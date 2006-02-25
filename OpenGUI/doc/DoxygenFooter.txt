@@ -1,0 +1,2 @@
+<HR>
+OpenGUI <a href="license.html">Copyright &copy; 2006</a>
