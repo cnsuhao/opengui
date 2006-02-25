@@ -1,0 +1,58 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGUI", "OpenGUI\OpenGUI.vcproj", "{F0265828-618F-4BAD-B4C4-8D3BF266B528}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D} = {9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}
+		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B} = {627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGUI_OGLRenderer", "OpenGUI_OGLRenderer\OpenGUI_OGLRenderer.vcproj", "{ADF033EA-32D7-4251-8E2B-01DB819054DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corona", "dependancies\corona\corona.vcproj", "{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml", "dependancies\tinyxml\tinyxml_lib.vcproj", "{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "playground", "playground\playground.vcproj", "{C7750CE5-57A6-4ADB-A2E2-280BFAD10646}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD} = {ADF033EA-32D7-4251-8E2B-01DB819054DD}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Debug.ActiveCfg = Debug|Win32
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Debug.Build.0 = Debug|Win32
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Release.ActiveCfg = Release|Win32
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Release.Build.0 = Release|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug.ActiveCfg = Debug|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug.Build.0 = Debug|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release.ActiveCfg = Release|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release.Build.0 = Release|Win32
+		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Debug.ActiveCfg = Debug|Win32
+		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Debug.Build.0 = Debug|Win32
+		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Release.ActiveCfg = Release|Win32
+		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Release.Build.0 = Release|Win32
+		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Debug.ActiveCfg = Debug|Win32
+		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Debug.Build.0 = Debug|Win32
+		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Release.ActiveCfg = Release|Win32
+		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Release.Build.0 = Release|Win32
+		{C7750CE5-57A6-4ADB-A2E2-280BFAD10646}.Debug.ActiveCfg = Debug|Win32
+		{C7750CE5-57A6-4ADB-A2E2-280BFAD10646}.Debug.Build.0 = Debug|Win32
+		{C7750CE5-57A6-4ADB-A2E2-280BFAD10646}.Release.ActiveCfg = Release|Win32
+		{C7750CE5-57A6-4ADB-A2E2-280BFAD10646}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

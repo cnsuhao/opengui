@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<Imageset name="DoesntMatter" sourceimage="SilverClean.png">
+	<Imagery Name="CloseButtonNormal" XPos="27" YPos="120" Width="10" Height="10" />
+	<Imagery Name="CloseButtonHover" XPos="3" YPos="120" Width="10" Height="10" />
+	<Imagery Name="CloseButtonPressed" XPos="15" YPos="120" Width="10" Height="10" />
+	<Imagery Name="Button" XPos="69" YPos="2" Width="50" Height="15" />
+	<Imagery Name="ButtonDisabled" XPos="2" YPos="103" Width="50" Height="15" />
+	<Imagery Name="ButtonDown" XPos="69" YPos="53" Width="50" Height="15" />
+	<Imagery Name="ButtonHover" XPos="69" YPos="19" Width="50" Height="15" />
+	<Imagery Name="DefaultCursor" XPos="224" YPos="1" Width="31" Height="32" />
+</Imageset>
+
