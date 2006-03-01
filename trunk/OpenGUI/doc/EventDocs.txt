@@ -356,7 +356,7 @@ Message.event.eventData = 0 //no additional eventData
 	list, and another Element performs an operation that again puts the first
 	Element in a situation where it should receive a \c ME_MouseLeave event,
 	it will not receive the event until the next \c ME_MouseMouse event is
-	generated.
+	generated.</i>
 	
 	\section Syntax
 \code

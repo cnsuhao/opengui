@@ -16,9 +16,9 @@ namespace OpenGUI{
 		Render::RenderOperationList SimpleButton::buildWidgetRenderOpList()
 		{
 			Render::PrimitiveBox box;
-			box.setRect(mElementRect);
+			box.setRect(this->getRect());
 			box.setTextureImagery(mImageryPtr);
-			if(mDisabled){
+			if(isDisabled()){
 				if(mImageryPtrDisabled)
 					box.setTextureImagery(mImageryPtrDisabled);
 			}else{
