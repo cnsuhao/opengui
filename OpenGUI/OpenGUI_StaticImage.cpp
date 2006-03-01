@@ -9,7 +9,7 @@ namespace OpenGUI{
 		Render::RenderOperationList StaticImage::buildWidgetRenderOpList()
 		{
 			Render::PrimitiveBox box;
-			box.setRect(mElementRect);
+			box.setRect(this->getRect());
 			box.setTextureImagery(mImageryPtr);
 			return box.getRenderOperationList();
 		}

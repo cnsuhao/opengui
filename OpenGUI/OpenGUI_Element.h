@@ -22,7 +22,49 @@ namespace OpenGUI{
 	{
 		friend class System;
 		friend class GUISheet;
+
 	public:
+		typedef enum {
+			/*! \brief
+				<b>Default Setting unless altered by an inheritor</b>.
+				Client area is always scaled to provide that 0,0 is the upper left, and 1,1 is the lower right.
+
+				- Resize will move and scale appearance of children.
+			*/
+			CAS_Scaled=1,
+			//! Client area uses the world coordinate system, offset by the element's client area offset.
+			/*! - Resize of this element does not move nor scale appearance of children.
+			*/
+			CAS_Absolute=2,
+			//! Client area inherits the client area of this element's parent.
+			/*! In other words, this element does not define its own unique client area scale.
+				It does not perform any scaling transformations on mouse position tests or
+				render operations from children. The only transform performed is for offsets,
+				which are necessary to provide functionality for widgets that provide scrollable
+				content.
+
+				- Resize of \b this element will not move and scale appearance of children,
+					though resizes of ancestors still map, depending on their own CAS setting.
+
+				\note This CAS type does stack recursively as one would expect, continuing to
+					search higher in the hierarchy until an ancestor is found that has a concrete
+					client area scale type. If a GUISheet is given this scale type, it is equivalent
+					to CAS_Scaled. (The "searching" is actually a side effect from
+					the design, and bares no additional cost.)
+			*/
+			CAS_Inherit=3,
+			//! Client area uses a custom scale.
+			/*! A custom scale is one that does not match any of the existing types.
+				If the element inheritor does not provide its own implementation of this via the
+				performCustomScaleOperation_Local2Inner() and performCustomScaleOperation_Inner2Local()
+				methods, then the default implementation is used.
+				\see
+					- performCustomScaleOperation_Local2Inner()
+					- performCustomScaleOperation_Inner2Local()
+			*/
+			CAS_Custom=0
+		} ClientAreaScale;
+
 		Element();
 		virtual ~Element();
 
@@ -137,19 +179,54 @@ namespace OpenGUI{
 		*/
 		void getChildElementZOrderExtents(int& upperZ, int& lowerZ);
 
-		//! Updates the URect that represents size and position with an entirely new value.
+		//! Updates the FRect that represents size and position with an entirely new value.
 		void setRect(FRect& newRect);
-		//! Returns a copy of the Element's URect (size and position)
+		//! Returns a copy of the Element's FRect (size and position)
 		FRect getRect();
 		//! Sets the position of the Element
 		void setPos(FVector2& newPosition);
+		//! Sets the position of the Element
 		void setPos(const float& xPos, const float& yPos);
 		//! Sets the size of the Element
 		void setSize(FVector2& newSize);
+		//! Sets the size of the Element
 		void setSize(const float& width, const float& height);
-		bool isActive(){return !mDisabled;}
+
+		//! returns \c TRUE if this element is not disabled (enabled)
+		bool isEnabled(){return !mDisabled;}
+		//! returns \c TRUE if this element is disabled
 		bool isDisabled(){return mDisabled;}
+		//! sets the Disabled state of the element.
+		/*! Disabled elements are still capable of receiving events, however,
+			they (and all of their children) are ignored for the purposes of
+			element under mouse position detection, and as such will not receive
+			events that are related to user input since none will be generated
+			for it as a destination.
+		*/
 		void setDisabled(bool disabled){mDisabled=disabled;}
+
+		//! sets if this Element visually clips its children
+		/*! The default is \c TRUE as that is usually the desired effect.
+			When an element does not perform clipping on its children, they are
+			not clipped to ensure they only draw within the bounds of this element.
+			Because of this, no geometric scissor rect clipping will occur at this
+			element. <i>(Which is a performance gain, but does not need to occur very often
+			due to render operation caching.)</i> Also, a side effect is that due to the
+			fact that the children are not guaranteed to be constrained within this element,
+			no hit test optimizations can be performed by this element's parent. Meaning that
+			if a hit test is performed on \b this element's parent, when that parent asks this
+			element if it, or any of its children are a better candidate for the hit test result,
+			this element has no choice but to test \b all of its children regardless of
+			the cursor being inside or outside of this element's rect. <i>(Which is a minor, but
+			quickly compounding, performance loss that will occur every frame that the cursor
+			is within the rect of this element's parent. Complex GUIs that turn off clipping
+			in many places will spend a lot of time walking large portions of the hierarchy
+			and their performance will likely suffer.)</i>
+
+		*/
+		void setClipsChildren(bool clip){mClipsChildren=clip;}
+		//! Returns \b TRUE if this element visually clips its children. \see setClipsChildren()
+		bool getClipsChildren(){return mClipsChildren;}
 
 		//! Returns the ZOrder index of this Element
 		int getZOrder();
@@ -176,16 +253,27 @@ namespace OpenGUI{
 		*/
 		void setAlwaysOnTop(bool newAlwaysOnTop);
 
-		
+		//! Sets the Client Area Scale used for this element's client area.
+		void setClientAreaScaleType(ClientAreaScale newCAS){mClientAreaScaleType = newCAS;}
+		//! Returns the Client Area Scale used for this element's client area.
+		ClientAreaScale getClientAreaScaleType(){return mClientAreaScaleType;}
+
+
+	// Coordinate transform functions
+		//! Returns an FVector2 in local coords that represents the given FVector2 in inner coords.
+		FVector2 convCoordInnerToLocal(FVector2 innerCoord);
+		//! Returns an FVector2 in inner coords that represents the given FVector2 in local coords.
+		FVector2 convCoordLocalToInner(FVector2 localCoord);
 		//! Returns an FVector2 in world coords that represents the given FVector2 in local coords. (Local coords are just outside this Element's rect)
 		FVector2 convCoordLocalToWorld(FVector2 localCoord);
 		//! Returns an FVector2 in world coords that represents the given FVector2 in inner coords. (Inner coords are inside this Element's rect)
 		FVector2 convCoordInnerToWorld(FVector2 innerCoord);
-
 		//! Returns an FVector2 in local coords that represents the given FVector2 in world coords. (Local coords are just outside this Element's rect)
 		FVector2 convCoordWorldToLocal(FVector2 worldCoord);
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in world coords. (Inner coords are inside this Element's rect)
 		FVector2 convCoordWorldToInner(FVector2 worldCoord);
+
+
 
 
 	protected:
@@ -217,12 +305,40 @@ namespace OpenGUI{
 		//! This function will be called whenever an Element is detached from a hierarchy with a GUISheet root. \todo implement functionality guarantee
 		virtual void handleDetach() {};
 
-	
+
+		/*! \brief
+		This function is used to transform FVector2(s) from local coords to inner coords
+		when the CAS_Custom scale type is used.
+
+		These functions only need to be overridden if the inheriting object intends on
+		redefining the way in which custom client area scales are handled.
+
+		\note
+		The default implementation will define its own scale as <i>mClientRectCustomScale 
+		== the number of units that are	equivalent to the element's current width and height</i>.
+		If the element is resized, this value is not updated, and will result in children
+		being visually moved and scaled. <i>If a widget's intent is to provide a custom
+		coordinate scaling while preserving absolute position and scale of children while
+		still using this default implementation to do all the work, it will need to update
+		the size of the mClientRectCustomScale that is used by these functions as the scale
+		factor in such a way as to maintain an equal units per pixel.</i>
+
+		\see
+		- mClientRectCustomScale
+		- mClientRectOffset
+		- performCustomScaleOperation_Inner2Local()
+
+		*/
+		virtual FVector2 performCustomScaleOperation_Local2Inner(FVector2 localCoord);
+		//! \see performCustomScaleOperation_Local2Inner()
+		virtual FVector2 performCustomScaleOperation_Inner2Local(FVector2 innerCoord);
+
+
 
 		//! Notifies the parent object (if there is one) that the Z order of this Element has somehow changed (either ZOrder is different, or AlwaysOnTop has been changed)
 		void notifyElementParentZChange();
 
-		//! Returns true is the point (in local coord space) is inside this Element.
+		//! Returns true if the point (in local coord space) is inside this Element.
 		/*!
 			The default operation simply checks the the point is greater than or equal to mElementRect.min
 			and less than mElementRect.max. This is fine for Widgets that are axis aligned, rectangular shaped,
@@ -240,14 +356,37 @@ namespace OpenGUI{
 		//! returns true if the given elementName identifies a descendant of this Element
 		bool isDescendant(std::string elementName);
 		
-		FRect mElementRect;
-		int mZOrder;
-		float mAlpha;
-		bool mVisible;
-		bool mDisabled;
-		bool mAlwaysOnTop;
+
+		//! This FVector2 holds the scale of this element's client area when the CAS_Custom scale type is used.
+		/*! This value is only used when the scale type is CAS_Custom, and is only used in calculations
+			by the default custom scale implementation.
+			\see	- performCustomScaleOperation_Local2Inner()
+					- performCustomScaleOperation_Inner2Local()
+		*/
+		FVector2 mClientRectCustomScale;
+
+		//! Holds the offset that is to be applied to all point transforms going through this element.
+		/*! This value should be used by \b all coordinate transformation implementations. The
+			built in Client Area Scale types all use this value as an amount to offset the client area,
+			using the same scale as defined for the client area.
+		
+			If CAS_Custom is used, and a custom implementation is provided, the implementation can choose to
+			somehow honor this value, though it is not required. It is never changed by the system directly,
+			though many scrollable window widget implementations will use this member to provide the desired
+			scroll effect.
+		*/
+		FVector2 mClientRectOffset;
 
 	private:
+		//! \internal transforms the positioning of the given render ops to properly contain them within this element.
+		/*! Since children simply draw to be the size they are told, we must transform their render operations
+			in order to properly encapsulate them.
+
+			This function performs the necessary alterations on each render operation within the renderOpList.
+		*/
+		void __transformChildrenRenderOperationList(Render::RenderOperationList& renderOpList);
+
+
 		//! \internal adds the current widget's renderoplist and all of its children's renderoplists to the given renderOpList
 		void __buildRenderOperationList(Render::RenderOperationList& renderOpList);
 
@@ -264,7 +403,7 @@ namespace OpenGUI{
 			converting the current value of the point into the inner coordinate space of the child
 			about to be called.
 		*/
-		Element* _getDecendantElementAt(FVector2 innerPoint, const bool& activeOnly=true);
+		Element* _getDecendantElementAt(FVector2 innerPoint, const bool activeOnly=true);
 
 		//! Propagates an event using an event propagation list.
 		/*!
@@ -323,6 +462,20 @@ namespace OpenGUI{
 		void _setElementParent(Element* newParent); //!< Sets the parent of this Element. Users should never have a reason to use this function.  \note This is implemented and used via function for consistency with _setName()
 		Element* mParentElement; //!< Pointer to the parent of this Element. \note This is not necessarily another Element! Do not assume that it is! \warning Modifying this is very dangerous. In a word: Don't.
 		std::string mObjectName; //!< Holds the name of this object
+
+		//! \internal This FRect holds this element's size and position within its parent.
+		FRect mElementRect;
+
+		//! \internal \c true if this element visually clips its children
+		bool mClipsChildren;
+
+		ClientAreaScale mClientAreaScaleType;
+
+		int mZOrder;
+		float mAlpha;
+		bool mVisible;
+		bool mDisabled;
+		bool mAlwaysOnTop;
 	};
 };
 #endif

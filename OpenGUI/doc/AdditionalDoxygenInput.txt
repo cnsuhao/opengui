@@ -29,7 +29,7 @@
 	\n\n\n
 	<hr>	
 	\note
-	%OpenGUI is distributed using the  BSD license so that both amatuer and
+	%OpenGUI is distributed using the  BSD license so that both amateur and
 	professional developers can benefit from its use. The exact copy of
 	this license can be found in the file LICENSE.TXT that is distributed with the
 	source code, or by clicking \link License here.\endlink
@@ -76,10 +76,10 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	- Cross API: Is easily used in native DirectX or OpenGL, as well as the OGRE rendering engine.
 	- Avoids custom containers when possible, using STL where available.
 	- Easily extendable widget set by class inheritance.
-	- Powerful message system with fully catchable and interruptable parent/child event propagation.
+	- Powerful message system with fully catchable and interruptible parent/child event propagation.
 	- Supports loading of fonts via FreeType 2.
-	- Supports native loading of mutiple imagery formats via Corona (http://corona.sourceforge.net)
-	- Full alpha support for image types that support alpha channels. (Single channel imagery is interpretted as alpha only.)
+	- Supports native loading of multiple imagery formats via Corona (http://corona.sourceforge.net)
+	- Full alpha support for image types that support alpha channels. (Single channel imagery is interpreted as alpha only.)
 	- Free form render operations allow Widget imagery to be rotated and scaled in any way imaginable.
 	
 	
@@ -146,7 +146,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	\page CustomWidgets
 	This page explains how to create custom widgets to extend the gui.
 	
-	\section RecievingEvents Recieving Events
+	\section RecievingEvents Receiving Events
 	\section IssuingAlerts Issuing Alerts
 */
 
@@ -168,9 +168,9 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	\todo - add more of the base widgets
 	\todo - implement xml imagery loading
 	\todo - design string based widget Property system
-	\todo - implement widgetfactory (so widgets can be created by name)
+	\todo - implement widget factory (so widgets can be created by name)
 	\todo - implement guisheet saving and restoring via xml
-	\todo - implement ThemeFactory (for creating widgets of any registerd type and autoassigning properties based on "theme")
+	\todo - implement ThemeFactory (for creating widgets of any registered type and auto assigning properties based on "theme")
 	
 */
 
@@ -189,3 +189,16 @@ The FreeType Project (www.freetype.org). All rights reserved.
 /*! \page IntegratingOpenGUI
 	This will cover how to add OpenGUI to your application
 */
+
+
+/*! \page CoordinateSpaces Coordinate Spaces
+	Working with coordinates within GUIs can often become more difficult than you would
+	initially expect. The reason for this comes from the constant changes of coordinate space.
+	As you build a GUI heirarchy, you are nesting widgets within other widgets. The top level
+	widget (the first added to the heirarchy) is positioned and sized using the coordinate
+	system defined by the GUISheet. However, a child of that top level widget may or may not
+	use that same coordinate system. It is up to the containing widget to define the coordinate
+	space in which its children reside.
+	
+*/
+

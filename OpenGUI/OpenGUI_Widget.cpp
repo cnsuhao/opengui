@@ -7,7 +7,7 @@ namespace OpenGUI{
 		Render::RenderOperationList Widget::buildWidgetRenderOpList()
 		{
 			Render::PrimitiveBox box;
-			box.setRect(mElementRect);
+			box.setRect(this->getRect());
 			return box.getRenderOperationList();
 		}
 		//#####################################################################

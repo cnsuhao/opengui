@@ -28,6 +28,9 @@ namespace OpenGUI{
 		mVisible = true;
 		mDisabled = false;
 		mAlwaysOnTop = false;
+		mClientAreaScaleType = CAS_Scaled;
+		mClipsChildren = true;
+		mClientRectCustomScale = FVector2(1.0f,1.0f);
 	}
 	//#####################################################################
 	Element::~Element()
@@ -367,7 +370,7 @@ namespace OpenGUI{
 	//#####################################################################
 	FVector2 Element::convCoordInnerToWorld(FVector2 innerCoord)
 	{
-		innerCoord=mElementRect.getOuterCoord(innerCoord);
+		innerCoord=convCoordInnerToLocal(innerCoord);
 		if(mParentElement){
 			return mParentElement->convCoordInnerToWorld(innerCoord);
 		}else{
@@ -388,10 +391,40 @@ namespace OpenGUI{
 	{
 		if(mParentElement){
 			worldCoord=mParentElement->convCoordWorldToInner(worldCoord);
-			return mElementRect.getInnerCoord(worldCoord);
+			return convCoordLocalToInner(worldCoord);
 		}else{
-			return mElementRect.getInnerCoord(worldCoord);
+			return convCoordLocalToInner(worldCoord);
 		}
+	}
+	//#####################################################################
+	FVector2 Element::convCoordInnerToLocal(FVector2 innerCoord)
+	{
+		switch(mClientAreaScaleType){
+			case CAS_Custom:
+				return performCustomScaleOperation_Inner2Local(innerCoord);
+			case CAS_Inherit:
+				return innerCoord = innerCoord + mClientRectOffset;
+			case CAS_Absolute:
+				return convCoordWorldToLocal(innerCoord + mClientRectOffset);
+			case CAS_Scaled:
+			default:
+				return mElementRect.getOuterCoord(innerCoord + mClientRectOffset);
+		};
+	}
+	//#####################################################################
+	FVector2 Element::convCoordLocalToInner(FVector2 localCoord)
+	{
+		switch(mClientAreaScaleType){
+			case CAS_Custom:
+				return performCustomScaleOperation_Local2Inner(localCoord);
+			case CAS_Inherit:
+				return localCoord = localCoord - mClientRectOffset;
+			case CAS_Absolute:
+				return convCoordLocalToWorld(localCoord) - mClientRectOffset;
+			case CAS_Scaled:
+			default:
+				return mElementRect.getInnerCoord(localCoord) - mClientRectOffset;
+		};
 	}
 	//#####################################################################
 	bool Element::pointIsInside(const FVector2& localPoint)
@@ -438,19 +471,30 @@ namespace OpenGUI{
 		return false; //it isn't here, return false
 	}
 	//#####################################################################
-	Element* Element::_getDecendantElementAt(FVector2 innerPoint, const bool& activeOnly)
+	Element* Element::_getDecendantElementAt(FVector2 innerPoint, const bool activeOnly)
 	{
 		ChildElementList::iterator i = mChildrenElements.begin();
 		while(i != mChildrenElements.end()){
 			
-			if( (!activeOnly || (*i)->isActive()) && //only test isActive if we need
-				(*i)->pointIsInside(innerPoint) //and only test hit if we don't need active or we are active
+			if( (!activeOnly || (*i)->isEnabled()) && //only test isActive if we need
+				( !(*i)->mClipsChildren || (*i)->pointIsInside(innerPoint) ) //and only test hit if we don't need active or we are active, and only if it is clipping children
 			){
 				Element* decendantHit;
-				decendantHit = (*i)->_getDecendantElementAt((*i)->mElementRect.getInnerCoord(innerPoint), activeOnly);
+				decendantHit = (*i)->_getDecendantElementAt( (*i)->convCoordLocalToInner(innerPoint) , activeOnly);
 				if(decendantHit) //if this child has a hitting descendant, then return it
 					return decendantHit;
-				return (*i); //otherwise just return the child
+
+				/* If the child does not clip children, we need to perform the hit
+					test for JUST the child at this point. Boolean algebra would have
+					culled out the previous call to this function, so there is no performance
+					loss. This will be the first time the function was actually called, we
+					just simply delayed it.
+				*/
+				if(!(*i)->mClipsChildren){ //if we didn't test the child for hit test before, do it now
+					if((*i)->pointIsInside(innerPoint))
+						return (*i); //return the child
+				}else
+					return (*i); //otherwise just return the child
 			}
 			i++;
 		}
@@ -462,6 +506,24 @@ namespace OpenGUI{
 		return Render::RenderOperationList();
 	}
 	//#####################################################################
+	FVector2 Element::performCustomScaleOperation_Local2Inner(FVector2 localCoord)
+	{
+		FRect tmpRect;
+		tmpRect.setPosition(FVector2(0.0f,0.0f));
+		tmpRect.setSize(mClientRectCustomScale);
+
+		return tmpRect.getInnerCoord(mElementRect.getInnerCoord(localCoord)) - mClientRectOffset;
+	}
+	//#####################################################################
+	FVector2 Element::performCustomScaleOperation_Inner2Local(FVector2 innerCoord)
+	{
+		FRect tmpRect;
+		tmpRect.setPosition(FVector2(0.0f,0.0f));
+		tmpRect.setSize(mClientRectCustomScale);
+
+		return mElementRect.getOuterCoord(tmpRect.getOuterCoord(innerCoord + mClientRectOffset));
+	}
+	//#####################################################################
 	void Element::__buildRenderOperationList(Render::RenderOperationList& renderOpList)
 	{
 		//to ensure back to front ordering
@@ -469,8 +531,13 @@ namespace OpenGUI{
 		//(in order of front to back visibility)
 		ChildElementList::iterator iter = mChildrenElements.begin();
 		while(iter != mChildrenElements.end()){
-			(*iter)->__buildRenderOperationList(renderOpList);
+			Render::RenderOperationList childROList;
+			(*iter)->__buildRenderOperationList(childROList);
+			__transformChildrenRenderOperationList(childROList);
+			Render::PrependRenderOperationList(renderOpList,childROList);
+			childROList.clear();
 			iter++;
+			
 		}
 
 		//build our own widget render ops
@@ -478,6 +545,17 @@ namespace OpenGUI{
 
 		//and then push our ops to the front
 		Render::PrependRenderOperationList(renderOpList,myROlist);
+	}
+	//#####################################################################
+	void Element::__transformChildrenRenderOperationList(Render::RenderOperationList& renderOpList)
+	{
+		Render::RenderOperationList::iterator iter = renderOpList.begin();
+		while(iter != renderOpList.end()){
+			iter->vertices[0].position = convCoordInnerToLocal(iter->vertices[0].position);
+			iter->vertices[1].position = convCoordInnerToLocal(iter->vertices[1].position);
+			iter->vertices[2].position = convCoordInnerToLocal(iter->vertices[2].position);
+			iter++;
+		}
 	}
 	//#####################################################################
 };
