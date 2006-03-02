@@ -71,7 +71,12 @@ namespace OpenGUI{
 
 		glEnable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
+
+		//glDisable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE); //test
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	//###########################################################
