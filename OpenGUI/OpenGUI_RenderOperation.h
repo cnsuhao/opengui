@@ -58,11 +58,11 @@ namespace OpenGUI{
 			advised that you use counter clockwise vertex windings. All Primitive
 			classes use CCW windings, so you can be assured that any Renderer implementation
 			that is performing winding culling will appear to absolutely not work correctly
-			with any of the built in Widgets if it is culling CCW wound polygons.
+			if it is culling CCW wound polygons.
 
 			\note
-			At the current imlementation, the system can only guarantee that renderers will
-			recieve render operations in a back to front order per widget. 
+			At the current implementation, the system can only guaranty that renderers will
+			receive render operations in a back to front order per widget. 
 		*/
 		class OPENGUI_API RenderOperation{
 		public:
@@ -105,8 +105,9 @@ namespace OpenGUI{
 		public:
 			PrimitiveBox() : mTextureImagery(0), mMaskImagery(0),mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
 			~PrimitiveBox() {}
+			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
-			//! Get the current size of the Box
+			//! Get the current position and size of the Box
 			FRect getRect(){return mRect;}
 			//! Sets the size and position of the Box to the given FRect
 			void setRect(FRect rect){mRect=rect;}
@@ -122,10 +123,11 @@ namespace OpenGUI{
 
 		/*! \brief
 			This primitive performs an axis aligned scissor rect operation
-			on provided render operations. For performance and compatability
-			reasons, %OpenGUI cannot perform scissor rects in hardware, so
-			as a replacement it provides this object to perform geometrical
-			scissor rect functionality.
+			on provided render operations.
+			
+			For compatibility reasons, %OpenGUI cannot perform scissor rects
+			in hardware, so as a replacement it provides this object to perform
+			geometrical	scissor rect functionality.
 
 			The clipping performed will automatically adjust all render operation
 			data to properly preserve the intended look of the original render
@@ -141,12 +143,37 @@ namespace OpenGUI{
 			only support 3 sided polygons, any 4 sided polygons that are produced
 			by this object are automatically converted into 2 separate 3 sided
 			polygons.
+
+			\note The order in which render operations are received is preserved,
+				so this Primitive can be trusted with RenderOperations that have
+				a specific draw order.
 		*/
 		class OPENGUI_API PrimitiveScissorRect : public Primitive{
 		public:
-			PrimitiveScissorRect() {}
+			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
 			~PrimitiveScissorRect() {}
+			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
+			//! Get the current position and size of the ScissorRect 
+			FRect getRect(){return mRect;}
+			//! Sets the size and position of the ScissorRect to the given FRect
+			void setRect(FRect rect){mRect=rect;}
+
+			//! Adds a single RenderOperation to the input RenderOperationList
+			void addRenderOperation(RenderOperation& renderOp);
+			//! Adds an entire RenderOperationList to the input RenderOperationList
+			void addRenderOperation(RenderOperationList& renderOpList);
+			//! Clears the input RenderOperationList
+			void clear();
+		private:
+			FRect mRect; //size and position of this ScissorRect
+			RenderOperationList mInputRenderOps;
+
+			void _SliceRenderOp_Vert_SaveLeft(RenderOperation& input, RenderOperationList& output, float cutPosition);
+			void _SliceRenderOp_Vert_SaveRight(RenderOperation& input, RenderOperationList& output, float cutPosition);
+			void _SliceRenderOp_Horiz_SaveTop(RenderOperation& input, RenderOperationList& output, float cutPosition);
+			void _SliceRenderOp_Horiz_SaveBottom(RenderOperation& input, RenderOperationList& output, float cutPosition);
+			static void sliceLineSegment(Vertex& vert1, Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal);
 		};
 	};//namespace Render{
 };
