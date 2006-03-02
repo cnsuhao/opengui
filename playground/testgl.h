@@ -45,15 +45,15 @@ class testgl : public OpenGLBase
 		sys->setGUISheet(sys->createGUISheet("root"));
 
 		
-		OpenGUI::Widgets::StaticImage* w = new OpenGUI::Widgets::StaticImage();
-		w->setRect(OpenGUI::FRect(0.25f,0.05f,0.5f,0.10f));
-		w->setImagery("Button");
-		sys->getGUISheetByName("root")->addChildElement(w);
-
-		w = new OpenGUI::Widgets::StaticImage();
-		w->setRect(OpenGUI::FRect(0.25f,0.15f,0.5f,0.20f));
-		w->setImagery("Button");
-		sys->getGUISheetByName("root")->addChildElement(w);
+// 		OpenGUI::Widgets::StaticImage* w = new OpenGUI::Widgets::StaticImage();
+// 		w->setRect(OpenGUI::FRect(0.25f,0.05f,0.5f,0.10f));
+// 		w->setImagery("Button");
+// 		sys->getGUISheetByName("root")->addChildElement(w);
+// 
+// 		w = new OpenGUI::Widgets::StaticImage();
+// 		w->setRect(OpenGUI::FRect(0.25f,0.15f,0.5f,0.20f));
+// 		w->setImagery("Button");
+// 		sys->getGUISheetByName("root")->addChildElement(w);
 
 		OpenGUI::Widgets::SimpleButton* button = new OpenGUI::Widgets::SimpleButton();
 		OpenGUI::Widgets::SimpleButton* button2 = new OpenGUI::Widgets::SimpleButton();
@@ -62,12 +62,16 @@ class testgl : public OpenGLBase
 		button->setImageryDisabled("ButtonDisabled");
 		button->setImageryPressed("ButtonDown");
 		button->setImageryMouseOver("ButtonHover");
-		button->setRect(OpenGUI::FRect(0.75f,0.75f,0.85f,0.80f));
+		button->setRect(OpenGUI::FRect(0.25f,0.25f,0.45f,0.45f));
 		*button2 = *button;
-		button2->setRect(OpenGUI::FRect(0.45f,0.75f,0.55f,0.80f));
+		button2->setRect(OpenGUI::FRect(0.35f,0.15f,0.55f,0.55f));
 
+		button->setClientAreaScaleType(OpenGUI::Element::CAS_Absolute);
+		//button->setClipsChildren(false);
 		sys->getGUISheetByName("root")->addChildElement(button);
-		sys->getGUISheetByName("root")->addChildElement(button2);
+		sys->getGUISheetByName("root")->setClipsChildren(false);
+		button->addChildElement(button2);
+		button2->setClipsChildren(false);
 
 		last=true;
 		//////////////////////////////////////////////////////////////
