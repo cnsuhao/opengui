@@ -534,11 +534,17 @@ namespace OpenGUI{
 			Render::RenderOperationList childROList;
 			(*iter)->__buildRenderOperationList(childROList);
 			__transformChildrenRenderOperationList(childROList);
+			if(mClipsChildren){
+				Render::PrimitiveScissorRect srect;
+				srect.setRect(mElementRect);
+				srect.addRenderOperation(childROList);
+				childROList = srect.getRenderOperationList();
+			}
 			Render::PrependRenderOperationList(renderOpList,childROList);
 			childROList.clear();
 			iter++;
-			
 		}
+		
 
 		//build our own widget render ops
 		Render::RenderOperationList myROlist = buildWidgetRenderOpList();
