@@ -1,9 +1,11 @@
 
+#include "OpenGUI_PreRequisites.h"
 
 //Custom data types and import/export macros
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Functors.h"
 #include "OpenGUI_RefPtr.h"
 #include "OpenGUI_Resource.h"
 
@@ -20,6 +22,7 @@
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Message.h"
 #include "OpenGUI_Subscriber.h"
+#include "OpenGUI_PropertySet.h"
 #include "OpenGUI_Element.h"
 #include "OpenGUI_GUISheet.h"
 #include "OpenGUI_TextureData.h"
