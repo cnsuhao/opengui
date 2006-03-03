@@ -24,7 +24,7 @@ namespace OpenGUI{
 		bool operator==(const IVector2& right) const  { return x==right.x && y == right.y; }
 		bool operator!=(const IVector2& right) const  { return !operator==(right); }
 		//! Return a string representation of this value
-		std::string toStr()
+		std::string toStr() const
 			{
 				std::stringstream ss;
 				ss << "( " << x << " x " << y <<" )" ;
@@ -79,7 +79,7 @@ namespace OpenGUI{
 				return false;
 			}
 		//! Return a string representation of this value
-		std::string toStr()
+		std::string toStr() const
 			{
 				std::stringstream ss;
 				ss << "{ " << min.toStr() << " X " << max.toStr() <<" }" ;
@@ -125,7 +125,7 @@ namespace OpenGUI{
 				return sqrt((x*x) + (y*y));
 			}
 		//! Return a string representation of this value
-		std::string toStr()
+		std::string toStr() const
 			{
 				std::stringstream ss;
 				ss << "( " << x << " x " << y <<" )" ;
@@ -206,7 +206,7 @@ namespace OpenGUI{
 				return FRect(min.pixelAligned(resolution),max.pixelAligned(resolution));
 			}
 		//! Return a string representation of this value
-		std::string toStr()
+		std::string toStr() const
 			{
 				std::stringstream ss;
 				ss << "{ " << min.toStr() << " X " << max.toStr() <<" }" ;
