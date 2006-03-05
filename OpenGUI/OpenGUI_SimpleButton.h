@@ -18,6 +18,9 @@ namespace OpenGUI{
 			void setImageryMouseOver(std::string imageryName);
 			//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
 			void setImageryDisabled(std::string imageryName);
+
+			//! This is just a factory interface.
+			static Widget* createSimpleButtonFactory();
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
