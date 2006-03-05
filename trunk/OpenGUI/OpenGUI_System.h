@@ -1,7 +1,6 @@
 #ifndef DC3E54A4_1432_4fa1_A635_D76797D7ED89
 #define DC3E54A4_1432_4fa1_A635_D76797D7ED89
 
-#include <string>
 
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
@@ -334,7 +333,9 @@ namespace OpenGUI{
 		void _destroyAllGUISheets(); //a shutdown function used to clean up any existing gui sheets
 		
 
-	
+	//WidgetFactoryManager
+		WidgetFactoryManager* mWidgetFactoryManager;
+
 	//TimerManager
 		TimerManager* mTimerManager;
 		bool m_PerformAutoTicks;

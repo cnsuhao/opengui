@@ -10,6 +10,9 @@ namespace OpenGUI{
 			StaticImage();
 			~StaticImage();
 			void setImagery(std::string imageryName);
+
+			//! This is just a factory interface.
+			static Widget* createStaticImageFactory();
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 			ImageryPtr mImageryPtr;

@@ -2,6 +2,12 @@
 //#include "mmgr.h"
 namespace OpenGUI{
 	namespace Widgets{
+		//#####################################################################
+		Widget* StaticImage::createStaticImageFactory()
+		{
+			return new StaticImage;
+		}
+		//#####################################################################
 		StaticImage::StaticImage() {}
 		//#####################################################################
 		StaticImage::~StaticImage() {}

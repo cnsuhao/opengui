@@ -3,6 +3,11 @@
 namespace OpenGUI{
 	namespace Widgets{
 		//#####################################################################
+		Widget* SimpleButton::createSimpleButtonFactory()
+		{
+			return new SimpleButton;
+		}
+		//#####################################################################
 		SimpleButton::SimpleButton()
 		{
 			m_MouseOver=false;

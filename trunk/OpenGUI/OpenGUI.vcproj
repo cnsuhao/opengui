@@ -175,6 +175,9 @@
 			<File
 				RelativePath=".\OpenGUI_Widget.cpp">
 			</File>
+			<File
+				RelativePath=".\OpenGUI_WidgetFactoryManager.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -275,6 +278,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Widget.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_WidgetFactoryManager.h">
 			</File>
 			<File
 				RelativePath=".\UnknownImage.h">

@@ -1,9 +1,7 @@
-#include <string>
-#include <sstream>
+
 #include "corona.h"
-
 #include "OpenGUI.h"
-
+#include "OpenGUI_BaseWidgets.h"
 
 namespace OpenGUI{
 	//############################################################################
@@ -22,6 +20,13 @@ namespace OpenGUI{
 	//############################################################################
 	//############################################################################
 	//############################################################################
+	//! \internal Just a little function to register all compiled in Widgets with the WidgetFactoryManager
+	void RegisterAllBaseWidgets()
+	{
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory));
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory));
+	}
+	//############################################################################
 	System::System(Renderer* renderer, ResourceProvider* resourceProvider)
 	{
 		mTimerManager = new TimerManager; //get this up asap
@@ -39,7 +44,8 @@ namespace OpenGUI{
 		mRenderer = renderer;
 		mRenderer->getViewportDimensions(mScreenResolution); //get the viewport resolution
 
-		
+		mWidgetFactoryManager = new WidgetFactoryManager();
+		RegisterAllBaseWidgets(); //register base widget factories
 
 		if(resourceProvider){
 			mResourceProvider=resourceProvider;
@@ -63,11 +69,21 @@ namespace OpenGUI{
 	System::~System()
 	{
 		System::_destroyAllGUISheets();
-		if(mCursorManager ) delete mCursorManager;
-		if(mImageryManager) delete mImageryManager;
+
+		if(mCursorManager )
+			delete mCursorManager;
+
+		if(mImageryManager)
+			delete mImageryManager;
+
 		if(mUsingGenericResourceProvider)
 			delete mResourceProvider;
-		if(mTimerManager) delete mTimerManager; //delete this last
+
+		if(mWidgetFactoryManager)
+			delete mWidgetFactoryManager;
+
+		if(mTimerManager)
+			delete mTimerManager; //delete this last
 	}
 	//############################################################################
 	FVector2 System::getAspectCorrection()
