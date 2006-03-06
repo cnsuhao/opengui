@@ -28,29 +28,43 @@ namespace OpenGUI{
 		//
 	}
 	//############################################################################
-	void WidgetFactoryManager::registerWidgetFactory(std::string widgetName, WidgetFactoryCallback factoryCallback)
+	void WidgetFactoryManager::registerWidgetFactory(std::string groupName, std::string widgetName, WidgetFactoryCallback factoryCallback)
 	{
-		mCallbackmap[widgetName]=factoryCallback;
+		CallbackMapItem item;
+		item.callBack=factoryCallback;
+		item.groupName=groupName;
+		item.widgetName=widgetName;
+		mCallbackmap[_buildGroupNameComposite(groupName,widgetName)]=item;
 	}
 	//############################################################################
-	void WidgetFactoryManager::unregisterWidgetFactory(std::string widgetName)
+	void WidgetFactoryManager::unregisterWidgetFactory(std::string groupName, std::string widgetName)
 	{
-		CallbackMap::iterator iter = mCallbackmap.find(widgetName);
+		CallbackMap::iterator iter = mCallbackmap.find(_buildGroupNameComposite(groupName,widgetName));
 		if(iter != mCallbackmap.end())
 			mCallbackmap.erase(iter);
 	}
 	//############################################################################
-	Widgets::Widget* WidgetFactoryManager::createWidget(std::string widgetName)
+	Widgets::Widget* WidgetFactoryManager::createWidget(std::string groupName, std::string widgetName)
 	{
-		CallbackMap::iterator iter = mCallbackmap.find(widgetName);
+		CallbackMap::iterator iter = mCallbackmap.find(_buildGroupNameComposite(groupName,widgetName));
 		if(iter != mCallbackmap.end()){
-			try{ //undefined? you bet! but hey, we've got faith.
-				return iter->second.Call();
-			}catch(...){
-				return 0;
+			//call me paranoid, but i'm going to check again just to make sure
+			if(iter->second.groupName == groupName && iter->second.widgetName == widgetName){
+				try{ //undefined? you bet! but hey, we've got faith.
+					return iter->second.callBack.Call();
+				}catch(...){
+					return 0;
+				}
 			}
-		}else
-			return 0;
+		}
+		return 0;
+	}
+	//############################################################################
+	std::string WidgetFactoryManager::_buildGroupNameComposite(const std::string& groupName, const std::string& widgetName)
+	{
+		std::stringstream ss;
+		ss << groupName << ":" << widgetName;
+		return ss.str();
 	}
 	//############################################################################
 }; //namespace OpenGUI{
