@@ -1,6 +1,5 @@
 #include "OpenGUI.h"
-#include <time.h>
-#include <windows.h>
+
 
 namespace OpenGUI{
 	template<> TimerManager* Singleton<TimerManager>::mptr_Singleton = 0;

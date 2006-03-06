@@ -1,8 +1,7 @@
 #ifndef ADDA6F72_2373_43e0_A282_A8E205CAA876
 #define ADDA6F72_2373_43e0_A282_A8E205CAA876
 
-#include <string>
-#include <list>
+
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Texture.h"

@@ -1,8 +1,7 @@
 #ifndef CCFEE719_8FDE_46ce_8F52_350F92CA56CD
 #define CCFEE719_8FDE_46ce_8F52_350F92CA56CD
-#include <cmath>
-#include <string>
-#include <sstream>
+
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 
 namespace OpenGUI{

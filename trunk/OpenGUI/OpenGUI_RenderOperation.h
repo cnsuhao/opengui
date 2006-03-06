@@ -1,6 +1,6 @@
 #ifndef BC21A4C5_FCD1_4d8c_9263_4AC39140B970
 #define BC21A4C5_FCD1_4d8c_9263_4AC39140B970
-#include <list>
+
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"

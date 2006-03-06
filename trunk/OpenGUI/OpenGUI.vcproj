@@ -131,6 +131,9 @@
 				RelativePath=".\OpenGUI_CursorManager.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_DynamicLib.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Element.cpp">
 			</File>
 			<File
@@ -147,6 +150,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Imageset.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_PluginManager.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PropertySet.cpp">
@@ -193,6 +199,9 @@
 				RelativePath=".\OpenGUI_CursorManager.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_DynamicLib.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Element.h">
 			</File>
 			<File
@@ -227,6 +236,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_MouseButton.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_PluginManager.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PreRequisites.h">

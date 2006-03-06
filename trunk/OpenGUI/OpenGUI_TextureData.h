@@ -1,6 +1,6 @@
 #ifndef D10169F3_7AC3_4a10_8691_2762C02DA230
 #define D10169F3_7AC3_4a10_8691_2762C02DA230
-#include <string>
+
 #include "OpenGUI_Exports.h"
 namespace OpenGUI{
 	/*! \brief

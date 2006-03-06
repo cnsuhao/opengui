@@ -1,7 +1,6 @@
-#include <string>
-#include <fstream>
-#include "OpenGUI_Exception.h"
-#include "OpenGUI_GenericResourceProvider.h"
+
+#include "OpenGUI.h"
+
 
 namespace OpenGUI{
 	//#####################################################################

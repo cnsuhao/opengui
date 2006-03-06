@@ -1,10 +1,8 @@
 #ifndef E1334B40_05A0_4a30_9714_34D7E9AF7378
 #define E1334B40_05A0_4a30_9714_34D7E9AF7378
 
-#include <string>
-#include <map>
-#include <list>
-#include <time.h>
+#include "OpenGUI_PreRequisites.h"
+
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Cursor.h"

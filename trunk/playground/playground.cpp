@@ -17,10 +17,8 @@ using namespace OpenGUI;
 int main(int argc, char* argv[])
 {
 	testgl* oglb = new testgl();
-	GetModuleHandle(0);
-	oglb->WinMain(GetModuleHandle(0),0,"",0);
-	delete oglb;
-return 0;
+	oglb->WinMain(GetModuleHandle(0), 0, "", 0);
+	return 0;
 
 	
 /*
