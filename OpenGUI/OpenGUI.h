@@ -10,7 +10,6 @@
 #include "OpenGUI_Resource.h"
 
 
-
 //Abstract classes for custom renderers/data providers/etc
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
@@ -35,6 +34,8 @@
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
 #include "OpenGUI_WidgetFactoryManager.h"
+#include "OpenGUI_DynamicLib.h"
+#include "OpenGUI_PluginManager.h"
 #include "OpenGUI_System.h"
 
 

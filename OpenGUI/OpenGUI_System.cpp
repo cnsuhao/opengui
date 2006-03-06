@@ -44,6 +44,8 @@ namespace OpenGUI{
 		mRenderer = renderer;
 		mRenderer->getViewportDimensions(mScreenResolution); //get the viewport resolution
 
+		m_PluginManager = new PluginManager;
+
 		mWidgetFactoryManager = new WidgetFactoryManager();
 		RegisterAllBaseWidgets(); //register base widget factories
 
@@ -70,6 +72,14 @@ namespace OpenGUI{
 	{
 		System::_destroyAllGUISheets();
 
+		/*
+		plugins are always unloaded as soon as possible to ensure that
+		all other subsystems are still available to the pluginStop
+		functions
+		*/
+		if(m_PluginManager)
+			delete m_PluginManager;
+
 		if(mCursorManager )
 			delete mCursorManager;
 
@@ -84,6 +94,16 @@ namespace OpenGUI{
 
 		if(mTimerManager)
 			delete mTimerManager; //delete this last
+	}
+	//############################################################################
+	void System::loadPlugin(std::string filename)
+	{
+		PluginManager::getSingleton().loadPlugin(filename);
+	}
+	//############################################################################
+	void System::unloadPlugin(std::string filename)
+	{
+		PluginManager::getSingleton().unloadPlugin(filename);
 	}
 	//############################################################################
 	FVector2 System::getAspectCorrection()

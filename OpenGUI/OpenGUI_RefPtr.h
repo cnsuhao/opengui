@@ -5,11 +5,7 @@
 //Great way to find out if all refptrs are actually getting destructed correctly.
 //#define REFPTR_DEBUG
 
-#ifdef REFPTR_DEBUG
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#endif
+#include "OpenGUI_PreRequisites.h"
 
 namespace OpenGUI{
 	template<typename T>

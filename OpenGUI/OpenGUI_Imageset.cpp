@@ -1,5 +1,4 @@
 
-#include <string>
 #include "tinyxml.h"
 #include "OpenGUI.h"
 

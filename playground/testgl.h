@@ -55,7 +55,9 @@ class testgl : public OpenGLBase
 // 		w->setImagery("Button");
 // 		sys->getGUISheetByName("root")->addChildElement(w);
 
-		OpenGUI::Widgets::SimpleButton* button = new OpenGUI::Widgets::SimpleButton();
+		
+		OpenGUI::Widgets::SimpleButton* button = static_cast<OpenGUI::Widgets::SimpleButton* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "SimpleButton"));
+		//OpenGUI::Widgets::SimpleButton* button = new OpenGUI::Widgets::SimpleButton();
 		OpenGUI::Widgets::SimpleButton* button2 = new OpenGUI::Widgets::SimpleButton();
 
 		button->setImagery("Button");

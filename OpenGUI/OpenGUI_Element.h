@@ -1,7 +1,8 @@
 #ifndef FD413C40_A7DC_403f_AC1F_C64C2A26DC05
 #define FD413C40_A7DC_403f_AC1F_C64C2A26DC05
-#include <list>
-#include <string>
+
+#include "OpenGUI_PreRequisites.h"
+
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Event.h"

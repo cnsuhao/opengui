@@ -1,8 +1,10 @@
 #ifndef DA3C55D9_F331_4cd8_9AAA_9354011F56C0
 #define DA3C55D9_F331_4cd8_9AAA_9354011F56C0
-#include <string>
+
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+
 namespace OpenGUI{
 	
 	class Imageset; //forward declaration

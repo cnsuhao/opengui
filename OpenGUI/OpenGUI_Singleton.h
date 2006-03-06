@@ -1,7 +1,7 @@
 #ifndef A8610A28_E6EA_4818_A265_FE8970EA50DC
 #define A8610A28_E6EA_4818_A265_FE8970EA50DC
 
-#include <cassert>
+
 
 
 #if defined(_WINDOWS) && defined(_MSC_VER) //thanks for the warning Bill

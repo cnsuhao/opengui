@@ -1,5 +1,4 @@
 
-#include <string>
 #include "OpenGUI.h"
 
 namespace OpenGUI{

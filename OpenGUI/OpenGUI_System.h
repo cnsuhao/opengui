@@ -10,6 +10,7 @@
 #include "OpenGUI_GUISheet.h"
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_ImageryManager.h"
+#include "OpenGUI_PluginManager.h"
 
 //! The base namespace contains the classes that applications will deal with the most.
 namespace OpenGUI{
@@ -56,6 +57,10 @@ namespace OpenGUI{
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static System* getSingletonPtr(void);
 
+		//! loads a plugin by filename
+		void loadPlugin(std::string filename);
+		//! unloads a plugin by filename
+		void unloadPlugin(std::string filename);
 
 		/*! \brief Renders the GUI using the current render system.	*/
 		void renderGUI();
@@ -324,6 +329,9 @@ namespace OpenGUI{
 		/*	this is a counter that is used to ensure that generateRandomElementName()
 			actually does create random names */
 		unsigned int mRandomElementNameGeneratorIndex;
+
+	//Plugin Manager
+		PluginManager* m_PluginManager;
 		
 	//GUISheet Related Members
 		typedef GUISheet* GUISheetListItem;
