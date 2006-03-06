@@ -31,14 +31,20 @@ namespace OpenGUI{
 		static WidgetFactoryManager* getSingletonPtr(void);
 
 		//! Allows registration of a widget factory to create widgets based on the given name.
-		void registerWidgetFactory(std::string widgetName, WidgetFactoryCallback factoryCallback);
+		void registerWidgetFactory(std::string groupName, std::string widgetName, WidgetFactoryCallback factoryCallback);
 		//! Removes widget factory registration of the given widget name.
-		void unregisterWidgetFactory(std::string widgetName);
+		void unregisterWidgetFactory(std::string groupName, std::string widgetName);
 		//! Creates a widget of the requested type name and returns a pointer. Returns 0 if none found.
-		Widgets::Widget* createWidget(std::string widgetName);
+		Widgets::Widget* createWidget(std::string groupName, std::string widgetName);
 
 	private:
-		typedef std::map<std::string,WidgetFactoryCallback> CallbackMap;
+		std::string _buildGroupNameComposite(const std::string& groupName, const std::string& widgetName);
+		typedef struct {
+			std::string groupName;
+			std::string widgetName;
+			WidgetFactoryCallback callBack;
+		} CallbackMapItem;
+		typedef std::map<std::string,CallbackMapItem> CallbackMap;
 		CallbackMap mCallbackmap;
 	};
 };//using namespace OpenGUI{

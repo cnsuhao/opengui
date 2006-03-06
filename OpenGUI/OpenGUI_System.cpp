@@ -23,8 +23,8 @@ namespace OpenGUI{
 	//! \internal Just a little function to register all compiled in Widgets with the WidgetFactoryManager
 	void RegisterAllBaseWidgets()
 	{
-		WidgetFactoryManager::getSingleton().registerWidgetFactory("StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory));
-		WidgetFactoryManager::getSingleton().registerWidgetFactory("SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory));
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory));
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory));
 	}
 	//############################################################################
 	System::System(Renderer* renderer, ResourceProvider* resourceProvider)
