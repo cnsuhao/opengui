@@ -58,7 +58,7 @@ namespace OpenGUI{
 			Custom renderers are required to implement this function to provide
 			the system a generalized method of referencing a texture. Basically,
 			this function is given a file name, and through any amount of smoke
-			and magic, the system expects to recieve back a pointer to a Texture
+			and magic, the system expects to receive back a pointer to a Texture
 			object that can be later referenced within RenderOperation objects
 			that are passed to doRenderOperation(). Most implementations simply
 			load the data as necessary for their graphics API and store their
@@ -72,7 +72,7 @@ namespace OpenGUI{
 			\param filename The filename of the source image data.
 			\return A valid pointer to a Texture object on success, or 0 on fail.
 
-			\note Renderer is responsible for managing the memory commited for the
+			\note Renderer is responsible for managing the memory committed for the
 			Texture object. The Renderer must ensure that until destroyTexture()
 			is called with the given Texture object, the pointer remains valid.
 		*/
@@ -83,8 +83,8 @@ namespace OpenGUI{
 			the createTextureFromTextureData() function. So it must not attempt
 			to delete it. It is the responsibility of the TextureData creator 
 			to clean up the TextureData object when it is no longer needed.
-			\b However, the caller \b must guarantee that the given TextureData
-			object is valid for the entire lifetime of the texture. Meaning that
+			The caller \b must guarantee that the given TextureData object
+			is valid for the entire lifetime of the texture. Meaning that
 			it cannot be deleted until after destroyTexture() has been called to
 			destroy the texture that is based upon the TextureData.
 
