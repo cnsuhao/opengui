@@ -1,3 +1,4 @@
+#include "tinyxml.h"
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exception.h"
@@ -105,6 +106,42 @@ namespace OpenGUI{
 		func = (PLUGIN_STOP_FUNC) lib->getSymbol("pluginStop");
 		if(func)
 			func();
+	}
+	//############################################################################
+	void PluginManager::_loadFromTinyXMLElement(void* tXelementPtr)
+	{
+		TiXmlElement* tXelement = (TiXmlElement*)tXelementPtr;
+		const char* pluginFilename = 0;
+		TiXmlAttribute* attrib = tXelement->FirstAttribute();
+		if(attrib){
+			do{
+				if(0 == strcmpi(attrib->Name(),"file")){
+					pluginFilename = attrib->Value();
+					break;
+				}
+			}while(attrib = attrib->Next());
+		}
+		if(pluginFilename){
+			loadPlugin(pluginFilename);
+		}
+	}
+	//############################################################################
+	void PluginManager::LoadPluginsFromXML(std::string xmlFilename)
+	{
+		TiXmlDocument doc;
+		doc.LoadFile(xmlFilename);
+		TiXmlElement* root = doc.RootElement();
+		TiXmlElement* section;
+		section = root;
+		if(section){
+			do{
+				//iterate through all of the root level elements and react to every "Imageset" found
+				if(0 == strcmpi(section->Value(),"Plugin")){
+					PluginManager::_loadFromTinyXMLElement(section);
+				}
+			}while(section = section->NextSiblingElement());
+		}
+
 	}
 	//############################################################################
 };
