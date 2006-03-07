@@ -35,7 +35,11 @@ namespace OpenGUI{
 		void unloadPlugin(std::string filename);
 		//! Unloads all currently loaded plugins
 		void unloadAllPlugins();
+
+		//! Loads plugins as defined by an xml file.
+		void LoadPluginsFromXML(std::string xmlFilename);
 	private:
+		void _loadFromTinyXMLElement(void* tXelementPtr);
 		static void firePluginStart(DynamicLib* lib);
 		static void firePluginStop(DynamicLib* lib);
 		typedef std::map<std::string,DynamicLib*> PluginMap;
