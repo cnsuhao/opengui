@@ -3,14 +3,6 @@
 
 namespace OpenGUI{
 	namespace Widgets{
-		class t1{};
-		class t2:public t1{};
-		class OPENGUI_API tester : public t2{
-		public:
-			bool member(const Msg::Message& m, Element* e){return false;}
-			static bool smember(const Msg::Message& m, Element* e){return false;}
-			bool member2(const std::string& m, std::string& e){return false;}
-		};
 
 		//#####################################################################
 		Widget::Widget()
