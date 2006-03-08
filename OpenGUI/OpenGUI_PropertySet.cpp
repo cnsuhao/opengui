@@ -4,12 +4,12 @@
 namespace OpenGUI{
 
 	//######################################################################
-	PropertySet::PropertyList PropertySet::propertyList()
+	PropertyList PropertySet::propertyList()
 	{
-		PropertySet::PropertyList retval;
+		PropertyList retval;
 		PropertyMap::iterator iter =_mPropertySubscriberList.begin();
 		while(iter != _mPropertySubscriberList.end()){
-			PropertySet::PropertyListItem item;
+			PropertyListItem item;
 			item.propertyName =  iter->first;
 			item.propertyType = iter->second.type;
 			retval.push_back(item);
@@ -39,42 +39,42 @@ namespace OpenGUI{
 
 		switch(iter->second.type){
 			case PT_STRING:
-				return iter->second.propertySetter.Call(propertyName, newValue, 0);
+				return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_BOOL:
 				if(PropertyParser::fromStrBool(newValue,boolHolder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &boolHolder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &boolHolder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_FLOAT:
 				if(PropertyParser::fromStrFloat(newValue,floatHolder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &floatHolder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &floatHolder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_FVECTOR2:
 				if(PropertyParser::fromStrFVector2(newValue,fv2Holder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &fv2Holder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &fv2Holder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_FRECT:
 				if(PropertyParser::fromStrFRect(newValue,frHolder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &frHolder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &frHolder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_INTEGER:
 				if(PropertyParser::fromStrInt(newValue,intHolder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &intHolder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &intHolder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_IVECTOR2:
 				if(PropertyParser::fromStrIVector2(newValue,iv2Holder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &iv2Holder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &iv2Holder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 			case PT_IRECT:
 				if(PropertyParser::fromStrIRect(newValue,irHolder))
-					return iter->second.propertySetter.Call(propertyName, newValue, &irHolder);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, &irHolder);
 				else
-					return iter->second.propertySetter.Call(propertyName, newValue, 0);
+					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 
 			default: // unhandled type, return false
 				return false;
@@ -93,7 +93,7 @@ namespace OpenGUI{
 		if(iter->second.propertyGetter == PropertyGetter())
 			return false;
 
-		return iter->second.propertyGetter.Call(propertyName,curValue);
+		return (*iter->second.propertyGetter)(this, propertyName,curValue);
 	}
 	//######################################################################
 	void PropertySet::PropertySet_BindProperty(const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter)

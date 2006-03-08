@@ -51,7 +51,9 @@ namespace OpenGUI{
 			//call me paranoid, but i'm going to check again just to make sure
 			if(iter->second.groupName == groupName && iter->second.widgetName == widgetName){
 				try{ //undefined? you bet! but hey, we've got faith.
-					return iter->second.callBack.Call();
+					WidgetFactoryCallback func;
+					func = iter->second.callBack;
+					return (*func)();
 				}catch(...){
 					return 0;
 				}
