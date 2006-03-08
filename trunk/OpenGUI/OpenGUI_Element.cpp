@@ -265,7 +265,8 @@ namespace OpenGUI{
 		bool continuePropagation=true;
 		SubscriberList::iterator sli = mSubscriberList.begin();
 		while(sli != mSubscriberList.end()){
-			continuePropagation = sli->Call(message,this) && continuePropagation;
+			Subscriber f = (*sli);
+			continuePropagation = (*f)(this,message) && continuePropagation;
 			sli++;
 		}
 		return continuePropagation;

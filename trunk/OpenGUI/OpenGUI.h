@@ -1,3 +1,5 @@
+#ifndef A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
+#define A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
 
 #include "OpenGUI_PreRequisites.h"
 
@@ -5,7 +7,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_Functors.h"
+
 #include "OpenGUI_RefPtr.h"
 #include "OpenGUI_Resource.h"
 
@@ -47,3 +49,6 @@
 
 //Generic Cursor Implementation
 #include "OpenGUI_GenericCursor.h"
+
+
+#endif

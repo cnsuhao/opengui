@@ -9,7 +9,7 @@ namespace OpenGUI{
 	//Forward declaration
 	namespace Widgets{class Widget;};
 
-	typedef Functors::GenericFunctorImpl_Ret_0Arg<Widgets::Widget*> WidgetFactoryCallback;
+	typedef Widgets::Widget* (*WidgetFactoryCallback)();
 
 	//! Provides an object registration and creation factory service for Widgets.
 	/*! In order for custom Widget objects to be created at runtime, their class type

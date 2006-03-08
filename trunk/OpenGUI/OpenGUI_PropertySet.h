@@ -5,22 +5,99 @@
 
 
 namespace OpenGUI{
-	
-	
-	typedef Functors::GenericFunctorImpl_Ret_3Arg<bool, const std::string&, const std::string&, const void*> PropertySetter;
-	typedef Functors::GenericFunctorImpl_Ret_2Arg<bool, const std::string&, std::string&> PropertyGetter;
+	class PropertySet;
+
+	/*! \brief This is the typedef used for callbacks to Property Set handlers.
+
+	\param widget Pointer to the widget whose property is being set
+	\param propertyName The name of the property that is being set
+	\param newValueStr The new value of the property, in the form of a string
+	\param newValuePtr A pointer to a converted object of the type that was specified when the
+	property was bound. If conversion to the registered type failed, or the type is PT_STRING,
+	this value will be 0.
+
+	\return Implementors should return \c TRUE if the property set was successful, \c FALSE otherwise.
+		This is not enforced within %OpenGUI, but the return value does get passed back to the
+		caller of setProperty, and its functionality should be honored.
+
+	Example usage:
+\code
+bool myPropertySetterCallback(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+{
+  //
+  // Your code in here...
+  //
+
+  return true;
+}
+\endcode
+	\see \ref WhyCallbacks "Why Callbacks?"
+	*/
+	typedef bool(*PropertySetter)(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+	/*! \brief This is the typedef used for callbacks to Property Get handlers.
+
+	\param widget Pointer to the widget whose property is being gotten
+	\param propertyName The name of the property that is being gotten
+	\param curValue The current value of the property should be written to this parameter
+
+	\return Implementors should return \c TRUE if the property get was successful, \c FALSE otherwise.
+	This is not enforced within %OpenGUI, but the return value does get passed back to the
+	caller of getProperty, and its functionality should be honored.
+
+	Example usage:
+\code
+bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+{
+  //
+  // Your code in here...
+  //
+
+  return true;
+}
+\endcode
+	\see \ref WhyCallbacks "Why Callbacks?"
+	*/
+	typedef bool (*PropertyGetter)(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
 
 	//#####################################################################
+	typedef enum{
+		PT_STRING = 0, PT_BOOL = 1,
+		PT_FLOAT = 2, PT_FVECTOR2 = 3, PT_FRECT = 4,
+		PT_INTEGER = 5, PT_IVECTOR2 = 6, PT_IRECT = 7
+	} PropertyType;
+	//#####################################################################
+	typedef struct _PropertyListItem{
+		std::string propertyName;
+		PropertyType propertyType;
+	} PropertyListItem;
+	typedef std::list<PropertyListItem> PropertyList;
+	//#####################################################################
 
 
-	class PropertySet{
+	class OPENGUI_API PropertySet{
 	public:
-		typedef enum{
-			PT_STRING = 0, PT_BOOL = 1,
-			PT_FLOAT = 2, PT_FVECTOR2 = 3, PT_FRECT = 4,
-			PT_INTEGER = 5, PT_IVECTOR2 = 6, PT_IRECT = 7
-		} PropertyType;
+		//! Sets a property
+		bool propertySet(const std::string& propertyName, const std::string& newValue);
+		//! Gets a property
+		bool propertyGet(const std::string& propertyName, std::string& curValue);
+		//! Returns a list of properties
+		PropertyList propertyList();
+	protected:
+		//! Binds a new property, complete with property name, type, getter function and setter function.
+		/*! Widgets that implement new properties, or reimplement existing ones will need to call this
+			function for each property they provide. (This is best done during the object constructor.)
+			\note
+			If an existing property is bound with a new handler, the old handler information is thrown
+			away. Because of this, widgets that inherit other widgets can easily override the behavior
+			of a previously defined property setter/getter.
+			\see
+			- PropertySetter
+			- PropertyGetter
+		*/
+		void PropertySet_BindProperty(const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter);
+	private:
+
 		typedef struct _PropertyMapItem{
 			PropertyType type;
 			PropertySetter propertySetter;
@@ -28,18 +105,6 @@ namespace OpenGUI{
 		} PropertyMapItem;
 		typedef std::map<std::string, PropertyMapItem> PropertyMap;
 
-		typedef struct _PropertyListItem{
-			std::string propertyName;
-			PropertyType propertyType;
-		} PropertyListItem;
-		typedef std::list<PropertyListItem> PropertyList;
-
-		bool propertySet(const std::string& propertyName, const std::string& newValue);
-		bool propertyGet(const std::string& propertyName, std::string& curValue);
-		PropertyList propertyList();
-	protected:
-		void PropertySet_BindProperty(const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter);
-	private:
 		//some sort of property map
 		PropertyMap _mPropertySubscriberList;
 	};
@@ -58,7 +123,7 @@ namespace OpenGUI{
 		\note All of these functions are case insensitive. They always output the results of
 			toStr operations in all lower case.
 	*/
-	class PropertyParser{
+	class OPENGUI_API PropertyParser{
 	public:
 		static bool toStrBool(const bool& value, std::string& result);
 		static bool fromStrBool(const std::string& value, bool& result);
