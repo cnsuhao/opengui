@@ -18,14 +18,18 @@ namespace OpenGUI{
 	//############################################################################
 	TimerManager::TimerManager()
 	{
+	#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
 		timeBeginPeriod(1);
+	#endif
 		m_timeSinceStart=0;
 		TimerManager::_init_timePassedSinceLastCall();
 	}
 	//############################################################################
 	TimerManager::~TimerManager()
 	{
+	#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
 		timeEndPeriod(1);
+	#endif
 	}
 	//############################################################################
 	TimerPtr TimerManager::getTimer()

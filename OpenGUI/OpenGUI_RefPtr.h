@@ -13,7 +13,7 @@ namespace OpenGUI{
 
 	template<typename T>
 	class __RefObj {
-		friend class RefPtr;
+		friend class RefPtr<T>;
 	private:
 		__RefObj(T *payload){
 			m_objPtr = payload;
@@ -140,3 +140,4 @@ namespace OpenGUI{
 	};
 };//namespace OpenGUI{
 #endif
+

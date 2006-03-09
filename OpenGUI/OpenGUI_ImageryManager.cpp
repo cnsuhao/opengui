@@ -33,7 +33,7 @@ namespace OpenGUI{
 	Imageset* ImageryManager::createImageset(std::string imageFilename)
 	{
 		Imageset* imgset;
-		if(imgset = getImageset(imageFilename)){
+		if( (imgset = getImageset(imageFilename)) ){
 			return imgset;
 		}
 		
@@ -145,7 +145,7 @@ namespace OpenGUI{
 				if(0 == strcmpi(section->Value(),"imageset")){
 					ImageryManager::_loadImagesetFromTinyXMLElement(section);
 				}
-			}while(section = section->NextSiblingElement());
+			}while( (section = section->NextSiblingElement()) );
 		}
 		
 	}
@@ -162,7 +162,7 @@ namespace OpenGUI{
 					imgFilename = attrib->Value();
 					break;
 				}
-			}while(attrib = attrib->Next());
+			}while( (attrib = attrib->Next()) );
 		}
 
 		if(imgFilename){

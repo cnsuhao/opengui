@@ -170,7 +170,7 @@ namespace OpenGUI{
 					mActiveGUISheet->_propogateEvent(message,destAncestryList);
 				}
 			}
-		}else if(message.messageType=message.MT_ALERT){
+		}else if(message.messageType == message.MT_ALERT){
 			//!\todo we will eventually need to do something here
 		}
 	}

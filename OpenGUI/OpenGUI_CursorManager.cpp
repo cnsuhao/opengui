@@ -135,9 +135,10 @@ namespace OpenGUI{
         CursorManager::_updateCursor();
 
 		Render::RenderOperationList ropList;
+		Render::RenderOperationList ropList2;
 		CursorPtrList::iterator iter = mCursorDrawList.begin();
 		while(iter != mCursorDrawList.end()){
-			Render::AppendRenderOperationList(ropList, (*iter)->getCursorRenderOpList());
+			Render::AppendRenderOperationList(ropList, ropList2 = (*iter)->getCursorRenderOpList());
 			iter++;
 		}
 		return ropList;
