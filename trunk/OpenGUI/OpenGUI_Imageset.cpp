@@ -157,7 +157,7 @@ namespace OpenGUI{
 							if(0 == strcmpi(attrib->Name(),"height") &&
 							attrib->QueryIntValue(&height_i) == TIXML_SUCCESS )
 								height = attrib->Value();
-						}while(attrib = attrib->Next());
+						}while( (attrib = attrib->Next()) );
 						if(iname && xpos && ypos && width && height){
 							//if we manager to acquire all the necessary data, create the imagery object
 							IRect irect;
@@ -167,7 +167,7 @@ namespace OpenGUI{
 						}
 					}
 				}
-			}while(section = section->NextSiblingElement());
+			}while( (section = section->NextSiblingElement()) );
 		}
 	}
 	//############################################################################

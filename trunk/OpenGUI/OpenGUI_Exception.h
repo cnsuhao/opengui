@@ -3,8 +3,10 @@
 
 #include "OpenGUI_Exports.h"
 
-// This warning can be disregarded
-#pragma warning (disable : 4251)
+#if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
+	// This warning can be disregarded
+	#pragma warning (disable : 4251)
+#endif
 
 namespace OpenGUI{
 

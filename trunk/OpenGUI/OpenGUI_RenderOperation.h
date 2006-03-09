@@ -90,7 +90,7 @@ namespace OpenGUI{
 		class OPENGUI_API Primitive{
 		public:
 			Primitive() {}
-			~Primitive() {}
+			virtual ~Primitive() {}
 			//! Return a RenderOperationList that correctly expresses this Primitive
 			virtual RenderOperationList getRenderOperationList()=0;
 		};
@@ -103,8 +103,8 @@ namespace OpenGUI{
 		*/
 		class OPENGUI_API PrimitiveBox : public Primitive{
 		public:
-			PrimitiveBox() : mTextureImagery(0), mMaskImagery(0),mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
-			~PrimitiveBox() {}
+			PrimitiveBox() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mTextureImagery(0), mMaskImagery(0) {}
+			virtual ~PrimitiveBox() {}
 			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
 			//! Get the current position and size of the Box
@@ -151,7 +151,7 @@ namespace OpenGUI{
 		class OPENGUI_API PrimitiveScissorRect : public Primitive{
 		public:
 			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
-			~PrimitiveScissorRect() {}
+			virtual ~PrimitiveScissorRect() {}
 			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
 			//! Get the current position and size of the ScissorRect 
@@ -178,3 +178,4 @@ namespace OpenGUI{
 	};//namespace Render{
 };
 #endif
+

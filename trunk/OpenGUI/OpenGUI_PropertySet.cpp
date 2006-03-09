@@ -129,6 +129,11 @@ namespace OpenGUI{
 		return true;
 	}
 	//######################################################################
+	unsigned char chrLower(unsigned char c)
+	{
+		return std::tolower(c);
+	}
+	//######################################################################
 	bool PropertyParser::fromStrBool(const std::string& value, bool& result)
 	{
 		std::string tmp=value;
@@ -141,7 +146,9 @@ namespace OpenGUI{
 			result = true;
 			return true;
 		}
-		std::transform(tmp.begin(),tmp.end(),tmp.begin(),std::tolower);
+		std::transform(tmp.begin(),tmp.end(),tmp.begin(),static_cast<int(*)(int)>(std::tolower));
+		// If the previous fails to work, use this instead
+		//std::transform(tmp.begin(),tmp.end(),tmp.begin(),chrLower);
 		if(tmp == "true"){
 			result = true;
 			return true;
@@ -321,3 +328,4 @@ namespace OpenGUI{
 	//######################################################################
 
 };
+

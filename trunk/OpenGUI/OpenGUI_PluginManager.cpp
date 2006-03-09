@@ -119,7 +119,7 @@ namespace OpenGUI{
 					pluginFilename = attrib->Value();
 					break;
 				}
-			}while(attrib = attrib->Next());
+			}while( (attrib = attrib->Next()) );
 		}
 		if(pluginFilename){
 			loadPlugin(pluginFilename);
@@ -139,7 +139,7 @@ namespace OpenGUI{
 				if(0 == strcmpi(section->Value(),"Plugin")){
 					PluginManager::_loadFromTinyXMLElement(section);
 				}
-			}while(section = section->NextSiblingElement());
+			}while( (section = section->NextSiblingElement()) );
 		}
 
 	}

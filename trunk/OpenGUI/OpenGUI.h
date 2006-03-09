@@ -1,6 +1,8 @@
 #ifndef A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
 #define A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
 
+#include "OpenGUI_Platform.h"
+
 #include "OpenGUI_PreRequisites.h"
 
 //Custom data types and import/export macros

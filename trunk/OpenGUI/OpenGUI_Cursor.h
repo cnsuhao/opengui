@@ -49,7 +49,7 @@ namespace OpenGUI{
 				to ensure they are drawing in the correct location.
 			*/
 			virtual Render::RenderOperationList getCursorRenderOpList()=0;
-			
+
 		protected:
 			/*!\brief This built in function allows the cursor to register itself for
 				drawing with the CursorManager.

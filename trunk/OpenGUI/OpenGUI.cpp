@@ -1,12 +1,11 @@
 // OpenGUI.cpp : Defines the entry point for the DLL application.
 //
+// Since we don't really use this for anything, we'll just define it
+// to do absolutely nothing.
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-// Windows Header Files:
-#include <windows.h>
+#include "OpenGUI_PreRequisites.h"
 
-#include "OpenGUI.h"
-//#include "OpenGUI_Singleton.h"
+#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
 					  DWORD  ul_reason_for_call, 
@@ -23,4 +22,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	}
 	return TRUE;
 }
+
+#endif
+
 
