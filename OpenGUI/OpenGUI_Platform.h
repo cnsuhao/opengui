@@ -26,14 +26,15 @@
 /* Detect compiler */
 //check for MSVC
 #if defined ( _MSC_VER )
-#   define OPENGUI_COMPILER OPENGUI_COMPILER_MSVC
+	#define OPENGUI_COMPILER OPENGUI_COMPILER_MSVC
+//	#pragma message( "Detected Compiler: MSVC" )
 
 //check for GCC
 #elif defined ( __GNUC__ )
-#   define OPENGUI_COMPILER OPENGUI_COMPILER_GCC
+	#define OPENGUI_COMPILER OPENGUI_COMPILER_GCC
 
 #else
-#   pragme error "Unknown compiler! Refer to OpenGUI_Platform.h"
+	#pragma error "Unknown compiler! Refer to OpenGUI_Platform.h"
 
 #endif
 
@@ -41,11 +42,12 @@
 /* Detect Platform */
 //checking for win32 is easy
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   define OPENGUI_PLATFORM OPENGUI_PLATFORM_WIN32
+	#define OPENGUI_PLATFORM OPENGUI_PLATFORM_WIN32
+//	#pragma message( "Detected Platform: WIN32" )
 
 //assume linux if nothing else fits
 #else
-#   define OPENGUI_PLATFORM OPENGUI_PLATFORM_LINUX
+	#define OPENGUI_PLATFORM OPENGUI_PLATFORM_LINUX
 
 #endif
 
