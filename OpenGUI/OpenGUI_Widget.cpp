@@ -8,6 +8,8 @@ namespace OpenGUI{
 		Widget::Widget()
 		{
 			PropertySet_BindProperty("Position", OpenGUI::PT_FVECTOR2, &Widget::_prop_SetPos, &Widget::_prop_GetPos);
+			PropertySet_BindProperty("Size", OpenGUI::PT_FVECTOR2, &Widget::_prop_SetSize, &Widget::_prop_GetSize);
+			PropertySet_BindProperty("Enabled", OpenGUI::PT_BOOL, &Widget::_prop_SetEnabled, &Widget::_prop_GetEnabled);
 		}
 		//#####################################################################
 		Render::RenderOperationList Widget::buildWidgetRenderOpList()
@@ -30,6 +32,38 @@ namespace OpenGUI{
 		{
 			Widget* w = static_cast<Widget*>(widget);
 			PropertyParser::toStrFVector2(w->getRect().getPosition(),curValue);
+			return true;
+		}
+		//#####################################################################
+		bool Widget::_prop_SetSize(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			Widget* w = static_cast<Widget*>(widget);
+			if(!newValuePtr) return false;
+			FVector2 newSize = *static_cast<const FVector2*>(newValuePtr);
+			w->setSize(newSize);
+			return true;
+		}
+		//#####################################################################
+		bool Widget::_prop_GetSize(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			Widget* w = static_cast<Widget*>(widget);
+			PropertyParser::toStrFVector2(w->getRect().getSize(), curValue);
+			return true;
+		}
+		//#####################################################################
+		bool Widget::_prop_SetEnabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			Widget* w = static_cast<Widget*>(widget);
+			if(!newValuePtr) return false;
+			bool newEnabled = *static_cast<const bool*>(newValuePtr);
+			w->setDisabled(!newEnabled);
+			return true;
+		}
+		//#####################################################################
+		bool Widget::_prop_GetEnabled(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			Widget* w = static_cast<Widget*>(widget);
+			PropertyParser::toStrBool(w->isEnabled(), curValue);
 			return true;
 		}
 		//#####################################################################
