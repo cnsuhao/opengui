@@ -28,6 +28,11 @@ namespace OpenGUI{
 		private:
 			static bool _prop_SetPos(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetPos(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetSize(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetSize(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
+			static bool _prop_SetEnabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetEnabled(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
 		};
 	};//namespace Widgets{

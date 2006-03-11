@@ -20,7 +20,10 @@ namespace OpenGUI{
 	//######################################################################
 	bool PropertySet::propertySet(const std::string& propertyName, const std::string& newValue)
 	{
-		PropertyMap::iterator iter = _mPropertySubscriberList.find(propertyName);
+		std::string tmpstr = propertyName;
+		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+
+		PropertyMap::iterator iter = _mPropertySubscriberList.find(tmpstr);
 		//if the property doesn't exist, return false
 		if(iter == _mPropertySubscriberList.end())
 			return false;
@@ -85,24 +88,31 @@ namespace OpenGUI{
 	//######################################################################
 	bool PropertySet::propertyGet(const std::string& propertyName, std::string& curValue)
 	{
-		PropertyMap::iterator iter = _mPropertySubscriberList.find(propertyName);
+		std::string tmpstr = propertyName;
+		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+
+		PropertyMap::iterator iter = _mPropertySubscriberList.find(tmpstr);
 		//if the property doesn't exist, return false
 		if(iter == _mPropertySubscriberList.end())
 			return false;
-		//if the property setter doesn't exist, return false
+
+		//if the property getter doesn't exist, return false
 		if(iter->second.propertyGetter == PropertyGetter())
 			return false;
 
 		return (*iter->second.propertyGetter)(this, propertyName,curValue);
 	}
 	//######################################################################
-	void PropertySet::PropertySet_BindProperty(const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter)
+	void PropertySet::PropertySet_BindProperty(const std::string& propertyName, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter)
 	{
-		PropertyMap::mapped_type item = _mPropertySubscriberList[name];
+		std::string tmpstr = propertyName;
+		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+
+		PropertyMap::mapped_type item = _mPropertySubscriberList[tmpstr];
 		item.type = type;
 		item.propertySetter = propertySetter;
 		item.propertyGetter = propertyGetter;
-		_mPropertySubscriberList[name]=item;
+		_mPropertySubscriberList[tmpstr]=item;
 	}
 	//######################################################################
 
