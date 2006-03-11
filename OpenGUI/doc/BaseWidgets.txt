@@ -1,0 +1,10 @@
+
+/*!
+	\page BW_StaticImage Static Image
+	\section Description
+	\section Properties
+	- Position
+	- Size
+	- Enabled
+
+*/

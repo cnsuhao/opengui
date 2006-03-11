@@ -154,7 +154,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	\page BaseWidgets Base Widgets
 	This is the complete list of all base widgets.
 	<HR>
-	- StaticImage
+	- \subpage BW_StaticImage "StaticImage"
 	- SimpleButton
 	- CheckBox
 	- RadioButton
@@ -174,9 +174,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	
 	\todo - implement Tooltips
 	\todo - add more of the base widgets
-	\todo - implement xml imagery loading
-	\todo - design string based widget Property system
-	\todo - implement widget factory (so widgets can be created by name)
+	
 	\todo - implement guisheet saving and restoring via xml
 	\todo - implement ThemeFactory (for creating widgets of any registered type and auto assigning properties based on "theme")
 	
