@@ -47,6 +47,8 @@ namespace OpenGUI{
 		m_PluginManager = new PluginManager;
 
 		mWidgetFactoryManager = new WidgetFactoryManager();
+		mWidgetTemplateManager = new WidgetTemplateManager();
+
 		RegisterAllBaseWidgets(); //register base widget factories
 
 		if(resourceProvider){
@@ -88,6 +90,9 @@ namespace OpenGUI{
 
 		if(mUsingGenericResourceProvider)
 			delete mResourceProvider;
+
+		if(mWidgetTemplateManager)
+			delete mWidgetTemplateManager;
 
 		if(mWidgetFactoryManager)
 			delete mWidgetFactoryManager;

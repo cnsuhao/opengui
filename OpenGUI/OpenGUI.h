@@ -37,6 +37,7 @@
 #include "OpenGUI_CursorManager.h"
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
+#include "OpenGUI_WidgetTemplateManager.h"
 #include "OpenGUI_WidgetFactoryManager.h"
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
