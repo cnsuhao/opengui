@@ -343,6 +343,7 @@ namespace OpenGUI{
 
 	//WidgetFactoryManager
 		WidgetFactoryManager* mWidgetFactoryManager;
+		WidgetTemplateManager* mWidgetTemplateManager;
 
 	//TimerManager
 		TimerManager* mTimerManager;

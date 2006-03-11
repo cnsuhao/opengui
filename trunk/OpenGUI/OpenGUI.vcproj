@@ -184,6 +184,9 @@
 			<File
 				RelativePath=".\OpenGUI_WidgetFactoryManager.cpp">
 			</File>
+			<File
+				RelativePath=".\OpenGUI_WidgetTemplateManager.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -295,6 +298,9 @@
 				RelativePath=".\OpenGUI_WidgetFactoryManager.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_WidgetTemplateManager.h">
+			</File>
+			<File
 				RelativePath=".\UnknownImage.h">
 			</File>
 		</Filter>
@@ -330,6 +336,9 @@
 		</Filter>
 		<File
 			RelativePath=".\doc\AdditionalDoxygenInput.txt">
+		</File>
+		<File
+			RelativePath=".\doc\BaseWidgets.txt">
 		</File>
 		<File
 			RelativePath=".\doc\EventDocs.txt">
