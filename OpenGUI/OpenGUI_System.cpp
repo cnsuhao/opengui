@@ -180,6 +180,15 @@ namespace OpenGUI{
 		}
 	}
 	//############################################################################
+	Widgets::Widget* System::createWidget(const std::string& widgetType, const std::string& widgetGroup)
+	{
+		if(widgetGroup!=""){
+			return mWidgetFactoryManager->createWidget(widgetGroup, widgetType);
+		}else{
+			return mWidgetTemplateManager->createWidget(widgetType);
+		}
+	}
+	//############################################################################
 	GUISheet* System::createGUISheet(std::string name)
 	{
 		std::string sheetName;

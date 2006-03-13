@@ -20,6 +20,8 @@
 	
 	- \subpage IntegratingOpenGUI "Integrating OpenGUI"
 	
+	- \subpage CreatingWidgets "Creating Widgets"
+	
 	- \subpage MessageSystem  "The Message System"
 	
 	- \subpage BaseWidgets "Base Widget Documentation"
@@ -85,6 +87,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	
 	
 */
+
 
 /*!
 	\page MessageSystem The Message System
@@ -201,6 +204,19 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	This will cover how to add OpenGUI to your application
 */
 
+/*!
+	\page CreatingWidgets Creating Widgets
+	\todo this page needs to be finished
+	
+	\section newWidget Direct Creation via "new"
+	SomeWidget* w = new SomeWidget;
+	
+	\section createWidget Widgets by name
+	Widgets can be created via System::createWidget
+	
+	\section WidgetTemplate Widget Templates
+	Templates allow you to create widgets with preconfigured properties.
+*/
 
 /*! \page CoordinateSpaces Coordinate Spaces
 	Working with coordinates within GUIs can often become more difficult than you would

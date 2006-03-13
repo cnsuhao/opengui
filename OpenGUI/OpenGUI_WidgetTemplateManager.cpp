@@ -1,4 +1,6 @@
 
+#include "tinyxml.h"
+
 #include "OpenGUI.h"
 
 
@@ -53,7 +55,7 @@ namespace OpenGUI{
 	void WidgetTemplateManager::addTemplateProperty(std::string templateName, std::string propertyName, std::string propertyValue)
 	{
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
-		if(mWidgetTemplateMap.end() == iter){
+		if(mWidgetTemplateMap.end() != iter){
 			(*iter).second->addProperty(propertyName ,propertyValue);
 		}else{
 			throw Exception("Template '" + templateName + "' does not exist, cannot remove property.");
@@ -82,12 +84,76 @@ namespace OpenGUI{
 		}
 	}
 	//############################################################################
+	void WidgetTemplateManager::LoadTemplatesFromXML(std::string xmlFilename)
+	{
+		TiXmlDocument doc;
+		doc.LoadFile(xmlFilename);
+		TiXmlElement* root = doc.RootElement();
+		TiXmlElement* section;
+		section = root;
+		if(section){
+			do{
+				//iterate through all of the root level elements and react to every "Imageset" found
+				if(0 == strcmpi(section->Value(),"template")){
+					WidgetTemplateManager::_loadTemplateFromTinyXMLElement(section);
+				}
+			}while( (section = section->NextSiblingElement()) );
+		}
+	}
+	//############################################################################
+	void WidgetTemplateManager::_loadTemplateFromTinyXMLElement(void* tXelementPtr)
+	{
+		TiXmlElement* tXelement = (TiXmlElement*)tXelementPtr;
+		TiXmlAttribute* attrib = tXelement->FirstAttribute();
+		const char* name = 0;
+		const char* group = 0;
+		const char* type = 0;
+		if(attrib){
+			do{
+				if(0 == strcmpi(attrib->Name(),"name"))
+					name = attrib->Value();
+				if(0 == strcmpi(attrib->Name(),"group"))
+					group = attrib->Value();
+				if(0 == strcmpi(attrib->Name(),"type"))
+					type = attrib->Value();
+			}while( (attrib = attrib->Next()) );
+		}
+		if(name && group && type){
+			WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(name);
+			if(iter == mWidgetTemplateMap.end()){
+				//only create if it does not already exist
+				createTemplate(name, group, type);
+			}
+			TiXmlElement* propElement = tXelement->FirstChildElement();
+			if(propElement){
+				do{
+					if(0 == strcmpi(propElement->Value(), "property")){
+						const char* propName = 0;
+						const char* propValue = 0;
+						TiXmlAttribute* propAttrib = propElement->FirstAttribute();
+						if(propAttrib){
+							do{
+								if(0 == strcmpi(propAttrib->Name(), "name"))
+									propName = propAttrib->Value();
+								if(0 == strcmpi(propAttrib->Name(), "value"))
+									propValue = propAttrib->Value();
+							}while( (propAttrib = propAttrib->Next()) );
+						}
+						if(propName && propValue){
+							addTemplateProperty(name, propName, propValue);
+						}
+					}
+				}while( (propElement = propElement->NextSiblingElement()) );
+			}
+		}
+	}
+	//############################################################################
 	//############################################################################
 	//############################################################################
 	Widgets::Widget* WidgetTemplate::createWidget()
 	{
 		Widgets::Widget* widget;
-		widget = WidgetFactoryManager::getSingleton().createWidget(mBaseGroupName,mBaseWidgetName);
+		widget = WidgetFactoryManager::getSingleton().createWidget(mBaseGroupName, mBaseWidgetName);
 		if(!widget) return 0;
 		TemplatePropertyMap::iterator iter = mPropertyMap.begin();
 		while(iter != mPropertyMap.end()){
@@ -100,9 +166,9 @@ namespace OpenGUI{
 	void WidgetTemplate::addProperty(std::string propertyName, std::string propertyValue)
 	{
 		std::string tmpstr = propertyName;
-		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+		std::transform(tmpstr.begin(), tmpstr.end(), tmpstr.begin(), static_cast<int(*)(int)>(std::tolower));
 
-		mPropertyMap[tmpstr]=propertyValue;
+		mPropertyMap[tmpstr] = propertyValue;
 	}
 	//############################################################################
 	void WidgetTemplate::removeProperty(std::string propertyName)
