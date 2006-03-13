@@ -225,10 +225,6 @@ namespace OpenGUI{
 		*/
 		void enableInputLogPlayback(std::string filename="");
 
-		
-
-		//! Generates, and returns a random Element name that is guaranteed to be unique for any 1 execution. \note If you can manage to call this over 4 billion times in 1 second, I am not responsible for your crash.
-		std::string generateRandomElementName();
 
 		//! Creates a new GUISheet. If no name is provided, then one will be created for you.
 		GUISheet* createGUISheet(std::string name="");
@@ -241,6 +237,9 @@ namespace OpenGUI{
 
 		//! Sets the active GUISheet. The active GUI Sheet is the only sheet that will be drawn, and is the only sheet that will recieve events. You can set the active GUISheet to 'none' by passing 0 as the parameter.
 		void setGUISheet(GUISheet* guiSheetPtr);
+
+		//! Create a widget by name
+		Widgets::Widget* createWidget(const std::string& widgetType, const std::string& widgetGroup="");
 
 		//! Returns an FVector2 containing the necessary floats to correct for aspect for either axis.
 		/*! To be more clear, if the resolution is 640x480, this will return FVector(480/640, 640/480)
@@ -314,6 +313,9 @@ namespace OpenGUI{
 		*/
 		//\see EventME_MouseLeave \todo implement me \note in order for this to succeed, an element cannot meet the event criteria at time of this call (can cause infinite event loop otherwise)
 		bool setTrackMouseLeave(Element* elementToTrack);
+
+		//! Generates, and returns a random Element name that is guaranteed to be unique for any 1 execution. \note If you can manage to call this over 4 billion times in 1 second, I am not responsible for your crash.
+		std::string generateRandomElementName();
 	protected:
 		//! Injects the given message into the system.
 		/*!

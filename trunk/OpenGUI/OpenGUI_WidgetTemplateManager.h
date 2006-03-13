@@ -49,10 +49,16 @@ namespace OpenGUI{
 		void removeTemplateProperty(std::string templateName, std::string propertyName);
 		Widgets::Widget* createWidget(std::string templateName);
 
+		//! Loads Templates from an XML document.
+		/*! Any conflicting templates will be appended, any non-template related
+			XML entities are silently ignored.
+		*/
+		void LoadTemplatesFromXML(std::string xmlFilename);
+
 	private:
 		typedef std::map<std::string,WidgetTemplate*> WidgetTemplateMap;
 		WidgetTemplateMap mWidgetTemplateMap;
-		
+		void _loadTemplateFromTinyXMLElement(void* tXelementPtr);
 	};
 
 };
