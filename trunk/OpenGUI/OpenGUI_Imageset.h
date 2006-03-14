@@ -7,6 +7,7 @@
 #include "OpenGUI_Texture.h"
 
 namespace OpenGUI{
+	//! Imagesets directly represent entire image files. They contain Imagery, which provide a usable window of the image file.
 	class OPENGUI_API Imageset
 	{
 		friend class ImageryManager;
@@ -26,7 +27,7 @@ namespace OpenGUI{
 		//! Destroys an Imagery object.
 		/*! This performs a "safe destruction" of the Imagery object. Since Imagery
 			object references are handed out only by RefPtrs, the object will never
-			truely destroy until all references to the Imagery object are deleted.
+			truly destroy until all references to the Imagery object are deleted.
 			This function \b does however disconnect the Imagery object from this
 			Imageset. Before this Imageset releases its reference to the Imagery,
 			the Imagery is pointed to the built in Default Imageset. This will

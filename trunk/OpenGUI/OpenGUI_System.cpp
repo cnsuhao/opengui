@@ -226,6 +226,7 @@ namespace OpenGUI{
 		while(gsi != mGUISheetList.end()){
 			if((*gsi)->getName() == name)
 				return (*gsi);
+			gsi++;
 		}
 		return 0;
 	}

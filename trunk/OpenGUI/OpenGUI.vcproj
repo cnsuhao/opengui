@@ -152,6 +152,9 @@
 				RelativePath=".\OpenGUI_Imageset.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_LayoutLoader.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_PluginManager.cpp">
 			</File>
 			<File
@@ -230,6 +233,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Imageset.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_LayoutLoader.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Message.h">
