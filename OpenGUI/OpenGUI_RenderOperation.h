@@ -66,7 +66,7 @@ namespace OpenGUI{
 		*/
 		class OPENGUI_API RenderOperation{
 		public:
-			RenderOperation() : texture(0), mask(0){}
+			RenderOperation() : texture(0), mask(0) {}
 			Vertex vertices[3]; //!< Simple array of 3 Vertex objects to define a single polygon
 			Texture* texture; //!< Pointer to the color texture, or 0 for none
 			Texture* mask; //!< Pointer to the mask texture, or 0 for none

@@ -239,6 +239,11 @@ namespace OpenGUI{
 		void setGUISheet(GUISheet* guiSheetPtr);
 
 		//! Create a widget by name
+		/*! The widget is created by referencing the WidgetTemplateManager and the WidgetFactoryManager.
+			If a \c widgetGroup is provided, the widget is assumed to be held in the WidgetFactoryManager,
+			otherwise the widget name is considered to be a template name, and WidgetTemplateManager is
+			used to create the widget.
+		*/
 		Widgets::Widget* createWidget(const std::string& widgetType, const std::string& widgetGroup="");
 
 		//! Returns an FVector2 containing the necessary floats to correct for aspect for either axis.

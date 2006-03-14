@@ -9,6 +9,7 @@ namespace OpenGUI{
 	
 	class Imageset; //forward declaration
 
+	//! Defines a sub area of an Imageset.
 	class OPENGUI_API Imagery
 	{
 		friend class __RefObj<Imagery>; //required for RefPtr to have access to destroy these objects
