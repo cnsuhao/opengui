@@ -196,7 +196,13 @@ namespace OpenGUI{
 			sheetName = generateRandomElementName();
 		else
 			sheetName=name;
-		GUISheet* retval = new GUISheet(sheetName);
+
+		GUISheet* retval = System::getGUISheetByName(sheetName);
+		if(retval){
+			//and what do we do here... throw? I guess so
+			throw Exception("GUISheet named '" + sheetName + "' already exists");
+		}
+		retval = new GUISheet(sheetName);
 		if(retval){
 			mGUISheetList.push_back(retval);
 		}
