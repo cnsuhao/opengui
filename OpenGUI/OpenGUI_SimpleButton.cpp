@@ -12,6 +12,10 @@ namespace OpenGUI{
 		{
 			m_MouseOver=false;
 			m_ButtonDown=false;
+			PropertySet_BindProperty("Imagery", OpenGUI::PT_STRING, &SimpleButton::_prop_SetImagery, &SimpleButton::_prop_GetImagery);
+			PropertySet_BindProperty("ImageryPressed", OpenGUI::PT_STRING, &SimpleButton::_prop_SetImageryPressed, &SimpleButton::_prop_GetImageryPressed);
+			PropertySet_BindProperty("ImageryMouseOver", OpenGUI::PT_STRING, &SimpleButton::_prop_SetImageryMouseOver, &SimpleButton::_prop_GetImageryMouseOver);
+			PropertySet_BindProperty("ImageryDisabled", OpenGUI::PT_STRING, &SimpleButton::_prop_SetImageryDisabled, &SimpleButton::_prop_GetImageryDisabled);
 		}
 		//#####################################################################
 		SimpleButton::~SimpleButton() {
@@ -119,6 +123,62 @@ namespace OpenGUI{
 					}
 				}
 			}
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			w->setImagery(newValueStr);
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			curValue = w->mImageryPtr ? w->mImageryPtr->getName() : "";
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_SetImageryPressed(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			w->setImageryPressed(newValueStr);
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_GetImageryPressed(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			curValue = w->mImageryPtrPressed ? w->mImageryPtrPressed->getName() : "";
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_SetImageryMouseOver(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			w->setImageryMouseOver(newValueStr);
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_GetImageryMouseOver(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			curValue = w->mImageryPtrMouseOver ? w->mImageryPtrMouseOver->getName() : "";
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_SetImageryDisabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			w->setImageryDisabled(newValueStr);
+			return true;
+		}
+		//#####################################################################
+		bool SimpleButton::_prop_GetImageryDisabled(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			SimpleButton* w = static_cast<SimpleButton*>(widget);
+			curValue = w->mImageryPtrDisabled ? w->mImageryPtrDisabled->getName() : "";
 			return true;
 		}
 		//#####################################################################
