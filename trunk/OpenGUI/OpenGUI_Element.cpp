@@ -11,7 +11,9 @@ namespace OpenGUI{
 	struct ChildElementListZOrderSortDescending{
 		//return true when the order is correct from left to right
 		bool operator()(ChildElementListItem& left,ChildElementListItem& right){
-			if(!left || !right) throw Exception("Bad ChildElementList data!");
+			if(!left || !right){
+				OG_THROW(Exception::ERR_INTERNAL_ERROR, "Bad ChildElementList data", "ChildElementListZOrderSortDescending");
+			}
 			if(left->getAlwaysOnTop() && (!right->getAlwaysOnTop()))
 				return true;
 			return(left->getZOrder() >= right->getZOrder());
@@ -79,11 +81,11 @@ namespace OpenGUI{
 		}else{
 			//test to ensure that the new element has no children with that name already
 			if(child->getChildElement(name)){
-				throw Exception("Element::addChildElement(): Element with name already exists:" + name);
+				OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Element with name already exists:" + name, "Element::addChildElement");
 			}
 			//test the name to ensure it is unique within the system
 			if(System::getSingleton().getElementByName(name)){
-				throw Exception("Element::addChildElement(): Element with name already exists:" + name);
+				OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Element with name already exists:" + name, "Element::addChildElement");
 			}
 		}
 		child->_setElementName(name);  //give the child a name
@@ -344,8 +346,9 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::sendToBack()
 	{
-		if(!mParentElement) //for some reason i feel that we should catch this
-			throw Exception("Element::sendToBack(): Cannot perform, I have no parent");
+		if(!mParentElement){ //for some reason i feel that we should catch this
+			OG_THROW(Exception::ERR_INTERNAL_ERROR, "Cannot perform, I have no parent", "Element::sendToBack");
+		}
 		int upper, lower;
 		mParentElement->getChildElementZOrderExtents(upper,lower);
 		setZOrder(lower-1);
@@ -353,8 +356,9 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::bringToFront()
 	{
-		if(!mParentElement) //for some reason i feel that we should catch this
-			throw Exception("Element::bringToFront(): Cannot perform, I have no parent");
+		if(!mParentElement){ //for some reason i feel that we should catch this
+			OG_THROW(Exception::ERR_INTERNAL_ERROR, "Cannot perform, I have no parent", "Element::bringToFront");
+		}
 		int upper, lower;
 		mParentElement->getChildElementZOrderExtents(upper,lower);
 		setZOrder(upper+1);

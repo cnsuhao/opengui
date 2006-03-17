@@ -38,8 +38,9 @@ namespace OpenGUI{
 	void PluginManager::loadPlugin(std::string filename)
 	{
 		PluginMap::iterator iter = mPluginMap.find(filename);
-		if(iter == mPluginMap.end())
-			throw Exception("Plugin already loaded: " + filename);
+		if(iter == mPluginMap.end()){
+			OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Plugin already loaded: " + filename, "PluginManager::loadPlugin");
+		}
 
 		//attach the module
 		DynamicLib* lib = new DynamicLib(filename);
@@ -60,8 +61,9 @@ namespace OpenGUI{
 	{
 		DynamicLib* lib;
 		PluginMap::iterator iter = mPluginMap.find(filename);
-		if(iter == mPluginMap.end())
-			throw Exception("Plugin not found in PluginManager's list: " + filename);
+		if(iter == mPluginMap.end()){
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Plugin not found in list of loaded plugins: " + filename, "PluginManager::unloadPlugin");
+		}
 
 		lib = iter->second;
 		mPluginMap.erase(iter);

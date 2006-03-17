@@ -49,8 +49,9 @@ namespace OpenGUI{
 				sheet = System::getSingleton().createGUISheet(sheetName);
 			}
 		}
-		if(!sheet)
-			throw Exception("Could not find or create GUISheet: " + std::string(sheetName));
+		if(!sheet){
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Could not find or create GUISheet: " + std::string(sheetName), "LayoutLoader");
+		}
 		
 		//iterate through all children tags
 		TiXmlElement* section;
@@ -128,10 +129,10 @@ namespace OpenGUI{
 				}
 
 			}else{
-				throw Exception("Could not create widget: System failed to return a valid widget");
+				OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Could not create widget: System failed to return a valid widget", "LayoutLoader::_loadWidgetFromTinyXMLElement");
 			}
 		}else{
-			throw Exception("Could not create widget: XML element missing valid 'type' attribute");
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Could not create widget: XML element missing valid 'type' attribute", "LayoutLoader::_loadWidgetFromTinyXMLElement");
 		}
 	}
 

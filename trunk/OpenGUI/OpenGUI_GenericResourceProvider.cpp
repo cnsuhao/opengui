@@ -7,12 +7,12 @@ namespace OpenGUI{
 	void GenericResourceProvider::loadResource(const std::string& filename, Resource& output)
 	{
 		if(filename.empty() || filename == ""){
-			throw Exception("GenericResourceProvider::loadResource(): No filename provided");
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "No filename provided", "GenericResourceProvider::loadResource");
 		}
 		std::ifstream inputFile(filename.c_str(), std::ios::binary|std::ios::ate);
 
 		if(inputFile.fail()){
-			throw Exception("GenericResourceProvider::loadResource(): File not found: '" + filename + "'");
+			OG_THROW(Exception::ERR_FILE_NOT_FOUND, "File not found: '" + filename + "'", "GenericResourceProvider::loadResource");
 		}
 		std::streampos size = inputFile.tellg();
 		inputFile.seekg(0,std::ios::beg);
@@ -23,7 +23,7 @@ namespace OpenGUI{
 			inputFile.read((char*)buffer,size);
 		}catch(std::ifstream::failure ex){
 			delete[] buffer;
-			throw Exception("GenericResourceProvider::loadResource(): Error reading file: '" + filename + "'");
+			OG_THROW(Exception::ERR_FILE_NOT_READABLE, "Error reading file: '" + filename + "'", "GenericResourceProvider::loadResource");
 		}
 		inputFile.close();
 		output.setData(buffer);

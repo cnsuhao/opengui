@@ -137,6 +137,9 @@
 				RelativePath=".\OpenGUI_Element.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Exception.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.cpp">
 			</File>
 			<File
@@ -153,6 +156,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_LayoutLoader.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_LogSystem.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PluginManager.cpp">
@@ -189,6 +195,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_WidgetTemplateManager.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_XMLParser.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -236,6 +245,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_LayoutLoader.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_LogSystem.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Message.h">
@@ -305,6 +317,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_WidgetTemplateManager.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_XMLParser.h">
 			</File>
 			<File
 				RelativePath=".\UnknownImage.h">
