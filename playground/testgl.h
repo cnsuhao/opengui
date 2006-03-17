@@ -25,10 +25,13 @@ class testgl : public OpenGLBase
 	void CustomInit()
 	{
 
+// 		OpenGUI::LogListenerToFile *t = new OpenGUI::LogListenerToFile("test.log");
+// 		t->write("General","This is now working. Yay Yay Yay", 30);
+// 		delete t;
+		
 		renderer = new OpenGUI::OGLRenderer();
 		sys = new OpenGUI::System(renderer);
 		
-
 		OpenGUI::ImageryManager::getSingleton().LoadImagesetsFromXML("test.xml");
 		OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
 		

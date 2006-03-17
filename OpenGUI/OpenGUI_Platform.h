@@ -51,5 +51,8 @@
 
 #endif
 
+#if defined ( _DEBUG )
+	#define OPENGUI_DEBUG
+#endif
 
 #endif

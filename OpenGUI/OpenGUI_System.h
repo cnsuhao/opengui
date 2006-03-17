@@ -44,8 +44,17 @@ namespace OpenGUI{
 			\param renderer pointer to a valid Renderer object
 			\param resourceProvider pointer to a valid ResourceProvider object, or 0
 				to use the built in generic ResourceProvider
+			\param logFile name of the log file to write log message to. If "" is used,
+				no log file will be created
 		*/
-		System(Renderer* renderer, ResourceProvider* resourceProvider=NULL);
+		System(Renderer* renderer, ResourceProvider* resourceProvider=NULL, std::string logFile="OpenGUI.log");
+		/*! As the other constructor except a log listener is passed in place of a log filename.
+			\param renderer pointer to a valid Renderer object
+			\param resourceProvider pointer to a valid ResourceProvider object, or 0
+				to use the built in generic ResourceProvider
+			\param logListener A valid pointer to a LogListener, or 0 for no logging.
+		*/
+		System(Renderer* renderer, ResourceProvider* resourceProvider, LogListener* logListener);
 
 		~System();
 
@@ -331,11 +340,17 @@ namespace OpenGUI{
 		//!\internal determines the current cursor name, based on cursor visibility, where the mouse is, and the default cursor
 		std::string _getCurrentCursorName();
 	private:
+		// This is the actual constructor, the other 2 both call this one after getting the logs up and running.
+		void doConstructor(Renderer* renderer, ResourceProvider* resourceProvider);
 
 	//Generic
 		/*	this is a counter that is used to ensure that generateRandomElementName()
 			actually does create random names */
 		unsigned int mRandomElementNameGeneratorIndex;
+
+	//Logging Facilities
+		LogManager* m_LogManager;
+		LogListenerToFile* mDefaultLogListener;
 
 	//Plugin Manager
 		PluginManager* m_PluginManager;

@@ -3,16 +3,21 @@
 
 #include "OpenGUI_Platform.h"
 
+#include <cstdlib>
 #include <cmath>
+#include <ctime>
 #include <string>
 #include <sstream>
+#include <ostream>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 #include <cctype>
 #include <map>
 #include <list>
 #include <cassert>
+#include <locale>
 
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32

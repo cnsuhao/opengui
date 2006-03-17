@@ -58,7 +58,7 @@ namespace OpenGUI{
 		if(mWidgetTemplateMap.end() != iter){
 			(*iter).second->addProperty(propertyName ,propertyValue);
 		}else{
-			throw Exception("Template '" + templateName + "' does not exist, cannot remove property.");
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Template '" + templateName + "' does not exist, cannot add property: " + propertyName, "WidgetTemplateManager");
 		}
 	}
 	//############################################################################
@@ -68,7 +68,7 @@ namespace OpenGUI{
 		if(mWidgetTemplateMap.end() != iter){
 			(*iter).second->removeProperty(propertyName);
 		}else{
-			throw Exception("Template '" + templateName + "' does not exist, cannot remove property.");
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Template '" + templateName + "' does not exist, cannot remove property: " + propertyName, "WidgetTemplateManager");
 		}
 	}
 	//############################################################################
@@ -80,7 +80,7 @@ namespace OpenGUI{
 			widget = (*iter).second->createWidget();
 			return widget;
 		}else{
-			throw Exception("Template '" + templateName + "' does not exist, cannot create widget.");
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Template '" + templateName + "' does not exist, cannot create widget.", "WidgetTemplateManager");
 		}
 	}
 	//############################################################################

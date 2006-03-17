@@ -27,8 +27,27 @@ namespace OpenGUI{
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory));
 	}
 	//############################################################################
-	System::System(Renderer* renderer, ResourceProvider* resourceProvider)
+	System::System(Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile)
 	{
+		if(logFile==""){
+			System(renderer, resourceProvider,0);
+		}else{
+			mDefaultLogListener = new LogListenerToFile(logFile);
+			m_LogManager = new LogManager(mDefaultLogListener);
+			System::doConstructor(renderer, resourceProvider);
+		}
+	}
+	//############################################################################
+	System::System(Renderer* renderer, ResourceProvider* resourceProvider, LogListener* logListener)
+	{
+		m_LogManager = new LogManager(logListener);
+		mDefaultLogListener=0;
+		System::doConstructor(renderer, resourceProvider);
+	}
+	//############################################################################
+	void System::doConstructor(Renderer* renderer, ResourceProvider* resourceProvider)
+	{
+		LogManager::SlogMsg("General", 10) << "OpenGUI System Init (version " << OPENGUI_VERSION_STR << ")" << Log::endlog;
 		mTimerManager = new TimerManager; //get this up asap
 
 		m_PerformAutoTicks = true;
@@ -39,9 +58,13 @@ namespace OpenGUI{
 		mCapturerKeyboard=0;
 		mUserDblClickRate=500;
 		mUserClickAccuracy=0.05f;
-			
+		
 		assert(renderer);
 		mRenderer = renderer;
+		if(!mRenderer){
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System");
+		}
+		LogManager::SlogMsg("General", 10) << mRenderer << Log::endlog;
 		mRenderer->getViewportDimensions(mScreenResolution); //get the viewport resolution
 
 		m_PluginManager = new PluginManager;
@@ -69,6 +92,7 @@ namespace OpenGUI{
 		mCursorVisible=true; //cursor starts visible
 		mCursorManager->setCursor(mDefaultCursor);
 	}
+	
 	//############################################################################
 	System::~System()
 	{
@@ -99,6 +123,12 @@ namespace OpenGUI{
 
 		if(mTimerManager)
 			delete mTimerManager; //delete this last
+
+		//End logging facilities last
+		if(m_LogManager)
+			delete m_LogManager;
+		if(mDefaultLogListener)
+			delete mDefaultLogListener; //very lastly close default log listener if it was used
 	}
 	//############################################################################
 	void System::loadPlugin(std::string filename)
@@ -200,7 +230,7 @@ namespace OpenGUI{
 		GUISheet* retval = System::getGUISheetByName(sheetName);
 		if(retval){
 			//and what do we do here... throw? I guess so
-			throw Exception("GUISheet named '" + sheetName + "' already exists");
+			OG_THROW(Exception::ERR_DUPLICATE_ITEM, "GUISheet '" + sheetName + "' already exists", "System");
 		}
 		retval = new GUISheet(sheetName);
 		if(retval){
@@ -223,7 +253,7 @@ namespace OpenGUI{
 				return;
 			}
 		}
-		throw Exception("System::destroyGUISheet():GUISheet not found");
+		OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "System::destroyGUISheet():GUISheet not found", "System");
 	}
 	//############################################################################
 	GUISheet* System::getGUISheetByName(std::string name)

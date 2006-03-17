@@ -19,14 +19,14 @@ namespace OpenGUI{
 	{
 		mHandle = DYNAMICLIB_LOAD(mName.c_str());
 		if(!mHandle){
-			throw Exception("Could not load library " + mName + "\n");
+			OG_THROW(Exception::OP_FAILED, "Could not load library " + mName, "DynamicLib::load");
 		}
 	}
 	//############################################################################
 	void DynamicLib::unload()
 	{
 		if(!DYNAMICLIB_UNLOAD(mHandle)){
-			throw Exception("Could not unload library " + mName + "\n");
+			OG_THROW(Exception::OP_FAILED, "Could not unload library " + mName, "DynamicLib::unload");
 		}
 	}
 	//############################################################################
