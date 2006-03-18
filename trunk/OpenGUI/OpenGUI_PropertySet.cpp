@@ -23,13 +23,21 @@ namespace OpenGUI{
 		std::string tmpstr = propertyName;
 		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
 
+		LogManager::SlogMsg("PropertySet", OGLL_INSANE) << "Set Property:  "
+			<< "<" << ((void*)this) << "> "
+			<< "\"" << tmpstr << "\" << " << newValue << Log::endlog;
+
 		PropertyMap::iterator iter = _mPropertySubscriberList.find(tmpstr);
 		//if the property doesn't exist, return false
-		if(iter == _mPropertySubscriberList.end())
+		if(iter == _mPropertySubscriberList.end()){
+			LogManager::SlogMsg("PropertySet", OGLL_WARN) << "Property Does Not Exist: " << tmpstr << Log::endlog;
 			return false;
+		}
 		//if the property setter doesn't exist, return false
-		if(iter->second.propertySetter == PropertySetter())
+		if(iter->second.propertySetter == PropertySetter(0)){
+			LogManager::SlogMsg("PropertySet", OGLL_WARN) << "Property Does Not Have Valid PropertySetter(): " << tmpstr << Log::endlog;
 			return false;
+		}
 
 		//waste of stack space. =(
 		bool boolHolder;
@@ -91,22 +99,51 @@ namespace OpenGUI{
 		std::string tmpstr = propertyName;
 		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
 
+		LogManager::SlogMsg("PropertySet", OGLL_INSANE) << "Get Property:  "
+			<< "<" << ((void*)this) << "> "
+			<< "\"" << tmpstr << "\"" << Log::endlog;
+
 		PropertyMap::iterator iter = _mPropertySubscriberList.find(tmpstr);
 		//if the property doesn't exist, return false
-		if(iter == _mPropertySubscriberList.end())
+		if(iter == _mPropertySubscriberList.end()){
+			LogManager::SlogMsg("PropertySet", OGLL_WARN) << "Property Does Not Exist: " << tmpstr << Log::endlog;
 			return false;
+		}
 
 		//if the property getter doesn't exist, return false
-		if(iter->second.propertyGetter == PropertyGetter())
+		if(iter->second.propertyGetter == PropertyGetter(0)){
+			LogManager::SlogMsg("PropertySet", OGLL_WARN) << "Property Does Not Have Valid PropertyGetter(): " << tmpstr << Log::endlog;
 			return false;
+		}
 
 		return (*iter->second.propertyGetter)(this, propertyName,curValue);
+	}
+	//######################################################################
+	std::string propertyTypeToStr(PropertyType type)
+	{
+		switch(type){
+			case PT_STRING: return "STRING";
+			case PT_BOOL: return "BOOL";
+			case PT_FLOAT: return "FLOAT";
+			case PT_FVECTOR2: return "FVECTOR2";
+			case PT_FRECT: return "FRECT";
+			case PT_INTEGER: return "INTEGER";
+			case PT_IVECTOR2: return "IVECTOR2";
+			case PT_IRECT: return "IRECT";
+			default: return "**UNKNOWN**";
+		}
 	}
 	//######################################################################
 	void PropertySet::PropertySet_BindProperty(const std::string& propertyName, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter)
 	{
 		std::string tmpstr = propertyName;
 		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+
+		LogManager::SlogMsg("PropertySet", OGLL_INSANE) << "Bind Property: "
+			<< "<" << ((void*)this) << "> "
+			<< "\"" << tmpstr
+			<< "\" type: " << propertyTypeToStr(type) << Log::endlog;
+		
 
 		PropertyMap::mapped_type item = _mPropertySubscriberList[tmpstr];
 		item.type = type;

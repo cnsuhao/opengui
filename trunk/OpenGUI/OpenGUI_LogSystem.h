@@ -10,8 +10,17 @@
 	#pragma warning (disable : 4251)
 #endif
 
+#define OGLL_MSG	10
+#define OGLL_ERR	20
+#define OGLL_WARN	30
+#define OGLL_INFO	40
+#define OGLL_INFO2	50
+#define OGLL_INFO3	60
+#define OGLL_VERB	100
+#define OGLL_INSANE 200
+
 namespace OpenGUI{
-#define OPENGUI_LOG()
+
 
 	//! LogListener interface class for creating custom log output streams.
 	class OPENGUI_API LogListener{

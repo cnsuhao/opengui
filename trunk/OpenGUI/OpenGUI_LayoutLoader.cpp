@@ -11,6 +11,8 @@ namespace OpenGUI{
 	//#####################################################################
 	void LayoutLoader::LoadLayoutFromXML(const std::string& xmlFilename)
 	{
+		LogManager::SlogMsg("LayoutLoader", 20) << "LoadLayoutFromXML: " << xmlFilename << Log::endlog;
+
 		TiXmlDocument doc;
 		doc.LoadFile(xmlFilename);
 		TiXmlElement* root = doc.RootElement();

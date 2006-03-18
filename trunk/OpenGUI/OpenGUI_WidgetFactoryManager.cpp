@@ -21,15 +21,20 @@ namespace OpenGUI{
 	WidgetFactoryManager::WidgetFactoryManager()
 	{
 		//
+		LogManager::SlogMsg("INIT", OGLL_INFO2) << "Creating WidgetFactoryManager" << Log::endlog;
 	}
 	//############################################################################
 	WidgetFactoryManager::~WidgetFactoryManager()
 	{
 		//
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO2) << "Destroying WidgetFactoryManager" << Log::endlog;
 	}
 	//############################################################################
 	void WidgetFactoryManager::registerWidgetFactory(std::string groupName, std::string widgetName, WidgetFactoryCallback factoryCallback)
 	{
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO) << "RegisterWidgetFactory: ";
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO) << groupName << "/" << widgetName << " <" << ((void*)(factoryCallback)) << ">" << Log::endlog;
+
 		CallbackMapItem item;
 		item.callBack=factoryCallback;
 		item.groupName=groupName;
@@ -39,18 +44,27 @@ namespace OpenGUI{
 	//############################################################################
 	void WidgetFactoryManager::unregisterWidgetFactory(std::string groupName, std::string widgetName)
 	{
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO) << "UnregisterWidgetFactory: ";
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO) << groupName << "/" << widgetName << Log::endlog;
+
 		CallbackMap::iterator iter = mCallbackmap.find(_buildGroupNameComposite(groupName,widgetName));
-		if(iter != mCallbackmap.end())
+		if(iter != mCallbackmap.end()){
 			mCallbackmap.erase(iter);
+			return;
+		}
+		OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Could not find widget factory to unregister " + groupName + "/" + widgetName, "WidgetFactoryManager::unregisterWidgetFactory");
 	}
 	//############################################################################
 	Widgets::Widget* WidgetFactoryManager::createWidget(std::string groupName, std::string widgetName)
 	{
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO3) << "CreateWidget: ";
+		LogManager::SlogMsg("WidgetFactoryManager", OGLL_INFO3) << groupName << "/" << widgetName << Log::endlog;
+
 		CallbackMap::iterator iter = mCallbackmap.find(_buildGroupNameComposite(groupName,widgetName));
 		if(iter != mCallbackmap.end()){
 			//call me paranoid, but i'm going to check again just to make sure
 			if(iter->second.groupName == groupName && iter->second.widgetName == widgetName){
-				try{ //undefined? you bet! but hey, we've got faith.
+				try{ //If func is unknown/garbage the result is undefined? you bet! but hey, we've got faith.
 					WidgetFactoryCallback func;
 					func = iter->second.callBack;
 					return (*func)();

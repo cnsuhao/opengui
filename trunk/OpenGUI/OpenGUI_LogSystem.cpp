@@ -179,9 +179,9 @@ namespace OpenGUI{
 		mFile << formatDateTime(*local, "%H:%M:%S") << ") ";
 
 		if(section.length() > 0){
-			mFile << setw(8) << section << setw(0) << " ";
+			mFile << setw(8) << left << section << setw(0) << " ";
 			mFile << "[" << setw(3) << right << level << setw(0) << left << "]";
-			mFile << " -:- ";
+			mFile << " : ";
 		}else{
 			mFile << "     ";
 		}

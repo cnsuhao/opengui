@@ -47,7 +47,10 @@ namespace OpenGUI{
 	//############################################################################
 	void System::doConstructor(Renderer* renderer, ResourceProvider* resourceProvider)
 	{
-		LogManager::SlogMsg("General", 10) << "OpenGUI System Init (version " << OPENGUI_VERSION_STR << ")" << Log::endlog;
+		LogManager::SlogMsg("INIT", OGLL_MSG) << "OpenGUI (ver ";
+		LogManager::SlogMsg("INIT", OGLL_MSG) << OPENGUI_VERSION_STR << ") ";
+		LogManager::SlogMsg("INIT", OGLL_MSG) << "http://OpenGUI.SourceForge.net/" << Log::endlog;
+		LogManager::SlogMsg("INIT", OGLL_INFO) << "System Init Started" << Log::endlog;
 		mTimerManager = new TimerManager; //get this up asap
 
 		m_PerformAutoTicks = true;
@@ -64,8 +67,9 @@ namespace OpenGUI{
 		if(!mRenderer){
 			OG_THROW(Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System");
 		}
-		LogManager::SlogMsg("General", 10) << mRenderer << Log::endlog;
+		
 		mRenderer->getViewportDimensions(mScreenResolution); //get the viewport resolution
+		LogManager::SlogMsg("INIT", OGLL_INFO3) << "Initial GUI Resolution: " << mScreenResolution.toStr() << Log::endlog;
 
 		m_PluginManager = new PluginManager;
 
@@ -77,8 +81,10 @@ namespace OpenGUI{
 		if(resourceProvider){
 			mResourceProvider=resourceProvider;
 			mUsingGenericResourceProvider=false;
+			LogManager::SlogMsg("INIT", OGLL_INFO3) << "Using custom resource provider: " << mResourceProvider << Log::endlog;
 		}
 		else{
+			LogManager::SlogMsg("INIT", OGLL_INFO3) << "Using built in resource provider" << Log::endlog;
 			mResourceProvider = new GenericResourceProvider();
 			mUsingGenericResourceProvider=true;
 		}
@@ -91,11 +97,15 @@ namespace OpenGUI{
 		mCursorPosition = FVector2(0.5f,0.5f); //cursor starts in middle of screen
 		mCursorVisible=true; //cursor starts visible
 		mCursorManager->setCursor(mDefaultCursor);
+
+		LogManager::SlogMsg("INIT", OGLL_INFO) << "System Init Complete" << Log::endlog;
 	}
 	
 	//############################################################################
 	System::~System()
 	{
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO) << "OpenGUI Shutdown Started" << Log::endlog;
+
 		System::_destroyAllGUISheets();
 
 		/*
@@ -123,6 +133,8 @@ namespace OpenGUI{
 
 		if(mTimerManager)
 			delete mTimerManager; //delete this last
+
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO) << "OpenGUI Shutdown Ending" << Log::endlog;
 
 		//End logging facilities last
 		if(m_LogManager)
