@@ -12,6 +12,7 @@ namespace OpenGUI{
 		and searching for Imageset and the children Image objects.\n \b [Singleton]
 	*/
 	class OPENGUI_API ImageryManager : public Singleton<ImageryManager>{
+		friend class XMLParser;
 	public:
 		ImageryManager();
 		~ImageryManager();

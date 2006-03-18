@@ -20,6 +20,7 @@ namespace OpenGUI{
 	//############################################################################
 	CursorManager::CursorManager()
 	{
+		LogManager::SlogMsg("INIT", OGLL_INFO2) << "Creating CursorManager" << Log::endlog;
 		mCurrentCursorPtr=0;
 		mCurrentCursorStr="";
 		mCurrentCursorInvalid=false;
@@ -27,11 +28,16 @@ namespace OpenGUI{
 	//############################################################################
 	CursorManager::~CursorManager()
 	{
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO2) << "Destroying CursorManager" << Log::endlog;
 		destroyAllCursors();
 	}
 	//############################################################################
 	void CursorManager::addCursor(Cursor* cursorPtr, std::string name)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO) << "Add Cursor: "
+			<< "\"" << name << "\" <" << ((void*)cursorPtr) << ">" << Log::endlog;
+			
+
 		Cursor* tmpCursor = CursorManager::getCursor(name);
 		if(tmpCursor)
 			CursorManager::destroyCursor(tmpCursor);
@@ -49,8 +55,12 @@ namespace OpenGUI{
 	//############################################################################
 	void CursorManager::destroyCursor(std::string name)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO) << "Destroy Cursor: "
+			<< "\"" << name << "\"" << Log::endlog;
+
 		CursorPtrMap::iterator iter = mCursorMap.find(name);
 		if(iter != mCursorMap.end()){
+			CursorManager::cursorUnregisterDraw(iter->second);
 			delete iter->second;
 			mCursorMap.erase(iter);
 		}
@@ -58,6 +68,9 @@ namespace OpenGUI{
 	//############################################################################
 	void CursorManager::destroyCursor(Cursor* cursorPtr)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO) << "Destroy Cursor: "
+			<< "<" << ((void*)cursorPtr) << ">" << Log::endlog;
+
 		CursorPtrMap::iterator iter = mCursorMap.begin();
 		while(iter != mCursorMap.end()){
 			if(iter->second == cursorPtr){
@@ -72,6 +85,9 @@ namespace OpenGUI{
 	//############################################################################
 	void CursorManager::removeCursor(Cursor* cursorPtr)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO) << "Remove Cursor: "
+			<< "<" << ((void*)cursorPtr) << ">" << Log::endlog;
+
 		CursorPtrMap::iterator iter = mCursorMap.begin();
 		while(iter != mCursorMap.end()){
 			if(iter->second == cursorPtr){
@@ -85,6 +101,8 @@ namespace OpenGUI{
 	//############################################################################
 	void CursorManager::destroyAllCursors()
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO) << "Destroy All Cursors..." << Log::endlog;
+
 		CursorPtrMap::iterator iter = mCursorMap.begin();
 		while(iter != mCursorMap.end()){
 			delete iter->second;
@@ -96,15 +114,25 @@ namespace OpenGUI{
 	//############################################################################
 	void CursorManager::cursorRegisterDraw(Cursor* cursorPtr)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO2) << "cursorRegisterDraw: "
+			<< "<" << ((void*)cursorPtr) << ">" << Log::endlog;
+
 		if(!cursorPtr) return; //don't register null
 		if(!isCursorRegistered(cursorPtr)) return; //don't register something we don't know about
 
-		CursorManager::cursorUnregisterDraw(cursorPtr); //first remove this ptr if we already have it
+		if(CursorManager::isCursorDrawRegistered(cursorPtr)){
+			LogManager::SlogMsg("CursorManager", OGLL_WARN) << "Removing duplicate cursorRegisterDraw entry: "
+				<< "<" << ((void*)cursorPtr) << ">" << Log::endlog;
+			CursorManager::cursorUnregisterDraw(cursorPtr); //first remove this ptr if we already have it
+		}
 		mCursorDrawList.push_back(cursorPtr); //new pointers go to the back of the list (last to draw, so on top)
 	}
 	//############################################################################
 	void CursorManager::cursorUnregisterDraw(Cursor* cursorPtr)
 	{
+		LogManager::SlogMsg("CursorManager", OGLL_INFO2) << "cursorUnregisterDraw: "
+			<< "<" << ((void*)cursorPtr) << ">" << Log::endlog;
+
 		//for this we simply run the entire list and remove the first hit we find
 		//(there will only ever be one hit, if any)
 		CursorPtrList::iterator iter = mCursorDrawList.begin();
@@ -115,6 +143,7 @@ namespace OpenGUI{
 			}
 			iter++;
 		}
+		OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Cursor not found in Draw List", "CursorManager::cursorUnregisterDraw");
 	}
 	//############################################################################
 	bool CursorManager::isCursorRegistered(Cursor* cursorPtr)
@@ -124,6 +153,17 @@ namespace OpenGUI{
 			if(iter->second == cursorPtr){
 				return true;
 			}
+			iter++;
+		}
+		return false;
+	}
+	//############################################################################
+	bool CursorManager::isCursorDrawRegistered(Cursor* cursorPtr)
+	{
+		CursorPtrList::iterator iter = mCursorDrawList.begin();
+		while(iter != mCursorDrawList.end()){
+			if((*iter) == cursorPtr)
+				return true;
 			iter++;
 		}
 		return false;

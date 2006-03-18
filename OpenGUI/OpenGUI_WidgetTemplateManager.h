@@ -31,6 +31,7 @@ namespace OpenGUI{
 	/*! 
 	*/
 	class OPENGUI_API WidgetTemplateManager : public Singleton<WidgetTemplateManager> {
+		friend class XMLParser;
 	public:
 		WidgetTemplateManager();
 		~WidgetTemplateManager();
