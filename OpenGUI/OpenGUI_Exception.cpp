@@ -8,14 +8,14 @@ namespace OpenGUI{
 		: mLine( 0 ), mCode( code), mMsg( desc ), mSrc( srcArea ), mFile( 0 )
 	{
 		if(LogManager::getSingletonPtr())
-			LogManager::SlogMsg("EXCEPTION",20) << Exception::getFullMessage() << Log::endlog;
+			LogManager::SlogMsg("EXCEPTION",OGLL_ERR) << Exception::getFullMessage() << Log::endlog;
 	}
 
 	Exception::Exception( int code, const std::string& desc, const std::string& srcArea, char* file, long line )
 		: mLine( line ), mCode( code), mMsg( desc ), mSrc( srcArea ), mFile( file )
 	{
 		if(LogManager::getSingletonPtr())
-			LogManager::SlogMsg("EXCEPTION",20) << Exception::getFullMessage() << Log::endlog;
+			LogManager::SlogMsg("EXCEPTION",OGLL_ERR) << Exception::getFullMessage() << Log::endlog;
 	}
 
 	Exception::Exception(const Exception& rhs)

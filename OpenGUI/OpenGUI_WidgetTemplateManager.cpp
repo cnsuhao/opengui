@@ -23,11 +23,12 @@ namespace OpenGUI{
 	//############################################################################
 	WidgetTemplateManager::WidgetTemplateManager()
 	{
-		//
+		LogManager::SlogMsg("INIT", OGLL_INFO2) << "Creating WidgetTemplateManager" << Log::endlog;
 	}
 	//############################################################################
 	WidgetTemplateManager::~WidgetTemplateManager()
 	{
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO2) << "Destroying WidgetTemplateManager" << Log::endlog;
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.begin();
 		while(mWidgetTemplateMap.end() != iter){
 			delete (*iter).second;
@@ -38,22 +39,38 @@ namespace OpenGUI{
 	//############################################################################
 	void WidgetTemplateManager::createTemplate(std::string templateName, std::string baseGroupName, std::string baseWidgetName)
 	{
-		//remove duplicate templates
-		WidgetTemplateManager::destroyTemplate(templateName);
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << "Creating Template: " << templateName;
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << " source: " << baseGroupName << "/" << baseWidgetName;
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << Log::endlog;
+
+		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
+		if(mWidgetTemplateMap.end() != iter){
+			LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << "Removing Duplicate Template: " << templateName << Log::endlog;
+			//remove duplicate templates
+			WidgetTemplateManager::destroyTemplate(templateName);
+		}
+		
 		mWidgetTemplateMap[templateName] = new WidgetTemplate(baseGroupName, baseWidgetName);
 	}
 	//############################################################################
 	void WidgetTemplateManager::destroyTemplate(std::string templateName)
 	{
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << "Destroying Template: " << templateName;
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << Log::endlog;
+
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
 		if(mWidgetTemplateMap.end() != iter){
 			delete (*iter).second;
 			mWidgetTemplateMap.erase(iter);
+			LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO2) << templateName << " destroyed" << Log::endlog;
+			return;
 		}
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_ERR) << templateName << " not found!" << Log::endlog;
 	}
 	//############################################################################
 	void WidgetTemplateManager::addTemplateProperty(std::string templateName, std::string propertyName, std::string propertyValue)
 	{
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO3) << "Add Template Property: " << templateName << " <- " << propertyName << ":" << propertyValue << Log::endlog;
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
 		if(mWidgetTemplateMap.end() != iter){
 			(*iter).second->addProperty(propertyName ,propertyValue);
@@ -64,6 +81,7 @@ namespace OpenGUI{
 	//############################################################################
 	void WidgetTemplateManager::removeTemplateProperty(std::string templateName, std::string propertyName)
 	{
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO3) << "Remove Template Property: " << templateName << " <- " << propertyName << Log::endlog;
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
 		if(mWidgetTemplateMap.end() != iter){
 			(*iter).second->removeProperty(propertyName);
@@ -74,6 +92,9 @@ namespace OpenGUI{
 	//############################################################################
 	Widgets::Widget* WidgetTemplateManager::createWidget(std::string templateName)
 	{
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO3) << "CreateWidget from Template: ";
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO3) << templateName << Log::endlog;
+
 		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
 		if(mWidgetTemplateMap.end() != iter){
 			Widgets::Widget* widget;
@@ -86,6 +107,8 @@ namespace OpenGUI{
 	//############################################################################
 	void WidgetTemplateManager::LoadTemplatesFromXML(std::string xmlFilename)
 	{
+		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO) << "LoadTemplatesFromXML: " << xmlFilename << Log::endlog;
+
 		TiXmlDocument doc;
 		doc.LoadFile(xmlFilename);
 		TiXmlElement* root = doc.RootElement();

@@ -1,6 +1,7 @@
 #include "tinyxml.h"
 
 #include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
@@ -27,16 +28,19 @@ namespace OpenGUI{
 	//############################################################################
 	PluginManager::PluginManager()
 	{
-		//
+		LogManager::SlogMsg("INIT", OGLL_INFO2) << "Created PluginManager" << Log::endlog;
 	}
 	//############################################################################
 	PluginManager::~PluginManager()
 	{
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO2) << "Destroying PluginManager" << Log::endlog;
 		PluginManager::unloadAllPlugins();
 	}
 	//############################################################################
 	void PluginManager::loadPlugin(std::string filename)
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO2) << "LoadPlugin: " << filename << Log::endlog;
+
 		PluginMap::iterator iter = mPluginMap.find(filename);
 		if(iter == mPluginMap.end()){
 			OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Plugin already loaded: " + filename, "PluginManager::loadPlugin");
@@ -59,6 +63,8 @@ namespace OpenGUI{
 	//############################################################################
 	void PluginManager::unloadPlugin(std::string filename)
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO2) << "UnloadPlugin: " << filename << Log::endlog;
+
 		DynamicLib* lib;
 		PluginMap::iterator iter = mPluginMap.find(filename);
 		if(iter == mPluginMap.end()){
@@ -79,6 +85,8 @@ namespace OpenGUI{
 	//############################################################################
 	void PluginManager::unloadAllPlugins()
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO2) << "UnloadAllPlugins..."  << Log::endlog;
+
 		DynamicLib* lib;
 		PluginMap::iterator iter = mPluginMap.begin();
 		while(iter != mPluginMap.end()){
@@ -96,6 +104,8 @@ namespace OpenGUI{
 	//############################################################################
 	void PluginManager::firePluginStart(DynamicLib* lib)
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO3) << "firePluginStart: " << lib->getName() << Log::endlog;
+
 		PLUGIN_START_FUNC func;
 		func = (PLUGIN_START_FUNC) lib->getSymbol("pluginSart");
 		if(func)
@@ -104,6 +114,8 @@ namespace OpenGUI{
 	//############################################################################
 	void PluginManager::firePluginStop(DynamicLib* lib)
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO3) << "firePluginStop: " << lib->getName() << Log::endlog;
+
 		PLUGIN_STOP_FUNC func;
 		func = (PLUGIN_STOP_FUNC) lib->getSymbol("pluginStop");
 		if(func)
@@ -130,6 +142,8 @@ namespace OpenGUI{
 	//############################################################################
 	void PluginManager::LoadPluginsFromXML(std::string xmlFilename)
 	{
+		LogManager::SlogMsg("PluginManager", OGLL_INFO) << "LoadPluginsFromXML: " << xmlFilename << Log::endlog;
+
 		TiXmlDocument doc;
 		doc.LoadFile(xmlFilename);
 		TiXmlElement* root = doc.RootElement();
