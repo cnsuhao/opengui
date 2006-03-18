@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 
+<Include file="test2.xml" />
+
 <Plugin file="" />
 
 <Template name="ezbutton" group="OpenGUI" type="SimpleButton">
@@ -16,7 +18,7 @@
 	<Imagery Name="CloseButtonHover" XPos="3" YPos="120" Width="10" Height="10" />
 	<Imagery Name="CloseButtonPressed" XPos="15" YPos="120" Width="10" Height="10" />
 	<Imagery Name="Button" XPos="69" YPos="2" Width="50" Height="15" />
-	<Imagery Name="ButtonDisabled" XPos="2" YPos="103" Width="50" Height="15" />
+	<Imagery Name="ButtonDisabled" XPos="2" YPos="103" Width="40" Height="15" />
 	<Imagery Name="ButtonDown" XPos="69" YPos="53" Width="50" Height="15" />
 	<Imagery Name="ButtonHover" XPos="69" YPos="19" Width="50" Height="15" />
 	<Imagery Name="DefaultCursor" XPos="224" YPos="1" Width="31" Height="32" />
@@ -35,5 +37,6 @@
 		<Property name="position" value="(0.05x0.75)" />
 	<Property name="size" value="(0.20x0.20)" />
 	</Widget>
+	<Widget name="button999" type="ezbutton24" />
 </GUISheet>
 

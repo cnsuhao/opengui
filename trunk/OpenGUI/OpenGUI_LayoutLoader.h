@@ -7,6 +7,7 @@
 namespace OpenGUI{
 	//! Provides loading of layouts from XML
 	class OPENGUI_API LayoutLoader{
+		friend class XMLParser;
 	public:
 		static void LoadLayoutFromXML(const std::string& xmlFilename);
 	private:

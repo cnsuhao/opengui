@@ -31,10 +31,12 @@ class testgl : public OpenGLBase
 		
 		renderer = new OpenGUI::OGLRenderer();
 		sys = new OpenGUI::System(renderer);
-		
-		OpenGUI::ImageryManager::getSingleton().LoadImagesetsFromXML("test.xml");
-		OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
-		
+		sys->setGUISheet(sys->createGUISheet("root"));
+
+		OpenGUI::LogManager::getSingleton().setLevel(100);
+		OpenGUI::XMLParser::LoadFromFile("test.xml");
+		//OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
+		//OpenGUI::LayoutLoader::LoadLayoutFromXML("test.xml");
 
 //		OpenGUI::ImageryManager::getSingleton().createImageset("SilverClean.png");
 // 		OpenGUI::ImageryManager::getSingleton().getImageset("SilverClean.png")->createImagery("Button",OpenGUI::IRect(69,2,69+50,2+15));
@@ -48,8 +50,8 @@ class testgl : public OpenGLBase
 		OpenGUI::CursorManager::getSingleton().addCursor(mCursor,"DefaultCursor");
 		mCursor->setImagery("DefaultCursor",OpenGUI::FVector2(0.0f,0.0f));
 		
-		sys->setGUISheet(sys->createGUISheet("root"));
-		OpenGUI::LayoutLoader::LoadLayoutFromXML("test.xml");
+		
+		
 		
 // 		OpenGUI::Widgets::StaticImage* w = new OpenGUI::Widgets::StaticImage();
 // 		w->setRect(OpenGUI::FRect(0.25f,0.05f,0.5f,0.10f));

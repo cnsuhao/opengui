@@ -30,6 +30,7 @@ namespace OpenGUI{
 		FVector2 mPos = System::getSingleton().getCursorPos();
 		FRect boxRect;
 		boxRect.setSize(FVector2(0.05f,0.05f));
+		mPos = mPos - (FVector2(0.05f,0.05f) * mOffset);
 		boxRect.setPosition(mPos);
 		Render::PrimitiveBox box;
 		box.setRect(boxRect);

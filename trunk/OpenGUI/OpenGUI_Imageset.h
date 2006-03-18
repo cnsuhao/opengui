@@ -13,8 +13,7 @@ namespace OpenGUI{
 		friend class ImageryManager;
 		friend class Imagery;
 	public:
-		Imageset(Texture* texturePtr,std::string sourceImageFilename) : 
-		  mFilename(sourceImageFilename), mpTexture(texturePtr) {}
+		Imageset(Texture* texturePtr,std::string sourceImageFilename);
 		~Imageset();
 	
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.

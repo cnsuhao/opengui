@@ -5,14 +5,22 @@
 namespace OpenGUI{
 
 	//############################################################################
+	Imageset::Imageset(Texture* texturePtr,std::string sourceImageFilename) 
+		: mFilename(sourceImageFilename), mpTexture(texturePtr)
+	{
+		LogManager::SlogMsg("Imageset", OGLL_INFO) << "(" << mFilename << ") " << "Creation" << Log::endlog;
+	}
+	//############################################################################
 	Imageset::~Imageset()
 	{
+		LogManager::SlogMsg("Imageset", OGLL_INFO) << "(" << mFilename << ") " << "Destruction" << Log::endlog;
 		Imageset::destroyAllImagery();
 		_unloadTexture();
 	}
 	//############################################################################
 	bool Imageset::_loadTexture()
 	{
+		LogManager::SlogMsg("Imageset", OGLL_VERB) << "(" << mFilename << ") " << "Loading Texture" << Log::endlog;
 		mpTexture = System::getSingleton()._getRenderer()->createTextureFromFile(mFilename);
 		if(mpTexture) return true;
 		return false;
@@ -21,6 +29,7 @@ namespace OpenGUI{
 	void Imageset::_unloadTexture()
 	{
 		if(mpTexture){
+			LogManager::SlogMsg("Imageset", OGLL_VERB) << "(" << mFilename << ") " << "Unloading Texture" << Log::endlog;
 			System::getSingleton()._getRenderer()->destroyTexture(mpTexture);
 			mpTexture=0;
 		}
@@ -38,7 +47,12 @@ namespace OpenGUI{
 	//############################################################################
 	ImageryPtr Imageset::createImagery(std::string imageryName, FRect areaRect)
 	{
+		LogManager::SlogMsg("Imageset", OGLL_INFO2) << "(" << mFilename << ") "
+			<< "Create Imagery: " << imageryName << " " << areaRect.toStr() << Log::endlog;
+
 		if(Imageset::getImagery(imageryName)){
+			LogManager::SlogMsg("Imageset", OGLL_WARN) << "(" << mFilename << ") "
+				<< "Duplicate Imagery found, removing old Imagery: " << imageryName << Log::endlog;
 			//this function redefines existing imagery with clashing names
 			destroyImagery(imageryName);
 		}
@@ -73,6 +87,9 @@ namespace OpenGUI{
 	//############################################################################
 	void Imageset::destroyImagery(Imagery* pImagery)
 	{
+		LogManager::SlogMsg("Imageset", OGLL_INFO2) << "(" << mFilename << ") "
+			<< "Destroying Imagery: " << pImagery->getName() << Log::endlog;
+
 		ImageryPtrList::iterator iter = mChildImageryList.begin();
 		while(mChildImageryList.end() != iter){
 			if((*iter).get() == pImagery){
@@ -89,6 +106,9 @@ namespace OpenGUI{
 			}
 			iter++;
 		}
+		std::stringstream ss;
+		ss << pImagery;
+		OG_THROW(Exception::ERR_ITEM_NOT_FOUND, "Could not find Imagery: " + ss.str(), "Imageset::destroyImagery");
 	}
 	//############################################################################
 	void Imageset::destroyImagery(std::string name)
@@ -110,6 +130,8 @@ namespace OpenGUI{
 	//############################################################################
 	void Imageset::destroyAllImagery()
 	{
+		LogManager::SlogMsg("Imageset", OGLL_INFO2) << "(" << mFilename << ") "
+			<< "Destroying All Imagery..." << Log::endlog;
 		ImageryPtrList tmpList = mChildImageryList;
 		ImageryPtrList::iterator iter = tmpList.begin();
 		while(tmpList.end() != iter){

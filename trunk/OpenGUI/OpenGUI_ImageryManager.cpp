@@ -20,12 +20,14 @@ namespace OpenGUI{
 	//############################################################################
 	ImageryManager::ImageryManager()
 	{
+		LogManager::SlogMsg("INIT", OGLL_INFO2) << "Creating ImageryManager" << Log::endlog;
 		mDefaultImageset=0;
 		__buildDefaultImageset();
 	}
 	//############################################################################
 	ImageryManager::~ImageryManager()
 	{
+		LogManager::SlogMsg("SHUTDOWN", OGLL_INFO2) << "Destroying ImageryManager" << Log::endlog;
 		ImageryManager::destroyAllImagesets();
 		__destroyDefaultImageset();
 	}
@@ -36,6 +38,8 @@ namespace OpenGUI{
 		if( (imgset = getImageset(imageFilename)) ){
 			return imgset;
 		}
+
+		LogManager::SlogMsg("ImageryManager", OGLL_INFO2) << "CreateImageset: " << imageFilename << Log::endlog;
 		
 		Texture* tex = System::getSingleton()._getRenderer()->createTextureFromFile(imageFilename);
 		if(!tex) return 0;
@@ -69,6 +73,7 @@ namespace OpenGUI{
 		while(iter != mImagesetList.end())
 		{
 			if((*iter) == pImageset){
+				LogManager::SlogMsg("ImageryManager", OGLL_INFO2) << "DestroyImageset: " << pImageset->getName() << Log::endlog;
 				delete pImageset;
 				mImagesetList.erase(iter);
 				return;
@@ -88,6 +93,7 @@ namespace OpenGUI{
 	//############################################################################
 	void ImageryManager::destroyAllImagesets()
 	{
+		LogManager::SlogMsg("ImageryManager", OGLL_INFO2) << "DestroyAllImagesets..." << Log::endlog;
 		ImagesetCPtrList::iterator iter = mImagesetList.begin();
 		while(iter != mImagesetList.end()){
 			delete (*iter);
@@ -134,6 +140,8 @@ namespace OpenGUI{
 	//############################################################################
 	void ImageryManager::LoadImagesetsFromXML(std::string xmlFilename)
 	{
+		LogManager::SlogMsg("ImageryManager", OGLL_INFO) << "LoadImagesetsFromXML: " << xmlFilename << Log::endlog;
+
 		TiXmlDocument doc;
 		doc.LoadFile(xmlFilename);
 		TiXmlElement* root = doc.RootElement();

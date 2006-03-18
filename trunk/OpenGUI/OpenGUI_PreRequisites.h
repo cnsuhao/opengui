@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cctype>
 #include <map>
+#include <set>
 #include <list>
 #include <cassert>
 #include <locale>
