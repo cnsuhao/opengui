@@ -1,5 +1,5 @@
 
-#include "corona.h"
+//#include "corona.h"
 #include "OpenGUI.h"
 #include "OpenGUI_BaseWidgets.h"
 
@@ -98,6 +98,8 @@ namespace OpenGUI{
 		mCursorVisible=true; //cursor starts visible
 		mCursorManager->setCursor(mDefaultCursor);
 
+		mFontManager = new FontManager();
+
 		LogManager::SlogMsg("INIT", OGLL_INFO) << "System Init Complete" << Log::endlog;
 	}
 	
@@ -115,6 +117,9 @@ namespace OpenGUI{
 		*/
 		if(m_PluginManager)
 			delete m_PluginManager;
+
+		if(mFontManager)
+			delete mFontManager;
 
 		if(mCursorManager )
 			delete mCursorManager;

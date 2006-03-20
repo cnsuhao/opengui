@@ -51,6 +51,7 @@
 #include "OpenGUI_WidgetFactoryManager.h"
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
+#include "OpenGUI_FontManager.h"
 #include "OpenGUI_System.h"
 
 

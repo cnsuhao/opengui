@@ -352,6 +352,9 @@ namespace OpenGUI{
 		LogManager* m_LogManager;
 		LogListenerToFile* mDefaultLogListener;
 
+	//Font Manager
+		FontManager* mFontManager;
+
 	//Plugin Manager
 		PluginManager* m_PluginManager;
 		
