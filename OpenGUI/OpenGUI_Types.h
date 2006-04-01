@@ -9,7 +9,7 @@ namespace OpenGUI{
 #undef min
 #undef max
 
-	//! Most users are probably looking for UVector2. IVector2s are only used briefly by the imagery system when working with pixel based texture locations.
+	//! IVector2s are two dimensional vectors based on integers.
 	class OPENGUI_API IVector2
 	{
 	public:
@@ -33,9 +33,7 @@ namespace OpenGUI{
 		int y;
 	};
 
-	/*! Most users are probably looking for URect. IRects are rects built from IDim values, 
-		and are only useful for defining pixel based areas within image files.
-	*/
+	//! IRects are rects built from int values. Internally they are comprised of two IVector2's.
 	class OPENGUI_API IRect
 	{
 	public:
@@ -89,13 +87,11 @@ namespace OpenGUI{
 	};
 
 
-	//! Most users are probably looking for UVector2. The FVector2 is the unit of measure used in the final rendering stages OpenGUI.
+	//! The FVector2 is a two dimensional vector based on floats.
 	/*!
 		This object often represents a screen coordinate starting from the upper left corner of the screen.
-		Unlike UVector2, the value a FVector2 represents is very much an issue of context.
+		The value a FVector2 represents is very much an issue of context.
 		In the rendering areas of OpenGUI, a FVector2 is quite often a representation of screen position between 0,0 (upper left) and 1,1 (lower right).
-		In the internal code, it can also represent a scaling factor for both axis at once, which is used to convert a UVector2
-		to a screen position FVector2 so that it can be used in the final rendering stages.
 	*/
 	class OPENGUI_API FVector2
 	{
@@ -134,6 +130,7 @@ namespace OpenGUI{
 		float y;
 	};
 
+	//! FRects are rects built from float values. Internally they are comprised of two FVector2's.
 	class OPENGUI_API FRect
 	{
 	public:
