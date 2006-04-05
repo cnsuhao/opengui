@@ -8,6 +8,8 @@
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Subscriber.h"
 
+#include "OpenGUI_RenderOperation.h"
+
 namespace OpenGUI{
 	typedef Element* ChildElementListItem;
 	typedef std::list<ChildElementListItem> ChildElementList;
@@ -25,6 +27,7 @@ namespace OpenGUI{
 		friend class GUISheet;
 
 	public:
+		//! Test
 		typedef enum {
 			/*! \brief
 				<b>Default Setting unless altered by an inheritor</b>.

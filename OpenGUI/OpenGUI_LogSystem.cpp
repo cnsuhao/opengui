@@ -104,14 +104,14 @@ namespace OpenGUI{
 		: mName(name), mParent(parent), mLogLevel(-1)
 	{
 #ifdef OPENGUI_DEBUG
-		write(0) << "**Log Type Created**" << Log::endlog;
+		//write(0) << "**Log Type Created**" << Log::endlog;
 #endif
 	}
 	//############################################################################
 	Log::~Log()
 	{
 #ifdef OPENGUI_DEBUG
-		write(0) << "**Log Type Destroyed**" << Log::endlog;
+		//write(0) << "**Log Type Destroyed**" << Log::endlog;
 #endif
 	}
 	//############################################################################
@@ -119,7 +119,7 @@ namespace OpenGUI{
 	{
 		mLogLevel = newLogLevel;
 #ifdef OPENGUI_DEBUG
-		write(newLogLevel) << " ]LOG LEVEL CHANGED[ = " << newLogLevel << Log::endlog;
+		//write(newLogLevel) << " ]LOG LEVEL CHANGED[ = " << newLogLevel << Log::endlog;
 #endif
 	}
 	//############################################################################
@@ -173,13 +173,16 @@ namespace OpenGUI{
 	//############################################################################
 	void LogListenerToFile::write(std::string section, std::string message, unsigned int level)
 	{
+		static unsigned int sSectionWidth = 0;
+
 		using namespace std;
 		time_t now = time(0);
 		tm* local = localtime(&now);
 		mFile << formatDateTime(*local, "%H:%M:%S") << ") ";
 
 		if(section.length() > 0){
-			mFile << setw(8) << left << section << setw(0) << " ";
+			if(section.length() > sSectionWidth) sSectionWidth = section.length();
+			mFile << setw(sSectionWidth) << left << section << setw(0) << " ";
 			mFile << "[" << setw(3) << right << level << setw(0) << left << "]";
 			mFile << " : ";
 		}else{

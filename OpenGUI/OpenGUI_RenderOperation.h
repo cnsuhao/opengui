@@ -1,6 +1,7 @@
 #ifndef BC21A4C5_FCD1_4d8c_9263_4AC39140B970
 #define BC21A4C5_FCD1_4d8c_9263_4AC39140B970
 
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
@@ -8,6 +9,7 @@
 namespace OpenGUI{
 	class Texture; //forward declaration
 	class Imagery; //forward declaration
+	class Element; //forward declaration
 	
 	/*! \brief
 		This namespace contains rendering specific objects and functions
@@ -19,7 +21,7 @@ namespace OpenGUI{
 	namespace Render{
 
 		//! Used to define the color of a vertex. The default color is White, with alpha=1.0f
-		class VertexColor{
+		class OPENGUI_API VertexColor{
 		public:
 			VertexColor(float R=1.0f, float G=1.0f, float B=1.0f, float A=1.0f) : Red(R), Blue(B), Green(G), Alpha(A) {}
 
@@ -50,7 +52,7 @@ namespace OpenGUI{
 		};
 
 		/*! \brief
-			These are the representations of render operations that are sent do the renderer for
+			These are the representations of render operations that are sent to the renderer for
 			drawing.
 
 			\note
@@ -119,6 +121,26 @@ namespace OpenGUI{
 			FRect mRect; //size and position of this Box
 			ImageryPtr mTextureImagery;
 			ImageryPtr mMaskImagery;
+		};
+
+		//! Provides a simple interface for generating text strings
+		class OPENGUI_API PrimitiveText : public Primitive{
+		public:
+			PrimitiveText();
+			virtual ~PrimitiveText();
+			RenderOperationList getRenderOperationList();
+			void setContext(Element* contextElement);
+			void setText(std::string textString);
+			void setFont(std::string fontName, unsigned int fontSize_points);
+			void setPosition(const FVector2& baselinePosition);
+			// renderText( Rect, text, font, color, align, scroll )
+		private:
+			std::string mTextContents;
+			FVector2 mPosition;
+			Element* mContext;
+
+			std::string mFontName;
+			unsigned int mFontSize;
 		};
 
 		/*! \brief

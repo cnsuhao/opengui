@@ -47,6 +47,10 @@ namespace OpenGUI{
 	//############################################################################
 	ImageryPtr Imageset::createImagery(std::string imageryName, FRect areaRect)
 	{
+		if(imageryName == ""){
+			imageryName = ImageryManager::_generateRandomName();
+		}
+
 		LogManager::SlogMsg("Imageset", OGLL_INFO2) << "(" << mFilename << ") "
 			<< "Create Imagery: " << imageryName << " " << areaRect.toStr() << Log::endlog;
 
@@ -126,6 +130,11 @@ namespace OpenGUI{
 			iter++;
 		}
 		return ImageryPtr(0);
+	}
+	//############################################################################
+	Texture* Imageset::getTexture()
+	{
+		return mpTexture;
 	}
 	//############################################################################
 	void Imageset::destroyAllImagery()

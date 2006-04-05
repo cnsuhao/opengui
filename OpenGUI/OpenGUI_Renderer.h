@@ -91,11 +91,21 @@ namespace OpenGUI{
 		*/
 		virtual Texture* createTextureFromTextureData(TextureData *textureData)=0;
 
+		//! Replaces an existing texture with the given TextureData
+		/*! This should cause a Renderer implementation to completely replace the
+			contents of a texture with the newly provided data. 
+			The given \c texture pointer must remain valid, but other than that it doesn't
+			matter how this is achieved internally. Renderer implementations can feel
+			free to discard their hardware textures and rebuild from scratch if they
+			choose.
+		*/
+		virtual void updateTextureFromTextureData(Texture* texture, TextureData *textureData)=0;
+
 		//! Destroy a previously created Texture object.
 		/*! Whatever needs to happen to properly destroy a Texture object,
 			custom Renderers need to implement that functionality here.
 
-			\note Renderer is responsible for managing the memory commited for the
+			\note Renderer is responsible for managing the memory committed for the
 			Texture object.  If	Texture objects are allocated via the new operator,
 			then they should be deleted by this function.
 		*/

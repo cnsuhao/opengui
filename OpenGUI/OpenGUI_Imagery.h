@@ -4,9 +4,10 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_RefPtr.h"
 
 namespace OpenGUI{
-	
+	class Texture; //forward declaration
 	class Imageset; //forward declaration
 
 	//! Defines a sub area of an Imageset.

@@ -15,6 +15,7 @@ namespace OpenGUI{
 
 		Texture* createTextureFromFile(std::string filename);
 		Texture* createTextureFromTextureData(TextureData *textureData);
+		void updateTextureFromTextureData(Texture* texture, TextureData *textureData);
 		void destroyTexture(Texture* texturePtr);
 	};
 };//namespace OpenGUI{

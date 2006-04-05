@@ -29,22 +29,44 @@ namespace OpenGUI{
 		memcpy(mPixelData, dataSource, dataSize);
 	}
 	//#####################################################
-	unsigned char* TextureData::getPixelData()
+	void TextureData::createNewData(int width, int height, int bpp, unsigned char* initData)
+	{
+		if(mPixelData)
+			delete[] mPixelData;
+		mWidth = width;
+		mHeight = height;
+		mBPP = bpp;
+
+		size_t dataSize = mBPP * mHeight * mWidth;
+		mPixelData = new unsigned char[dataSize];
+
+		if(!initData){
+			memset(mPixelData, 0, dataSize);
+		}else{
+			for(unsigned int i = 0; i < dataSize; ){
+				for(int j = 0; j < bpp && i < dataSize; j++, i++){
+					mPixelData[i] = initData[j];
+				}
+			}
+		}
+	}
+	//#####################################################
+	unsigned char* TextureData::getPixelData() const
 	{
 		return mPixelData;
 	}
 	//#####################################################
-	int TextureData::getWidth()
+	int TextureData::getWidth() const
 	{
 		return mWidth;
 	}
 	//#####################################################
-	int TextureData::getHeight()
+	int TextureData::getHeight() const
 	{
 		return mHeight;
 	}
 	//#####################################################
-	int TextureData::getBPP()
+	int TextureData::getBPP() const
 	{
 		return mBPP;
 	}
@@ -124,6 +146,7 @@ namespace OpenGUI{
 		return retval;
 	}
 	//#####################################################
+	
 
 
 

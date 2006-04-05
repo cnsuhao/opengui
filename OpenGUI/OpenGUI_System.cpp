@@ -347,6 +347,41 @@ namespace OpenGUI{
 				mRenderer->doRenderOperation((*iterC));
 				iterC++;
 			}
+
+			//!\todo DEBUG REMOVE ME
+			Render::PrimitiveText text;
+			text.setPosition(FVector2(0.025f, 0.70f));
+			text.setText("Hello World!");
+			text.setFont("kick",100);
+			Render::RenderOperationList textRL = text.getRenderOperationList();
+			Render::RenderOperationList::iterator textRLIter = textRL.begin();
+			while(textRLIter != textRL.end()){
+				mRenderer->doRenderOperation((*textRLIter));
+				textRLIter++;
+			}
+			text.setPosition(FVector2(0.625f, 0.10f));
+			text.setText("This is some\nsmaller text.\nIsn't it nice?");
+			text.setFont("arial",30);
+			Render::RenderOperationList textRL2 = text.getRenderOperationList();
+			Render::RenderOperationList::iterator textRLIter2 = textRL2.begin();
+			while(textRLIter2 != textRL2.end()){
+				mRenderer->doRenderOperation((*textRLIter2));
+				textRLIter2++;
+			}
+
+			//!\todo DEBUG REMOVE ME
+			Render::PrimitiveBox box;
+			Render::RenderOperationList debugRL;
+			box.setRect(FRect(0.0f,0.0f,0.5f,0.5f));
+			debugRL = box.getRenderOperationList();
+			Render::RenderOperationList::iterator debugIter = debugRL.begin();
+			while(debugIter != debugRL.end()){
+				//(*debugIter).vertices[0].color = Render::VertexColor(1,1,1,0.5f);
+				(*debugIter).texture = FontManager::getSingleton().getDebugTexture();
+				mRenderer->doRenderOperation((*debugIter));
+				debugIter++;
+			}
+			//!\todo DEBUG REMOVE ME (end)
 			
 
 			mRenderer->postRenderCleanup();

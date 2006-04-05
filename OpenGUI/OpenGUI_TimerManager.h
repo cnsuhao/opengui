@@ -1,6 +1,7 @@
 #ifndef F85EFDFC_7B31_49c3_AD76_CA4D85284590
 #define F85EFDFC_7B31_49c3_AD76_CA4D85284590
 
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Timer.h"

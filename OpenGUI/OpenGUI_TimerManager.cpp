@@ -1,4 +1,7 @@
-#include "OpenGUI.h"
+
+
+#include "OpenGUI_TimerManager.h"
+#include "OpenGUI_System.h"
 
 
 namespace OpenGUI{

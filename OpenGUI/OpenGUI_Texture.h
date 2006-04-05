@@ -1,5 +1,8 @@
 #ifndef C4152441_F250_46dd_958F_D1007688400A
 #define C4152441_F250_46dd_958F_D1007688400A
+
+#include "OpenGUI_Types.h"
+
 namespace OpenGUI{
 	/*! \brief
 		This is a base class for custom Texture implementations. Custom Renderer

@@ -25,6 +25,7 @@
 //Abstract classes for custom renderers/data providers/etc
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
+#include "OpenGUI_RenderOperation.h"
 #include "OpenGUI_Renderer.h"
 
 //Includes necessary for core functionality
@@ -39,7 +40,6 @@
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_Imagery.h"
-#include "OpenGUI_RenderOperation.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_ImageryManager.h"
 #include "OpenGUI_Cursor.h"
@@ -51,6 +51,7 @@
 #include "OpenGUI_WidgetFactoryManager.h"
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
+#include "OpenGUI_Font.h"
 #include "OpenGUI_FontManager.h"
 #include "OpenGUI_System.h"
 

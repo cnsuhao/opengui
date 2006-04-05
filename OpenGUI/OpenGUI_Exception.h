@@ -38,9 +38,10 @@ namespace OpenGUI{
 		
 
 		Exception( int code, const std::string& desc, const std::string& srcArea );
-		/*! \param code The ExceptionID that most closely matches the problem
+		/*! 
+			\param code The ExceptionID that most closely matches the problem
 			\param desc A string describing the problem
-			\param scrArea The name of the module or subsystem that initially threw the exception
+			\param srcArea The name of the module or subsystem that initially threw the exception
 			\param file The filename in which the exception occurred
 			\param line The line number where the exception occurred
 		*/

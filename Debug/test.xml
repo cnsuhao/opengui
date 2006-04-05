@@ -1,8 +1,13 @@
 <?xml version="1.0" ?>
 
+<Font name="" file="Kickassinger.ttf" />
+
 <Include file="test2.xml" />
 
 <Plugin file="" />
+
+<Font name="arial" file="arial.ttf" autoscale="false" xres="800" yres="600" />
+<FontPreload name="arial">abcdefghijklmnopqrstuvwxyz</FontPreload>
 
 <Template name="ezbutton" group="OpenGUI" type="SimpleButton">
 	<Property name="position" value="(0.75x0.75)" />
