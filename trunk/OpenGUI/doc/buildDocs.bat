@@ -1,1 +1,5 @@
-"C:\Program Files\doxygen\bin\doxygen.exe" Doxyfile > buildLog.txt 2>&1
+@echo Building HTML Docs...
+@"C:\Program Files\doxygen\bin\doxygen.exe" Doxyfile > buildLog.txt 2>&1
+@echo Compiling CHM...
+@"c:\Program Files\HTML Help Workshop\hhc.exe" html\index.hhp >> buildLog.txt 2>&1
+@echo DONE!

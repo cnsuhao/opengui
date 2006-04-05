@@ -140,6 +140,15 @@
 				RelativePath=".\OpenGUI_Exception.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Font.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontAtlas.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontCache.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_FontManager.cpp">
 			</File>
 			<File
@@ -185,6 +194,9 @@
 				RelativePath=".\OpenGUI_TextureData.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_TextureDataRect.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Timer.cpp">
 			</File>
 			<File
@@ -211,6 +223,9 @@
 				RelativePath=".\OpenGUI.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_CONFIG.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Cursor.h">
 			</File>
 			<File
@@ -230,6 +245,18 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Exports.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Font.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontAtlas.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontCache.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontGlyph.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_FontManager.h">
@@ -302,6 +329,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_TextureData.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_TextureDataRect.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Timer.h">

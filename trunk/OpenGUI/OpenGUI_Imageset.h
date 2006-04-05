@@ -50,6 +50,9 @@ namespace OpenGUI{
 		*/
 		ImageryPtr getImagery(std::string imageryName);
 
+		//! Returns the texture backing this Imageset
+		Texture* getTexture();
+
 		//! Returns the name of this Imageset
 		std::string getName();
 	private:

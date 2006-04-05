@@ -1,20 +1,31 @@
 #ifndef DC3E54A4_1432_4fa1_A635_D76797D7ED89
 #define DC3E54A4_1432_4fa1_A635_D76797D7ED89
 
-
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_MouseButton.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Message.h"
-#include "OpenGUI_GUISheet.h"
-#include "OpenGUI_TextureData.h"
-#include "OpenGUI_ImageryManager.h"
-#include "OpenGUI_PluginManager.h"
+#include "OpenGUI_Element.h"
 
 //! The base namespace contains the classes that applications will deal with the most.
 namespace OpenGUI{
-	class Element; //forward declaration
+	//forward declarations
+	namespace Widgets{ class Widget; }
+	class GUISheet;
+	class WidgetFactoryManager;
+	class WidgetTemplateManager;
+	class TimerManager;
+	class LogManager;
+	class LogListener;
+	class LogListenerToFile;
+	class CursorManager;
+	class ResourceProvider;
+	class FontManager;
+	class PluginManager;
+	class Renderer;
+	class ImageryManager;
 
 	/*!
 		\brief
@@ -23,14 +34,15 @@ namespace OpenGUI{
 		cursor, and managing the GUI sheets. \n \b [Singleton]
 
 		This class is implemented using the Singleton system. There can only be one System
-		object instanciated at any point in time.
+		object instantiated at any point in time.
 
 		\todo implement me
 	*/
 	class OPENGUI_API System : public Singleton<System>
 	{
-	public:
 		friend class Element;
+	public:
+		
 		
 		//! The constructor for the System object.
 		/*! Firstly, the System object is a singleton, so only one can exist
@@ -38,7 +50,7 @@ namespace OpenGUI{
 			
 			In order to create an instance of the System object, you must
 			provide a pointer to a valid Renderer. The resourceProvider pointer
-			is optional, as a generic implementation of that comes prebuilt
+			is optional, as a generic implementation of that comes pre-built
 			with the library.
 
 			\param renderer pointer to a valid Renderer object
@@ -55,6 +67,7 @@ namespace OpenGUI{
 			\param logListener A valid pointer to a LogListener, or 0 for no logging.
 		*/
 		System(Renderer* renderer, ResourceProvider* resourceProvider, LogListener* logListener);
+		//System(Renderer* renderer);
 
 		~System();
 

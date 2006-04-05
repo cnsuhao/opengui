@@ -31,10 +31,17 @@ class testgl : public OpenGLBase
 		
 		renderer = new OpenGUI::OGLRenderer();
 		sys = new OpenGUI::System(renderer);
+
+		
+
 		sys->setGUISheet(sys->createGUISheet("root"));
 
-		OpenGUI::LogManager::getSingleton().setLevel(100);
+		//OpenGUI::LogManager::getSingleton().setLevel(100);
 		OpenGUI::XMLParser::LoadFromFile("test.xml");
+
+		OpenGUI::FontManager::getSingleton().CreateFont("arial.ttf", "arial");
+		OpenGUI::FontManager::getSingleton().CreateFont("kickassinger.ttf", "kick");
+
 		//OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
 		//OpenGUI::LayoutLoader::LoadLayoutFromXML("test.xml");
 

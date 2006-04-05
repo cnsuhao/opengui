@@ -133,6 +133,8 @@ namespace OpenGUI{
 		//set up texture filtering
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
 		delete td;
 
@@ -184,8 +186,62 @@ namespace OpenGUI{
 		//set up texture filtering
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 		
 		return retval;
+	}
+	//###########################################################
+	void OGLRenderer::updateTextureFromTextureData(Texture* texture, TextureData *textureData)
+	{
+		TextureData* td = textureData; // copy/paste quick fix
+		OGLTexture* retval = 0;
+		retval = (OGLTexture*) texture;
+		if(!retval) return;
+
+		//throw away old data
+		glDeleteTextures(1,&(retval->textureId));
+
+		retval->mTextureName="__## TextureFromMemory ##__";
+
+		retval->mTextureSize = IVector2(td->getWidth(),td->getHeight());			
+
+		GLint internalFormat;
+		GLenum dataFormat;
+		switch(td->getBPP()){
+			case 1:
+				internalFormat = GL_ALPHA;
+				dataFormat = GL_ALPHA;
+				break;
+			case 3:
+				internalFormat = GL_RGB;
+				dataFormat = GL_RGB;
+				break;
+			case 4:
+				internalFormat = GL_RGBA;
+				dataFormat = GL_RGBA;
+				break;
+		}
+
+
+		glGenTextures(1,&(retval->textureId));
+		glBindTexture(GL_TEXTURE_2D, retval->textureId);
+		glTexImage2D(	GL_TEXTURE_2D, //2D texture
+			0, //mipmap level 0
+			internalFormat, // the texture format
+			td->getWidth(), //image width
+			td->getHeight(), //image height
+			0, //no border (does anyone ever use this?)
+			dataFormat, //the format of the pixel data
+			GL_UNSIGNED_BYTE, //each channel consists of 1 unsigned byte
+			td->getPixelData() //pointer to the image data
+			);
+
+		//set up texture filtering
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 	}
 	//###########################################################
 	void OGLRenderer::destroyTexture(Texture* texturePtr)

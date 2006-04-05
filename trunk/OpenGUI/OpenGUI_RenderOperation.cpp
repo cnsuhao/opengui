@@ -56,7 +56,14 @@ namespace OpenGUI{
 				ropB.vertices[1].textureUV=tRect.max;
 				ropB.vertices[2].textureUV=FVector2(tRect.max.x,tRect.min.y);
 			}else{
+				ropA.vertices[0].maskUV = ropA.vertices[0].textureUV = FVector2(0.0f, 0.0f);
+				ropA.vertices[1].maskUV = ropA.vertices[1].textureUV = FVector2(0.0f, 1.0f);
+				ropA.vertices[2].maskUV = ropA.vertices[2].textureUV = FVector2(1.0f, 1.0f);
 				ropA.texture = 0;
+				ropB.vertices[0].maskUV = ropB.vertices[0].textureUV = FVector2(0.0f, 0.0f);
+				ropB.vertices[1].maskUV = ropB.vertices[1].textureUV = FVector2(1.0f, 1.0f);
+				ropB.vertices[2].maskUV = ropB.vertices[2].textureUV = FVector2(1.0f, 0.0f);
+				
 				ropB.texture = 0;
 			}
 
@@ -84,8 +91,108 @@ namespace OpenGUI{
 			return ropList;
 		}
 		//############################################################################
+		//############################################################################
+		//############################################################################
+
+
+
+
+		//############################################################################
+		//############################################################################
+		//############################################################################
+		PrimitiveText::PrimitiveText()
+		{
+			mTextContents = "";
+			mPosition = FVector2(0.0f, 0.0f);
+			mContext = 0;
+			mFontName = "";
+			mFontSize = 0;
+		}
+		//############################################################################
+		PrimitiveText::~PrimitiveText()
+		{
+			//
+		}
+		//############################################################################
+		RenderOperationList PrimitiveText::getRenderOperationList()
+		{
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			RenderOperationList retval;
+			if(!fntMgr) return retval;
+
+			const char* stringContents = mTextContents.c_str();
+
+			FVector2 curPosition = mPosition;
+			//!\todo Fix this to actually calculate the real pixelScale based on the given contextElement
+			FVector2 pixelScale = FVector2( 1.0f / 640, 1.0f / 480 ); 
+			unsigned int lineSpacing = fntMgr->getLineSpacing(mFontName, mFontSize);
+
+			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){
+				char theChar = stringContents[strLoc];
+				if(theChar == '\n'){
+					//catch newlines and handle them without loading a pointless 'newline' glyph
+					curPosition.x = mPosition.x;
+					curPosition.y += lineSpacing * pixelScale.y;
+					continue;
+				}
+				//
+				RenderOperationList boxOutput;
+				PrimitiveBox box;
+				FRect boxRect;
+				IRect glyphRect;
+				FontGlyph glyph;
+				fntMgr->getGlyph(glyphRect, glyph, theChar, mFontName, mFontSize);
+				
+				if(glyph.metrics.height>0 && glyph.metrics.width>0){
+					box.setTextureImagery(glyph.imageryPtr);
+					boxRect.setHeight( ((float)glyph.metrics.height) * pixelScale.y );
+					boxRect.setWidth( ((float)glyph.metrics.width) * pixelScale.x );
+					boxRect.setPosition( curPosition );
+					
+					FVector2 tmpV; //adjust for bearing
+					tmpV.x = glyph.metrics.horiBearingX * pixelScale.x;
+					tmpV.y = -glyph.metrics.horiBearingY * pixelScale.y;
+					boxRect.offset(tmpV);
+
+					box.setRect( boxRect );
+					boxOutput = box.getRenderOperationList();
+					AppendRenderOperationList(retval, boxOutput);
+				}
+				curPosition.x += ((float)glyph.metrics.horiAdvance) * pixelScale.x;
+			}
+
+			return retval;
+		}
+		//############################################################################
+		void PrimitiveText::setContext(Element* contextElement)
+		{
+			mContext = contextElement;
+		}
+		//############################################################################
+		void PrimitiveText::setText(std::string textString)
+		{
+			mTextContents = textString;
+		}
+		//############################################################################
+		void PrimitiveText::setFont(std::string fontName, unsigned int fontSize_points)
+		{
+			mFontName = fontName;
+			mFontSize = fontSize_points;
+		}
+		//############################################################################
+		void PrimitiveText::setPosition(const FVector2& baselinePosition)
+		{
+			mPosition = baselinePosition;
+		}
+		//############################################################################
+		//############################################################################
+		//############################################################################
 	
 
+
+
+		//############################################################################
+		//############################################################################
 		//############################################################################
 		RenderOperationList PrimitiveScissorRect::getRenderOperationList()
 		{

@@ -55,4 +55,9 @@
 	#define OPENGUI_DEBUG
 #endif
 
+#if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
+// This warning can be disregarded
+	#pragma warning (disable : 4251)
+#endif
+
 #endif

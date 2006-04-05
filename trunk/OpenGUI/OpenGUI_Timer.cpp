@@ -1,5 +1,11 @@
 
-#include "OpenGUI.h"
+//#include "OpenGUI.h"
+
+#include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
+#include "OpenGUI_RefPtr.h"
+#include "OpenGUI_TimerManager.h"
+#include "OpenGUI_Timer.h"
 
 namespace OpenGUI{
 
