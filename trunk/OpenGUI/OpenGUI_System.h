@@ -293,7 +293,19 @@ namespace OpenGUI{
 		*/
 		void notifyViewportDimensionsChanged();
 
-		//
+
+		//! Notify the System that the dimensions of the screen have changed.
+		/*! This \b should be automatically called by the Renderer implementation via calling
+			Renderer::alertScreenDimensionsChanged(), however, if for some unknown reason
+			the renderer cannot be relied upon to make the call, the application can call
+			this function to inform the System of the dimension change instead.
+		*/
+		void notifyScreenDimensionsChanged();
+
+		//! Returns the current viewport resolution
+		IVector2 getViewportResolution();
+		//! Returns the current screen resolution
+		IVector2 getScreenResolution();
 
 		//! Returns a pointer to the Element that currently captures the mouse events, or 0 if none is set.
 		Element* getCaptureMouse();
@@ -393,7 +405,8 @@ namespace OpenGUI{
 		
 	//Renderer Related Members
 		Renderer* mRenderer;
-		IVector2 mScreenResolution;
+		IVector2 mScreenResolution; //resolution of the entire screen (used for auto font scaling)
+		IVector2 mWindowResolution; //resolution of the viewport that we are rendering to (used for pixel alignment)
 
 	//ImageryManager Related Members
 		ImageryManager* mImageryManager; //root pointer to the created ImageryManager singleton.

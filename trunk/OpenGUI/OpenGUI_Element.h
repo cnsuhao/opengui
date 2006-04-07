@@ -268,7 +268,7 @@ namespace OpenGUI{
 		FVector2 convCoordInnerToLocal(FVector2 innerCoord);
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in local coords.
 		FVector2 convCoordLocalToInner(FVector2 localCoord);
-		//! Returns an FVector2 in world coords that represents the given FVector2 in local coords. (Local coords are just outside this Element's rect)
+		//! Returns an FVector2 in world coords that represents the given FVector2 in local coords. (Local coords are just outside this Element's rect. The Element's rect, itself, is defined using local coords.)
 		FVector2 convCoordLocalToWorld(FVector2 localCoord);
 		//! Returns an FVector2 in world coords that represents the given FVector2 in inner coords. (Inner coords are inside this Element's rect)
 		FVector2 convCoordInnerToWorld(FVector2 innerCoord);
@@ -277,7 +277,11 @@ namespace OpenGUI{
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in world coords. (Inner coords are inside this Element's rect)
 		FVector2 convCoordWorldToInner(FVector2 worldCoord);
 
-
+		//! Returns an IRect that defines the rect of this element in pixels, rather than the usual float units.
+		/*! It is worth mentioning that this value should only be referenced for pixel size related operations,
+			such as providing pixel alignment. (The font system uses this function for such a purpose.)
+		*/
+		IRect getPixelRect();
 
 
 	protected:
@@ -301,6 +305,10 @@ namespace OpenGUI{
 		//! This function will be called by the system whenever it needs the widget to redraw itself. Returned list should be depth ordered using a painters algorithm (back to front)
 		/*! This function should be overridden by custom widgets. The default implementation within
 			the Element class draws nothing.
+
+			\note All render operations are expected to be drawn using Local coordinates.
+			That means you are using the same coordinate system that is used to define the
+			Element's rect. ( See \c Element::getRect() )
 		*/
 		virtual Render::RenderOperationList buildWidgetRenderOpList();
 

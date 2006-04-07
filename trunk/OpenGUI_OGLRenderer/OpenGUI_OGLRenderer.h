@@ -8,6 +8,7 @@ namespace OpenGUI{
 		OGLRenderer();
 		~OGLRenderer();
 		void getViewportDimensions(IVector2& dims);
+		void getScreenDimensions(IVector2& dims);
 		void doRenderOperation(Render::RenderOperation& renderOp);
 		void preRenderSetup();
 		void postRenderCleanup();

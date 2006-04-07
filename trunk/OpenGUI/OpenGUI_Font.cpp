@@ -11,6 +11,7 @@
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontCache.h"
 #include "OpenGUI_TextureDataRect.h"
+#include "OpenGUI_System.h"
 
 namespace OpenGUI{
 	//############################################################################
@@ -121,15 +122,33 @@ namespace OpenGUI{
 	//############################################################################
 	void Font::calcPixelSizeFromPoints(unsigned int pointSize, IVector2& pixelSize)
 	{
-		//!\todo Fix this to actually calculate the real pixelSize based on a screenResolution setting somewhere
 		/*
+			Average point size -> pixel size calculation
 			pixel_size = point_size * resolution / 72
 			where resolution is the dpi (dots per inch)
 		*/
-		unsigned int xScreenRes = 800;
-		unsigned int yScreenRes = 600;
-		pixelSize.x = pointSize;
-		pixelSize.y = pointSize;
+
+		/*
+			Since we can't possibly determine the true dpi of the user's screen, we assume 72 dpi
+			and instead provide the option for an automatic scaling system to ensure consistent
+			glyph sizes despite changes in screen resolution.
+		*/
+
+		//if they didn't want auto scaling, this is really easy
+		if(!mAutoscale){
+			pixelSize.x = pointSize;
+			pixelSize.y = pointSize;
+			return;
+		}
+
+		// otherwise, we need to scale our results according to the scale differences of
+		// the native res vs the current res
+		IVector2 screenRes = System::getSingleton().getScreenResolution();
+		FVector2 scaleFactor;
+		scaleFactor.x = screenRes.x / (float) mNativeXres;
+		scaleFactor.y = screenRes.y / (float) mNativeYres;
+		pixelSize.x = (int)(pointSize * scaleFactor.x);
+		pixelSize.y = (int)(pointSize * scaleFactor.y);
 	}
 	//############################################################################
 	//! Returns the line height in pixels for a given pixelSizeY

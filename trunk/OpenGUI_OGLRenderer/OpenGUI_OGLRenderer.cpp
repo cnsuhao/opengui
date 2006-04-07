@@ -26,6 +26,15 @@ namespace OpenGUI{
 		dims.y = viewportDims[3];
 	}
 	//###########################################################
+	void OGLRenderer::getScreenDimensions(IVector2& dims)
+	{
+		//!\todo FIX ME! This is not the required action
+		GLint viewportDims[4];
+		glGetIntegerv(GL_VIEWPORT,viewportDims);
+		dims.x = viewportDims[2];
+		dims.y = viewportDims[3];
+	}
+	//###########################################################
 	void OGLRenderer::doRenderOperation(Render::RenderOperation& renderOp)
 	{
 		if(renderOp.texture){

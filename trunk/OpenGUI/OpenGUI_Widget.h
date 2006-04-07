@@ -21,7 +21,11 @@ namespace OpenGUI{
 		protected:
 			//! This function will be called by the system whenever it needs the widget to redraw itself. Returned list should be depth ordered using a painters algorithm (back to front)
 			/*! This function should be overridden by custom widgets. The default implementation within
-			the Widget class draws a single white quad that fills the entire defined widget area.
+				the Widget class draws a single white quad that fills the entire defined widget area.
+
+				\note All render operations are expected to be drawn using Local coordinates.
+				That means you are using the same coordinate system that is used to define the
+				Element's rect. ( See \c Element::getRect() )
 			*/
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
