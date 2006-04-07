@@ -432,6 +432,26 @@ namespace OpenGUI{
 		};
 	}
 	//#####################################################################
+	IRect Element::getPixelRect()
+	{
+		FRect viewportFRect;
+		IVector2 viewportRes;
+		IRect pixelRect;
+
+		//first convert to viewport level coordinates
+		viewportFRect.min = convCoordLocalToWorld(mElementRect.min);
+		viewportFRect.max = convCoordLocalToWorld(mElementRect.max);
+		viewportRes = System::getSingleton().getViewportResolution();
+
+		//now just do the simply math to convert the float viewport coords into pixel positions
+		pixelRect.min.x = (int)(viewportFRect.min.x * (float)viewportRes.x);
+		pixelRect.max.x = (int)(viewportFRect.max.x * (float)viewportRes.x);
+		pixelRect.min.y = (int)(viewportFRect.min.y * (float)viewportRes.y);
+		pixelRect.max.y = (int)(viewportFRect.max.y * (float)viewportRes.y);
+
+		return pixelRect;
+	}
+	//#####################################################################
 	bool Element::pointIsInside(const FVector2& localPoint)
 	{
 		if(localPoint.x >= mElementRect.min.x &&

@@ -24,10 +24,6 @@ class testgl : public OpenGLBase
 	}
 	void CustomInit()
 	{
-
-// 		OpenGUI::LogListenerToFile *t = new OpenGUI::LogListenerToFile("test.log");
-// 		t->write("General","This is now working. Yay Yay Yay", 30);
-// 		delete t;
 		
 		renderer = new OpenGUI::OGLRenderer();
 		sys = new OpenGUI::System(renderer);
@@ -39,8 +35,8 @@ class testgl : public OpenGLBase
 		//OpenGUI::LogManager::getSingleton().setLevel(100);
 		OpenGUI::XMLParser::LoadFromFile("test.xml");
 
-		OpenGUI::FontManager::getSingleton().CreateFont("arial.ttf", "arial");
-		OpenGUI::FontManager::getSingleton().CreateFont("kickassinger.ttf", "kick");
+		OpenGUI::FontManager::getSingleton().CreateFont("arial.ttf", "arial");//, true, 800, 600);
+		OpenGUI::FontManager::getSingleton().CreateFont("kickassinger.ttf", "kick");//, true, 800, 600);
 
 		//OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
 		//OpenGUI::LayoutLoader::LoadLayoutFromXML("test.xml");
@@ -117,6 +113,8 @@ class testgl : public OpenGLBase
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		sys->notifyScreenDimensionsChanged();
+		sys->notifyViewportDimensionsChanged();
 		sys->renderGUI();
 
 

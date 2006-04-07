@@ -123,8 +123,18 @@ namespace OpenGUI{
 			const char* stringContents = mTextContents.c_str();
 
 			FVector2 curPosition = mPosition;
-			//!\todo Fix this to actually calculate the real pixelScale based on the given contextElement
-			FVector2 pixelScale = FVector2( 1.0f / 640, 1.0f / 480 ); 
+
+			IRect pixelRect;
+			if(mContext){
+				//get the pixel space available as this level
+				pixelRect = mContext->getPixelRect();
+			}else{
+				//best we can do here is assume that we are drawing directly to the viewport
+				pixelRect.setSize(System::getSingleton().getViewportResolution());
+			}
+
+			FVector2 pixelScale = FVector2( 1.0f / pixelRect.getWidth(), 1.0f / pixelRect.getHeight() ); 
+			//FVector2 pixelScale = FVector2( 1.0f / 640, 1.0f / 480 ); 
 			unsigned int lineSpacing = fntMgr->getLineSpacing(mFontName, mFontSize);
 
 			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){

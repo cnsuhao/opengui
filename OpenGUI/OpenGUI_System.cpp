@@ -68,8 +68,10 @@ namespace OpenGUI{
 			OG_THROW(Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System");
 		}
 		
-		mRenderer->getViewportDimensions(mScreenResolution); //get the viewport resolution
-		LogManager::SlogMsg("INIT", OGLL_INFO3) << "Initial GUI Resolution: " << mScreenResolution.toStr() << Log::endlog;
+		mRenderer->getViewportDimensions(mWindowResolution); //get the viewport resolution
+		mRenderer->getScreenDimensions(mScreenResolution); //get the screen resolution
+
+		LogManager::SlogMsg("INIT", OGLL_INFO3) << "Initial GUI Resolution: Screen: " << mScreenResolution.toStr() << " Viewport: " << mWindowResolution.toStr() << Log::endlog;
 
 		m_PluginManager = new PluginManager;
 
@@ -161,8 +163,8 @@ namespace OpenGUI{
 	FVector2 System::getAspectCorrection()
 	{
 		return FVector2(
-			(float)mScreenResolution.y / (float)mScreenResolution.x,
-			(float)mScreenResolution.x / (float)mScreenResolution.y
+			(float)mWindowResolution.y / (float)mWindowResolution.x,
+			(float)mWindowResolution.x / (float)mWindowResolution.y
 		);
 	}
 	//############################################################################
@@ -319,7 +321,23 @@ namespace OpenGUI{
 	void System::notifyViewportDimensionsChanged()
 	{
 		//!\todo make sure this is all that needs to be done to properly handle viewport dimension changes
-		mRenderer->getViewportDimensions(mScreenResolution);
+		mRenderer->getViewportDimensions(mWindowResolution);
+	}
+	//############################################################################
+	void System::notifyScreenDimensionsChanged()
+	{
+		//!\todo make sure this is all that needs to be done to properly handle screen dimension changes
+		mRenderer->getScreenDimensions(mScreenResolution);
+	}
+	//############################################################################
+	IVector2 System::getViewportResolution()
+	{
+		return mWindowResolution;
+	}
+	//############################################################################
+	IVector2 System::getScreenResolution()
+	{
+		return mScreenResolution;
 	}
 	//############################################################################
 	void System::renderGUI()

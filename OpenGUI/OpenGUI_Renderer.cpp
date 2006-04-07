@@ -8,5 +8,12 @@ namespace OpenGUI{
 			System::getSingletonPtr()->notifyViewportDimensionsChanged();
 		}
 	}
+
+	void Renderer::alertScreenDimensionsChanged()
+	{
+		if(System::getSingletonPtr()){
+			System::getSingletonPtr()->notifyScreenDimensionsChanged();
+		}
+	}
 };
 
