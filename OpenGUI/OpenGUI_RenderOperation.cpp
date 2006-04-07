@@ -114,16 +114,8 @@ namespace OpenGUI{
 			//
 		}
 		//############################################################################
-		RenderOperationList PrimitiveText::getRenderOperationList()
+		FVector2 PrimitiveText::_getPixelScale()
 		{
-			FontManager* fntMgr = FontManager::getSingletonPtr();
-			RenderOperationList retval;
-			if(!fntMgr) return retval;
-
-			const char* stringContents = mTextContents.c_str();
-
-			FVector2 curPosition = mPosition;
-
 			IRect pixelRect;
 			if(mContext){
 				//get the pixel space available as this level
@@ -134,7 +126,21 @@ namespace OpenGUI{
 			}
 
 			FVector2 pixelScale = FVector2( 1.0f / pixelRect.getWidth(), 1.0f / pixelRect.getHeight() ); 
-			//FVector2 pixelScale = FVector2( 1.0f / 640, 1.0f / 480 ); 
+			return pixelScale;
+		}
+		//############################################################################
+		RenderOperationList PrimitiveText::getRenderOperationList()
+		{
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			RenderOperationList retval;
+			if(!fntMgr) return retval;
+
+			const char* stringContents = mTextContents.c_str();
+
+			FVector2 curPosition = mPosition;
+
+			FVector2 pixelScale = PrimitiveText::_getPixelScale();
+
 			unsigned int lineSpacing = fntMgr->getLineSpacing(mFontName, mFontSize);
 
 			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){
@@ -170,6 +176,103 @@ namespace OpenGUI{
 				}
 				curPosition.x += ((float)glyph.metrics.horiAdvance) * pixelScale.x;
 			}
+
+			return retval;
+		}
+		//############################################################################
+		float PrimitiveText::getTextWidth()
+		{
+			return PrimitiveText::getTextSize().x;
+		}
+		//############################################################################
+		float PrimitiveText::getTextHeight()
+		{
+			return PrimitiveText::getTextSize().y;
+		}
+		//############################################################################
+		FVector2 PrimitiveText::getTextSize()
+		{
+			// This process works much like rendering the text, only we don't bother to do the actual rendering
+
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			FVector2 retval;
+			if(!fntMgr) return retval;
+
+			const char* stringContents = mTextContents.c_str();
+
+			FVector2 curPosition = mPosition;
+
+			FVector2 pixelScale = PrimitiveText::_getPixelScale();
+
+			unsigned int lineSpacing = fntMgr->getLineSpacing(mFontName, mFontSize);
+
+			curPosition.y += lineSpacing * pixelScale.y; //add 1 line immediately for the first line
+
+			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){
+				char theChar = stringContents[strLoc];
+				if(theChar == '\n'){
+					//catch newlines and handle them without loading a pointless 'newline' glyph
+					if( float tmp = (curPosition.x - mPosition.x) > retval.x ) retval.x = tmp;
+
+					curPosition.x = mPosition.x;
+					curPosition.y += lineSpacing * pixelScale.y;
+					continue;
+				}
+
+				IRect glyphRect;
+				FontGlyph glyph;
+				fntMgr->getGlyph(glyphRect, glyph, theChar, mFontName, mFontSize);
+
+				curPosition.x += ((float)glyph.metrics.horiAdvance) * pixelScale.x;
+			}
+
+			if( float tmp = (curPosition.x - mPosition.x) > retval.x ) retval.x = tmp;
+			retval.y = curPosition.y - mPosition.y;
+
+			return retval;
+		}
+		//############################################################################
+		int PrimitiveText::getTextPixelWidth()
+		{
+			return getTextPixelSize().x;
+		}
+		//############################################################################
+		int PrimitiveText::getTextPixelHeight()
+		{
+			return getTextPixelSize().y;
+		}
+		//############################################################################
+		IVector2 PrimitiveText::getTextPixelSize()
+		{
+			// This process works much like rendering the text, only we don't bother to do the actual rendering
+
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			IVector2 retval(0,0);
+			if(!fntMgr) return retval;
+
+			const char* stringContents = mTextContents.c_str();
+			int curWidth = 0;
+			unsigned int lineSpacing = fntMgr->getLineSpacing(mFontName, mFontSize);
+
+			retval.y += lineSpacing; //add 1 line immediately for the first line
+
+			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){
+				char theChar = stringContents[strLoc];
+				if(theChar == '\n'){
+					//catch newlines and handle them without loading a pointless 'newline' glyph
+					if( curWidth > retval.x ) retval.x = curWidth;
+					curWidth = 0;
+					retval.y += lineSpacing;
+					continue;
+				}
+
+				IRect glyphRect;
+				FontGlyph glyph;
+				fntMgr->getGlyph(glyphRect, glyph, theChar, mFontName, mFontSize);
+				curWidth += glyph.metrics.horiAdvance;
+			}
+
+			if( curWidth > retval.x ) retval.x = curWidth;
 
 			return retval;
 		}

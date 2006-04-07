@@ -133,7 +133,31 @@ namespace OpenGUI{
 			void setText(std::string textString);
 			void setFont(std::string fontName, unsigned int fontSize_points);
 			void setPosition(const FVector2& baselinePosition);
+
+			//! Returns the width of the current text string 
+			/*! \note This function requires access to each of glyphs' metrics,
+				and will hit the font cache to get them. This means that the glyphs
+				will be loaded into the font cache. There is currently no way around this.
+			*/
+			float getTextWidth();
+			//! Returns the height of the current text string
+			float getTextHeight();
+			//! Returns the combined width and height of the text string
+			FVector2 getTextSize();
+
+			//! Returns the width of the current text string in pixels
+			/*! \note This function requires access to each of glyphs' metrics,
+			and will hit the font cache to get them. This means that the glyphs
+			will be loaded into the font cache. There is currently no way around this.
+			*/
+			int getTextPixelWidth();
+			//! Returns the height of the current text string in pixels
+			int getTextPixelHeight();
+			//! Returns the combined width and height of the text string in pixels
+			IVector2 getTextPixelSize();
+
 			// renderText( Rect, text, font, color, align, scroll )
+
 		private:
 			std::string mTextContents;
 			FVector2 mPosition;
@@ -141,6 +165,8 @@ namespace OpenGUI{
 
 			std::string mFontName;
 			unsigned int mFontSize;
+
+			FVector2 _getPixelScale();
 		};
 
 		/*! \brief
