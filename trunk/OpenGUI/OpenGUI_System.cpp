@@ -23,8 +23,9 @@ namespace OpenGUI{
 	//! \internal Just a little function to register all compiled in Widgets with the WidgetFactoryManager
 	void RegisterAllBaseWidgets()
 	{
-		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory));
-		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory));
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory) );
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory) );
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "TextLabel", WidgetFactoryCallback(&Widgets::TextLabel::createTextLabelFactory) );
 	}
 	//############################################################################
 	System::System(Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile)
@@ -368,8 +369,14 @@ namespace OpenGUI{
 
 			//!\todo DEBUG REMOVE ME
 			Render::PrimitiveText text;
+
+			static unsigned int myDebugInt = 0;
+			myDebugInt++;
+			std::stringstream ss;
+			ss << "Hello World\n" << myDebugInt;// / 100;
+			
 			text.setPosition(FVector2(0.025f, 0.70f));
-			text.setText("Hello World!");
+			text.setText(ss.str());
 			text.setFont("kick",100);
 			Render::RenderOperationList textRL = text.getRenderOperationList();
 			Render::RenderOperationList::iterator textRLIter = textRL.begin();
@@ -377,8 +384,8 @@ namespace OpenGUI{
 				mRenderer->doRenderOperation((*textRLIter));
 				textRLIter++;
 			}
-			text.setPosition(FVector2(0.625f, 0.10f));
-			text.setText("This is some\nsmaller text.\nIsn't it nice?");
+			text.setPosition(FVector2(0.625f, 0.750f));
+			text.setText("This y is some\nsmaller text.\nIsn't it nice?");
 			text.setFont("arial",30);
 			Render::RenderOperationList textRL2 = text.getRenderOperationList();
 			Render::RenderOperationList::iterator textRLIter2 = textRL2.begin();
@@ -386,19 +393,7 @@ namespace OpenGUI{
 				mRenderer->doRenderOperation((*textRLIter2));
 				textRLIter2++;
 			}
-
-			//!\todo DEBUG REMOVE ME
-			Render::PrimitiveBox box;
-			Render::RenderOperationList debugRL;
-			box.setRect(FRect(0.0f,0.0f,0.5f,0.5f));
-			debugRL = box.getRenderOperationList();
-			Render::RenderOperationList::iterator debugIter = debugRL.begin();
-			while(debugIter != debugRL.end()){
-				//(*debugIter).vertices[0].color = Render::VertexColor(1,1,1,0.5f);
-				(*debugIter).texture = FontManager::getSingleton().getDebugTexture();
-				mRenderer->doRenderOperation((*debugIter));
-				debugIter++;
-			}
+			
 			//!\todo DEBUG REMOVE ME (end)
 			
 

@@ -18,8 +18,22 @@
 namespace OpenGUI{
 
 	struct SortFontAtlasRowListByHeightAsc{
-		bool operator()( const FontAtlasRow lhs, const FontAtlasRow rhs ) const	{
+		bool operator()( const FontAtlasRow lhs, const FontAtlasRow rhs ) const {
 			return lhs.Height < rhs.Height;
+		}
+	};
+
+	struct SortFreeIRectList{
+		bool operator()( const IRect lhs, const IRect rhs ) const {
+			//Is lhs < rhs ?
+ 			if( lhs.getHeight() < rhs.getHeight() ) return true;
+ 			//if( lhs.getHeight() == rhs.getHeight() && 
+ 			if( lhs.getWidth() < rhs.getWidth() ) return true;
+ 			return false;
+
+			if( lhs.getHeight() > rhs.getHeight() ) return false;
+			if( lhs.getWidth() > rhs.getWidth() ) return false;
+			return true;
 		}
 	};
 	//############################################################################
@@ -29,6 +43,8 @@ namespace OpenGUI{
 
 		unsigned char initdata = 255; //! \todo DEBUG: Fix me
 		mTextureData.createNewData(dimensions.x, dimensions.y, 1, &initdata);
+
+		mFreeRectList.push_back( IRect(0, 0, dimensions.x, dimensions.y) );
 
 		Texture* tex = System::getSingleton()._getRenderer()->createTextureFromTextureData(&mTextureData);
 
@@ -49,6 +65,87 @@ namespace OpenGUI{
 			ImageryManager::getSingleton().destroyImageset(mImageset);
 	}
 	//############################################################################
+	FontAtlas::IRectPair FontAtlas::_splitIRect(const IRect& sourceIRect, const IVector2& subtractSpace)
+	{
+		/* This operation is fairly simple. We just remove the subtractSpace from the given sourceIRect
+			which will result in 2 remaining (and smaller) IRects. One for the space left at the bottom,
+			and one for the space left to the right.
+			If the subtractSpace doesn't fit into the sourceIRect, then we just throw an exception.
+			(This should never happen, as we expect the input to be pre-validated.)
+		*/
+		if(subtractSpace.x <=0 || subtractSpace.y <= 0){
+			OG_THROW(Exception::ERR_INVALIDPARAMS,"(subtractSpace.x <=0 || subtractSpace.y <= 0) == TRUE","FontAtlas::_splitIRect");
+		}
+		if(sourceIRect.getWidth() < subtractSpace.x ||
+			sourceIRect.getHeight() < subtractSpace.y)
+		{
+			OG_THROW(Exception::ERR_INVALIDPARAMS,"subtractSpace is too large to fit into given sourceIRect","FontAtlas::_splitIRect");
+		}
+		
+		IRectPair retval;
+		IRect tmpRect;
+		bool methodWideBottom;
+
+		//evaluate the requested operation to determine the best split method to use
+		
+		if( (sourceIRect.getWidth() - subtractSpace.x) > (sourceIRect.getHeight() - subtractSpace.y) )
+			methodWideBottom = false;
+		else
+			methodWideBottom = true;
+
+		//perform the rect split based on the chosen algorithm
+		if(methodWideBottom){
+			//calculate the bottom rect
+			tmpRect = sourceIRect;
+			tmpRect.offset(IVector2(0, subtractSpace.y ));
+			tmpRect.setHeight( sourceIRect.getHeight() - subtractSpace.y );
+			retval.first = tmpRect;
+
+			//calculate the right rect
+			tmpRect = sourceIRect;
+			tmpRect.setHeight( subtractSpace.y );
+			tmpRect.setWidth( sourceIRect.getWidth() - subtractSpace.x );
+			tmpRect.offset(IVector2( subtractSpace.x, 0 ));
+			retval.second = tmpRect;
+		}else{
+			//calculate the bottom rect
+			tmpRect = sourceIRect;
+			tmpRect.offset(IVector2(0, subtractSpace.y ));
+			tmpRect.setHeight( sourceIRect.getHeight() - subtractSpace.y );
+			tmpRect.setWidth( subtractSpace.x );
+			retval.first = tmpRect;
+
+			//calculate the right rect
+			tmpRect = sourceIRect;
+			tmpRect.setWidth( sourceIRect.getWidth() - subtractSpace.x );
+			tmpRect.offset(IVector2( subtractSpace.x, 0 ));
+			retval.second = tmpRect;
+		}
+		
+		return retval;
+	}
+	//############################################################################
+	unsigned int FontAtlas::statUsedArea() const
+	{
+		return statTotalArea() - statAvailableArea();
+	}
+	//############################################################################
+	unsigned int FontAtlas::statAvailableArea() const
+	{
+		unsigned int availArea = 0;
+		IRectList::const_iterator iter = mFreeRectList.begin();
+		while( iter != mFreeRectList.end() ){
+			availArea += (*iter).getArea();
+			iter++;
+		}
+		return availArea;
+	}
+	//############################################################################
+	unsigned int FontAtlas::statTotalArea() const
+	{
+		return mTextureData.getWidth() * mTextureData.getHeight();
+	}
+	//############################################################################
 	bool FontAtlas::GetAvailableChunk(IVector2 sizeNeeded, IRect& returnedChunk, bool reserveSpaceFound)
 	{
 		if(sizeNeeded.x <=0 || sizeNeeded.y <= 0)
@@ -58,42 +155,38 @@ namespace OpenGUI{
 		if(mTextureData.getHeight() < sizeNeeded.y || mTextureData.getWidth() < sizeNeeded.x)
 			return false; //size needed is larger than this entire texture, so it won't fit anywhere
 
-		//find the smallest existing row capable of holding the desired size
-		mRowList.sort(SortFontAtlasRowListByHeightAsc());
-		FontAtlasRowList::iterator iter = mRowList.begin();
-		while(iter != mRowList.end()){
-			if((unsigned int)sizeNeeded.y <= (*iter).Height){
-				//potential hit, test for available X space
-				if((unsigned int)sizeNeeded.x <= (mTextureData.getWidth() - (*iter).RowWidth) ){
-					//this is our solution, update the returnedChunk
-					returnedChunk.setSize(sizeNeeded);
-					returnedChunk.setPosition( IVector2((*iter).RowWidth, (*iter).Row) );
-					if(reserveSpaceFound)//reserve the found space if requested
-						(*iter).RowWidth += sizeNeeded.x;
-					return true;
+		//find the smallest existing free IRect that can hold the requested size (height is more important than width)
+		IRectList::iterator iter = mFreeRectList.begin();
+		while( iter != mFreeRectList.end() ){
+			IRect debugRect = (*iter);
+			if( (*iter).getHeight() >= sizeNeeded.y &&
+				(*iter).getWidth() >= sizeNeeded.x )
+			{
+				//it will fit in here, so let's make a chunk to return
+				returnedChunk.setPosition( (*iter).getPosition() );
+				returnedChunk.setSize( sizeNeeded );
+
+				//if we are supposed to actually reserve this chunk, do so now
+				if(reserveSpaceFound){
+					IRectPair rectPair;
+					rectPair = _splitIRect( (*iter), sizeNeeded );
+					mFreeRectList.erase( iter ); //remove the old rect
+
+					//push in any valid leftovers
+					if( rectPair.first.getWidth() > 0 && rectPair.first.getHeight() > 0 )
+						mFreeRectList.push_front( rectPair.first );
+					if( rectPair.second.getWidth() > 0 && rectPair.second.getHeight() > 0 )
+						mFreeRectList.push_front( rectPair.second );
+
+					mFreeRectList.sort(SortFreeIRectList()); // keep the list sorted when we make changes to it
 				}
+
+				return true;
 			}
 			iter++;
 		}
-
-		//looks like we ran off the end of the existing list with no reasonable results, try to make a new row
-		if( (mTextureData.getHeight() - mOpenRowStartPos) >= (unsigned int)sizeNeeded.y ){
-			//we have enough room
-			returnedChunk.setSize(sizeNeeded);
-			returnedChunk.setPosition(IVector2(0, mOpenRowStartPos));
-			if(reserveSpaceFound){//reserve the found space if requested
-				//that means we need to create a new row
-				FontAtlasRow newRow;
-				newRow.Height = returnedChunk.getHeight();
-				newRow.Row = mOpenRowStartPos;
-				mOpenRowStartPos += newRow.Height;
-				newRow.RowWidth = returnedChunk.getWidth();
-				mRowList.push_back(newRow);
-			}
-			return true;
-		}
-
-		//not enough room for a new row of this size
+		
+		
 		return false;
 	}
 	//############################################################################
@@ -106,7 +199,7 @@ namespace OpenGUI{
 		sizeNeeded.x += 4; sizeNeeded.y += 4;
 
 		//try to find a spot for the data in this atlas, reserving anything we find
-		if(FontAtlas::GetAvailableChunk(sizeNeeded, destRect, true)){
+		if( FontAtlas::GetAvailableChunk(sizeNeeded, destRect, true) ){
 			//it will fit in here, so write it, update the texture, and return true
 
 			//first write a solid background

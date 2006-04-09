@@ -52,7 +52,7 @@ namespace OpenGUI{
 		IVector2 getSize() const { return max - min; }
 		int getWidth() const { return max.x - min.x; }
 		int getHeight() const { return max.y - min.y; }
-
+		int getArea() const { return getWidth() * getHeight(); }
 		void setWidth(const int& newWidth) { max.x = min.x + newWidth; }
 		void setHeight(const int& newHeight) { max.y = min.y + newHeight; }
 		void setSize(const IVector2& newSize) { max = min + newSize; }

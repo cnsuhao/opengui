@@ -5,6 +5,9 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
+#include "OpenGUI_System.h"
+#include "OpenGUI_ResourceProvider.h"
+#include "OpenGUI_Resource.h"
 
 typedef void (*PLUGIN_START_FUNC)(void);
 typedef void (*PLUGIN_STOP_FUNC)(void);
@@ -145,7 +148,11 @@ namespace OpenGUI{
 		LogManager::SlogMsg("PluginManager", OGLL_INFO) << "LoadPluginsFromXML: " << xmlFilename << Log::endlog;
 
 		TiXmlDocument doc;
-		doc.LoadFile(xmlFilename);
+		//doc.LoadFile(xmlFilename);
+		Resource_CStr res;
+		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		resProvider->loadResource(xmlFilename, res);
+		doc.Parse(res.getString());
 		TiXmlElement* root = doc.RootElement();
 		TiXmlElement* section;
 		section = root;

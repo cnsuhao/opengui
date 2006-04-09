@@ -12,34 +12,27 @@
 #include "OpenGUI_TextureDataRect.h"
 #include "OpenGUI_Imageset.h"
 
+#include "OpenGUI_CONFIG.h"
+
 namespace OpenGUI{
-	Texture* FontCache::getDebugTexture()
-	{
-		//FontAtlasList::reverse_iterator iter = mFontAtlasList.rbegin();
-		FontAtlasList::iterator iter = mFontAtlasList.begin();
-		//if(iter != mFontAtlasList.rend()){
-		if(iter != mFontAtlasList.end()){
-			FontAtlas* atlas = (*iter);
-			return atlas->GetImageset()->getTexture();
-		}
-		return 0;
-	}
 
 
 	int _calcNewAtlasDimension(int estimatedDim)
 	{
-		return 512;
+#ifdef FONTCACHE_GUESS_FONTATLAS_SIZE
 		/*
 			This is just a fun little algorithm I decided to add that attempts to
 			guess the best size in a dimension based on the glyph dimension.
 			At the moment, it does an okay job, but really isn't anything that
 			impressive.
+
+			This currently isn't used, a
 		*/
 
 		const int glyphSpacing = 2; //spacing used by FontAtlas
-		const int minDimension = 64; //minimum dimension allowed
-		const int maxDimension = 2048; //maximum dimension allowed
-		const int defaultDimension = 512; //soft maximum dimension
+		const int minDimension = FONTCACHE_MIN_FONTATLAS_DIM; //minimum dimension allowed
+		const int maxDimension = FONTCACHE_MAX_FONTATLAS_DIM; //maximum dimension allowed
+		const int defaultDimension = 512>FONTCACHE_MAX_FONTATLAS_DIM?FONTCACHE_MAX_FONTATLAS_DIM:512; //soft maximum dimension
 
 		estimatedDim += (glyphSpacing * 2); //adjust estimate to account for glyph spacing
 
@@ -77,6 +70,14 @@ namespace OpenGUI{
 		}
 
 		return idealSize;
+#else  //#ifdef FONTCACHE_GUESS_FONTATLAS_SIZE
+	const int minDimension = FONTCACHE_MIN_FONTATLAS_DIM; //minimum dimension allowed
+	const int maxDimension = FONTCACHE_MAX_FONTATLAS_DIM; //maximum dimension allowed
+	int size = minDimension;
+	while(size < estimatedDim && size < maxDimension)
+		size = size<<1;
+	return size;
+#endif //#ifdef FONTCACHE_GUESS_FONTATLAS_SIZE
 	}
 
 	
@@ -147,6 +148,21 @@ namespace OpenGUI{
 		return gset;
 	}
 	//############################################################################
+	float FontCache::_GetCurrentCacheEfficiency()
+	{
+		unsigned int totalArea = 0;
+		unsigned int usedArea = 0;
+		FontAtlasList::iterator iter = mFontAtlasList.begin();
+		while(iter != mFontAtlasList.end()){
+			totalArea += (*iter)->statTotalArea();
+			usedArea += (*iter)->statUsedArea();
+			iter++;
+		}
+		if(totalArea == 0) return 1.0f;
+		float retval = ((float)usedArea) / ((float) totalArea);
+		return retval;
+	}
+	//############################################################################
 	void FontCache::_RenderGlyph(FontCacheGlyphSet* glyphSet, char glyph_charCode)
 	{
 		char logChar[] = { glyph_charCode, 0};
@@ -181,6 +197,8 @@ namespace OpenGUI{
 			LogManager::SlogMsg("FontCache", OGLL_INFO3)
 				<< "Growing FontCache size..."
 				<< " new FontAtlas: " << nextAtlasSize.toStr()
+				<< " Current Cache Efficiency: "
+				<< FontCache::_GetCurrentCacheEfficiency()
 				<< Log::endlog;
 			atlas = new FontAtlas( nextAtlasSize );
 			mFontAtlasList.push_back(atlas);
@@ -253,12 +271,18 @@ namespace OpenGUI{
 	//############################################################################
 	void FontCache::_DestroyAllFontAtlas()
 	{
-		LogManager::SlogMsg("FontCache", OGLL_INFO3) << "Destroy All FontAtlas..." << Log::endlog;
+		LogManager::SlogMsg("FontCache", OGLL_INFO3) << "Destroy All FontAtlas..."
+			<< " Overall Efficiency: " << FontCache::_GetCurrentCacheEfficiency() << Log::endlog;
 
 		FontAtlasList::iterator iter = mFontAtlasList.begin();
 		while(iter != mFontAtlasList.end()){
 			FontAtlas* atlas = (*iter);
-			if(atlas) delete atlas;
+			if(atlas){
+				float usage = (float) atlas->statUsedArea() / (float) atlas->statTotalArea();
+				LogManager::SlogMsg("FontCache", OGLL_VERB)
+					<< "FontAtlas Usage: " << usage << Log::endlog;
+				delete atlas;
+			}
 			iter++;
 		}
 		mFontAtlasList.clear();

@@ -48,7 +48,7 @@ namespace OpenGUI{
 
 		//! Flushes all glyphs from a given font
 		void FlushFont(Font* font);
-		Texture* getDebugTexture();
+		
 	private:
 		IVector2 _calcNewAtlasSize(const IVector2& estimatedGlyphSize);
 		FontCacheGlyphSet* _GetFontCacheGlyphSet(Font* font, const IVector2& glyph_pixelSize);
@@ -56,6 +56,7 @@ namespace OpenGUI{
 
 		void _DestroyAllGlyphSets();
 		void _DestroyAllFontAtlas();
+		float _GetCurrentCacheEfficiency(); //returns a percentage of all font atlas coverage
 
 		typedef std::list<FontCacheGlyphSet*> FontCacheGlyphSetList;
 		FontCacheGlyphSetList mFontCacheGlyphSetList;

@@ -110,7 +110,11 @@ namespace OpenGUI{
 		LogManager::SlogMsg("WidgetTemplateManager", OGLL_INFO) << "LoadTemplatesFromXML: " << xmlFilename << Log::endlog;
 
 		TiXmlDocument doc;
-		doc.LoadFile(xmlFilename);
+		//doc.LoadFile(xmlFilename);
+		Resource_CStr res;
+		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		resProvider->loadResource(xmlFilename, res);
+		doc.Parse(res.getString());
 		TiXmlElement* root = doc.RootElement();
 		TiXmlElement* section;
 		section = root;

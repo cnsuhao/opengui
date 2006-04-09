@@ -390,6 +390,12 @@
 			<File
 				RelativePath=".\OpenGUI_StaticImage.h">
 			</File>
+			<File
+				RelativePath=".\OpenGUI_TextLabel.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_TextLabel.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\doc\AdditionalDoxygenInput.txt">
