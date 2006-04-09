@@ -22,7 +22,11 @@ namespace OpenGUI{
 		includesToIgnore.insert(xmlFilename);
 
 		TiXmlDocument doc;
-		doc.LoadFile(xmlFilename);
+		//doc.LoadFile(xmlFilename);
+		Resource_CStr res;
+		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		resProvider->loadResource(xmlFilename, res);
+		doc.Parse(res.getString());
 		TiXmlElement* root = doc.RootElement();
 		TiXmlElement* section;
 		section = root;
@@ -59,6 +63,9 @@ namespace OpenGUI{
 				}
 				if(0 == strcmpi(section->Value(),"GUISheet")){
 					LayoutLoader::_loadGUISheetFromTinyXMLElement(section);
+				}
+				if(0 == strcmpi(section->Value(),"font")){
+					FontManager::getSingleton()._loadFontFromTinyXMLElement(section);
 				}
 			}while( (section = section->NextSiblingElement()) );
 		}

@@ -26,8 +26,7 @@ namespace OpenGUI{
 			OG_THROW(Exception::ERR_FILE_NOT_READABLE, "Error reading file: '" + filename + "'", "GenericResourceProvider::loadResource");
 		}
 		inputFile.close();
-		output.setData(buffer);
-		output.setSize(size);
+		output.setData(buffer, size);
 	}
 	//#####################################################################
 	void GenericResourceProvider::unloadResource(Resource& resource)

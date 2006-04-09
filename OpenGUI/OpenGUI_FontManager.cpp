@@ -1,4 +1,4 @@
-
+#include "tinyxml.h"
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
@@ -14,20 +14,15 @@
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontCache.h"
 #include "OpenGUI_System.h"
+#include "OpenGUI_ResourceProvider.h"
+#include "OpenGUI_Resource.h"
 
 #include "OpenGUI_CONFIG.h"
 
 OpenGUI::TextureData gTexData;
 
 namespace OpenGUI{
-	Texture* FontManager::getDebugTexture()
-	{
-		return mFontCache->getDebugTexture();
-	}
-	void FontManager::DebugTest()
-	{
-		//mFontCache->GetGlyphImagery()
-	}
+
 
 	//############################################################################
 	template<> FontManager* Singleton<FontManager>::mptr_Singleton = 0;
@@ -114,9 +109,15 @@ namespace OpenGUI{
 	//############################################################################
 	Font* FontManager::CreateFont(std::string filename, std::string fontName, bool autoscale, unsigned int xres, unsigned int yres)
 	{
-		LogManager::SlogMsg("FontManager", OGLL_INFO) << "CreateFont:"
+		LogManager::SlogMsg("FontManager", OGLL_INFO)
+			<< "CreateFont:"
 			<< " Name: " << fontName
-			<< " Source: " << filename
+			<< " Source: " << filename;
+		if(autoscale){
+			LogManager::SlogMsg("FontManager", OGLL_INFO)
+				<< " Autoscaling: [" << xres << " x " << yres << "]";
+		}
+		LogManager::SlogMsg("FontManager", OGLL_INFO)
 			<< Log::endlog;
 
 		Font* retval = 0;
@@ -259,6 +260,99 @@ namespace OpenGUI{
 			}
 		}
 		return fntPtr->getLineSpacing(pointSize);
+	}
+	//############################################################################
+	void FontManager::LoadFontsFromXML(std::string xmlFilename)
+	{
+		LogManager::SlogMsg("FontManager", OGLL_INFO) << "LoadFontsFromXML: " << xmlFilename << Log::endlog;
+
+		TiXmlDocument doc;
+		//doc.LoadFile(xmlFilename);
+		Resource_CStr res;
+		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		resProvider->loadResource(xmlFilename, res);
+		doc.Parse(res.getString());
+		TiXmlElement* root = doc.RootElement();
+		TiXmlElement* section;
+		section = root;
+		if(section){
+			do{
+				//iterate through all of the root level elements and react to every "Imageset" found
+				if(0 == strcmpi(section->Value(),"font")){
+					FontManager::_loadFontFromTinyXMLElement(section);
+				}
+			}while( (section = section->NextSiblingElement()) );
+		}
+	}
+	//############################################################################
+	Font* FontManager::_loadFontFromTinyXMLElement(void* tXelementPtr)
+	{
+		TiXmlElement* tXelement = (TiXmlElement*)tXelementPtr;
+		Font* resultFont=0;
+		std::string fontFilename = "";
+		std::string fontName = "";
+		const char* fontAutoscale = 0;
+		const char* fontXRes = 0;
+		const char* fontYRes = 0;
+
+		TiXmlAttribute* attrib = tXelement->FirstAttribute();
+		if(attrib){
+			do{
+				if(0 == strcmpi(attrib->Name(),"name"))
+					fontName = attrib->Value();
+
+				if(0 == strcmpi(attrib->Name(),"file"))
+					fontFilename = attrib->Value();
+
+				if(0 == strcmpi(attrib->Name(),"autoscale"))
+					fontAutoscale = attrib->Value();
+
+				if(0 == strcmpi(attrib->Name(),"xres"))
+					fontXRes = attrib->Value();
+
+				if(0 == strcmpi(attrib->Name(),"yres"))
+					fontYRes = attrib->Value();
+
+			}while( (attrib = attrib->Next()) );
+		}
+
+		bool autoscale = false;
+		unsigned int xres = 800;
+		unsigned int yres = 600;
+		
+		if(fontAutoscale){
+			if( 0 == strcmpi(fontAutoscale,"true") || 0 == strcmpi(fontAutoscale,"1") )
+				autoscale = true;
+		}
+		if(fontXRes){
+			std::stringstream ss;
+			std::string tmp = fontXRes;
+			ss.str(tmp);
+			ss >> xres;
+		}
+		if(fontYRes){
+			std::stringstream ss;
+			std::string tmp = fontYRes;
+			ss.str(tmp);
+			ss >> yres;
+		}
+
+		if(fontFilename!="" && fontName!=""){
+			resultFont = FontManager::CreateFont(fontFilename, fontName, autoscale, xres, yres);
+		}else{
+			if(fontFilename==""){
+				OG_THROW(Exception::ERR_INVALIDPARAMS,
+					"<Font> XML Element missing required attribute 'file'",
+					"FontManager::_loadFontFromTinyXMLElement");
+			}
+			if(fontName==""){
+				OG_THROW(Exception::ERR_INVALIDPARAMS,
+					"<Font> XML Element missing required attribute 'name'",
+					"FontManager::_loadFontFromTinyXMLElement");
+			}
+		}
+
+		return resultFont;
 	}
 	//############################################################################
 

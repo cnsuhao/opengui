@@ -13,9 +13,14 @@ namespace OpenGUI{
 
 			//! This is just a factory interface.
 			static Widget* createStaticImageFactory();
+
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 			ImageryPtr mImageryPtr;
+
+		private:
+			static bool _prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 		};
 	};//namespace Widgets{
 };//namespace OpenGUI{

@@ -32,6 +32,7 @@ namespace OpenGUI{
 			ImageryPtr mImageryPtrDisabled;
 			bool m_MouseOver;
 			bool m_ButtonDown;
+
 		private:
 			static bool _prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);

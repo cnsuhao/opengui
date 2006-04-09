@@ -16,6 +16,7 @@ namespace OpenGUI{
 	//! Provides font loading and texture UV generation for glyphs loaded from fonts.
 	class OPENGUI_API FontManager : public Singleton<FontManager>{
 		friend class Font;
+		friend class XMLParser;
 	public:
 		FontManager();
 
@@ -32,7 +33,7 @@ namespace OpenGUI{
 
 		//! Creates a new font
 		/*! If an existing font already exists with the same \c fontName, it will destroyed and replaced
-			by the new font. This will, of course, cause a complete cache unload for that font
+			by the new font. This will, of course, cause a complete cache unload for that font.
 			\note
 			The first font loaded is automatically set as the default. To manually set the default
 			font to something else, use \c SetDefaultFont().
@@ -80,14 +81,16 @@ namespace OpenGUI{
 		unsigned int getLineSpacing(const std::string& fontName="", unsigned int pointSize=0);
 		
 
-		//ImageryPtr GetGlyphImagery(char glyphCharacter, )
-		// renderText( Rect, text, font, color, align, scroll )
-
-		//! \internal \todo debug texture. remove me
-		Texture* getDebugTexture();
-		void DebugTest();
+		//! Loads Fonts from an XML document.
+		/*! Any conflicting Fonts will be overwritten, any non-font related
+			XML entities are silently ignored.
+		*/
+		void LoadFontsFromXML(std::string xmlFilename);
 
 	private:
+
+		Font* _loadFontFromTinyXMLElement(void* tXelementPtr);
+
 		//! \internal Returns a string containing the error description from FreeType for the given FreeType error code. If the error is not found, "*UNKNOWN ERROR*" is returned.
 		std::string _GetFTErrorString(int errorCode);
 

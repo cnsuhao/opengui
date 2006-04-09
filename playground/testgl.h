@@ -35,8 +35,8 @@ class testgl : public OpenGLBase
 		//OpenGUI::LogManager::getSingleton().setLevel(100);
 		OpenGUI::XMLParser::LoadFromFile("test.xml");
 
-		OpenGUI::FontManager::getSingleton().CreateFont("arial.ttf", "arial");//, true, 800, 600);
-		OpenGUI::FontManager::getSingleton().CreateFont("kickassinger.ttf", "kick");//, true, 800, 600);
+		//OpenGUI::FontManager::getSingleton().CreateFont("arial.ttf", "arial");//, true, 800, 600);
+		//OpenGUI::FontManager::getSingleton().CreateFont("kickassinger.ttf", "kick");//, true, 800, 600);
 
 		//OpenGUI::WidgetTemplateManager::getSingleton().LoadTemplatesFromXML("test.xml");
 		//OpenGUI::LayoutLoader::LoadLayoutFromXML("test.xml");
