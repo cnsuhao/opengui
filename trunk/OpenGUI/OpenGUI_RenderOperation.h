@@ -75,10 +75,10 @@ namespace OpenGUI{
 		};
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
-		void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		inline void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
 
 		//! Prepends the contents of inList to the beginning of outList. The contents of inList are preserved.
-		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		inline void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
 
 		/*! \brief
 			This is a base class for the built in Primitive system. Using
@@ -88,6 +88,7 @@ namespace OpenGUI{
 			A widget does not have to use primitives to generate render
 			operations, it is merely a set of helper classes that make
 			generating render operations much easier.
+
 		*/
 		class OPENGUI_API Primitive{
 		public:
@@ -97,226 +98,7 @@ namespace OpenGUI{
 			virtual RenderOperationList getRenderOperationList()=0;
 		};
 
-		/*! \brief
-			A box primitive. Provides simple render operation generation
-			for creating boxes of any dimension, location, and imagery.
-			It provides automatic Texture* linking and UV generation for
-			both textures and masks based on imagery.
-		*/
-		class OPENGUI_API PrimitiveBox : public Primitive{
-		public:
-			PrimitiveBox() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mTextureImagery(0), mMaskImagery(0) {}
-			virtual ~PrimitiveBox() {}
-			//! Returns the RenderOperationList that is the result of this primitive
-			RenderOperationList getRenderOperationList();
-			//! Get the current position and size of the Box
-			FRect getRect(){return mRect;}
-			//! Sets the size and position of the Box to the given FRect
-			void setRect(FRect rect){mRect=rect;}
-			//! Sets the imagery that should be used for texturing the Box. 0 uses none (default)
-			void setTextureImagery(ImageryPtr imagery) {mTextureImagery = imagery;}
-			//! Sets the mask imagery that should be used for texturing the Box. 0 uses none (default)
-			void setMaskImagery(ImageryPtr imagery) {mMaskImagery = imagery;}
-		private:
-			FRect mRect; //size and position of this Box
-			ImageryPtr mTextureImagery;
-			ImageryPtr mMaskImagery;
-		};
-
-		//! A primitive to draw a box shaped outline. The outline is drawn on the inside of the given rect
-		class OPENGUI_API PrimitiveBoxOutline : public Primitive{
-		public:
-			PrimitiveBoxOutline() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mThickness(1), mContext(0) {}
-			virtual ~PrimitiveBoxOutline() {}
-			//! Returns the RenderOperationList that is the result of this primitive
-			RenderOperationList getRenderOperationList();
-			//! Sets the element used as the context for obtaining pixel alignment
-			void setContext(Element* contextElement){mContext = contextElement;}
-			//! Get the current position and size of the Box
-			FRect getRect(){return mRect;}
-			//! Sets the size and position of the Box to the given FRect
-			void setRect(FRect rect){mRect=rect;}
-			//! Sets the thickness of the outline
-			void setThickness(unsigned int thickness){mThickness=thickness;}
-		private:
-			FRect mRect; //size and position of this Box
-			unsigned int mThickness; //pixel thickness of the outline
-			Element* mContext;
-			FVector2 _getPixelScale();
-		};
-
-		//! Provides a simple interface for generating simple text strings
-		class OPENGUI_API PrimitiveText : public Primitive{
-		public:
-			PrimitiveText();
-			virtual ~PrimitiveText();
-			RenderOperationList getRenderOperationList();
-			//! Sets the element used as the context for obtaining pixel alignment
-			void setContext(Element* contextElement);
-			void setText(std::string textString);
-			void setFont(std::string fontName, unsigned int fontSize_points);
-			void setPosition(const FVector2& baselinePosition);
-
-			//! Returns the width of the current text string 
-			/*! \note This function requires access to each of glyphs' metrics,
-				and will hit the font cache to get them. This means that the glyphs
-				will be loaded into the font cache. There is currently no way around this.
-			*/
-			float getTextWidth();
-			//! Returns the height of the current text string
-			float getTextHeight();
-			//! Returns the combined width and height of the text string
-			FVector2 getTextSize();
-			//! Returns the height of a single line of text
-			float getLineHeight();
-
-			//! Returns the width of the current text string in pixels
-			/*! \note This function requires access to each of glyphs' metrics,
-			and will hit the font cache to get them. This means that the glyphs
-			will be loaded into the font cache. There is currently no way around this.
-			*/
-			int getTextPixelWidth();
-			//! Returns the height of the current text string in pixels
-			int getTextPixelHeight();
-			//! Returns the combined width and height of the text string in pixels
-			IVector2 getTextPixelSize();
-			//! Returns the height of a single line of text in pixels
-			int getLinePixelHeight();
-			
-			//! Adjusts the spacing between glyphs in pixels
-			/*! \remark The value is represented as a float to support fractions of pixels. */
-			void setTextSpacing(float spacing_per_glyph){mAdvTextSpacing = spacing_per_glyph;}
-			//! Gets the current spacing between glyphs in pixels
-			/*! \remark The value is represented as a float to support fractions of pixels. */
-			float getTextSpacing(){return mAdvTextSpacing;}
-
-			//! Adjusts the spacing between lines in pixels
-			/*! \remark The value is represented as a float to support fractions of pixels. */
-			void setLineSpacing(float spacing_per_line){mAdvLineSpacing = spacing_per_line;}
-			//! Gets the current spacing between glyphs in pixels
-			/*! \remark The value is represented as a float to support fractions of pixels. */
-			float getLineSpacing(){return mAdvLineSpacing;}
-
-			// renderText( Rect, text, font, color, align, scroll )
-
-		private:
-			std::string mTextContents;
-			FVector2 mPosition;
-			Element* mContext;
-
-			std::string mFontName;
-			unsigned int mFontSize;
-
-			float mAdvTextSpacing;
-			float mAdvLineSpacing;
-
-			FVector2 _getPixelScale();
-		};
-
-		//! Provides a simple interface for generating simple text strings
-		class OPENGUI_API PrimitiveTextBox : public Primitive{
-		public:
-			PrimitiveTextBox();
-			virtual ~PrimitiveTextBox();
-			RenderOperationList getRenderOperationList();
-
-			//! Sets the element used as the context for obtaining pixel alignment
-			void setContext(Element* contextElement){mContext = contextElement;}
-			//! Get the current position and size of the Box
-			FRect getRect(){return mRect;}
-			//! Sets the size and position of the Box to the given FRect
-			void setRect(FRect rect){mRect=rect;}
-
-			void setText(std::string textString);
-			void setFont(std::string fontName, unsigned int fontSize_points);
-
-			void setAlignment_Horiz(TextAlignment alignment){mAlignHoriz = alignment;}
-			TextAlignment getAlignment_Horiz(){return mAlignHoriz;}
-
-			void setAlignment_Vert(TextAlignment alignment){mAlignVert = alignment;}
-			TextAlignment getAlignment_Vert(){return mAlignVert;}
-
-			void setAutoWrap(bool wrap){mAutoWrap=wrap;}
-			bool getAutoWrap(){return mAutoWrap;}
-
-		private:
-			std::string mTextContents;
-			FRect mRect;
-			Element* mContext;
-
-			std::string mFontName;
-			unsigned int mFontSize;
-
-			TextAlignment mAlignVert;
-			TextAlignment mAlignHoriz;
-
-			float mAdvTextSpacing;
-			float mAdvLineSpacing;
-
-			bool mAutoWrap;
-
-			typedef std::list<std::string> StringList;
-			void _WrapText(StringList& strList);
-			std::string _SubTextByWidth(std::string input, float width);
-			//Breaks a string into a list of strings by splitting on new-line characters
-			void _Tokenize(const std::string& inputStr, StringList& outputStrList, char token);
-			FVector2 _getPixelScale();
-		};
-
-		/*! \brief
-			This primitive performs an axis aligned scissor rect operation
-			on provided render operations.
-			
-			For compatibility reasons, %OpenGUI cannot perform scissor rects
-			in hardware, so as a replacement it provides this object to perform
-			geometrical	scissor rect functionality.
-
-			The clipping performed will automatically adjust all render operation
-			data to properly preserve the intended look of the original render
-			operation. This includes vertex color, texture UV, and mask UV.
-
-			Do not expect every render operation you put into this object
-			to make it back out. Render operations that are completely outside
-			of the specified rect are culled.
-			
-			Also, do not expect to get less render operations out than you put
-			in. A side effect of geometric clipping is the potential for 3 sided
-			polygons to become 4 sided polygons. Since RenderOperation objects
-			only support 3 sided polygons, any 4 sided polygons that are produced
-			by this object are automatically converted into 2 separate 3 sided
-			polygons.
-
-			\note The order in which render operations are received is preserved,
-				so this Primitive can be trusted with RenderOperations that have
-				a specific draw order.
-		*/
-		class OPENGUI_API PrimitiveScissorRect : public Primitive{
-		public:
-			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
-			virtual ~PrimitiveScissorRect() {}
-			//! Returns the RenderOperationList that is the result of this primitive
-			RenderOperationList getRenderOperationList();
-			//! Get the current position and size of the ScissorRect 
-			FRect getRect(){return mRect;}
-			//! Sets the size and position of the ScissorRect to the given FRect
-			void setRect(FRect rect){mRect=rect;}
-
-			//! Adds a single RenderOperation to the input RenderOperationList
-			void addRenderOperation(RenderOperation& renderOp);
-			//! Adds an entire RenderOperationList to the input RenderOperationList
-			void addRenderOperation(RenderOperationList& renderOpList);
-			//! Clears the input RenderOperationList
-			void clear();
-		private:
-			FRect mRect; //size and position of this ScissorRect
-			RenderOperationList mInputRenderOps;
-
-			void _SliceRenderOp_Vert_SaveLeft(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Vert_SaveRight(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Horiz_SaveTop(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Horiz_SaveBottom(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			static void sliceLineSegment(Vertex& vert1, Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal);
-		};
+		
 	};//namespace Render{
 };
 #endif

@@ -214,6 +214,10 @@ namespace OpenGUI{
 		FVector2 max;
 	};
 
+	/*! \brief
+		This type is used throughout %OpenGUI to represent the 4 horizontal
+		alignment types (Left,Center,Right,Justified) and the
+	*/
 	class TextAlignment{
 	public:
 		typedef enum {
@@ -226,11 +230,18 @@ namespace OpenGUI{
 		}Alignment;
 		TextAlignment& operator=(const Alignment& rhs)
 			{value = rhs; return *this;}
+		
 		bool operator==(const Alignment& rhs)
 			{return value == rhs;}
-			bool operator==(const TextAlignment& rhs)
+		bool operator==(const TextAlignment& rhs)
 			{return value == rhs.value;}
 		Alignment value;
+
+		//a few little methods to handle various casts and assignments
+		operator Alignment&(){return value;}
+		TextAlignment(const Alignment& rhs){value=rhs;}
+
+		TextAlignment():value(ALIGN_LEFT){} //default constructor
 	};
 
 	

@@ -42,10 +42,10 @@ namespace OpenGUI{
 			void setFontSize(unsigned int fontSize_points);
 			unsigned int getFontSize();
 
-			void setAlignment_Horiz(Alignment alignment);
+			void setAlignment_Horiz(TextAlignment alignment);
 			TextAlignment getAlignment_Horiz();
 
-			void setAlignment_Vert(Alignment alignment);
+			void setAlignment_Vert(TextAlignment alignment);
 			TextAlignment getAlignment_Vert();
 
 			void setAutoWrap(bool wrap);
@@ -67,8 +67,15 @@ namespace OpenGUI{
 			static bool _prop_SetText(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetText(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
+			static bool _prop_SetFont(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetFont(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetFontSize(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetFontSize(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
 			static bool _prop_SetHAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetHAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetVAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetVAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 		};
 	};//namespace Widgets{
 };//namespace OpenGUI{

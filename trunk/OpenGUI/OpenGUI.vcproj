@@ -176,6 +176,15 @@
 				RelativePath=".\OpenGUI_PluginManager.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Primitives_Geometric.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives_Mutations.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives_Text.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_PropertySet.cpp">
 			</File>
 			<File
@@ -296,6 +305,18 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PreRequisites.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives_Geometric.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives_Mutations.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Primitives_Text.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PropertySet.h">
