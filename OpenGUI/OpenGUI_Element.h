@@ -282,6 +282,10 @@ namespace OpenGUI{
 			such as providing pixel alignment. (The font system uses this function for such a purpose.)
 		*/
 		IRect getPixelRect();
+		//! Same as \c getPixelRect() except it returns the pixel rect of this element's parent.
+		/*! If this element has no parent, or is a top level element (a GUISheet), then the pixel
+			rect returned will be the viewport dimensions. */
+		IRect getParentPixelRect();
 
 
 	protected:

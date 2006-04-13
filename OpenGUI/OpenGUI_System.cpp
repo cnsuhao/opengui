@@ -366,7 +366,7 @@ namespace OpenGUI{
 				mRenderer->doRenderOperation((*iterC));
 				iterC++;
 			}
-
+/*
 			//!\todo DEBUG REMOVE ME
 			Render::PrimitiveText text;
 
@@ -396,7 +396,7 @@ namespace OpenGUI{
 			
 			//!\todo DEBUG REMOVE ME (end)
 			
-
+*/
 			mRenderer->postRenderCleanup();
 		}
 	}

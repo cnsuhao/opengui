@@ -87,7 +87,8 @@ namespace OpenGUI{
 				else
 					return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
 
-			default: // unhandled type, return false
+			default: // unhandled type, throw!
+				OG_THROW(Exception::ERR_NOT_IMPLEMENTED, "Unimplemented property type", "PropertySet::propertySet");
 				return false;
 		}
 

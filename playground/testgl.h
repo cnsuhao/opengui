@@ -49,6 +49,7 @@ class testgl : public OpenGLBase
 // 		OpenGUI::ImageryManager::getSingleton().getImageset("SilverClean.png")->createImagery("ButtonHover",OpenGUI::IRect(69,19,69+50,19+15));
 // 		OpenGUI::ImageryManager::getSingleton().getImageset("SilverClean.png")->createImagery("DefaultCursor",OpenGUI::IRect(224,1,224+31,1+32));
 
+		
 		mCursor = new OpenGUI::GenericCursor();
 		OpenGUI::CursorManager::getSingleton().addCursor(mCursor,"DefaultCursor");
 		mCursor->setImagery("DefaultCursor",OpenGUI::FVector2(0.0f,0.0f));
@@ -89,6 +90,26 @@ class testgl : public OpenGLBase
 		sys->getGUISheetByName("root")->setClipsChildren(false);
 		button->addChildElement(button2);
 		button2->setClipsChildren(false);
+
+		OpenGUI::Widgets::TextLabel* label = 
+			static_cast<OpenGUI::Widgets::TextLabel* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "TextLabel"));
+		label->setText("Hello World!\nAll is well");
+		label->setPos(0.15f,0.25f);
+		label->setSize(0.5f,0.15f);
+		label->setFont("kick"); label->setFontSize(16);
+		label->setAlignment_Vert(OpenGUI::Widgets::TextLabel::ALIGN_CENTER);
+		sys->getGUISheetByName("root")->addChildElement(label);
+
+		OpenGUI::Widgets::TextLabel* label2 = 
+			static_cast<OpenGUI::Widgets::TextLabel* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "TextLabel"));
+		label2->setText("MegaBigTimeUltraSuperconfragulisticexpialidociousnesslylongwerded stuff MegaBigTimeUltraSuperconfragulisticexpialidociousnesslylongwerded Welcome to OpenGUI, the ultimate in psychedelic chickens, and the free range barbeque cook off for adolescent sea urchins.");
+		label2->setPos(0.15f,0.55f);
+		label2->setSize(0.5f,0.25f);
+		label2->setAutoWrap(true);
+		label2->setFont("arial"); label2->setFontSize(16);
+		label2->setAlignment_Horiz(OpenGUI::Widgets::TextLabel::ALIGN_JUSTIFIED);
+		label2->setAlignment_Vert(OpenGUI::Widgets::TextLabel::ALIGN_TOP);
+		sys->getGUISheetByName("root")->addChildElement(label2);
 
 		last=true;
 		//////////////////////////////////////////////////////////////
