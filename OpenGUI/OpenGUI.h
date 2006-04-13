@@ -26,6 +26,7 @@
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_RenderOperation.h"
+#include "OpenGUI_Primitives.h"
 #include "OpenGUI_Renderer.h"
 
 //Includes necessary for core functionality
