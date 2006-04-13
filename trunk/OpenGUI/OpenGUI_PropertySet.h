@@ -59,12 +59,24 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	*/
 	typedef bool (*PropertyGetter)(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
-
+	//#####################################################################
+	//! \intenal Experimental class. Not finished
+	class Enum{
+	public:
+		Enum(std::string firstValue);
+		void addValue(std::string value);
+	};
 	//#####################################################################
 	typedef enum{
-		PT_STRING = 0, PT_BOOL = 1,
-		PT_FLOAT = 2, PT_FVECTOR2 = 3, PT_FRECT = 4,
-		PT_INTEGER = 5, PT_IVECTOR2 = 6, PT_IRECT = 7
+		PT_STRING = 0,
+		PT_BOOL = 1,
+		PT_FLOAT = 2,
+		PT_FVECTOR2 = 3,
+		PT_FRECT = 4,
+		PT_INTEGER = 5,
+		PT_IVECTOR2 = 6,
+		PT_IRECT = 7,
+		PT_ENUM = 8 //!< Enum type. <b>Not yet implemented.</b>
 	} PropertyType;
 	//#####################################################################
 	typedef struct _PropertyListItem{

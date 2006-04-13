@@ -432,6 +432,17 @@ namespace OpenGUI{
 		};
 	}
 	//#####################################################################
+	IRect Element::getParentPixelRect()
+	{
+		//
+		if(mParentElement){
+			return mParentElement->getPixelRect();
+		}
+		IRect tmp;
+		tmp.setSize(System::getSingleton().getViewportResolution());
+		return tmp;
+	}
+	//#####################################################################
 	IRect Element::getPixelRect()
 	{
 		FRect viewportFRect;

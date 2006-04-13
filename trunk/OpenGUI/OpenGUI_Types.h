@@ -105,8 +105,9 @@ namespace OpenGUI{
 
 		bool operator==(const FVector2& right) const  { return x==right.x && y == right.y; }
 		bool operator!=(const FVector2& right) const  { return !operator==(right); }
-		//! This function takes the FVector2 with values between 0,0 and 1,1 and aligns it's value to the nearest pixel, as defined by resolution.
-		FVector2 pixelAligned(const IVector2& resolution)
+		
+		//! Returns a pixel aligned copy of this FVector2
+		FVector2 pixelAligned(const IVector2& resolution) const
 			{
 				FVector2 tmpF;
 				IVector2 tmpI((int)(x * (float)resolution.x),(int)(y * (float)resolution.y));
@@ -197,7 +198,8 @@ namespace OpenGUI{
 				);
 				
 			}
-		FRect pixelAligned(const IVector2& resolution)
+		//! Returns a pixel aligned copy of this FRect
+		FRect pixelAligned(const IVector2& resolution) const
 			{
 				return FRect(min.pixelAligned(resolution),max.pixelAligned(resolution));
 			}
@@ -212,7 +214,24 @@ namespace OpenGUI{
 		FVector2 max;
 	};
 
-
+	class TextAlignment{
+	public:
+		typedef enum {
+			ALIGN_LEFT = 0,
+			ALIGN_TOP = 0,
+			ALIGN_RIGHT = 1,
+			ALIGN_BOTTOM = 1,
+			ALIGN_CENTER = 2,
+			ALIGN_JUSTIFIED = 3
+		}Alignment;
+		TextAlignment& operator=(const Alignment& rhs)
+			{value = rhs; return *this;}
+		bool operator==(const Alignment& rhs)
+			{return value == rhs;}
+			bool operator==(const TextAlignment& rhs)
+			{return value == rhs.value;}
+		Alignment value;
+	};
 
 	
 };

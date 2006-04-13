@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 
-<Font name="" file="Kickassinger.ttf" />
+<Font name="kick" file="Kickassinger.ttf" />
 
 <Include file="test2.xml" />
 
 <Plugin file="" />
 
-<Font name="arial" file="arial.ttf" autoscale="false" xres="800" yres="600" />
-<FontPreload name="arial">abcdefghijklmnopqrstuvwxyz</FontPreload>
+<Font name="arial" file="arial.ttf" autoscale="false" xres="640" yres="480" />
+
 
 <Template name="ezbutton" group="OpenGUI" type="SimpleButton">
 	<Property name="position" value="(0.75x0.75)" />
@@ -40,7 +40,7 @@
 	</Widget>
 	<Widget name="button9" type="ezbutton">
 		<Property name="position" value="(0.05x0.75)" />
-	<Property name="size" value="(0.20x0.20)" />
+		<Property name="size" value="(0.20x0.20)" />
 	</Widget>
 	<Widget name="button999" type="ezbutton24" />
 </GUISheet>

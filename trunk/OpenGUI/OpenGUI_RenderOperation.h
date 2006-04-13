@@ -123,12 +123,35 @@ namespace OpenGUI{
 			ImageryPtr mMaskImagery;
 		};
 
-		//! Provides a simple interface for generating text strings
+		//! A primitive to draw a box shaped outline. The outline is drawn on the inside of the given rect
+		class OPENGUI_API PrimitiveBoxOutline : public Primitive{
+		public:
+			PrimitiveBoxOutline() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mThickness(1), mContext(0) {}
+			virtual ~PrimitiveBoxOutline() {}
+			//! Returns the RenderOperationList that is the result of this primitive
+			RenderOperationList getRenderOperationList();
+			//! Sets the element used as the context for obtaining pixel alignment
+			void setContext(Element* contextElement){mContext = contextElement;}
+			//! Get the current position and size of the Box
+			FRect getRect(){return mRect;}
+			//! Sets the size and position of the Box to the given FRect
+			void setRect(FRect rect){mRect=rect;}
+			//! Sets the thickness of the outline
+			void setThickness(unsigned int thickness){mThickness=thickness;}
+		private:
+			FRect mRect; //size and position of this Box
+			unsigned int mThickness; //pixel thickness of the outline
+			Element* mContext;
+			FVector2 _getPixelScale();
+		};
+
+		//! Provides a simple interface for generating simple text strings
 		class OPENGUI_API PrimitiveText : public Primitive{
 		public:
 			PrimitiveText();
 			virtual ~PrimitiveText();
 			RenderOperationList getRenderOperationList();
+			//! Sets the element used as the context for obtaining pixel alignment
 			void setContext(Element* contextElement);
 			void setText(std::string textString);
 			void setFont(std::string fontName, unsigned int fontSize_points);
@@ -144,6 +167,8 @@ namespace OpenGUI{
 			float getTextHeight();
 			//! Returns the combined width and height of the text string
 			FVector2 getTextSize();
+			//! Returns the height of a single line of text
+			float getLineHeight();
 
 			//! Returns the width of the current text string in pixels
 			/*! \note This function requires access to each of glyphs' metrics,
@@ -155,6 +180,22 @@ namespace OpenGUI{
 			int getTextPixelHeight();
 			//! Returns the combined width and height of the text string in pixels
 			IVector2 getTextPixelSize();
+			//! Returns the height of a single line of text in pixels
+			int getLinePixelHeight();
+			
+			//! Adjusts the spacing between glyphs in pixels
+			/*! \remark The value is represented as a float to support fractions of pixels. */
+			void setTextSpacing(float spacing_per_glyph){mAdvTextSpacing = spacing_per_glyph;}
+			//! Gets the current spacing between glyphs in pixels
+			/*! \remark The value is represented as a float to support fractions of pixels. */
+			float getTextSpacing(){return mAdvTextSpacing;}
+
+			//! Adjusts the spacing between lines in pixels
+			/*! \remark The value is represented as a float to support fractions of pixels. */
+			void setLineSpacing(float spacing_per_line){mAdvLineSpacing = spacing_per_line;}
+			//! Gets the current spacing between glyphs in pixels
+			/*! \remark The value is represented as a float to support fractions of pixels. */
+			float getLineSpacing(){return mAdvLineSpacing;}
 
 			// renderText( Rect, text, font, color, align, scroll )
 
@@ -166,6 +207,59 @@ namespace OpenGUI{
 			std::string mFontName;
 			unsigned int mFontSize;
 
+			float mAdvTextSpacing;
+			float mAdvLineSpacing;
+
+			FVector2 _getPixelScale();
+		};
+
+		//! Provides a simple interface for generating simple text strings
+		class OPENGUI_API PrimitiveTextBox : public Primitive{
+		public:
+			PrimitiveTextBox();
+			virtual ~PrimitiveTextBox();
+			RenderOperationList getRenderOperationList();
+
+			//! Sets the element used as the context for obtaining pixel alignment
+			void setContext(Element* contextElement){mContext = contextElement;}
+			//! Get the current position and size of the Box
+			FRect getRect(){return mRect;}
+			//! Sets the size and position of the Box to the given FRect
+			void setRect(FRect rect){mRect=rect;}
+
+			void setText(std::string textString);
+			void setFont(std::string fontName, unsigned int fontSize_points);
+
+			void setAlignment_Horiz(TextAlignment alignment){mAlignHoriz = alignment;}
+			TextAlignment getAlignment_Horiz(){return mAlignHoriz;}
+
+			void setAlignment_Vert(TextAlignment alignment){mAlignVert = alignment;}
+			TextAlignment getAlignment_Vert(){return mAlignVert;}
+
+			void setAutoWrap(bool wrap){mAutoWrap=wrap;}
+			bool getAutoWrap(){return mAutoWrap;}
+
+		private:
+			std::string mTextContents;
+			FRect mRect;
+			Element* mContext;
+
+			std::string mFontName;
+			unsigned int mFontSize;
+
+			TextAlignment mAlignVert;
+			TextAlignment mAlignHoriz;
+
+			float mAdvTextSpacing;
+			float mAdvLineSpacing;
+
+			bool mAutoWrap;
+
+			typedef std::list<std::string> StringList;
+			void _WrapText(StringList& strList);
+			std::string _SubTextByWidth(std::string input, float width);
+			//Breaks a string into a list of strings by splitting on new-line characters
+			void _Tokenize(const std::string& inputStr, StringList& outputStrList, char token);
 			FVector2 _getPixelScale();
 		};
 

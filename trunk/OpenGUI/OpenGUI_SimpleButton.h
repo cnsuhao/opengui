@@ -5,6 +5,8 @@
 
 namespace OpenGUI{
 	namespace Widgets{
+
+		//! Built in Widget providing a very simplistic button functionality.
 		class OPENGUI_API SimpleButton : public Widget
 		{
 		public:

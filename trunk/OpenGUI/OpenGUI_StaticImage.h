@@ -4,6 +4,8 @@
 
 namespace OpenGUI{
 	namespace Widgets{
+
+		//! Built in Widget that displays a static image.
 		class OPENGUI_API StaticImage : public Widget
 		{
 		public:
