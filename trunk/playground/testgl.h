@@ -97,18 +97,18 @@ class testgl : public OpenGLBase
 		label->setPos(0.15f,0.25f);
 		label->setSize(0.5f,0.15f);
 		label->setFont("kick"); label->setFontSize(16);
-		label->setAlignment_Vert(OpenGUI::Widgets::TextLabel::ALIGN_CENTER);
+		label->setAlignment_Vert(OpenGUI::TextAlignment::ALIGN_JUSTIFIED);
 		sys->getGUISheetByName("root")->addChildElement(label);
 
 		OpenGUI::Widgets::TextLabel* label2 = 
 			static_cast<OpenGUI::Widgets::TextLabel* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "TextLabel"));
 		label2->setText("MegaBigTimeUltraSuperconfragulisticexpialidociousnesslylongwerded stuff MegaBigTimeUltraSuperconfragulisticexpialidociousnesslylongwerded Welcome to OpenGUI, the ultimate in psychedelic chickens, and the free range barbeque cook off for adolescent sea urchins.");
 		label2->setPos(0.15f,0.55f);
-		label2->setSize(0.5f,0.25f);
+		label2->setSize(0.5f,0.35f);
 		label2->setAutoWrap(true);
 		label2->setFont("arial"); label2->setFontSize(16);
-		label2->setAlignment_Horiz(OpenGUI::Widgets::TextLabel::ALIGN_JUSTIFIED);
-		label2->setAlignment_Vert(OpenGUI::Widgets::TextLabel::ALIGN_TOP);
+		label2->setAlignment_Horiz(OpenGUI::TextAlignment::ALIGN_JUSTIFIED);
+		label2->setAlignment_Vert(OpenGUI::TextAlignment::ALIGN_JUSTIFIED);
 		sys->getGUISheetByName("root")->addChildElement(label2);
 
 		last=true;

@@ -22,14 +22,6 @@ namespace OpenGUI{
 		class OPENGUI_API TextLabel : public Widget
 		{
 		public:
-			typedef enum {
-				ALIGN_LEFT = 0,
-				ALIGN_TOP = 0,
-				ALIGN_RIGHT = 1,
-				ALIGN_BOTTOM = 1,
-				ALIGN_CENTER = 2,
-				ALIGN_JUSTIFIED = 3
-			} Alignment;
 			TextLabel();
 			~TextLabel();
 

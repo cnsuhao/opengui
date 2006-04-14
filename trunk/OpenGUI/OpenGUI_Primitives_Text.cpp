@@ -481,64 +481,64 @@ namespace OpenGUI{
 				_WrapText(strList);
 
 
-			//DEBUG
-			StringList::iterator iter2 = strList.begin();
-			textPos.y = getRect().min.y + text.getLineHeight(); //top
-			textPos.x = getRect().min.x; //left
-			text.setPosition(textPos);
-			text.reset();
-			while(iter2 != strList.end()){
-				text.setText( (*iter2) );
-
-				AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
-				text.advanceLine();
-				iter2++;
-			}
-			return outRenderOpList;
-			//DEBUG
-
-
 			//set up vertical alignment
 			if(mAlignVert == TextAlignment::ALIGN_TOP){
 				textPos.y = getRect().min.y + text.getLineHeight();
+
 			}else if(mAlignVert == TextAlignment::ALIGN_BOTTOM){
 				//calculate start position as bottom minus total height
 				textPos.y = getRect().max.y - ( text.getLineHeight() * strList.size() );
 				textPos.y += text.getLineHeight(); //plus 1
+
 			}else if(mAlignVert == TextAlignment::ALIGN_CENTER){
 				textPos.y = 
 					((getRect().min.y + getRect().max.y)/2) // the mid point
 					- ( ( text.getLineHeight() * strList.size() ) / 2 ); // minus half the total size
 				textPos.y += (text.getLineHeight() / 2); //plus 1/2
+			
+			}else if(mAlignVert == TextAlignment::ALIGN_JUSTIFIED){
+				if(strList.size()>0){
+					int curHeight = text.getLinePixelHeight() * strList.size();
+					int fullHeight = (int)(mRect.getHeight() / PrimitiveTextBox::_getPixelScale().y);
+					if(fullHeight > curHeight){
+						textPos.y = getRect().min.y + text.getLineHeight();
+						float lineAdjust = (float)(fullHeight - curHeight) / (float)strList.size();
+						text.setLineSpacing( lineAdjust );
+						//
+					}else{
+						//if we are too long to justify correctly, fall back to ALIGN_TOP
+						textPos.y = getRect().min.y + text.getLineHeight();
+					}
+				}else{
+					//if there are no lines to draw, then just do something logical as a fallback
+					textPos.y = getRect().min.y + text.getLineHeight();
+				}
 			}
 
+			//Pre setup for left aligned and justified text 
+			if(mAlignHoriz == TextAlignment::ALIGN_LEFT || TextAlignment::ALIGN_JUSTIFIED){
+				textPos.x = getRect().min.x;
+				text.setPosition(textPos);
+			}
 
 			//for each line of text, we will render as necessary according to horizontal alignment
 			StringList::iterator iter = strList.begin();
 			while(iter != strList.end()){
 				if(mAlignHoriz == TextAlignment::ALIGN_LEFT){
 					text.setText( (*iter) );
-					textPos.x = getRect().min.x;
-					text.setPosition(textPos);
 					AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
-					textPos.y += text.getLineHeight();
-					textPos = text.advanceLine();
 
 				} else if(mAlignHoriz == TextAlignment::ALIGN_CENTER){
 					text.setText( (*iter) );
 					textPos.x = ((getRect().max.x + getRect().min.x)/2) - (text.getTextWidth() / 2);
 					text.setPosition(textPos);
 					AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
-					//textPos.y += text.getLineHeight();
-					textPos = text.advanceLine();
-
+					
 				} else if(mAlignHoriz == TextAlignment::ALIGN_RIGHT){
 					text.setText( (*iter) );
 					textPos.x = getRect().max.x - text.getTextWidth();
 					text.setPosition(textPos);
 					AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
-					//textPos.y += text.getLineHeight();
-					textPos = text.advanceLine();
 
 				} else if(mAlignHoriz == TextAlignment::ALIGN_JUSTIFIED){
 					text.setText( (*iter) );
@@ -549,29 +549,19 @@ namespace OpenGUI{
 						int curWidth = text.getTextPixelWidth();
 						int fullWidth = (int)(mRect.getWidth() / PrimitiveTextBox::_getPixelScale().x);
 
-						//if(mContext) fullWidth = mContext->getPixelRect().getWidth();
-						//else System::getViewportResolution();
-
 						float pixelAdjust = (float)(fullWidth - curWidth) / (float)((*iter).length() - 1);
-						textPos.x = getRect().min.x;
 						if(pixelAdjust > 0)
 							text.setTextSpacing(pixelAdjust);
-					}else{
-						textPos.x = getRect().min.x;
 					}
-					text.setPosition(textPos);
 
 					AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
-
-					//textPos.y += text.getLineHeight();
-					textPos = text.advanceLine();
-					text.setTextSpacing(0.0f);
 				}
+
+				text.advanceLine();
 				iter++;
 			}
 
-
-			//debug outline
+			// finally! return our output
 			return outRenderOpList;
 
 		}
