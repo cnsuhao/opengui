@@ -105,11 +105,10 @@ namespace OpenGUI{
 			text.setAlignment_Vert(mAlignVert);
 			text.setAlignment_Horiz(mAlignHoriz);
 
-			//return text.getRenderOperationList();
+			return text.getRenderOperationList();
 			
 			scissor.addRenderOperation(text.getRenderOperationList());
 			
-
 
 			//debug outline
 			Render::PrimitiveBoxOutline outline;
