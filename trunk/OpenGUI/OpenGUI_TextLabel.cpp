@@ -26,6 +26,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setText(const std::string& newText)
 		{
+			dirtyCache();
 			mText = newText;
 		}
 		//#####################################################################
@@ -36,6 +37,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setFont(const std::string& fontName)
 		{
+			dirtyCache();
 			mFontName = fontName;
 		}
 		//#####################################################################
@@ -46,6 +48,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setFontSize(unsigned int fontSize_points)
 		{
+			dirtyCache();
 			mFontSize = fontSize_points;
 		}
 		//#####################################################################
@@ -56,6 +59,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setAlignment_Horiz(TextAlignment alignment)
 		{
+			dirtyCache();
 			mAlignHoriz = alignment;
 		}
 		//#####################################################################
@@ -66,6 +70,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setAlignment_Vert(TextAlignment alignment)
 		{
+			dirtyCache();
 			mAlignVert = alignment;
 		}
 		//#####################################################################
@@ -76,6 +81,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void TextLabel::setAutoWrap(bool wrap)
 		{
+			dirtyCache();
 			mAutoWrap = wrap;
 		}
 		//#####################################################################

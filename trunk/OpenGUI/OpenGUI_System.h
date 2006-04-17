@@ -355,6 +355,9 @@ namespace OpenGUI{
 
 		//! Generates, and returns a random Element name that is guaranteed to be unique for any 1 execution. \note If you can manage to call this over 4 billion times in 1 second, I am not responsible for your crash.
 		std::string generateRandomElementName();
+
+		//! Returns the current size of the render cache in bytes.
+		size_t statRenderCacheSize();
 	protected:
 		//! Injects the given message into the system.
 		/*!

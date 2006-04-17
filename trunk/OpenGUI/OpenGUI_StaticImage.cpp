@@ -24,6 +24,7 @@ namespace OpenGUI{
 		//#####################################################################
 		void StaticImage::setImagery(std::string imageryName)
 		{
+			dirtyCache();
 			mImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################

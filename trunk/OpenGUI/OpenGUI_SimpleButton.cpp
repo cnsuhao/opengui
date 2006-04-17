@@ -48,21 +48,25 @@ namespace OpenGUI{
 		//#####################################################################
 		void SimpleButton::setImagery(std::string imageryName)
 		{
+			dirtyCache();
 			mImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
 		void SimpleButton::setImageryPressed(std::string imageryName)
 		{
+			dirtyCache();
 			mImageryPtrPressed = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
 		void SimpleButton::setImageryMouseOver(std::string imageryName)
 		{
+			dirtyCache();
 			mImageryPtrMouseOver = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
 		void SimpleButton::setImageryDisabled(std::string imageryName)
 		{
+			dirtyCache();
 			mImageryPtrDisabled = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
@@ -77,6 +81,7 @@ namespace OpenGUI{
 				if (message.event.type==message.event.ME_MouseEnter)
 				{
 					if(System::getSingleton().setTrackMouseLeave(this)){
+						dirtyCache();
 						m_MouseOver=true;
 					}
 					return true;
@@ -93,16 +98,19 @@ namespace OpenGUI{
 
 				if (message.event.type==message.event.ME_MouseLeave)
 				{
+					dirtyCache();
 					m_MouseOver=false;
 				}
 
 				if (message.event.type==message.event.ME_MouseButtonDown)
 				{
+					dirtyCache();
 					System::getSingleton().setCaptureMouse(this);
 					m_ButtonDown = true;
 				}
 				if (message.event.type==message.event.ME_MouseButtonUp)
 				{
+					dirtyCache();
 					System::getSingleton().setCaptureMouse(0);
 					m_ButtonDown = false;
 					if(this != System::getSingleton().getElementAt(System::getSingleton().getCursorPos())){
@@ -118,6 +126,7 @@ namespace OpenGUI{
 					mpos = convCoordWorldToLocal(mpos);
 					if(pointIsInside(mpos)){
 						if(System::getSingleton().setTrackMouseLeave(this)){
+							dirtyCache();
 							m_MouseOver=true;
 						}
 					}

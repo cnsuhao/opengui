@@ -6,12 +6,17 @@
 #include "OpenGUI_Element.h"
 
 namespace OpenGUI{
+	class Renderer;
+
 	class OPENGUI_API GUISheet : public Element
 	{
-	public:
+		friend class System;
+	protected:
 		//! Applications should not create GUISheets directly, instead they should use System::createGUISheet()
 		GUISheet(std::string name);
-	protected:
+
+		//! Renders the contents of this GUI sheet by sending the render operations to the given Renderer
+		void renderGUISheet(Renderer* rendererPtr);
 
 	private:
 		
