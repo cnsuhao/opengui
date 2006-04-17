@@ -2,6 +2,8 @@
 #define CA9C2935_B11D_417d_BC51_8FE0051168FD
 
 #include "OpenGUI_Event.h"
+#include "OpenGUI_Message.h"
+
 namespace OpenGUI{
 	
 

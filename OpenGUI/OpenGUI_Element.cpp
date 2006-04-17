@@ -1,5 +1,6 @@
 
 #include "OpenGUI.h"
+#include "OpenGUI_RenderCache.h"
 
 namespace OpenGUI{
 
@@ -33,10 +34,15 @@ namespace OpenGUI{
 		mClientAreaScaleType = CAS_Scaled;
 		mClipsChildren = true;
 		mClientRectCustomScale = FVector2(1.0f,1.0f);
+
+		mRenderCache = 0;
+		mRenderCache = new RenderCache(this);
 	}
 	//#####################################################################
 	Element::~Element()
 	{
+		if(mRenderCache) delete mRenderCache;
+		mRenderCache = 0;
 		Element::destroyAllChildElements();
 	}
 	//#####################################################################
@@ -76,6 +82,12 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::addChildElement(Element* child, std::string name)
 	{
+		if(child == 0)
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "Element cannot parent nothing", "Element::addChildElement");
+
+		if(child == this)
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "Element cannot parent itself", "Element::addChildElement");
+		
 		if(name==""){
 			name = System::getSingleton().generateRandomElementName();
 		}else{
@@ -560,7 +572,19 @@ namespace OpenGUI{
 		return mElementRect.getOuterCoord(tmpRect.getOuterCoord(innerCoord + mClientRectOffset));
 	}
 	//#####################################################################
-	void Element::__buildRenderOperationList(Render::RenderOperationList& renderOpList)
+	void Element::__getRenderOperationList_This(Render::RenderOperationList& renderOpList)
+	{
+		//build our own widget render ops
+		Render::RenderOperationList myROlist = buildWidgetRenderOpList();
+
+		//and then push our ops to the front
+		Render::PrependRenderOperationList(renderOpList,myROlist);
+		std::pair<int,char> f(7,'c');
+		f.first = 7;
+		f.second = 'c';
+	}
+	//#####################################################################
+	void Element::__getRenderOperationList_Children(Render::RenderOperationList& renderOpList)
 	{
 		//to ensure back to front ordering
 		//first have all children add their render op lists using this same function
@@ -580,13 +604,16 @@ namespace OpenGUI{
 			childROList.clear();
 			iter++;
 		}
-		
-
-		//build our own widget render ops
-		Render::RenderOperationList myROlist = buildWidgetRenderOpList();
-
-		//and then push our ops to the front
-		Render::PrependRenderOperationList(renderOpList,myROlist);
+	}
+	//#####################################################################
+	void Element::__buildRenderOperationList(Render::RenderOperationList& renderOpList)
+	{
+		if(mRenderCache){
+			mRenderCache->getCache(renderOpList);
+		}else{
+			__getRenderOperationList_Children(renderOpList);
+			__getRenderOperationList_This(renderOpList);
+		}
 	}
 	//#####################################################################
 	void Element::__transformChildrenRenderOperationList(Render::RenderOperationList& renderOpList)
@@ -598,6 +625,31 @@ namespace OpenGUI{
 			iter->vertices[2].position = convCoordInnerToLocal(iter->vertices[2].position);
 			iter++;
 		}
+	}
+	//#####################################################################
+	void Element::dirtyCache()
+	{
+		if(mRenderCache){
+			mRenderCache->markDirty();
+		}
+		if(mParentElement){
+			mParentElement->dirtyCache();
+		}
+	}
+	//#####################################################################
+	size_t Element::_renderCacheSize()
+	{
+		size_t tmp = 0;
+
+		if(mRenderCache)
+			tmp += mRenderCache->statCacheSize();
+
+		ChildElementList::iterator iter = mChildrenElements.begin();
+		while(iter != mChildrenElements.end()){
+			tmp += (*iter)->_renderCacheSize();
+			iter++;
+		}
+		return tmp;
 	}
 	//#####################################################################
 };

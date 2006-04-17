@@ -188,6 +188,9 @@
 				RelativePath=".\OpenGUI_PropertySet.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_RenderCache.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Renderer.cpp">
 			</File>
 			<File
@@ -323,6 +326,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_RefPtr.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_RenderCache.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Renderer.h">

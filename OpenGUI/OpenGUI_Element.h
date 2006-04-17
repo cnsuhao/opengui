@@ -18,6 +18,8 @@ namespace OpenGUI{
 	typedef Element* ElementListItem;
 	typedef std::list<ElementListItem> ElementList;
 
+	class RenderCache;
+
 	//! This is the base class for all GUI elements. It provides a very basic functionality set.
 	/*! The Element class should be inherited by all classes that need to exist within a GUI.
 	*/
@@ -25,6 +27,7 @@ namespace OpenGUI{
 	{
 		friend class System;
 		friend class GUISheet;
+		friend class RenderCache;
 
 	public:
 		//! Test
@@ -289,6 +292,8 @@ namespace OpenGUI{
 
 
 	protected:
+		//! Marks the cache of this element dirty, and will trigger a call to \c buildWidgetRenderOpList() next frame.
+		void dirtyCache();
 
 		//! The default event handler for all events reaching this Element.
 		/*!
@@ -403,7 +408,14 @@ namespace OpenGUI{
 		void __transformChildrenRenderOperationList(Render::RenderOperationList& renderOpList);
 
 
+		//! \internal adds the renderoplist of all children to the given renderOpList
+		void __getRenderOperationList_Children(Render::RenderOperationList& renderOpList);
+
+		//! \internal adds the current widget's renderoplist to the given renderOpList
+		void __getRenderOperationList_This(Render::RenderOperationList& renderOpList);
+
 		//! \internal adds the current widget's renderoplist and all of its children's renderoplists to the given renderOpList
+		/*! This is accomplished by calls to \c __getRenderOperationList_Children() and \c __getRenderOperationList_This() */
 		void __buildRenderOperationList(Render::RenderOperationList& renderOpList);
 
 		//! Returns the first lowest descendant Element that is under the given point in inner coord space of this Element.
@@ -492,6 +504,9 @@ namespace OpenGUI{
 		bool mVisible;
 		bool mDisabled;
 		bool mAlwaysOnTop;
+
+		RenderCache* mRenderCache; //pointer to this element's render cache
+		size_t _renderCacheSize();
 	};
 };
 #endif

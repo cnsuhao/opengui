@@ -347,15 +347,10 @@ namespace OpenGUI{
 			mTimerManager->_DoAutoTickInject();
 
 		if(mActiveGUISheet){
-			Render::RenderOperationList renderOpList;
-			mActiveGUISheet->__buildRenderOperationList(renderOpList);
 
 			mRenderer->preRenderSetup();
-			Render::RenderOperationList::iterator iter = renderOpList.begin();
-			while(iter != renderOpList.end()){
-				mRenderer->doRenderOperation((*iter));
-				iter++;
-			}
+
+			mActiveGUISheet->renderGUISheet(mRenderer);
 
 			
 			Render::RenderOperationList renderOpList_Cursor;
@@ -366,37 +361,7 @@ namespace OpenGUI{
 				mRenderer->doRenderOperation((*iterC));
 				iterC++;
 			}
-/*
-			//!\todo DEBUG REMOVE ME
-			Render::PrimitiveText text;
 
-			static unsigned int myDebugInt = 0;
-			myDebugInt++;
-			std::stringstream ss;
-			ss << "Hello World\n" << myDebugInt;// / 100;
-			
-			text.setPosition(FVector2(0.025f, 0.70f));
-			text.setText(ss.str());
-			text.setFont("kick",100);
-			Render::RenderOperationList textRL = text.getRenderOperationList();
-			Render::RenderOperationList::iterator textRLIter = textRL.begin();
-			while(textRLIter != textRL.end()){
-				mRenderer->doRenderOperation((*textRLIter));
-				textRLIter++;
-			}
-			text.setPosition(FVector2(0.625f, 0.750f));
-			text.setText("This y is some\nsmaller text.\nIsn't it nice?");
-			text.setFont("arial",30);
-			Render::RenderOperationList textRL2 = text.getRenderOperationList();
-			Render::RenderOperationList::iterator textRLIter2 = textRL2.begin();
-			while(textRLIter2 != textRL2.end()){
-				mRenderer->doRenderOperation((*textRLIter2));
-				textRLIter2++;
-			}
-			
-			//!\todo DEBUG REMOVE ME (end)
-			
-*/
 			mRenderer->postRenderCleanup();
 		}
 	}
@@ -782,6 +747,15 @@ namespace OpenGUI{
 				m_MouseButtonClickElement[buttonId]=0;
 			}
 		}
+	}
+	//############################################################################
+	size_t System::statRenderCacheSize()
+	{
+		size_t tmp=0;
+		for(GUISheetList::iterator iter = mGUISheetList.begin(); iter != mGUISheetList.end(); iter++){
+			tmp += (*iter)->_renderCacheSize();
+		}
+		return tmp;
 	}
 	//############################################################################
 };//namespace OpenGUI{
