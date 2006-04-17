@@ -1,2 +1,5 @@
 <HR>
-OpenGUI <a href="license.html">Copyright &copy; 2006</a>
+<a href="license.html">Copyright &copy; 2006</a> OpenGUI |
+<a href="http://opengui.sourceforge.net/">OpenGUI.SF.net</a>
+<br>
+<i>Generated: $datetime</i>
