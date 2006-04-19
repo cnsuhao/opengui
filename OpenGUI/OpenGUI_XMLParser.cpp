@@ -67,6 +67,9 @@ namespace OpenGUI{
 				if(0 == strcmpi(section->Value(),"font")){
 					FontManager::getSingleton()._loadFontFromTinyXMLElement(section);
 				}
+				if(0 == strcmpi(section->Value(),"plugin")){
+					PluginManager::getSingleton()._loadFromTinyXMLElement(section);
+				}
 			}while( (section = section->NextSiblingElement()) );
 		}
 	}

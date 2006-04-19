@@ -45,7 +45,7 @@ namespace OpenGUI{
 		LogManager::SlogMsg("PluginManager", OGLL_INFO2) << "LoadPlugin: " << filename << Log::endlog;
 
 		PluginMap::iterator iter = mPluginMap.find(filename);
-		if(iter == mPluginMap.end()){
+		if(iter != mPluginMap.end()){
 			OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Plugin already loaded: " + filename, "PluginManager::loadPlugin");
 		}
 
@@ -110,7 +110,7 @@ namespace OpenGUI{
 		LogManager::SlogMsg("PluginManager", OGLL_INFO3) << "firePluginStart: " << lib->getName() << Log::endlog;
 
 		PLUGIN_START_FUNC func;
-		func = (PLUGIN_START_FUNC) lib->getSymbol("pluginSart");
+		func = (PLUGIN_START_FUNC) lib->getSymbol("pluginStart");
 		if(func)
 			func();
 	}

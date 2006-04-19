@@ -579,9 +579,6 @@ namespace OpenGUI{
 
 		//and then push our ops to the front
 		Render::PrependRenderOperationList(renderOpList,myROlist);
-		std::pair<int,char> f(7,'c');
-		f.first = 7;
-		f.second = 'c';
 	}
 	//#####################################################################
 	void Element::__getRenderOperationList_Children(Render::RenderOperationList& renderOpList)

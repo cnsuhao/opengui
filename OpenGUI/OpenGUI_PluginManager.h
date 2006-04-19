@@ -17,6 +17,7 @@ namespace OpenGUI{
 		
 	*/
 	class PluginManager : public Singleton<PluginManager>{
+		friend class XMLParser;
 	public:
 		PluginManager();
 		~PluginManager();
