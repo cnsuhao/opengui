@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+
+<Include file="metal.xml" />
+<Include file="tachometer.xml" />
+
+
+<GUISheet name="root">
+	<Widget name="myTach" type="tachometer" />
+</GUISheet>

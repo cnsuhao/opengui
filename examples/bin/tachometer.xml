@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<Font name="TachMPH" file="kongtext.ttf" autoscale="true" xres="800" yres="600" />
+<plugin file="TachometerWidget_d.dll" />
+
+<Template name="tachometer" group="OpenGUI" type="StaticImage">
+	<Property name="Imagery" value="TachBG" />
+	<Property name="position" value="(0.59875 x0.465)" />
+	<Property name="size" value="(0.40125x0.535)" />
+</Template>
+
+<Imageset sourceimage="tachometer.png">
+	<Imagery Name="TachBG" XPos="2" YPos="2" Width="321" Height="321" />
+</Imageset>
