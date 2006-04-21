@@ -3,8 +3,18 @@
 	\page BW_StaticImage Static Image
 	\section Description
 	\section Properties
-	- Position
-	- Size
-	- Enabled
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+	- Imagery : String
+	
+	Example XML:
+\code
+	<Widget name="myStaticImage" group="OpenGUI" type="StaticImage">
+		<Property name="Imagery" value="myImagery" />
+		<Property name="position" value="(0.59875 x0.465)" />
+		<Property name="size" value="(0.40125x0.535)" />
+	</Widget>
+\endcode
 
 */

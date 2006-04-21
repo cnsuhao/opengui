@@ -16,6 +16,8 @@ using namespace std;
 using namespace OpenGUI;
 int main(int argc, char* argv[])
 {
+	
+
 	testgl* oglb = new testgl();
 	oglb->WinMain(GetModuleHandle(0), 0, "", 0);
 	return 0;

@@ -10,39 +10,65 @@ namespace OpenGUI{
 		/*! This widget also provides the ability to display a small amount of information on top of the
 			tachometer, like a small LCD screen. This is originally intended to display vehicle speed.
 		*/
-		class OPENGUI_API Tachometer : public Widget
+		class OPENGUI_WIDGET_API Tachometer : public Widget
 		{
 		public:
 			Tachometer();
 			virtual ~Tachometer();
-			//! Sets the normal button imagery.
-			void setImagery(std::string imageryName);
+			//! Sets the background imagery for the tachometer
+			void setBackgroundImagery(std::string imageryName);
+			//! Sets the location within the BG imagery where the needle pivot should be
+			void setNeedlePivot(const FVector2& pivotLocation);
+			//! Sets the Imagery used for the needle
+			void setNeedleImagery(std::string imageryName);
+			//! Sets the point in the needle imagery where it attaches to the needle pivot
+			void setNeedleAnchor(const FVector2& anchorLocation);
+			//! Specifies the minimum and maximum displayable values, and the angles that represent them
+			void setNeedleScale(float minValue, float minValueAngle, float maxValue, float maxValueAngle);
+			//! Sets the current tachometer value
+			void setNeedleValue(float currentValue);
 
-
-			//! This is just a factory interface.
 			static Widget* createTachometerFactory();
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
-			bool defaultMessageHandler(const Msg::Message &message);
+			virtual bool defaultMessageHandler(const Msg::Message &message);
 
-			ImageryPtr mImageryPtr;
-			ImageryPtr mImageryPtrPressed;
-			ImageryPtr mImageryPtrMouseOver;
-			ImageryPtr mImageryPtrDisabled;
-			bool m_MouseOver;
-			bool m_ButtonDown;
+			ImageryPtr mBGImageryPtr;
+			ImageryPtr mNeedleImageryPtr;
+			FVector2 mNeedlePivot; //where the needle pivots/attaches in the background imagery
+			FVector2 mNeedleAnchor; //the location in the needle imagery that needs to attach to the pivot
+
+			float mCurrentValue;
+			float mMinValue;
+			float mMinValueAngle;
+			float mMaxValue;
+			float mMaxValueAngle;
 
 		private:
-// 			static bool _prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-// 			static bool _prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-// 			static bool _prop_SetImageryPressed(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-// 			static bool _prop_GetImageryPressed(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-// 			static bool _prop_SetImageryMouseOver(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-// 			static bool _prop_GetImageryMouseOver(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-// 			static bool _prop_SetImageryDisabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-// 			static bool _prop_GetImageryDisabled(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-		};
+ 			static bool _prop_SetBGImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+ 			static bool _prop_GetBGImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetNeedleImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetNeedleAnchor(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleAnchor(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetNeedlePivot(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedlePivot(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
+			static bool _prop_SetNeedleValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
+
+			static bool _prop_SetNeedleMinValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleMinValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
+			static bool _prop_SetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+};
 	};//namespace Widgets{
 };//namespace OpenGUI{
 #endif

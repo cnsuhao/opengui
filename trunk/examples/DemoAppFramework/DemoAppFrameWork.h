@@ -20,7 +20,7 @@ protected:
 	virtual void postRun(){};
 	//Override this to alter normal window close querying, default always allows close
 	virtual bool queryCloseWindow(){ return true; };
-	virtual void windowSizeChanged(int width, int height){}
+	virtual void windowSizeChanged(int width, int height);
 	virtual void windowRefresh(){}
 	virtual void charCallback(int character, int action){}
 	virtual void keyCallback(int key, int action){}

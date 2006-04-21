@@ -105,6 +105,8 @@ namespace OpenGUI{
 
 		bool operator==(const FVector2& right) const  { return x==right.x && y == right.y; }
 		bool operator!=(const FVector2& right) const  { return !operator==(right); }
+
+		FVector2 operator-() const  { return FVector2(-x,-y); }
 		
 		//! Returns a pixel aligned copy of this FVector2
 		FVector2 pixelAligned(const IVector2& resolution) const

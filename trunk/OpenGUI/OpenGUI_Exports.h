@@ -9,9 +9,16 @@
 #       define OPENGUI_API __declspec(dllimport)
 #   endif
 
+#   ifdef OPENGUI_WIDGET_EXPORTS
+#       define OPENGUI_WIDGET_API __declspec(dllexport)
+#   else
+#       define OPENGUI_WIDGET_API __declspec(dllimport)
+#   endif
+
 #else
 
 #   define OPENGUI_API
+#   define OPENGUI_WIDGET_API
 
 #endif
 

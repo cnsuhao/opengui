@@ -7,7 +7,52 @@
 #include "OpenGUI_RenderOperation.h"
 
 namespace OpenGUI{
+	
 	namespace Render{
+
+		/*! \brief
+		This primitive performs a rotation operation on the provided render
+		operations according to a given rotation angle and a given origin.
+
+		Positive angles create clockwise rotation, negative angles create counter
+		clockwise rotation.
+
+		If no angle is given, the default rotation is 0. If no origin is given,
+		the default origin is (0.0f x 0.0f).
+
+		\note This operation does not account for the unbalanced Width/Height ratio
+		that is common in widget coordinate space. You'll need to work around that
+		issue yourself if it matters to you.
+
+		*/
+		class OPENGUI_API PrimitiveRotation : public Primitive
+		{
+		public:
+			PrimitiveRotation() : mRadians(0), mOrigin(FVector2(0.0f,0.0f)) {}
+			virtual ~PrimitiveRotation() {}
+
+			//! Returns the RenderOperationList that is the result of this primitive
+			RenderOperationList getRenderOperationList();
+
+			//! Sets the origin of the rotation to the given location
+			void setOrigin(const FVector2& newOrigin){ mOrigin = newOrigin; }
+			//! Sets the rotation angle in radians
+			void setAngleRadians(float newAngle){ mRadians = newAngle; }
+			//! Sets the rotation angle in degrees
+			void setAngleDegrees(float newAngle);
+
+			//! Adds a single RenderOperation to the input RenderOperationList
+			void addRenderOperation(RenderOperation& renderOp);
+			//! Adds an entire RenderOperationList to the input RenderOperationList
+			void addRenderOperation(RenderOperationList& renderOpList);
+		private:
+			float mRadians;
+			FVector2 mOrigin;
+			RenderOperationList mInputRenderOps;
+
+			inline void _rotateFV2(FVector2& point);
+			inline void _rotateRenderOp(RenderOperation& renderOp);
+		};
 
 		/*! \brief
 		This primitive performs an axis aligned scissor rect operation
@@ -36,7 +81,8 @@ namespace OpenGUI{
 		so this Primitive can be trusted with RenderOperations that have
 		a specific draw order.
 		*/
-		class OPENGUI_API PrimitiveScissorRect : public Primitive{
+		class OPENGUI_API PrimitiveScissorRect : public Primitive
+		{
 		public:
 			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
 			virtual ~PrimitiveScissorRect() {}

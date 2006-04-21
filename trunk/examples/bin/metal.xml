@@ -1,2 +1,2 @@
 <?xml version="1.0" ?>
-<Font name="pecot" file="pecot.ttf" />
+<Font name="pecot" file="pecot.ttf" xres=800 yres=600 autoscale=true />

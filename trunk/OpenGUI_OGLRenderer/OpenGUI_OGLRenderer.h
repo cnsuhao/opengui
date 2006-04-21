@@ -7,17 +7,25 @@ namespace OpenGUI{
 	public:
 		OGLRenderer();
 		~OGLRenderer();
-		void getViewportDimensions(IVector2& dims);
-		void getScreenDimensions(IVector2& dims);
-		void doRenderOperation(Render::RenderOperation& renderOp);
-		void preRenderSetup();
-		void postRenderCleanup();
+		virtual void getViewportDimensions(IVector2& dims);
+		virtual void getScreenDimensions(IVector2& dims);
+		virtual void doRenderOperation(Render::RenderOperation& renderOp);
+		virtual void preRenderSetup();
+		virtual void postRenderCleanup();
+
+		void setDim(int w, int h) {mHeight = h; mWidth=w; alertViewportDimensionsChanged();}
+		void setScreenDim(int w, int h) {mSHeight = h; mSWidth=w; alertScreenDimensionsChanged(); }
 
 
 		Texture* createTextureFromFile(std::string filename);
 		Texture* createTextureFromTextureData(TextureData *textureData);
 		void updateTextureFromTextureData(Texture* texture, TextureData *textureData);
 		void destroyTexture(Texture* texturePtr);
+	private:
+		int mHeight;
+		int mWidth;
+		int mSHeight;
+		int mSWidth;
 	};
 };//namespace OpenGUI{
 #endif

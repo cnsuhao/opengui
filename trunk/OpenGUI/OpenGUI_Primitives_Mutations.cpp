@@ -2,8 +2,65 @@
 
 #include "OpenGUI_Primitives_Mutations.h"
 
+float lastDeg = 0;
+
 namespace OpenGUI{
+	namespace Math{
+		const float PI = float( 4.0 * atan( 1.0 ) );
+		const float Deg2Rad = PI / float(180.0);
+	}
 	namespace Render{
+
+		//############################################################################
+		//############################################################################
+		RenderOperationList PrimitiveRotation::getRenderOperationList()
+		{
+			//return RenderOperationList();
+			RenderOperationList::iterator iter = mInputRenderOps.begin();
+			while(iter != mInputRenderOps.end()){
+				_rotateRenderOp( (*iter) );
+				iter++;
+			}
+			return mInputRenderOps;
+		}
+		//############################################################################
+		void PrimitiveRotation::_rotateRenderOp(RenderOperation& renderOp)
+		{
+			_rotateFV2( renderOp.vertices[0].position );
+			_rotateFV2( renderOp.vertices[1].position );
+			_rotateFV2( renderOp.vertices[2].position );
+		}
+		//############################################################################
+		void PrimitiveRotation::_rotateFV2(FVector2& point)
+		{
+			float x = point.x - mOrigin.x;
+			float y = point.y - mOrigin.y;
+
+			point.x = cos(mRadians)*x - sin(mRadians)*y;
+			point.y = sin(mRadians)*x + cos(mRadians)*y;
+
+			point.x = point.x + mOrigin.x;
+			point.y = point.y + mOrigin.y;
+		}
+		//############################################################################
+		void PrimitiveRotation::setAngleDegrees(float newAngle)
+		{
+			setAngleRadians( newAngle * Math::Deg2Rad );
+			lastDeg = newAngle;
+		}
+		//############################################################################
+		void PrimitiveRotation::addRenderOperation(RenderOperation& renderOp)
+		{
+			mInputRenderOps.push_back(renderOp);
+		}
+		//############################################################################
+		void PrimitiveRotation::addRenderOperation(RenderOperationList& renderOpList)
+		{
+			AppendRenderOperationList(mInputRenderOps,renderOpList);
+		}
+		//############################################################################
+		//############################################################################
+		//############################################################################
 
 		//############################################################################
 		//############################################################################

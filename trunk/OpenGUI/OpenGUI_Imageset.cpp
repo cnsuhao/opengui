@@ -45,7 +45,7 @@ namespace OpenGUI{
 		return Imageset::createImagery(imageryName, FRect(0.0f,0.0f,1.0f,1.0f));
 	}
 	//############################################################################
-	ImageryPtr Imageset::createImagery(std::string imageryName, FRect areaRect)
+	ImageryPtr Imageset::createImagery(std::string imageryName, FRect areaRect, IRect imagesetRect)
 	{
 		if(imageryName == ""){
 			imageryName = ImageryManager::_generateRandomName();
@@ -61,9 +61,21 @@ namespace OpenGUI{
 			destroyImagery(imageryName);
 		}
 
+		if(imagesetRect.getWidth() == 0 || imagesetRect.getHeight() == 0){
+			//the imagesetRect was not provided or is possibly invalid, so try to generate a new one
+			if(mpTexture){ //but only if we have a texture to use, otherwise forget it
+				IVector2 texSize = mpTexture->getSize();
+				imagesetRect.min.x = (int)(areaRect.min.x * (float)texSize.x);
+				imagesetRect.min.y = (int)(areaRect.min.y * (float)texSize.y);
+				imagesetRect.max.x = (int)(areaRect.max.x * (float)texSize.x);
+				imagesetRect.max.y = (int)(areaRect.max.y * (float)texSize.y);
+			}
+		}
+
 		ImageryPtr imgptr = new Imagery();
 		imgptr->mParentImageset = this;
 		imgptr->mAreaRect = areaRect;
+		imgptr->mNativeRect = imagesetRect;
 		imgptr->mName = imageryName;
 		mChildImageryList.push_back(imgptr);
 		return imgptr;
@@ -81,7 +93,7 @@ namespace OpenGUI{
 		frect.min.y = ((float)areaRect.min.y) / ((float)texSize.y);
 		frect.max.x = ((float)areaRect.max.x) / ((float)texSize.x);
 		frect.max.y = ((float)areaRect.max.y) / ((float)texSize.y);
-		return Imageset::createImagery(imageryName,frect);
+		return Imageset::createImagery(imageryName, frect, areaRect);
 	}
 	//############################################################################
 	void Imageset::destroyImagery(ImageryPtr imageryPtr)

@@ -19,7 +19,7 @@ namespace OpenGUI{
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
 		ImageryPtr createImagery(std::string imageryName);
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the Imageset area defined by areaRect (which is in standard UV coordinates).
-		ImageryPtr createImagery(std::string imageryName, FRect areaRect);
+		ImageryPtr createImagery(std::string imageryName, FRect areaRect, IRect imagesetRect=IRect(0,0,0,0));
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery.  The new Imagery will encompass the Imageset area defined by areaRect (which is in pixels).
 		ImageryPtr createImagery(std::string imageryName, IRect areaRect);
 

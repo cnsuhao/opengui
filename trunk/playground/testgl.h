@@ -70,25 +70,29 @@ class testgl : public OpenGLBase
 		
 		OpenGUI::Widgets::SimpleButton* button = static_cast<OpenGUI::Widgets::SimpleButton* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "SimpleButton"));
 		//OpenGUI::Widgets::SimpleButton* button = new OpenGUI::Widgets::SimpleButton();
-		OpenGUI::Widgets::SimpleButton* button2 = new OpenGUI::Widgets::SimpleButton();
+		//OpenGUI::Widgets::SimpleButton* button2 = new OpenGUI::Widgets::SimpleButton();
+		OpenGUI::Widgets::SimpleButton* button2 = static_cast<OpenGUI::Widgets::SimpleButton* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "SimpleButton"));
 
 		button->setImagery("Button");
 		button->setImageryDisabled("ButtonDisabled");
 		button->setImageryPressed("ButtonDown");
 		button->setImageryMouseOver("ButtonHover");
-		
 		button->setRect(OpenGUI::FRect(0.25f,0.25f,0.45f,0.45f));
-		*button2 = *button;
+		
+		button2->setImagery("Button");
+		button2->setImageryDisabled("ButtonDisabled");
+		button2->setImageryPressed("ButtonDown");
+		button2->setImageryMouseOver("ButtonHover");
 		button2->setRect(OpenGUI::FRect(0.35f,0.15f,0.55f,0.55f));
 
 		button->propertySet("size","( 0.5 x 0.5)");
 
 		button->setClientAreaScaleType(OpenGUI::Element::CAS_Absolute);
 		//button->setClipsChildren(false);
-		sys->getGUISheetByName("root")->addChildElement(button);
-		sys->getGUISheetByName("root")->addChildElement(sys->createWidget("ezbutton"));
+		sys->getGUISheetByName("root")->addChildElement(button,"button");
+		sys->getGUISheetByName("root")->addChildElement(sys->createWidget("ezbutton"),"ezbutton");
 		sys->getGUISheetByName("root")->setClipsChildren(false);
-		button->addChildElement(button2);
+		button->addChildElement(button2,"button2");
 		button2->setClipsChildren(false);
 
 		OpenGUI::Widgets::TextLabel* label = 
@@ -98,7 +102,7 @@ class testgl : public OpenGLBase
 		label->setSize(0.5f,0.15f);
 		label->setFont("kick"); label->setFontSize(16);
 		label->setAlignment_Vert(OpenGUI::TextAlignment::ALIGN_JUSTIFIED);
-		sys->getGUISheetByName("root")->addChildElement(label);
+		sys->getGUISheetByName("root")->addChildElement(label,"BobLABEL");
 
 		OpenGUI::Widgets::TextLabel* label2 = 
 			static_cast<OpenGUI::Widgets::TextLabel* >(OpenGUI::WidgetFactoryManager::getSingleton().createWidget("OpenGUI", "TextLabel"));
@@ -121,14 +125,30 @@ class testgl : public OpenGLBase
 
 	void CustomDrawOperations()
 	{
+		static unsigned int cache=0;
 		static unsigned int fps=0;
 		static unsigned int mLastTimerTick = 0;
 
 		unsigned int t = (unsigned long)((float)(clock()-mLastTimerTick) / ((float)CLOCKS_PER_SEC/1000.0));
 		if(t>=1000){
+			
+			std::stringstream ss007;
+			cache = (unsigned int)sys->statRenderCacheSize();
+			ss007 << "FPS: " << fps << "\n"
+				<< "CacheSize: " << cache;
+			
+			((OpenGUI::Widgets::TextLabel*)sys->getElementByName("BobLABEL"))->setText(ss007.str());
+			
+
+
 			std::cout<<"FPS: " << fps<< "\n";
 			mLastTimerTick=clock();
 			fps=0;
+			
+			std::cout<<"cache: " << cache << "\n";
+			
+
+			
 		}else{
 			fps++;
 		}
@@ -136,7 +156,13 @@ class testgl : public OpenGLBase
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		sys->notifyScreenDimensionsChanged();
 		sys->notifyViewportDimensionsChanged();
-		sys->renderGUI();
+		try{
+			sys->renderGUI();
+		}catch(...){
+			assert(0);
+		}
+
+		
 
 
 		//perform mouse capturing

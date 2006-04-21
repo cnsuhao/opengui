@@ -294,6 +294,8 @@ namespace OpenGUI{
 	protected:
 		//! Marks the cache of this element dirty, and will trigger a call to \c buildWidgetRenderOpList() next frame.
 		void dirtyCache();
+		//! Marks the cache dirty for this element and all its children, and will trigger a call to \c buildWidgetRenderOpList() next frame.
+		void dirtyCache_Recursive();
 
 		//! The default event handler for all events reaching this Element.
 		/*!
@@ -507,6 +509,7 @@ namespace OpenGUI{
 
 		RenderCache* mRenderCache; //pointer to this element's render cache
 		size_t _renderCacheSize();
+		void _dirtyChildrenCache_Recursive();
 	};
 };
 #endif
