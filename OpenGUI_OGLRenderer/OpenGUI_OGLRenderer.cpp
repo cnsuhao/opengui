@@ -24,6 +24,9 @@ namespace OpenGUI{
 		glGetIntegerv(GL_VIEWPORT,viewportDims);
 		dims.x = viewportDims[2];
 		dims.y = viewportDims[3];
+
+		dims.x = mWidth;
+		dims.y = mHeight;
 	}
 	//###########################################################
 	void OGLRenderer::getScreenDimensions(IVector2& dims)
@@ -33,6 +36,9 @@ namespace OpenGUI{
 		glGetIntegerv(GL_VIEWPORT,viewportDims);
 		dims.x = viewportDims[2];
 		dims.y = viewportDims[3];
+
+		dims.x = mSWidth;
+		dims.y = mSHeight;
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation(Render::RenderOperation& renderOp)
@@ -80,6 +86,8 @@ namespace OpenGUI{
 
 		glEnable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_2D);
+		glShadeModel(GL_SMOOTH);
 
 		//glDisable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);

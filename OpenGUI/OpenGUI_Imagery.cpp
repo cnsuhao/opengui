@@ -9,6 +9,11 @@ namespace OpenGUI{
 		return mAreaRect;
 	}
 	//############################################################################
+	IRect Imagery::getImagesetRect()
+	{
+		return mNativeRect;
+	}
+	//############################################################################
 	Texture* Imagery::getTexture()
 	{
 		if(!mParentImageset) return 0;

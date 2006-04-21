@@ -82,11 +82,15 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::addChildElement(Element* child, std::string name)
 	{
-		if(child == 0)
+		if(child == 0){
 			OG_THROW(Exception::ERR_INVALIDPARAMS, "Element cannot parent nothing", "Element::addChildElement");
+			return;
+		}
 
-		if(child == this)
+		if(child == this){
 			OG_THROW(Exception::ERR_INVALIDPARAMS, "Element cannot parent itself", "Element::addChildElement");
+			return;
+		}
 		
 		if(name==""){
 			name = System::getSingleton().generateRandomElementName();
@@ -94,10 +98,12 @@ namespace OpenGUI{
 			//test to ensure that the new element has no children with that name already
 			if(child->getChildElement(name)){
 				OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Element with name already exists:" + name, "Element::addChildElement");
+				return;
 			}
 			//test the name to ensure it is unique within the system
 			if(System::getSingleton().getElementByName(name)){
 				OG_THROW(Exception::ERR_DUPLICATE_ITEM, "Element with name already exists:" + name, "Element::addChildElement");
+				return;
 			}
 		}
 		child->_setElementName(name);  //give the child a name
@@ -113,6 +119,7 @@ namespace OpenGUI{
 				mChildrenElements.insert(i, child);
 				child->_setElementParent(this); //add ourself to the child
 				//!\TODO: perform attach operations here
+				dirtyCache();
 				return;
 			}
 			i++;
@@ -120,6 +127,7 @@ namespace OpenGUI{
 		//the new child has the lowest zOrder, so we need to push it to the back of the child list
 		mChildrenElements.push_back(child);
 		child->_setElementParent(this); //add ourself to the child
+		dirtyCache();
 	}
 	//#####################################################################
 	void Element::destroyChildElement(Element* child)
@@ -130,6 +138,7 @@ namespace OpenGUI{
 				(*i)->_setElementParent(0); //remove ourself from the child
 				delete (*i);
 				mChildrenElements.erase(i);
+				dirtyCache();
 				return;
 			}
 			i++;
@@ -151,6 +160,7 @@ namespace OpenGUI{
 			if((*i) == child){
 				(*i)->_setElementParent(0); //remove ourself from the child
 				mChildrenElements.erase(i);
+				dirtyCache();
 				return;
 			}
 			i++;
@@ -171,6 +181,7 @@ namespace OpenGUI{
 	void Element::sortChildElements()
 	{
 		mChildrenElements.sort(ChildElementListZOrderSortDescending());
+		dirtyCache();
 	}
 	//#####################################################################
 	ChildElementList Element::getChildElementList()
@@ -289,6 +300,7 @@ namespace OpenGUI{
 	void Element::setRect(FRect& newRect)
 	{
 		mElementRect = newRect;
+		dirtyCache();
 	}
 	//#####################################################################
 	FRect Element::getRect()
@@ -300,22 +312,26 @@ namespace OpenGUI{
 	{
 		//!\todo should we add an event for widget position changes?
 		mElementRect.setPosition(newPosition);
+		dirtyCache();
 	}
 	//#####################################################################
 	void Element::setPos(const float& xPos, const float& yPos)
 	{
 		mElementRect.setPosition(FVector2(xPos,yPos));
+		dirtyCache();
 	}
 	//#####################################################################
 	void Element::setSize(FVector2& newSize)
 	{
 		//!\todo should we add an event for widget size changes?
 		mElementRect.setSize(newSize);
+		dirtyCache();
 	}
 	//#####################################################################
 	void Element::setSize(const float& width, const float& height)
 	{
 		mElementRect.setSize(FVector2(width,height));
+		dirtyCache();
 	}
 	//#####################################################################
 	int Element::getZOrder()
@@ -631,6 +647,23 @@ namespace OpenGUI{
 		}
 		if(mParentElement){
 			mParentElement->dirtyCache();
+		}
+	}
+	//#####################################################################
+	void Element::dirtyCache_Recursive()
+	{
+		Element::_dirtyChildrenCache_Recursive();
+		Element::dirtyCache();
+	}
+	//#####################################################################
+	void Element::_dirtyChildrenCache_Recursive()
+	{
+		ChildElementList childList = getChildElementList();
+		for(ChildElementList::iterator iter = childList.begin(); iter != childList.end(); iter++){
+			(*iter)->_dirtyChildrenCache_Recursive();
+		}
+		if(mRenderCache){
+			mRenderCache->markDirty();
 		}
 	}
 	//#####################################################################

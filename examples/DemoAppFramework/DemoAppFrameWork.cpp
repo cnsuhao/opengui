@@ -27,6 +27,9 @@ DemoApp::DemoApp(std::string windowTitle)
 	assert( !mptr_Singleton );
 	mptr_Singleton = (this);
 
+	mSystem = 0;
+	mRenderer = 0;
+
 	glfwInit();
 	if( !glfwOpenWindow( 800,600, 0,0,0,0,0,0, GLFW_WINDOW ) ){
 		glfwTerminate();
@@ -44,7 +47,15 @@ DemoApp::DemoApp(std::string windowTitle)
 	glfwSetMouseWheelCallback( &DemoApp::_mouseWhlCallback );
 
 	mRenderer = new OpenGUI::OGLRenderer();
+	
+	int w,h;
+	glfwGetWindowSize(&w, &h);
+	DemoApp::windowSizeChanged(w, h);
+	static_cast<OpenGUI::OGLRenderer*>(mRenderer)->setScreenDim(w, h);
+
 	mSystem = new OpenGUI::System(mRenderer);
+
+	
 }
 DemoApp::~DemoApp()
 {
@@ -64,7 +75,7 @@ void DemoApp::run()
 	while( running )
 	{
 		// OpenGL rendering goes here...
-		glClearColor(1.0f,0.0f,0.0f,0.0f);
+		//glClearColor(1.0f,0.0f,0.0f,0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		perframeRun();
@@ -81,6 +92,13 @@ void DemoApp::run()
 	postRun();
 }
 
+void DemoApp::windowSizeChanged(int width, int height)
+{
+	glViewport(0,0,width,height);
+	if(mRenderer){
+		static_cast<OpenGUI::OGLRenderer*>(mRenderer)->setDim(width,height);
+	}
+}
 
 
 

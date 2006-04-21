@@ -289,8 +289,10 @@ namespace OpenGUI{
 	//############################################################################
 	void System::setGUISheet(GUISheet* guiSheetPtr)
 	{
-		if(mActiveGUISheet)
+		if(mActiveGUISheet){
+			mActiveGUISheet->dirtyCache_Recursive();
 			_issueGUISheetDeactivate();
+		}
 		_tmPurgeTracks();
 		mActiveGUISheet = guiSheetPtr;
 		if(guiSheetPtr)
@@ -323,12 +325,16 @@ namespace OpenGUI{
 	{
 		//!\todo make sure this is all that needs to be done to properly handle viewport dimension changes
 		mRenderer->getViewportDimensions(mWindowResolution);
+		if(mActiveGUISheet)
+			mActiveGUISheet->dirtyCache_Recursive();
 	}
 	//############################################################################
 	void System::notifyScreenDimensionsChanged()
 	{
 		//!\todo make sure this is all that needs to be done to properly handle screen dimension changes
 		mRenderer->getScreenDimensions(mScreenResolution);
+		if(mActiveGUISheet)
+			mActiveGUISheet->dirtyCache_Recursive();
 	}
 	//############################################################################
 	IVector2 System::getViewportResolution()

@@ -18,6 +18,18 @@ namespace OpenGUI{
 	public:
 		//! Returns the FRect that defines the Texture UVs for this Imagery within the Imageset
 		FRect getTextureUVRect();
+		//! Returns the IRect that was used to define the Imagery within the Imageset
+		/*! %OpenGUI will do its best to preserve this information, but due to the different ways
+			that Imagery can be defined, this value may not always be accurate. It is guaranteed to
+			be wrong for Imagery created in Imagesets that have no texture assigned. In which case,
+			the value will be a rect equal to IRect(0,0,0,0). If the Imagery was created by defining
+			UV coordinates, rather than a pixel based rect, then a pixel rect will be calculated based
+			on the UVs. (This is mostly accurate, but not 100% perfect, so some error may occur.)
+
+			\note This value is always available (and accurate) for Imagery that was created from
+			an XML file, as the XML loader always creates Imagery using pixel based rects.
+		*/
+		IRect getImagesetRect();
 		//! Returns a pointer to the Texture object for this Imagery's parent Imageset.
 		/*! \warning Widget writers: Do <b>not</b>, under any circumstances, cache this value within
 			your Widget. It absolutely \b must be retrieved every time you build a RenderOperation,
@@ -34,6 +46,7 @@ namespace OpenGUI{
 		~Imagery() { }
 		std::string mName;
 		FRect mAreaRect;
+		IRect mNativeRect;
 		Imageset* mParentImageset;
 	};
 	typedef RefPtr<Imagery> ImageryPtr;

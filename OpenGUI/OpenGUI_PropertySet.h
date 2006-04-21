@@ -60,7 +60,7 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	typedef bool (*PropertyGetter)(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
 	//#####################################################################
-	//! \intenal Experimental class. Not finished
+	//! \internal Experimental class. Not finished
 	class Enum{
 	public:
 		Enum(std::string firstValue);

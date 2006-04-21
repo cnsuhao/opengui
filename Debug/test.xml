@@ -4,7 +4,7 @@
 
 <Include file="test2.xml" />
 
-<Plugin file="" />
+<Plugin file="TachometerWidget_d.dll" />
 
 <Font name="arial" file="arial.ttf" autoscale="false" xres="640" yres="480" />
 
