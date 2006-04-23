@@ -1,3 +1,6 @@
+# OpenGUI (4/23/06) - Fixed library collisions by splitting build into
+#     separate debug & release builds.
+
 ##########################################################################
 # Makefile for GLFW on Windows using MS VC++ 6.x.
 #-------------------------------------------------------------------------
@@ -10,7 +13,9 @@
 ##########################################################################
 # Default: Build static and dynamic versions of GLFW
 ##########################################################################
-default: glfw.lib glfw.dll
+# OpenGUI (4/23/06) Added debug library build type
+default: glfw.lib glfw_d.lib
+#glfw.dll - OpenGUI examples don't use DLL build, so it is disabled
 
 
 ##########################################################################
@@ -23,12 +28,15 @@ VERMINOR = 5
 ##########################################################################
 # Compiler settings
 ##########################################################################
+# OpenGUI (4/23/06) Switched runtime library linkage from LIBC (/ML) to MSVCRT (/MD)
 CC         = cl
-CFLAGS     = /nologo /c /O1sgiy /Gs /W3 /I. /I..
+CFLAGS     = /nologo /c /MD /O1sgiy /Gs /W3 /I. /I..
+CFLAGS_D     = /nologo /c /MDd /O1sgiy /Gs /W3 /I. /I..
 CFLAGS_DLL = $(CFLAGS) /DGLFW_BUILD_DLL
 
 # Some modules should be optimized for speed (image decoding)
-CFLAGS_SPEED     = /nologo /c /O2tgiy /Gs /W3 /I. /I..
+CFLAGS_SPEED     = /nologo /c /MD /O2tgiy /Gs /W3 /I. /I..
+CFLAGS_SPEED_D     = /nologo /c /MDd /O2tgiy /Gs /W3 /I. /I..
 CFLAGS_SPEED_DLL = $(CFLAGS_SPEED) /DGLFW_BUILD_DLL
 
 
@@ -48,6 +56,7 @@ LINKLIBS  = opengl32.lib user32.lib
 ##########################################################################
 # Object files for static library
 ##########################################################################
+#OpenGUI (4/23/06) - These are used for release builds
 OBJS = \
        enable.obj \
        fullscreen.obj \
@@ -68,6 +77,28 @@ OBJS = \
        win32_thread.obj \
        win32_time.obj \
        win32_window.obj
+
+#OpenGUI (4/23/06) - These are used for debug builds 
+OBJS_D = \
+       enable_d.obj \
+       fullscreen_d.obj \
+       glext_d.obj \
+       image_d.obj \
+       init_d.obj \
+       input_d.obj \
+       joystick_d.obj \
+       tga_d.obj \
+       thread_d.obj \
+       time_d.obj \
+       window_d.obj \
+       win32_enable_d.obj \
+       win32_fullscreen_d.obj \
+       win32_glext_d.obj \
+       win32_init_d.obj \
+       win32_joystick_d.obj \
+       win32_thread_d.obj \
+       win32_time_d.obj \
+       win32_window_d.obj
 
 
 ##########################################################################
@@ -100,8 +131,13 @@ DLLOBJS = \
 ##########################################################################
 # Rule for building static library
 ##########################################################################
+#OpenGUI (4/23/06) - Release build
 glfw.lib: $(OBJS)
 	$(MKLIB) $(LIBFLAGS) /OUT:glfw.lib $(OBJS)
+
+#OpenGUI (4/23/06) - Debug build
+glfw_d.lib: $(OBJS_D)
+	$(MKLIB) $(LIBFLAGS) /OUT:glfw_d.lib $(OBJS_D)
 
 
 ##########################################################################
@@ -114,6 +150,7 @@ glfw.dll: $(DLLOBJS)
 ##########################################################################
 # Rules for building static library object files
 ##########################################################################
+#OpenGUI (4/23/06) - These are used for release builds
 enable.obj: ..\\enable.c ..\\internal.h platform.h
 	$(CC) $(CFLAGS) /Fo$@ ..\\enable.c
 
@@ -170,6 +207,66 @@ win32_time.obj: win32_time.c ..\\internal.h platform.h
 
 win32_window.obj: win32_window.c ..\\internal.h platform.h
 	$(CC) $(CFLAGS) /Fo$@ win32_window.c
+
+	
+#OpenGUI (4/23/06) - These are used for debug builds
+
+enable_d.obj: ..\\enable.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\enable.c
+
+fullscreen_d.obj: ..\\fullscreen.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\fullscreen.c
+
+glext_d.obj: ..\\glext.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\glext.c
+
+image_d.obj: ..\\image.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_SPEED_D) /Fo$@ ..\\image.c
+
+init_d.obj: ..\\init.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\init.c
+
+input_d.obj: ..\\input.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\input.c
+
+joystick_d.obj: ..\\joystick.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\joystick.c
+
+tga_d.obj: ..\\tga.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_SPEED_D) /Fo$@ ..\\tga.c
+
+thread_d.obj: ..\\thread.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\thread.c
+
+time_d.obj: ..\\time.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\time.c
+
+window_d.obj: ..\\window.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ ..\\window.c
+
+win32_enable_d.obj: win32_enable.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_enable.c
+
+win32_fullscreen_d.obj: win32_fullscreen.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_fullscreen.c
+
+win32_glext_d.obj: win32_glext.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_glext.c
+
+win32_init_d.obj: win32_init.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_init.c
+
+win32_joystick_d.obj: win32_joystick.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_joystick.c
+
+win32_thread_d.obj: win32_thread.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_thread.c
+
+win32_time_d.obj: win32_time.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_time.c
+
+win32_window_d.obj: win32_window.c ..\\internal.h platform.h
+	$(CC) $(CFLAGS_D) /Fo$@ win32_window.c
 
 
 ##########################################################################

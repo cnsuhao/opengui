@@ -56,6 +56,10 @@ REM ----------------------------------------------------------------------
 cd .\lib\win32
 %1 -f Makefile.win32.%2
 
+REM OpenGUI (4/23/06) Disabling GLFW examples
+cd ..
+GOTO End
+
 
 REM ----------------------------------------------------------------------
 REM Build example programs
@@ -101,6 +105,29 @@ IF EXIST .\lib\win32\win32_thread.o       del .\lib\win32\win32_thread.o
 IF EXIST .\lib\win32\win32_time.o         del .\lib\win32\win32_time.o
 IF EXIST .\lib\win32\win32_window.o       del .\lib\win32\win32_window.o
 
+REM OpenGUI (4/23/06) Fixing library collisions by splitting build into debug/release combo
+IF EXIST .\lib\win32\enable_d.o             del .\lib\win32\enable_d.o
+IF EXIST .\lib\win32\fullscreen_d.o         del .\lib\win32\fullscreen_d.o
+IF EXIST .\lib\win32\glext_d.o              del .\lib\win32\glext_d.o
+IF EXIST .\lib\win32\image_d.o              del .\lib\win32\image_d.o
+IF EXIST .\lib\win32\init_d.o               del .\lib\win32\init_d.o
+IF EXIST .\lib\win32\input_d.o              del .\lib\win32\input_d.o
+IF EXIST .\lib\win32\joystick_d.o           del .\lib\win32\joystick_d.o
+IF EXIST .\lib\win32\tga_d.o                del .\lib\win32\tga_d.o
+IF EXIST .\lib\win32\thread_d.o             del .\lib\win32\thread_d.o
+IF EXIST .\lib\win32\time_d.o               del .\lib\win32\time_d.o
+IF EXIST .\lib\win32\window_d.o             del .\lib\win32\window_d.o
+IF EXIST .\lib\win32\win32_enable_d.o       del .\lib\win32\win32_enable_d.o
+IF EXIST .\lib\win32\win32_fullscreen_d.o   del .\lib\win32\win32_fullscreen_d.o
+IF EXIST .\lib\win32\win32_glext_d.o        del .\lib\win32\win32_glext_d.o
+IF EXIST .\lib\win32\win32_init_d.o         del .\lib\win32\win32_init_d.o
+IF EXIST .\lib\win32\win32_joystick_d.o     del .\lib\win32\win32_joystick_d.o
+IF EXIST .\lib\win32\win32_thread_d.o       del .\lib\win32\win32_thread_d.o
+IF EXIST .\lib\win32\win32_time_d.o         del .\lib\win32\win32_time_d.o
+IF EXIST .\lib\win32\win32_window_d.o       del .\lib\win32\win32_window_d.o
+REM OpenGUI (4/23/06) End change segment
+
+
 IF EXIST .\lib\win32\enable_dll.o         del .\lib\win32\enable_dll.o
 IF EXIST .\lib\win32\fullscreen_dll.o     del .\lib\win32\fullscreen_dll.o
 IF EXIST .\lib\win32\glext_dll.o          del .\lib\win32\glext_dll.o
@@ -142,6 +169,29 @@ IF EXIST .\lib\win32\win32_thread.obj     del .\lib\win32\win32_thread.obj
 IF EXIST .\lib\win32\win32_time.obj       del .\lib\win32\win32_time.obj
 IF EXIST .\lib\win32\win32_window.obj     del .\lib\win32\win32_window.obj
 
+REM OpenGUI (4/23/06) Fixing library collisions by splitting build into debug/release combo
+IF EXIST .\lib\win32\enable_d.obj           del .\lib\win32\enable_d.obj
+IF EXIST .\lib\win32\fullscreen_d.obj       del .\lib\win32\fullscreen_d.obj
+IF EXIST .\lib\win32\glext_d.obj            del .\lib\win32\glext_d.obj
+IF EXIST .\lib\win32\image_d.obj            del .\lib\win32\image_d.obj
+IF EXIST .\lib\win32\init_d.obj             del .\lib\win32\init_d.obj
+IF EXIST .\lib\win32\input_d.obj            del .\lib\win32\input_d.obj
+IF EXIST .\lib\win32\joystick_d.obj         del .\lib\win32\joystick_d.obj
+IF EXIST .\lib\win32\tga_d.obj              del .\lib\win32\tga_d.obj
+IF EXIST .\lib\win32\thread_d.obj           del .\lib\win32\thread_d.obj
+IF EXIST .\lib\win32\time_d.obj             del .\lib\win32\time_d.obj
+IF EXIST .\lib\win32\window_d.obj           del .\lib\win32\window_d.obj
+IF EXIST .\lib\win32\win32_enable_d.obj     del .\lib\win32\win32_enable_d.obj
+IF EXIST .\lib\win32\win32_fullscreen_d.obj del .\lib\win32\win32_fullscreen_d.obj
+IF EXIST .\lib\win32\win32_glext_d.obj      del .\lib\win32\win32_glext_d.obj
+IF EXIST .\lib\win32\win32_init_d.obj       del .\lib\win32\win32_init_d.obj
+IF EXIST .\lib\win32\win32_joystick_d.obj   del .\lib\win32\win32_joystick_d.obj
+IF EXIST .\lib\win32\win32_thread_d.obj     del .\lib\win32\win32_thread_d.obj
+IF EXIST .\lib\win32\win32_time_d.obj       del .\lib\win32\win32_time_d.obj
+IF EXIST .\lib\win32\win32_window_d.obj     del .\lib\win32\win32_window_d.obj
+REM OpenGUI (4/23/06) End change segment
+
+
 IF EXIST .\lib\win32\enable_dll.obj       del .\lib\win32\enable_dll.obj
 IF EXIST .\lib\win32\fullscreen_dll.obj   del .\lib\win32\fullscreen_dll.obj
 IF EXIST .\lib\win32\glext_dll.obj        del .\lib\win32\glext_dll.obj
@@ -173,6 +223,9 @@ IF EXIST .\lib\win32\glfwdll.lib          del .\lib\win32\glfwdll.lib
 IF EXIST .\lib\win32\glfw.dll             del .\lib\win32\glfw.dll
 IF EXIST .\lib\win32\glfw.tds             del .\lib\win32\glfw.tds
 IF EXIST .\lib\win32\init.tds             del .\lib\win32\init.tds
+REM OpenGUI (4/23/06) Fixing library collisions by splitting build into debug/release combo
+IF EXIST .\lib\win32\glfw_d.lib             del .\lib\win32\glfw_d.lib
+REM OpenGUI (4/23/06) End change segment
 
 REM Executables and related files
 IF EXIST .\examples\boing.exe             del .\examples\boing.exe
