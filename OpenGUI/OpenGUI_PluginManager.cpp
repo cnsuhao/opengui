@@ -51,11 +51,14 @@ namespace OpenGUI{
 
 		//attach the module
 		DynamicLib* lib = new DynamicLib(filename);
+		if(!lib)
+			return;
+
 		try{
 			lib->load();
 		}catch(Exception e){
 			delete lib;
-			throw;
+			return;
 		}
 
 		mPluginMap[filename] = lib;

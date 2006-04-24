@@ -4,6 +4,9 @@
 // This file is meant to hold configuration settings in the form of C macros.
 // Please give your configuration settings useful comments so people know what they do.
 
+//###########################################################################################
+//###########################################################################################
+//###########################################################################################
 
 //***********************//
 //  FONT CACHE SETTINGS  //
@@ -28,6 +31,39 @@
 // and the defaults are good enough for most applications.
 #define FONTCACHE_MIN_FONTATLAS_DIM 256
 #define FONTCACHE_MAX_FONTATLAS_DIM 1024
+
+
+
+//###########################################################################################
+//###########################################################################################
+//###########################################################################################
+
+//*******************************//
+//  DYNAMIC LIB LOADER SETTINGS  //
+//*******************************//
+// The DynamicLib class provides cross platform loading of dynamic libraries. Because of
+// the differences in file naming conventions of dynamic libraries on different platforms,
+// it also has the ability to provide a filename mangling service. This allows you to
+// provide dynamic library names by filename prefix only, and will automatically generate
+// the correct suffix (filename extension) according to the current platform.
+// 	( .dll for Windows; .so for Linux )
+// It also provides the ability to append "_d" to the filename prefix if OpenGUI was built
+// as a debug version.
+//
+// Sets the style of filename mangling that is performed.
+// 0 - Mangling is DISABLED completely (default action if DYNAMICLIB_FILENAME_MANGLING is not defined)
+// 1 - Mangling is ALWAYS performed, even if the given filename already matches an existing file
+//	( "_d" is ALWAYS appended to filename prefixes if OpenGUI is debug )
+// 2 - Mangling is performed ONLY when the given filename does not match an existing file
+//	( "_d" is ONLY appended to filename prefixes if the given filename is not found if OpenGUI is debug )
+// 3 - Mangling is performed when the given filename does not match an existing file,
+//	except "_d" is ALWAYS appended to the filename prefix if OpenGUI was built in debug mode
+//	( in release mode, will act the same as setting 2 )
+//
+// In order to properly supply cross platform builds of demos with the least effort, the default
+// setting is 1 (full mangling ALWAYS enforced). Changing this value will likely break at least some
+// demos, as it will invalidate the xml config files they utilize.
+#define DYNAMICLIB_FILENAME_MANGLING 1
 
 
 #endif
