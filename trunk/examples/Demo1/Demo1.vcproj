@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				AdditionalDependencies="OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer.lib"
 				OutputFile="$(OutDir)/Demo1_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32"

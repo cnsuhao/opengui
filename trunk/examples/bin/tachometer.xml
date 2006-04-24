@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <Font name="TachMPH" file="kongtext.ttf" autoscale="true" xres="800" yres="600" />
-<plugin file="TachometerWidget.dll" />
+<plugin file="TachometerWidget" />
 
 <Template name="tachometer2" group="OpenGUI" type="StaticImage">
 	<Property name="Imagery" value="TachBG" />
