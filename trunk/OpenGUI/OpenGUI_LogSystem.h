@@ -20,6 +20,7 @@
 #define OGLL_INSANE 200
 
 namespace OpenGUI{
+	class Log; //forward declaration
 
 
 	//! LogListener interface class for creating custom log output streams.
@@ -68,8 +69,12 @@ namespace OpenGUI{
 	class OPENGUI_API LogManager : public Singleton<LogManager>{
 		friend class Log;
 	public:
-		LogManager() : mLogListenerPtr(0), mLogLevel(-1) {}
-		LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(-1) {}
+		//TODO : FIXME (gcc is anal)
+		//LogManager() : mLogListenerPtr(0), mLogLevel(-1) {}
+		LogManager() : mLogListenerPtr(0), mLogLevel(0) {}
+		//TODO : FIXME (gcc is anal)
+		//LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(-1) {}
+		LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(0) {}
 		~LogManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
@@ -168,3 +173,4 @@ namespace OpenGUI{
 }; //namespace OpenGUI{
 
 #endif
+

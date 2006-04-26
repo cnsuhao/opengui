@@ -185,7 +185,8 @@ namespace OpenGUI{
 		FontAtlasList::iterator iter = mFontAtlasList.begin();
 		while(iter != mFontAtlasList.end()){
 			atlas = (*iter);
-			if( atlas->GetAvailableChunk(glyphSet->glyphSize, IRect(), false) ){
+			IRect tmpIRect; //GCC apparently does not support in-place object contruction in pass by reference
+			if( atlas->GetAvailableChunk(glyphSet->glyphSize, tmpIRect, false) ){
 				break;
 			}
 			iter++;
