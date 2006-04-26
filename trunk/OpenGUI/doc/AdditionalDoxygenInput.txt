@@ -153,24 +153,6 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	\section IssuingAlerts Issuing Alerts
 */
 
-/*!
-	\page BaseWidgets Base Widgets
-	\todo Add a #define in OpenGUI_CONFIG.h to toggle building of default widgets.
-	This is the complete list of the base widgets that come built in to OpenGUI.
-	These widgets are extremely basic, most of them only performing imagery
-	replacement for different states.
-	\note Only the widgets that have links to more detailed documentation are
-		finished at this time. All others are in varying states of completion.
-	<HR>
-	- \subpage BW_StaticImage "StaticImage"
-	- SimpleButton
-	- Label (static text)
-	- CheckBox
-	- RadioButton
-	- ProgressBar
-	
-	\todo add documentation about each of these base types
-*/
 
 /*! \page GeneralTODOs General TODOs
 	\todo - Need to ensure that every function and variable that is intended for use by 

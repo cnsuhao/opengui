@@ -88,11 +88,9 @@ namespace OpenGUI{
 				}
 
 				if (message.event.type==message.event.ME_MouseClick){
-					std::cout << "! CLICK!\n";
 					return true;
 				}
 				if (message.event.type==message.event.ME_MouseDblClick){
-					std::cout << "## DBLCLICK!\n";
 					return true;
 				}
 
