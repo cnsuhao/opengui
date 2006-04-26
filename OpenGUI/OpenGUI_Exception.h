@@ -60,11 +60,12 @@ namespace OpenGUI{
 		int getLine(){return mLine;}
 	private:
 		int mCode;
-		std::string mSrc;
-		std::string mMsg;
-		char* mFile;
 		int mLine;
+		std::string mMsg;
+		std::string mSrc;
+		char* mFile;
 		static std::string getCodeStr(int code);
 	};
 };
 #endif
+

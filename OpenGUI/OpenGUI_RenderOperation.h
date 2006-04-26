@@ -75,10 +75,12 @@ namespace OpenGUI{
 		};
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
-		inline void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		/*! \todo inline this in a way that GCC doesn't complain about */
+		void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
 
 		//! Prepends the contents of inList to the beginning of outList. The contents of inList are preserved.
-		inline void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		/*! \todo inline this in a way that GCC doesn't complain about */
+		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
 
 		/*! \brief
 			This is a base class for the built in Primitive system. Using

@@ -100,8 +100,11 @@ namespace OpenGUI{
 	//############################################################################
 	
 
+	//TODO : FIXME (gcc is anal)
+	//Log::Log(LogManager* parent, std::string name) 
+	//	: mName(name), mParent(parent), mLogLevel(-1)
 	Log::Log(LogManager* parent, std::string name) 
-		: mName(name), mParent(parent), mLogLevel(-1)
+		: mName(name), mParent(parent), mLogLevel(0)
 	{
 #ifdef OPENGUI_DEBUG
 		//write(0) << "**Log Type Created**" << Log::endlog;
@@ -218,3 +221,4 @@ namespace OpenGUI{
 	//############################################################################
 
 };//namespace OpenGUI{
+

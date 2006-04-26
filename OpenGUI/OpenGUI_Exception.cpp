@@ -5,21 +5,21 @@ namespace OpenGUI{
 
 
 	Exception::Exception( int code, const std::string& desc, const std::string& srcArea )
-		: mLine( 0 ), mCode( code), mMsg( desc ), mSrc( srcArea ), mFile( 0 )
+		: mCode( code), mLine( 0 ), mMsg( desc ), mSrc( srcArea ), mFile( 0 )
 	{
 		if(LogManager::getSingletonPtr())
 			LogManager::SlogMsg("EXCEPTION",OGLL_ERR) << Exception::getFullMessage() << Log::endlog;
 	}
 
 	Exception::Exception( int code, const std::string& desc, const std::string& srcArea, char* file, long line )
-		: mLine( line ), mCode( code), mMsg( desc ), mSrc( srcArea ), mFile( file )
+		: mCode( code), mLine( line ), mMsg( desc ), mSrc( srcArea ), mFile( file )
 	{
 		if(LogManager::getSingletonPtr())
 			LogManager::SlogMsg("EXCEPTION",OGLL_ERR) << Exception::getFullMessage() << Log::endlog;
 	}
 
 	Exception::Exception(const Exception& rhs)
-		: mLine( rhs.mLine ), mCode( rhs.mCode), mMsg( rhs.mMsg ), mSrc( rhs.mSrc ), mFile( rhs.mFile )
+		: mCode( rhs.mCode), mLine( rhs.mLine ), mMsg( rhs.mMsg ), mSrc( rhs.mSrc ), mFile( rhs.mFile )
 	{
 
 	}
