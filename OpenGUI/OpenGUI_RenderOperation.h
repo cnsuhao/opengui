@@ -82,6 +82,19 @@ namespace OpenGUI{
 		/*! \todo inline this in a way that GCC doesn't complain about */
 		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
 
+		//! Appends the contents of outList by splicing the contents of appendingList onto the end of outList.
+		/*! The contents of \c appendingList are directly moved into \c outList via pointer manipulation, leaving
+			\c appendingList completely empty.
+
+			This operation is O(n), performing no free-store allocations, making it very efficient for appending
+			long lists.
+			\todo inline this in a way that GCC doesn't complain about
+		*/
+		inline void SpliceRenderOperationList(RenderOperationList& outList, RenderOperationList& appendingList)
+		{
+			outList.splice(outList.end(), appendingList);
+		}
+
 		/*! \brief
 			This is a base class for the built in Primitive system. Using
 			primitives allows widgets to easily create the most common types

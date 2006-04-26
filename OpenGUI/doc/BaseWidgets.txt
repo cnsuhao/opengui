@@ -1,20 +1,115 @@
 
 /*!
+	\page BaseWidgets Base Widgets
+	\todo Add a #define in OpenGUI_CONFIG.h to toggle building of default widgets.
+	
+	This is the complete list of the base widgets that come built in to OpenGUI.
+	These widgets are extremely basic, most of them only performing imagery
+	replacement for different states. The goal of the base widgets is to provide
+	code examples for custom widget creation, while being functionally complete
+	enough for making very basic GUIs.
+	
+	In order to access the C++ interfaces to the base widgets that come built
+	directly into %OpenGUI you must include \c OpenGUI_BaseWidgets.h. This is only
+	required for access the native class interfaces. You can always perform
+	the same operations using the property system instead, which is always accessible
+	anywhere that \c OpenGUI.h has been included.
+	
+	\note Only the widgets that have links to more detailed documentation are
+		finished at this time. All others are in varying states of completion.
+	<HR>
+	- \subpage BW_StaticImage "StaticImage"
+	- \subpage BW_SimpleButton "SimpleButton"
+	- Label (static text)
+	- CheckBox
+	- RadioButton
+	- ProgressBar
+	
+	\todo add documentation about each of these base types
+*/
+
+/*!
 	\page BW_StaticImage Static Image
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "StaticImage"
+	
 	\section Description
+	Draws static imagery to the screen. The imagery is stretched to completely will the widget.
+	Pixel alignment must be performed manually if it is desired.
+	
+	\see Class Documentation: OpenGUI::Widgets::StaticImage
+	
 	\section Properties
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
 	- Imagery : String
-	
+
+	\section Usage	
 	Example XML:
 \code
-	<Widget name="myStaticImage" group="OpenGUI" type="StaticImage">
-		<Property name="Imagery" value="myImagery" />
-		<Property name="position" value="(0.59875 x0.465)" />
-		<Property name="size" value="(0.40125x0.535)" />
-	</Widget>
+<Widget name="myStaticImage" group="OpenGUI" type="StaticImage">
+	<Property name="Imagery" value="myImagery" />
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
 \endcode
 
+	Example Code:
+\code
+Widgets::StaticImage* staticImage = 
+	static_cast<Widgets::StaticImage*>( System::getSingleton().createWidget("StaticImage","OpenGUI") );
+staticImage->setImagery("myImagery");
+staticImage->setPos( 0.59875f, 0.465f );
+staticImage->setSize( 0.40125f, 0.535f );
+\endcode
+*/
+
+/*!
+	\page BW_SimpleButton Simple Button
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "SimpleButton"
+	
+	\section Description
+	Provides a very simple button functionality that is purely imagery based.
+	This widget provides absolutely no text on the button, it only provides
+	state imagery.
+	
+	\see Class Documentation: OpenGUI::Widgets::SimpleButton
+	
+	\section Properties
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+	- Imagery : String
+	- ImageryPressed : String
+	- ImageryMouseOver : String
+	- ImageryDisabled : String
+
+	\section Usage	
+	Example XML:
+\code
+<Widget name="myStaticImage" group="OpenGUI" type="SimpleButton">
+	<Property name="Imagery" value="myImagery" />
+	<Property name="ImageryPressed" value="myImagery_Pressed" />
+	<Property name="ImageryMouseOver" value="myImagery_MouseOver" />
+	<Property name="ImageryDisabled" value="myImagery_Disabled" />
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
+\endcode
+
+	Example Code:
+\code
+Widgets::SimpleButton* simpleButton = 
+	static_cast<Widgets::SimpleButton*>( System::getSingleton().createWidget("SimpleButton","OpenGUI") );
+simpleButton->setImagery("myImagery");
+simpleButton->setImagery("myImagery_Pressed");
+simpleButton->setImagery("myImagery_MouseOver");
+simpleButton->setImagery("myImagery_Disabled");
+simpleButton->setPos( 0.59875f, 0.465f );
+simpleButton->setSize( 0.40125f, 0.535f );
+\endcode
 */
