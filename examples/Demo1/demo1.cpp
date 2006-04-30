@@ -1,7 +1,9 @@
 
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
+#include "OpenGUI_BaseWidgets.h"
 
+#include "../TachometerWidget/Tachometer.h"
 
 class Demo1App : public DemoApp
 {
@@ -10,6 +12,8 @@ public:
 	virtual void preRun();
 	virtual void perframeRun();
 	virtual void postRun(){}
+private:
+	OpenGUI::Widgets::TextLabel* mLabel;
 };
 
 void Demo1App::preRun()
@@ -18,6 +22,16 @@ void Demo1App::preRun()
 	OpenGUI::System::getSingleton().setGUISheet(
 		OpenGUI::System::getSingleton().getGUISheetByName("root")
 		);
+	mLabel = static_cast<OpenGUI::Widgets::TextLabel*>
+		( OpenGUI::System::getSingleton().createWidget("TextLabel","OpenGUI") );
+
+	/*
+	OpenGUI::System::getSingleton().getGUISheetByName("root")->addChildElement(mLabel,"FPS");
+		mLabel->setFont("pecot");
+		mLabel->setFontSize(14);
+		mLabel->setPos(0.5f,0.5f);
+		mLabel->setSize(1.0f,1.0f);
+		mLabel->setText("teest");*/
 	
 }
 void Demo1App::perframeRun()
@@ -32,9 +46,9 @@ void Demo1App::perframeRun()
 	if(OpenGUI::System::getSingletonPtr()){
 		OpenGUI::Widgets::Widget* w = (OpenGUI::Widgets::Widget*)
 			OpenGUI::System::getSingleton().getElementByName("myTach");
-		std::stringstream ss;
-		ss << val;
-		w->propertySet("needlevalue",ss.str());
+
+		OpenGUI::Widgets::Tachometer* t = static_cast<OpenGUI::Widgets::Tachometer*>(w);
+		t->setNeedleValue((float) val);
 	}
 }
 
