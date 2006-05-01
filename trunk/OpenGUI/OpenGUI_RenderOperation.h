@@ -76,11 +76,11 @@ namespace OpenGUI{
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
 		/*! \todo inline this in a way that GCC doesn't complain about */
-		void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList);
 
 		//! Prepends the contents of inList to the beginning of outList. The contents of inList are preserved.
 		/*! \todo inline this in a way that GCC doesn't complain about */
-		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList);
+		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList);
 
 		//! Appends the contents of outList by splicing the contents of appendingList onto the end of outList.
 		/*! The contents of \c appendingList are directly moved into \c outList via pointer manipulation, leaving

@@ -4,19 +4,19 @@
 namespace OpenGUI{
 	namespace Render{
 		//############################################################################
-		void AppendRenderOperationList(RenderOperationList& outList, RenderOperationList& inList)
+		void AppendRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList)
 		{
-			RenderOperationList::iterator roli = inList.begin();
+			RenderOperationList::const_iterator roli = inList.begin();
 			while(roli != inList.end()){
 				outList.push_back((*roli));
 				roli++;
 			}
 		}
 		//############################################################################
-		void PrependRenderOperationList(RenderOperationList& outList, RenderOperationList& inList)
+		void PrependRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList)
 		{
 			if(inList.size() == 0) return;
-			RenderOperationList::reverse_iterator roli = inList.rbegin();
+			RenderOperationList::const_reverse_iterator roli = inList.rbegin();
 			while(roli != inList.rend()){
 				outList.push_front((*roli));
 				roli++;

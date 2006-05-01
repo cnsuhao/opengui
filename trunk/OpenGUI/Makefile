@@ -2,7 +2,7 @@
 # Makefile created by mfg (version 2.3)
 #
 
-TARGET =	OpenGUI.so
+TARGET =	OpenGUI_d.so
 HEADERS =	../dependancies/tinyxml/tinystr.h \
 		../dependancies/tinyxml/tinyxml.h \
 		OpenGUI.h \
@@ -263,6 +263,9 @@ clean:
 
 distclean:	clean
 		$(RM) $(DISTCLEAN)
+
+release:	$(TARGET)
+		strip -g -o OpenGUI.so $(TARGET)
 
 print:
 		$(LPR) $(HEADERS) $(SOURCES)

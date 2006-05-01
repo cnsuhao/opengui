@@ -199,9 +199,6 @@ namespace OpenGUI{
 		dstRect.setPosition( dstOffset );
 
 		//perform the copy
-		TDRColor* dstData = dstTextureDataRect->mData;
-		
-		int dstWidth = dstTextureDataRect->mSize.x;
 		int sX,sY, dX,dY;
 
 		for(sY = 0, dY = dstRect.min.y; dY < dstRect.max.y; sY++, dY++){
@@ -253,3 +250,4 @@ namespace OpenGUI{
 	//############################################################################
 
 };//namespace OpenGUI{
+
