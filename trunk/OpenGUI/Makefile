@@ -154,7 +154,8 @@ OBJECTS =	../dependancies/tinyxml/tinystr.o \
 		OpenGUI_XMLParser.o
 
 
-CLEAN =		../dependancies/tinyxml/tinystr.o \
+CLEAN =		OpenGUI.so \
+		../dependancies/tinyxml/tinystr.o \
 		../dependancies/tinyxml/tinyxml.o \
 		../dependancies/tinyxml/tinyxmlerror.o \
 		../dependancies/tinyxml/tinyxmlparser.o \
@@ -202,7 +203,7 @@ CLEAN =		../dependancies/tinyxml/tinystr.o \
 #>		--- do not remove this line ---
 AR =		ar
 ARFLAGS =	cr
-# CC =		gcc
+CC =		g++
 CFLAGS =	-Wall -g
 CPPFLAGS =
 DEFS =
@@ -215,7 +216,7 @@ INSTALL_DATA =	$(INSTALL) -m 644
 INSTALL_PROGRAM =	$(INSTALL) -s
 LDFLAGS =	-shared
 LEX =		lex
-LIBS =		# -lm -lobjc
+LIBS =		../dependancies/corona-linux/src/.libs/libcorona.a
 LIBTOOL =	libtool $(LTFLAGS)
 LPR =		lpr -h
 PROGRAMS =	$(OBJECTS:.o= )
