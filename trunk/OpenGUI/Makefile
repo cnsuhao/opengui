@@ -216,7 +216,8 @@ INSTALL_DATA =	$(INSTALL) -m 644
 INSTALL_PROGRAM =	$(INSTALL) -s
 LDFLAGS =	-shared
 LEX =		lex
-LIBS =		../dependancies/corona-linux/src/.libs/libcorona.a
+LIBS =		../dependancies/corona-linux/src/.libs/libcorona.a \
+		../dependancies/freetype2/objs/.libs/libfreetype.a
 LIBTOOL =	libtool $(LTFLAGS)
 LPR =		lpr -h
 PROGRAMS =	$(OBJECTS:.o= )
@@ -257,7 +258,6 @@ SHELL =		/bin/sh
 $(TARGET):	$(OBJECTS) $(ADDLIBS)
 		$(CC) $(LDFLAGS) $(OBJECTS) $(ADDLIBS) $(LIBS) -o $@
 
-check:		$(TARGET)
 
 clean:
 		$(RM) $(CLEAN) $(TARGET) $(TARGET)$(EXEEXT) core
@@ -268,15 +268,7 @@ distclean:	clean
 release:	$(TARGET)
 		strip -g -o OpenGUI.so $(TARGET)
 
-print:
-		$(LPR) $(HEADERS) $(SOURCES)
 
-install:	$(TARGET)
-		$(INSTALL) -d $(bindir)
-		$(INSTALL_PROGRAM) $(TARGET)$(EXEEXT) $(bindir)
-
-uninstall:
-		$(RM) $(bindir)/$(TARGET)$(EXEEXT)
 
 #>		--- do not remove this line ---
 

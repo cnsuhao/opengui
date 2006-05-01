@@ -1,0 +1,35 @@
+Windows
+-----------------------------------------------------------
+Just open OpenGUI.sln in the root directory, select a
+build configuration and build the solution. All necessary
+dependancies will be automatically built.
+
+
+
+Linux
+-----------------------------------------------------------
+To build the OpenGUI library:
+make debug -or- make release
+
+To build the examples:
+make examples-debug -or- make examples-release
+
+I did my best to ensure that all dependancies will build
+automatically. Your mileage may vary.
+
+
+
+Other
+-----------------------------------------------------------
+You're pretty much on your own here. OpenGUI is written in
+standard C++, and aims to avoid all compiler warnings. It
+also comes with all necessary dependancies, so if you can
+manage to get the dependancies to build, you shouldn't have
+too much trouble getting OpenGUI to build. Any platform
+specific #define statments can be found in
+"OpenGUI_Platform.h". Patches that increase the number of
+build targets are welcome, but stand a much better chance
+of permanent inclusion if you also offer to provide
+continued maintenance to ensure that the given build target
+is always working in future releases of OpenGUI.
+
