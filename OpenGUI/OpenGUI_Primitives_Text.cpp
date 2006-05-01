@@ -165,7 +165,8 @@ namespace OpenGUI{
 			unsigned int tmpLineCount = 0;
 
 			//add 1 line immediately for the first line
-			curPosition.y += ( (((int)(++tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
+			tmpLineCount++;
+			curPosition.y += ( (((int)(tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
 				+ PrimitiveText::getLinePixelHeight() ) * pixelScale.y;
 
 			float tmp;
@@ -177,7 +178,8 @@ namespace OpenGUI{
 					if( (tmp = (curPosition.x - mPosition.x)) > retval.x ) retval.x = tmp;
 
 					curPosition.x = mPosition.x;
-					curPosition.y += ( (((int)(++tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
+					tmpLineCount++;
+					curPosition.y += ( (((int)(tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
 						+ PrimitiveText::getLinePixelHeight() ) * pixelScale.y;
 					continue;
 				}
@@ -219,7 +221,8 @@ namespace OpenGUI{
 			unsigned int tmpLineCount = 0;
 
 			//add 1 line immediately for the first line
-			retval.y += (((int)(++tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
+			tmpLineCount++;
+			retval.y += (((int)(tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
 				+ PrimitiveText::getLinePixelHeight();
 
 			for( unsigned int strLoc = 0; stringContents[strLoc] != 0; strLoc++){
@@ -228,7 +231,8 @@ namespace OpenGUI{
 					//catch newlines and handle them without loading a pointless 'newline' glyph
 					if( curWidth > retval.x ) retval.x = curWidth;
 					curWidth = 0;
-					retval.y += (((int)(++tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
+					tmpLineCount++;
+					retval.y += (((int)(tmpLineCount * mAdvLineSpacing)) - ((int)((tmpLineCount -1) * mAdvLineSpacing)))
 						+ PrimitiveText::getLinePixelHeight();
 					continue;
 				}
@@ -364,7 +368,6 @@ namespace OpenGUI{
 			text.setContext(mContext);
 			text.setFont(mFontName,mFontSize);
 			float maxWidth = getRect().getWidth();
-			float thisWidth = 0.0f;
 
 			StringList::iterator iter = strList.begin();
 			while(iter != strList.end()){
@@ -587,3 +590,4 @@ namespace OpenGUI{
 
 	};
 };
+

@@ -42,9 +42,9 @@ namespace OpenGUI{
 			void setAngleDegrees(float newAngle);
 
 			//! Adds a single RenderOperation to the input RenderOperationList
-			void addRenderOperation(RenderOperation& renderOp);
+			void addRenderOperation(const RenderOperation& renderOp);
 			//! Adds an entire RenderOperationList to the input RenderOperationList
-			void addRenderOperation(RenderOperationList& renderOpList);
+			void addRenderOperation(const RenderOperationList& renderOpList);
 		private:
 			float mRadians;
 			FVector2 mOrigin;
@@ -94,9 +94,9 @@ namespace OpenGUI{
 			void setRect(FRect rect){mRect=rect;}
 
 			//! Adds a single RenderOperation to the input RenderOperationList
-			void addRenderOperation(RenderOperation& renderOp);
+			void addRenderOperation(const RenderOperation& renderOp);
 			//! Adds an entire RenderOperationList to the input RenderOperationList
-			void addRenderOperation(RenderOperationList& renderOpList);
+			void addRenderOperation(const RenderOperationList& renderOpList);
 			//! Clears the input RenderOperationList
 			void clear();
 		private:

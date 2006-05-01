@@ -49,12 +49,12 @@ namespace OpenGUI{
 			lastDeg = newAngle;
 		}
 		//############################################################################
-		void PrimitiveRotation::addRenderOperation(RenderOperation& renderOp)
+		void PrimitiveRotation::addRenderOperation(const RenderOperation& renderOp)
 		{
 			mInputRenderOps.push_back(renderOp);
 		}
 		//############################################################################
-		void PrimitiveRotation::addRenderOperation(RenderOperationList& renderOpList)
+		void PrimitiveRotation::addRenderOperation(const RenderOperationList& renderOpList)
 		{
 			AppendRenderOperationList(mInputRenderOps,renderOpList);
 		}
@@ -99,12 +99,12 @@ namespace OpenGUI{
 			return tmpList2;
 		}
 		//############################################################################
-		void PrimitiveScissorRect::addRenderOperation(RenderOperation& renderOp)
+		void PrimitiveScissorRect::addRenderOperation(const RenderOperation& renderOp)
 		{
 			mInputRenderOps.push_back(renderOp);
 		}
 		//############################################################################
-		void PrimitiveScissorRect::addRenderOperation(RenderOperationList& renderOpList)
+		void PrimitiveScissorRect::addRenderOperation(const RenderOperationList& renderOpList)
 		{
 			AppendRenderOperationList(mInputRenderOps,renderOpList);
 		}
@@ -392,3 +392,4 @@ namespace OpenGUI{
 
 	};
 };
+

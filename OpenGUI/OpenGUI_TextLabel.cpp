@@ -172,27 +172,32 @@ namespace OpenGUI{
 		//#####################################################################
 		bool TextLabel::_prop_SetHAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
 		{
-			TextLabel* w = static_cast<TextLabel*>(widget);
+			//!\todo fixme
+			//TextLabel* w = static_cast<TextLabel*>(widget);
 			return false;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_GetHAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue)
 		{
-			TextLabel* w = static_cast<TextLabel*>(widget);
+			//!\todo fixme
+			//TextLabel* w = static_cast<TextLabel*>(widget);
 			return false;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_SetVAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
 		{
-			TextLabel* w = static_cast<TextLabel*>(widget);
+			//!\todo fixme
+			//TextLabel* w = static_cast<TextLabel*>(widget);
 			return false;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_GetVAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue)
 		{
-			TextLabel* w = static_cast<TextLabel*>(widget);
+			//!\todo fixme
+			//TextLabel* w = static_cast<TextLabel*>(widget);
 			return false;
 		}
 		//#####################################################################
 	};
 };
+
