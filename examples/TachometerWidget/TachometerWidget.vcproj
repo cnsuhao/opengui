@@ -37,7 +37,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../Debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
+				ProgramDatabaseFile="$(OutDir)/TachometerWidget_d.pdb"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/TachometerWidget_d.lib"
 				TargetMachine="1"/>
@@ -86,6 +86,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

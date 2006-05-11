@@ -22,10 +22,10 @@ void Demo1App::preRun()
 	OpenGUI::System::getSingleton().setGUISheet(
 		OpenGUI::System::getSingleton().getGUISheetByName("root")
 		);
-	mLabel = static_cast<OpenGUI::Widgets::TextLabel*>
+	/*mLabel = static_cast<OpenGUI::Widgets::TextLabel*>
 		( OpenGUI::System::getSingleton().createWidget("TextLabel","OpenGUI") );
 
-	/*
+	
 	OpenGUI::System::getSingleton().getGUISheetByName("root")->addChildElement(mLabel,"FPS");
 		mLabel->setFont("pecot");
 		mLabel->setFontSize(14);

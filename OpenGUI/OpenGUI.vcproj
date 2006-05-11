@@ -38,7 +38,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\dependancies\corona\debug;..\dependancies\tinyxml\Debug;..\dependancies\freetype2\objs"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
+				ProgramDatabaseFile="$(OutDir)/OpenGUI_d.pdb"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/OpenGUI_d.lib"
 				TargetMachine="1"/>
@@ -88,6 +88,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\dependancies\corona\release;..\dependancies\tinyxml\Release;..\dependancies\freetype2\objs"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
