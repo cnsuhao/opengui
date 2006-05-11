@@ -39,7 +39,7 @@
 				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32"
 				IgnoreAllDefaultLibraries="FALSE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Demo1.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo1_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -88,6 +88,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/Demo1.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
