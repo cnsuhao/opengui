@@ -358,6 +358,17 @@ namespace OpenGUI{
 
 		//! Returns the current size of the render cache in bytes.
 		size_t statRenderCacheSize();
+
+		//! Returns the current FPS
+		/*! The FPS value returned is an average over the last 5 frames. If less than
+			5 frames have been rendered, then the average is based on as many frames
+			as available. If no frames have been rendered, the returned value will be 0.0f.
+			\note A "frame" is defined as a single call to System::renderGUI(). Since most
+			applications will call this function once per scene frame, this is an adequate
+			metric.
+		*/
+		float statRenderFPS();
+		
 	protected:
 		//! Injects the given message into the system.
 		/*!
@@ -375,6 +386,10 @@ namespace OpenGUI{
 		/*	this is a counter that is used to ensure that generateRandomElementName()
 			actually does create random names */
 		unsigned int mRandomElementNameGeneratorIndex;
+
+	//Statistics
+		void _stat_UpdateFPS();
+		
 
 	//Logging Facilities
 		LogManager* m_LogManager;

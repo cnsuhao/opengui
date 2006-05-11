@@ -73,7 +73,21 @@ namespace OpenGUI{
 	//############################################################################
 	unsigned long TimerManager::_timeCurrent()
 	{
+	#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
+		/*
+		We do this because clock() is not affected by timeBeginPeriod on Win32.
+		QueryPerformanceCounter is a little overkill for the amount of precision that
+		I consider acceptable. If someone submits a patch that replaces this code
+		with QueryPerformanceCounter, I wouldn't complain. Until then, timeGetTime
+		gets the results I'm after. -EMS
+
+		See: http://www.geisswerks.com/ryan/FAQS/timing.html
+		And: http://support.microsoft.com/default.aspx?scid=KB;EN-US;Q274323&
+		*/
+		return timeGetTime();
+	#else
 		return (unsigned long)((float)(clock()) / ((float)CLOCKS_PER_SEC/1000.0));
+	#endif
 	}
 	//############################################################################
 };//namespace OpenGUI{

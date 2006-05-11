@@ -370,6 +370,8 @@ namespace OpenGUI{
 
 			mRenderer->postRenderCleanup();
 		}
+
+		System::_stat_UpdateFPS();
 	}
 	//############################################################################
 	void System::_issueTickEvent(unsigned long timeDelta)
@@ -762,6 +764,36 @@ namespace OpenGUI{
 			tmp += (*iter)->_renderCacheSize();
 		}
 		return tmp;
+	}
+	//############################################################################
+	TimerPtr statFPSTimer;
+	typedef std::list<unsigned int> FPSList;
+	FPSList statFPSList;
+	float System::statRenderFPS()
+	{
+		if(statFPSList.size()>0){
+			float fpsSum = 0.0f;
+			for(FPSList::iterator iter=statFPSList.begin(); iter!=statFPSList.end(); iter++){
+				unsigned int delta = (*iter);
+				fpsSum += (float)delta;
+			}
+
+			fpsSum = fpsSum / (float)statFPSList.size();
+			return 1000.0f / fpsSum;
+		}else
+			return 0.0f;
+	}
+	//############################################################################
+	void System::_stat_UpdateFPS()
+	{
+		if(statFPSTimer.isNull()){
+			statFPSTimer = TimerManager::getSingletonPtr()->getTimer();
+		}else{
+			statFPSList.push_back( statFPSTimer->getMilliseconds() );
+			statFPSTimer->reset();
+			while(statFPSList.size() > 100)
+				statFPSList.pop_front();
+		}
 	}
 	//############################################################################
 };//namespace OpenGUI{

@@ -84,7 +84,7 @@
 				OutputFile="$(OutDir)/playground.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\Release"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

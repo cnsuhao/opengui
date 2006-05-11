@@ -9,8 +9,15 @@
 namespace OpenGUI{
 
 	/*! \brief
-	Provides management services for loading, unloading, keeping track of,
-	and searching for Imageset and the children Image objects.\n \b [Singleton]
+	Provides timing services for %OpenGUI widgets and applications.
+	\n \b [Singleton]
+
+	\warning This subsystem will provide its own time injections unless
+		System::setAutoTick(false) is called.
+	\note It is worth noting that many time dependant statistics within %OpenGUI,
+		for example System::statRenderFPS(), utilize this subsystem as their timing
+		mechanism. Manually providing inaccurate time deltas via System::injectTick()
+		will cause these statistics to generate inaccurate results.
 	*/
 	class OPENGUI_API TimerManager : public Singleton<TimerManager> {
 		friend class System;
@@ -29,7 +36,7 @@ namespace OpenGUI{
 		//! Returns a RefPtr to a Timer object that is ready for immediate use. The returned Timer is pre-synced to the current time.
 		TimerPtr getTimer();
 
-		//! Returns the total time since start in milliseconds.
+		//! Returns the total time since start in milliseconds. ( 1/1000th of a second )
 		/*! \warning This should NOT be directly used to represent total application running time,
 			as overflow will cause the timer to loop back to 0 after approx 49.7 days.
 		*/
