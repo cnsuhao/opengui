@@ -87,7 +87,7 @@
 				OutputFile="$(OutDir)/OpenGUI.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\dependancies\corona\release;..\dependancies\tinyxml\Release;..\dependancies\freetype2\objs"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"

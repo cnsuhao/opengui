@@ -85,7 +85,7 @@
 				OutputFile="$(OutDir)/TachometerWidget.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
