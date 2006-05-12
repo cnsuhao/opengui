@@ -3,7 +3,7 @@
 	
 	\image html logo.jpg
 	
-	%OpenGUI is an easy to use and easy to extend widget set for use in 3D applications.
+	%OpenGUI is an easy to use and easy to extend GUI framework for use in 3D applications.
 	The core aim of %OpenGUI is to provide developers of 3D applications a drop in
 	system for creating simple GUIs without hassle, while still providing an easy method
 	of extendability for creating complex GUIs with custom widgets.
@@ -65,27 +65,24 @@ The FreeType Project (www.freetype.org). All rights reserved.
 */
 /*!
 	\page Features
-	\verbatim
-	This list is currently an expected feature list. Since development
-	is in very early stages most these are not implemented. The list 
-	also isn't entirely done.
-	
-	\endverbatim
-	
-	- Easily integrated with any input system: All input is injected into the system by the application
-		using simple function calls.
+		
+	- Easily integrated with any input system: All input is injected into the system by the application using simple function calls.
 	- Input injection logging with log playback feature.
 	- Cross API: Is easily used in native DirectX or OpenGL, as well as the OGRE rendering engine.
 	- Avoids custom containers when possible, using STL where available.
 	- Easily extendable widget set by class inheritance.
-	- Powerful message system with fully catchable and interruptible parent/child event propagation.
-	- Supports loading of fonts via FreeType 2.
-	- Supports native loading of multiple imagery formats via Corona (http://corona.sourceforge.net)
-	- Full alpha support for image types that support alpha channels. (Single channel imagery is interpreted as alpha only.)
+	- Powerful message system with fully catchable and interruptable parent/child event propagation.
+	- Auto scaling, pixel aligned fonts, rendered via FreeType 2.
+	- Supports native loading of mutiple imagery formats via Corona (http://corona.sourceforge.net)
+	- Full alpha support for image types that support alpha channels. (Single channel imagery is interpretted as alpha only.)
 	- Free form render operations allow Widget imagery to be rotated and scaled in any way imaginable.
+	- Provides input logging and playback functionality for automated application testing.
+	- Plugin system so custom widgets can be used in any application without recompiling.
 	
-	
-	
+	\note
+	OpenGUI is still very much a work in progress. This list of features
+	is accurate to the best of my knowledge. If %OpenGUI is missing a
+	feature that you feel it should have, please feel free to submit a patch.
 */
 
 

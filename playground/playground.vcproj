@@ -32,8 +32,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_OGLRenderer.lib OpenGUI_d.lib OpenGL32.lib GLu32.lib GLaux.lib"
-				OutputFile="$(OutDir)/playground.exe"
+				AdditionalDependencies="OpenGUI_OGLRenderer_d.lib OpenGUI_d.lib OpenGL32.lib GLu32.lib GLaux.lib"
+				OutputFile="$(OutDir)/playground_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\Debug"
 				GenerateDebugInformation="TRUE"
