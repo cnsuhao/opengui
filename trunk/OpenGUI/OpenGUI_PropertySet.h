@@ -67,6 +67,7 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 		void addValue(std::string value);
 	};
 	//#####################################################################
+	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list.
 	typedef enum{
 		PT_STRING = 0,
 		PT_BOOL = 1,
@@ -87,6 +88,7 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	//#####################################################################
 
 
+	//! Provides a universal property get/set system for use by all widgets.
 	class OPENGUI_API PropertySet{
 	public:
 		//! Sets a property

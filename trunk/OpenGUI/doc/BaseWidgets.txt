@@ -1,7 +1,7 @@
 
 /*!
 	\page BaseWidgets Base Widgets
-	\todo Add a #define in OpenGUI_CONFIG.h to toggle building of default widgets.
+	\todo Add a \#define in OpenGUI_CONFIG.h to toggle building of default widgets.
 	
 	This is the complete list of the base widgets that come built in to OpenGUI.
 	These widgets are extremely basic, most of them only performing imagery

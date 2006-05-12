@@ -11,13 +11,6 @@ namespace OpenGUI{
 	//class Imagery; //forward declaration
 	//class Element; //forward declaration
 
-	/*! \brief
-	This namespace contains rendering specific objects and functions
-	that are used by all widgets to tell the renderer how to draw them.
-	If you want to make a widget from scratch (rather than encapsulating
-	existing widgets), this is where you look to build the necessary render
-	operations.
-	*/
 	namespace Render{
 
 		//! Provides a simple interface for drawing text strings
