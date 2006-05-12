@@ -1,8 +1,4 @@
 @echo off
-rem
-rem Delete any previous SDK data
-rem
-rmdir /s /q winSDK > NUL 2>&1
 
 set P_="winSDK"
 set P_OG="winSDK\OpenGUI"
@@ -13,6 +9,12 @@ set P_OGLlib="winSDK\OGLRenderer\lib"
 set P_TACHinc="winSDK\Tachometer\include"
 set P_TACHlib="winSDK\Tachometer\lib"
 set P_demo="winSDK\Demos"
+
+rem
+rem Delete any previous SDK data
+rem
+rmdir /s /q %P_% > NUL 2>&1
+
 
 echo Build directory tree...
 mkdir %P_OGinc%
