@@ -19,7 +19,17 @@ move %P_tmp% %P_% > NUL 2>&1
 echo Cleaning source tree...
 cd %P_%
 del /S *.ilk > NUL 2>&1
+del /S *.pdb > NUL 2>&1
 del *.ncb > NUL 2>&1
+rmdir /Q /S OpenGUI_OGLRenderer\Debug > NUL 2>&1
+rmdir /Q /S OpenGUI_OGLRenderer\Release > NUL 2>&1
+rmdir /Q /S examples\Demo1\Debug > NUL 2>&1
+rmdir /Q /S examples\Demo1\Release > NUL 2>&1
+rmdir /Q /S examples\TachometerWidget\Debug > NUL 2>&1
+rmdir /Q /S examples\TachometerWidget\Release > NUL 2>&1
+rmdir /Q /S examples\glfw\Debug > NUL 2>&1
+rmdir /Q /S examples\glfw\Release > NUL 2>&1
+
 rmdir /Q /S dependancies\corona-linux > NUL 2>&1
 del *.bat *.nsi > NUL 2>&1
 rmdir /Q /S OpenGUI\doc > NUL 2>&1
