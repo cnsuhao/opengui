@@ -1,0 +1,6 @@
+version 0.7.1 - current)
+* Added a changelog
+* Removed temporary GCC build fix in log system (breaks GCC building)
+
+version 0.7 - 05/11/2005)
+* Initial packaged release

@@ -69,12 +69,10 @@ namespace OpenGUI{
 	class OPENGUI_API LogManager : public Singleton<LogManager>{
 		friend class Log;
 	public:
-		//TODO : FIXME (gcc is anal)
-		//LogManager() : mLogListenerPtr(0), mLogLevel(-1) {}
-		LogManager() : mLogListenerPtr(0), mLogLevel(0) {}
-		//TODO : FIXME (gcc is anal)
-		//LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(-1) {}
-		LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(0) {}
+		//NOTE : GCC doesn't like the -1 compiler trick
+		LogManager() : mLogListenerPtr(0), mLogLevel(-1) {}
+		//NOTE : GCC doesn't like the -1 compiler trick
+		LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(-1) {}
 		~LogManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
