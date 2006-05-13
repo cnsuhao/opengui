@@ -1,9 +1,0 @@
-<Include file="test.xml" />
-<Template name="ezbutton24" group="OpenGUI" type="SimpleButton">
-	<Property name="position" value="(0.05x0.05)" />
-	<Property name="size" value="(0.20x0.20)" />
-	<Property name="Imagery" value="ButtonDisabled" />
-	<Property name="ImageryPressed" value="ButtonDown" />
-	<Property name="ImageryMouseOver" value="ButtonHover" />
-	<Property name="ImageryDisabled" value="ButtonDisabled" />
-</Template>
