@@ -2,10 +2,10 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "OpenGUI SDK"
-!define PRODUCT_VERSION "0.7"
+!define PRODUCT_VERSION "0.7.1"
 !define PRODUCT_WEB_SITE "http://OpenGUI.sourceforge.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Demo1.exe"
-!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}_${PRODUCT_VERSION}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
 ; MUI 1.67 compatible ------
@@ -139,7 +139,9 @@ Section "MainSection" SEC01
   CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Demo1.lnk" "$INSTDIR\Demos\Demo1.exe"
   SetOutPath "$INSTDIR"
   File "winSDK\OpenGUI.chm"
+  File "winSDK\CHANGELOG.txt"
   CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\OpenGUI API Docs.lnk" "$INSTDIR\OpenGUI.chm"
+  CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\ChangeLog.lnk" "$INSTDIR\CHANGELOG.txt"
 SectionEnd
 
 Section -AdditionalIcons
@@ -256,13 +258,13 @@ Section Uninstall
   Delete "$INSTDIR\OpenGUI\include\OpenGUI_Cursor.h"
   Delete "$INSTDIR\OpenGUI\include\OpenGUI_Widget.h"
 
-  Delete "$SMPROGRAMS\OpenGUI SDK\Uninstall.lnk"
-  Delete "$SMPROGRAMS\OpenGUI SDK\Website.lnk"
-  Delete "$SMPROGRAMS\OpenGUI SDK\Help.lnk"
-  Delete "$DESKTOP\OpenGUI SDK.lnk"
-  Delete "$SMPROGRAMS\OpenGUI SDK\OpenGUI SDK.lnk"
+  Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Uninstall.lnk"
+  Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Website.lnk"
+  Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Demo1.lnk"
+  Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\ChangeLog.lnk"
+  Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\OpenGUI API Docs.lnk"
 
-  RMDir "$SMPROGRAMS\OpenGUI SDK"
+  RMDir "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK"
   RMDir "$INSTDIR\Tachometer\lib"
   RMDir "$INSTDIR\Tachometer\include"
   RMDir "$INSTDIR\OpenGUI\lib"
