@@ -1,16 +1,28 @@
 @echo off
 
+rem This is just a little madness added to prevent pauses during full-auto builds
+IF "%1" == "SKIP" GOTO SKIP
+echo PLEASE MAKE SURE YOU ARE NOT CURRENTLY RUNNING VISUAL STUDIO!
+pause
+GOTO SKIP
+:SKIP
+
+set VCVARS="C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\vsvars32.bat"
 set P_tmp="..\winSRC"
 set P_="OpenGUIsrc"
 set PI_exbin="examples\bin"
 set P_doc="OpenGUI\doc"
 
+echo Loading Visual Studio Environment...
+call %VCVARS% >> NUL 2>&1
 
-rem
 rem Delete any previous SRC data
-rem
 rmdir /s /q %P_% > NUL 2>&1
 rmdir /s /q %P_tmp% > NUL 2>&1
+
+echo Cleaning Solution...
+devenv OpenGUI.sln /clean Debug > NUL
+devenv OpenGUI.sln /clean Release > NUL
 
 echo Build directory tree...
 xcopy /E * %P_tmp%\ > NUL 2>&1
@@ -46,3 +58,5 @@ call buildUserDocs.bat
 cd ..\..
 copy %P_doc%\OpenGUI_INTERNAL.chm %P_%\ > NUL 2>&1
 copy %P_doc%\OpenGUI.chm %P_%\ > NUL 2>&1
+
+IF "%1" == "SKIP" exit
