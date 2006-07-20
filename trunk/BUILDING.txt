@@ -8,6 +8,10 @@ dependancies will be automatically built.
 
 Linux
 -----------------------------------------------------------
+Linux isn't officially supported at this time, but here's the
+basic rundown. You can expect this process to break, so if
+you spend the time to fix it please submit a patch.
+
 To build the OpenGUI library:
 make debug -or- make release
 
@@ -16,6 +20,7 @@ make examples-debug -or- make examples-release
 
 I did my best to ensure that all dependancies will build
 automatically. Your mileage may vary.
+
 
 
 
