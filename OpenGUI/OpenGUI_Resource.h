@@ -12,13 +12,26 @@ namespace OpenGUI{
 	public:
 		Resource() :mData(0),mSize(0) {}
 		virtual ~Resource() { release(); }
+		//! Sets this object's stored data to the given memory.
+		/*! \param newData pointer to the data to store
+			\param newSize the size of the data given in bytes
+			\note The Resource objects takes ownership of the given memory
+				so you no longer need to worry about freeing the buffer.
+				(Read: Do not free the memory you pass to this function,
+					or you \b will cause a crash when this object is
+					destroyed. If you don't have the ability to ensure
+					this buffer is never deallocated, make a copy of it
+					and provide that instead.)
+		*/
 		virtual void setData(unsigned char* newData, size_t newSize)
 			{
 				release();
 				mData = newData;
 				mSize = newSize;
 			}
+		//! Returns a pointer to the held data, or 0 if there is no stored data.
 		unsigned char* getData() { return mData; }
+		//! Returns the size of the held data in bytes.
 		size_t getSize() { return mSize; }
 		void release()
 			{
