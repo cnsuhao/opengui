@@ -8,6 +8,10 @@ namespace OpenGUI{
 		This is a base class for custom Texture implementations. Custom Renderer
 		implementations will also quite likely include a custom Texture
 		implementation to deal with API specific texture handling.
+
+		\note All Rendered implementations will need to create a subclass of this
+			in order to access the protected data members. Setting the values of
+			these protected members is a required function of Renderer implementations.
 	*/
 	class OPENGUI_API Texture
 	{

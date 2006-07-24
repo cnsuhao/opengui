@@ -11,7 +11,7 @@
 		<Property name="position" value="(0.0 x0.0)" />
 		<Property name="size" value="(1x1)" />
 		<Property name="font" value="pecot" />
-		<Property name="fontsize" value="80" />
+		<Property name="fontsize" value="50" />
 		<Property name="text" value="OpenGUI Demo 1" />
 	</Widget>
 	<!--<Widget name="test" group="OpenGUI" type="StaticImage">

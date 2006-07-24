@@ -24,21 +24,28 @@ namespace OpenGUI{
 		glGetIntegerv(GL_VIEWPORT,viewportDims);
 		dims.x = viewportDims[2];
 		dims.y = viewportDims[3];
-
-		dims.x = mWidth;
-		dims.y = mHeight;
 	}
 	//###########################################################
 	void OGLRenderer::getScreenDimensions(IVector2& dims)
 	{
-		//!\todo FIX ME! This is not the required action
+#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
+		DEVMODE devMode;
+		devMode.dmSize = sizeof(DEVMODE);
+		devMode.dmDriverExtra = 0;
+		BOOL ret = EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &devMode);
+		if(ret){
+			mSWidth = devMode.dmPelsWidth;
+			mSHeight = devMode.dmPelsHeight;
+		}
+		dims.x = mSWidth;
+		dims.y = mSHeight;
+#else
+		//!\todo FIX ME! This is not the required action. Not sure what to do here for Linux. =/
 		GLint viewportDims[4];
 		glGetIntegerv(GL_VIEWPORT,viewportDims);
 		dims.x = viewportDims[2];
 		dims.y = viewportDims[3];
-
-		dims.x = mSWidth;
-		dims.y = mSHeight;
+#endif
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation(Render::RenderOperation& renderOp)

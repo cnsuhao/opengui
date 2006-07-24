@@ -19,6 +19,9 @@ namespace OpenGUI{
 			current dimensions every time it is called, or things \b will break.
 			This function is guaranteed to be called during creation of the System object.
 
+			This function is also automatically called when the System receives a call to
+			System::notifyViewportDimensionsChanged().
+
 			\note In addition, it is highly advisable that renderers call
 			alertViewportDimensionsChanged() whenever the viewport dimensions
 			change during operation.
@@ -31,6 +34,9 @@ namespace OpenGUI{
 			current dimensions every time it is called, or things \b will break.
 			This function is guaranteed to be called during creation of the System object.
 
+			This function is also automatically called when the System receives a call to
+			System::alertScreenDimensionsChanged().
+
 			\note In addition, it is highly advisable that renderers call
 			alertScreenDimensionsChanged() whenever the screen dimensions
 			change during operation.
@@ -38,9 +44,13 @@ namespace OpenGUI{
 		virtual void getScreenDimensions(IVector2& dims)=0;
 
 		//! Signal the system object that the viewport dimensions have changed so that it may take appropriate action.
+		/*! Currently this function simply provides a safe avenue of calling System::notifyViewportDimensionsChanged(),
+			by ensuring that the call is only made if the System Singleton exists. */
 		void alertViewportDimensionsChanged();
 
 		//! Signal the system object that the screen dimensions have changed so that it may take appropriate action.
+		/*! Currently this function simply provides a safe avenue of calling System::alertScreenDimensionsChanged(),
+		by ensuring that the call is only made if the System Singleton exists. */
 		void alertScreenDimensionsChanged();
 
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
@@ -62,7 +72,7 @@ namespace OpenGUI{
 		*/
 		virtual void doRenderOperation(Render::RenderOperation& renderOp)=0;
 		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed.
-		/*! Much like preRenderSetup(), this gives the renderer an oportunity to perform
+		/*! Much like preRenderSetup(), this gives the renderer an opportunity to perform
 			whatever tasks it feels are necessary to return the render system back to a
 			usable state for the application.
 		*/

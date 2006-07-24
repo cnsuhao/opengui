@@ -2,7 +2,8 @@
 //
 
 
-#include "OgreFusion_PreRequisites.h"
+//#include "OgreFusion_PreRequisites.h"
+#include "OgreFusion.h" //this just ensures that all headers are working correctly for client apps
 
 #if OGREFUSION_PLATFORM == OGREFUSION_PLATFORM_WIN32
 

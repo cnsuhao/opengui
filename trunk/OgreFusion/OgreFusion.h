@@ -5,6 +5,7 @@
 #ifndef	_H_OGREFUSION
 #define _H_OGREFUSION
 
+#include <OpenGUI.h>
 
 #include "OgreFusion_PreRequisites.h"
 #include "OgreFusion_Exports.h"
