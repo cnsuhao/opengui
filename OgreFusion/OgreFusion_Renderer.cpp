@@ -3,45 +3,53 @@
 // -----------------------------------------------------------------------------
 
 #include "OgreFusion_Renderer.h"
+#include "OgreFusion_Texture.h"
 
 #include "Ogre.h"
 
 namespace OpenGUI{
 	//#####################################################################
-	OpenGUI_OgreRenderer::OpenGUI_OgreRenderer(){
+	OgreRenderer::OgreRenderer(){
 	}
 	//#####################################################################
-	OpenGUI_OgreRenderer::~OpenGUI_OgreRenderer(){
+	OgreRenderer::~OgreRenderer(){
 	}
 	//#####################################################################
 
-	void OpenGUI_OgreRenderer::getViewportDimensions(IVector2& dims){
+	void OgreRenderer::getViewportDimensions(IVector2& dims){
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::getScreenDimensions(IVector2& dims){
+	void OgreRenderer::getScreenDimensions(IVector2& dims){
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::preRenderSetup(){
+	void OgreRenderer::preRenderSetup(){
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::doRenderOperation(Render::RenderOperation& renderOp){
+	void OgreRenderer::doRenderOperation(Render::RenderOperation& renderOp){
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::postRenderCleanup(){
+	void OgreRenderer::postRenderCleanup(){
 	}
 	//#####################################################################
-	Texture* OpenGUI_OgreRenderer::createTextureFromFile(std::string filename){
-		return 0;
+	Texture* OgreRenderer::createTextureFromFile(std::string filename){
+		OgreTexture* tex = new OgreTexture();
+		tex->mTextureName = filename;
+		tex->mTextureSize = IVector2(0,0);
+		return tex;
 	}
 	//#####################################################################
-	Texture* OpenGUI_OgreRenderer::createTextureFromTextureData(TextureData *textureData){
-		return 0;
+	Texture* OgreRenderer::createTextureFromTextureData(TextureData *textureData){
+		OgreTexture* tex = new OgreTexture();
+		tex->mTextureName = "#TextureFromMemory#";
+		tex->mTextureSize = IVector2(0,0);
+		return tex;
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::updateTextureFromTextureData(Texture* texture, TextureData *textureData){
+	void OgreRenderer::updateTextureFromTextureData(Texture* texture, TextureData *textureData){
 	}
 	//#####################################################################
-	void OpenGUI_OgreRenderer::destroyTexture(Texture* texturePtr){
+	void OgreRenderer::destroyTexture(Texture* texturePtr){
+		delete texturePtr;
 	}
 	//#####################################################################
 }

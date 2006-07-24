@@ -7,21 +7,21 @@
 
 #include "OgreFusion_Exports.h"
 
-#include "OpenGUI.h"
+#include <OpenGUI.h>
 
 namespace OpenGUI{
-	class OGREFUSION_API OpenGUI_OgreRenderer: public Renderer
+	class OGREFUSION_API OgreRenderer: public Renderer
 	{
 	public:
-		OpenGUI_OgreRenderer();
-		virtual ~OpenGUI_OgreRenderer();
+		OgreRenderer();
+		virtual ~OgreRenderer();
 		virtual void getViewportDimensions(IVector2& dims);
 		virtual void getScreenDimensions(IVector2& dims);
 		//void alertViewportDimensionsChanged();
 		//void alertScreenDimensionsChanged();
 		virtual void preRenderSetup();
 		virtual void doRenderOperation(Render::RenderOperation& renderOp);
-		virtual void postRenderCleanup()=0;
+		virtual void postRenderCleanup();
 		virtual Texture* createTextureFromFile(std::string filename);
 		virtual Texture* createTextureFromTextureData(TextureData *textureData);
 		virtual void updateTextureFromTextureData(Texture* texture, TextureData *textureData);
