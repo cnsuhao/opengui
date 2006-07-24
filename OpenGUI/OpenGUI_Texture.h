@@ -16,9 +16,14 @@ namespace OpenGUI{
 	class OPENGUI_API Texture
 	{
 	public:
+		Texture() {} //<! base class constructor
+		virtual ~Texture() {} //<! base class destructor
+		//! Returns the name of the texture.
+		/*! This will be the texture source filename if the texture was loaded from a file.
+			Otherwise its value is undefined.
+		*/
 		virtual std::string getName();
-		Texture() {}
-		virtual ~Texture() {}
+		//! Returns the size of the texture, in pixels
 		IVector2 getSize(){return mTextureSize;}
 	protected:
 		std::string mTextureName;//!<It is required that this be set to the source filename by custom Renderers
