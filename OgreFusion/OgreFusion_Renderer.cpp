@@ -197,7 +197,7 @@ namespace OpenGUI{
 		if(renderOp.texture && static_cast<OgreTexture*>(renderOp.texture)->validOgreTexture()){
 			
 			mRenderSystem->_setTexture( 0, // texture unit id
-										true, //disable texture (temporary)
+										true, //enable texture
 										static_cast<OgreTexture*>(renderOp.texture)->getOgreTextureName()); //ogre texture name
 		}else{
 			mRenderSystem->_setTexture( 0, // texture unit id
