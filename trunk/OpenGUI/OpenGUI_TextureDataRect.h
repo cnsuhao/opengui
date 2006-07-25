@@ -27,7 +27,7 @@ namespace OpenGUI{
 	};
 
 	//! Provides a clean and reliable method of altering the contents of a TextureData object.
-	/*!	
+	/*!
 		These objects represent a subset of data from a TextureData object. The immediate contents
 		of the image data contained is not directly linked to the data of a TextureData object. When
 		a TextureDataRect is created, they can be created with a provided background color but otherwise
@@ -132,12 +132,10 @@ namespace OpenGUI{
 				it fit.
 		*/
 		void paste(TextureDataRect* dstTextureDataRect, const IVector2& dstOffset) const;
-		
+
 		//! Provides pixel write functionality.
 		/*! This function respects logical image dimensions. Writes outside of the image area
 			will do nothing.
-
-			\todo inline this function
 		*/
 		inline void write(const IVector2& position, const TDRColor& color)
 		{

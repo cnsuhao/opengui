@@ -70,6 +70,7 @@ namespace OpenGUI{
 	//#####################################################################
 	void OgreTexture::loadFromTextureData(TextureData* textureData, const std::string& groupName){
 		using namespace Ogre;
+		
 		freeOgreTexture(); //dump any existing texture
 		if(!textureData) return; //stop here if there is no data
 
@@ -85,13 +86,41 @@ namespace OpenGUI{
 				pFmt = PF_A8; break;
 		}
 
+		//if we are given a bitmap with only an alpha channel, we need to convert it to RBGA
+		unsigned char* pixelData = 0;
+		bool autoDelete;
+		if(pFmt == PF_A8){
+			size_t newSize = textureData->getWidth() * textureData->getHeight() * 4;
+			unsigned char* origData = textureData->getPixelData();
+			unsigned char* newData = new unsigned char[newSize];
+			unsigned char* newPtr; //we use this later
+			for(	int i = 0; 
+					i < textureData->getWidth() * textureData->getHeight(); 
+					i++)
+			{
+				
+				newPtr = &(newData[i * 4]);
+				newPtr[0] = 255; //new R
+				newPtr[1] = 255; //new G
+				newPtr[2] = 255; //new B
+				newPtr[3] = origData[i]; //keep the old A channel
+			}
+			
+			pFmt = PF_BYTE_RGBA; //and we are now RBGA (yay)
+			pixelData = newData; //here's our new data
+			autoDelete = true; //and ogre can delete it when it's done with it
+		}else{
+			pixelData = textureData->getPixelData();
+			autoDelete = false; //we'd like to keep our data, thank you
+		}
+
 		try{
-			tmpImg.loadDynamicImage(textureData->getPixelData(), //pointer to pixel buffer
+			tmpImg.loadDynamicImage(pixelData, //pointer to pixel buffer
 									textureData->getWidth(), //width
 									textureData->getHeight(), //height
 									1, // depth = 1 (2D texture)
 									pFmt, // pixel format of input
-									false, // autodelete = false (we'd like to keep our data, thank you)
+									autoDelete, // autoDelete (signifies if Ogre now owns that memory)
 									1, // 1 face (just a 2D texture, cubemaps need not apply)
 									0); //mipmaps are still for Ninnies
 		}catch(Ogre::Exception e){
@@ -100,6 +129,7 @@ namespace OpenGUI{
 				" (Ogre::Image failed to load the pixel buffer)",
 				"OgreTexture::loadFromTextureData");
 		}
+
 		std::string tmpName = System::getSingleton().generateRandomElementName();
 
 		TexturePtr tmpTexture;
@@ -110,7 +140,8 @@ namespace OpenGUI{
 																	TEX_TYPE_2D, //yep, 2D texture
 																	0, //mipmap hasn't changed (they are still for Ninnies)
 																	1.0f, //i'm allergic to gamma
-																	pFmt==PF_A8?true:false); //i knew i should have put that info somewhere more accessible ;)
+																	false);
+																	//pFmt==PF_A8?true:false); //i knew i should have put that info somewhere more accessible ;)
 		}catch(Ogre::Exception e){
 			OG_THROW(Exception::ERR_INTERNAL_ERROR,
 				std::string("Error loading texture from TextureData") +
@@ -120,6 +151,7 @@ namespace OpenGUI{
 
 		if(!tmpTexture.isNull()){
 			mOgreTexturePtr = tmpTexture;
+			mOgreTexturePtr->setFormat(PF_BYTE_RGBA );
 			mTextureSize = IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() );
 			mTextureName = mOgreTexturePtr->getName();;
 			mNotOwner = false; //you build it, you own it
