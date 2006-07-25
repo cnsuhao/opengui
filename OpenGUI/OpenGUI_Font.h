@@ -4,6 +4,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Resource.h"
 #include "OpenGUI_Imagery.h"
 
 #include "OpenGUI_FontGlyph.h"
@@ -66,6 +67,7 @@ namespace OpenGUI{
 		unsigned int mNativeXres;
 		unsigned int mNativeYres;
 		bool mAutoscale;
+		Resource *mFontResource;
 	};
 };
 
