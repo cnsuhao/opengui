@@ -14,14 +14,22 @@ namespace OpenGUI{
 	class TextureDataRect;
 
 	
-
+	//! Used to load fonts and render glyphs from those fonts into memory segments.
 	class OPENGUI_API Font
 	{
 	friend class FontManager;
 	protected:
+		//! Font creation implies loading of the font via FreeType.
+		/*! \param sourceFilename filename of the font to load
+			\param nativeXres Used to determine the horizontal scale factor for glyphs rendered from this font. Only used if \c autoscale is true.
+			\param nativeYres Used to determine the vertical scale factor for glyphs rendered from this font. Only used if \c autoscale is true.
+			\param autoscale Determines of glyphs from this font need to be scaled to compensate for resolution differences between layout creation and layout display.
+		*/
 		Font(std::string sourceFilename, unsigned int nativeXres, unsigned int nativeYres, bool autoscale);
+		//! Destruction also unloads the font from FreeType
 		~Font();
 	public:
+		//! Returns the filename used to load the font
 		std::string getFilename() {return mFilename;}
 
 		//! Retrieves the imagery backing a font glyph, as well as a pixel based rect defining the glyph extents.
@@ -60,6 +68,7 @@ namespace OpenGUI{
 		*/
 		void renderGlyph(char glyph_charCode, const IVector2& pixelSize, TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics);
 
+		//! Calculates the pixel size of a generic glyph from this Font based on the scale settings given at Font creation.
 		void calcPixelSizeFromPoints(unsigned int pointSize, IVector2& pixelSize);
 	private:
 		void* mFT_Face;
