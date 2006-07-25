@@ -12,6 +12,7 @@
 #include "OpenGUI_FontCache.h"
 #include "OpenGUI_TextureDataRect.h"
 #include "OpenGUI_System.h"
+#include "OpenGUI_ResourceProvider.h"
 
 namespace OpenGUI{
 	//############################################################################
@@ -26,17 +27,27 @@ namespace OpenGUI{
 		mNativeXres = nativeXres;
 		mNativeYres = nativeYres;
 		mFT_Face = 0;
+		mFontResource = new Resource;
+
+		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		resProvider->loadResource(sourceFilename, *mFontResource);
 
 		FT_Library* library = (FT_Library*) FontManager::getSingleton().mFTLibrary;
 		FT_Face* tFace = new FT_Face;
-		FT_Error error = FT_New_Face(*library, sourceFilename.c_str(), 0, tFace);
+
+		FT_Open_Args ftOpenArgs;
+		ftOpenArgs.flags = FT_OPEN_MEMORY;
+		ftOpenArgs.memory_base = mFontResource->getData();
+		ftOpenArgs.memory_size = mFontResource->getSize();
+		FT_Error error = FT_Open_Face(*library, &ftOpenArgs, 0, tFace);
+		//FT_Error error = FT_New_Face(*library, sourceFilename.c_str(), 0, tFace);
 		if(error){
 			LogManager::SlogMsg("Font", OGLL_ERR) 
 				<< "FreeType 2 Error: (" << ((int)error) << ") "
 				<< FontManager::getSingleton()._GetFTErrorString(error)
 				<< Log::endlog;
-			delete tFace;
-			tFace = 0;
+			delete tFace; tFace = 0;
+			delete mFontResource; mFontResource = 0;
 			OG_THROW(Exception::ERR_INTERNAL_ERROR, "Fatal Error loading Font. Freetype error occurred during Font creation.","Font::Font");
 		}
 		mFT_Face = tFace;
@@ -61,6 +72,9 @@ namespace OpenGUI{
 			delete tFace;
 		}
 		mFT_Face = 0;
+		if(mFontResource)
+			delete mFontResource;
+		mFontResource = 0;
 	}
 	//############################################################################
 	void Font::renderGlyph( char glyph_charCode, const IVector2& pixelSize,
