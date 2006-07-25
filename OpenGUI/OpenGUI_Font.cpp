@@ -40,7 +40,6 @@ namespace OpenGUI{
 		ftOpenArgs.memory_base = mFontResource->getData();
 		ftOpenArgs.memory_size = mFontResource->getSize();
 		FT_Error error = FT_Open_Face(*library, &ftOpenArgs, 0, tFace);
-		//FT_Error error = FT_New_Face(*library, sourceFilename.c_str(), 0, tFace);
 		if(error){
 			LogManager::SlogMsg("Font", OGLL_ERR) 
 				<< "FreeType 2 Error: (" << ((int)error) << ") "
