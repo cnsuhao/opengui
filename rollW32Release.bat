@@ -15,7 +15,7 @@ start /WAIT buildSRC_W32.bat SKIP
 start /WAIT buildSDK_W32.bat SKIP
 
 set NSIS="C:\Program Files\NSIS\makensis.exe"
-"%NSIS%" win32sdkInstaller.nsi
+%NSIS% win32sdkInstaller.nsi
 
 echo .
 echo .
