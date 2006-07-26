@@ -17,6 +17,9 @@ set P_OGLlib="winSDK\OGLRenderer\lib"
 set P_TACHinc="winSDK\Tachometer\include"
 set P_TACHlib="winSDK\Tachometer\lib"
 set P_demo="winSDK\Demos"
+set P_OF="winSDK\OgreFusion"
+set P_OFinc="winSDK\OgreFusion\include"
+set P_OFlib="winSDK\OgreFusion\lib"
 set LOG="sdkBuildLog.txt"
 
 rem Reset the Build Log
@@ -33,16 +36,16 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
-devenv OpenGUI.sln /clean Debug >> %LOG%
-devenv OpenGUI.sln /clean Release >> %LOG%
+devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
+devenv OpenGUI.sln /clean "Release - All" >> %LOG%
 
 echo Building Solution...
 echo ################ >> %LOG% 2>&1
 echo ### BUILDING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
-devenv OpenGUI.sln /build Debug >> %LOG%
-devenv OpenGUI.sln /build Release >> %LOG%
+devenv OpenGUI.sln /build "Debug - All" >> %LOG%
+devenv OpenGUI.sln /build "Release - All" >> %LOG%
 
 IF "%1" == "SKIP" GOTO SKIP2
 echo PLEASE CHECK THE SDK BUILD LOG AND ENSURE THAT EVERYTHING BUILT CORRECTLY BEFORE CONTINUING
@@ -58,6 +61,8 @@ mkdir %P_OGLlib%
 mkdir %P_TACHinc%
 mkdir %P_TACHlib%
 mkdir %P_demo%
+mkdir %P_OFinc%
+mkdir %P_OFlib%
 
 echo Copying OpenGUI files...
 copy OpenGUI\LICENSE.TXT %P_OG% >> %LOG% 2>&1
@@ -66,7 +71,7 @@ copy Debug\OpenGUI_d.lib %P_OGlib% >> %LOG% 2>&1
 copy Debug\OpenGUI_d.dll %P_OGlib% >> %LOG% 2>&1
 copy Release\OpenGUI.lib %P_OGlib% >> %LOG% 2>&1
 copy Release\OpenGUI.dll %P_OGlib% >> %LOG% 2>&1
-copy OpenGUI\*.h %P_OGinc% >> %LOG% 2>&1
+
 
 echo Copying OpenGL Renderer files...
 copy OpenGUI_OGLRenderer\*.h %P_OGLinc% >> %LOG% 2>&1
@@ -92,6 +97,16 @@ copy examples\bin\metal.xml %P_demo% >> %LOG% 2>&1
 copy examples\bin\OpenGUI.dll %P_demo% >> %LOG% 2>&1
 copy examples\bin\demo1.xml %P_demo% >> %LOG% 2>&1
 copy examples\bin\Demo1.exe %P_demo% >> %LOG% 2>&1
+
+echo Copying OgreFusion...
+copy OgreFusion\LICENSE.TXT %P_OF% >> %LOG% 2>&1
+copy OgreFusion\*.h %P_OFinc% >> %LOG% 2>&1
+copy OgreFusion\Debug\OgreFusion_d.lib %P_OFlib% >> %LOG% 2>&1
+copy OgreFusion\Debug\OgreFusion_d.dll %P_OFlib% >> %LOG% 2>&1
+copy OgreFusion\Release\OgreFusion.lib %P_OFlib% >> %LOG% 2>&1
+copy OgreFusion\Release\OgreFusion.dll %P_OFlib% >> %LOG% 2>&1
+
+
 
 echo Copying Documentation...
 copy OpenGUI\doc\OpenGUI.chm %P_% >> %LOG% 2>&1

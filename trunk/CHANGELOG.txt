@@ -1,7 +1,13 @@
-version 0.7.1 - 05/13/2005)
+Version 0.7.5 - 07/26/2006)
+* Added more documentation to OpenGUI classes that needed it
+* Added proper screen resolution detection in OGLRenderer under Windows.
+* Corrected issue where fonts were not loaded through the OpenGUI ResourceProvider
+* Added OgreFusion (OpenGUI / Ogre interoperability)
+
+version 0.7.1 - 05/13/2006)
 * Added a changelog
 * Removed temporary GCC build fix in log system (breaks GCC building)
 * Added a little extra housekeeping in the source release build script
 
-version 0.7 - 05/11/2005)
+version 0.7 - 05/11/2006)
 * Initial packaged release

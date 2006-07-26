@@ -12,6 +12,7 @@
 #include <OgreTextureManager.h>
 
 namespace OpenGUI{
+	//! An OpenGUI::Texture implementation used by OgreRenderer to load and represent Ogre textures.
 	class OGREFUSION_API OgreTexture : public Texture
 	{
 		friend class OgreRenderer;
@@ -27,7 +28,9 @@ namespace OpenGUI{
 		void loadFromTextureData(TextureData* textureData, const std::string& groupName);
 		//! frees the attached Ogre texture. Infinitely recallable
 		void freeOgreTexture();
+		//! Returns the name of this texture as held by Ogre
 		const Ogre::String& getOgreTextureName() const;
+		//! Returns true if this texture object is currently representing an Ogre texture.
 		bool validOgreTexture(){return !mOgreTexturePtr.isNull();}
 	private:
 		bool mNotOwner; // true if we do not own the ogre texture we're reference, so we won't destroy it

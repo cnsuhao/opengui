@@ -4,6 +4,8 @@ Just open OpenGUI.sln in the root directory, select a
 build configuration and build the solution. All necessary
 dependancies will be automatically built.
 
+See also: OgreFusion\README.txt for details on building
+the OgreFusion project, which links OpenGUI into Ogre.
 
 
 Linux

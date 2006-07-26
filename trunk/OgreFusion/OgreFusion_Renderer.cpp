@@ -141,7 +141,6 @@ namespace OpenGUI{
 		// set-up matrices
 		mRenderSystem->_setWorldMatrix(Matrix4::IDENTITY);
 		mRenderSystem->_setViewMatrix(Matrix4::IDENTITY);
-		//! \todo Switch this to use Ogre::RenderSystem::_makeOrthoMatrix()
 		mRenderSystem->_setProjectionMatrix(Matrix4::IDENTITY);
 
 		// initialise render settings
