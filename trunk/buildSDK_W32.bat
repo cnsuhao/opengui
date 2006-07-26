@@ -111,6 +111,7 @@ copy OgreFusion\Release\OgreFusion.dll %P_OFlib% >> %LOG% 2>&1
 echo Copying Documentation...
 copy OpenGUI\doc\OpenGUI.chm %P_% >> %LOG% 2>&1
 copy CHANGELOG.txt %P_% >> %LOG% 2>&1
+copy OgreFusion\doc\OgreFusion.chm %P_% >> %LOG% 2>&1
 
 GOTO END
 :END

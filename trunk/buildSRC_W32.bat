@@ -28,6 +28,7 @@ devenv OpenGUI.sln /clean "Release - All" > NUL
 
 echo Build directory tree...
 xcopy /E * "%P_tmp%\" > NUL 2>&1
+xcopy /H OpenGUI.suo "%P_tmp%\" > NUL 2>&1
 move "%P_tmp%" "%P_%" > NUL 2>&1
 
 echo Cleaning source tree...
