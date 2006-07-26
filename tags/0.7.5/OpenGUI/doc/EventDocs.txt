@@ -1,0 +1,426 @@
+
+/*!
+	\page EventTypes Event Types
+	This is the complete list of all message events that Widgets can expect to potentially recieve from the system.
+	<HR>
+	- \subpage EventME_GUISheetActivate "ME_GUISheetActivate"
+	- \subpage EventME_GUISheetDeactivate "ME_GUISheetDeactivate"
+	- \subpage EventME_KeyDown "ME_KeyDown"
+	- \subpage EventME_KeyStroke "ME_KeyStroke"
+	- \subpage EventME_KeyUp "ME_KeyUp"
+	- \subpage EventME_MouseButtonDown "ME_MouseButtonDown"
+	- \subpage EventME_MouseButtonUp "ME_MouseButtonUp"
+	- \subpage EventME_MouseClick "ME_MouseClick"
+	- \subpage EventME_MouseDblClick "ME_MouseDblClick"
+	- \subpage EventME_MouseEnter "ME_MouseEnter"
+	- \subpage EventME_MouseLeave "ME_MouseLeave"
+	- \subpage EventME_MouseMove "ME_MouseMove"
+	- \subpage EventME_Tick "ME_Tick"
+*/
+
+/*!
+	\page EventME_GUISheetActivate ME_GUISheetActivate
+	\section Description
+	The ME_GUISheetActivate event is sent directly after the system
+	sets a new active GUISheet.
+	
+	This event is sent globally to all Elements within the GUISheet that is
+	becoming active. The \c destination field will be 0.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_GUISheetActivate //event type is ME_GUISheetActivate
+Message.event.destination = 0 //event destination 0 (global Event)
+Message.event.eventData = 0 //no additional eventData
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_GUISheetDeactivate ME_GUISheetDeactivate
+	\section Description
+	The ME_GUISheetDeactivate event is sent directly before the system
+	sets a new active GUISheet.
+	
+	This event is sent globally to all Elements within the GUISheet that is
+	losing focus. The \c destination field will be 0.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_GUISheetDeactivate //event type is ME_GUISheetDeactivate
+Message.event.destination = 0 //event destination 0 (global Event)
+Message.event.eventData = 0 //no additional eventData
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_KeyDown ME_KeyDown
+	\section Description
+	The ME_KeyDown event is sent when the system
+	recieves a call to \link OpenGUI::System::injectKeyDown injectKeyDown() \endlink.
+	
+	The \c destination is the Element that has captured the keyboard.
+	If the keyboard is not captured by an Element, this event will not be issued.
+	
+	\c KeyEvent.key will contain the ASCII table key code representing which
+	key the event references.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_KeyDown //event type is ME_KeyDown
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = KeyEvent* //eventData is pointer to KeyEvent struct
+KeyEvent.key = acsiiKeyCode //key is the ASCII code of the key
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_KeyStroke ME_KeyStroke
+	\section Description
+	The ME_KeyStroke event is sent for two situations.
+	
+	First, it is sent directly following a ME_KeyDown event to inform
+	the keyboard capturing Element that a key was pressed.
+	
+	Second, it is sent in multiple succession when the system detects
+	the last ME_KeyDown event has not recieved a complimenting ME_KeyUp
+	event within the system-wide TypeMaticDelay. The repeat rate of these
+	ME_KeyStroke events is determined by the system-wide TypeMaticRate.
+	
+	This event is specifically designed to provide Elements a simple method
+	of receiving keyboard input, as the user would expect any usual console or
+	text field to behave.
+	
+	
+	The \c destination is the Element that has captured the keyboard.
+	If the keyboard is not captured by an Element, this event will not be issued.
+	
+	\c KeyEvent.key will contain the ASCII table key code representing which
+	key the event references.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_KeyStroke //event type is ME_KeyStroke
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = KeyEvent* //eventData is pointer to KeyEvent struct
+KeyEvent.key = acsiiKeyCode //key is the ASCII code of the key
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_KeyUp ME_KeyUp
+	\section Description
+	The ME_KeyUp event is sent when the system
+	recieves a call to \link OpenGUI::System::injectKeyUp injectKeyUp() \endlink.
+	
+	The \c destination is the Element that has captured the keyboard.
+	If the keyboard is not captured by an Element, this event will not be issued.
+	
+	\c KeyEvent.key will contain the ASCII table key code representing which
+	key the event references.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_KeyUp //event type is ME_KeyUp
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = KeyEvent* //eventData is pointer to KeyEvent struct
+KeyEvent.key = acsiiKeyCode //key is the ASCII code of the key
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseButtonDown ME_MouseButtonDown
+	\section Description
+	The ME_MouseButtonDown event is sent when the system
+	recieves a call to \link OpenGUI::System::injectMouseButtonDown injectMouseButtonDown() \endlink.
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise the
+	\c destination is the Element that has captured the mouse.
+	
+	\c MouseButtonEvent.mouseButtonID will contain the MouseButton representing which
+	button's state has changed.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseButtonDown //event type is ME_MouseButtonDown
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = MouseButtonEvent* //eventData is pointer to MouseButtonEvent struct
+MouseButtonEvent.mouseButtonID = MouseButton //mouseButtonID is a value from the MouseButton enum
+\endcode
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseButtonUp ME_MouseButtonUp
+	\section Description
+	The ME_MouseButtonUp event is sent when the system
+	recieves a call to \link OpenGUI::System::injectMouseButtonUp injectMouseButtonUp() \endlink.
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise the
+	\c destination is the Element that has captured the mouse.
+	
+	\c MouseButtonEvent.mouseButtonID will contain the MouseButton representing which
+	button's state has changed.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseButtonUp //event type is ME_MouseButtonUp
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = MouseButtonEvent* //eventData is pointer to MouseButtonEvent struct
+MouseButtonEvent.mouseButtonID = MouseButton //mouseButtonID is a value from the MouseButton enum
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseClick ME_MouseClick
+	\section Description
+	The ME_MouseClick event is sent when the system detects the user has pressed and released
+	a mouse button, within the same Element, without significant mouse movement between the
+	button down and button up.
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise the
+	\c destination is the Element that has captured the mouse.
+	
+	The ME_MouseClick event cannot be generated without first generating 
+	ME_MouseButtonDown and ME_MouseButtonUp events. Whether or not a widget recieves
+	those events is up to the event handlers of its parents, but Widgets should properly
+	anticipate the possibility of these events preceeding a ME_MouseClick.
+	
+	\c MouseButtonEvent.mouseButtonID will contain the MouseButton representing which
+	button was clicked.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseClick //event type is ME_MouseClick
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = MouseButtonEvent* //eventData is pointer to MouseButtonEvent struct
+MouseButtonEvent.mouseButtonID = MouseButton //mouseButtonID is a value from the MouseButton enum
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseDblClick ME_MouseDblClick
+	\section Description
+	The ME_MouseDblClick event is sent when the system detects the user has pressed, released,
+	and again pressed a mouse button, within the same Element, without significant mouse
+	movement or delay between the two generated ME_MouseButtonDown events.
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise the
+	\c destination is the Element that has captured the mouse.
+	
+	The ME_MouseDblClick event cannot be generated without first generating
+	ME_MouseButtonDown, ME_MouseButtonUp, ME_MouseClick and ME_MouseButtonDown events.
+	Whether or not a widget recieves those events is up to the event handlers of its
+	parents, but Widgets should properly anticipate the possibility of these events
+	preceeding a ME_MouseDblClick.
+	
+	\c MouseButtonEvent.mouseButtonID will contain the MouseButton representing which
+	button was double clicked.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseDblClick //event type is ME_MouseDblClick
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = MouseButtonEvent* //eventData is pointer to MouseButtonEvent struct
+MouseButtonEvent.mouseButtonID = MouseButton //mouseButtonID is a value from the MouseButton enum
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseEnter ME_MouseEnter
+	\section Description
+	The ME_MouseEnter event is sent when the system detects a ME_MouseMove
+	event is about to be generated to new Element.
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise this
+	event will not occur, as the destination of ME_MouseMove events must
+	change to create this event.
+	
+	The ME_MouseEnter is always generated before a new Element recieves
+	its first ME_MouseMove event. As with all events, the ME_MouseEnter
+	event may be squelched by a parent, so Elements should not depend on
+	recieving it before recieving ME_MouseMove unless that is the desired
+	functionality.
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseEnter //event type is ME_MouseEnter
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = 0 //no additional eventData
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseLeave ME_MouseLeave
+	\section Description
+	The ME_MouseLeave event is sent only to Elements that ask for it
+	via \link OpenGUI::System::setTrackMouseLeave() System::setTrackMouseLeave()\endlink.
+	For those Elements, the event will be generated when the system detects a
+	ME_MouseMove event is about to be generated to new Element outside
+	of its decendants or the cursor has left the rect of the Element. This event
+	is also sent to a requesting Element when the GUISheet is about to change,
+	as this is considered as the mouse leaving the Element's rect.
+	
+	Mouse capturing does not affect this event outside of ensuring that
+	it will not be generated due to a new Element about to receive a
+	ME_MouseMove event. It can still be generated due to the cursor
+	leaving the Element's rect.
+	
+	The ME_MouseLeave is always generated before the new Element recieves
+	its first ME_MouseMove event, and before the new Element receives its
+	ME_MouseEnter event.
+	
+	After generation of this event, the target of the ME_MouseMove is
+	re-evaluated. Because of this, if an Element changes the position
+	of the cursor via setCursorPos, or moves itself back infront of
+	the cursor, or performs some other trick to ensure it remains the
+	destination of the next ME_MouseMove event, it can effectively prevent
+	another Element from ever receiving mouse events for as long as it likes.
+	
+	
+	\remarks
+	When this event is generated, the obligation of setTrackMouseLeave() is
+	considered fulfilled, and this Element's request for tracking is removed
+	immediately before the event is issued. It is valid to request another
+	setTrackMouseLeave() within this event's handler, but the caller must
+	still meet the criteria of setTrackMouseLeave() at the time of the call
+	or it with fail.<i>The list of mouse tracking Elements is only processed
+	once per \c ME_MouseMove. If an Element readds itself to the tracking
+	list, and another Element performs an operation that again puts the first
+	Element in a situation where it should receive a \c ME_MouseLeave event,
+	it will not receive the event until the next \c ME_MouseMouse event is
+	generated.</i>
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseLeave //event type is ME_MouseLeave
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = 0 //no additional eventData
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_MouseMove ME_MouseMove
+	\section Description
+	The ME_MouseMove event is sent any time the cursor moves. 
+	
+	If the mouse is not captured, the \c destination of the
+	event will be the Element that is under the cursor. Otherwise the
+	\c destination is the Element that has captured the mouse.
+	
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_MouseMove //event type is ME_MouseEnter
+Message.event.destination = Element* //event destination is a pointer to an Element
+Message.event.eventData = MouseMoveEvent* //eventData is a pointer to a valid MouseMoveEvent
+MouseMoveEvent.mousePosition = cursorPosition //the cursor's position as of when this event was sent, in world coordinates
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
+/*!
+	\page EventME_Tick ME_Tick
+	\section Description
+	Depending on the choice of the application, the ME_Tick event is either
+	sent automatically by the system every frame, or only when the application
+	calls \link OpenGUI::System::injectTick() System::injectTick() \endlink.
+	
+		
+	
+	\section Syntax
+\code
+Message.messageType = MT_EVENT //message is type MT_EVENT
+Message.event.type = ME_Tick //event type is ME_Tick
+Message.event.destination = 0 //event destination is 0, this is a global event
+Message.event.eventData = TickEvent* //eventData is a pointer to a valid TickEvent
+TickEvent.timeDelta = milliseconds_passed //the amount of time passed, since the last ME_Tick, in milliseconds
+\endcode
+
+	\return
+	As with all event handlers: Return \c TRUE to allow continued propagation of this event
+	toward its destination, or \c FALSE to stop the propagation at the current Element.
+	(All event handlers at the current Element are guaranteed a chance to run, even if one
+	of them returns false.)
+*/
+
