@@ -17,7 +17,7 @@ namespace OpenGUI{
 	class OgreRenderer; //forward declaration
 
 	//! Used internally by OgreFusion to hook into Ogre for automatic GUI rendering.
-	/*! \note Symbols not exported */
+	/*! \note Not for application use, symbols not exported */
 	class OgreRenderQueueListener : public Ogre::RenderQueueListener
 	{
 	public:
@@ -39,12 +39,12 @@ namespace OpenGUI{
 	};
 
 
-	//! OpenGUI Renderer implementation that works with Ogre
+	//! %OpenGUI Renderer implementation that works with Ogre
 	class OGREFUSION_API OgreRenderer: public Renderer
 	{
 	public:
 
-		//! Constructor. If you use this constructor, be sure you call setSceneManager before rendering
+		//! Constructor. If you use this constructor, be sure you call OgreRenderer::setSceneManager() before rendering
 		OgreRenderer( Ogre::RenderWindow* ogreRenderWindow,
 			Ogre::uint8 queueId = Ogre::RENDER_QUEUE_OVERLAY,
 			bool postQueue = false );
@@ -74,15 +74,15 @@ namespace OpenGUI{
 
 
 		//Standard OpenGUI Renderer functions
-		virtual void getViewportDimensions(IVector2& dims);
-		virtual void getScreenDimensions(IVector2& dims);
-		virtual void preRenderSetup();
-		virtual void doRenderOperation(Render::RenderOperation& renderOp);
-		virtual void postRenderCleanup();
-		virtual Texture* createTextureFromFile(std::string filename);
-		virtual Texture* createTextureFromTextureData(TextureData *textureData);
-		virtual void updateTextureFromTextureData(Texture* texture, TextureData *textureData);
-		virtual void destroyTexture(Texture* texturePtr);
+		virtual void getViewportDimensions(IVector2& dims); //!< See Renderer documentation from %OpenGUI
+		virtual void getScreenDimensions(IVector2& dims); //!< See Renderer documentation from %OpenGUI
+		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
+		virtual void doRenderOperation(Render::RenderOperation& renderOp); //!< See Renderer documentation from %OpenGUI
+		virtual void postRenderCleanup(); //!< See Renderer documentation from %OpenGUI
+		virtual Texture* createTextureFromFile(std::string filename); //!< See Renderer documentation from %OpenGUI
+		virtual Texture* createTextureFromTextureData(TextureData *textureData); //!< See Renderer documentation from %OpenGUI
+		virtual void updateTextureFromTextureData(Texture* texture, TextureData *textureData); //!< See Renderer documentation from %OpenGUI
+		virtual void destroyTexture(Texture* texturePtr); //!< See Renderer documentation from %OpenGUI
 
 	private:
 		//constructor implementation
@@ -109,7 +109,7 @@ namespace OpenGUI{
 
 		IVector2 mScreenDim; //last stored screen dimensions
 
-
+		//! Struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex{
 			float x, y, z;
 			Ogre::RGBA color;

@@ -1,11 +1,13 @@
 @echo off
 
 echo BEFORE CONTINUING, PERFORM THESE STEPS!
+echo * CLOSE VISUAL STUDIO! (and please leave it in a sane state...)
 echo * Did you update the ChangeLog.txt?
 echo * Make sure both doxygen config files have the correct version number set.
 echo * Make sure that OpenGUI.h has the correct version number set.
-echo * Update the NSIS script (win32sdkInstaller.nsi) to reflect the new version number.
+echo * Update the NSIS script (win32sdkInstaller.nsi) to reflect the new ver number.
 echo .
+echo = Note: You need to have Ogre setup and compiled correctly for OgreFusion SDK =
 echo When you're done with all of that, press a key and come back in 10 minutes.
 pause
 
@@ -13,7 +15,7 @@ start /WAIT buildSRC_W32.bat SKIP
 start /WAIT buildSDK_W32.bat SKIP
 
 set NSIS="C:\Program Files\NSIS\makensis.exe"
-%NSIS% win32sdkInstaller.nsi
+"%NSIS%" win32sdkInstaller.nsi
 
 echo .
 echo .

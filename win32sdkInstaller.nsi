@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "OpenGUI SDK"
-!define PRODUCT_VERSION "0.7.1"
+!define PRODUCT_VERSION "0.7.5"
 !define PRODUCT_WEB_SITE "http://OpenGUI.sourceforge.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Demo1.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}_${PRODUCT_VERSION}"
@@ -135,12 +135,32 @@ Section "MainSection" SEC01
   File "winSDK\Demos\OpenGUI.dll"
   File "winSDK\Demos\demo1.xml"
   File "winSDK\Demos\Demo1.exe"
+  SetOutPath "$INSTDIR\OgreFusion"
+  File "winSDK\OgreFusion\OgreFusion.h"
+  File "winSDK\OgreFusion\OgreFusion_Platform.h"
+  File "winSDK\OgreFusion\OgreFusion_Exports.h"
+  File "winSDK\OgreFusion\OgreFusion_PreRequisites.h"
+  File "winSDK\OgreFusion\OgreFusion_Texture.h"
+  File "winSDK\OgreFusion\OgreFusion_Renderer.h"
+  File "winSDK\OgreFusion\OgreFusion_ResourceProvider.h"
+  
+  SetOutPath "$INSTDIR\OgreFusion\lib"
+  File "winSDK\OgreFusion\lib\OgreFusion_d.lib"
+  File "winSDK\OgreFusion\lib\OgreFusion_d.dll"
+  File "winSDK\OgreFusion\lib\OgreFusion.lib"
+  File "winSDK\OgreFusion\lib\OgreFusion.dll"
+  SetOutPath "$INSTDIR\OgreFusion"
+  File "winSDK\OgreFusion\LICENSE.TXT"
+
+  
   CreateDirectory "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK"
   CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Demo1.lnk" "$INSTDIR\Demos\Demo1.exe"
   SetOutPath "$INSTDIR"
   File "winSDK\OpenGUI.chm"
+  File "winSDK\OgreFusion.chm"
   File "winSDK\CHANGELOG.txt"
   CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\OpenGUI API Docs.lnk" "$INSTDIR\OpenGUI.chm"
+  CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\OgreFusion Docs.lnk" "$INSTDIR\OgreFusion.chm"
   CreateShortCut "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\ChangeLog.lnk" "$INSTDIR\CHANGELOG.txt"
 SectionEnd
 
