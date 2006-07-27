@@ -17,7 +17,7 @@
 
 #else
 
-#   define OPENGUI_API
+#   define OGREFUSION_API
 
 #endif
 
