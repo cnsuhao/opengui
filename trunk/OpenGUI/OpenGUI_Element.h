@@ -5,10 +5,10 @@
 
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Message.h"
 #include "OpenGUI_Event.h"
-#include "OpenGUI_Subscriber.h"
-
 #include "OpenGUI_RenderOperation.h"
+
 
 namespace OpenGUI{
 	typedef Element* ChildElementListItem;
@@ -18,7 +18,8 @@ namespace OpenGUI{
 	typedef Element* ElementListItem;
 	typedef std::list<ElementListItem> ElementList;
 
-	class RenderCache;
+	class RenderCache; //forward declaration
+	class EventListener; //forward declaration
 
 	//! This is the base class for all GUI elements. It provides a very basic functionality set.
 	/*! The Element class should be inherited by all classes that need to exist within a GUI.
@@ -78,21 +79,17 @@ namespace OpenGUI{
 		//! returns the name of this object
 		std::string getName();
 
-		/*! Attaches the given Subscriber to this element so that it will receive event
+		/*! Attaches the given EventListener to this Element so that it will receive event
 			notifications from this object.
 
 			This is a design element to allow an application to monitor actions
-			taking place within the gui so that it can react to them.
-
-			\see Subscriber
+			taking place within the GUI so that it can react to them.
 		*/
-		void attachEventSubscriber(Subscriber sub);
-		/*! Detaches the given Subscriber from this element so that it will no longer
+		void attachEventListener(EventListener* listener);
+		/*! Detaches the given EventListener from this Element so that it will no longer
 			receive event notifications from this object.
-
-			\see Subscriber
 		*/
-		void detachEventSubscriber(Subscriber sub);
+		void detachEventListener(EventListener* listener);
 
 		//! Adds the given Element as a child of this parent
 		/*! Any element, customized or not, is added to the GUI by attaching it as a child of
@@ -485,8 +482,9 @@ namespace OpenGUI{
 		*/
 		ChildElementList mChildrenElements;
 
-		typedef std::list<Subscriber> SubscriberList;
-		SubscriberList mSubscriberList;
+		// EventListener list typedef and list object
+		typedef std::list<EventListener*> EventListenerList;
+		EventListenerList mEventListeners;
 
 		void _setElementName(std::string newName); //!< Sets the name of this Element. Users should never have a reason to use this function. \see mName \note This is implemented and used via function to ensure proper DLL linking
 		void _setElementParent(Element* newParent); //!< Sets the parent of this Element. Users should never have a reason to use this function.  \note This is implemented and used via function for consistency with _setName()

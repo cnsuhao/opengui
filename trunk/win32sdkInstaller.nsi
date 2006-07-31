@@ -103,26 +103,34 @@ Section "MainSection" SEC01
   File "winSDK\OpenGUI\include\OpenGUI_Primitives_Geometric.h"
   File "winSDK\OpenGUI\include\OpenGUI_Primitives_Mutations.h"
   File "winSDK\OpenGUI\include\OpenGUI_LogSystem.h"
+  File "winSDK\OpenGUI\include\OpenGUI_EventListener.h"
+  
   SetOutPath "$INSTDIR\OpenGUI\lib"
   File "winSDK\OpenGUI\lib\OpenGUI_d.lib"
   File "winSDK\OpenGUI\lib\OpenGUI_d.dll"
   File "winSDK\OpenGUI\lib\OpenGUI.lib"
   File "winSDK\OpenGUI\lib\OpenGUI.dll"
+  
   SetOutPath "$INSTDIR\OpenGUI"
   File "winSDK\OpenGUI\LICENSE.TXT"
+  
   SetOutPath "$INSTDIR\OGLRenderer\include"
   File "winSDK\OGLRenderer\include\OpenGUI_OGLTexture.h"
   File "winSDK\OGLRenderer\include\OpenGUI_OGLRenderer.h"
+  
   SetOutPath "$INSTDIR\OGLRenderer\lib"
   File "winSDK\OGLRenderer\lib\OpenGUI_OGLRenderer.lib"
   File "winSDK\OGLRenderer\lib\OpenGUI_OGLRenderer_d.lib"
+  
   SetOutPath "$INSTDIR\Tachometer\include"
   File "winSDK\Tachometer\include\Tachometer.h"
+  
   SetOutPath "$INSTDIR\Tachometer\lib"
   File "winSDK\Tachometer\lib\TachometerWidget.dll"
   File "winSDK\Tachometer\lib\TachometerWidget.lib"
   File "winSDK\Tachometer\lib\TachometerWidget_d.dll"
   File "winSDK\Tachometer\lib\TachometerWidget_d.lib"
+  
   SetOutPath "$INSTDIR\Demos"
   File "winSDK\Demos\licenses.txt"
   File "winSDK\Demos\pecot.ttf"
@@ -135,6 +143,7 @@ Section "MainSection" SEC01
   File "winSDK\Demos\OpenGUI.dll"
   File "winSDK\Demos\demo1.xml"
   File "winSDK\Demos\Demo1.exe"
+  
   SetOutPath "$INSTDIR\OgreFusion"
   File "winSDK\OgreFusion\include\OgreFusion.h"
   File "winSDK\OgreFusion\include\OgreFusion_Platform.h"
@@ -277,6 +286,7 @@ Section Uninstall
   Delete "$INSTDIR\OpenGUI\include\OpenGUI_PropertySet.h"
   Delete "$INSTDIR\OpenGUI\include\OpenGUI_Cursor.h"
   Delete "$INSTDIR\OpenGUI\include\OpenGUI_Widget.h"
+  Delete "$INSTDIR\OpenGUI\include\OpenGUI_EventListener.h"
 
   Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Uninstall.lnk"
   Delete "$SMPROGRAMS\OpenGUI ${PRODUCT_VERSION} SDK\Website.lnk"

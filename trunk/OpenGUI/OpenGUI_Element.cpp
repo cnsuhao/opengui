@@ -1,6 +1,7 @@
 
 #include "OpenGUI.h"
 #include "OpenGUI_RenderCache.h"
+#include "OpenGUI_EventListener.h"
 
 namespace OpenGUI{
 
@@ -267,34 +268,31 @@ namespace OpenGUI{
 		return true;
 	}
 	//#####################################################################
-	void Element::attachEventSubscriber(Subscriber sub)
-	{
-		Element::detachEventSubscriber(sub);
-		mSubscriberList.push_back(sub);
-	}
-	//#####################################################################
-	void Element::detachEventSubscriber(Subscriber sub)
-	{
-		SubscriberList::iterator sli = mSubscriberList.begin();
-		while(sli != mSubscriberList.end()){
-			if((*sli) == sub){
-				mSubscriberList.erase(sli);
-				return;
-			}
-			sli++;
-		}
-	}
-	//#####################################################################
 	bool Element::_fireMessageSubscribers(const Msg::Message& message)
 	{
 		bool continuePropagation=true;
-		SubscriberList::iterator sli = mSubscriberList.begin();
-		while(sli != mSubscriberList.end()){
-			Subscriber f = (*sli);
-			continuePropagation = (*f)(this,message) && continuePropagation;
+		EventListenerList::iterator sli = mEventListeners.begin();
+		while(sli != mEventListeners.end()){
+			EventListener* f = (*sli);
+			continuePropagation = f->onEvent(message) && continuePropagation;
 			sli++;
 		}
 		return continuePropagation;
+	}
+	//#####################################################################
+	void Element::attachEventListener(EventListener* listener){
+		if(listener){
+			Element::detachEventListener(listener);
+			listener->_setAttachedElement(this);
+			mEventListeners.push_back(listener);
+		}
+	}
+	//#####################################################################
+	void Element::detachEventListener(EventListener* listener){
+		if(listener){
+			mEventListeners.remove(listener);
+			listener->_setAttachedElement(0);
+		}
 	}
 	//#####################################################################
 	void Element::setRect(FRect& newRect)

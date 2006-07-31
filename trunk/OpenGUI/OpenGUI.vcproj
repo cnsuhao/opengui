@@ -140,6 +140,9 @@
 				RelativePath=".\OpenGUI_Element.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_EventListener.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Exception.cpp">
 			</File>
 			<File
@@ -256,6 +259,9 @@
 				RelativePath=".\OpenGUI_Event.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_EventListener.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Exception.h">
 			</File>
 			<File
@@ -347,9 +353,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Singleton.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Subscriber.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_System.h">
