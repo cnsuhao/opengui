@@ -45,7 +45,17 @@ echo ### BUILDING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
 devenv OpenGUI.sln /build "Debug - All" >> %LOG%
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+echo !!!  END DEBUG  !!! >> %LOG% 2>&1
+echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+
 devenv OpenGUI.sln /build "Release - All" >> %LOG%
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+echo !!! END RELEASE !!! >> %LOG% 2>&1
+echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
+
 
 IF "%1" == "SKIP" GOTO SKIP2
 echo PLEASE CHECK THE SDK BUILD LOG AND ENSURE THAT EVERYTHING BUILT CORRECTLY BEFORE CONTINUING
