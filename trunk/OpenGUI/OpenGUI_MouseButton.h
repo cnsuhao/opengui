@@ -4,9 +4,9 @@
 namespace OpenGUI{
 	//! This enum represents mouse buttons for use in functions and structs that require a mouse button identifier.
 	typedef enum {
-			MouseButtonLeft=1,
-			MouseButtonMiddle=2,
-			MouseButtonRight=3
+			MouseButtonLeft=1, //!< Left mouse button
+			MouseButtonMiddle=2, //!< Middle mouse button
+			MouseButtonRight=3 //!< Right mouse button
 	} MouseButton;
 };
 #endif
