@@ -34,6 +34,7 @@
 #include "OpenGUI_MouseButton.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Message.h"
+#include "OpenGUI_EventListener.h"
 #include "OpenGUI_PropertySet.h"
 //#include "OpenGUI_RenderCache.h" //The RenderCache system is included where needed, and is not for use by client applications.
 #include "OpenGUI_Element.h"
