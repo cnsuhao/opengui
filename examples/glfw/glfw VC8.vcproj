@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="lib\win32"
+			IntermediateDirectory="lib\win32"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			>
@@ -27,7 +27,7 @@
 				BuildCommandLine="compile.bat nmake msvc"
 				ReBuildCommandLine=""
 				CleanCommandLine="compile.bat CLEAN"
-				Output=""
+				Output="$(OutDir)\glfw_d.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -38,8 +38,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="lib\win32"
+			IntermediateDirectory="lib\win32"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			>
@@ -48,7 +48,7 @@
 				BuildCommandLine="compile.bat nmake msvc"
 				ReBuildCommandLine=""
 				CleanCommandLine="compile.bat CLEAN"
-				Output=""
+				Output="$(OutDir)\glfw.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
