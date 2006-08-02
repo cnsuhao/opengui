@@ -8,19 +8,19 @@ GOTO SKIP
 :SKIP
 
 set VCVARS="C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\vsvars32.bat"
-set P_="winSDK"
-set P_OG="winSDK\OpenGUI"
-set P_OGinc="winSDK\OpenGUI\include"
-set P_OGlib="winSDK\OpenGUI\lib"
-set P_OGLinc="winSDK\OGLRenderer\include"
-set P_OGLlib="winSDK\OGLRenderer\lib"
-set P_TACHinc="winSDK\Tachometer\include"
-set P_TACHlib="winSDK\Tachometer\lib"
-set P_demo="winSDK\Demos"
-set P_OF="winSDK\OgreFusion"
-set P_OFinc="winSDK\OgreFusion\include"
-set P_OFlib="winSDK\OgreFusion\lib"
-set LOG="sdkBuildLog.txt"
+set P_="winSDK_vc71"
+set P_OG="winSDK_vc71\OpenGUI"
+set P_OGinc="winSDK_vc71\OpenGUI\include"
+set P_OGlib="winSDK_vc71\OpenGUI\lib"
+set P_OGLinc="winSDK_vc71\OGLRenderer\include"
+set P_OGLlib="winSDK_vc71\OGLRenderer\lib"
+set P_TACHinc="winSDK_vc71\Tachometer\include"
+set P_TACHlib="winSDK_vc71\Tachometer\lib"
+set P_demo="winSDK_vc71\Demos"
+set P_OF="winSDK_vc71\OgreFusion"
+set P_OFinc="winSDK_vc71\OgreFusion\include"
+set P_OFlib="winSDK_vc71\OgreFusion\lib"
+set LOG="sdkBuildLog_vc71.txt"
 
 rem Reset the Build Log
 echo Begin Build > %LOG% 2>&1
