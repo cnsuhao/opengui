@@ -58,6 +58,9 @@
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 // This warning can be disregarded
 	#pragma warning (disable : 4251)
+
+	#define strcmpi _strcmpi // VC8 doesn't like POSIX style strcmpi
+	#define _CRT_SECURE_NO_DEPRECATE // VC8 also doesn't like a lot of standard C library functions
 #endif
 
 #endif
