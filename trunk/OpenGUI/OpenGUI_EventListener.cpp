@@ -32,7 +32,6 @@ namespace OpenGUI{
 	}
 	//#####################################################################
 	void EventListener::_setAttachedElement(Element* newElement){
-		if(mAttachedElement) detach();
 		mAttachedElement = newElement;
 	}
 	//#####################################################################
