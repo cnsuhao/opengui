@@ -14,23 +14,24 @@ set P_="OpenGUIsrc"
 set PI_exbin="examples\bin"
 set P_doc="OpenGUI\doc"
 set P_OFdoc="OgreFusion\doc"
+set LOG=sourceBuildLog.txt
 
 echo Loading Visual Studio Environment...
-call %VCVARS% >> NUL 2>&1
+call %VCVARS% > %LOG% 2>&1
 
 rem Delete any previous SRC data
-rmdir /s /q %P_% > NUL 2>&1
-rmdir /s /q %P_tmp% > NUL 2>&1
+rmdir /s /q %P_% >> %LOG% 2>&1
+rmdir /s /q %P_tmp% >> %LOG% 2>&1
 
 echo Cleaning Solution...
-devenv OpenGUI.sln /clean "Debug - All" > NUL
-devenv OpenGUI.sln /clean "Release - All" > NUL
+devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
+devenv OpenGUI.sln /clean "Release - All" >> %LOG%
 
 echo Build directory tree...
-xcopy /E * "%P_tmp%\" > NUL 2>&1
-xcopy /H OpenGUI.suo "%P_tmp%\" > NUL 2>&1
-xcopy /H "OpenGUI VC8.suo" "%P_tmp%\" > NUL 2>&1
-move "%P_tmp%" "%P_%" > NUL 2>&1
+xcopy /E * "%P_tmp%\" >> %LOG% 2>&1
+xcopy /H /Y OpenGUI.suo "%P_tmp%\" >> %LOG% 2>&1
+xcopy /H /Y "OpenGUI VC8.suo" "%P_tmp%\" >> %LOG% 2>&1
+move "%P_tmp%" "%P_%" >> %LOG% 2>&1
 
 echo Cleaning source tree...
 cd %P_%
