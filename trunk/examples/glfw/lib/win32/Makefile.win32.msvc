@@ -29,14 +29,15 @@ VERMINOR = 5
 # Compiler settings
 ##########################################################################
 # OpenGUI (4/23/06) Switched runtime library linkage from LIBC (/ML) to MSVCRT (/MD)
+# OpenGUI (8/1/06) Added /D_CRT_SECURE_NO_DEPRECATE to keep VC8 from complaining about C libs being unsecure
 CC         = cl
-CFLAGS     = /nologo /c /MD /O1sgiy /Gs /W3 /I. /I..
-CFLAGS_D     = /nologo /c /MDd /O1sgiy /Gs /W3 /I. /I..
+CFLAGS     = /nologo /c /MD /O1sgiy /Gs /W3 /I. /I.. /D_CRT_SECURE_NO_DEPRECATE
+CFLAGS_D     = /nologo /c /MDd /O1sgiy /Gs /W3 /I. /I.. /D_CRT_SECURE_NO_DEPRECATE
 CFLAGS_DLL = $(CFLAGS) /DGLFW_BUILD_DLL
 
 # Some modules should be optimized for speed (image decoding)
-CFLAGS_SPEED     = /nologo /c /MD /O2tgiy /Gs /W3 /I. /I..
-CFLAGS_SPEED_D     = /nologo /c /MDd /O2tgiy /Gs /W3 /I. /I..
+CFLAGS_SPEED     = /nologo /c /MD /O2tgiy /Gs /W3 /I. /I.. /D_CRT_SECURE_NO_DEPRECATE
+CFLAGS_SPEED_D     = /nologo /c /MDd /O2tgiy /Gs /W3 /I. /I.. /D_CRT_SECURE_NO_DEPRECATE
 CFLAGS_SPEED_DLL = $(CFLAGS_SPEED) /DGLFW_BUILD_DLL
 
 
