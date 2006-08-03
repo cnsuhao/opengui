@@ -38,6 +38,7 @@ echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
 devenv "OpenGUI VC8.sln" /clean "Debug - All" >> %LOG%
 devenv "OpenGUI VC8.sln" /clean "Release - All" >> %LOG%
+call CleanILKs.bat
 
 echo Building Solution...
 echo ################ >> %LOG% 2>&1
