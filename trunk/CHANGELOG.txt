@@ -1,4 +1,4 @@
-
+* Updated OgreFusion builds to Ogre 1.2.2 (previous was Ogre 1.2.0)
 * Added VC 8 as a build platform.
 * New installer based distribution for all Windows releases.
 

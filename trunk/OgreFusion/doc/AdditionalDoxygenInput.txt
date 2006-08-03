@@ -130,6 +130,10 @@ to crashes and other errors. The proper destruction order when using OgreFusion 
 
 <hr>
 
-That should cover
+That should cover everything you need to know about using OpenGUI with Ogre in your application
+via OgreFusion. If you run into trouble, try the following online resources for help:
+
+ - OpenGUI website (forums and wiki): http://opengui.sourceforge.net/
+ - Ogre website (forums and wiki): http://www.ogre3d.org/
 
 */
