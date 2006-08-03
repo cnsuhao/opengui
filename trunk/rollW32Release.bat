@@ -29,8 +29,12 @@ echo Building SDK Release (VC 8)...
 start /WAIT buildSDK_W32_VC8.bat SKIP
 echo DONE: Building SDK Release (VC 8)
 
-REM set NSIS="C:\Program Files\NSIS\makensis.exe"
-REM %NSIS% win32sdkInstaller.nsi
+echo.
+echo Update the Installer Script now, then
+pause
+echo Building install script...
+set INSTALLER="C:\Program Files\Caphyon\Advanced Installer\AdvancedInstaller.com"
+%INSTALLER% /build sdkInstaller.aip
 
 echo .
 echo .
