@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="4" />
+	<Project>
+		<Option title="TachometerWidget" />
+		<Option pch_mode="2" />
+		<Option default_target="-1" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug|Win32">
+				<Option output="..\bin\TachometerWidget_d.dll" />
+				<Option object_output="Debug" />
+				<Option external_deps="..\Debug\libOpenGUI_d.a;" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Option projectLibDirsRelation="2" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_WINDOWS" />
+					<Add option="-D_USRDLL" />
+					<Add option="-DTACHOMETERWIDGET_EXPORTS" />
+					<Add directory="..\..\OpenGUI" />
+				</Compiler>
+				<Linker>
+					<Add library="OpenGUI_d" />
+					<Add directory="..\..\Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release|Win32">
+				<Option output="..\bin\TachometerWidget.dll" />
+				<Option object_output="Release" />
+				<Option external_deps="..\Release\libOpenGUI.a;" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_WINDOWS" />
+					<Add option="-D_USRDLL" />
+					<Add option="-DTACHOMETERWIDGET_EXPORTS" />
+					<Add directory="..\..\OpenGUI" />
+				</Compiler>
+				<Linker>
+					<Add library="OpenGUI" />
+					<Add directory="..\..\Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="Tachometer.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug|Win32" />
+			<Option target="Release|Win32" />
+		</Unit>
+		<Unit filename="Tachometer.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug|Win32" />
+			<Option target="Release|Win32" />
+		</Unit>
+		<Unit filename="TachometerWidget.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug|Win32" />
+			<Option target="Release|Win32" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

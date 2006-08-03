@@ -1,6 +1,7 @@
 * Updated OgreFusion builds to Ogre 1.2.2 (previous was Ogre 1.2.0)
 * Added VC 8 as a build platform.
 * New installer based distribution for all Windows releases.
+* Added project files for Code::Blocks/MinGW. (Only partly works and requires Ogre SDK to build.)
 
 Version 0.7.5 - 07/26/2006)
 * Added more documentation to OpenGUI classes that needed it
