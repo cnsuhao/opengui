@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI;..\..\OgreMain\include"
+				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -35,7 +35,7 @@
 				AdditionalDependencies="OgreMain_d.lib"
 				OutputFile="$(OutDir)/OgreFusion_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\OgreMain\lib\Debug"
+				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/OgreFusion_d.pdb"
 				SubSystem="2"
@@ -70,7 +70,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\..\OgreMain\include"
+				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -84,7 +84,7 @@
 				AdditionalDependencies="OgreMain.lib"
 				OutputFile="$(OutDir)/OgreFusion.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\OgreMain\lib\Release"
+				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
