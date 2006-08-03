@@ -19,28 +19,18 @@ echo DONE: Building Source Release
 
 
 echo .
-echo Preparing Ogre for VC 7.1...
-start /WAIT prepareOgre.bat VC71
-echo DONE: Preparing Ogre for VC 7.1
-
-echo .
 echo Building SDK Release (VC 7.1)...
 start /WAIT buildSDK_W32_VC71.bat SKIP
 echo DONE: Building SDK Release (VC 7.1)
 
 
 echo .
-echo Preparing Ogre for VC 8...
-start /WAIT prepareOgre.bat VC8
-echo DONE: Preparing Ogre for VC 8
-
-echo .
 echo Building SDK Release (VC 8)...
 start /WAIT buildSDK_W32_VC8.bat SKIP
 echo DONE: Building SDK Release (VC 8)
 
-set NSIS="C:\Program Files\NSIS\makensis.exe"
-%NSIS% win32sdkInstaller.nsi
+REM set NSIS="C:\Program Files\NSIS\makensis.exe"
+REM %NSIS% win32sdkInstaller.nsi
 
 echo .
 echo .
