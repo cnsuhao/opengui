@@ -23,17 +23,21 @@ namespace OpenGUI{
 		}
 	};
 
+	/* Returns true if LHS is < (less than) RHS,
+		otherwise false (which will cause a swap to occur).
+
+		We define an IRect as less than another by first comparing
+		height, and then comparing width if heights are equal.
+	*/
 	struct SortFreeIRectList{
 		bool operator()( const IRect lhs, const IRect rhs ) const {
 			//Is lhs < rhs ?
- 			if( lhs.getHeight() < rhs.getHeight() ) return true;
- 			//if( lhs.getHeight() == rhs.getHeight() && 
- 			if( lhs.getWidth() < rhs.getWidth() ) return true;
+ 			if( lhs.getHeight() < rhs.getHeight() )
+				return true;
+			else if( lhs.getHeight() == rhs.getHeight() ){	
+ 				if( lhs.getWidth() < rhs.getWidth() ) return true;
+			}
  			return false;
-
-			if( lhs.getHeight() > rhs.getHeight() ) return false;
-			if( lhs.getWidth() > rhs.getWidth() ) return false;
-			return true;
 		}
 	};
 	//############################################################################
