@@ -26,6 +26,7 @@ rmdir /s /q %P_tmp% >> %LOG% 2>&1
 echo Cleaning Solution...
 devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
 devenv OpenGUI.sln /clean "Release - All" >> %LOG%
+call CleanILKs.bat
 
 echo Build directory tree...
 xcopy /E * "%P_tmp%\" >> %LOG% 2>&1
@@ -48,6 +49,13 @@ rmdir /Q /S examples\glfw\Debug > NUL 2>&1
 rmdir /Q /S examples\glfw\Release > NUL 2>&1
 rmdir /Q /S OgreFusion\Debug > NUL 2>&1
 rmdir /Q /S OgreFusion\Release > NUL 2>&1
+
+rmdir /Q /S dependancies\OgreSDK_vc71
+mkdir dependancies\OgreSDK_vc71
+copy ..\dependancies\OgreSDK_vc71\README.txt dependancies\OgreSDK_vc71\
+rmdir /Q /S dependancies\OgreSDK_vc8
+mkdir dependancies\OgreSDK_vc8
+copy ..\dependancies\OgreSDK_vc8\README.txt dependancies\OgreSDK_vc8\
 
 rmdir /Q /S dependancies\corona-linux > NUL 2>&1
 del *.bat *.nsi > NUL 2>&1
