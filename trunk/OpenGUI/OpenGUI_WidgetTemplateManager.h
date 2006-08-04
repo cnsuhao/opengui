@@ -52,7 +52,7 @@ namespace OpenGUI{
 
 		//! Loads Templates from an XML document.
 		/*! Any conflicting templates will be appended, any non-template related
-			XML entities are silently ignored.
+			XML entities are silently ignored (only processes \<Template\> and enclosed \<Property\> tags).
 		*/
 		void LoadTemplatesFromXML(std::string xmlFilename);
 

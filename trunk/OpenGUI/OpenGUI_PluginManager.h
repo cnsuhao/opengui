@@ -38,6 +38,7 @@ namespace OpenGUI{
 		void unloadAllPlugins();
 
 		//! Loads plugins as defined by an xml file.
+		/*! Any non-Plugin related XML entities are silently ignored (only processes \<Plugin\> tags). */
 		void LoadPluginsFromXML(std::string xmlFilename);
 	private:
 		void _loadFromTinyXMLElement(void* tXelementPtr);

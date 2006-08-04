@@ -95,7 +95,7 @@ namespace OpenGUI{
 
 		//! Loads Imagesets from an XML document.
 		/*! Any conflicting Imagesets will be overwritten, any non-imageset related
-			XML entities are silently ignored.
+			XML entities are silently ignored (only processes \<Imageset\> and enclosed \<Imagery\> tags).
 		*/
 		void LoadImagesetsFromXML(std::string xmlFilename);
 
