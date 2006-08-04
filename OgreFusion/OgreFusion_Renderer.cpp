@@ -5,7 +5,11 @@
 #include "OgreFusion_Renderer.h"
 #include "OgreFusion_Texture.h"
 
-#include "Ogre.h"
+//#include "Ogre.h"
+#include <OgreRenderSystem.h>
+#include <OgreRoot.h>
+#include <OgreHardwareBufferManager.h>
+#include <OgreRenderWindow.h>
 
 namespace OpenGUI{
 //OgreRenderQueueListener implementation
@@ -25,7 +29,6 @@ namespace OpenGUI{
 	}
 	//#####################################################################
 	
-
 
 
 //OgreRenderer implementation
@@ -108,6 +111,17 @@ namespace OpenGUI{
 	void OgreRenderer::getViewportDimensions(IVector2& dims){
 		dims.x = mRenderWindow->getWidth();
 		dims.y = mRenderWindow->getHeight();
+
+		/*
+			since the pixel level texel offset only changes when the viewport size changes,
+			this is the best place to perform updates to mTexelOffset
+		*/
+		mTexelOffset = FVector2(	mRenderSystem->getHorizontalTexelOffset(),
+									mRenderSystem->getVerticalTexelOffset() );
+		const float sceneWidth = 2;
+		const float sceneHeight = 2;
+		mTexelOffset.x = (sceneWidth / dims.x) * mTexelOffset.x;
+		mTexelOffset.y = (sceneHeight / dims.y) * -mTexelOffset.y;
 	}
 	//#####################################################################
 	void OgreRenderer::getScreenDimensions(IVector2& dims){
@@ -176,8 +190,10 @@ namespace OpenGUI{
 
 		//Would this be faster if this loop was expanded?
 		for(unsigned int i=0; i<3; i++){
-			hwbuffer[i].x = (renderOp.vertices[i].position.x * 2) - 1; //the simply math here corrects for the projection matrix
-			hwbuffer[i].y = (renderOp.vertices[i].position.y * -2) + 1;
+			//the simple math here corrects for the projection matrix and the texel offset
+			hwbuffer[i].x = (renderOp.vertices[i].position.x * 2) - 1 + mTexelOffset.x;
+			hwbuffer[i].y = (renderOp.vertices[i].position.y * -2) + 1 + mTexelOffset.y;
+
 			hwbuffer[i].z = 0;
 			mRenderSystem->convertColourValue(
 				Ogre::ColourValue(	renderOp.vertices[i].color.Red,

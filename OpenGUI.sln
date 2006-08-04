@@ -45,6 +45,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreFusion", "OgreFusion\Og
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoO", "examples\DemoO\DemoO.vcproj", "{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D} = {15971078-5E41-4B58-A5FA-7654B1B7BF7D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -183,6 +189,18 @@ Global
 		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - Just OpenGUI.ActiveCfg = Release|Win32
 		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.ActiveCfg = Release|Win32
 		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.Build.0 = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug.ActiveCfg = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - All.ActiveCfg = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - All.Build.0 = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - OgreFusion.ActiveCfg = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - OgreFusion.Build.0 = Debug|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release.ActiveCfg = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release - All.ActiveCfg = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release - All.Build.0 = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release - Just OpenGUI.ActiveCfg = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release - OgreFusion.ActiveCfg = Release|Win32
+		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Release - OgreFusion.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

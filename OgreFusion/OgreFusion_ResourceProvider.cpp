@@ -2,9 +2,11 @@
 // OgreFusion_ResourceProvider.cpp
 // -----------------------------------------------------------------------------
 
+#include <OgreArchiveManager.h>
 #include "OgreFusion_ResourceProvider.h"
 
-#include "Ogre.h"
+//#include "Ogre.h"
+
 
 namespace OpenGUI{
 	//#####################################################################
@@ -42,10 +44,9 @@ namespace OpenGUI{
 
 		size_t rSize = dStream->size();
 		if(rSize){ // we can do this the easy way!
-			unsigned char* data = new unsigned char[rSize];
-			dStream->read(data , rSize);
-			output.setData(data, rSize);
-
+			output.setSize(rSize);
+			dStream->read(output.getData() , rSize);
+			
 		}else{ //we have to do this the hard way...
 			const size_t readSize = 1024;
 			typedef std::pair<unsigned char*, size_t> BufferPair;

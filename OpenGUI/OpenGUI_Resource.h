@@ -31,6 +31,16 @@ namespace OpenGUI{
 			}
 		//! Returns a pointer to the held data, or 0 if there is no stored data.
 		unsigned char* getData() { return mData; }
+		//! Sets the size of the data buffer. The current contents will be lost.
+		virtual void setSize(size_t size)
+			{
+				release();
+				if(size)
+				{
+					mSize = size;
+					mData = new unsigned char[ mSize ];
+				}
+			}
 		//! Returns the size of the held data in bytes.
 		size_t getSize() { return mSize; }
 		void release()
@@ -68,6 +78,16 @@ namespace OpenGUI{
 			{
 				if(!mData) return 0;
 				return (char*)mData;
+			}
+		virtual void setSize(size_t size)
+			{
+				release();
+				if(size)
+				{
+					mSize = size;
+					mData = new unsigned char[ mSize + 1 ];
+					mData[ mSize ] = 0;
+				}
 			}
 	};
 };//namespace OpenGUI{
