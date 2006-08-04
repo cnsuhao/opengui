@@ -161,7 +161,7 @@ namespace OpenGUI{
 		section = root;
 		if(section){
 			do{
-				//iterate through all of the root level elements and react to every "Imageset" found
+				//iterate through all of the root level elements and react to every "Plugin" found
 				if(0 == strcmpi(section->Value(),"Plugin")){
 					PluginManager::_loadFromTinyXMLElement(section);
 				}

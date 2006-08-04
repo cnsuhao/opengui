@@ -1,0 +1,184 @@
+/*!
+\page XMLDOC XML Documentation
+
+%OpenGUI provides the use of XML based configuration files to allow users to set up various aspects of their GUI without having to hard code everything. These XML files can be loaded via OpenGUI::XMLParser::LoadFromFile(). The individual tag names within these documents are always parsed as case insensitive. That may or may not be standard XML practice, but for simplicity %OpenGUI ignores the case of tag names and attribute names. <i>The contents of attributes may or may not be case sensitive depending on their context.</i>
+\note Attributes can be in any order, so feel free to rearrange them as you see fit.
+
+\note Standard XML comments are supported.
+
+<hr>
+\section quicktags Quick Tag List:
+ - \ref include
+ - \ref font
+ - \ref plugin
+ - \ref imageset 
+ - \ref imagery 
+ - \ref guisheet 
+ - \ref widget 
+ - \ref property
+ - \ref template
+ 
+<hr>
+
+
+
+\section example Example Config File
+The following is an example xml file. Its contents will be referenced in the following sections. It is listed here in its entirety so that you can get an idea of what a common config file looks like.
+\verbatim
+<Include file="metal.xml" />
+<Plugin file="TachometerWidget" />
+<Font name="pecot" file="pecot.ttf" xres=800 yres=600 autoscale=true />
+<Imageset sourceimage="tachometer.png">
+	<Imagery Name="TachBG" XPos="2" YPos="2" Width="321" Height="321" />
+	<Imagery Name="TachNeedle" XPos="42" YPos="348" Width="131" Height="7" />
+</Imageset>
+<Template name="tachometer" group="OpenGUIExt" type="Tachometer">
+	<Property name="BGImagery" value="TachBG" />
+	<Property name="NeedleImagery" value="TachNeedle" />
+	
+	<Property name="position" value="(0.59875 x0.465)" />
+	<Property name="size" value="(0.40125x0.535)" />
+	
+	<Property name="needlepivot" value="(0.50x0.50)" />
+	<Property name="needleanchor" value="(0.10x0.50)" />
+	
+	<Property name="NeedleMinValue" value="0" />
+	<Property name="NeedleMaxValue" value="900" />
+	<Property name="NeedleMinAngle" value="-135" />
+	<Property name="NeedleMaxAngle" value="90" />
+	
+	<Property name="needlevalue" value="0" />
+</Template>
+<GUISheet name="root">
+	<Widget name="myTach" type="tachometer" />
+	<Widget name="test" group="OpenGUI" type="TextLabel">
+		<Property name="position" value="(0.0 x0.0)" />
+		<Property name="size" value="(1x1)" />
+		<Property name="font" value="pecot" />
+		<Property name="fontsize" value="50" />
+		<Property name="text" value="OpenGUI Demo 1" />
+	</Widget>
+	<!--<Widget name="test" group="OpenGUI" type="StaticImage">
+		<Property name="position" value="(0.0 x0.0)" />
+		<Property name="size" value="(1x1)" />
+	</Widget>-->
+</GUISheet>
+\endverbatim
+The following sections will describe each tag used within this example file.
+
+
+
+<hr>
+\section include <Include>
+Performs what is effectively an inline include of the given file. <i>The included file will be parsed for XML based configuration content.</i>
+
+Each file can only be included once per execution of OpenGUI::XMLParser::LoadFromFile(). Subsequent requests for an include file are logged as warnings, but otherwise ignored. <i>(The multiple include testing is performed using a simple case-insensitive string comparison. Minor path tricks will fool it, but are generally discouraged.)</i>
+
+Example:
+\verbatim
+<Include file="metal.xml" />
+\endverbatim
+
+\subsection attr Attributes
+ - \c File \b (required)
+   - \em Type: string
+   - \em Description: The path and filename where the config file to include can be located. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
+
+
+
+
+<hr>
+\section font <Font>
+To load a font, you can either call OpenGUI::FontManager::CreateFont(), or you can use a config file and the \c \<FONT\> tag.
+
+Example:
+\verbatim
+<Font name="pecot" file="pecot.ttf" xres=800 yres=600 autoscale=true />
+\endverbatim
+
+\subsection attr Attributes
+ - \c Name \b (required)
+   - \em Type: string
+   - \em Description: Name by which the font will be referenced within %OpenGUI. This does not have to be the same as the filename.
+
+ - \c File \b (required)
+   - \em Type: string
+   - \em Description: The path and filename where the actual font can be located. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
+
+ - \c Autoscale
+   - \em Type: boolean \c true / \c false
+   - \em Default: \c false
+   - \em Description: Signifies if this font is to be autoscaled according to the current screen resolution vs its native resolution.
+
+ - \c xres
+   - \em Type: unsigned int
+   - \em Default: \c 800
+   - \em Description: The native screen resolution along the X axis for this font. Ignored unless \c autoscale is \c true.
+
+ - \c yres
+   - \em Type: unsigned int
+   - \em Default: \c 600
+   - \em Description: The native screen resolution along the Y axis for this font. Ignored unless \c autoscale is \c true.
+
+
+
+
+
+
+<hr>
+\section plugin  <Plugin>
+Loads a plugin by passing the given \c file to OpenGUI::PluginManager::loadPlugin().
+
+Example:
+\verbatim
+<Plugin file="TachometerWidget" />
+\endverbatim
+
+\subsection attr Attributes
+ - \c File \b (required)
+   - \em Type: string
+   - \em Description: The filename to be passed to OpenGUI::PluginManager::loadPlugin().
+
+\see OpenGUI::PluginManager::loadPlugin() has the potential to perform filename mangling. See its documentation for more information.
+
+
+
+
+
+<hr>
+\section imageset <Imageset>
+Loads the given \c sourceimage as an imageset via OpenGUI::ImageryManager::createImageset().
+
+Example:
+\verbatim
+<Imageset sourceimage="tachometer.png">
+	<!-- some <Imagery> tags in here -->
+</Imageset>
+\endverbatim
+
+\subsection attr Attributes
+ - \c Sourceimage \b (required)
+   - \em Type: string
+   - \em Description: The path and filename where the actual image file to load can be located. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
+
+
+
+
+
+
+<hr>
+\section imagery <Imagery>
+
+<hr>
+\section guisheet <GUISheet>
+
+<hr>
+\section widget <Widget>
+
+<hr>
+\section property <Property>
+
+<hr>
+\section template <Template>
+
+*/

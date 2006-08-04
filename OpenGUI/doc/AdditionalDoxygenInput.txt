@@ -20,6 +20,8 @@
 	
 	- \subpage IntegratingOpenGUI "Integrating OpenGUI"
 	
+	- \subpage XMLDOC "XML Configuration Files"
+	
 	- \subpage CreatingWidgets "Creating Widgets"
 	
 	- \subpage MessageSystem  "The Message System"
@@ -80,7 +82,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	- Plugin system so custom widgets can be used in any application without recompiling.
 	
 	\note
-	OpenGUI is still very much a work in progress. This list of features
+	%OpenGUI is still very much a work in progress. This list of features
 	is accurate to the best of my knowledge. If %OpenGUI is missing a
 	feature that you feel it should have, please feel free to submit a patch.
 */
