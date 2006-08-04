@@ -108,6 +108,7 @@ namespace OpenGUI{
 		Ogre::LayerBlendModeEx mAlphaBlendMode; //we cache this to save cpu time
 
 		IVector2 mScreenDim; //last stored screen dimensions
+		FVector2 mTexelOffset; //holds the pixel level texel offset that needs to be applied to each vertex to maintain pixel alignment
 
 		//! Struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex{

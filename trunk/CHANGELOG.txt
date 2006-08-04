@@ -1,4 +1,7 @@
-* Updated OgreFusion builds to Ogre 1.2.2 (previous was Ogre 1.2.0)
+* Added texel offset correction to OgreFusion to compensate for differences between D3D's and OpenGL's definition of a 'texel origin'.
+* Added new demo to test/show off Ogre integration
+* Corrected several memory manager conflicts within OgreFusion when using precompiled Ogre SDKs. (Sinbad, please consider turning MMGR off in public precompiled SDKs.)
+* Updated OgreFusion builds to Ogre 1.2.2 precompiled SDKs (previous was Ogre 1.2.0 from source)
 * Added VC 8 as a build platform.
 * New installer based distribution for all Windows releases.
 * Added project files for Code::Blocks/MinGW. (Only partly works and requires Ogre SDK to build.)

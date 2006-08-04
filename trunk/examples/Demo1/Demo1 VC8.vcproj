@@ -65,7 +65,7 @@
 				AdditionalDependencies="OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
 				OutputFile="$(OutDir)/Demo1_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32"
+				AdditionalLibraryDirectories="../../Debug; ../glfw/lib/win32"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/Demo1_d.pdb"

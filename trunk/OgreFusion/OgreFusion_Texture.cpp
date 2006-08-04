@@ -151,7 +151,7 @@ namespace OpenGUI{
 
 		if(!tmpTexture.isNull()){
 			mOgreTexturePtr = tmpTexture;
-			mOgreTexturePtr->setFormat(PF_BYTE_RGBA );
+			mOgreTexturePtr->setFormat( pFmt );
 			mTextureSize = IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() );
 			mTextureName = mOgreTexturePtr->getName();;
 			mNotOwner = false; //you build it, you own it
