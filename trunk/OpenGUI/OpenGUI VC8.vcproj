@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\examples\bin\&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -183,7 +183,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\examples\bin\&quot;"
 			/>
 		</Configuration>
 	</Configurations>
