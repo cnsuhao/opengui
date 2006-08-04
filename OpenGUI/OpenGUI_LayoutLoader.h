@@ -9,6 +9,8 @@ namespace OpenGUI{
 	class OPENGUI_API LayoutLoader{
 		friend class XMLParser;
 	public:
+		//! Loads GUISheets from an XML document.
+		/*! Any non-Layout related XML entities are silently ignored (only processes \<GUISheet\> and other enclosed tags). */
 		static void LoadLayoutFromXML(const std::string& xmlFilename);
 	private:
 		static void _loadGUISheetFromTinyXMLElement(void* tXelementPtr);

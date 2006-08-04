@@ -77,7 +77,7 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 		PT_INTEGER = 5,
 		PT_IVECTOR2 = 6,
 		PT_IRECT = 7,
-		PT_ENUM = 8 //!< Enum type. <b>Not yet implemented.</b>
+		PT_ENUM = 8 //!< Reserved for Enum type. <b>Not yet implemented.</b>
 	} PropertyType;
 	//#####################################################################
 	typedef struct _PropertyListItem{
@@ -88,7 +88,27 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	//#####################################################################
 
 
-	//! Provides a universal property get/set system for use by all widgets.
+	//! This base class provides advanced string parsing and callback functionality for inheritors to easily support a text based get/set Property system.
+	/*!
+	Here is list of known types that the property system can natively read and interpret with examples:
+	- Type: String
+	  - Values: it's a string, treat it like one
+	- Type: Boolean
+	  - Values: 0 1 TRUE FALSE
+	- Type: Float
+	  - Values: any float looking number such as "1.0", "1", "0.1", or ".1"
+	- Type: FVector2
+	  - Values: (1.0 x 1.0), parenthesis and lower case 'x' are mandatory, spaces are optional. Each side of 'x' is filled with a valid Float in string form.
+	- Type: FRect
+	  - Values: { (1.0 x 1.0) X (1.0 x 1.0) }, curly braces and upper case 'X' are mandatory, spaces are optional. Each side of the 'X' is filled with a valid FVector2 in string form.
+	- Type: Integer
+	  - Values: any int looking number such as "1"
+	- Type: IVector2
+	  - Values: (1 x 1), parenthesis and lower case 'x' are mandatory, spaces are optional. Each side of 'x' is filled with a valid Integer in string form.
+	- Type: IRect
+	  - Values:  { (1 x 1) X (1 x 1) }, curly braces and upper case 'X' are mandatory, spaces are optional. Each side of the 'X' is filled with a valid IVector2 in string form.
+
+	*/
 	class OPENGUI_API PropertySet{
 	public:
 		//! Sets a property

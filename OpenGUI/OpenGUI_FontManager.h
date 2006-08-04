@@ -83,7 +83,7 @@ namespace OpenGUI{
 
 		//! Loads Fonts from an XML document.
 		/*! Any conflicting Fonts will be overwritten, any non-font related
-			XML entities are silently ignored.
+			XML entities are silently ignored (only processes \<Font\> tags).
 		*/
 		void LoadFontsFromXML(std::string xmlFilename);
 
