@@ -26,6 +26,7 @@ namespace OpenGUI{
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory) );
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory) );
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "TextLabel", WidgetFactoryCallback(&Widgets::TextLabel::createTextLabelFactory) );
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "ScalingImage", WidgetFactoryCallback(&Widgets::ScalingImage::createScalingImageFactory) );
 	}
 	//############################################################################
 	System::System(Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile)

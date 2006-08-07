@@ -32,6 +32,12 @@ bool myPropertySetterCallback(PropertySet* widget, const std::string& propertyNa
 }
 \endcode
 	\see \ref WhyCallbacks "Why Callbacks?"
+
+	\warning The propery system does \b not honor property case. All registered property names are automatically 
+		translated to <i>lower case</i> before they are stored. This means that all property handler callbacks
+		will receive the property in lower case form \b only. If you want to save yourself some pain, I highly
+		recommend having your PropertySetter and PropertyGetter callbacks only perform case-insensitive string
+		comparisons if they need to do such tests.
 	*/
 	typedef bool(*PropertySetter)(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 	/*! \brief This is the typedef used for callbacks to Property Get handlers.

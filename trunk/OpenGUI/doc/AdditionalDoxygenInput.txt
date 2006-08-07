@@ -153,18 +153,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 */
 
 
-/*! \page GeneralTODOs General TODOs
-	\todo - Need to ensure that every function and variable that is intended for use by 
-		end users is documented with a doxygen tag, otherwise they will not show up in
-		the final end user build of the documentation.
-	
-	\todo - implement Tooltips
-	\todo - add more of the base widgets
-	
-	\todo - implement guisheet saving and restoring via xml
-	\todo - implement ThemeFactory (for creating widgets of any registered type and auto assigning properties based on "theme")
-	
-*/
+
 
 /*! \page DefaultImageset
 	There is a default image that is used whenever an Imageset is unloaded when there are

@@ -21,21 +21,21 @@
 	- \subpage BW_StaticImage "StaticImage"
 	- \subpage BW_SimpleButton "SimpleButton"
 	- Label (static text)
+	- \subpage BW_ScalingImage "ScalingImage"
 	- CheckBox
 	- RadioButton
 	- ProgressBar
-	
-	\todo add documentation about each of these base types
+
 */
 
 /*!
-	\page BW_StaticImage Static Image
+	\page BW_StaticImage StaticImage
 	
 	- widgetGroup: "OpenGUI"
 	- widgetType:  "StaticImage"
 	
 	\section Description
-	Draws static imagery to the screen. The imagery is stretched to completely will the widget.
+	Draws a static image to the screen. The image is stretched to completely will the widget.
 	Pixel alignment must be performed manually if it is desired.
 	
 	\see Class Documentation: OpenGUI::Widgets::StaticImage
@@ -66,8 +66,90 @@ staticImage->setSize( 0.40125f, 0.535f );
 \endcode
 */
 
+
+
 /*!
-	\page BW_SimpleButton Simple Button
+	\page BW_ScalingImage ScalingImage
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "ScalingImage"
+	
+	\section Description
+	Draws a static image to the screen much like StaticImage, but in such a way that pixel stretching is contained to predefined "acceptable" areas. The drawn image is comprised of 9 zones, each of which is actually defined as independent Imagery.
+	
+	List of zones and stretch method performed:
+	- Upper Left (no stretching)
+	- Upper Middle (stretches in X only)
+	- Upper Right (no stretching)
+	- Middle Left (stretches in Y only)
+	- Middle Middle (center area)
+	- Middle Right (stretches in Y only)
+	- Lower Left (no stretching)
+	- Lower Middle (stretches in X only)
+	- Lower Right (no stretching)
+	
+	\image html ScalingImage_streching.jpg
+	
+	
+	\see Class Documentation: OpenGUI::Widgets::ScalingImage
+	
+	\section Properties
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+	- Imagery_UL : String
+	- Imagery_UM : String
+	- Imagery_UR : String
+	- Imagery_ML : String
+	- Imagery_MM : String
+	- Imagery_MR : String	
+	- Imagery_LL : String
+	- Imagery_LM : String
+	- Imagery_LR : String
+
+	\section Usage	
+	Example XML:
+\code
+<Widget name="myScalingImage" group="OpenGUI" type="ScalingImage">
+	<Property name="Imagery_UL" value="myImageryUL" />
+	<Property name="Imagery_UM" value="myImageryUM" />
+	<Property name="Imagery_UR" value="myImageryUR" />
+	<Property name="Imagery_ML" value="myImageryUL" />
+	<Property name="Imagery_MM" value="myImageryUM" />
+	<Property name="Imagery_MR" value="myImageryUR" />
+	<Property name="Imagery_LL" value="myImageryLL" />
+	<Property name="Imagery_LM" value="myImageryLM" />
+	<Property name="Imagery_LR" value="myImageryLR" />
+	
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
+\endcode
+
+	Example Code:
+\code
+Widgets::ScalingImage* scalingImage = 
+	static_cast<Widgets::ScalingImage*>( System::getSingleton().createWidget("ScalingImage","OpenGUI") );
+scalingImage->setImagery_UL("myImageryUL");
+scalingImage->setImagery_UM("myImageryUM");
+scalingImage->setImagery_UR("myImageryUR");
+scalingImage->setImagery_ML("myImageryML");
+scalingImage->setImagery_MM("myImageryMM");
+scalingImage->setImagery_MR("myImageryMR");
+scalingImage->setImagery_LL("myImageryLL");
+scalingImage->setImagery_LM("myImageryLM");
+scalingImage->setImagery_LR("myImageryLR");
+
+scalingImage->setPos( 0.59875f, 0.465f );
+scalingImage->setSize( 0.40125f, 0.535f );
+\endcode
+*/
+
+
+
+
+/*!
+	\page BW_SimpleButton SimpleButton
 	
 	- widgetGroup: "OpenGUI"
 	- widgetType:  "SimpleButton"
