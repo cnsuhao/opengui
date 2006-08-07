@@ -5,6 +5,7 @@
 
 
 namespace OpenGUI{
+
 	class PropertySet;
 
 	/*! \brief This is the typedef used for callbacks to Property Set handlers.
@@ -66,24 +67,73 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	typedef bool (*PropertyGetter)(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
 	//#####################################################################
-	//! \internal Experimental class. Not finished
-	class Enum{
+	//! This is the class that provides PT_ENUM support for properties.
+	/*! A PT_ENUM works like a filtered PT_STRING, only allowing predefined values through to the widget.
+		In addition, applications can query the PT_ENUM for a list of acceptable values.
+
+		\note The filtering is only one way. Any time a PropertyGet request is made to the widget, the
+		PT_Enum is bypassed. The widget is assumed to do "the right thing" and only return values that
+		can be successfully fed right back through the PT_Enum.
+
+		\remarks You'll probably notice there is no way to clear or remove PT_Enum values once you've added them.
+		That's not a bug, nor an oversight. ENUMs aren't something you're supposed to dynamically play with.
+		Set them once at widget creation and leave them alone. You'll be much happier, I promise.
+
+		\warning PT_Enum values are case \b insensitive. All values added or tested are first converted to
+		all lower case.
+	*/
+	class OPENGUI_API PT_Enum{
 	public:
-		Enum(std::string firstValue);
+		//! This is a list of acceptable ENUM values for the PT_Enum from which it was obtained
+		typedef std::set<std::string> EnumList;
+
+		//! The constructor does not require any default values, as this object is intended to be instantiated and held as a widget object member.
+		/*! \warning Care must be taken to ensure that a PT_Enum is filled out by the widget or no property set requests will ever make it through.
+		
+			This class is written to be sub-classed on purpose, as it is generally much easier for a widget to create
+			a private sub-classing of this object that will automatically fill itself with the desired values.
+		*/
+		PT_Enum();
+		//! Default destructor, does nothing special.
+		virtual ~PT_Enum();
+		//! Adds the given value to the list of acceptable enum values
 		void addValue(std::string value);
+		//! Tests a single value to see if it passes the ENUM filter. \c true for pass, \c false for fail
+		/*! \note This performs no case modification.*/
+		bool testValue(std::string value);
+		//! Returns a copy of the valid ENUM value list
+		EnumList getList();
+	private:
+		EnumList mEnumList;
 	};
+
+
+	//! This is a sub-class of PT_Enum that is already set up to handle horizontal TextAlignment requests.
+	class OPENGUI_API PT_Enum_TextAlignment_H : public PT_Enum{
+	public:
+		//! Everything important happens in the constructor automatically. I'm ready to use "out of the box".
+		PT_Enum_TextAlignment_H();
+	};
+
+	//! This is a sub-class of PT_Enum that is already set up to handle horizontal TextAlignment requests.
+	class OPENGUI_API PT_Enum_TextAlignment_V : public PT_Enum{
+	public:
+		//! Everything important happens in the constructor automatically. I'm ready to use "out of the box".
+		PT_Enum_TextAlignment_V();
+	};
+
 	//#####################################################################
 	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list.
 	typedef enum{
-		PT_STRING = 0,
-		PT_BOOL = 1,
-		PT_FLOAT = 2,
-		PT_FVECTOR2 = 3,
-		PT_FRECT = 4,
-		PT_INTEGER = 5,
-		PT_IVECTOR2 = 6,
-		PT_IRECT = 7,
-		PT_ENUM = 8 //!< Reserved for Enum type. <b>Not yet implemented.</b>
+		PT_STRING = 0, //!< String property type
+		PT_BOOL = 1, //!< Boolean property type
+		PT_FLOAT = 2, //!< Float property type
+		PT_FVECTOR2 = 3, //!< FVector2 property type
+		PT_FRECT = 4, //!< FRect property type
+		PT_INTEGER = 5, //!< Integer property type
+		PT_IVECTOR2 = 6, //!< IVector2 property type
+		PT_IRECT = 7, //!< IRect property type
+		PT_ENUM = 8 //!< PT_Enum property type
 	} PropertyType;
 	//#####################################################################
 	typedef struct _PropertyListItem{
@@ -123,6 +173,8 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 		bool propertyGet(const std::string& propertyName, std::string& curValue);
 		//! Returns a list of properties
 		PropertyList propertyList();
+		//! Returns a list of valid values for the requested PT_ENUM typed property. If the given \c propertyName is not a PT_ENUM type, or it doesn't exist, an empty list is returned.
+		PT_Enum::EnumList enumValues(const std::string& propertyName);
 	protected:
 		//! Binds a new property, complete with property name, type, getter function and setter function.
 		/*! Widgets that implement new properties, or reimplement existing ones will need to call this
@@ -136,12 +188,19 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 			- PropertyGetter
 		*/
 		void PropertySet_BindProperty(const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter);
+		//! As the other PropertySet_BindProperty() with the addition of \c pt_EnumPtr, which needs to be a pointer to a valid PT_Enum if \c type = PT_ENUM
+		/*! If \c type is PT_ENUM, then the passed \c pt_EnumPtr \b must remain valid for the life of the widget.
+			The easiest way to accomplish this is to place the PT_Enum directly into the widget's class as a member variable.
+			<i>Yes, this is the intended method.</i>
+		*/
+		void PropertySet_BindProperty(const std::string& name, PropertyType type, PT_Enum* pt_EnumPtr, PropertySetter propertySetter, PropertyGetter propertyGetter);
 	private:
 
 		typedef struct _PropertyMapItem{
 			PropertyType type;
 			PropertySetter propertySetter;
 			PropertyGetter propertyGetter;
+			PT_Enum* enumPtr;
 		} PropertyMapItem;
 		typedef std::map<std::string, PropertyMapItem> PropertyMap;
 

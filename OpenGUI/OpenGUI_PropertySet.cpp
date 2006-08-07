@@ -18,6 +18,20 @@ namespace OpenGUI{
 		return retval;
 	}
 	//######################################################################
+	PT_Enum::EnumList PropertySet::enumValues(const std::string& propertyName)
+	{
+		PT_Enum::EnumList retval;
+		std::string tmpstr = propertyName;
+		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
+		PropertyMap::iterator iter =_mPropertySubscriberList.find(tmpstr);
+		if(iter == _mPropertySubscriberList.end())
+			return retval;
+		if( 0 == iter->second.enumPtr )
+			return retval;
+		retval = iter->second.enumPtr->getList();
+		return retval;
+	}
+	//######################################################################
 	bool PropertySet::propertySet(const std::string& propertyName, const std::string& newValue)
 	{
 		std::string tmpstr = propertyName;
@@ -47,10 +61,20 @@ namespace OpenGUI{
 		int intHolder;
 		IVector2 iv2Holder;
 		IRect irHolder;
+		std::string strHolder = newValue;
+
+		if(iter->second.type == PT_ENUM){
+			if( 0 == iter->second.enumPtr)
+				return false;
+			if(! iter->second.enumPtr->testValue(newValue) )
+				return false;
+			std::transform(strHolder.begin(),strHolder.end(),strHolder.begin(),static_cast<int(*)(int)>(std::tolower));
+		}
 
 		switch(iter->second.type){
+			case PT_ENUM: //if the enum made it this far, treat it like a string
 			case PT_STRING:
-				return (*iter->second.propertySetter)(this, propertyName, newValue, 0);
+				return (*iter->second.propertySetter)(this, propertyName, strHolder, 0);
 			case PT_BOOL:
 				if(PropertyParser::fromStrBool(newValue,boolHolder))
 					return (*iter->second.propertySetter)(this, propertyName, newValue, &boolHolder);
@@ -131,11 +155,20 @@ namespace OpenGUI{
 			case PT_INTEGER: return "INTEGER";
 			case PT_IVECTOR2: return "IVECTOR2";
 			case PT_IRECT: return "IRECT";
+			case PT_ENUM:  return "ENUM";
 			default: return "**UNKNOWN**";
 		}
 	}
 	//######################################################################
 	void PropertySet::PropertySet_BindProperty(const std::string& propertyName, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter)
+	{
+		if(type == PT_ENUM){
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "You cannot specify a PT_ENUM with this PropertySet_BindProperty(). Use the other one.", "PropertySet_BindProperty");
+		}else
+			PropertySet_BindProperty(propertyName, type, 0, propertySetter, propertyGetter);
+	}
+	//######################################################################
+	void PropertySet::PropertySet_BindProperty(const std::string& propertyName, PropertyType type, PT_Enum* pt_EnumPtr, PropertySetter propertySetter, PropertyGetter propertyGetter)
 	{
 		std::string tmpstr = propertyName;
 		std::transform(tmpstr.begin(),tmpstr.end(),tmpstr.begin(),static_cast<int(*)(int)>(std::tolower));
@@ -144,16 +177,15 @@ namespace OpenGUI{
 			<< "<" << ((void*)this) << "> "
 			<< "\"" << tmpstr
 			<< "\" type: " << propertyTypeToStr(type) << Log::endlog;
-		
+
 
 		PropertyMap::mapped_type item = _mPropertySubscriberList[tmpstr];
 		item.type = type;
 		item.propertySetter = propertySetter;
 		item.propertyGetter = propertyGetter;
+		item.enumPtr = pt_EnumPtr;
 		_mPropertySubscriberList[tmpstr]=item;
 	}
-	//######################################################################
-
 
 
 	//######################################################################
@@ -374,6 +406,60 @@ namespace OpenGUI{
 		return false;
 	}
 	//######################################################################
+	//######################################################################
+	//######################################################################
+	PT_Enum::PT_Enum()
+	{
+		//
+	}
+	//######################################################################
+	PT_Enum::~PT_Enum()
+	{
+		//
+	}
+	//######################################################################
+	void PT_Enum::addValue(std::string value)
+	{
+		//make it all lower case
+		std::transform(value.begin(),value.end(),value.begin(),static_cast<int(*)(int)>(std::tolower));
 
+		//safe insert (ignore duplicates)
+		if(! testValue(value) )
+			mEnumList.insert(value);
+	}
+	//######################################################################
+	bool PT_Enum::testValue(std::string value)
+	{
+		//make it all lower case
+		std::transform(value.begin(),value.end(),value.begin(),static_cast<int(*)(int)>(std::tolower));
+
+		//try to find it
+		EnumList::iterator iter = mEnumList.find(value);
+		if(iter != mEnumList.end())
+			return true; //if we found it, it is valid
+		return false; //otherwise it is not
+	}
+	//######################################################################
+	PT_Enum::EnumList PT_Enum::getList()
+	{
+		return mEnumList;
+	}
+	//######################################################################
+	PT_Enum_TextAlignment_H::PT_Enum_TextAlignment_H()
+	{
+		addValue("ALIGN_LEFT");
+		addValue("ALIGN_RIGHT");
+		addValue("ALIGN_CENTER");
+		addValue("ALIGN_JUSTIFIED");
+	}
+	//######################################################################
+	PT_Enum_TextAlignment_V::PT_Enum_TextAlignment_V()
+	{
+		addValue("ALIGN_TOP");
+		addValue("ALIGN_BOTTOM");
+		addValue("ALIGN_CENTER");
+		addValue("ALIGN_JUSTIFIED");
+	}
+	//######################################################################
 };
 

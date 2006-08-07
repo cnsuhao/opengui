@@ -88,6 +88,9 @@ namespace OpenGUI{
 
 			static bool _prop_SetWrap(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetWrap(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+
+			PT_Enum_TextAlignment_H m_hAlignEnum;
+			PT_Enum_TextAlignment_V m_vAlignEnum;
 		};
 	};//namespace Widgets{
 };//namespace OpenGUI{

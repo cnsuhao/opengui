@@ -15,8 +15,8 @@ namespace OpenGUI{
 			PropertySet_BindProperty("Text", OpenGUI::PT_STRING, &TextLabel::_prop_SetText, &TextLabel::_prop_GetText);
 			PropertySet_BindProperty("Font", OpenGUI::PT_STRING, &TextLabel::_prop_SetFont, &TextLabel::_prop_GetFont);
 			PropertySet_BindProperty("FontSize", OpenGUI::PT_INTEGER, &TextLabel::_prop_SetFontSize, &TextLabel::_prop_GetFontSize);
-			PropertySet_BindProperty("Alignment_H", OpenGUI::PT_STRING, &TextLabel::_prop_SetHAlign, &TextLabel::_prop_GetHAlign);
-			PropertySet_BindProperty("Alignment_V", OpenGUI::PT_STRING, &TextLabel::_prop_SetVAlign, &TextLabel::_prop_GetVAlign);
+			PropertySet_BindProperty("Alignment_H", OpenGUI::PT_ENUM, &m_hAlignEnum, &TextLabel::_prop_SetHAlign, &TextLabel::_prop_GetHAlign);
+			PropertySet_BindProperty("Alignment_V", OpenGUI::PT_ENUM, &m_vAlignEnum, &TextLabel::_prop_SetVAlign, &TextLabel::_prop_GetVAlign);
 			PropertySet_BindProperty("AutoWrap", OpenGUI::PT_BOOL, &TextLabel::_prop_SetWrap, &TextLabel::_prop_GetWrap);
 		}
 		//#####################################################################
@@ -173,30 +173,74 @@ namespace OpenGUI{
 		//#####################################################################
 		bool TextLabel::_prop_SetHAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
 		{
-			//!\todo fixme
-			//TextLabel* w = static_cast<TextLabel*>(widget);
-			return false;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			if(!w) return false;
+			if(newValueStr == "align_left")
+				w->setAlignment_Horiz(TextAlignment::ALIGN_LEFT);
+			else if(newValueStr == "align_right")
+				w->setAlignment_Horiz(TextAlignment::ALIGN_RIGHT);
+			else if(newValueStr == "align_center")
+				w->setAlignment_Horiz(TextAlignment::ALIGN_CENTER);
+			else if(newValueStr == "align_justified")
+				w->setAlignment_Horiz(TextAlignment::ALIGN_JUSTIFIED);
+			else
+				return false;
+			return true;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_GetHAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue)
 		{
-			//!\todo fixme
-			//TextLabel* w = static_cast<TextLabel*>(widget);
-			return false;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			if(!w) return false;
+			switch(w->getAlignment_Horiz()){
+				case TextAlignment::ALIGN_LEFT:
+					curValue = "align_left"; break;
+				case TextAlignment::ALIGN_RIGHT:
+					curValue = "align_right"; break;
+				case TextAlignment::ALIGN_CENTER:
+					curValue = "align_center"; break;
+				case TextAlignment::ALIGN_JUSTIFIED:
+					curValue = "align_justified"; break;
+				default:
+					return false;
+			}
+			return true;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_SetVAlign(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
 		{
-			//!\todo fixme
-			//TextLabel* w = static_cast<TextLabel*>(widget);
-			return false;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			if(!w) return false;
+			if(newValueStr == "align_top")
+				w->setAlignment_Vert(TextAlignment::ALIGN_TOP);
+			else if(newValueStr == "align_bottom")
+				w->setAlignment_Vert(TextAlignment::ALIGN_BOTTOM);
+			else if(newValueStr == "align_center")
+				w->setAlignment_Vert(TextAlignment::ALIGN_CENTER);
+			else if(newValueStr == "align_justified")
+				w->setAlignment_Vert(TextAlignment::ALIGN_JUSTIFIED);
+			else
+				return false;
+			return true;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_GetVAlign(PropertySet* widget, const std::string& propertyName, std::string& curValue)
 		{
-			//!\todo fixme
-			//TextLabel* w = static_cast<TextLabel*>(widget);
-			return false;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			if(!w) return false;
+			switch(w->getAlignment_Vert()){
+				case TextAlignment::ALIGN_TOP:
+					curValue = "align_top"; break;
+				case TextAlignment::ALIGN_BOTTOM:
+					curValue = "align_bottom"; break;
+				case TextAlignment::ALIGN_CENTER:
+					curValue = "align_center"; break;
+				case TextAlignment::ALIGN_JUSTIFIED:
+					curValue = "align_justified"; break;
+				default:
+					return false;
+			}
+			return true;
 		}
 		//#####################################################################
 		bool TextLabel::_prop_SetWrap(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)

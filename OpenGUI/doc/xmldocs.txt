@@ -329,7 +329,7 @@ Properties are a little trickier to use than the rest of the tags, as the input 
 
 \see For a complete list of natively processed string formats, see OpenGUI::PropertySet
 
-\note Make sure you take notice that the \<Property\> tag can accept the \c Value parameter as either an attribute or as the contents of the tag. One or the either must be used. If a \c Value is provided as an attribute, the body text is ignored. Also note that if your \c Value requires the use of \< or \> you will need to use the standard \&lt; and \&gt; representations of these to prevent the xml parser from thinking you've started a new tag. Keep in mind that just because you have line feeds in your XML document does not mean that they will be \i parsed as line feeds. From what I recall, the line feed character is encoding specific, but \&#10; has worked for me in the past (but I never use UTF-8 or any other Unicode style encodings).
+\note Make sure you take notice that the \<Property\> tag can accept the \c Value parameter as either an attribute or as the contents of the tag. One or the either must be used. If a \c Value is provided as an attribute, the body text is ignored. Also note that if your \c Value requires the use of \< or \> you will need to use the standard \&lt; and \&gt; representations of these to prevent the xml parser from thinking you've started a new tag. Keep in mind that just because you have line feeds in your XML document does not mean that they will be \em parsed as line feeds. From what I recall, the line feed character is encoding specific, but \&#10; has worked for me in the past (but I never use UTF-8 or any other Unicode style encodings).
 
 
 

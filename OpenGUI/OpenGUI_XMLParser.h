@@ -7,7 +7,7 @@ namespace OpenGUI{
 		to the necessary subsystem as it sees them, so you can load data into several
 		subsystems with a single function call.
 
-		It also supports use of the '<include file="somefile.xml">' tag, which allows
+		It also supports use of the '\<include file="somefile.xml"\>' tag, which allows
 		you to split your XML files into smaller and more specific pieces, while allowing
 		them to automatically load their dependants.
 
@@ -19,9 +19,12 @@ namespace OpenGUI{
 		logged as warnings, but otherwise ignored. <i>(The multiple include testing is performed
 		using a simple case-insensitive string comparison. Minor path tricks will fool it, but
 		are generally discouraged.)</i>
+
+		\see \ref XMLDOC "The XML Documentation" for a complete reference to using XML with %OpenGUI.
 	*/
 	class OPENGUI_API XMLParser{
 	public:
+		//! Reads the given XML file from the registered resource manager and parses the file according to the \ref XMLDOC "XML specifications"
 		static void LoadFromFile(const std::string& xmlFilename);
 	private:
 		typedef std::set<std::string> IncludeSet;
