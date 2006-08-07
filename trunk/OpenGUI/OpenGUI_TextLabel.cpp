@@ -17,6 +17,7 @@ namespace OpenGUI{
 			PropertySet_BindProperty("FontSize", OpenGUI::PT_INTEGER, &TextLabel::_prop_SetFontSize, &TextLabel::_prop_GetFontSize);
 			PropertySet_BindProperty("Alignment_H", OpenGUI::PT_STRING, &TextLabel::_prop_SetHAlign, &TextLabel::_prop_GetHAlign);
 			PropertySet_BindProperty("Alignment_V", OpenGUI::PT_STRING, &TextLabel::_prop_SetVAlign, &TextLabel::_prop_GetVAlign);
+			PropertySet_BindProperty("AutoWrap", OpenGUI::PT_BOOL, &TextLabel::_prop_SetWrap, &TextLabel::_prop_GetWrap);
 		}
 		//#####################################################################
 		TextLabel::~TextLabel()
@@ -198,6 +199,22 @@ namespace OpenGUI{
 			return false;
 		}
 		//#####################################################################
-	};
-};
+		bool TextLabel::_prop_SetWrap(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		{
+			if(!newValuePtr) return false;
+			bool* t = (bool*)newValuePtr;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			w->setAutoWrap(*t);
+			return true;
+		}
+		//#####################################################################
+		bool TextLabel::_prop_GetWrap(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		{
+			std::string outval;
+			TextLabel* w = static_cast<TextLabel*>(widget);
+			return PropertyParser::toStrBool(w->mAutoWrap, curValue);
+		}
+		//#####################################################################
+	};//namespace Widgets{
+};//namespace OpenGUI{
 

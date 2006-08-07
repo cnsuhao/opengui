@@ -390,6 +390,34 @@ namespace OpenGUI{
 		setZOrder(upper+1);
 	}
 	//#####################################################################
+	FVector2 Element::getNativePixelSize_Inner()
+	{
+		FVector2 nativePixelWidth = getNativePixelSize_World();
+		FVector2 origin = FVector2(0.0f, 0.0f);
+		origin = convCoordWorldToInner(origin);
+		nativePixelWidth = convCoordWorldToInner(nativePixelWidth);
+		nativePixelWidth = nativePixelWidth - origin;
+		return nativePixelWidth;
+	}
+	//#####################################################################
+	FVector2 Element::getNativePixelSize_Local()
+	{
+		FVector2 nativePixelWidth = getNativePixelSize_World();
+		FVector2 origin = FVector2(0.0f, 0.0f);
+		origin = convCoordWorldToLocal(origin);
+		nativePixelWidth = convCoordWorldToLocal(nativePixelWidth);
+		nativePixelWidth = nativePixelWidth - origin;
+		return nativePixelWidth;
+	}
+	//#####################################################################
+	FVector2 Element::getNativePixelSize_World()
+	{
+		FVector2 nativePixelWidth;
+		nativePixelWidth.x = 1.0f / (float) System::getSingleton().getViewportResolution().x;
+		nativePixelWidth.y = 1.0f / (float) System::getSingleton().getViewportResolution().y;
+		return nativePixelWidth;
+	}
+	//#####################################################################
 	FVector2 Element::convCoordLocalToWorld(FVector2 localCoord)
 	{
 		if(mParentElement){

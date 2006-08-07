@@ -223,11 +223,16 @@ namespace OpenGUI{
 	class TextAlignment{
 	public:
 		typedef enum {
-			ALIGN_LEFT = 0,
-			ALIGN_TOP = 0,
-			ALIGN_RIGHT = 1,
-			ALIGN_BOTTOM = 1,
-			ALIGN_CENTER = 2,
+			ALIGN_LEFT = 0, //!< Aligns text to left of widget
+			ALIGN_TOP = 0, //!< Aligns text to top of widget
+			ALIGN_RIGHT = 1, //!< Aligns text to right of widget
+			ALIGN_BOTTOM = 1, //!< Aligns text to bottom of widget
+			ALIGN_CENTER = 2, //!< Aligns text to the center of the widget. (This is valid for both horizontal and vertical alignments.)
+			/*! \brief Evenly distributes text spacing to completely fill widget
+			in the direction used. (This is valid for both horizontal and vertical alignments.)
+			TextLabel applies a minimum span that must be met before this is applied to a line of text. This
+			prevents short lines of text from being spaced unreasonable distances.
+			*/
 			ALIGN_JUSTIFIED = 3
 		}Alignment;
 		TextAlignment& operator=(const Alignment& rhs)

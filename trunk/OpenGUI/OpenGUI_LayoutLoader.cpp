@@ -126,8 +126,18 @@ namespace OpenGUI{
 										propValue = attrib->Value();
 									}
 								}while( (attrib = attrib->Next()) );
+								if(!propValue){
+									propValue = section->GetText();
+								}
 								if(propValue && propName){
 									w->propertySet(propName,propValue);
+								}else{
+									if(!propValue && ! propName)
+										OG_THROW(Exception::ERR_INVALIDPARAMS, "Property is missing both a name and a value", "_loadWidgetFromTinyXMLElement");
+									else if(!propName)
+										OG_THROW(Exception::ERR_INVALIDPARAMS, "Property is missing a name", "_loadWidgetFromTinyXMLElement");
+									else if(!propValue)
+										OG_THROW(Exception::ERR_INVALIDPARAMS, "Property " + std::string(propName) + " did not provide a Value as either an attribute or in the tag body", "_loadWidgetFromTinyXMLElement");
 								}
 							}
 						}
