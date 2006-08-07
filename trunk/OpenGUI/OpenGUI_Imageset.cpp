@@ -207,6 +207,15 @@ namespace OpenGUI{
 							irect.setPosition(IVector2(xpos_i,ypos_i));
 							irect.setSize(IVector2(width_i,height_i));
 							createImagery(iname,irect);
+						}else{
+							std::string msg = "Missing <Imagery> attributes";
+							if(!iname) msg += ": (Imagery Name) ";
+							else msg += "for '" + std::string(iname) + "'";
+							if(!xpos) msg += "(XPos) ";
+							if(!ypos) msg += "(YPos) ";
+							if(!width) msg += "(Width) ";
+							if(!height) msg += "(Height) ";
+							OG_THROW(Exception::ERR_INVALIDPARAMS, msg, "_loadImageryFromRootTinyXMLElement");
 						}
 					}
 				}
