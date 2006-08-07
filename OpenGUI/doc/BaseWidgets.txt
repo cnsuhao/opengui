@@ -20,7 +20,7 @@
 	<HR>
 	- \subpage BW_StaticImage "StaticImage"
 	- \subpage BW_SimpleButton "SimpleButton"
-	- Label (static text)
+	- \subpage BW_TextLabel "TextLabel"
 	- \subpage BW_ScalingImage "ScalingImage"
 	- CheckBox
 	- RadioButton
@@ -75,7 +75,7 @@ staticImage->setSize( 0.40125f, 0.535f );
 	- widgetType:  "ScalingImage"
 	
 	\section Description
-	Draws a static image to the screen much like StaticImage, but in such a way that pixel stretching is contained to predefined "acceptable" areas. The drawn image is comprised of 9 zones, each of which is actually defined as independent Imagery.
+	Draws a static image to the screen much like StaticImage, but in such a way that pixel stretching is contained to predefined "acceptable" areas. The drawn image is comprised of 9 zones, each of which is actually defined as independent Imagery. All non-stretched dimensions  automatically preserve the original pixel density of the source image when displayed. So if your border is 24 pixels thick in your source image, it will always be displayed at 24 pixels thick, regardless of the current screen resolution.
 	
 	List of zones and stretch method performed:
 	- Upper Left (no stretching)
@@ -89,6 +89,8 @@ staticImage->setSize( 0.40125f, 0.535f );
 	- Lower Right (no stretching)
 	
 	\image html ScalingImage_streching.jpg
+	
+	\note This widget determines the "border thickness" for each side independently of the others, and will always use the "thickest" value found as the thickness for that entire side.
 	
 	
 	\see Class Documentation: OpenGUI::Widgets::ScalingImage
@@ -193,5 +195,61 @@ simpleButton->setImagery("myImagery_MouseOver");
 simpleButton->setImagery("myImagery_Disabled");
 simpleButton->setPos( 0.59875f, 0.465f );
 simpleButton->setSize( 0.40125f, 0.535f );
+\endcode
+*/
+
+
+
+
+/*!
+	\page BW_TextLabel TextLabel
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "TextLabel"
+	
+	\section Description
+	Provides a full featured method of writing text to the screen. Supports various alignment types, and optional word wrapping.
+	
+	\see Class Documentation: OpenGUI::Widgets::TextLabel, and OpenGUI::TextAlignment
+	
+	\section Properties
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+	- Text : String
+	- Font : String
+	- FontSize : Integer
+	- Alignment_H : String? (NYI)
+	- Alignment_V : String? (NYI)
+	- AutoWrap : Boolean
+
+	\section Usage	
+	Example XML:
+\code
+<Widget name="myTextLabel" group="OpenGUI" type="TextLabel">
+	<Property name="Font" value="myFont" />
+	<Property name="FontSize" value="16" />
+	<Property name="Alignment_H" value="ALIGN_LEFT" />
+	<Property name="Alignment_V" value="ALIGN_CENTER" />
+	<Property name="AutoWrap" value="FALSE" />
+	<Property name="Text">This is my text string!
+	&#10;And this is the second line.</Property>
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
+\endcode
+
+	Example Code:
+\code
+Widgets::TextLabel* textLabel = 
+	static_cast<Widgets::TextLabel*>( System::getSingleton().createWidget("TextLabel","OpenGUI") );
+textLabel->setFont("myFont");
+textLabel->setFontSize(16);
+textLabel->setAlignment_Horiz(TextAlignment::ALIGN_LEFT);
+textLabel->setAlignment_Vert(TextAlignment::ALIGN_CENTER);
+textLabel->setAutoWrap(false);
+textLabel->setText("This is my text string! \nAnd this is the second line.");
+textLabel->setPos( 0.59875f, 0.465f );
+textLabel->setSize( 0.40125f, 0.535f );
 \endcode
 */

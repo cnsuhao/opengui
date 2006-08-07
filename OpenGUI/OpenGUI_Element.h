@@ -277,6 +277,13 @@ namespace OpenGUI{
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in world coords. (Inner coords are inside this Element's rect)
 		FVector2 convCoordWorldToInner(FVector2 worldCoord);
 
+		//! Returns an FVector2 containing the size of a single pixel in inner coords.
+		FVector2 getNativePixelSize_Inner();
+		//! Returns an FVector2 containing the size of a single pixel in local coords.
+		FVector2 getNativePixelSize_Local();
+		//! Returns an FVector2 containing the size of a single pixel in world coords.
+		FVector2 getNativePixelSize_World();
+
 		//! Returns an IRect that defines the rect of this element in pixels, rather than the usual float units.
 		/*! It is worth mentioning that this value should only be referenced for pixel size related operations,
 			such as providing pixel alignment. (The font system uses this function for such a purpose.)
