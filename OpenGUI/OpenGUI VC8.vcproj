@@ -576,6 +576,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_ScalingImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ScalingImage.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_SimpleButton.cpp"
 				>
 			</File>

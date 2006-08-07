@@ -6,11 +6,15 @@ namespace OpenGUI{
 	namespace Widgets{
 
 		//! Built in Widget that displays a static image.
+		/*!
+			\see \ref BW_StaticImage "StaticImage widget documentation"
+		*/
 		class OPENGUI_API StaticImage : public Widget
 		{
 		public:
 			StaticImage();
-			~StaticImage();
+			virtual ~StaticImage();
+			//! Sets the imagery to be used by this object
 			void setImagery(std::string imageryName);
 
 			//! This is just a factory interface.
