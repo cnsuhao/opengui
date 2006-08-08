@@ -10,7 +10,9 @@ namespace OpenGUI{
 	class OPENGUI_API Renderer
 	{
 	public:
+		//! Constructor
 		Renderer() {}
+		//! virtual Destructor
 		virtual ~Renderer() {}
 
 		//! The renderer implementation must be able to properly supply %OpenGUI with viewport dimensions via this function.

@@ -8,6 +8,7 @@
 namespace OpenGUI{
 	class Renderer;
 
+	//! This is the base Element from which all GUI hierarchies are built upon.
 	class OPENGUI_API GUISheet : public Element
 	{
 		friend class System;

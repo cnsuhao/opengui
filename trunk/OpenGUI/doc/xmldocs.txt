@@ -235,9 +235,8 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name
+ - \c Name (required)
    - \em Type: string
-   - \em Default: randomly generated unique string
    - \em Description: The name to give the new GUISheet, or the name of the existing GUISheet you are appending.
 
 

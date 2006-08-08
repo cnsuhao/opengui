@@ -18,6 +18,7 @@ namespace OpenGUI{
 		*/
 		class OPENGUI_API PrimitiveBox : public Primitive{
 		public:
+			//! default constructor
 			PrimitiveBox() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mTextureImagery(0), mMaskImagery(0) {}
 			virtual ~PrimitiveBox() {}
 			//! Returns the RenderOperationList that is the result of this primitive
@@ -40,6 +41,7 @@ namespace OpenGUI{
 		//! A primitive to draw a box shaped outline. The outline is drawn on the inside of the given rect
 		class OPENGUI_API PrimitiveBoxOutline : public Primitive{
 		public:
+			//! default constructor
 			PrimitiveBoxOutline() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)), mThickness(1), mContext(0) {}
 			virtual ~PrimitiveBoxOutline() {}
 			//! Returns the RenderOperationList that is the result of this primitive

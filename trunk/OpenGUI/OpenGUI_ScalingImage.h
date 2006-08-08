@@ -15,7 +15,9 @@ namespace OpenGUI{
 		class OPENGUI_API ScalingImage : public Widget
 		{
 		public:
+			//! Constructor
 			ScalingImage();
+			//! virtual Destructor
 			virtual ~ScalingImage();
 
 			//! Sets imagery for the Upper Left zone

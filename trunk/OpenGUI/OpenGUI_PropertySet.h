@@ -224,25 +224,39 @@ bool myPropertyGetterCallback(PropertySet* widget, const std::string& propertyNa
 	*/
 	class OPENGUI_API PropertyParser{
 	public:
+		//! convert a boolean to a string
 		static bool toStrBool(const bool& value, std::string& result);
+		//! convert a string to a boolean
 		static bool fromStrBool(const std::string& value, bool& result);
 
+		//! convert a float to a string
 		static bool toStrFloat(const float& value, std::string& result);
+		//! convert a string to a float
 		static bool fromStrFloat(const std::string& value, float& result);
 
+		//! convert a FVector2 to a string
 		static bool toStrFVector2(const FVector2& value, std::string& result);
+		//! convert a string to a FVector2
 		static bool fromStrFVector2(const std::string& value, FVector2& result);
 
+		//! convert a FRect to a string
 		static bool toStrFRect(const FRect& value, std::string& result);
+		//! convert a string to a FRect
 		static bool fromStrFRect(const std::string& value, FRect& result);
 
+		//! convert an integer to a string
 		static bool toStrInt(const int& value, std::string& result);
+		//! convert a string to an integer
 		static bool fromStrInt(const std::string& value, int& result);
 
+		//! convert a IVector2 to a string
 		static bool toStrIVector2(const IVector2& value, std::string& result);
+		//! convert a string to a IVector2
 		static bool fromStrIVector2(const std::string& value, IVector2& result);
 
+		//! convert a IRect to a string
 		static bool toStrIRect(const IRect& value, std::string& result);
+		//! convert a string to a IRect
 		static bool fromStrIRect(const std::string& value, IRect& result);
 	};
 

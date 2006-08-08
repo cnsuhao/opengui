@@ -41,6 +41,9 @@
 //*******************************//
 //  DYNAMIC LIB LOADER SETTINGS  //
 //*******************************//
+/*! \page PMANGLE Plugin Filename Mangling
+This section is copied verbatim from OpenGUI_CONFIG.h:
+\verbatim
 // The DynamicLib class provides cross platform loading of dynamic libraries. Because of
 // the differences in file naming conventions of dynamic libraries on different platforms,
 // it also has the ability to provide a filename mangling service. This allows you to
@@ -63,6 +66,7 @@
 // In order to properly supply cross platform builds of demos with the least effort, the default
 // setting is 1 (full mangling ALWAYS enforced). Changing this value will likely break at least some
 // demos, as it will invalidate the xml config files they utilize.
+\endverbatim */
 #define DYNAMICLIB_FILENAME_MANGLING 1
 
 

@@ -15,6 +15,12 @@ namespace OpenGUI{
 		- void pluginStart(void);\n
 		- void pluginStop(void);\n
 		
+		\remarks
+		Depending on how %OpenGUI was configured when compiled the plugin system may
+		perform varying degrees of filename mangling. An explanation and the current
+		setting can be found in OpenGUI_CONFIG.h. To help explain how this works, the
+		comment from that section of the config file is available \ref PMANGLE "here".
+
 	*/
 	class PluginManager : public Singleton<PluginManager>{
 		friend class XMLParser;
@@ -31,8 +37,10 @@ namespace OpenGUI{
 		static PluginManager* getSingletonPtr(void);
 
 		//! Loads a plugin by filename.
+
 		void loadPlugin(std::string filename);
 		//! Unloads a plugin by filename.
+		/*! */
 		void unloadPlugin(std::string filename);
 		//! Unloads all currently loaded plugins
 		void unloadAllPlugins();

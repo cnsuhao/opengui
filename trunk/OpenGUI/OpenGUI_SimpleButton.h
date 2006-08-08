@@ -7,10 +7,15 @@ namespace OpenGUI{
 	namespace Widgets{
 
 		//! Built in Widget providing a very simplistic button functionality.
+		/*!
+		\see \ref BW_SimpleButton "SimpleButton widget documentation"
+		*/
 		class OPENGUI_API SimpleButton : public Widget
 		{
 		public:
+			//! Constructor
 			SimpleButton();
+			//! virtual Destructor
 			virtual ~SimpleButton();
 			//! Sets the normal button imagery.
 			void setImagery(std::string imageryName);

@@ -18,7 +18,9 @@ namespace OpenGUI{
 		class OPENGUI_API Cursor
 		{
 		public:
+			//! Constructor
 			Cursor() {}
+			//! virtual Destructor
 			virtual ~Cursor() {}
 
 			//! Called when the cursor should be shown.

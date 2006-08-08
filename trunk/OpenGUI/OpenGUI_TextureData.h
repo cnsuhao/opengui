@@ -23,8 +23,8 @@ namespace OpenGUI{
 	class OPENGUI_API TextureData
 	{
 	public:
-		TextureData();
-		~TextureData();
+		TextureData(); //!< constructor
+		~TextureData(); //!< destructor
 		unsigned char* getPixelData() const; //!< Returns a pointer to the pixel data.
 		int getWidth() const; //!< Returns the texture data width.
 		int getHeight() const;//!< Returns the texture data height.

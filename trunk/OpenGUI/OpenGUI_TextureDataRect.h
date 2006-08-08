@@ -20,10 +20,10 @@ namespace OpenGUI{
 		TDRColor(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255)
 			: Red(red), Green(green), Blue(blue), Alpha(alpha) {}
 
-		unsigned char Red;
-		unsigned char Green;
-		unsigned char Blue;
-		unsigned char Alpha;
+		unsigned char Red; //!< red channel
+		unsigned char Green; //!< green channel
+		unsigned char Blue; //!< blue channel
+		unsigned char Alpha; //!< alpha channel
 	};
 
 	//! Provides a clean and reliable method of altering the contents of a TextureData object.
@@ -52,11 +52,15 @@ namespace OpenGUI{
 	class OPENGUI_API TextureDataRect
 	{
 	public:
+		//! create a blank slate of the given size and color
 		TextureDataRect( const IVector2& size = IVector2(), const TDRColor& color = TDRColor() );
+		//! create using an existing TextureData as the source of data. \c srcRect defines the sub area with it to use, as well as size
 		TextureDataRect( const TextureData* srcTextureData, const IRect& srcRect );
+		//! create using an existing TextureDataRect as the source of data. \c srcRect defines the sub area with it to use, as well as size
 		TextureDataRect( const TextureDataRect* srcTextureDataRect, const IRect& srcRect );
 
-		~TextureDataRect();
+		~TextureDataRect();//!< destructor
+
 		//! Returns the width and height of the texture data rect
 		IVector2 getSize();
 		//! Sets the size of this object to the given size.
@@ -149,8 +153,6 @@ namespace OpenGUI{
 		//! Provides pixel read functionality.
 		/*! This function respects logical image dimensions. Reads outside of the image area
 			will return pure white w/ 100% alpha.
-
-			\todo inline this function
 		*/
 		inline TDRColor read(const IVector2& position) const
 		{

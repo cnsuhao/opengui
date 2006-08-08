@@ -32,8 +32,8 @@ namespace OpenGUI{
 			*/
 			void setImagery(std::string imageryName,FVector2 offset);
 			
-			void show();
-			void hide();
+			virtual void show();
+			virtual void hide();
 			Render::RenderOperationList getCursorRenderOpList();
 
 		private:

@@ -11,8 +11,11 @@
 
 
 namespace OpenGUI{
+	//! Redefinition of an Element pointer to prevent misuse
 	typedef Element* ChildElementListItem;
+	//! List of ChildElementListItems
 	typedef std::list<ChildElementListItem> ChildElementList;
+
 	typedef Element* ElementAncestryItem;
 	typedef std::list<ElementAncestryItem> ElementAncestryList;
 	typedef Element* ElementListItem;
@@ -23,6 +26,7 @@ namespace OpenGUI{
 
 	//! This is the base class for all GUI elements. It provides a very basic functionality set.
 	/*! The Element class should be inherited by all classes that need to exist within a GUI.
+	\note Users are probably looking for OpenGUI::Widgets::Widget
 	*/
 	class OPENGUI_API Element
 	{
@@ -31,7 +35,7 @@ namespace OpenGUI{
 		friend class RenderCache;
 
 	public:
-		//! Test
+		//! Defines the various types of client area scaling methods that are applied to child Elements
 		typedef enum {
 			/*! \brief
 				<b>Default Setting unless altered by an inheritor</b>.

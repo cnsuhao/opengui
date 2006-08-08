@@ -5,6 +5,11 @@
 //Great way to find out if all refptrs are actually getting destructed correctly.
 //#define REFPTR_DEBUG
 
+// I didn't like the ones that were out there, so I wrote my own. :-)
+// Unlike the rest of OpenGUI, the immediate contents of this file are hereby PUBLIC DOMAIN.
+// Do what you want with it. I think everyone should have a decent RefPtr class.
+//             - Eric Shorkey (August 7th, 2006)
+
 #include "OpenGUI_PreRequisites.h"
 
 namespace OpenGUI{
@@ -66,29 +71,35 @@ namespace OpenGUI{
 		unsigned int refcount;
 	};
 
+	//! This is the base template used for any reference counted pointers in %OpenGUI
 	template<typename T>
 	class RefPtr {
 	public:
+		//! Create a RefPtr from an existing pointer, or empty
 		RefPtr(T *ptr=0){
 			m_refObjPtr=0;
 			if(ptr)
 				m_refObjPtr = new __RefObj<T>(ptr);
 		}
+		//! Create a RefPtr from another RefPtr
 		RefPtr(const RefPtr<T> &ptr){
 			m_refObjPtr = ptr.m_refObjPtr;
 			if(m_refObjPtr)	m_refObjPtr->ref();
 		}
+		//! Destructor does the usual unreferencing operation
 		~RefPtr(){
 			if(m_refObjPtr)
 				m_refObjPtr->unref();
 		}
 
+		//! Return the total number of references to the stored pointer, yourself included.
 		unsigned int getRefCount() {
 			if(m_refObjPtr)
 				return m_refObjPtr->refcount;
 			return 0;
 		}
 
+		//! Assignment operator
 		RefPtr<T>& operator=(const RefPtr<T>& ptr){
 			if(m_refObjPtr) m_refObjPtr->unref();
 			m_refObjPtr = ptr.m_refObjPtr;
@@ -96,17 +107,20 @@ namespace OpenGUI{
 			return *this;
 		}
 
+		//! The usual *RefPtr resolving
 		T& operator*() const {
 			return *(m_refObjPtr->m_objPtr);
 		}
+		//! The usual RefPtr->somthing resolving
 		T* operator->() const{
 			return (m_refObjPtr->m_objPtr);
 		}
+		//! This makes "if( RefPtr )" work just like "if( !RefPtr.isNull() )"
 		operator bool() const {
 			return m_refObjPtr == 0? false : true;
 		}
 
-		
+		//! This allows us to use "if( RefPtr == NULL )" and "if( RefPtr == 0 )"
 		bool operator==(int p) const {
 			//yep, they're testing for null, but we need to make sure
 			if(0 == p)
@@ -115,22 +129,28 @@ namespace OpenGUI{
 			//so no, we don't equal that
 			return false;
 		}
+		//! used for "if( RefPtr != NULL )" and "if(RefPtr != 0 )"
 		bool operator!=(int p) const {
 			//yet another null test type
 			return !operator==(p);
 		}
+		//! Used for "if( RefPtr == normal_pointer )"
 		bool operator ==(const T* p) const {
 			if(m_refObjPtr)
 				return m_refObjPtr->m_objPtr  == p;
 			return p == 0;
 		}
+		//! Used for "if( RefPtr == RefPtr )"
 		bool operator==(const RefPtr& r) const {
 			return m_refObjPtr == r.m_refObjPtr;
 		}
 		
+		//! Used for "if( RefPtr != RefPtr )"
 		bool operator!=(const RefPtr& r) const { return !operator==(r); }
+		//! Used for "if( RefPtr != normal_pointer )"
 		bool operator!=(const T* p) const { return !operator==(p); }
 
+		//! RefPtr.isNull() returns true if RefPtr carries no pointer
 		bool isNull()const{ return m_refObjPtr==0; }
 		T* get() const { 
 			return (m_refObjPtr->m_objPtr);

@@ -13,6 +13,7 @@ namespace OpenGUI{
 		friend class ImageryManager;
 		friend class Imagery;
 	public:
+		//! Applications should use the ImageryManager to creation Imagesets
 		Imageset(Texture* texturePtr,std::string sourceImageFilename);
 		~Imageset();
 	
