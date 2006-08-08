@@ -12,7 +12,9 @@ namespace OpenGUI{
 		class OPENGUI_API StaticImage : public Widget
 		{
 		public:
+			//! Constructor
 			StaticImage();
+			//! virtual Destructor
 			virtual ~StaticImage();
 			//! Sets the imagery to be used by this object
 			void setImagery(std::string imageryName);

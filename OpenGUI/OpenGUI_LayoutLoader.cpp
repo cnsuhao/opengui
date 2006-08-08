@@ -48,7 +48,7 @@ namespace OpenGUI{
 
 		GUISheet* sheet;
 		if(!sheetName){
-			sheet = System::getSingleton().createGUISheet();
+			OG_THROW(Exception::ERR_INVALIDPARAMS, "<GUISheet> requires a 'name' attribute","_loadGUISheetFromTinyXMLElement");
 		}else{
 			sheet = System::getSingleton().getGUISheetByName(sheetName);
 			if(!sheet){

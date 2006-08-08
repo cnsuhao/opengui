@@ -6,6 +6,11 @@
 	This is a built in RGB image that is used as a generic stand in
 	for imagery that has its imageset pulled out from under it.
 
+	CORRECTION:
+	This is no longer used for that purpose. Right now it simply gets
+	loaded as a texture on System init, and unloaded on system shutdown.
+	It does nothing and should be taken out.
+
 */
 
 /* GIMP RGB C-Source image dump (UnknownImage.c) */

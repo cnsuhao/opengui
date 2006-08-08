@@ -28,6 +28,7 @@ namespace OpenGUI{
 		class OPENGUI_API PrimitiveRotation : public Primitive
 		{
 		public:
+			//! default constructor
 			PrimitiveRotation() : mRadians(0), mOrigin(FVector2(0.0f,0.0f)) {}
 			virtual ~PrimitiveRotation() {}
 
@@ -84,6 +85,7 @@ namespace OpenGUI{
 		class OPENGUI_API PrimitiveScissorRect : public Primitive
 		{
 		public:
+			//! default constructor
 			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
 			virtual ~PrimitiveScissorRect() {}
 			//! Returns the RenderOperationList that is the result of this primitive

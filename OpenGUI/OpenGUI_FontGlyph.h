@@ -8,6 +8,7 @@
 
 namespace OpenGUI{
 
+	//! \internal This is an internal object definition
 	struct FontGlyphMetrics{
 		int width;
 		int height;
@@ -23,6 +24,7 @@ namespace OpenGUI{
 		int horizLineSpacing;
 	};
 
+	//! \internal This is an internal object definition
 	struct FontGlyph{
 		FontGlyphMetrics metrics;
 		ImageryPtr imageryPtr;

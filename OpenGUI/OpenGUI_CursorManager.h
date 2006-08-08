@@ -16,7 +16,9 @@ namespace OpenGUI{
 		friend class Cursor;
 		friend class System;
 	public:
+		//! Constructor. This singleton is automatically created by System when needed. Do not create yourself.
 		CursorManager();
+		//! Destructor
 		~CursorManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs

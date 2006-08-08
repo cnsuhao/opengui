@@ -10,7 +10,9 @@ namespace OpenGUI{
 	class OPENGUI_API Resource
 	{
 	public:
+		//! constructor
 		Resource() :mData(0),mSize(0) {}
+		//! virtual destructor
 		virtual ~Resource() { release(); }
 		//! Sets this object's stored data to the given memory.
 		/*! \param newData pointer to the data to store
@@ -43,6 +45,7 @@ namespace OpenGUI{
 			}
 		//! Returns the size of the held data in bytes.
 		size_t getSize() { return mSize; }
+		//! frees the data held
 		void release()
 			{
 				if(mData){
@@ -61,6 +64,7 @@ namespace OpenGUI{
 	class OPENGUI_API Resource_CStr : public Resource
 	{
 	public:
+		//! just as Resource::setData(), but allocates 1 additional byte for holding the '\\0' cstring terminator
 		virtual void setData(unsigned char* newData, size_t newSize)
 			{
 				release();
@@ -74,11 +78,13 @@ namespace OpenGUI{
 				}
 			}
 
+		//! get the contents of the buffer as a cstring
 		char* getString()
 			{
 				if(!mData) return 0;
 				return (char*)mData;
 			}
+		//! again, allocates the requested buffer size, destroys existing data. Allocates 1 additional byte for cstring terminator
 		virtual void setSize(size_t size)
 			{
 				release();

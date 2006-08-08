@@ -16,7 +16,9 @@ namespace OpenGUI{
 		class OPENGUI_API Widget : public OpenGUI::Element, public OpenGUI::PropertySet
 		{
 		public:
+			//! constructor
 			Widget();
+			//! virtual destructor
 			virtual ~Widget() {}
 		protected:
 			//! This function will be called by the system whenever it needs the widget to redraw itself. Returned list should be depth ordered using a painters algorithm (back to front)

@@ -10,6 +10,7 @@ namespace OpenGUI{
 	//forward declaration
 	namespace Widgets{class Widget;};
 
+	//! \internal this is an internal component of the WidgetTemplateManager, and should not be used directly by applications
 	class WidgetTemplate{
 	public:
 		WidgetTemplate(std::string baseGroup, std::string baseWidget)
@@ -28,7 +29,10 @@ namespace OpenGUI{
 	};
 
 	//! Provides a template based widget creation system.
-	/*! 
+	/*! Using this system, applications can create widgets from predefined templates,
+		where any or all properties for the widget are already defined.
+
+		\note You currently cannot create Templates based on other Templates.
 	*/
 	class OPENGUI_API WidgetTemplateManager : public Singleton<WidgetTemplateManager> {
 		friend class XMLParser;
@@ -44,10 +48,15 @@ namespace OpenGUI{
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static WidgetTemplateManager* getSingletonPtr(void);
 
+		//! Create a new template (\c templateName) based on the widget defined by \c baseGroup and \c baseWidgetName
 		void createTemplate(std::string templateName, std::string baseGroupName, std::string baseWidgetName);
+		//! Destroy the template named \c templateName
 		void destroyTemplate(std::string templateName);
+		//! Add a new property preset value to be applied to widgets coming from this template.
 		void addTemplateProperty(std::string templateName, std::string propertyName, std::string propertyValue);
+		//! Remove an existing property preset from an existing template.
 		void removeTemplateProperty(std::string templateName, std::string propertyName);
+		//! Create a widget based on the given template
 		Widgets::Widget* createWidget(std::string templateName);
 
 		//! Loads Templates from an XML document.

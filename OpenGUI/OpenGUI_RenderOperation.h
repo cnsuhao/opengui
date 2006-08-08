@@ -23,6 +23,7 @@ namespace OpenGUI{
 		//! Used to define the color of a vertex. The default color is White, with alpha=1.0f
 		class OPENGUI_API VertexColor{
 		public:
+			//! Constructor with optional in place initialization
 			VertexColor(float R=1.0f, float G=1.0f, float B=1.0f, float A=1.0f) : Red(R), Blue(B), Green(G), Alpha(A) {}
 
 			float Red;//!<Red Channel
@@ -68,11 +69,13 @@ namespace OpenGUI{
 		*/
 		class OPENGUI_API RenderOperation{
 		public:
+			//! constructor
 			RenderOperation() : texture(0), mask(0) {}
 			Vertex vertices[3]; //!< Simple array of 3 Vertex objects to define a single polygon
 			Texture* texture; //!< Pointer to the color texture, or 0 for none
 			Texture* mask; //!< Pointer to the mask texture, or 0 for none
 		};
+		//! This is a popular list type for holding render operations. You'll see it a lot.
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
 		/*! \todo inline this in a way that GCC doesn't complain about */
@@ -107,7 +110,9 @@ namespace OpenGUI{
 		*/
 		class OPENGUI_API Primitive{
 		public:
+			//! constructor (does nothing)
 			Primitive() {}
+			//! virtual destructor (does nothing)
 			virtual ~Primitive() {}
 			//! Return a RenderOperationList that correctly expresses this Primitive
 			virtual RenderOperationList getRenderOperationList()=0;

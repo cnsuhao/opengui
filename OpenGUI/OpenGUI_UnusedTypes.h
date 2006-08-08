@@ -1,6 +1,6 @@
 
 
-	//!The UDim is the base unit of measure for everything, it allows simultaneous representation of both relative and absolute measure.
+	//! \internal UNUSED The UDim is the base unit of measure for everything, it allows simultaneous representation of both relative and absolute measure.
 	/*!
 		As the base of all measurements, the default value for a UDim is 0,0. This means
 		all objects built from UDims will always start with an initialized value of some sort.
@@ -22,7 +22,7 @@
 		bool operator==(const UDim& right) const { return scale == right.scale && offset == right.offset; }
 		bool operator!=(const UDim& right) const { return !operator==(right); }
 
-		//! Evaluates this UDim against a given scalelimit and returns the resulting float and int values in a UDim
+		//! \internal UNUSED  Evaluates this UDim against a given scalelimit and returns the resulting float and int values in a UDim
 		/*!
 			Both halfs of the input represent the same concept, only using different metrics. Both
 			the scale and the offset of the input are interpretted as the maximum scale along the axis.
@@ -60,7 +60,7 @@
 	};
 
 
-	//! The UVector2 is a 2 dimensional vector that is built from two UDim objects
+	//! \internal UNUSED The UVector2 is a 2 dimensional vector that is built from two UDim objects
 	class OPENGUI_API UVector2
 	{
 	public:
@@ -96,7 +96,7 @@
 		UDim y;
 	};
 
-	//!The URect is a rect built from UVector2 objects.
+	//! \internal UNUSED The URect is a rect built from UVector2 objects.
 	class OPENGUI_API URect
 	{
 	public:

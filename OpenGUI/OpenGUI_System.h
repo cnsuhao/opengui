@@ -114,6 +114,7 @@ namespace OpenGUI{
 				1.0 x 1.0 == lower right
 		*/
 		Element* getElementAt(FVector2 screenLoc, GUISheet* sheet=0, bool activeOnly=true);
+		//! as previous, only with floats instead of FVector2
 		Element* getElementAt(const float& xPos, const float& yPos, GUISheet* sheet=0, bool activeOnly=true)
 		{
 			return System::getElementAt(FVector2(xPos,yPos),sheet,activeOnly);
@@ -282,7 +283,9 @@ namespace OpenGUI{
 		*/
 		FVector2 getAspectCorrection();
 
+		//! Returns a pointer to the registered ResourceProvider. Apps really shouldn't need, or use, this.
 		ResourceProvider* _getResourceProvider() { return mResourceProvider; }
+		//! Returns a pointer to the registered Renderer. Apps really shouldn't need, or use, this.
 		Renderer* _getRenderer() { return mRenderer; }
 
 		//! Notify the System that the dimensions of the viewport it is drawing to have changed.

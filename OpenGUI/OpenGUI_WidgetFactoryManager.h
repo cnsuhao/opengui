@@ -9,6 +9,10 @@ namespace OpenGUI{
 	//Forward declaration
 	namespace Widgets{class Widget;};
 
+	//! Callback function pattern used for factories
+	/*! Uses a C pointer because it is a lot faster to write one function and register
+	it's address than it is to write an entire factory class just to create objects.
+	Some design patterns are just plain wasteful. */
 	typedef Widgets::Widget* (*WidgetFactoryCallback)();
 
 	//! Provides an object registration and creation factory service for Widgets.

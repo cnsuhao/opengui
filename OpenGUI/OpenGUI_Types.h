@@ -13,14 +13,22 @@ namespace OpenGUI{
 	class OPENGUI_API IVector2
 	{
 	public:
+		//! constructor
 		IVector2() : x(0), y(0) {}
+		//! constructor
 		IVector2( int x, int y) : x(x), y(y) {}
+		//! operator +
 		IVector2 operator+(const IVector2& right) const  { return IVector2(x + right.x, y + right.y); }
+		//! operator -
 		IVector2 operator-(const IVector2& right) const  { return IVector2(x - right.x, y - right.y); }
+		//! operator *
 		IVector2 operator*(const IVector2& right) const  { return IVector2(x * right.x, y * right.y); }
+		//! operator /
 		IVector2 operator/(const IVector2& right) const  { return IVector2(x / right.x, y / right.y); }
 
+		//! comparison operator
 		bool operator==(const IVector2& right) const  { return x==right.x && y == right.y; }
+		//! comparison operator
 		bool operator!=(const IVector2& right) const  { return !operator==(right); }
 		//! Return a string representation of this value
 		std::string toStr() const
@@ -29,16 +37,19 @@ namespace OpenGUI{
 				ss << "( " << x << " x " << y <<" )" ;
 				return ss.str();
 			}
-		int x;
-		int y;
+		int x; //!< direct access to x
+		int y; //!< direct access to y
 	};
 
 	//! IRects are rects built from int values. Internally they are comprised of two IVector2's.
 	class OPENGUI_API IRect
 	{
 	public:
+		//! constructor
 		IRect() {}
+		//! constructor
 		IRect(const IVector2& min, const IVector2 max):min(min),max(max) {}
+		//! constructor
 		IRect(const int& left, const int& top, const int& right, const int& bottom)
 			{
 				min.y = top;
@@ -48,14 +59,23 @@ namespace OpenGUI{
 			}
 		~IRect() {}
 
+		//!returns top,left
 		const IVector2& getPosition() const { return min; }
+		//! return size as IVector2
 		IVector2 getSize() const { return max - min; }
+		//! return width
 		int getWidth() const { return max.x - min.x; }
+		//! return height
 		int getHeight() const { return max.y - min.y; }
+		//! return total area
 		int getArea() const { return getWidth() * getHeight(); }
+		//! sets new width
 		void setWidth(const int& newWidth) { max.x = min.x + newWidth; }
+		//! sets new height
 		void setHeight(const int& newHeight) { max.y = min.y + newHeight; }
+		//! sets new size
 		void setSize(const IVector2& newSize) { max = min + newSize; }
+		//! sets new position
 		void setPosition(const IVector2& newPosition)
 			{
 				IVector2 tmpSize = max - min;
@@ -63,11 +83,13 @@ namespace OpenGUI{
 				max = min + tmpSize;
 			}
 
+		//! offset position by given IVector2
 		void offset(const IVector2& offsetVector)
 			{
 				min = min + offsetVector;
 				max = max + offsetVector;
 			}
+		//! return true if given point is inside this IRect
 		bool inside(IVector2 point)
 			{
 				if(	point.x >= min.x && point.x < max.x &&
@@ -82,8 +104,8 @@ namespace OpenGUI{
 				ss << "{ " << min.toStr() << " X " << max.toStr() <<" }" ;
 				return ss.str();
 			}
-		IVector2 min;
-		IVector2 max;
+		IVector2 min; //!< direct access to upper left point
+		IVector2 max; //!< direct access to lower right point
 	};
 
 
@@ -96,16 +118,25 @@ namespace OpenGUI{
 	class OPENGUI_API FVector2
 	{
 	public:
+		//! constructor
 		FVector2() : x(0), y(0) {}
+		//! constructor
 		FVector2( float x, float y) : x(x), y(y) {}
+		//! operator +
 		FVector2 operator+(const FVector2& right) const  { return FVector2(x + right.x, y + right.y); }
+		//! operator -
 		FVector2 operator-(const FVector2& right) const  { return FVector2(x - right.x, y - right.y); }
+		//! operator *
 		FVector2 operator*(const FVector2& right) const  { return FVector2(x * right.x, y * right.y); }
+		//! operator /
 		FVector2 operator/(const FVector2& right) const  { return FVector2(x / right.x, y / right.y); }
 
+		//! comparison operator
 		bool operator==(const FVector2& right) const  { return x==right.x && y == right.y; }
+		//! comparison operator
 		bool operator!=(const FVector2& right) const  { return !operator==(right); }
 
+		//! returns inverse FVector2 -x,-y
 		FVector2 operator-() const  { return FVector2(-x,-y); }
 		
 		//! Returns a pixel aligned copy of this FVector2
@@ -129,16 +160,19 @@ namespace OpenGUI{
 				ss << "( " << x << " x " << y <<" )" ;
 				return ss.str();
 			}
-		float x;
-		float y;
+		float x; //!< direct access to x
+		float y; //!< direct access to y
 	};
 
 	//! FRects are rects built from float values. Internally they are comprised of two FVector2's.
 	class OPENGUI_API FRect
 	{
 	public:
+		//! constructor
 		FRect() {}
+		//! constructor
 		FRect(const FVector2& min, const FVector2 max):min(min),max(max) {}
+		//! constructor
 		FRect(const float& left, const float& top, const float& right, const float& bottom)
 			{
 				min.y = top;
@@ -148,21 +182,29 @@ namespace OpenGUI{
 			}
 		~FRect() {}
 
+		//! return position
 		const FVector2& getPosition() const { return min; }
+		//! return size
 		FVector2 getSize() const { return max - min; }
+		//! return width
 		float getWidth() const { return max.x - min.x; }
+		//! return height
 		float getHeight() const { return max.y - min.y; }
 
+		//! set new width
 		void setWidth(const float& newWidth) { max.x = min.x + newWidth; }
+		//! set new height
 		void setHeight(const float& newHeight) { max.y = min.y + newHeight; }
+		//! set new size
 		void setSize(const FVector2& newSize) { max = min + newSize; }
+		//! set new position
 		void setPosition(const FVector2& newPosition)
 			{
 				FVector2 tmpSize = max - min;
 				min = newPosition;
 				max = min + tmpSize;
 			}
-
+		//! offset position by \c offsetVector
 		void offset(const FVector2& offsetVector)
 			{
 				min = min + offsetVector;
@@ -176,6 +218,7 @@ namespace OpenGUI{
 				if(min.y > max.y){tmp=min.y; min.y=max.y; max.y=tmp;}
 				return (*this);
 			}
+		//! return true if given point is within bounds of this rect
 		bool isInside(const FVector2& point)
 			{
 				if(	point.x >= min.x && point.x < max.x &&
@@ -184,6 +227,7 @@ namespace OpenGUI{
 				return false;
 			}
 		//! Return the given outer coord as an inner coord
+		/*! inner coord is defined as upper left = 0,0, lower right = 1.0f,1.0f */
 		FVector2 getInnerCoord(const FVector2& outerFVector2)
 			{
 				return FVector2(
@@ -192,6 +236,7 @@ namespace OpenGUI{
 				);
 			}
 		//! Return the given inner coord as an outer coord
+		/*! inner coord is defined as upper left = 0,0, lower right = 1.0f,1.0f */
 		FVector2 getOuterCoord(const FVector2& innerFVector2)
 			{
 				return FVector2(
@@ -212,8 +257,8 @@ namespace OpenGUI{
 				ss << "{ " << min.toStr() << " X " << max.toStr() <<" }" ;
 				return ss.str();
 			}
-		FVector2 min;
-		FVector2 max;
+		FVector2 min; //!< direct access to upper left point
+		FVector2 max; //!< direct access to lower right point
 	};
 
 	/*! \brief
@@ -247,7 +292,7 @@ namespace OpenGUI{
 		//a few little methods to handle various casts and assignments
 		operator Alignment&(){return value;}
 		TextAlignment(const Alignment& rhs){value=rhs;}
-
+		//! Default constructor initializes as ALIGN_LEFT/ALIGN_TOP depending on usage context. (They have same value)
 		TextAlignment():value(ALIGN_LEFT){} //default constructor
 	};
 
