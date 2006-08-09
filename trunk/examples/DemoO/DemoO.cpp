@@ -7,7 +7,8 @@
 #include "OpenGUI_BaseWidgets.h"
 
 
-
+// Kids, don't ever make an entire program in a single file like this.
+//   It's bad karma.
 
 
 
@@ -24,7 +25,14 @@ public:
 		Ending, //spinning down
 		Done //stopped
 	};
-	GUIState(){}
+	GUIState(){
+		OpenGUI::LogManager::SlogMsg("GUIState", 0)
+			<< "+++ New State Created" << OpenGUI::Log::endlog;
+	}
+	virtual ~GUIState(){
+		OpenGUI::LogManager::SlogMsg("GUIState", 0)
+			<< "--- New State Created" << OpenGUI::Log::endlog;
+	}
 protected:
 	//return false from any of these to quit the application
 	virtual bool run_Running(){ return true; }
@@ -67,6 +75,9 @@ private:
 	}
 	void setMode(Mode newMode){
 		mCurMode = newMode;
+		unsigned int stateInt = newMode;
+		OpenGUI::LogManager::SlogMsg("GUIState", 0)
+			<< "<<<< Entered New State: " << stateInt << OpenGUI::Log::endlog;
 		mJustSwitched = true;
 	}
 	
@@ -237,6 +248,9 @@ public:
 		Ogre::Root::getSingleton().addFrameListener(this);
 		mInputDevice = Ogre::PlatformManager::getSingleton().createInputReader();
 		mInputDevice->initialise(window,true, true);
+		//whatever the default scale is, it need to be double that!
+		mInputDevice->setMouseScale( mInputDevice->getMouseScale() * 2.0f );
+		mButtonWasDown = false;
 	}
 	virtual ~OpenGUIInputReader()
 	{
@@ -272,7 +286,16 @@ public:
 		mSystem->injectMouseMovement(mx * mInputDevice->getMouseScale(),
 			my * mInputDevice->getMouseScale());
 
-
+		bool curBtnState;
+		curBtnState = mInputDevice->getMouseButton( 0 );
+		if( curBtnState != mButtonWasDown ){
+			mButtonWasDown = curBtnState;
+			if(curBtnState)
+				mSystem->injectMouseButtonDown( OpenGUI::MouseButtonLeft );
+			else
+				mSystem->injectMouseButtonUp( OpenGUI::MouseButtonLeft );
+		}
+		
 		return true;
 	}
 	
@@ -280,6 +303,7 @@ public:
 protected:
 	OpenGUI::System* mSystem;
 	Ogre::InputReader* mInputDevice;
+	bool mButtonWasDown;
 };
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////

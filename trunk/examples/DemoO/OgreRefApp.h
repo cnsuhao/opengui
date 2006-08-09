@@ -28,9 +28,11 @@ Description: Base class for all the OGRE ReferenceApplication examples
 #ifndef __OgreRefApp_H__
 #define __OgreRefApp_H__
 
+#include <Ogre.h>
+#include "OgreNoMemoryMacros.h"
 #include <OpenGUI.h>
 #include <OgreFusion.h>
-#include <Ogre.h>
+#include "OgreMemoryMacros.h"
 
 
 

@@ -56,6 +56,7 @@ copy ..\dependancies\OgreSDK_vc71\README.txt dependancies\OgreSDK_vc71\
 rmdir /Q /S dependancies\OgreSDK_vc8
 mkdir dependancies\OgreSDK_vc8
 copy ..\dependancies\OgreSDK_vc8\README.txt dependancies\OgreSDK_vc8\
+rmdir /Q /S dependancies\MSVC Redist
 
 rmdir /Q /S dependancies\corona-linux > NUL 2>&1
 del *.bat *.nsi > NUL 2>&1
@@ -64,6 +65,8 @@ rmdir /Q /S OgreFusion\doc > NUL 2>&1
 rmdir /Q /S Debug > NUL 2>&1
 rmdir /Q /S Release > NUL 2>&1
 del "%PI_exbin%\*.pdb" "%PI_exbin%\*.dll" "%PI_exbin%\*.log" > NUL 2>&1
+del sdkInstaller.aip > NUL 2>&1
+del sourceBuildLog.txt > NUL 2>&1
 cd..
 
 

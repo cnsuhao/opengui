@@ -21,12 +21,53 @@
 	- \subpage BW_StaticImage "StaticImage"
 	- \subpage BW_SimpleButton "SimpleButton"
 	- \subpage BW_TextLabel "TextLabel"
-	- \subpage BW_ScalingImage "ScalingImage"
+	- \subpage BW_FrameImage "FrameImage"
+	- \subpage BW_FrameButton "FrameButton"
 	- CheckBox
 	- RadioButton
 	- ProgressBar
 
 */
+
+
+
+/*!
+	\page BW_Container Container
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "Container"
+	
+	\section Description
+	The container widget is just a simple widget that has extremely few features. Most of all, it is just an implementation of a blank widget so that you can use it to group several other widgets together.
+	
+	\see Class Documentation: OpenGUI::Widgets::Container
+	
+	\section Properties
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+
+
+	\section Usage	
+	Example XML:
+\code
+<Widget name="myContainer" group="OpenGUI" type="Container">
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
+
+\endcode
+
+	Example Code:
+\code
+Widgets::Container* container = 
+	static_cast<Widgets::Container*>( System::getSingleton().createWidget("Container","OpenGUI") );
+container->setPos( 0.59875f, 0.465f );
+container->setSize( 0.40125f, 0.535f );
+\endcode
+*/
+
+
 
 /*!
 	\page BW_StaticImage StaticImage
@@ -65,17 +106,32 @@ staticImage->setPos( 0.59875f, 0.465f );
 staticImage->setSize( 0.40125f, 0.535f );
 \endcode
 */
-
+/*!
+	\page BW_FrameButton FrameButton
+	
+	- widgetGroup: "OpenGUI"
+	- widgetType:  "FrameButton"
+	
+	\section Description
+	This is a button that draws its background imagery using functionality like that of
+	\ref BW_FrameImage FrameImage, but also provides a text overlay so that you can easily change what the button says.
+	
+	Imagery is provided for all 4 states: Normal, MouseOver, Pressed, and Disabled.
+	
+	\see Class Documentation: OpenGUI::Widgets::FrameButton
+	
+	\todo FINISH THIS
+*/
 
 
 /*!
-	\page BW_ScalingImage ScalingImage
+	\page BW_FrameImage FrameImage
 	
 	- widgetGroup: "OpenGUI"
-	- widgetType:  "ScalingImage"
+	- widgetType:  "FrameImage"
 	
 	\section Description
-	Draws a static image to the screen much like StaticImage, but in such a way that pixel stretching is contained to predefined "acceptable" areas. The drawn image is comprised of 9 zones, each of which is actually defined as independent Imagery. All non-stretched dimensions  automatically preserve the original pixel density of the source image when displayed. So if your border is 24 pixels thick in your source image, it will always be displayed at 24 pixels thick, regardless of the current screen resolution.
+	Draws a static image to the screen much like StaticImage, but in such a way that pixel stretching is contained to predefined "acceptable" areas. The drawn image is comprised of 9 zones, each of which is actually defined as independent Imagery. All non-stretched dimensions automatically preserve the original pixel density of the source image when displayed. So if your border is 24 pixels thick in your source image, it will always be displayed at 24 pixels thick, regardless of the current screen resolution.
 	
 	List of zones and stretch method performed:
 	- Upper Left (no stretching)
@@ -88,12 +144,12 @@ staticImage->setSize( 0.40125f, 0.535f );
 	- Lower Middle (stretches in X only)
 	- Lower Right (no stretching)
 	
-	\image html ScalingImage_streching.jpg
+	\image html FrameImage_stretching.jpg
 	
 	\note This widget determines the "border thickness" for each side independently of the others, and will always use the "thickest" value found as the thickness for that entire side.
 	
 	
-	\see Class Documentation: OpenGUI::Widgets::ScalingImage
+	\see Class Documentation: OpenGUI::Widgets::FrameImage
 	
 	\section Properties
 	- Position : FVector2
@@ -112,7 +168,7 @@ staticImage->setSize( 0.40125f, 0.535f );
 	\section Usage	
 	Example XML:
 \code
-<Widget name="myScalingImage" group="OpenGUI" type="ScalingImage">
+<Widget name="myFrameImage" group="OpenGUI" type="FrameImage">
 	<Property name="Imagery_UL" value="myImageryUL" />
 	<Property name="Imagery_UM" value="myImageryUM" />
 	<Property name="Imagery_UR" value="myImageryUR" />
@@ -130,20 +186,20 @@ staticImage->setSize( 0.40125f, 0.535f );
 
 	Example Code:
 \code
-Widgets::ScalingImage* scalingImage = 
-	static_cast<Widgets::ScalingImage*>( System::getSingleton().createWidget("ScalingImage","OpenGUI") );
-scalingImage->setImagery_UL("myImageryUL");
-scalingImage->setImagery_UM("myImageryUM");
-scalingImage->setImagery_UR("myImageryUR");
-scalingImage->setImagery_ML("myImageryML");
-scalingImage->setImagery_MM("myImageryMM");
-scalingImage->setImagery_MR("myImageryMR");
-scalingImage->setImagery_LL("myImageryLL");
-scalingImage->setImagery_LM("myImageryLM");
-scalingImage->setImagery_LR("myImageryLR");
+Widgets::FrameImage* frameImage = 
+	static_cast<Widgets::FrameImage*>( System::getSingleton().createWidget("FrameImage","OpenGUI") );
+frameImage->setImagery_UL("myImageryUL");
+frameImage->setImagery_UM("myImageryUM");
+frameImage->setImagery_UR("myImageryUR");
+frameImage->setImagery_ML("myImageryML");
+frameImage->setImagery_MM("myImageryMM");
+frameImage->setImagery_MR("myImageryMR");
+frameImage->setImagery_LL("myImageryLL");
+frameImage->setImagery_LM("myImageryLM");
+frameImage->setImagery_LR("myImageryLR");
 
-scalingImage->setPos( 0.59875f, 0.465f );
-scalingImage->setSize( 0.40125f, 0.535f );
+frameImage->setPos( 0.59875f, 0.465f );
+frameImage->setSize( 0.40125f, 0.535f );
 \endcode
 */
 

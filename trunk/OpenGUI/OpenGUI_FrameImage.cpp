@@ -1,38 +1,36 @@
 
 #include "OpenGUI.h"
-#include "OpenGUI_ScalingImage.h"
+#include "OpenGUI_FrameImage.h"
 
 
 namespace OpenGUI{
 	namespace Widgets{
 
 		//#####################################################################
-		Widget* ScalingImage::createScalingImageFactory()
+		Widget* FrameImage::createFrameImageFactory()
 		{
-			return new ScalingImage;
+			return new FrameImage;
 		}
 		//#####################################################################
-		ScalingImage::ScalingImage()
+		FrameImage::FrameImage()
 		{
-			PropertySet_BindProperty("Imagery_UL", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_UM", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_UR", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-
-			PropertySet_BindProperty("Imagery_ML", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_MM", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_MR", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-
-			PropertySet_BindProperty("Imagery_LL", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_LM", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
-			PropertySet_BindProperty("Imagery_LR", OpenGUI::PT_STRING, &ScalingImage::_prop_SetImagery, &ScalingImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_UL", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_UM", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_UR", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_ML", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_MM", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_MR", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_LL", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_LM", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
+			PropertySet_BindProperty("Imagery_LR", OpenGUI::PT_STRING, &FrameImage::_prop_SetImagery, &FrameImage::_prop_GetImagery);
 		}
 		//#####################################################################
-		ScalingImage::~ScalingImage()
+		FrameImage::~FrameImage()
 		{
 			//
 		}
 		//#####################################################################
-		Render::RenderOperationList ScalingImage::buildWidgetRenderOpList()
+		Render::RenderOperationList FrameImage::buildWidgetRenderOpList()
 		{
 			Render::RenderOperationList outList; //something to draw to
 
@@ -193,7 +191,7 @@ namespace OpenGUI{
 			return outList;
 		}
 		//#####################################################################
-		bool ScalingImage::_prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
+		bool FrameImage::_prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
 		{
 			/*	This is a good example of combining several similar property
 				operations into a single callback.
@@ -211,7 +209,7 @@ namespace OpenGUI{
 				run their own code instead of this, while leaving the rest
 				of the class untouched.
 			*/
-			ScalingImage* w = static_cast<ScalingImage*>(widget);
+			FrameImage* w = static_cast<FrameImage*>(widget);
 			assert(w);
 			if(propertyName == "imagery_ul")
 				w->setImagery_UL(newValueStr);
@@ -236,82 +234,82 @@ namespace OpenGUI{
 			return true;
 		}
 		//#####################################################################
-		bool ScalingImage::_prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue)
+		bool FrameImage::_prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue)
 		{
-			ScalingImage* w = static_cast<ScalingImage*>(widget);
+			FrameImage* w = static_cast<FrameImage*>(widget);
 			assert(w);
 			if(propertyName == "imagery_ul")
 				curValue = w->mImageryPtr_UL ? w->mImageryPtr_UL->getName() : "";
 			else if(propertyName == "imagery_um")
-				curValue = w->mImageryPtr_UM ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_UM ? w->mImageryPtr_UM->getName() : "";
 			else if(propertyName == "imagery_ur")
-				curValue = w->mImageryPtr_UR ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_UR ? w->mImageryPtr_UR->getName() : "";
 			else if(propertyName == "imagery_ml")
-				curValue = w->mImageryPtr_ML ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_ML ? w->mImageryPtr_ML->getName() : "";
 			else if(propertyName == "imagery_mm")
-				curValue = w->mImageryPtr_MM ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_MM ? w->mImageryPtr_MM->getName() : "";
 			else if(propertyName == "imagery_mr")
-				curValue = w->mImageryPtr_MR ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_MR ? w->mImageryPtr_MR->getName() : "";
 			else if(propertyName == "imagery_ll")
-				curValue = w->mImageryPtr_LL ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_LL ? w->mImageryPtr_LL->getName() : "";
 			else if(propertyName == "imagery_lm")
-				curValue = w->mImageryPtr_LM ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_LM ? w->mImageryPtr_LM->getName() : "";
 			else if(propertyName == "imagery_lr")
-				curValue = w->mImageryPtr_LR ? w->mImageryPtr_UL->getName() : "";
+				curValue = w->mImageryPtr_LR ? w->mImageryPtr_LR->getName() : "";
 			else
 				return false;
 			return true;
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_UL(std::string imageryName)
+		void FrameImage::setImagery_UL(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_UL = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_UM(std::string imageryName)
+		void FrameImage::setImagery_UM(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_UM = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_UR(std::string imageryName)
+		void FrameImage::setImagery_UR(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_UR = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_ML(std::string imageryName)
+		void FrameImage::setImagery_ML(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_ML = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_MM(std::string imageryName)
+		void FrameImage::setImagery_MM(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_MM = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_MR(std::string imageryName)
+		void FrameImage::setImagery_MR(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_MR = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_LL(std::string imageryName)
+		void FrameImage::setImagery_LL(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_LL = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_LM(std::string imageryName)
+		void FrameImage::setImagery_LM(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_LM = ImageryManager::getSingleton().getImagery(imageryName);
 		}
 		//#####################################################################
-		void ScalingImage::setImagery_LR(std::string imageryName)
+		void FrameImage::setImagery_LR(std::string imageryName)
 		{
 			dirtyCache();
 			mImageryPtr_LR = ImageryManager::getSingleton().getImagery(imageryName);

@@ -2,19 +2,7 @@
 #define E3B7005D_9A7A_4bd1_B9DF_8C50A140033E
 #include "OpenGUI_BaseWidgets.h"
 
-/*
-Horizontal Alignments
-	left
-	right
-	center
-	justified
 
-Vertical Alignments
-	top
-	bottom
-	center
-	justified?
-*/
 namespace OpenGUI{
 	namespace Widgets{
 

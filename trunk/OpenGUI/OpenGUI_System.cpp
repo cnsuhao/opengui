@@ -23,10 +23,12 @@ namespace OpenGUI{
 	//! \internal Just a little function to register all compiled in Widgets with the WidgetFactoryManager
 	void RegisterAllBaseWidgets()
 	{
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "Container", WidgetFactoryCallback(&Widgets::Container::createContainerFactory) );
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "StaticImage", WidgetFactoryCallback(&Widgets::StaticImage::createStaticImageFactory) );
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "SimpleButton", WidgetFactoryCallback(&Widgets::SimpleButton::createSimpleButtonFactory) );
 		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "TextLabel", WidgetFactoryCallback(&Widgets::TextLabel::createTextLabelFactory) );
-		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "ScalingImage", WidgetFactoryCallback(&Widgets::ScalingImage::createScalingImageFactory) );
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "FrameImage", WidgetFactoryCallback(&Widgets::FrameImage::createFrameImageFactory) );
+		WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUI", "FrameButton", WidgetFactoryCallback(&Widgets::FrameButton::createFrameButtonFactory) );
 	}
 	//############################################################################
 	System::System(Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile)
