@@ -12,13 +12,13 @@ namespace OpenGUI{
 
 			\see \ref BW_ScalingImage "ScalingImage widget documentation"
 		*/
-		class OPENGUI_API ScalingImage : public Widget
+		class OPENGUI_API FrameImage : public Widget
 		{
 		public:
 			//! Constructor
-			ScalingImage();
+			FrameImage();
 			//! virtual Destructor
-			virtual ~ScalingImage();
+			virtual ~FrameImage();
 
 			//! Sets imagery for the Upper Left zone
 			void setImagery_UL(std::string imageryName);
@@ -42,7 +42,7 @@ namespace OpenGUI{
 			void setImagery_LR(std::string imageryName);
 
 			//! This is just a factory interface.
-			static Widget* createScalingImageFactory();
+			static Widget* createFrameImageFactory();
 
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();

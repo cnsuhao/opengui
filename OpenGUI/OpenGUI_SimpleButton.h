@@ -31,7 +31,7 @@ namespace OpenGUI{
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
-			bool defaultMessageHandler(const Msg::Message &message);
+			virtual bool defaultMessageHandler(const Msg::Message &message);
 
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;

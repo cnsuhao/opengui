@@ -10,7 +10,35 @@
 // Do what you want with it. I think everyone should have a decent RefPtr class.
 //             - Eric Shorkey (August 7th, 2006)
 
+// Note: If you are going to use this, remove the funny #define logic by  following the
+//       embedded removal instructions for #define areas that should be removed.
+//       And don't forget to change the #ifndef/#def at the top to something new!
+
 #include "OpenGUI_PreRequisites.h"
+
+
+/*
+	Note to OpenGUI editors:
+	The following #define system and __suicide()/__killPayload() are used to ensure
+	that RefPtr's and their payloads are only destroyed from within OpenGUI.dll.
+	This is necessary because we officially support Ogre, and Ogre currently ships with
+	a memory manager in the SDK that can not be properly turned off. As such, any
+	OpenGUI created data must be deleted from within OpenGUI, or Ogre's memory manager
+	will complain.
+*/
+
+
+// Code Stealers - SNIP HERE
+#ifdef OPENGUI_DEBUG
+#	ifdef OPENGUI_EXPORTS
+#		define DELETE_HERE
+#	else
+#		define DELETE_ELSEWHERE
+#	endif
+#else
+#	define DELETE_HERE
+#endif
+// Code Stealers - END SNIP HERE
 
 namespace OpenGUI{
 	template<typename T>
@@ -20,6 +48,25 @@ namespace OpenGUI{
 	class __RefObj {
 		friend class RefPtr<T>;
 	private:
+// Code Stealers - SNIP HERE
+#ifdef DELETE_HERE
+// Code Stealers - END SNIP HERE
+		void OPENGUI_API __suicide(){
+			delete this;
+		}
+		void OPENGUI_API __killPayload(){
+			if(m_objPtr)
+				delete m_objPtr;
+			m_objPtr = 0;
+		}
+// Code Stealers - SNIP HERE
+#endif
+#ifdef DELETE_ELSEWHERE
+		void OPENGUI_API __suicide();
+		void OPENGUI_API __killPayload();
+#endif
+// Code Stealers - END SNIP HERE
+
 		__RefObj(T *payload){
 			m_objPtr = payload;
 			refcount=1;
@@ -41,7 +88,7 @@ namespace OpenGUI{
 			out<<"[-] DEL RefObj: 0x" << this <<" : (0x"<< m_objPtr <<") {"<<refcount<<"}\n";
 			out.close();
 #endif
-			delete m_objPtr;
+			__killPayload();
 		}
 		void ref(){
 			refcount++;
@@ -65,13 +112,18 @@ namespace OpenGUI{
 			out.close();
 #endif
 			if(refcount==0)
-				delete this;
+				__suicide();
 		}
 		T* m_objPtr;
 		unsigned int refcount;
 	};
 
 	//! This is the base template used for any reference counted pointers in %OpenGUI
+	/*! \warning Do \b not use as a RefPtr in your own applications. At least not in its
+		native form. If you need a RefPtr for your application's use, feel free to steal
+		RefPtr.h from this source tree. Instructions, details, and full source are held
+		within that file.
+	*/
 	template<typename T>
 	class RefPtr {
 	public:
@@ -152,6 +204,7 @@ namespace OpenGUI{
 
 		//! RefPtr.isNull() returns true if RefPtr carries no pointer
 		bool isNull()const{ return m_refObjPtr==0; }
+		//! Returns the carried pointer in raw form.
 		T* get() const { 
 			return (m_refObjPtr->m_objPtr);
 		}
