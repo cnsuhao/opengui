@@ -40,6 +40,8 @@ namespace OpenGUI{
 			static bool _prop_SetEnabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
 			static bool _prop_GetEnabled(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 
+			static bool _prop_SetAlpha(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
+			static bool _prop_GetAlpha(PropertySet* widget, const std::string& propertyName, std::string& curValue);
 		};
 	};//namespace Widgets{
 };//namespace OpenGUI{

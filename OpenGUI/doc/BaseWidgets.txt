@@ -45,6 +45,7 @@
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 
 
 	\section Usage	
@@ -84,6 +85,7 @@ container->setSize( 0.40125f, 0.535f );
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 	- Imagery : String
 
 	\section Usage	
@@ -123,6 +125,7 @@ staticImage->setSize( 0.40125f, 0.535f );
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 	- <b>Normal State Imagery</b>
 		- ImageryNormal_UL : String
 		- ImageryNormal_UM : String
@@ -242,6 +245,7 @@ staticImage->setSize( 0.40125f, 0.535f );
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 	- Imagery_UL : String
 	- Imagery_UM : String
 	- Imagery_UR : String
@@ -310,6 +314,7 @@ frameImage->setSize( 0.40125f, 0.535f );
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 	- Imagery : String
 	- ImageryPressed : String
 	- ImageryMouseOver : String
@@ -359,6 +364,7 @@ simpleButton->setSize( 0.40125f, 0.535f );
 	- Position : FVector2
 	- Size : FVector2
 	- Enabled : Boolean
+	- Alpha : Float
 	- Text : String
 	- Font : String
 	- FontSize : Integer
