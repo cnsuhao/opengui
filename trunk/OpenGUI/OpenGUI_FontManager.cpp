@@ -230,9 +230,95 @@ namespace OpenGUI{
 
 		if( ! fntPtr->getGlyph(glyph_charCode, pointSize, outPixelRect, outFontGlyph) ){
 			OG_THROW(Exception::ERR_INTERNAL_ERROR,
-				"An internal error prevented proper ",
+				std::string("An internal error prevented proper glyph retrieval for: ") + glyph_charCode,
 				"FontManager::getGlyph");
 		}
+	}
+	//############################################################################
+	unsigned int FontManager::getStringBearingY(const std::string& str, const std::string& fontName, unsigned int pointSize)
+	{
+		Font* fntPtr = 0;
+		if(fontName != "")
+			fntPtr = GetFont(fontName);
+		if(!fntPtr)
+			fntPtr = GetFont(mDefaultFontName);
+
+		if(!fntPtr){
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND,
+				"Could not find requested font '" + fontName 
+				+ "' and no default font was available as substitute",
+				"FontManager::getLineSpacing");
+			return 0;
+		}
+
+		if(pointSize == 0){
+			pointSize = mDefaultFontSize;
+			if(pointSize == 0){
+				OG_THROW(Exception::ERR_ITEM_NOT_FOUND,
+					"Invalid pointSize given (0), and no default font size was set",
+					"FontManager::getLineSpacing");
+			}
+		}
+		int maxheight = 0;
+		const char* cstr = str.c_str();
+		size_t len = strlen(cstr);
+		size_t i = 0;
+		IRect glyphRect;
+		FontGlyph glyph;
+		for(size_t i = 0; i < len; i++){
+			if( ! fntPtr->getGlyph( cstr[i] , pointSize, glyphRect, glyph) ){
+				OG_THROW(Exception::ERR_INTERNAL_ERROR,
+					std::string("An internal error prevented proper glyph retrieval for: ") + cstr[i],
+					"FontManager::getGlyph");
+			}else{
+				if( maxheight < glyph.metrics.horiBearingY )
+					maxheight = glyph.metrics.horiBearingY;
+			}
+		}
+		return maxheight;
+	}
+	//############################################################################
+	unsigned int FontManager::getStringHeight(const std::string& str, const std::string& fontName, unsigned int pointSize)
+	{
+		Font* fntPtr = 0;
+		if(fontName != "")
+			fntPtr = GetFont(fontName);
+		if(!fntPtr)
+			fntPtr = GetFont(mDefaultFontName);
+
+		if(!fntPtr){
+			OG_THROW(Exception::ERR_ITEM_NOT_FOUND,
+				"Could not find requested font '" + fontName 
+				+ "' and no default font was available as substitute",
+				"FontManager::getLineSpacing");
+			return 0;
+		}
+
+		if(pointSize == 0){
+			pointSize = mDefaultFontSize;
+			if(pointSize == 0){
+				OG_THROW(Exception::ERR_ITEM_NOT_FOUND,
+					"Invalid pointSize given (0), and no default font size was set",
+					"FontManager::getLineSpacing");
+			}
+		}
+		int maxheight = 0;
+		const char* cstr = str.c_str();
+		size_t len = strlen(cstr);
+		size_t i = 0;
+		IRect glyphRect;
+		FontGlyph glyph;
+		for(size_t i = 0; i < len; i++){
+			if( ! fntPtr->getGlyph( cstr[i] , pointSize, glyphRect, glyph) ){
+				OG_THROW(Exception::ERR_INTERNAL_ERROR,
+					std::string("An internal error prevented proper glyph retrieval for: ") + cstr[i],
+					"FontManager::getGlyph");
+			}else{
+				if( maxheight < glyph.metrics.height )
+					maxheight = glyph.metrics.height;
+			}
+		}
+		return maxheight;
 	}
 	//############################################################################
 	unsigned int FontManager::getLineSpacing(const std::string& fontName, unsigned int pointSize)

@@ -175,9 +175,10 @@ namespace OpenGUI{
 		mRenderSystem->_setTextureAddressingMode(0, mTextureAddressMode);
 		mRenderSystem->_setTextureMatrix(0, Matrix4::IDENTITY);
 		mRenderSystem->_setAlphaRejectSettings(CMPF_ALWAYS_PASS, 0);
-		mRenderSystem->_setTextureBlendMode(0, mColorBlendMode);
-		mRenderSystem->_setTextureBlendMode(0, mAlphaBlendMode);
+		
 		mRenderSystem->_disableTextureUnitsFrom(1);
+		mTexUnitDisabledLastPass[0] = true;
+		mTexUnitDisabledLastPass[1] = true;
 
 		// enable alpha blending
 		mRenderSystem->_setSceneBlending(SBF_SOURCE_ALPHA, SBF_ONE_MINUS_SOURCE_ALPHA);
@@ -210,11 +211,19 @@ namespace OpenGUI{
 		mVertexBuffer->unlock();
 
 		if(renderOp.texture && static_cast<OgreTexture*>(renderOp.texture)->validOgreTexture()){
-			
+
+			if(mTexUnitDisabledLastPass[0]){
+				mRenderSystem->_setTextureBlendMode(0, mColorBlendMode);
+				mRenderSystem->_setTextureBlendMode(0, mAlphaBlendMode);
+				mTexUnitDisabledLastPass[0] = false;
+			}
+
 			mRenderSystem->_setTexture( 0, // texture unit id
 										true, //enable texture
 										static_cast<OgreTexture*>(renderOp.texture)->getOgreTextureName()); //ogre texture name
 		}else{
+			mTexUnitDisabledLastPass[0] = true;
+			mTexUnitDisabledLastPass[1] = true;
 			mRenderSystem->_setTexture( 0, // texture unit id
 										false, //disable texture (temporary)
 										""); //ogre texture name

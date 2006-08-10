@@ -119,23 +119,23 @@ namespace OpenGUI{
 			void setImageryPress_LR(std::string imageryName);
 
 			//Disabled Imagery
-			//! Sets Press state imagery for the Upper Left zone
+			//! Sets Disabled state imagery for the Upper Left zone
 			void setImageryDisabled_UL(std::string imageryName);
-			//! Sets Press state imagery for the Upper Middle zone
+			//! Sets Disabled state imagery for the Upper Middle zone
 			void setImageryDisabled_UM(std::string imageryName);
-			//! Sets Press state imagery for the Upper Right zone
+			//! Sets Disabled state imagery for the Upper Right zone
 			void setImageryDisabled_UR(std::string imageryName);
-			//! Sets Press state imagery for the Middle Left zone
+			//! Sets Disabled state imagery for the Middle Left zone
 			void setImageryDisabled_ML(std::string imageryName);
-			//! Sets Press state imagery for the Middle Middle zone
+			//! Sets Disabled state imagery for the Middle Middle zone
 			void setImageryDisabled_MM(std::string imageryName);
-			//! Sets Press state imagery for the Middle Right zone
+			//! Sets Disabled state imagery for the Middle Right zone
 			void setImageryDisabled_MR(std::string imageryName);
-			//! Sets Press state imagery for the Lower Left zone
+			//! Sets Disabled state imagery for the Lower Left zone
 			void setImageryDisabled_LL(std::string imageryName);
-			//! Sets Press state imagery for the Lower Middle zone
+			//! Sets Disabled state imagery for the Lower Middle zone
 			void setImageryDisabled_LM(std::string imageryName);
-			//! Sets Press state imagery for the Lower Right zone
+			//! Sets Disabled state imagery for the Lower Right zone
 			void setImageryDisabled_LR(std::string imageryName);
 		protected:
 			Render::RenderOperationList buildWidgetRenderOpList();

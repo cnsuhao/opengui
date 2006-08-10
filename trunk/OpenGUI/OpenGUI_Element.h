@@ -213,6 +213,31 @@ namespace OpenGUI{
 		*/
 		void setDisabled(bool disabled){mDisabled=disabled;}
 
+		//! Sets the alpha level at this element
+		/*! The alpha setting allows you control the opacity of an element.
+			0.0f is completely transparent and 1.0f is completely opaque.
+			The alpha setting also applies to all children of an element, by
+			inheritance only. Querying a child for its alpha value via getAlpha()
+			will only return that particular element's alpha setting, which is
+			not necessarily the end display value, as it will be affected by its
+			parents' alpha settings.
+
+			The default alpha level for all elements is 1.0f. (100%)
+
+			\note
+			Alpha settings are clamped to a known valid range when they are set.
+			0.0f is the minimum, and 1.0f is the maximum. Values above or below this
+			are clamped to the nearest valid value. This helps enforce the logic of alpha,
+			so that an element with a completely transparent parent cannot force itself
+			to be shown by the use of an extremely high alpha setting.
+		*/
+		void setAlpha(float newAlpha);
+		//! Retrieves this element's alpha setting.
+		/*! \note This is the alpha setting of \em this element, and does not directly reflect
+			the end alpha value that it used for display.
+		*/
+		float getAlpha();
+
 		//! sets if this Element visually clips its children
 		/*! The default is \c TRUE as that is usually the desired effect.
 			When an element does not perform clipping on its children, they are

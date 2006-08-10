@@ -323,7 +323,8 @@ public:
 			delete m_ogInputReader;
 		if(gState) delete gState;
 		if(mCursor){
-			OpenGUI::CursorManager::getSingleton().removeCursor(mCursor);
+			if(OpenGUI::CursorManager::getSingletonPtr())
+				OpenGUI::CursorManager::getSingleton().removeCursor(mCursor);
 			delete mCursor;
 		}
 	}
