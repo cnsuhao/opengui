@@ -110,6 +110,38 @@ namespace OpenGUI{
 			return retval;
 		}
 		//############################################################################
+		float PrimitiveText::getStringHeight(const std::string& str)
+		{
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			float retval;
+			if(!fntMgr){
+				return 0;
+			}
+
+			FVector2 pixelScale = PrimitiveText::_getPixelScale();
+			unsigned int textheight = fntMgr->getStringHeight(str, mFontName, mFontSize);
+
+			retval = textheight * pixelScale.y;
+
+			return retval;
+		}
+		//############################################################################
+		float PrimitiveText::getStringBearingY(const std::string& str)
+		{
+			FontManager* fntMgr = FontManager::getSingletonPtr();
+			float retval;
+			if(!fntMgr){
+				return 0;
+			}
+
+			FVector2 pixelScale = PrimitiveText::_getPixelScale();
+			unsigned int textheight = fntMgr->getStringBearingY(str, mFontName, mFontSize);
+
+			retval = textheight * pixelScale.y;
+
+			return retval;
+		}
+		//############################################################################
 		float PrimitiveText::getLineHeight()
 		{
 			FontManager* fntMgr = FontManager::getSingletonPtr();
@@ -494,11 +526,16 @@ namespace OpenGUI{
 				textPos.y += text.getLineHeight(); //plus 1
 
 			}else if(mAlignVert == TextAlignment::ALIGN_CENTER){
-				textPos.y = 
-					((getRect().min.y + getRect().max.y)/2) // the mid point
-					- ( ( text.getLineHeight() * strList.size() ) / 2 ); // minus half the total size
-				textPos.y += (text.getLineHeight() / 2); //plus 1/2
-			
+				if(strList.size() > 1){
+					textPos.y = (getRect().getPosition().y + (getRect().getHeight() / 2.0f)); // the mid point
+					textPos.y -= ( ( text.getLineHeight() * (float)(strList.size()-1) ) / 2.0f ); // minus half the total size - first line
+					float textHeight = text.getStringHeight(strList.front());
+					textPos.y += (textHeight / 2.0f ); //plus 1/2 the first line's actual height
+				}else{
+					float textHeight = text.getStringHeight(strList.front());
+					textPos.y = (getRect().getPosition().y + (getRect().getHeight() / 2.0f)); // the mid point
+					textPos.y += (textHeight / 2.0f ); //plus 1/2 actual text height
+				}
 			}else if(mAlignVert == TextAlignment::ALIGN_JUSTIFIED){
 				if(strList.size()>0){
 					int curHeight = text.getLinePixelHeight() * strList.size();
@@ -519,7 +556,7 @@ namespace OpenGUI{
 			}
 
 			//Pre setup for left aligned and justified text 
-			if(mAlignHoriz == TextAlignment::ALIGN_LEFT || TextAlignment::ALIGN_JUSTIFIED){
+			if(mAlignHoriz == TextAlignment::ALIGN_LEFT || mAlignHoriz == TextAlignment::ALIGN_JUSTIFIED){
 				textPos.x = getRect().min.x;
 				text.setPosition(textPos);
 			}
@@ -533,7 +570,8 @@ namespace OpenGUI{
 
 				} else if(mAlignHoriz == TextAlignment::ALIGN_CENTER){
 					text.setText( (*iter) );
-					textPos.x = ((getRect().max.x + getRect().min.x)/2) - (text.getTextWidth() / 2);
+					textPos.x = (getRect().min.x + (getRect().getWidth() / 2.0f )) //mid point of destination
+						- (text.getTextWidth() / 2.0f); //minus half of output width
 					text.setPosition(textPos);
 					AppendRenderOperationList(outRenderOpList, text.getRenderOperationList());
 					

@@ -107,6 +107,10 @@ namespace OpenGUI{
 		Ogre::LayerBlendModeEx mColorBlendMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mAlphaBlendMode; //we cache this to save cpu time
 
+		// This is used to store and test if a particular texture unit was disabled in the last pass.
+		// We need to know this so we can reset that unit's blending settings before we use it
+		bool mTexUnitDisabledLastPass[2];
+
 		IVector2 mScreenDim; //last stored screen dimensions
 		FVector2 mTexelOffset; //holds the pixel level texel offset that needs to be applied to each vertex to maintain pixel alignment
 

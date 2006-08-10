@@ -18,14 +18,13 @@
 	\note Only the widgets that have links to more detailed documentation are
 		finished at this time. All others are in varying states of completion.
 	<HR>
+	- \subpage BW_Container "Container"
 	- \subpage BW_StaticImage "StaticImage"
 	- \subpage BW_SimpleButton "SimpleButton"
 	- \subpage BW_TextLabel "TextLabel"
 	- \subpage BW_FrameImage "FrameImage"
 	- \subpage BW_FrameButton "FrameButton"
-	- CheckBox
-	- RadioButton
-	- ProgressBar
+
 
 */
 
@@ -38,7 +37,7 @@
 	- widgetType:  "Container"
 	
 	\section Description
-	The container widget is just a simple widget that has extremely few features. Most of all, it is just an implementation of a blank widget so that you can use it to group several other widgets together.
+	The container widget is just a simple widget that has very few features. Most of all, it is just an implementation of a blank widget so that you can use it to group several other widgets together.
 	
 	\see Class Documentation: OpenGUI::Widgets::Container
 	
@@ -114,13 +113,101 @@ staticImage->setSize( 0.40125f, 0.535f );
 	
 	\section Description
 	This is a button that draws its background imagery using functionality like that of
-	\ref BW_FrameImage FrameImage, but also provides a text overlay so that you can easily change what the button says.
+	\ref BW_FrameImage "FrameImage", but also provides a text overlay so that you can easily change what the button says.
 	
-	Imagery is provided for all 4 states: Normal, MouseOver, Pressed, and Disabled.
+	Imagery can be provided for all 4 states: Normal, MouseOver, Pressed, and Disabled.
 	
-	\see Class Documentation: OpenGUI::Widgets::FrameButton
+	\see Class Documentation: OpenGUI::Widgets::FrameButton, and \ref BW_FrameImage "FrameImage" documentation for reference to imagery zones.
 	
-	\todo FINISH THIS
+	\section Properties
+	- Position : FVector2
+	- Size : FVector2
+	- Enabled : Boolean
+	- <b>Normal State Imagery</b>
+		- ImageryNormal_UL : String
+		- ImageryNormal_UM : String
+		- ImageryNormal_UR : String
+		- ImageryNormal_ML : String
+		- ImageryNormal_MM : String
+		- ImageryNormal_MR : String
+		- ImageryNormal_LL : String
+		- ImageryNormal_LM : String
+		- ImageryNormal_LR : String
+	- <b>Mouse Over State Imagery</b>
+		- ImageryOver_UL : String
+		- ImageryOver_UM : String
+		- ImageryOver_UR : String
+		- ImageryOver_ML : String
+		- ImageryOver_MM : String
+		- ImageryOver_MR : String
+		- ImageryOver_LL : String
+		- ImageryOver_LM : String
+		- ImageryOver_LR : String
+	- <b>Pressed State Imagery</b>
+		- ImageryPressed_UL : String
+		- ImageryPressed_UM : String
+		- ImageryPressed_UR : String
+		- ImageryPressed_ML : String
+		- ImageryPressed_MM : String
+		- ImageryPressed_MR : String
+		- ImageryPressed_LL : String
+		- ImageryPressed_LM : String
+		- ImageryPressed_LR : String
+	- <b>Disabled State Imagery</b>
+		- ImageryDisabled_UL : String
+		- ImageryDisabled_UM : String
+		- ImageryDisabled_UR : String
+		- ImageryDisabled_ML : String
+		- ImageryDisabled_MM : String
+		- ImageryDisabled_MR : String
+		- ImageryDisabled_LL : String
+		- ImageryDisabled_LM : String
+		- ImageryDisabled_LR : String
+	- <b>Button Text Properties</b>
+		- Text : String
+		- Font : String
+		- FontSize : Integer
+		- Alignment_H : ENUM{ ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_JUSTIFIED }
+		- Alignment_V : ENUM{ ALIGN_TOP, ALIGN_CENTER, ALIGN_BOTTOM, ALIGN_JUSTIFIED }
+		- AutoWrap : Boolean
+		
+		
+		
+	\section Usage	
+	Example XML:
+\code
+<Widget name="myFrameButton" group="OpenGUI" type="FrameButton">
+	<Property name="ImageryNormal_UL" value="myNImageryUL" />
+	<Property name="ImageryNormal_UM" value="myNImageryUM" />
+	<Property name="ImageryNormal_UR" value="myNImageryUR" />
+	<Property name="ImageryNormal_ML" value="myNImageryUL" />
+	<Property name="ImageryNormal_MM" value="myNImageryUM" />
+	<Property name="ImageryNormal_MR" value="myNImageryUR" />
+	<Property name="ImageryNormal_LL" value="myNImageryLL" />
+	<Property name="ImageryNormal_LM" value="myNImageryLM" />
+	<Property name="ImageryNormal_LR" value="myNImageryLR" />
+	
+	<Property name="ImageryOver_UL" value="myOImageryUL" />
+	<Property name="ImageryOver_UM" value="myOImageryUM" />
+	<Property name="ImageryOver_UR" value="myOImageryUR" />
+	<Property name="ImageryOver_ML" value="myOImageryUL" />
+	<Property name="ImageryOver_MM" value="myOImageryUM" />
+	<Property name="ImageryOver_MR" value="myOImageryUR" />
+	<Property name="ImageryOver_LL" value="myOImageryLL" />
+	<Property name="ImageryOver_LM" value="myOImageryLM" />
+	<Property name="ImageryOver_LR" value="myOImageryLR" />
+	
+	<Property name="Font" value="myFont" />
+	<Property name="FontSize" value="16" />
+	<Property name="Alignment_H" value="ALIGN_CENTER" />
+	<Property name="Alignment_V" value="ALIGN_CENTER" />
+	<Property name="AutoWrap" value="FALSE" />
+	<Property name="Text" value="ButtonText" />
+	
+	<Property name="position" value="(0.59875 x 0.465)" />
+	<Property name="size" value="(0.40125 x 0.535)" />
+</Widget>
+\endcode
 */
 
 
@@ -275,8 +362,8 @@ simpleButton->setSize( 0.40125f, 0.535f );
 	- Text : String
 	- Font : String
 	- FontSize : Integer
-	- Alignment_H : String? (NYI)
-	- Alignment_V : String? (NYI)
+	- Alignment_H : ENUM{ ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT, ALIGN_JUSTIFIED }
+	- Alignment_V : ENUM{ ALIGN_TOP, ALIGN_CENTER, ALIGN_BOTTOM, ALIGN_JUSTIFIED }
 	- AutoWrap : Boolean
 
 	\section Usage	

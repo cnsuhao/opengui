@@ -58,8 +58,15 @@ namespace OpenGUI{
 			normally occur if the pen were to carriage return due to a new line character.
 			*/
 			FVector2 getTextSize();
-			//! Returns the height of a single line of text. Does not include any additional line spacing that may be specified by \c setLineSpacing()
+			//! Returns the height of a single line of text in the context coords.
+			/*! Does not include any additional line spacing that may be specified by \c setLineSpacing() */
 			float getLineHeight();
+
+			//! Returns the maximum glyph height of a given string in the context coords. New lines characters are ignored.
+			float getStringHeight(const std::string& str);
+
+			//! Returns the maximum bearingY of a given string in the context coords. New lines characters are ignored.
+			float getStringBearingY(const std::string& str);
 
 			//! Returns the width of the current text string in pixels
 			/*! \note This function requires access to each of glyphs' metrics,

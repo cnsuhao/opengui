@@ -79,7 +79,34 @@ namespace OpenGUI{
 			size if you request a size of 0;
 		*/
 		unsigned int getLineSpacing(const std::string& fontName="", unsigned int pointSize=0);
+
+		//! Retrieves the height of the tallest glyph in the given string \c str at the given font and font size.
+		/*! This is useful if you need the \em actual height of a set of glyphs for vertically centering
+			of a string for display.
+
+			This function will automatically substitute the default font if the requested
+			font cannot be found (or you request ""), and will also substitute the default
+			size if you request a size of 0;
+
+			In case you are unfamiliar with the common glyph metrics, here is an image that should help
+			clarify what this function returns.
+			\image html glyphMetrics.jpg "Glyph Metrics"
+		*/
+		unsigned int getStringHeight(const std::string& str, const std::string& fontName="", unsigned int pointSize=0);
 		
+		//! Retrieves the largest BearingY of all the glyphs in the given string \c str at the given font and font size.
+		/*! This is useful if you need the \em actual height of a set of glyphs for vertically centering
+		of a string for display.
+
+		This function will automatically substitute the default font if the requested
+		font cannot be found (or you request ""), and will also substitute the default
+		size if you request a size of 0;
+
+		In case you are unfamiliar with the common glyph metrics, here is an image that should help
+		clarify what this function returns.
+		\image html glyphMetrics.jpg "Glyph Metrics"
+		*/
+		unsigned int getStringBearingY(const std::string& str, const std::string& fontName="", unsigned int pointSize=0);
 
 		//! Loads Fonts from an XML document.
 		/*! Any conflicting Fonts will be overwritten, any non-font related
