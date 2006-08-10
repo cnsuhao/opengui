@@ -332,6 +332,21 @@ namespace OpenGUI{
 		dirtyCache();
 	}
 	//#####################################################################
+	void Element::setAlpha(float newAlpha)
+	{
+		if(newAlpha > 1.0f)
+			newAlpha = 1.0f;
+		else if(newAlpha < 0.0f)
+			newAlpha = 0.0f;
+		mAlpha = newAlpha;
+		dirtyCache();
+	}
+	//#####################################################################
+	float Element::getAlpha()
+	{
+		return mAlpha;
+	}
+	//#####################################################################
 	int Element::getZOrder()
 	{
 		return mZOrder;
@@ -619,6 +634,16 @@ namespace OpenGUI{
 		//build our own widget render ops
 		Render::RenderOperationList myROlist = buildWidgetRenderOpList();
 
+		//apply alpha here
+		Render::RenderOperationList::iterator iter = myROlist.begin();
+		while(iter != myROlist.end()){
+			//we do it this way so we honor the user's predefined alpha
+			iter->vertices[0].color.Alpha = iter->vertices[0].color.Alpha * mAlpha;
+			iter->vertices[1].color.Alpha = iter->vertices[1].color.Alpha * mAlpha;
+			iter->vertices[2].color.Alpha = iter->vertices[2].color.Alpha * mAlpha;
+			iter++;
+		}
+
 		//and then push our ops to the front
 		Render::PrependRenderOperationList(renderOpList,myROlist);
 	}
@@ -662,6 +687,10 @@ namespace OpenGUI{
 			iter->vertices[0].position = convCoordInnerToLocal(iter->vertices[0].position);
 			iter->vertices[1].position = convCoordInnerToLocal(iter->vertices[1].position);
 			iter->vertices[2].position = convCoordInnerToLocal(iter->vertices[2].position);
+			//we apply child alpha here so we don't have to iterate the list twice
+			iter->vertices[0].color.Alpha = iter->vertices[0].color.Alpha * mAlpha;
+			iter->vertices[1].color.Alpha = iter->vertices[1].color.Alpha * mAlpha;
+			iter->vertices[2].color.Alpha = iter->vertices[2].color.Alpha * mAlpha;
 			iter++;
 		}
 	}
