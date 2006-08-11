@@ -66,36 +66,37 @@ Section "-Documentation" SEC01
 SectionEnd
 
 Section "VC8 SDK" SEC02
+  CreateDirectory "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)"
+  SetOutPath "$INSTDIR"
   File /r "win32rel\sdk_vc8"
   SetOutPath "$INSTDIR\sdk_vc8\Demos"
   File "dependancies\MSVC Redist\VC8\*.dll"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)\Demo 1.lnk" "$INSTDIR\sdk_vc8\Demos\Demo1.exe"
   SetOutPath "$INSTDIR\sdk_vc8\OgreDemos"
   File "dependancies\MSVC Redist\VC8\*.dll"
-  SetOutPath "$INSTDIR"
-  CreateDirectory "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)"
-  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)\Demo 1.lnk" "$INSTDIR\sdk_vc8\Demos\Demo1.exe"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)\Demo O.lnk" "$INSTDIR\sdk_vc8\OgreDemos\DemoO.exe"
 SectionEnd
 
 Section "VC7.1 SDK" SEC03
+  CreateDirectory "$SMPROGRAMS\OpenGUI SDK\Demos (VC7.1)"
+  SetOutPath "$INSTDIR"
   File /r "win32rel\sdk_vc71"
   SetOutPath "$INSTDIR\sdk_vc71\Demos"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC7.1)\Demo 1.lnk" "$INSTDIR\sdk_vc71\Demos\Demo1.exe"
   File "dependancies\MSVC Redist\VC71\*.dll"
   SetOutPath "$INSTDIR\sdk_vc71\OgreDemos"
-  File "dependancies\MSVC Redist\VC71\*.dll"
-  SetOutPath "$INSTDIR"
-  CreateDirectory "$SMPROGRAMS\OpenGUI SDK\Demos (VC7.1)"
-  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC7.1)\Demo 1.lnk" "$INSTDIR\sdk_vc71\Demos\Demo1.exe"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC7.1)\Demo O.lnk" "$INSTDIR\sdk_vc71\OgreDemos\DemoO.exe"
+  File "dependancies\MSVC Redist\VC71\*.dll"
 SectionEnd
 
 Section "Source" SEC04
+  SetOutPath "$INSTDIR"
   File /r "win32rel\src"
 SectionEnd
 
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OpenGUI Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
