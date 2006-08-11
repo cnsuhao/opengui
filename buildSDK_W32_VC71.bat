@@ -17,6 +17,7 @@ set P_OGLlib="winSDK_vc71\OGLRenderer\lib"
 set P_TACHinc="winSDK_vc71\Tachometer\include"
 set P_TACHlib="winSDK_vc71\Tachometer\lib"
 set P_demo="winSDK_vc71\Demos"
+set P_demoOgre="winSDK_vc71\OgreDemos"
 set P_OF="winSDK_vc71\OgreFusion"
 set P_OFinc="winSDK_vc71\OgreFusion\include"
 set P_OFlib="winSDK_vc71\OgreFusion\lib"
@@ -36,7 +37,9 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
+echo ...Release
 devenv OpenGUI.sln /clean "Release - All" >> %LOG%
 call CleanAll.bat
 
@@ -46,12 +49,14 @@ echo ################ >> %LOG% 2>&1
 echo ### BUILDING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv OpenGUI.sln /build "Debug - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!  END DEBUG  !!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 
+echo ...Release
 devenv OpenGUI.sln /build "Release - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
@@ -73,6 +78,7 @@ mkdir %P_OGLlib%
 mkdir %P_TACHinc%
 mkdir %P_TACHlib%
 mkdir %P_demo%
+mkdir %P_demoOgre%
 mkdir %P_OFinc%
 mkdir %P_OFlib%
 
@@ -98,6 +104,7 @@ copy examples\bin\TachometerWidget_d.dll %P_TACHlib% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget_d.lib %P_TACHlib% >> %LOG% 2>&1
 
 echo Copying Demos...
+echo ...Demo1
 copy examples\bin\licenses.txt %P_demo% >> %LOG% 2>&1
 copy examples\bin\pecot.ttf %P_demo% >> %LOG% 2>&1
 copy examples\bin\kongtext.ttf %P_demo% >> %LOG% 2>&1
@@ -109,6 +116,11 @@ copy examples\bin\metal.xml %P_demo% >> %LOG% 2>&1
 copy examples\bin\OpenGUI.dll %P_demo% >> %LOG% 2>&1
 copy examples\bin\demo1.xml %P_demo% >> %LOG% 2>&1
 copy examples\bin\Demo1.exe %P_demo% >> %LOG% 2>&1
+echo ...Demo O
+copy examples\DemoO\Release\DemoO.exe %P_demoOgre% >> %LOG% 2>&1
+copy examples\DemoO\Release\*.dll %P_demoOgre% >> %LOG% 2>&1
+copy examples\DemoO\Release\*.zip %P_demoOgre% >> %LOG% 2>&1
+copy examples\DemoO\Release\*.cfg %P_demoOgre% >> %LOG% 2>&1
 
 echo Copying OgreFusion...
 copy OgreFusion\LICENSE.TXT %P_OF% >> %LOG% 2>&1
@@ -124,6 +136,20 @@ echo Copying Documentation...
 copy OpenGUI\doc\OpenGUI.chm %P_% >> %LOG% 2>&1
 copy CHANGELOG.txt %P_% >> %LOG% 2>&1
 copy OgreFusion\doc\OgreFusion.chm %P_% >> %LOG% 2>&1
+
+IF "%1" == "SKIP" (
+echo Cleaning Solution...
+echo ################ >> %LOG% 2>&1
+echo ### CLEANING ### >> %LOG% 2>&1
+echo ################ >> %LOG% 2>&1
+echo ############################################### >> %LOG% 2>&1
+echo ...Debug
+devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
+echo ...Release
+devenv OpenGUI.sln /clean "Release - All" >> %LOG%
+call CleanAll.bat
+)
+
 
 GOTO END
 :END
