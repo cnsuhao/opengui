@@ -13,10 +13,9 @@ pause
 
 
 echo .
-echo Building Source Release...
-start /WAIT buildSRC_W32.bat SKIP
-echo DONE: Building Source Release
-
+echo Cleaning Slate...
+start /WAIT CleanAll.bat SKIP
+echo DONE: Clean Slate!
 
 echo .
 echo Building SDK Release (VC 7.1)...
@@ -29,8 +28,13 @@ echo Building SDK Release (VC 8)...
 start /WAIT buildSDK_W32_VC8.bat SKIP
 echo DONE: Building SDK Release (VC 8)
 
+echo .
+echo Preparing Source Release...
+start /WAIT buildSRC_W32.bat SKIP
+echo DONE: Building Source Release
+
 echo.
-echo Update the Installer Script now, then
+echo Now check all build logs for any issues. Next operation builds the package.
 pause
 echo Building install script...
 set INSTALLER="C:\Program Files\Caphyon\Advanced Installer\AdvancedInstaller.com"
