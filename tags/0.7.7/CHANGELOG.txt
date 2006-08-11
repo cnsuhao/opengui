@@ -1,0 +1,30 @@
+* Added alpha support for widgets
+* Reworked logic behind vertical text alignment ALIGN_CENTER to now take individual glyph height into consideration instead of relying solely on the font's provided line advance.
+* Fixed texture state problem in OgreFusion that would cause draw errors when an untextured renderop was drawn.
+Version x.x.x - MM/DD/YY [rev])
+* Added PT_ENUM type to list of property types natively handled by the PropertySet system
+* Extended <Property> tag parsing to allow 'value' to be contained within tag body as well as attribute
+* New base widget type: OpenGUI/ScalingImage
+* Added new Element methods: getNativePixelSize_Inner(), getNativePixelSize_Local(), and getNativePixelSize_World() 
+* Added texel offset correction to OgreFusion to compensate for differences between D3D's and OpenGL's definition of a 'texel origin'.
+* Added new demo to test/show off Ogre integration
+* Corrected several memory manager conflicts within OgreFusion when using precompiled Ogre SDKs. (Sinbad, please consider turning MMGR off in public precompiled SDKs.)
+* Updated OgreFusion builds to Ogre 1.2.2 precompiled SDKs (previous was Ogre 1.2.0 from source)
+* Added VC 8 as a build platform.
+* New installer based distribution for all Windows releases.
+* Added project files for Code::Blocks/MinGW. (Only partly works and requires Ogre SDK to build.)
+* Lots of documentation updates, XML system is now fully documented, as well as all base Widgets
+
+Version 0.7.5 - 07/26/2006)
+* Added more documentation to OpenGUI classes that needed it
+* Added proper screen resolution detection in OGLRenderer under Windows.
+* Corrected issue where fonts were not loaded through the OpenGUI ResourceProvider
+* Added OgreFusion (OpenGUI / Ogre interoperability)
+
+version 0.7.1 - 05/13/2006)
+* Added a changelog
+* Removed temporary GCC build fix in log system (breaks GCC building)
+* Added a little extra housekeeping in the source release build script
+
+version 0.7 - 05/11/2006)
+* Initial packaged release
