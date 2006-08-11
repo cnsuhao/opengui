@@ -26,7 +26,8 @@ rmdir /s /q %P_tmp% >> %LOG% 2>&1
 echo Cleaning Solution...
 devenv OpenGUI.sln /clean "Debug - All" >> %LOG%
 devenv OpenGUI.sln /clean "Release - All" >> %LOG%
-call CleanILKs.bat
+call CleanAll.bat
+
 
 echo Build directory tree...
 xcopy /E * "%P_tmp%\" >> %LOG% 2>&1

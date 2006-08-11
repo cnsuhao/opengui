@@ -138,7 +138,7 @@ namespace OpenGUI{
 
 		//! returns inverse FVector2 -x,-y
 		FVector2 operator-() const  { return FVector2(-x,-y); }
-		
+
 		//! Returns a pixel aligned copy of this FVector2
 		FVector2 pixelAligned(const IVector2& resolution) const
 			{
@@ -243,7 +243,7 @@ namespace OpenGUI{
 					((innerFVector2.x*getWidth()) + min.x),
 					((innerFVector2.y*getHeight()) + min.y)
 				);
-				
+
 			}
 		//! Returns a pixel aligned copy of this FRect
 		FRect pixelAligned(const IVector2& resolution) const
@@ -279,10 +279,10 @@ namespace OpenGUI{
 			prevents short lines of text from being spaced unreasonable distances.
 			*/
 			ALIGN_JUSTIFIED = 3
-		}Alignment;
+		}Alignment; //!< Enum definition for representing alignment style
 		TextAlignment& operator=(const Alignment& rhs)
 			{value = rhs; return *this;}
-		
+
 		bool operator==(const Alignment& rhs)
 			{return value == rhs;}
 		bool operator==(const TextAlignment& rhs)
@@ -296,7 +296,7 @@ namespace OpenGUI{
 		TextAlignment():value(ALIGN_LEFT){} //default constructor
 	};
 
-	
+
 };
 
 #endif

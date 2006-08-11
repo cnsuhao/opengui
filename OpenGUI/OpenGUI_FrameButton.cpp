@@ -114,6 +114,7 @@ namespace OpenGUI{
 						m_MouseOver=false; //fix the mouse over value if needed
 					}else{
 						//hey, we just got pressed!
+						injectAlert(OpenGUI::Msg::Message_Alert::MA_Clicked);
 					}
 				}
 
