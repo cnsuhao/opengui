@@ -1,5 +1,5 @@
 @echo off
-
+set MAKENSIS="C:\Program Files\NSIS\makensis.exe"
 echo BEFORE CONTINUING, PERFORM THESE STEPS!
 echo * CLOSE VISUAL STUDIO! (and please leave it in a sane state...)
 echo * Did you update the ChangeLog.txt?
@@ -12,10 +12,20 @@ echo When you're done with all of that, press a key and come back in an hour.
 pause
 
 
+
+
 echo .
 echo Cleaning Slate...
 start /WAIT CleanAll.bat SKIP
 echo DONE: Clean Slate!
+
+
+echo .
+echo Preparing Source Release...
+start /WAIT buildSRC_W32.bat SKIP
+echo DONE: Building Source Release
+
+
 
 echo .
 echo Building SDK Release (VC 7.1)...
@@ -28,17 +38,29 @@ echo Building SDK Release (VC 8)...
 start /WAIT buildSDK_W32_VC8.bat SKIP
 echo DONE: Building SDK Release (VC 8)
 
-echo .
-echo Preparing Source Release...
-start /WAIT buildSRC_W32.bat SKIP
-echo DONE: Building Source Release
 
+echo Generating documentation...
+rem OpenGUI Docs
+cd OpenGUI\doc
+rmdir /Q /S html
+call buildDocs.bat
+call buildUserDocs.bat
+cd ..\..
+rem OgreFusion docs
+cd OgreFusion\doc
+rmdir /Q /S html
+call buildDocs.bat
+cd ..\..
+copy /Y OpenGUI\doc\OpenGUI.chm win32rel
+copy /Y OgreFusion\doc\OgreFusion.chm win32rel
+copy /Y CHANGELOG.txt win32rel
+copy /Y CONTRIBUTERS.txt win32rel
+copy /Y OpenGUI\LICENSE.txt win32rel
 echo.
 echo Now check all build logs for any issues. Next operation builds the package.
 pause
 echo Building install script...
-set INSTALLER="C:\Program Files\Caphyon\Advanced Installer\AdvancedInstaller.com"
-%INSTALLER% /build sdkInstaller.aip
+%MAKENSIS% sdkInstaller.nsi
 
 echo .
 echo .

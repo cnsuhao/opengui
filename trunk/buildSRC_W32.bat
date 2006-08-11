@@ -85,32 +85,13 @@ mkdir %P_out%\examples\glfw  >> %LOG% 2>&1
 %copy% examples\GLFW-2.5.txt %P_out%\examples >> %LOG% 2>&1
 
 
-
-%copy% CHANGELOG.txt %P_out% >> %LOG% 2>&1
-%copy% CONTRIBUTERS.txt %P_out% >> %LOG% 2>&1
 %copy% BUILDING.txt %P_out% >> %LOG% 2>&1
 xcopy /Y /H *.sln %P_out% >> %LOG% 2>&1
 xcopy /Y /H *.suo %P_out% >> %LOG% 2>&1
 
 GOTO END
 
-echo Generating documentation...
-rem OpenGUI Docs
-cd "%P_doc%"
-rmdir /Q /S html
-call buildDocs.bat
-call buildUserDocs.bat
-cd ..\..
 
-rem OgreFusion docs
-cd "%P_OFdoc%"
-rmdir /Q /S html
-call buildDocs.bat
-cd ..\..
-
-echo.
-echo Update the Installer Script now, then
-pause
 endlocal
 :END
 IF "%1" == "SKIP" exit
