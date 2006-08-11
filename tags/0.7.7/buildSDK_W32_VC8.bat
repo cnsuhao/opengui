@@ -37,7 +37,9 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /clean "Debug - All" >> %LOG%
+echo ...Release
 devenv "OpenGUI VC8.sln" /clean "Release - All" >> %LOG%
 call CleanAll.bat
 
@@ -46,12 +48,14 @@ echo ################ >> %LOG% 2>&1
 echo ### BUILDING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /build "Debug - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!  END DEBUG  !!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 
+echo ...Release
 devenv "OpenGUI VC8.sln" /build "Release - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
@@ -138,7 +142,9 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /clean "Debug - All" >> %LOG%
+echo ...Release
 devenv "OpenGUI VC8.sln" /clean "Release - All" >> %LOG%
 call CleanAll.bat
 )
