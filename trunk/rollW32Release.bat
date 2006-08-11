@@ -5,7 +5,7 @@ echo * CLOSE VISUAL STUDIO! (and please leave it in a sane state...)
 echo * Did you update the ChangeLog.txt?
 echo * Make sure both doxygen config files have the correct version number set.
 echo * Make sure that OpenGUI.h has the correct version number set.
-echo * Update the NSIS script (win32sdkInstaller.nsi) to reflect the new ver number.
+echo * Update the NSIS script (sdkInstaller.nsi) to reflect the new ver number.
 echo .
 echo = Note: You need to have Ogre setup and compiled correctly for OgreFusion SDK =
 echo When you're done with all of that, press a key and come back in an hour.
