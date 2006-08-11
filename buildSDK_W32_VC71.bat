@@ -8,6 +8,7 @@ GOTO SKIP
 :SKIP
 
 set VCVARS="C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Tools\vsvars32.bat"
+set P_out=win32rel\sdk_vc71
 set P_="winSDK_vc71"
 set P_OG="winSDK_vc71\OpenGUI"
 set P_OGinc="winSDK_vc71\OpenGUI\include"
@@ -131,11 +132,8 @@ copy OgreFusion\Release\OgreFusion.lib %P_OFlib% >> %LOG% 2>&1
 copy OgreFusion\Release\OgreFusion.dll %P_OFlib% >> %LOG% 2>&1
 
 
+move %P_% %P_out%
 
-echo Copying Documentation...
-copy OpenGUI\doc\OpenGUI.chm %P_% >> %LOG% 2>&1
-copy CHANGELOG.txt %P_% >> %LOG% 2>&1
-copy OgreFusion\doc\OgreFusion.chm %P_% >> %LOG% 2>&1
 
 IF "%1" == "SKIP" (
 echo Cleaning Solution...
@@ -149,7 +147,6 @@ echo ...Release
 devenv OpenGUI.sln /clean "Release - All" >> %LOG%
 call CleanAll.bat
 )
-
 
 GOTO END
 :END

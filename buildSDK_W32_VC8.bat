@@ -8,6 +8,7 @@ GOTO SKIP
 :SKIP
 
 set VCVARS="C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\vsvars32.bat"
+set P_out=win32rel\sdk_vc8
 set P_="winSDK_vc8"
 set P_OG="winSDK_vc8\OpenGUI"
 set P_OGinc="winSDK_vc8\OpenGUI\include"
@@ -37,7 +38,9 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /clean "Debug - All" >> %LOG%
+echo ...Release
 devenv "OpenGUI VC8.sln" /clean "Release - All" >> %LOG%
 call CleanAll.bat
 
@@ -46,12 +49,14 @@ echo ################ >> %LOG% 2>&1
 echo ### BUILDING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /build "Debug - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!  END DEBUG  !!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 
+echo ...Release
 devenv "OpenGUI VC8.sln" /build "Release - All" >> %LOG%
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
 echo !!!!!!!!!!!!!!!!!!! >> %LOG% 2>&1
@@ -126,11 +131,8 @@ copy OgreFusion\Release\OgreFusion.lib %P_OFlib% >> %LOG% 2>&1
 copy OgreFusion\Release\OgreFusion.dll %P_OFlib% >> %LOG% 2>&1
 
 
+move %P_% %P_out%
 
-echo Copying Documentation...
-copy OpenGUI\doc\OpenGUI.chm %P_% >> %LOG% 2>&1
-copy CHANGELOG.txt %P_% >> %LOG% 2>&1
-copy OgreFusion\doc\OgreFusion.chm %P_% >> %LOG% 2>&1
 
 IF "%1" == "SKIP" (
 echo Cleaning Solution...
@@ -138,7 +140,9 @@ echo ################ >> %LOG% 2>&1
 echo ### CLEANING ### >> %LOG% 2>&1
 echo ################ >> %LOG% 2>&1
 echo ############################################### >> %LOG% 2>&1
+echo ...Debug
 devenv "OpenGUI VC8.sln" /clean "Debug - All" >> %LOG%
+echo ...Release
 devenv "OpenGUI VC8.sln" /clean "Release - All" >> %LOG%
 call CleanAll.bat
 )
