@@ -631,6 +631,10 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::__getRenderOperationList_This(Render::RenderOperationList& renderOpList)
 	{
+		//abort completely if we are not visible
+		if(mAlpha == 0.0f)
+			return;
+
 		//build our own widget render ops
 		Render::RenderOperationList myROlist = buildWidgetRenderOpList();
 
@@ -650,6 +654,10 @@ namespace OpenGUI{
 	//#####################################################################
 	void Element::__getRenderOperationList_Children(Render::RenderOperationList& renderOpList)
 	{
+		//abort completely if we are not visible
+		if(mAlpha == 0.0f)
+			return;
+
 		//to ensure back to front ordering
 		//first have all children add their render op lists using this same function
 		//(in order of front to back visibility)

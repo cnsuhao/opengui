@@ -26,6 +26,7 @@ public:
 		Done //stopped
 	};
 	GUIState(){
+		mCurMode = Waiting;
 		OpenGUI::LogManager::SlogMsg("GUIState", 0)
 			<< "+++ New State Created" << OpenGUI::Log::endlog;
 	}
@@ -143,6 +144,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 GUIStateMngr* gState = 0;
 OpenGUI::GenericCursor* mCursor = 0;
+class LogoState;
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -153,7 +155,10 @@ public:
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
+
 class LogoState : public GUIState{
+
+protected:
 	/*
 	virtual bool run_Starting(){ advanceMyMode(); return true; }
 	virtual bool run_Running(){ advanceMyMode(); return true; }
@@ -170,6 +175,7 @@ class LogoState : public GUIState{
 			float x;
 			x = 0.0f - mLogoWidget->getRect().getWidth();
 			mLogoWidget->setPos(x,0.0f);
+			mLogoWidget->setAlpha(1.0f);
 			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
 			mFirstMove = 0;
 			return true;
@@ -195,7 +201,10 @@ class LogoState : public GUIState{
 		}
 		return true;
 	}
-	virtual bool run_Running(){ advanceMyMode(); return true; }
+	virtual bool run_Running(){
+		advanceMyMode();
+		return true;
+	}
 	virtual bool run_Ending()
 	{
 		if(justSwitched()){
@@ -214,6 +223,7 @@ class LogoState : public GUIState{
 
 		if( curX2 < 0.0f ){
 			mLogoWidget->setPos(-0.6f ,0.0f);
+			mLogoWidget->setAlpha(0.0f);
 			advanceMyMode();
 		}
 		return true;
@@ -225,14 +235,157 @@ private:
 	OpenGUI::Widgets::StaticImage* mLogoWidget;
 };
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+class InitState: public GUIState{
+
+protected:
+	virtual bool run_Starting(){
+		if(justSwitched()){
+			mLogoWidget = (OpenGUI::Widgets::StaticImage* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("Logo");
+			if(!mLogoWidget)
+				return false;
+			mLogoWidget->setAlpha(0.0f);
+
+			mOgreGroup = (OpenGUI::Widgets::Container* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("ogreGroup");
+			if(!mOgreGroup)
+				return false;
+			mOgreGroup->setAlpha(0.0f);
+
+			mOpenGUIGroup = (OpenGUI::Widgets::Container* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("openguiGroup");
+			if(!mOpenGUIGroup)
+				return false;
+			mOpenGUIGroup->setAlpha(0.0f);
+
+			mButtonGroup = (OpenGUI::Widgets::Container* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("buttonGroup");
+			if(!mButtonGroup)
+				return false;
+			mButtonGroup->setAlpha(0.0f);
+
+			mFirstMove = 0;
+			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+		}
+
+		if(mFirstMove < 10){
+			mFirstMove++;
+			return true;
+		}
+		advanceMyMode();
+		mTimer->reset();
+		return true;
+	}
+	virtual bool run_Running(){
+		const float seconds_to_wait = 2.0f;
+		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
+
+		if(newAlpha >= 1.0f )
+			gState->setNextState( new LogoState );
+
+		mButtonGroup->setAlpha(newAlpha);
+
+		return true;
+	}
+	virtual bool run_Ending(){
+		mButtonGroup->setAlpha(1.0f);
+		advanceMyMode();
+		return true;
+	}
+private:
+	OpenGUI::TimerPtr mTimer; 
+	OpenGUI::Widgets::StaticImage* mLogoWidget;
+	OpenGUI::Widgets::Container* mOgreGroup;
+	OpenGUI::Widgets::Container* mOpenGUIGroup;
+	OpenGUI::Widgets::Container* mButtonGroup;
+	int mFirstMove;
+};
 //////////////////////////////////////////////////////////////////////////////
 class OpenGUIState : public GUIState{
-	/*
-	virtual bool run_Starting(){ advanceMyMode(); return true; }
-	virtual bool run_Running(){ advanceMyMode(); return true; }
-	virtual bool run_Ending(){ advanceMyMode(); return true; }
-	*/
+
+protected:
+	virtual bool run_Starting(){
+		if(justSwitched()){
+			mGroup = (OpenGUI::Widgets::Container* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("openguiGroup");
+			if(!mGroup)
+				return false;
+			mGroup->setAlpha(0.0f);
+			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+		}
+
+		const float seconds_to_wait = 2.0f;
+		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
+
+		if(newAlpha >= 1.0f )
+			advanceMyMode();
+
+		mGroup->setAlpha(newAlpha);
+
+		return true;
+	}
+	virtual bool run_Running(){ return true; }
+	virtual bool run_Ending(){
+		if(justSwitched()){
+			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+		}
+
+		const float seconds_to_wait = 2.0f;
+		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
+		newAlpha = 1.0f - newAlpha;
+		if(newAlpha <= 0.0f )
+			advanceMyMode();
+
+		mGroup->setAlpha(newAlpha);
+
+		return true;
+	}
+private:
+	OpenGUI::TimerPtr mTimer; 
+	OpenGUI::Widgets::Container* mGroup;
+};
+class OgreState : public GUIState{
+
+protected:
+	virtual bool run_Starting(){
+		if(justSwitched()){
+			mGroup = (OpenGUI::Widgets::Container* )
+				OpenGUI::System::getSingletonPtr()->getElementByName("ogreGroup");
+			if(!mGroup)
+				return false;
+			mGroup->setAlpha(0.0f);
+			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+		}
+
+		const float seconds_to_wait = 2.0f;
+		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
+
+		if(newAlpha >= 1.0f )
+			advanceMyMode();
+
+		mGroup->setAlpha(newAlpha);
+
+		return true;
+	}
+	virtual bool run_Running(){ return true; }
+	virtual bool run_Ending(){
+		if(justSwitched()){
+			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+		}
+
+		const float seconds_to_wait = 2.0f;
+		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
+		newAlpha = 1.0f - newAlpha;
+		if(newAlpha <= 0.0f )
+			advanceMyMode();
+
+		mGroup->setAlpha(newAlpha);
+
+		return true;
+	}
+private:
+	OpenGUI::TimerPtr mTimer; 
+	OpenGUI::Widgets::Container* mGroup;
 };
 
 
@@ -274,6 +427,11 @@ public:
 		if( mInputDevice->isKeyDown( KC_L ) )
 			gState->setNextState( new LogoState );
 		
+		if( mInputDevice->isKeyDown( KC_J ) )
+			gState->setNextState( new OgreState );
+
+		if( mInputDevice->isKeyDown( KC_K ) )
+			gState->setNextState( new OpenGUIState );
 
 		if( gState ){
 			if( gState->needShutdown() )
@@ -340,7 +498,8 @@ protected:
 		OpenGUI::XMLParser::LoadFromFile("DemoO.xml");
 		ogSystem->setGUISheet( ogSystem->getGUISheetByName("root") );
 		
-		gState->setNextState( new LogoState );
+		gState->setNextState( new InitState );
+
 		gState->runStates();
 		OpenGUI::CursorManager::getSingleton().addCursor(mCursor, "DefaultCursor");
 		mCursor->setImagery("Cursor", OpenGUI::FVector2(0,0));

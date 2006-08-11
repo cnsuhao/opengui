@@ -91,7 +91,8 @@ namespace OpenGUI{
 		CursorPtrMap::iterator iter = mCursorMap.begin();
 		while(iter != mCursorMap.end()){
 			if(iter->second == cursorPtr){
-				CursorManager::cursorUnregisterDraw(cursorPtr);
+				if(isCursorDrawRegistered(cursorPtr))
+					CursorManager::cursorUnregisterDraw(cursorPtr);
 				mCursorMap.erase(iter);
 				return;
 			}
