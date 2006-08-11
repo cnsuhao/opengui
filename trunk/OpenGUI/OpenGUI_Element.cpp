@@ -259,6 +259,28 @@ namespace OpenGUI{
 			(*i)->_propogateGlobalEvent(message);
 			i++;
 		}
+		// propagate
+		// propagate
+	}
+	//#####################################################################
+	void Element::_propogateAlert(const Msg::Message& message)
+	{
+		bool contProp = _fireMessageSubscribers(message);
+		contProp = defaultMessageHandler(message) && contProp;
+		if(!contProp) return; //if someone said stop, then stop!
+		//otherwise pass on to our parent if we have one
+		if(mParentElement)
+			mParentElement->_propogateAlert(message);
+	}
+	//#####################################################################
+	void Element::injectAlert(int alertType, void* alertData)
+	{
+		OpenGUI::Msg::Message msg;
+		msg.messageType = OpenGUI::Msg::Message::MT_ALERT;
+		msg.alert.source = this;
+		msg.alert.type = alertType;
+		msg.alert.alertData = alertData;
+		_propogateAlert(msg);
 	}
 	//#####################################################################
 	bool Element::defaultMessageHandler(const Msg::Message& message)

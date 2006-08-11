@@ -10,7 +10,7 @@ namespace OpenGUI{
 			useful for backgrounds in buttons other objects that require variable
 			size but would like to maintain some level of control over pixel stretching.
 
-			\see \ref BW_ScalingImage "ScalingImage widget documentation"
+			\see \ref BW_FrameImage "ScalingImage widget documentation"
 		*/
 		class OPENGUI_API FrameImage : public Widget
 		{

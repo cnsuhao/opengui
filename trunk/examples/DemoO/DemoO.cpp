@@ -304,6 +304,7 @@ private:
 class OpenGUIState : public GUIState{
 
 protected:
+	
 	virtual bool run_Starting(){
 		if(justSwitched()){
 			mGroup = (OpenGUI::Widgets::Container* )
@@ -392,7 +393,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-class OpenGUIInputReader : Ogre::FrameListener
+class OpenGUIInputReader : Ogre::FrameListener, public OpenGUI::EventListener
 {
 public:
 	OpenGUIInputReader(OpenGUI::System* system, Ogre::RenderWindow* window)
@@ -404,11 +405,32 @@ public:
 		//whatever the default scale is, it need to be double that!
 		mInputDevice->setMouseScale( mInputDevice->getMouseScale() * 2.0f );
 		mButtonWasDown = false;
+		mSystem->getGUISheetByName("root")->attachEventListener(this);
 	}
 	virtual ~OpenGUIInputReader()
 	{
 		Ogre::Root::getSingleton().removeFrameListener(this);
 		Ogre::PlatformManager::getSingleton().destroyInputReader( mInputDevice );
+	}
+
+	virtual bool onEvent(const OpenGUI::Msg::Message &msg)
+	{
+		//
+		if(msg.messageType == msg.MT_ALERT && msg.alert.type == msg.alert.MA_Clicked){
+			if(msg.alert.source->getName() == "IntroButton"){
+				gState->setNextState( new LogoState );
+			}
+			else if(msg.alert.source->getName() == "OpenGUIButton"){
+				gState->setNextState( new OpenGUIState );
+			}
+			else if(msg.alert.source->getName() == "OgreButton"){
+				gState->setNextState( new OgreState );
+			}
+			else if(msg.alert.source->getName() == "QuitButton"){
+				gState->setNextState( new AppEndState );
+			}
+		}
+		return true;
 	}
 
 	virtual bool frameStarted (const FrameEvent &evt)

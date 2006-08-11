@@ -330,21 +330,32 @@ namespace OpenGUI{
 		//! Marks the cache dirty for this element and all its children, and will trigger a call to \c buildWidgetRenderOpList() next frame.
 		void dirtyCache_Recursive();
 
-		//! The default event handler for all events reaching this Element.
+		//! The default message handler for all messages reaching this Element.
 		/*!
 			This function is intended to be overridden by subclasses to provide
 			built in Widget functionality. If a user would like to mute the
-			defaultEventHandler of any Widget for any event type for any reason,
+			defaultEventHandler of any Widget for any message type for any reason,
 			then that user should subclass that widget type and provide the
 			necessary logic to mute the desired events.
 
 			\note It is the responsibility of all subclasses to explicitly call the
 				defaultEventHandler() of their immediate superclass if they wish to
-				preserve existing functionality of that class. The event types that
+				preserve existing functionality of that class. The message types that
 				are passed back the class tree can, of course, be filtered by the
 				subclass if such resulting functionality is desired.
 		*/
 		virtual bool defaultMessageHandler(const Msg::Message& message);
+
+		//! Issue an Alert message from this Element.
+		/*!
+			\param alertType Should either be a custom \b negative value, or a value from the
+			existing enum OpenGUI::Msg::Message_Alert::AlertType
+			\param alertData a pointer to a valid struct (either stack or free memory) that contains
+			the additional data required for the alert, if any. Otherwise 0.
+		
+			\see OpenGUI::Msg::Message_Alert
+		*/
+		void injectAlert(int alertType, void* alertData=0);
 
 		//! This function will be called by the system whenever it needs the widget to redraw itself. Returned list should be depth ordered using a painters algorithm (back to front)
 		/*! This function should be overridden by custom widgets. The default implementation within
@@ -433,6 +444,9 @@ namespace OpenGUI{
 		*/
 		FVector2 mClientRectOffset;
 
+
+		
+
 	private:
 		//! \internal transforms the positioning of the given render ops to properly contain them within this element.
 		/*! Since children simply draw to be the size they are told, we must transform their render operations
@@ -486,6 +500,13 @@ namespace OpenGUI{
 			signifying that it is a global event.
 		*/
 		void _propogateGlobalEvent(const Msg::Message& message);
+		
+		//! Propagates an alert back down the hierarchy towards the GUISheet.
+		/*!	If the result of _fireEventSubscribers() and the result
+			of defaultEventHandler() are both true, call _propogateAlert() for
+			your parent (providing you have one).
+		*/
+		void _propogateAlert(const Msg::Message& message);
 
 		//! Fires the event subscribers and returns true only if they all returned true, otherwise returns false.
 		bool _fireMessageSubscribers(const Msg::Message& message);

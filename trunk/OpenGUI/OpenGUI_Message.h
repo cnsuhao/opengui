@@ -29,11 +29,12 @@ namespace OpenGUI{
 			/*! This integer identifies the type of the alert. Since a Widget can generate any
 				number of different alerts based on its design and function, it is entirely up
 				to he alert generating Widget to set this value. 
-				\see DefaultAlertType for a list of built in alert type IDs. Widget writers can also
+				\see AlertType for a list of built in alert type IDs. Widget writers can also
 				use negative values for custom alert types that are not covered under the built in
 				IDs.
 				\warning Widget writers should \b only use negative integers for their custom alert type ids.
-				Positive values are reserved by %OpenGUI for use in default alert types.
+				Positive values are reserved by %OpenGUI for use in default alert types. Widget writers
+				should attempt to avoid the use of custom alert types where possible.
 			*/
 			int type;
 			//! Pointer to a custom data struct for additional data about the Alert
