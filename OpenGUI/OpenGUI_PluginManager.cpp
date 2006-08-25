@@ -58,6 +58,7 @@ namespace OpenGUI{
 			lib->load();
 		}catch(Exception e){
 			delete lib;
+			throw e;
 			return;
 		}
 
