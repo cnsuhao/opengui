@@ -268,6 +268,15 @@ namespace OpenGUI{
 		return retval;
 	}
 	//############################################################################
+	ImagesetList ImageryManager::getImagesetList(){
+		ImagesetList retval;
+		for(ImagesetCPtrList::iterator iter = mImagesetList.begin(); iter != mImagesetList.end(); iter++){
+			retval.push_back( (*iter)->getName() );
+		}
+		retval.sort();
+		return retval;
+	}
+	//############################################################################
 }; //namespace OpenGUI{
 
 

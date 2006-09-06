@@ -9,7 +9,7 @@ namespace OpenGUI{
 
 	//#####################################################################
 
-	//! This is used as a sort predicate for sorting Element children by Z Order
+	//! \internal This is used as a sort predicate for sorting Element children by Z Order
 	struct ChildElementListZOrderSortDescending{
 		//return true when the order is correct from left to right
 		bool operator()(ChildElementListItem& left,ChildElementListItem& right){

@@ -112,6 +112,6 @@ namespace OpenGUI{
 			static void sliceLineSegment(Vertex& vert1, Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal);
 		};
 	};//namespace Render{
-};
+};//namespace OpenGUI{
 
 #endif

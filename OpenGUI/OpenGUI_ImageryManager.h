@@ -8,6 +8,8 @@
 #include "OpenGUI_Imageset.h"
 
 namespace OpenGUI{
+	//! A string list used by ImageryManager::getImagesetList()
+	typedef std::list<std::string> ImagesetList;
 
 	/*! \brief
 		Provides management services for loading, unloading, keeping track of,
@@ -102,6 +104,9 @@ namespace OpenGUI{
 		//Internal use only
 		Imageset* __getDefaultImageset();
 
+		
+		//! Returns an ImagesetList of all imagesets that are currently loaded. Items can be fed back into getImageset()
+		ImagesetList getImagesetList();
 		
 	private:
 		ImagesetCPtrList mImagesetList;

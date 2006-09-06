@@ -13,6 +13,10 @@ namespace OpenGUI{
 	class Texture;	//forward declaration
 	class FontCache; //forward declaration
 
+
+	//! a list of font names that are currently loaded in the FontManager, retrieved by FontManager::getFontList()
+	typedef std::list<std::string> FontList;
+
 	//! Provides font loading and texture UV generation for glyphs loaded from fonts.
 	class OPENGUI_API FontManager : public Singleton<FontManager>{
 		friend class Font;
@@ -113,6 +117,9 @@ namespace OpenGUI{
 			XML entities are silently ignored (only processes \<Font\> tags).
 		*/
 		void LoadFontsFromXML(std::string xmlFilename);
+
+		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFont().
+		FontList getFontList();
 
 	private:
 

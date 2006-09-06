@@ -441,6 +441,15 @@ namespace OpenGUI{
 		return resultFont;
 	}
 	//############################################################################
+	FontList FontManager::getFontList(){
+		FontList retval;
+		for( FontCPtrMap::iterator iter = mFontMap.begin(); iter != mFontMap.end(); iter++ ){
+			retval.push_back(iter->first);
+		}
+		retval.sort();
+		return retval;
+	}
+	//############################################################################
 
 }//namespace OpenGUI{
 
