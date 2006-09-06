@@ -83,6 +83,31 @@ namespace OpenGUI{
 		return ss.str();
 	}
 	//############################################################################
+	//! Internal predicate function for sorting WidgetFactoryLists
+	struct SortWidgetFactoryList{
+		//return left < right
+		bool operator() (const WidgetFactoryListItem& left, const WidgetFactoryListItem& right){
+			if(left.WidgetGroup < right.WidgetGroup)
+				return true;
+			if(left.WidgetGroup == right.WidgetGroup && left.WidgetName < right.WidgetName)
+				return true;
+			return false;
+		}
+	};
+	//############################################################################
+	WidgetFactoryList WidgetFactoryManager::getWidgetFactoryList()
+	{
+		WidgetFactoryList retval;
+		for( CallbackMap::iterator iter = mCallbackmap.begin(); iter != mCallbackmap.end(); iter++ ){
+			WidgetFactoryListItem item;
+			item.WidgetGroup = iter->second.groupName;
+			item.WidgetName = iter->second.widgetName;
+			retval.push_back(item);
+		}
+		retval.sort(SortWidgetFactoryList());
+		return retval;
+	}
+	//############################################################################
 }; //namespace OpenGUI{
 
 
