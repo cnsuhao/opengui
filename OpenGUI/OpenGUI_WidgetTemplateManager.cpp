@@ -185,6 +185,26 @@ namespace OpenGUI{
 		}
 	}
 	//############################################################################
+	const WidgetTemplate* WidgetTemplateManager::getWidgetTemplate(const std::string& templateName)
+	{
+		WidgetTemplateMap::iterator iter = mWidgetTemplateMap.find(templateName);
+		if(mWidgetTemplateMap.end() != iter){
+			return (*iter).second;
+		}else{
+			return 0;
+		}
+	}
+	//############################################################################
+	WidgetTemplateManager::WidgetTemplateList WidgetTemplateManager::getWidgetTemplateList()
+	{
+		WidgetTemplateList retval;
+		for(WidgetTemplateMap::iterator iter = mWidgetTemplateMap.begin(); iter != mWidgetTemplateMap.end(); iter++){
+			retval.push_back( iter->first );
+		}
+		retval.sort();
+		return retval;
+	}
+	//############################################################################
 	//############################################################################
 	//############################################################################
 	Widgets::Widget* WidgetTemplate::createWidget()
@@ -218,4 +238,15 @@ namespace OpenGUI{
 			mPropertyMap.erase(iter);
 	}
 	//############################################################################
+	WidgetTemplate::PropertyList WidgetTemplate::getProperties()
+	{
+		PropertyList retval;
+		for(TemplatePropertyMap::iterator iter = mPropertyMap.begin(); iter != mPropertyMap.end(); iter++){
+			PropertyListItem item;
+			item.Property = iter->first;
+			item.Value = iter->second;
+		}
+		retval.sort();
+		return retval;
+	}
 };//namespace OpenGUI{

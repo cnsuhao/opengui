@@ -86,7 +86,9 @@ namespace OpenGUI{
 	//! Internal predicate function for sorting WidgetFactoryLists
 	struct SortWidgetFactoryList{
 		//return left < right
-		bool operator() (const WidgetFactoryListItem& left, const WidgetFactoryListItem& right){
+		bool operator() (const WidgetFactoryManager::WidgetFactoryListItem& left, 
+							const WidgetFactoryManager::WidgetFactoryListItem& right)
+		{
 			if(left.WidgetGroup < right.WidgetGroup)
 				return true;
 			if(left.WidgetGroup == right.WidgetGroup && left.WidgetName < right.WidgetName)
@@ -95,7 +97,7 @@ namespace OpenGUI{
 		}
 	};
 	//############################################################################
-	WidgetFactoryList WidgetFactoryManager::getWidgetFactoryList()
+	WidgetFactoryManager::WidgetFactoryList WidgetFactoryManager::getWidgetFactoryList()
 	{
 		WidgetFactoryList retval;
 		for( CallbackMap::iterator iter = mCallbackmap.begin(); iter != mCallbackmap.end(); iter++ ){

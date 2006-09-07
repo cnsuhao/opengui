@@ -223,7 +223,7 @@ namespace OpenGUI{
 		}
 	}
 	//############################################################################
-	ImageryList Imageset::getImageryList()
+	Imageset::ImageryList Imageset::getImageryList()
 	{
 		ImageryList retval;
 		for(ImageryPtrList::iterator iter = mChildImageryList.begin(); mChildImageryList.end() != iter; iter++){
