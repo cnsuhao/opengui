@@ -15,15 +15,7 @@ namespace OpenGUI{
 	Some design patterns are just plain wasteful. */
 	typedef Widgets::Widget* (*WidgetFactoryCallback)();
 
-	//! Individual item in a WidgetFactoryList
-	typedef struct _WidgetFactoryListItem {
-		std::string WidgetGroup; //!< The group name that the widget is registered under
-		std::string WidgetName; //!< The name of the widget
-	} WidgetFactoryListItem;
-
-	//! Used by WidgetFactoryManager::getWidgetFactoryList() to return the list of registered widgets
-	typedef std::list<WidgetFactoryListItem> WidgetFactoryList;
-
+	
 	//! Provides an object registration and creation factory service for Widgets.
 	/*! In order for custom Widget objects to be created at runtime, their class type
 		must be known at compile time. Obviously it is impossible for OpenGUI to know
@@ -49,6 +41,15 @@ namespace OpenGUI{
 		void unregisterWidgetFactory(std::string groupName, std::string widgetName);
 		//! Creates a widget of the requested type name and returns a pointer. Returns 0 if none found.
 		Widgets::Widget* createWidget(std::string groupName, std::string widgetName);
+
+		//! Individual item in a WidgetFactoryList
+		typedef struct _WidgetFactoryListItem {
+			std::string WidgetGroup; //!< The group name that the widget is registered under
+			std::string WidgetName; //!< The name of the widget
+		} WidgetFactoryListItem;
+
+		//! Used by WidgetFactoryManager::getWidgetFactoryList() to return the list of registered widgets
+		typedef std::list<WidgetFactoryListItem> WidgetFactoryList;
 
 		//! Returns a WidgetFactoryList containing all currently registered widgets
 		WidgetFactoryList getWidgetFactoryList();

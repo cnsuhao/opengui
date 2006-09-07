@@ -7,9 +7,7 @@
 #include "OpenGUI_Texture.h"
 
 namespace OpenGUI{
-	//! A string list used by Imageset::getImageryList()
-	typedef std::list<std::string> ImageryList;
-
+	
 	//! Imagesets directly represent entire image files. They contain Imagery, which provide a usable window of the image file.
 	class OPENGUI_API Imageset
 	{
@@ -56,6 +54,9 @@ namespace OpenGUI{
 			the returned Imagery pointer will be == 0.
 		*/
 		ImageryPtr getImagery(std::string imageryName);
+
+		//! A string list used by Imageset::getImageryList()
+		typedef std::list<std::string> ImageryList;
 
 		//! Returns a list of all imagery currently defined within this imageset. Entries can be fed back into getImagery()
 		ImageryList getImageryList();
