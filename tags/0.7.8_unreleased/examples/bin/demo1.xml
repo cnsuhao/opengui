@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<Include file="metal.xml" />
+<Include file="tachometer.xml" />
+
+
+
+<GUISheet name="root">
+	<Widget name="myTach" type="tachometer" />
+	<Widget name="test" group="OpenGUI" type="TextLabel">
+		<Property name="position" value="(0.0 x0.0)" />
+		<Property name="size" value="(1x1)" />
+		<Property name="font" value="pecot" />
+		<Property name="fontsize" value="50" />
+		<Property name="text" value="OpenGUI Demo 1" />
+	</Widget>
+	<!--<Widget name="test" group="OpenGUI" type="StaticImage">
+		<Property name="position" value="(0.0 x0.0)" />
+		<Property name="size" value="(1x1)" />
+	</Widget>-->
+</GUISheet>
