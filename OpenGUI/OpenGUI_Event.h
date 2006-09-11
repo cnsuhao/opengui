@@ -4,35 +4,38 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_MouseButton.h"
 
-namespace OpenGUI{
-		
-	namespace Msg{
+namespace OpenGUI {
+
+	namespace Msg {
 
 		//! Contains all the event specific structs that are used
-		namespace EventData{
+		namespace EventData {
 
 			//! Event specific data struct.
-			struct MouseButtonEvent{
+			struct MouseButtonEvent {
 				unsigned int mouseButtonID;//!< The mouse button ID. \see OpenGUI::MouseButton
 			};
 
 			//! Event specific data struct.
-			struct MouseMoveEvent{
+			struct MouseMoveEvent {
 				FVector2 mousePosition; //!< The new mouse position in absolute world space coordinates.
 			};
 
 			//! Event specific data struct.
-			struct KeyEvent{
+			struct KeyEvent {
 				char key; //!< ASCII char of the key
 			};
 
 			//! Event specific data struct.
-			struct TickEvent{
+			struct TickEvent {
 				unsigned int timeDelta; //!< The time delta in milliseconds since the previous tick event
 			};
 
 
-		};//namespace EventData{
-	};//namespace Msg{
-};//namespace OpenGUI{
+		}
+		;//namespace EventData{
+	}
+	;//namespace Msg{
+}
+;//namespace OpenGUI{
 #endif

@@ -4,17 +4,17 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//! Provides loading of layouts from XML
-	class OPENGUI_API LayoutLoader{
+	class OPENGUI_API LayoutLoader {
 		friend class XMLParser;
 	public:
 		//! Loads GUISheets from an XML document.
 		/*! Any non-Layout related XML entities are silently ignored (only processes \<GUISheet\> and other enclosed tags). */
-		static void LoadLayoutFromXML(const std::string& xmlFilename);
+		static void LoadLayoutFromXML( const std::string& xmlFilename );
 	private:
-		static void _loadGUISheetFromTinyXMLElement(void* tXelementPtr);
-		static void _loadWidgetFromTinyXMLElement(void* tXelementPtr, Element* parent);
+		static void _loadGUISheetFromTinyXMLElement( void* tXelementPtr );
+		static void _loadWidgetFromTinyXMLElement( void* tXelementPtr, Element* parent );
 	};
 };
 #endif

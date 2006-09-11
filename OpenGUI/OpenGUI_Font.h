@@ -9,15 +9,14 @@
 
 #include "OpenGUI_FontGlyph.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	class TextureDataRect;
 
-	
+
 	//! Used to load fonts and render glyphs from those fonts into memory segments.
-	class OPENGUI_API Font
-	{
-	friend class FontManager;
+	class OPENGUI_API Font {
+		friend class FontManager;
 	protected:
 		//! Font creation implies loading of the font via FreeType.
 		/*! \param sourceFilename filename of the font to load
@@ -25,15 +24,17 @@ namespace OpenGUI{
 			\param nativeYres Used to determine the vertical scale factor for glyphs rendered from this font. Only used if \c autoscale is true.
 			\param autoscale Determines of glyphs from this font need to be scaled to compensate for resolution differences between layout creation and layout display.
 		*/
-		Font(std::string sourceFilename, unsigned int nativeXres, unsigned int nativeYres, bool autoscale);
+		Font( std::string sourceFilename, unsigned int nativeXres, unsigned int nativeYres, bool autoscale );
 		//! Destruction also unloads the font from FreeType
 		~Font();
 	public:
 		//! Returns the filename used to load the font
-		std::string getFilename() {return mFilename;}
+		std::string getFilename() {
+			return mFilename;
+		}
 
 		//! Retrieves the imagery backing a font glyph, as well as a pixel based rect defining the glyph extents.
-		/*! 
+		/*!
 			\return \c true on success, \c false if the glyph cannot be generated because of some FreeType error
 			\param glyph_charCode The character code (currently ASCII) of the glyph you are requesting
 			\param pointSize The size of the glyph you'd like, in font points. <i>This value is automatically
@@ -49,27 +50,27 @@ namespace OpenGUI{
 			alignment. In most cases, users should use the PrimitiveText object to generate their text output,
 			as it will perform the necessary steps to provide pixel alignment.
 		*/
-		bool getGlyph(char glyph_charCode, unsigned int pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph);
+		bool getGlyph( char glyph_charCode, unsigned int pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph );
 
 		//! Returns the line height in pixels for a given pointSize
 		/*! \see To obtain the pixelSizeY, refer to \c calcPixelSizeFromPoints()
 		*/
-		unsigned int getLineSpacing(unsigned int pointSize);
-			
-		
+		unsigned int getLineSpacing( unsigned int pointSize );
+
+
 
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
-		/*! 
+		/*!
 			\note The TextureDataRect will be resized to exactly hold the glyph. \c destGlyphMetrics will
 				contain the glyph metrics in pixels for the glyph at the requested size
 			\remarks This function is used by the FontCache to generate glyphs for storage in FontAtlases
 				so that they can be renderer to the screen.
 			\see Most users are probably looking for PrimitiveText, or at the most getGlyph().
 		*/
-		void renderGlyph(char glyph_charCode, const IVector2& pixelSize, TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics);
+		void renderGlyph( char glyph_charCode, const IVector2& pixelSize, TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics );
 
 		//! Calculates the pixel size of a generic glyph from this Font based on the scale settings given at Font creation.
-		void calcPixelSizeFromPoints(unsigned int pointSize, IVector2& pixelSize);
+		void calcPixelSizeFromPoints( unsigned int pointSize, IVector2& pixelSize );
 	private:
 		void* mFT_Face;
 		std::string mFilename;

@@ -7,16 +7,14 @@
 #include "OpenGUI_TimerManager.h"
 #include "OpenGUI_Timer.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	//###############################################################
-	void Timer::reset()
-	{
+	void Timer::reset() {
 		m_TimePoint = TimerManager::getSingleton().getMillisecondsSinceStart();
 	}
 	//###############################################################
-	unsigned int Timer::getMilliseconds()
-	{
+	unsigned int Timer::getMilliseconds() {
 		return TimerManager::getSingleton().getMillisecondsSinceStart() - m_TimePoint;
 	}
 	//###############################################################

@@ -5,7 +5,7 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_DynamicLib.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	//! Plugin manager for tracking the proper loading and unloading of plugins.
 	/*!
@@ -22,7 +22,7 @@ namespace OpenGUI{
 		comment from that section of the config file is available \ref PMANGLE "here".
 
 	*/
-	class PluginManager : public Singleton<PluginManager>{
+	class PluginManager : public Singleton<PluginManager> {
 		friend class XMLParser;
 	public:
 		PluginManager();
@@ -30,33 +30,34 @@ namespace OpenGUI{
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
-		static PluginManager& getSingleton(void);
+		static PluginManager& getSingleton( void );
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
-		static PluginManager* getSingletonPtr(void);
+		static PluginManager* getSingletonPtr( void );
 
 		//! Loads a plugin by filename.
 
-		void loadPlugin(std::string filename);
+		void loadPlugin( std::string filename );
 		//! Unloads a plugin by filename.
 		/*! */
-		void unloadPlugin(std::string filename);
+		void unloadPlugin( std::string filename );
 		//! Unloads all currently loaded plugins
 		void unloadAllPlugins();
 
 		//! Loads plugins as defined by an xml file.
 		/*! Any non-Plugin related XML entities are silently ignored (only processes \<Plugin\> tags). */
-		void LoadPluginsFromXML(std::string xmlFilename);
+		void LoadPluginsFromXML( std::string xmlFilename );
 	private:
-		void _loadFromTinyXMLElement(void* tXelementPtr);
-		static void firePluginStart(DynamicLib* lib);
-		static void firePluginStop(DynamicLib* lib);
-		typedef std::map<std::string,DynamicLib*> PluginMap;
+		void _loadFromTinyXMLElement( void* tXelementPtr );
+		static void firePluginStart( DynamicLib* lib );
+		static void firePluginStop( DynamicLib* lib );
+		typedef std::map<std::string, DynamicLib*> PluginMap;
 		PluginMap mPluginMap;
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 
 #endif
 

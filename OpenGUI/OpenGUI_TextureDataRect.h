@@ -5,20 +5,19 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	class TextureData;	//forward declaration
 
 	//! Used to represent colors for a few functions within TextureDataRect
-	class OPENGUI_API TDRColor
-	{
+	class OPENGUI_API TDRColor {
 	public:
 		//! Default constructor provides pure white, 100% alpha.
 		TDRColor()
-			: Red(255), Green(255), Blue(255), Alpha(255) {}
+				: Red( 255 ), Green( 255 ), Blue( 255 ), Alpha( 255 ) {}
 		//! Custom constructor allows for definition of each color element. Alpha is optional and defaults to 100%.
-		TDRColor(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255)
-			: Red(red), Green(green), Blue(blue), Alpha(alpha) {}
+		TDRColor( unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha = 255 )
+				: Red( red ), Green( green ), Blue( blue ), Alpha( alpha ) {}
 
 		unsigned char Red; //!< red channel
 		unsigned char Green; //!< green channel
@@ -49,8 +48,7 @@ namespace OpenGUI{
 			and color channels that are missing in \c copy() sources are autofilled with 0. If this doesn't
 			fit your needs, see the above remarks.
 	*/
-	class OPENGUI_API TextureDataRect
-	{
+	class OPENGUI_API TextureDataRect {
 	public:
 		//! create a blank slate of the given size and color
 		TextureDataRect( const IVector2& size = IVector2(), const TDRColor& color = TDRColor() );
@@ -72,9 +70,9 @@ namespace OpenGUI{
 				are automatically changed to a 0. If either dimension is 0, the other is automatically set
 				to 0 as well.
 		*/
-		void setSize(const IVector2& newSize, const TDRColor& color = TDRColor());
+		void setSize( const IVector2& newSize, const TDRColor& color = TDRColor() );
 		//! Fills this TextureDataRect with the given color, overwriting any existing data.
-		void fill(const TDRColor& color = TDRColor());
+		void fill( const TDRColor& color = TDRColor() );
 
 		//! Copies the contents of an existing TextureData into the buffer of this object.
 		/*!
@@ -93,7 +91,7 @@ namespace OpenGUI{
 				the copy will immediately return without performing any copy at all. The
 				previous contents of this object are still discarded.)
 		*/
-		void copy(const TextureData* srcTextureData, IRect srcRect);
+		void copy( const TextureData* srcTextureData, IRect srcRect );
 		//! Copies the contents of an existing TextureDataRect into the buffer of this object.
 		/*!
 			\param srcTextureDataRect The TextureDataRect object that is used as the data source.
@@ -111,7 +109,7 @@ namespace OpenGUI{
 				the copy will immediately return without performing any copy at all. The
 				previous contents of this object are still discarded.)
 		*/
-		void copy(const TextureDataRect* srcTextureDataRect, IRect srcRect);
+		void copy( const TextureDataRect* srcTextureDataRect, IRect srcRect );
 		//! Writes the contents of this object's buffer onto a TextureData at the desired offset.
 		/*!
 			\param dstTextureData The TextureData object that is the destination for writing.
@@ -123,7 +121,7 @@ namespace OpenGUI{
 				will ever be thrown for it. The destination will \b not be resized to make
 				it fit.
 		*/
-		void paste(TextureData* dstTextureData, const IVector2& dstOffset) const;
+		void paste( TextureData* dstTextureData, const IVector2& dstOffset ) const;
 		//! Writes the contents of this object's buffer onto a TextureDataRect at the desired offset.
 		/*!
 			\param dstTextureDataRect The TextureDataRect object that is the destination for writing.
@@ -135,32 +133,30 @@ namespace OpenGUI{
 				will ever be thrown for it. The destination will \b not be resized to make
 				it fit.
 		*/
-		void paste(TextureDataRect* dstTextureDataRect, const IVector2& dstOffset) const;
+		void paste( TextureDataRect* dstTextureDataRect, const IVector2& dstOffset ) const;
 
 		//! Provides pixel write functionality.
 		/*! This function respects logical image dimensions. Writes outside of the image area
 			will do nothing.
 		*/
-		inline void write(const IVector2& position, const TDRColor& color)
-		{
+		inline void write( const IVector2& position, const TDRColor& color ) {
 			//only allow writes within the available data range
-			if( position.x < 0 || position.y < 0 ||
-				position.x >= mSize.x || position.y >= mSize.y )
+			if ( position.x < 0 || position.y < 0 ||
+					position.x >= mSize.x || position.y >= mSize.y )
 				return;
-			mData[ (mSize.x * position.y) + position.x ] = color;
+			mData[( mSize.x * position.y ) + position.x ] = color;
 		}
 
 		//! Provides pixel read functionality.
 		/*! This function respects logical image dimensions. Reads outside of the image area
 			will return pure white w/ 100% alpha.
 		*/
-		inline TDRColor read(const IVector2& position) const
-		{
+		inline TDRColor read( const IVector2& position ) const {
 			//only allow reads within the available data range
-			if( position.x < 0 || position.y < 0 ||
-				position.x >= mSize.x || position.y >= mSize.y )
+			if ( position.x < 0 || position.y < 0 ||
+					position.x >= mSize.x || position.y >= mSize.y )
 				return TDRColor();
-			return mData[ (mSize.x * position.y) + position.x ];
+			return mData[( mSize.x * position.y ) + position.x ];
 		}
 	private:
 		TDRColor* mData;
@@ -168,10 +164,11 @@ namespace OpenGUI{
 		//! \internal Deletes any existing mData, and resets the mSize to (0,0)
 		void _reset();
 		//! \internal Allocates a new buffer to hold an image of the given size. Calls \c _reset() first.
-		void _buildBuffer(const IVector2& size);
+		void _buildBuffer( const IVector2& size );
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 //OpenGUI_TextureDataRect
 
 

@@ -3,12 +3,11 @@
 #include "OpenGUI_RenderOperation.h"
 #include "OpenGUI_Texture.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class TextureData;//forward declaration
 
 	//! Base class for all renderers. Any custom Renderer should inherit this base class.
-	class OPENGUI_API Renderer
-	{
+	class OPENGUI_API Renderer {
 	public:
 		//! Constructor
 		Renderer() {}
@@ -28,7 +27,7 @@ namespace OpenGUI{
 			alertViewportDimensionsChanged() whenever the viewport dimensions
 			change during operation.
 		*/
-		virtual void getViewportDimensions(IVector2& dims)=0;
+		virtual void getViewportDimensions( IVector2& dims ) = 0;
 
 		//! The renderer implementation must be able to properly supply %OpenGUI with screen dimensions via this function.
 		/*! %OpenGUI requires the screen dimensions for certain functionality
@@ -43,7 +42,7 @@ namespace OpenGUI{
 			alertScreenDimensionsChanged() whenever the screen dimensions
 			change during operation.
 		*/
-		virtual void getScreenDimensions(IVector2& dims)=0;
+		virtual void getScreenDimensions( IVector2& dims ) = 0;
 
 		//! Signal the system object that the viewport dimensions have changed so that it may take appropriate action.
 		/*! Currently this function simply provides a safe avenue of calling System::notifyViewportDimensionsChanged(),
@@ -56,11 +55,11 @@ namespace OpenGUI{
 		void alertScreenDimensionsChanged();
 
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
-		/*! The primary purpose of this is to provide the renderer an opportunity to 
+		/*! The primary purpose of this is to provide the renderer an opportunity to
 			configure the projection matrix as it feels necessary, as well as set any
 			graphics api options that will be used on all (or most) render operations.
 		*/
-		virtual void preRenderSetup()=0;
+		virtual void preRenderSetup() = 0;
 		//! This will be called for every render operation that needs to be performed.
 		/*! This function is passed a RenderOperation object, by reference, for every
 			render operation that needs to take place to properly draw the gui.
@@ -72,13 +71,13 @@ namespace OpenGUI{
 
 			\note Expect this function to be called a LOT. Keep it small, keep it fast.
 		*/
-		virtual void doRenderOperation(Render::RenderOperation& renderOp)=0;
+		virtual void doRenderOperation( Render::RenderOperation& renderOp ) = 0;
 		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed.
 		/*! Much like preRenderSetup(), this gives the renderer an opportunity to perform
 			whatever tasks it feels are necessary to return the render system back to a
 			usable state for the application.
 		*/
-		virtual void postRenderCleanup()=0;
+		virtual void postRenderCleanup() = 0;
 
 		//! This is called whenever a texture needs to be created from a file.
 		/*!
@@ -103,7 +102,7 @@ namespace OpenGUI{
 			Texture object. The Renderer must ensure that until destroyTexture()
 			is called with the given Texture object, the pointer remains valid.
 		*/
-		virtual Texture* createTextureFromFile(std::string filename)=0;
+		virtual Texture* createTextureFromFile( std::string filename ) = 0;
 
 		//! Create a texture from a TextureData object (memory)
 		/*! The passed in TextureData object does not become the sole property of
@@ -116,7 +115,7 @@ namespace OpenGUI{
 			destroy the texture that is based upon the TextureData.
 
 		*/
-		virtual Texture* createTextureFromTextureData(TextureData *textureData)=0;
+		virtual Texture* createTextureFromTextureData( TextureData *textureData ) = 0;
 
 		//! Replaces an existing texture with the given TextureData
 		/*! This should cause a Renderer implementation to completely replace the
@@ -126,7 +125,7 @@ namespace OpenGUI{
 			free to discard their hardware textures and rebuild from scratch if they
 			choose.
 		*/
-		virtual void updateTextureFromTextureData(Texture* texture, TextureData *textureData)=0;
+		virtual void updateTextureFromTextureData( Texture* texture, TextureData *textureData ) = 0;
 
 		//! Destroy a previously created Texture object.
 		/*! Whatever needs to happen to properly destroy a Texture object,
@@ -136,8 +135,9 @@ namespace OpenGUI{
 			Texture object.  If	Texture objects are allocated via the new operator,
 			then they should be deleted by this function.
 		*/
-		virtual void destroyTexture(Texture* texturePtr)=0;
+		virtual void destroyTexture( Texture* texturePtr ) = 0;
 	};
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 

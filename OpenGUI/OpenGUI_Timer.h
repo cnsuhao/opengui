@@ -5,10 +5,10 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_RefPtr.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	//! Timers provide a simple method of retrieving time deltas from the TimerManager.
-	class OPENGUI_API Timer{
+	class OPENGUI_API Timer {
 	public:
 		//! Re-Syncs this Timer's internal time point marker with the TimerManager's current time.
 		void reset();

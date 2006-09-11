@@ -6,11 +6,11 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class Texture; //forward declaration
 	class Imagery; //forward declaration
 	class Element; //forward declaration
-	
+
 	/*! \brief
 		This namespace contains rendering specific objects and functions
 		that are used by all widgets to tell the renderer how to draw them.
@@ -18,13 +18,13 @@ namespace OpenGUI{
 		existing widgets), this is where you look to build the necessary render
 		operations.
 	*/
-	namespace Render{
+	namespace Render {
 
 		//! Used to define the color of a vertex. The default color is White, with alpha=1.0f
-		class OPENGUI_API VertexColor{
+		class OPENGUI_API VertexColor {
 		public:
 			//! Constructor with optional in place initialization
-			VertexColor(float R=1.0f, float G=1.0f, float B=1.0f, float A=1.0f) : Red(R), Blue(B), Green(G), Alpha(A) {}
+			VertexColor( float R = 1.0f, float G = 1.0f, float B = 1.0f, float A = 1.0f ) : Red( R ), Blue( B ), Green( G ), Alpha( A ) {}
 
 			float Red;//!<Red Channel
 			float Blue;//!<Blue Channel
@@ -32,19 +32,29 @@ namespace OpenGUI{
 			float Alpha;//!<Alpha Channel
 
 			//! Quickly generate a preset VertexColor that is Red
-			static VertexColor PresetRed(){return VertexColor(1.0f,0.0f,0.0f,1.0f);}
+			static VertexColor PresetRed() {
+				return VertexColor( 1.0f, 0.0f, 0.0f, 1.0f );
+			}
 			//! Quickly generate a preset VertexColor that is Green
-			static VertexColor PresetGreen(){return VertexColor(0.0f,1.0f,0.0f,1.0f);}
+			static VertexColor PresetGreen() {
+				return VertexColor( 0.0f, 1.0f, 0.0f, 1.0f );
+			}
 			//! Quickly generate a preset VertexColor that is Blue
-			static VertexColor PresetBlue(){return VertexColor(0.0f,0.0f,1.0f,1.0f);}
+			static VertexColor PresetBlue() {
+				return VertexColor( 0.0f, 0.0f, 1.0f, 1.0f );
+			}
 			//! Quickly generate a preset VertexColor that is White
-			static VertexColor PresetWhite(){return VertexColor(1.0f,1.0f,1.0f,1.0f);}
+			static VertexColor PresetWhite() {
+				return VertexColor( 1.0f, 1.0f, 1.0f, 1.0f );
+			}
 			//! Quickly generate a preset VertexColor that is Black
-			static VertexColor PresetBlack(){return VertexColor(0.0f,0.0f,0.0f,1.0f);}
+			static VertexColor PresetBlack() {
+				return VertexColor( 0.0f, 0.0f, 0.0f, 1.0f );
+			}
 		};
 
 		//! It's a vertex. RenderOperations consist of 3 of these to make a polygon.
-		class OPENGUI_API Vertex{
+		class OPENGUI_API Vertex {
 		public:
 			FVector2 position; //!< The X,Y position of this vertex
 			VertexColor color; //!< The color of this vertex
@@ -67,10 +77,10 @@ namespace OpenGUI{
 			At the current implementation, the system can only guaranty that renderers will
 			receive render operations in a back to front order per widget. 
 		*/
-		class OPENGUI_API RenderOperation{
+		class OPENGUI_API RenderOperation {
 		public:
 			//! constructor
-			RenderOperation() : texture(0), mask(0) {}
+			RenderOperation() : texture( 0 ), mask( 0 ) {}
 			Vertex vertices[3]; //!< Simple array of 3 Vertex objects to define a single polygon
 			Texture* texture; //!< Pointer to the color texture, or 0 for none
 			Texture* mask; //!< Pointer to the mask texture, or 0 for none
@@ -79,11 +89,11 @@ namespace OpenGUI{
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
 		/*! \todo inline this in a way that GCC doesn't complain about */
-		void OPENGUI_API AppendRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList);
+		void OPENGUI_API AppendRenderOperationList( RenderOperationList& outList, const RenderOperationList& inList );
 
 		//! Prepends the contents of inList to the beginning of outList. The contents of inList are preserved.
 		/*! \todo inline this in a way that GCC doesn't complain about */
-		void OPENGUI_API PrependRenderOperationList(RenderOperationList& outList, const RenderOperationList& inList);
+		void OPENGUI_API PrependRenderOperationList( RenderOperationList& outList, const RenderOperationList& inList );
 
 		//! Appends the contents of outList by splicing the contents of appendingList onto the end of outList.
 		/*! The contents of \c appendingList are directly moved into \c outList via pointer manipulation, leaving
@@ -93,9 +103,8 @@ namespace OpenGUI{
 			long lists.
 			\todo inline this in a way that GCC doesn't complain about
 		*/
-		inline void SpliceRenderOperationList(RenderOperationList& outList, RenderOperationList& appendingList)
-		{
-			outList.splice(outList.end(), appendingList);
+		inline void SpliceRenderOperationList( RenderOperationList& outList, RenderOperationList& appendingList ) {
+			outList.splice( outList.end(), appendingList );
 		}
 
 		/*! \brief
@@ -108,18 +117,19 @@ namespace OpenGUI{
 			generating render operations much easier.
 
 		*/
-		class OPENGUI_API Primitive{
+		class OPENGUI_API Primitive {
 		public:
 			//! constructor (does nothing)
 			Primitive() {}
 			//! virtual destructor (does nothing)
 			virtual ~Primitive() {}
 			//! Return a RenderOperationList that correctly expresses this Primitive
-			virtual RenderOperationList getRenderOperationList()=0;
+			virtual RenderOperationList getRenderOperationList() = 0;
 		};
 
-		
-	};//namespace Render{
+
+	}
+	;//namespace Render{
 };
 #endif
 

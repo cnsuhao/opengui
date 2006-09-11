@@ -6,10 +6,10 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	//! \internal This is an internal object definition
-	struct FontGlyphMetrics{
+	struct FontGlyphMetrics {
 		int width;
 		int height;
 
@@ -25,11 +25,12 @@ namespace OpenGUI{
 	};
 
 	//! \internal This is an internal object definition
-	struct FontGlyph{
+	struct FontGlyph {
 		FontGlyphMetrics metrics;
 		ImageryPtr imageryPtr;
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 
 #endif

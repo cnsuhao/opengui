@@ -10,7 +10,7 @@
 #include "OpenGUI_RenderOperation.h"
 
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//! Redefinition of an Element pointer to prevent misuse
 	typedef Element* ChildElementListItem;
 	//! List of ChildElementListItems
@@ -28,8 +28,7 @@ namespace OpenGUI{
 	/*! The Element class should be inherited by all classes that need to exist within a GUI.
 	\note Users are probably looking for OpenGUI::Widgets::Widget
 	*/
-	class OPENGUI_API Element
-	{
+	class OPENGUI_API Element {
 		friend class System;
 		friend class GUISheet;
 		friend class RenderCache;
@@ -43,11 +42,11 @@ namespace OpenGUI{
 
 				- Resize will move and scale appearance of children.
 			*/
-			CAS_Scaled=1,
+			CAS_Scaled = 1,
 			//! Client area uses the world coordinate system, offset by the element's client area offset.
 			/*! - Resize of this element does not move nor scale appearance of children.
 			*/
-			CAS_Absolute=2,
+			CAS_Absolute = 2,
 			//! Client area inherits the client area of this element's parent.
 			/*! In other words, this element does not define its own unique client area scale.
 				It does not perform any scaling transformations on mouse position tests or
@@ -64,7 +63,7 @@ namespace OpenGUI{
 					to CAS_Scaled. (The "searching" is actually a side effect from
 					the design, and bares no additional cost.)
 			*/
-			CAS_Inherit=3,
+			CAS_Inherit = 3,
 			//! Client area uses a custom scale.
 			/*! A custom scale is one that does not match any of the existing types.
 				If the element inheritor does not provide its own implementation of this via the
@@ -74,7 +73,7 @@ namespace OpenGUI{
 					- performCustomScaleOperation_Local2Inner()
 					- performCustomScaleOperation_Inner2Local()
 			*/
-			CAS_Custom=0
+			CAS_Custom = 0
 		} ClientAreaScale;
 
 		Element();
@@ -89,11 +88,11 @@ namespace OpenGUI{
 			This is a design element to allow an application to monitor actions
 			taking place within the GUI so that it can react to them.
 		*/
-		void attachEventListener(EventListener* listener);
+		void attachEventListener( EventListener* listener );
 		/*! Detaches the given EventListener from this Element so that it will no longer
 			receive event notifications from this object.
 		*/
-		void detachEventListener(EventListener* listener);
+		void detachEventListener( EventListener* listener );
 
 		//! Adds the given Element as a child of this parent
 		/*! Any element, customized or not, is added to the GUI by attaching it as a child of
@@ -106,7 +105,7 @@ namespace OpenGUI{
 				It will automatically delete the object when it is no longer needed unless you go out
 				of your way to ensure the object survives. \see removeChildElement
 		*/
-		void addChildElement(Element* child, std::string name="");
+		void addChildElement( Element* child, std::string name = "" );
 
 		//! Retrieves a pointer to a child Element by its name.
 		/*!
@@ -115,11 +114,11 @@ namespace OpenGUI{
 
 			\todo make protected
 		*/
-		Element* getChildElement(const std::string& name);
+		Element* getChildElement( const std::string& name );
 
 		//! As getChildElement() except that this version will search recursively down the hierarchy for the Element.
 		/*! \see getChildElement() \todo make protected */
-		Element* getChildElementRecursive(const std::string& name);
+		Element* getChildElementRecursive( const std::string& name );
 
 		//! Removes an Element from this Parent's list of children and deletes the child object.
 		/*! This is the usual way that child Elements are removed, as there is usually no need
@@ -128,15 +127,15 @@ namespace OpenGUI{
 		\throw Exception If child cannot be found in the list of immediate children (descendants are not checked)
 				this will throw an Exception.
 		*/
-		void destroyChildElement(Element* child);
+		void destroyChildElement( Element* child );
 		//! Removes an Element from this Parent's list of children and deletes the child object.
 		/*!
 		\param name The name of the child Element you wish to remove.
 		\throw Exception If child cannot be found in the list of immediate children (descendants are not checked)
 				this will throw an Exception.
 		*/
-		void destroyChildElement(std::string name);
-		
+		void destroyChildElement( std::string name );
+
 		//! Removes an Element from this Parent's list of children, \b without deleting the object.
 		/*! This is a similar function to destroyChildElement, with the key exception that the
 			child object itself is not deleted after it is removed from the parent. Because of the
@@ -148,8 +147,8 @@ namespace OpenGUI{
 				this will throw an Exception. This can be avoided easily enough by ensuring that
 				child->getElementParent() returns a pointer to the parent from which you are calling removeChildElement().
 		*/
-		void removeChildElement(Element* child);
-		
+		void removeChildElement( Element* child );
+
 		//! Same as destroyChildElement(), but is called on all children automatically.
 		/*! This is also implicitly called by the object destructor to ensure that slicing off
 			a large hierarchy of Elements by deleting a parent does not result in memory leaks.
@@ -185,25 +184,29 @@ namespace OpenGUI{
 			\note This is normally only used by Element::sendToBack() and Element::bringToFront().
 				Because of this, I may make it a private member function and give it an underscore.
 		*/
-		void getChildElementZOrderExtents(int& upperZ, int& lowerZ);
+		void getChildElementZOrderExtents( int& upperZ, int& lowerZ );
 
 		//! Updates the FRect that represents size and position with an entirely new value.
-		void setRect(FRect& newRect);
+		void setRect( FRect& newRect );
 		//! Returns a copy of the Element's FRect (size and position)
 		FRect getRect();
 		//! Sets the position of the Element
-		void setPos(FVector2& newPosition);
+		void setPos( FVector2& newPosition );
 		//! Sets the position of the Element
-		void setPos(const float& xPos, const float& yPos);
+		void setPos( const float& xPos, const float& yPos );
 		//! Sets the size of the Element
-		void setSize(FVector2& newSize);
+		void setSize( FVector2& newSize );
 		//! Sets the size of the Element
-		void setSize(const float& width, const float& height);
+		void setSize( const float& width, const float& height );
 
 		//! returns \c TRUE if this element is not disabled (enabled)
-		bool isEnabled(){return !mDisabled;}
+		bool isEnabled() {
+			return !mDisabled;
+		}
 		//! returns \c TRUE if this element is disabled
-		bool isDisabled(){return mDisabled;}
+		bool isDisabled() {
+			return mDisabled;
+		}
 		//! sets the Disabled state of the element.
 		/*! Disabled elements are still capable of receiving events, however,
 			they (and all of their children) are ignored for the purposes of
@@ -211,7 +214,9 @@ namespace OpenGUI{
 			events that are related to user input since none will be generated
 			for it as a destination.
 		*/
-		void setDisabled(bool disabled){mDisabled=disabled;}
+		void setDisabled( bool disabled ) {
+			mDisabled = disabled;
+		}
 
 		//! Sets the alpha level at this element
 		/*! The alpha setting allows you control the opacity of an element.
@@ -231,7 +236,7 @@ namespace OpenGUI{
 			so that an element with a completely transparent parent cannot force itself
 			to be shown by the use of an extremely high alpha setting.
 		*/
-		void setAlpha(float newAlpha);
+		void setAlpha( float newAlpha );
 		//! Retrieves this element's alpha setting.
 		/*! \note This is the alpha setting of \em this element, and does not directly reflect
 			the end alpha value that it used for display.
@@ -257,14 +262,18 @@ namespace OpenGUI{
 			and their performance will likely suffer.)</i>
 
 		*/
-		void setClipsChildren(bool clip){mClipsChildren=clip;}
+		void setClipsChildren( bool clip ) {
+			mClipsChildren = clip;
+		}
 		//! Returns \b TRUE if this element visually clips its children. \see setClipsChildren()
-		bool getClipsChildren(){return mClipsChildren;}
+		bool getClipsChildren() {
+			return mClipsChildren;
+		}
 
 		//! Returns the ZOrder index of this Element
 		int getZOrder();
 		//! Sets the ZOrder index of this Element
-		void setZOrder(int newZOrder);
+		void setZOrder( int newZOrder );
 		//! Sets the ZOrder index of this Element to one less than the lowest of its siblings \todo implement
 		void sendToBack();
 		//! Sets the ZOrder index of this Element to one higher than the highest of its siblings \todo implement
@@ -284,27 +293,31 @@ namespace OpenGUI{
 			set Always On Top, will always be on top of Elements that are not
 			set Always On Top.
 		*/
-		void setAlwaysOnTop(bool newAlwaysOnTop);
+		void setAlwaysOnTop( bool newAlwaysOnTop );
 
 		//! Sets the Client Area Scale used for this element's client area.
-		void setClientAreaScaleType(ClientAreaScale newCAS){mClientAreaScaleType = newCAS;}
+		void setClientAreaScaleType( ClientAreaScale newCAS ) {
+			mClientAreaScaleType = newCAS;
+		}
 		//! Returns the Client Area Scale used for this element's client area.
-		ClientAreaScale getClientAreaScaleType(){return mClientAreaScaleType;}
+		ClientAreaScale getClientAreaScaleType() {
+			return mClientAreaScaleType;
+		}
 
 
-	// Coordinate transform functions
+		// Coordinate transform functions
 		//! Returns an FVector2 in local coords that represents the given FVector2 in inner coords.
-		FVector2 convCoordInnerToLocal(FVector2 innerCoord);
+		FVector2 convCoordInnerToLocal( FVector2 innerCoord );
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in local coords.
-		FVector2 convCoordLocalToInner(FVector2 localCoord);
+		FVector2 convCoordLocalToInner( FVector2 localCoord );
 		//! Returns an FVector2 in world coords that represents the given FVector2 in local coords. (Local coords are just outside this Element's rect. The Element's rect, itself, is defined using local coords.)
-		FVector2 convCoordLocalToWorld(FVector2 localCoord);
+		FVector2 convCoordLocalToWorld( FVector2 localCoord );
 		//! Returns an FVector2 in world coords that represents the given FVector2 in inner coords. (Inner coords are inside this Element's rect)
-		FVector2 convCoordInnerToWorld(FVector2 innerCoord);
+		FVector2 convCoordInnerToWorld( FVector2 innerCoord );
 		//! Returns an FVector2 in local coords that represents the given FVector2 in world coords. (Local coords are just outside this Element's rect)
-		FVector2 convCoordWorldToLocal(FVector2 worldCoord);
+		FVector2 convCoordWorldToLocal( FVector2 worldCoord );
 		//! Returns an FVector2 in inner coords that represents the given FVector2 in world coords. (Inner coords are inside this Element's rect)
-		FVector2 convCoordWorldToInner(FVector2 worldCoord);
+		FVector2 convCoordWorldToInner( FVector2 worldCoord );
 
 		//! Returns an FVector2 containing the size of a single pixel in inner coords.
 		FVector2 getNativePixelSize_Inner();
@@ -344,7 +357,7 @@ namespace OpenGUI{
 				are passed back the class tree can, of course, be filtered by the
 				subclass if such resulting functionality is desired.
 		*/
-		virtual bool defaultMessageHandler(const Msg::Message& message);
+		virtual bool defaultMessageHandler( const Msg::Message& message );
 
 		//! Issue an Alert message from this Element.
 		/*!
@@ -352,10 +365,10 @@ namespace OpenGUI{
 			existing enum OpenGUI::Msg::Message_Alert::AlertType
 			\param alertData a pointer to a valid struct (either stack or free memory) that contains
 			the additional data required for the alert, if any. Otherwise 0.
-		
+
 			\see OpenGUI::Msg::Message_Alert
 		*/
-		void injectAlert(int alertType, void* alertData=0);
+		void injectAlert( int alertType, void* alertData = 0 );
 
 		//! This function will be called by the system whenever it needs the widget to redraw itself. Returned list should be depth ordered using a painters algorithm (back to front)
 		/*! This function should be overridden by custom widgets. The default implementation within
@@ -396,9 +409,9 @@ namespace OpenGUI{
 		- performCustomScaleOperation_Inner2Local()
 
 		*/
-		virtual FVector2 performCustomScaleOperation_Local2Inner(FVector2 localCoord);
+		virtual FVector2 performCustomScaleOperation_Local2Inner( FVector2 localCoord );
 		//! \see performCustomScaleOperation_Local2Inner()
-		virtual FVector2 performCustomScaleOperation_Inner2Local(FVector2 innerCoord);
+		virtual FVector2 performCustomScaleOperation_Inner2Local( FVector2 innerCoord );
 
 
 
@@ -416,13 +429,13 @@ namespace OpenGUI{
 			bounding box test before embarking on a more rigorous mathematical hit test. The likelihood
 			that this function will be called often is quite high.
 		*/
-		virtual bool pointIsInside(const FVector2& localPoint);
+		virtual bool pointIsInside( const FVector2& localPoint );
 
 		//! returns true if the given elementPtr identifies a descendant of this Element
-		bool isDescendant(Element* elementPtr);
+		bool isDescendant( Element* elementPtr );
 		//! returns true if the given elementName identifies a descendant of this Element
-		bool isDescendant(std::string elementName);
-		
+		bool isDescendant( std::string elementName );
+
 
 		//! This FVector2 holds the scale of this element's client area when the CAS_Custom scale type is used.
 		/*! This value is only used when the scale type is CAS_Custom, and is only used in calculations
@@ -436,7 +449,7 @@ namespace OpenGUI{
 		/*! This value should be used by \b all coordinate transformation implementations. The
 			built in Client Area Scale types all use this value as an amount to offset the client area,
 			using the same scale as defined for the client area.
-		
+
 			If CAS_Custom is used, and a custom implementation is provided, the implementation can choose to
 			somehow honor this value, though it is not required. It is never changed by the system directly,
 			though many scrollable window widget implementations will use this member to provide the desired
@@ -445,7 +458,7 @@ namespace OpenGUI{
 		FVector2 mClientRectOffset;
 
 
-		
+
 
 	private:
 		//! \internal transforms the positioning of the given render ops to properly contain them within this element.
@@ -454,18 +467,18 @@ namespace OpenGUI{
 
 			This function performs the necessary alterations on each render operation within the renderOpList.
 		*/
-		void __transformChildrenRenderOperationList(Render::RenderOperationList& renderOpList);
+		void __transformChildrenRenderOperationList( Render::RenderOperationList& renderOpList );
 
 
 		//! \internal adds the renderoplist of all children to the given renderOpList
-		void __getRenderOperationList_Children(Render::RenderOperationList& renderOpList);
+		void __getRenderOperationList_Children( Render::RenderOperationList& renderOpList );
 
 		//! \internal adds the current widget's renderoplist to the given renderOpList
-		void __getRenderOperationList_This(Render::RenderOperationList& renderOpList);
+		void __getRenderOperationList_This( Render::RenderOperationList& renderOpList );
 
 		//! \internal adds the current widget's renderoplist and all of its children's renderoplists to the given renderOpList
 		/*! This is accomplished by calls to \c __getRenderOperationList_Children() and \c __getRenderOperationList_This() */
-		void __buildRenderOperationList(Render::RenderOperationList& renderOpList);
+		void __buildRenderOperationList( Render::RenderOperationList& renderOpList );
 
 		//! Returns the first lowest descendant Element that is under the given point in inner coord space of this Element.
 		/*!
@@ -480,7 +493,7 @@ namespace OpenGUI{
 			converting the current value of the point into the inner coordinate space of the child
 			about to be called.
 		*/
-		Element* _getDecendantElementAt(FVector2 innerPoint, const bool activeOnly=true);
+		Element* _getDecendantElementAt( FVector2 innerPoint, const bool activeOnly = true );
 
 		//! Propagates an event using an event propagation list.
 		/*!
@@ -494,22 +507,22 @@ namespace OpenGUI{
 
 			\see buildElementAncestry()
 		*/
-		void _propogateEvent(Msg::Message& message, ElementAncestryList& propagationList);
+		void _propogateEvent( Msg::Message& message, ElementAncestryList& propagationList );
 		//! Propagates a global event by sending the event to all children.
 		/*! This function should only be used if the Event has no destination,
 			signifying that it is a global event.
 		*/
-		void _propogateGlobalEvent(const Msg::Message& message);
-		
+		void _propogateGlobalEvent( const Msg::Message& message );
+
 		//! Propagates an alert back down the hierarchy towards the GUISheet.
 		/*!	If the result of _fireEventSubscribers() and the result
 			of defaultEventHandler() are both true, call _propogateAlert() for
 			your parent (providing you have one).
 		*/
-		void _propogateAlert(const Msg::Message& message);
+		void _propogateAlert( const Msg::Message& message );
 
 		//! Fires the event subscribers and returns true only if they all returned true, otherwise returns false.
-		bool _fireMessageSubscribers(const Msg::Message& message);
+		bool _fireMessageSubscribers( const Msg::Message& message );
 
 		//! Builds an ancestry list starting with this Element.
 		/*!
@@ -523,7 +536,7 @@ namespace OpenGUI{
 					events walk as they work toward their goal Element.
 
 		*/
-		void buildElementAncestry(ElementAncestryList& ancestryList);
+		void buildElementAncestry( ElementAncestryList& ancestryList );
 
 		/*!
 			This is a list of all children elements. Elements are guaranteed to be sorted by ZOrder
@@ -543,8 +556,8 @@ namespace OpenGUI{
 		typedef std::list<EventListener*> EventListenerList;
 		EventListenerList mEventListeners;
 
-		void _setElementName(std::string newName); //!< Sets the name of this Element. Users should never have a reason to use this function. \see mName \note This is implemented and used via function to ensure proper DLL linking
-		void _setElementParent(Element* newParent); //!< Sets the parent of this Element. Users should never have a reason to use this function.  \note This is implemented and used via function for consistency with _setName()
+		void _setElementName( std::string newName ); //!< Sets the name of this Element. Users should never have a reason to use this function. \see mName \note This is implemented and used via function to ensure proper DLL linking
+		void _setElementParent( Element* newParent ); //!< Sets the parent of this Element. Users should never have a reason to use this function.  \note This is implemented and used via function for consistency with _setName()
 		Element* mParentElement; //!< Pointer to the parent of this Element. \note This is not necessarily another Element! Do not assume that it is! \warning Modifying this is very dangerous. In a word: Don't.
 		std::string mObjectName; //!< Holds the name of this object
 

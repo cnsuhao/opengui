@@ -6,8 +6,8 @@
 #include "OpenGUI_Singleton.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
-	// This warning can be disregarded
-	#pragma warning (disable : 4251)
+// This warning can be disregarded
+#pragma warning (disable : 4251)
 #endif
 
 #define OGLL_MSG	10
@@ -19,43 +19,81 @@
 #define OGLL_VERB	100
 #define OGLL_INSANE 200
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class Log; //forward declaration
 
 
 	//! LogListener interface class for creating custom log output streams.
-	class OPENGUI_API LogListener{
+	class OPENGUI_API LogListener {
 	public:
-		virtual ~LogListener(){}
+		virtual ~LogListener() {}
 		/*!
 			\param section Name of the log section the message came from
 			\param message The message itself
 			\param level The log level of the message
 		*/
-		virtual void write(std::string section, std::string message, unsigned int level)=0;
+		virtual void write( std::string section, std::string message, unsigned int level ) = 0;
 	};
 
 
-	class OPENGUI_API LogMessage 
-	{
+	class OPENGUI_API LogMessage {
 		friend class Log;
 	public:
 		LogMessage();
-		LogMessage& operator<< (std::string val ){mStream << val; return *this;}
-		LogMessage& operator<< (bool val ){mStream << val; return *this;}
-		LogMessage& operator<< (short val ){mStream << val; return *this;}
-		LogMessage& operator<< (unsigned short val ){mStream << val; return *this;}
-		LogMessage& operator<< (int val ){mStream << val; return *this;}
-		LogMessage& operator<< (unsigned int val ){mStream << val; return *this;}
-		LogMessage& operator<< (long val ){mStream << val; return *this;}
-		LogMessage& operator<< (unsigned long val ){mStream << val; return *this;}
-		LogMessage& operator<< (float val ){mStream << val; return *this;}
-		LogMessage& operator<< (double val ){mStream << val; return *this;}
-		LogMessage& operator<< (long double val ){mStream << val; return *this;}
-		LogMessage& operator<< (void* val ){mStream << "0x" << val; return *this;}
-		LogMessage& operator<< (OpenGUI::LogMessage& ( *pf ) (LogMessage&));
-		LogMessage& operator<< (std::ios_base& ( *pf )(std::ios_base&)){mStream << pf; return *this;}
-		LogMessage& operator<< (const char* str );
+		LogMessage& operator<< ( std::string val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( bool val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( short val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( unsigned short val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( int val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( unsigned int val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( long val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( unsigned long val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( float val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( double val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( long double val ) {
+			mStream << val;
+			return *this;
+		}
+		LogMessage& operator<< ( void* val ) {
+			mStream << "0x" << val;
+			return *this;
+		}
+		LogMessage& operator<< ( OpenGUI::LogMessage& ( *pf )( LogMessage& ) );
+		LogMessage& operator<< ( std::ios_base& ( *pf )( std::ios_base& ) ) {
+			mStream << pf;
+			return *this;
+		}
+		LogMessage& operator<< ( const char* str );
 	private:
 		Log* m_ParentLog;
 		unsigned int tmpLogLevel;
@@ -66,56 +104,56 @@ namespace OpenGUI{
 
 
 	//! Central log manager. Logging messages can be sent through this object, or a specific Log object
-	class OPENGUI_API LogManager : public Singleton<LogManager>{
+	class OPENGUI_API LogManager : public Singleton<LogManager> {
 		friend class Log;
 	public:
 		//NOTE : GCC doesn't like the -1 compiler trick
-		LogManager() : mLogListenerPtr(0), mLogLevel(-1) {}
+		LogManager() : mLogListenerPtr( 0 ), mLogLevel( -1 ) {}
 		//NOTE : GCC doesn't like the -1 compiler trick
-		LogManager(LogListener* listener) : mLogListenerPtr(listener), mLogLevel(-1) {}
+		LogManager( LogListener* listener ) : mLogListenerPtr( listener ), mLogLevel( -1 ) {}
 		~LogManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
-		static LogManager& getSingleton(void);
+		static LogManager& getSingleton( void );
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
-		static LogManager* getSingletonPtr(void);
+		static LogManager* getSingletonPtr( void );
 
 		//! Send a message through the given log.
 		/*! This is equivalent to getLog(log)->write(message, logLevel); \n
 			If \c log does not yet exist, it will be created.
 		*/
-		void logMsg(std::string log, std::string message, unsigned int logLevel);
+		void logMsg( std::string log, std::string message, unsigned int logLevel );
 
 		//! A stream like interface for writing to logs
 		/*! This should be pretty simple to use for just about everyone. Works just like
 			standard C++ stream (since it is based off of them).
 			myLogmanagerPtr->logMsg("myLog", 1) << "Here is my log entry, and the number " << 4 << Log::end;
 		*/
-		LogMessage& logMsg(std::string log, unsigned int logLevel);
+		LogMessage& logMsg( std::string log, unsigned int logLevel );
 
 		//! Same as logMsg, but implemented as a static function, with automatic singleton dereferencing. Should help make your code a little smaller.
-		static LogMessage& SlogMsg(std::string log, unsigned int logLevel){
-			return LogManager::getSingleton().logMsg(log, logLevel);
+		static LogMessage& SlogMsg( std::string log, unsigned int logLevel ) {
+			return LogManager::getSingleton().logMsg( log, logLevel );
 		};
 
 		//! Sets the used log listener to the given listener. Only 1 LogListener is used at a time.
 		/*! If you want more than 1 output stream, do it in a custom LogListener. */
-		void setLogListener(LogListener* listener);
+		void setLogListener( LogListener* listener );
 
 		//! Sets the log level that is applied to all messages. This check occurs after the log specific checks.
-		void setLevel(unsigned int logLevel);
+		void setLevel( unsigned int logLevel );
 
 		//! Explicitly create a new log. \note Log names are case sensitive
-		Log* createLog(std::string name);
+		Log* createLog( std::string name );
 		//! Get a log by name
-		Log* getLog(std::string name);
+		Log* getLog( std::string name );
 		//! Destroy a log by name
-		void destroyLog(std::string name);
+		void destroyLog( std::string name );
 	protected:
-		void _writeLogListener(std::string log, std::string message, unsigned int logLevel);
+		void _writeLogListener( std::string log, std::string message, unsigned int logLevel );
 	private:
 		LogListener* mLogListenerPtr;
 		typedef std::map<std::string, Log*> LogMap;
@@ -123,32 +161,32 @@ namespace OpenGUI{
 		unsigned int mLogLevel;
 	};
 
-	
 
-	
 
-	
+
+
+
 
 	//! A log represents a categorization type for messages. Each log is given its own logLevel setting, in addition to the setLevel of the LogManager.
-	class OPENGUI_API Log{
+	class OPENGUI_API Log {
 		friend class LogManager;
 	public:
 
 		//! Sets the log level. Messages with a higher value than the current logLevel are not logged.
-		void setLevel(unsigned int newLogLevel);
+		void setLevel( unsigned int newLogLevel );
 
 		//! Write a message to this log.
-		void write(std::string message, unsigned int logLevel);
+		void write( std::string message, unsigned int logLevel );
 
 		//! Used for << notation
-		LogMessage& write(unsigned int logLevel);
+		LogMessage& write( unsigned int logLevel );
 
 		//! Writes a LogMessage to the Log. This is also a stream manipulator for LogMessage.
-		static LogMessage& endlog(LogMessage& in);
+		static LogMessage& endlog( LogMessage& in );
 
 	protected:
 		//! Protected constructor. Logs are created only by the LogManager
-		Log(LogManager* parent, std::string name);
+		Log( LogManager* parent, std::string name );
 		~Log();
 	private:
 		std::string mName;
@@ -159,16 +197,17 @@ namespace OpenGUI{
 
 
 	//! Default implementation of a LogListener. This one simply writes to a file, truncating it on open.
-	class OPENGUI_API LogListenerToFile : public LogListener{
+	class OPENGUI_API LogListenerToFile : public LogListener {
 	public:
-		LogListenerToFile(std::string filename);
+		LogListenerToFile( std::string filename );
 		virtual ~LogListenerToFile();
-		virtual void write(std::string section, std::string message, unsigned int level);
+		virtual void write( std::string section, std::string message, unsigned int level );
 	private:
 		std::ofstream mFile;
 	};
 
-}; //namespace OpenGUI{
+}
+; //namespace OpenGUI{
 
 #endif
 

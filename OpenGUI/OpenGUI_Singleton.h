@@ -15,31 +15,26 @@
 //Reference to author of this singleton's base:
 /* "Portions Copyright (C) Scott Bilas, 2000" */
 
-namespace OpenGUI{
-	template <typename T> class Singleton
-	{
+namespace OpenGUI {
+	template <typename T> class Singleton {
 	protected:
 		static T* mptr_Singleton;
 	public:
-		Singleton()
-		{
+		Singleton() {
 			assert( !mptr_Singleton );
-			mptr_Singleton = static_cast<T*>(this);
+			mptr_Singleton = static_cast<T*>( this );
 		}
 
-		~Singleton()
-		{
+		~Singleton() {
 			assert( mptr_Singleton );
 			mptr_Singleton = 0;
 		}
 
-		static T& getSingleton( void )
-		{
+		static T& getSingleton( void ) {
 			assert( mptr_Singleton );
 			return ( *mptr_Singleton );
 		}
-		static T* getSingletonPtr( void )
-		{
+		static T* getSingletonPtr( void ) {
 			assert( mptr_Singleton );
 			return mptr_Singleton;
 		}

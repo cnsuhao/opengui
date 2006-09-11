@@ -5,7 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	/*! \brief
 		Represents in memory Texture data.
 		Also provides built-in loading of BMP, GIF, JPEG, PCX, PNG, and TGA image files
@@ -20,8 +20,7 @@ namespace OpenGUI{
 		If you want something more robust, "http://openil.sourceforge.net",
 		and load them yourself. =)
 	*/
-	class OPENGUI_API TextureData
-	{
+	class OPENGUI_API TextureData {
 	public:
 		TextureData(); //!< constructor
 		~TextureData(); //!< destructor
@@ -40,7 +39,7 @@ namespace OpenGUI{
 			The \c dataSource is copied to a new buffer, so updates to buffer originally given will not
 			be reflected in the texture data.
 		*/
-		void setData(int width, int height, int bpp, void* dataSource);
+		void setData( int width, int height, int bpp, void* dataSource );
 
 		//! Creates new internal data with the given width and height and bpp, initializes with the given initData.
 		/*!
@@ -51,7 +50,7 @@ namespace OpenGUI{
 				The contents of the array will be repeated as initialization data for the contents of the
 				TextureData. If zero is given in place of a valid pointer, all bytes will be initialized to 0.
 		*/
-		void createNewData(int width, int height, int bpp, unsigned char* initData);
+		void createNewData( int width, int height, int bpp, unsigned char* initData );
 	private:
 		unsigned char* mPixelData;
 		int mHeight; //image height
@@ -60,8 +59,9 @@ namespace OpenGUI{
 	public:
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
-		static TextureData* LoadTextureData(std::string filename);
+		static TextureData* LoadTextureData( std::string filename );
 
 	};
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif

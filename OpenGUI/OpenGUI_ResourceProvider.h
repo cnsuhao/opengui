@@ -4,10 +4,9 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Resource.h"
-namespace OpenGUI{
+namespace OpenGUI {
 	//! Abstract class. Used as a base class for custom resource providers.
-	class OPENGUI_API ResourceProvider
-	{
+	class OPENGUI_API ResourceProvider {
 	public:
 		// Constructor (base implemenation does nothing)
 		ResourceProvider() { }
@@ -15,11 +14,12 @@ namespace OpenGUI{
 		virtual ~ResourceProvider() { }
 
 		//! This will be called whenever %OpenGUI needs data from the registered resource provider.
-		virtual void loadResource(const std::string& filename, Resource& output)=0;
+		virtual void loadResource( const std::string& filename, Resource& output ) = 0;
 
 		//! This is called whenever %OpenGUI is done with the data and is ready to destroy the Resource contents
-		virtual void unloadResource(Resource& resource)=0;
+		virtual void unloadResource( Resource& resource ) = 0;
 	};
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 

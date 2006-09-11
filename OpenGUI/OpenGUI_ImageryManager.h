@@ -7,13 +7,13 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Imageset.h"
 
-namespace OpenGUI{
-	
+namespace OpenGUI {
+
 	/*! \brief
 		Provides management services for loading, unloading, keeping track of,
 		and searching for Imageset and the children Image objects.\n \b [Singleton]
 	*/
-	class OPENGUI_API ImageryManager : public Singleton<ImageryManager>{
+	class OPENGUI_API ImageryManager : public Singleton<ImageryManager> {
 		friend class XMLParser;
 		friend class Imageset;
 	public:
@@ -22,11 +22,11 @@ namespace OpenGUI{
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
-		static ImageryManager& getSingleton(void);
+		static ImageryManager& getSingleton( void );
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
-		static ImageryManager* getSingletonPtr(void);
+		static ImageryManager* getSingletonPtr( void );
 
 
 		//! Create a new Imageset.
@@ -38,7 +38,7 @@ namespace OpenGUI{
 				can also be used to later retrieve the Imageset pointer via getImageset()
 			\return pointer to the newly created imageset, or 0 on failure.
 		*/
-		Imageset* createImageset(std::string imageFilename);
+		Imageset* createImageset( std::string imageFilename );
 
 		//! Create a new Imageset from an existing texture.
 		/*! This acts much like the file-based \c createImageset() function, with the
@@ -74,51 +74,52 @@ namespace OpenGUI{
 				On failure the return value is 0, and the given \c texture does not become the
 				property of the Imageset.
 		*/
-		Imageset* createImagesetFromTexture(Texture* texture, std::string imageFilename="");
-		
+		Imageset* createImagesetFromTexture( Texture* texture, std::string imageFilename = "" );
+
 		//! Returns a pointer to the Imageset that was created using the given filename, or 0 on failure.
-		Imageset* getImageset(std::string imageFilename);
+		Imageset* getImageset( std::string imageFilename );
 
 		//! Returns a pointer to the Imageset that is based on the given \c texture, or 0 on failure.
-		Imageset* getImagesetByTexture(Texture* texture);
+		Imageset* getImagesetByTexture( Texture* texture );
 
 		//! Destroys an Imageset.
-		void destroyImageset(Imageset* pImageset);
+		void destroyImageset( Imageset* pImageset );
 		//! Destroys an Imageset.
-		void destroyImageset(std::string imageFilename);
+		void destroyImageset( std::string imageFilename );
 		//! Destroys all Imagesets
 		void destroyAllImagesets();
 
 		//! Searches all Imagesets for imagery of the given name and returns the first instance found.
 		/*! \returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
-		ImageryPtr getImagery(std::string imageryName);
+		ImageryPtr getImagery( std::string imageryName );
 
 		//! Loads Imagesets from an XML document.
 		/*! Any conflicting Imagesets will be overwritten, any non-imageset related
 			XML entities are silently ignored (only processes \<Imageset\> and enclosed \<Imagery\> tags).
 		*/
-		void LoadImagesetsFromXML(std::string xmlFilename);
+		void LoadImagesetsFromXML( std::string xmlFilename );
 
 		//Internal use only
 		Imageset* __getDefaultImageset();
 
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
-		
+
 		//! Returns an ImagesetList of all imagesets that are currently loaded. Items can be fed back into getImageset()
 		ImagesetList getImagesetList();
-		
+
 	private:
 		ImagesetCPtrList mImagesetList;
 		Imageset* mDefaultImageset;
 		void __buildDefaultImageset();
 		void __destroyDefaultImageset();
-		Imageset* _loadImagesetFromTinyXMLElement(void* tXelementPtr);
-		
+		Imageset* _loadImagesetFromTinyXMLElement( void* tXelementPtr );
+
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 
 #endif
 

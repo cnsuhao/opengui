@@ -5,33 +5,33 @@
 #include "OpenGUI_EventListener.h"
 #include "OpenGUI_Element.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//#####################################################################
-	EventListener::EventListener(Element* elementToBind){
+	EventListener::EventListener( Element* elementToBind ) {
 		mAttachedElement = 0;
-		if(elementToBind)
-			attach(elementToBind);
+		if ( elementToBind )
+			attach( elementToBind );
 	}
 	//#####################################################################
-	EventListener::~EventListener(){
-		if(isAttached())
+	EventListener::~EventListener() {
+		if ( isAttached() )
 			detach();
 	}
 	//#####################################################################
-	void EventListener::attach(Element* elementToBind){
+	void EventListener::attach( Element* elementToBind ) {
 		detach();
-		if(elementToBind){
-			elementToBind->attachEventListener(this);
+		if ( elementToBind ) {
+			elementToBind->attachEventListener( this );
 		}
 	}
 	//#####################################################################
-	void EventListener::detach(){
-		if(mAttachedElement){
-			mAttachedElement->detachEventListener(this);
+	void EventListener::detach() {
+		if ( mAttachedElement ) {
+			mAttachedElement->detachEventListener( this );
 		}
 	}
 	//#####################################################################
-	void EventListener::_setAttachedElement(Element* newElement){
+	void EventListener::_setAttachedElement( Element* newElement ) {
 		mAttachedElement = newElement;
 	}
 	//#####################################################################

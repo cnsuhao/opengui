@@ -3,18 +3,17 @@
 #include "OpenGUI.h"
 #include "OpenGUI_PropertySet.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	/*! \brief
 		All basic widgets are contained within this namespace. If you want to 
 		create a custom widget, your widget should be a subclass of something
 		from in here.
 	*/
-	namespace Widgets{
+	namespace Widgets {
 
 		//! The widget class is the base class for all Widgets.
-		class OPENGUI_API Widget : public OpenGUI::Element, public OpenGUI::PropertySet
-		{
+		class OPENGUI_API Widget : public OpenGUI::Element, public OpenGUI::PropertySet {
 		public:
 			//! constructor
 			Widget();
@@ -32,18 +31,20 @@ namespace OpenGUI{
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
 		private:
-			static bool _prop_SetPos(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetPos(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetSize(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetSize(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetPos( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetPos( PropertySet* widget, const std::string& propertyName, std::string& curValue );
+			static bool _prop_SetSize( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetSize( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 
-			static bool _prop_SetEnabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetEnabled(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetEnabled( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetEnabled( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 
-			static bool _prop_SetAlpha(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetAlpha(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetAlpha( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetAlpha( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 		};
-	};//namespace Widgets{
-};//namespace OpenGUI{
+	}
+	;//namespace Widgets{
+}
+;//namespace OpenGUI{
 #endif
 

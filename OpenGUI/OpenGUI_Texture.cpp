@@ -1,10 +1,10 @@
 #include "OpenGUI.h"
-namespace OpenGUI{
+namespace OpenGUI {
 	//#############################################
-	std::string Texture::getName()
-	{
+	std::string Texture::getName() {
 		return mTextureName;
 	}
 	//#############################################
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 

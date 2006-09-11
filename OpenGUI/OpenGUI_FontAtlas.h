@@ -7,38 +7,41 @@
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_TextureDataRect.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	class Imageset;
 
-	typedef struct _FontAtlasRow{
+	typedef struct _FontAtlasRow {
 		unsigned int Row; //The Y position this row starts at
 		unsigned int Height; //the height of the row
 		unsigned int RowWidth; //the width of area used in this row
-	} FontAtlasRow;
+	}
+	FontAtlasRow;
 
 	//! \internal A FontAtlas is a Texture containing several rendered font glyphs, this implementation provides additional space management functionality, and is used internally by the Font system.
 	/*! \todo Redo the way real estate is managed. This current system sucks. It works, but it sucks. */
-	class FontAtlas{
+	class FontAtlas {
 	public:
-		FontAtlas(IVector2 dimensions);
+		FontAtlas( IVector2 dimensions );
 		~FontAtlas();
 
-		bool GetAvailableChunk(IVector2 sizeNeeded, IRect& returnedChunk, bool reserveSpaceFound=false);
-		bool WriteChunk(TextureDataRect* chunkToWrite, IRect& returnedChunk);
-		Imageset* GetImageset() { return mImageset; }
+		bool GetAvailableChunk( IVector2 sizeNeeded, IRect& returnedChunk, bool reserveSpaceFound = false );
+		bool WriteChunk( TextureDataRect* chunkToWrite, IRect& returnedChunk );
+		Imageset* GetImageset() {
+			return mImageset;
+		}
 
 		unsigned int statUsedArea() const;
 		unsigned int statAvailableArea() const;
 		unsigned int statTotalArea() const;
 	private:
 		typedef std::list<IRect> IRectList;
-		typedef std::pair<IRect,IRect> IRectPair;
+		typedef std::pair<IRect, IRect> IRectPair;
 
-		void _UpdateTexture(const IRect& updateRect);
+		void _UpdateTexture( const IRect& updateRect );
 
-		IRectPair _splitIRect(const IRect& sourceIRect, const IVector2& subtractSpace);
-		
+		IRectPair _splitIRect( const IRect& sourceIRect, const IVector2& subtractSpace );
+
 
 		typedef std::list<FontAtlasRow> FontAtlasRowList;
 		FontAtlasRowList mRowList;
@@ -49,10 +52,11 @@ namespace OpenGUI{
 		TextureData mTextureData;
 		Imageset* mImageset;
 
-		
+
 		IRectList mFreeRectList;
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 

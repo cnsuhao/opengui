@@ -6,13 +6,12 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RefPtr.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class Texture; //forward declaration
 	class Imageset; //forward declaration
 
 	//! Defines a sub area of an Imageset.
-	class OPENGUI_API Imagery
-	{
+	class OPENGUI_API Imagery {
 		friend class __RefObj<Imagery>; //required for RefPtr to have access to destroy these objects
 		friend class Imageset;
 	public:
@@ -42,7 +41,7 @@ namespace OpenGUI{
 		std::string getName();
 
 	private:
-		Imagery() : mName(""),mParentImageset(0) { }
+		Imagery() : mName( "" ), mParentImageset( 0 ) { }
 		~Imagery() { }
 		std::string mName;
 		FRect mAreaRect;
@@ -51,7 +50,8 @@ namespace OpenGUI{
 	};
 	typedef RefPtr<Imagery> ImageryPtr;
 	typedef std::list<ImageryPtr> ImageryPtrList;
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 
 

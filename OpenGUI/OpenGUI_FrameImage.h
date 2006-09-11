@@ -3,8 +3,8 @@
 
 #include "OpenGUI_BaseWidgets.h"
 
-namespace OpenGUI{
-	namespace Widgets{
+namespace OpenGUI {
+	namespace Widgets {
 
 		/*! \brief This Widget provides a method of drawing auto-scaling images,
 			useful for backgrounds in buttons other objects that require variable
@@ -12,8 +12,7 @@ namespace OpenGUI{
 
 			\see \ref BW_FrameImage "ScalingImage widget documentation"
 		*/
-		class OPENGUI_API FrameImage : public Widget
-		{
+		class OPENGUI_API FrameImage : public Widget {
 		public:
 			//! Constructor
 			FrameImage();
@@ -21,25 +20,25 @@ namespace OpenGUI{
 			virtual ~FrameImage();
 
 			//! Sets imagery for the Upper Left zone
-			void setImagery_UL(std::string imageryName);
+			void setImagery_UL( std::string imageryName );
 			//! Sets imagery for the Upper Middle zone
-			void setImagery_UM(std::string imageryName);
+			void setImagery_UM( std::string imageryName );
 			//! Sets imagery for the Upper Right zone
-			void setImagery_UR(std::string imageryName);
+			void setImagery_UR( std::string imageryName );
 
 			//! Sets imagery for the Middle Left zone
-			void setImagery_ML(std::string imageryName);
+			void setImagery_ML( std::string imageryName );
 			//! Sets imagery for the Middle Middle zone
-			void setImagery_MM(std::string imageryName);
+			void setImagery_MM( std::string imageryName );
 			//! Sets imagery for the Middle Right zone
-			void setImagery_MR(std::string imageryName);
+			void setImagery_MR( std::string imageryName );
 
 			//! Sets imagery for the Lower Left zone
-			void setImagery_LL(std::string imageryName);
+			void setImagery_LL( std::string imageryName );
 			//! Sets imagery for the Lower Middle zone
-			void setImagery_LM(std::string imageryName);
+			void setImagery_LM( std::string imageryName );
 			//! Sets imagery for the Lower Right zone
-			void setImagery_LR(std::string imageryName);
+			void setImagery_LR( std::string imageryName );
 
 			//! This is just a factory interface.
 			static Widget* createFrameImageFactory();
@@ -58,8 +57,8 @@ namespace OpenGUI{
 
 
 		private:
-			static bool _prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetImagery( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetImagery( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 		};
 
 	}//namespace Widgets{
