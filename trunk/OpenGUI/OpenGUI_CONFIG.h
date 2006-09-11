@@ -17,7 +17,7 @@
 // simply make the smallest possible font atlas that will hold the next glyph.
 //
 // This code is highly experimental, and it is recommended that you don't use it.
-// 
+//
 // To turn on, uncomment. To turn off, just comment out.
 // #define FONTCACHE_GUESS_FONTATLAS_SIZE
 

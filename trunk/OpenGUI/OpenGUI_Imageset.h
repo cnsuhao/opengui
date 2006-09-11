@@ -6,27 +6,26 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Texture.h"
 
-namespace OpenGUI{
-	
+namespace OpenGUI {
+
 	//! Imagesets directly represent entire image files. They contain Imagery, which provide a usable window of the image file.
-	class OPENGUI_API Imageset
-	{
+	class OPENGUI_API Imageset {
 		friend class ImageryManager;
 		friend class Imagery;
 	public:
 		//! Applications should use the ImageryManager to creation Imagesets
-		Imageset(Texture* texturePtr,std::string sourceImageFilename);
+		Imageset( Texture* texturePtr, std::string sourceImageFilename );
 		~Imageset();
-	
+
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery(std::string imageryName);
+		ImageryPtr createImagery( std::string imageryName );
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the Imageset area defined by areaRect (which is in standard UV coordinates).
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery(std::string imageryName, FRect areaRect, IRect imagesetRect=IRect(0,0,0,0));
+		ImageryPtr createImagery( std::string imageryName, FRect areaRect, IRect imagesetRect = IRect( 0, 0, 0, 0 ) );
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery.  The new Imagery will encompass the Imageset area defined by areaRect (which is in pixels).
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery(std::string imageryName, IRect areaRect);
+		ImageryPtr createImagery( std::string imageryName, IRect areaRect );
 
 		//! Destroys an Imagery object.
 		/*! This performs a "safe destruction" of the Imagery object. Since Imagery
@@ -40,11 +39,11 @@ namespace OpenGUI{
 
 			The default image can be seen \ref DefaultImageset "here"
 		*/
-		void destroyImagery(ImageryPtr imageryPtr);
+		void destroyImagery( ImageryPtr imageryPtr );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
-		void destroyImagery(Imagery* pImagery);
+		void destroyImagery( Imagery* pImagery );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
-		void destroyImagery(std::string name);
+		void destroyImagery( std::string name );
 
 		//! Destroys all Imagery within this Imageset. \note Preserves the "safe destruction" of Imagery, as defined in destroyImagery().
 		void destroyAllImagery();
@@ -53,7 +52,7 @@ namespace OpenGUI{
 			Imageset that has the given name. If the Imagery cannot be found,
 			the returned Imagery pointer will be == 0.
 		*/
-		ImageryPtr getImagery(std::string imageryName);
+		ImageryPtr getImagery( std::string imageryName );
 
 		//! A string list used by Imageset::getImageryList()
 		typedef std::list<std::string> ImageryList;
@@ -74,11 +73,12 @@ namespace OpenGUI{
 		void _unloadTexture();
 
 		//Takes a TiXML element pointer of the Imageset element as an argument.
-		void _loadImageryFromRootTinyXMLElement(void* tXrootElementPtr);
+		void _loadImageryFromRootTinyXMLElement( void* tXrootElementPtr );
 	};
 	typedef RefPtr<Imageset> ImagesetPtr;
 	typedef std::list<ImagesetPtr> ImagesetPtrList;
 	typedef std::list<Imageset*> ImagesetCPtrList;
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 

@@ -6,9 +6,9 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RenderOperation.h"
 
-namespace OpenGUI{
-	
-	namespace Render{
+namespace OpenGUI {
+
+	namespace Render {
 
 		/*! \brief
 		This primitive performs a rotation operation on the provided render
@@ -25,34 +25,37 @@ namespace OpenGUI{
 		issue yourself if it matters to you.
 
 		*/
-		class OPENGUI_API PrimitiveRotation : public Primitive
-		{
+		class OPENGUI_API PrimitiveRotation : public Primitive {
 		public:
 			//! default constructor
-			PrimitiveRotation() : mRadians(0), mOrigin(FVector2(0.0f,0.0f)) {}
+			PrimitiveRotation() : mRadians( 0 ), mOrigin( FVector2( 0.0f, 0.0f ) ) {}
 			virtual ~PrimitiveRotation() {}
 
 			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
 
 			//! Sets the origin of the rotation to the given location
-			void setOrigin(const FVector2& newOrigin){ mOrigin = newOrigin; }
+			void setOrigin( const FVector2& newOrigin ) {
+				mOrigin = newOrigin;
+			}
 			//! Sets the rotation angle in radians
-			void setAngleRadians(float newAngle){ mRadians = newAngle; }
+			void setAngleRadians( float newAngle ) {
+				mRadians = newAngle;
+			}
 			//! Sets the rotation angle in degrees
-			void setAngleDegrees(float newAngle);
+			void setAngleDegrees( float newAngle );
 
 			//! Adds a single RenderOperation to the input RenderOperationList
-			void addRenderOperation(const RenderOperation& renderOp);
+			void addRenderOperation( const RenderOperation& renderOp );
 			//! Adds an entire RenderOperationList to the input RenderOperationList
-			void addRenderOperation(const RenderOperationList& renderOpList);
+			void addRenderOperation( const RenderOperationList& renderOpList );
 		private:
 			float mRadians;
 			FVector2 mOrigin;
 			RenderOperationList mInputRenderOps;
 
-			inline void _rotateFV2(FVector2& point);
-			inline void _rotateRenderOp(RenderOperation& renderOp);
+			inline void _rotateFV2( FVector2& point );
+			inline void _rotateRenderOp( RenderOperation& renderOp );
 		};
 
 		/*! \brief
@@ -82,36 +85,41 @@ namespace OpenGUI{
 		so this Primitive can be trusted with RenderOperations that have
 		a specific draw order.
 		*/
-		class OPENGUI_API PrimitiveScissorRect : public Primitive
-		{
+		class OPENGUI_API PrimitiveScissorRect : public Primitive {
 		public:
 			//! default constructor
-			PrimitiveScissorRect() : mRect(FRect(0.0f,0.0f,1.0f,1.0f)) {}
+			PrimitiveScissorRect() : mRect( FRect( 0.0f, 0.0f, 1.0f, 1.0f ) ) {}
 			virtual ~PrimitiveScissorRect() {}
 			//! Returns the RenderOperationList that is the result of this primitive
 			RenderOperationList getRenderOperationList();
-			//! Get the current position and size of the ScissorRect 
-			FRect getRect(){return mRect;}
+			//! Get the current position and size of the ScissorRect
+			FRect getRect() {
+				return mRect;
+			}
 			//! Sets the size and position of the ScissorRect to the given FRect
-			void setRect(FRect rect){mRect=rect;}
+			void setRect( FRect rect ) {
+				mRect = rect;
+			}
 
 			//! Adds a single RenderOperation to the input RenderOperationList
-			void addRenderOperation(const RenderOperation& renderOp);
+			void addRenderOperation( const RenderOperation& renderOp );
 			//! Adds an entire RenderOperationList to the input RenderOperationList
-			void addRenderOperation(const RenderOperationList& renderOpList);
+			void addRenderOperation( const RenderOperationList& renderOpList );
 			//! Clears the input RenderOperationList
 			void clear();
 		private:
 			FRect mRect; //size and position of this ScissorRect
 			RenderOperationList mInputRenderOps;
 
-			void _SliceRenderOp_Vert_SaveLeft(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Vert_SaveRight(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Horiz_SaveTop(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			void _SliceRenderOp_Horiz_SaveBottom(RenderOperation& input, RenderOperationList& output, float cutPosition);
-			static void sliceLineSegment(Vertex& vert1, Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal);
+			void _SliceRenderOp_Vert_SaveLeft( RenderOperation& input, RenderOperationList& output, float cutPosition );
+			void _SliceRenderOp_Vert_SaveRight( RenderOperation& input, RenderOperationList& output, float cutPosition );
+			void _SliceRenderOp_Horiz_SaveTop( RenderOperation& input, RenderOperationList& output, float cutPosition );
+			void _SliceRenderOp_Horiz_SaveBottom( RenderOperation& input, RenderOperationList& output, float cutPosition );
+			static void sliceLineSegment( Vertex& vert1, Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal );
 		};
-	};//namespace Render{
-};//namespace OpenGUI{
+	}
+	;//namespace Render{
+}
+;//namespace OpenGUI{
 
 #endif

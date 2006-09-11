@@ -3,8 +3,8 @@
 
 #include "OpenGUI_BaseWidgets.h"
 
-namespace OpenGUI{
-	namespace Widgets{
+namespace OpenGUI {
+	namespace Widgets {
 		/*! \brief This widget is a very simple sub-classing of Widget,
 			just so that applications can create container widgets easily via
 			an abstracted method.
@@ -12,8 +12,7 @@ namespace OpenGUI{
 
 		\see \ref BW_Container "Container widget documentation"
 		*/
-		class OPENGUI_API Container : public Widget
-		{
+		class OPENGUI_API Container : public Widget {
 		public:
 			//! Constructor
 			Container();

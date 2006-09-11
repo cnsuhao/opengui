@@ -1,7 +1,7 @@
 #ifndef BE0F3698_B136_43b6_993F_F93035AB500C
 #define BE0F3698_B136_43b6_993F_F93035AB500C
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//! Provides complete loading of xml files containing data for all different subsystems.
 	/*! This class provides complete parsing of XML files. It will delegate top level tags
 		to the necessary subsystem as it sees them, so you can load data into several
@@ -22,13 +22,13 @@ namespace OpenGUI{
 
 		\see \ref XMLDOC "The XML Documentation" for a complete reference to using XML with %OpenGUI.
 	*/
-	class OPENGUI_API XMLParser{
+	class OPENGUI_API XMLParser {
 	public:
 		//! Reads the given XML file from the registered resource manager and parses the file according to the \ref XMLDOC "XML specifications"
-		static void LoadFromFile(const std::string& xmlFilename);
+		static void LoadFromFile( const std::string& xmlFilename );
 	private:
 		typedef std::set<std::string> IncludeSet;
-		static void ParseXMLFile(const std::string& xmlFilename, IncludeSet& includesToIgnore, unsigned int depth);
+		static void ParseXMLFile( const std::string& xmlFilename, IncludeSet& includesToIgnore, unsigned int depth );
 	};
 };
 

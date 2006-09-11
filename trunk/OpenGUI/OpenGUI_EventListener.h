@@ -13,7 +13,7 @@
 #include "OpenGUI_Message.h"
 
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	class Element; //forward declaration
 
@@ -22,23 +22,27 @@ namespace OpenGUI{
 		Attaching can be performed either by the EventListener::attach() method, or by
 		Element::attachEventListener().
 	*/
-	class OPENGUI_API EventListener{
+	class OPENGUI_API EventListener {
 	public:
 		//! Newly created listeners can be created in either an initially attached or detached state according to \c elementToBind
-		EventListener(Element* elementToBind=0);
+		EventListener( Element* elementToBind = 0 );
 		//! Automatically detaches on destruction if necessary
 		virtual ~EventListener();
 		//! Attaches this listener to the given \c elementToBind.
 		/*! This will automatically detach any existing Element before binding to
 			the new one.
 		*/
-		void attach(Element* elementToBind);
+		void attach( Element* elementToBind );
 		//! Detaches from the current Element. Multiple calls cause no ill effect
 		void detach();
 		//! Returns \c TRUE if the listener is attached to an Element
-		bool isAttached() { return 0 != mAttachedElement; }
+		bool isAttached() {
+			return 0 != mAttachedElement;
+		}
 		//! Returns a pointer to the currently attached Element, or 0 if not attached
-		Element* getElement(){ return mAttachedElement; }
+		Element* getElement() {
+			return mAttachedElement;
+		}
 
 		//! Pure Virtual, Needs Implementing by subclass
 		/*! This function will be called whenever an event passes through the attached
@@ -56,13 +60,13 @@ namespace OpenGUI{
 				other event handlers that already ran or will run.) If unsure what to do
 				with an event (ie. default action), you should return \c TRUE.
 		*/
-		virtual bool onEvent(const Msg::Message& msg) =0;
+		virtual bool onEvent( const Msg::Message& msg ) = 0;
 
 	protected:
 	private:
 		friend class Element; //needed for access to _setAttachedElement()
 		//! \internal This is called by the to-be-attached Element to complete the attachment process
-		void _setAttachedElement(Element* newElement);
+		void _setAttachedElement( Element* newElement );
 		Element* mAttachedElement; //!< \internal pointer to the Element to which this listener is currently attached
 	};
 

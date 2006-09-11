@@ -17,17 +17,17 @@ A few quick notes on this design:
 		as possible. A patch that sped this whole process up would be most welcomed.
 ///////////////////////////////////////////////*/
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class Font;
 	class FontAtlas;
 
-	
 
-	class FontCacheGlyphSet{
+
+	class FontCacheGlyphSet {
 	public:
 		Font* font;
 		IVector2 glyphSize;
-		typedef std::map<char,FontGlyph> GlyphMap;
+		typedef std::map<char, FontGlyph> GlyphMap;
 		GlyphMap mGlyphMap;
 	};
 
@@ -38,21 +38,20 @@ namespace OpenGUI{
 		glyph renderings, and it shall be provided.
 
 	*/
-	class FontCache
-	{
+	class FontCache {
 	public:
 		FontCache();
 		~FontCache();
-		void GetGlyph(Font* font, char glyph_charCode,
-			const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph);
+		void GetGlyph( Font* font, char glyph_charCode,
+					   const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph );
 
 		//! Flushes all glyphs from a given font
-		void FlushFont(Font* font);
-		
+		void FlushFont( Font* font );
+
 	private:
-		IVector2 _calcNewAtlasSize(const IVector2& estimatedGlyphSize);
-		FontCacheGlyphSet* _GetFontCacheGlyphSet(Font* font, const IVector2& glyph_pixelSize);
-		void _RenderGlyph(FontCacheGlyphSet* glyphSet, char glyph_charCode);
+		IVector2 _calcNewAtlasSize( const IVector2& estimatedGlyphSize );
+		FontCacheGlyphSet* _GetFontCacheGlyphSet( Font* font, const IVector2& glyph_pixelSize );
+		void _RenderGlyph( FontCacheGlyphSet* glyphSet, char glyph_charCode );
 
 		void _DestroyAllGlyphSets();
 		void _DestroyAllFontAtlas();
@@ -65,6 +64,7 @@ namespace OpenGUI{
 		FontAtlasList mFontAtlasList;
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 
 #endif

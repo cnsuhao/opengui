@@ -6,7 +6,7 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Timer.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	/*! \brief
 	Provides timing services for %OpenGUI widgets and applications.
@@ -27,11 +27,11 @@ namespace OpenGUI{
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
-		static TimerManager& getSingleton(void);
+		static TimerManager& getSingleton( void );
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
-		static TimerManager* getSingletonPtr(void);
+		static TimerManager* getSingletonPtr( void );
 
 		//! Returns a RefPtr to a Timer object that is ready for immediate use. The returned Timer is pre-synced to the current time.
 		TimerPtr getTimer();
@@ -43,7 +43,7 @@ namespace OpenGUI{
 		unsigned long getMillisecondsSinceStart();
 
 	protected:
-		void _addTime(unsigned int amount);
+		void _addTime( unsigned int amount );
 		unsigned long m_timeSinceStart;
 
 		//This performs an injection of ticks into the system. Only call this if the app is NOT supplying its own ticks
@@ -78,6 +78,7 @@ namespace OpenGUI{
 		*/
 	};
 
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 
 #endif

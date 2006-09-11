@@ -22,15 +22,15 @@
 
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
-    #include <time.h>
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #include <Mmsystem.h>
+#include <time.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <Mmsystem.h>
 #endif
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_LINUX
-    #include <dlfcn.h>
-    #define strcmpi strcasecmp
+#include <dlfcn.h>
+#define strcmpi strcasecmp
 #endif
 
 #endif

@@ -8,7 +8,7 @@
 
 #include "OpenGUI_RenderOperation.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	class Element; //forward declaration
 
 	/*
@@ -30,12 +30,11 @@ namespace OpenGUI{
 
 		The current implementation will mindlessly hold a copy of the contents,
 		regardless of how often they become dirty.
-	*/	
-	class RenderCache
-	{
+	*/
+	class RenderCache {
 	public:
-		RenderCache(Element* parent):mDirty(true),mParent(parent){}
-		virtual ~RenderCache(){}
+		RenderCache( Element* parent ): mDirty( true ), mParent( parent ) {}
+		virtual ~RenderCache() {}
 		//! Marks the contents of this cache dirty
 		void markDirty();
 		//! Returns true if the contents of this cache are dirty
@@ -44,7 +43,7 @@ namespace OpenGUI{
 		size_t statCacheSize();
 
 		//! writes the contents of the render cache to the beginning of the given RenderOperationList
-		void getCache(Render::RenderOperationList& renderOpList);
+		void getCache( Render::RenderOperationList& renderOpList );
 		//! Returns a reference to the actual cache, which is faster than \c getCache(), but not as flexible.
 		/*! \warning This is provided for high speed read-only purposes \b only. Do not, alter the returned
 			RenderOperationList or you will quite likely break something.

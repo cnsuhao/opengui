@@ -1,42 +1,36 @@
 #include "OpenGUI.h"
 #include "OpenGUI_GenericCursor.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//############################################################################
-	GenericCursor::GenericCursor()
-	{
-	
-	}
+	GenericCursor::GenericCursor() {}
 	//############################################################################
-	void GenericCursor::setImagery(std::string imageryName,FVector2 offset)
-	{
-		mImagery = ImageryManager::getSingleton().getImagery(imageryName);
+	void GenericCursor::setImagery( std::string imageryName, FVector2 offset ) {
+		mImagery = ImageryManager::getSingleton().getImagery( imageryName );
 		mOffset = offset;
 	}
 	//############################################################################
-	void GenericCursor::show()
-	{
+	void GenericCursor::show() {
 		RegisterForDraw();
 	}
 	//############################################################################
-	void GenericCursor::hide()
-	{
+	void GenericCursor::hide() {
 		UnRegisterForDraw();
 	}
 	//############################################################################
-	Render::RenderOperationList GenericCursor::getCursorRenderOpList()
-	{
+	Render::RenderOperationList GenericCursor::getCursorRenderOpList() {
 		//!\todo fix me
 		FVector2 mPos = System::getSingleton().getCursorPos();
 		FRect boxRect;
-		boxRect.setSize(FVector2(0.05f,0.05f));
-		mPos = mPos - (FVector2(0.05f,0.05f) * mOffset);
-		boxRect.setPosition(mPos);
+		boxRect.setSize( FVector2( 0.05f, 0.05f ) );
+		mPos = mPos - ( FVector2( 0.05f, 0.05f ) * mOffset );
+		boxRect.setPosition( mPos );
 		Render::PrimitiveBox box;
-		box.setRect(boxRect);
-		if(mImagery)
-			box.setTextureImagery(mImagery);
+		box.setRect( boxRect );
+		if ( mImagery )
+			box.setTextureImagery( mImagery );
 		return box.getRenderOperationList();
 	}
 	//############################################################################
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{

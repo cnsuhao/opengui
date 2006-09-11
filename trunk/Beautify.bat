@@ -10,5 +10,8 @@ call tools\style.bat OgreFusion\*.h OgreFusion\*.cpp > nul
 echo Fixing OpenGUI
 call tools\style.bat OpenGUI\*.h OpenGUI\*.cpp > nul
 
+echo Cleaning Up
+del /s *.orig > nul
+
 endlocal
 pause

@@ -3,35 +3,34 @@
 #include "OpenGUI_BaseWidgets.h"
 
 
-namespace OpenGUI{
-	namespace Widgets{
+namespace OpenGUI {
+	namespace Widgets {
 
 		//! Built in Widget providing a very simplistic button functionality.
 		/*!
 		\see \ref BW_SimpleButton "SimpleButton widget documentation"
 		*/
-		class OPENGUI_API SimpleButton : public Widget
-		{
+		class OPENGUI_API SimpleButton : public Widget {
 		public:
 			//! Constructor
 			SimpleButton();
 			//! virtual Destructor
 			virtual ~SimpleButton();
 			//! Sets the normal button imagery.
-			void setImagery(std::string imageryName);
+			void setImagery( std::string imageryName );
 			//! Sets the pressed button imagery. If none specified, uses the Normal imagery.
-			void setImageryPressed(std::string imageryName);
+			void setImageryPressed( std::string imageryName );
 			//! Sets the mouse over button imagery. If none specified, uses the Normal imagery.
-			void setImageryMouseOver(std::string imageryName);
+			void setImageryMouseOver( std::string imageryName );
 			//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
-			void setImageryDisabled(std::string imageryName);
+			void setImageryDisabled( std::string imageryName );
 
 			//! This is just a factory interface.
 			static Widget* createSimpleButtonFactory();
 		protected:
 			virtual Render::RenderOperationList buildWidgetRenderOpList();
 
-			virtual bool defaultMessageHandler(const Msg::Message &message);
+			virtual bool defaultMessageHandler( const Msg::Message &message );
 
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;
@@ -41,15 +40,17 @@ namespace OpenGUI{
 			bool m_ButtonDown;
 
 		private:
-			static bool _prop_SetImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetImageryPressed(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetImageryPressed(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetImageryMouseOver(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetImageryMouseOver(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetImageryDisabled(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetImageryDisabled(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+			static bool _prop_SetImagery( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetImagery( PropertySet* widget, const std::string& propertyName, std::string& curValue );
+			static bool _prop_SetImageryPressed( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetImageryPressed( PropertySet* widget, const std::string& propertyName, std::string& curValue );
+			static bool _prop_SetImageryMouseOver( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetImageryMouseOver( PropertySet* widget, const std::string& propertyName, std::string& curValue );
+			static bool _prop_SetImageryDisabled( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
+			static bool _prop_GetImageryDisabled( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 		};
-	};//namespace Widgets{
-};//namespace OpenGUI{
+	}
+	;//namespace Widgets{
+}
+;//namespace OpenGUI{
 #endif

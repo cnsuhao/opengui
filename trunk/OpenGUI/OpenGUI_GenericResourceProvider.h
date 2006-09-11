@@ -3,7 +3,7 @@
 
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_ResourceProvider.h"
-namespace OpenGUI{
+namespace OpenGUI {
 	//! This is the defailt generic implementation of the resource provider
 	/*! If no specialized resource provider is given during creation of the
 		System() object, then this resource provider is automatically loaded
@@ -13,16 +13,16 @@ namespace OpenGUI{
 		passthrough to fstream. Most applications will want to create their
 		own resource provider, as this one is very low on features.
 	*/
-	class OPENGUI_API GenericResourceProvider : public ResourceProvider
-	{
+	class OPENGUI_API GenericResourceProvider : public ResourceProvider {
 	public:
 		GenericResourceProvider() { }
 		~GenericResourceProvider() { }
 
-		void loadResource(const std::string& filename, Resource& output);
+		void loadResource( const std::string& filename, Resource& output );
 
-		void unloadResource(Resource& resource);
+		void unloadResource( Resource& resource );
 	};
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
 

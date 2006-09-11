@@ -5,11 +5,11 @@
 #include "OpenGUI_Exports.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
-	// This warning can be disregarded
-	#pragma warning (disable : 4251)
+// This warning can be disregarded
+#pragma warning (disable : 4251)
 #endif
 
-namespace OpenGUI{
+namespace OpenGUI {
 #define OG_THROW(code, description, source) \
 	throw ( OpenGUI::Exception( code, description, source,  __FILE__, __LINE__ ) )
 
@@ -17,8 +17,7 @@ namespace OpenGUI{
 
 
 	//! The only Exception class OpenGUI currently uses.
-	class OPENGUI_API Exception
-	{
+	class OPENGUI_API Exception {
 	public:
 		enum ExceptionID {
 			OP_FAILED,
@@ -35,10 +34,10 @@ namespace OpenGUI{
 
 			ERR_NOT_IMPLEMENTED
 		};
-		
+
 
 		Exception( int code, const std::string& desc, const std::string& srcArea );
-		/*! 
+		/*!
 			\param code The ExceptionID that most closely matches the problem
 			\param desc A string describing the problem
 			\param srcArea The name of the module or subsystem that initially threw the exception
@@ -47,24 +46,34 @@ namespace OpenGUI{
 		*/
 		Exception( int code, const std::string& desc, const std::string& srcArea, char* file, long line );
 		~Exception() {}
-		Exception(const Exception& rhs);
-		void operator = (const Exception& rhs);
-		
+		Exception( const Exception& rhs );
+		void operator = ( const Exception& rhs );
+
 		//! Returns a fully formatted string comprised of all available information
 		std::string getFullMessage() const;
 
-		int getCode(){return mCode;}
-		std::string getSource(){return mSrc;}
-		std::string getMessage(){return mMsg;}
-		char* getFile(){return mFile;}
-		int getLine(){return mLine;}
+		int getCode() {
+			return mCode;
+		}
+		std::string getSource() {
+			return mSrc;
+		}
+		std::string getMessage() {
+			return mMsg;
+		}
+		char* getFile() {
+			return mFile;
+		}
+		int getLine() {
+			return mLine;
+		}
 	private:
 		int mCode;
 		int mLine;
 		std::string mMsg;
 		std::string mSrc;
 		char* mFile;
-		static std::string getCodeStr(int code);
+		static std::string getCodeStr( int code );
 	};
 };
 #endif
