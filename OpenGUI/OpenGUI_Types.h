@@ -9,6 +9,7 @@ namespace OpenGUI{
 #undef min
 #undef max
 
+
 	//! IVector2s are two dimensional vectors based on integers.
 	class OPENGUI_API IVector2
 	{
@@ -263,7 +264,7 @@ namespace OpenGUI{
 
 	/*! \brief
 		This type is used throughout %OpenGUI to represent the 4 horizontal
-		alignment types (Left,Center,Right,Justified) and the
+		alignment types (Left,Center,Right,Justified)
 	*/
 	class TextAlignment{
 	public:
@@ -294,6 +295,64 @@ namespace OpenGUI{
 		TextAlignment(const Alignment& rhs){value=rhs;}
 		//! Default constructor initializes as ALIGN_LEFT/ALIGN_TOP depending on usage context. (They have same value)
 		TextAlignment():value(ALIGN_LEFT){} //default constructor
+	};
+
+	//! Used throughout %OpenGUI to define colors.
+	/*! Supports an alpha channel. The default color is White, with alpha = 1.0f */
+	class OPENGUI_API Color{
+	public:
+		//! Constructor with optional in place initialization
+		Color(float R=1.0f, float G=1.0f, float B=1.0f, float A=1.0f) : Red(R), Blue(B), Green(G), Alpha(A) {}
+
+		float Red;//!<Red Channel
+		float Green;//!<Green Channel
+		float Blue;//!<Blue Channel
+		float Alpha;//!<Alpha Channel
+
+		//! Quickly generate a preset Color that is Red
+		static Color PresetRed(){return Color(1.0f,0.0f,0.0f,1.0f);}
+		//! Quickly generate a preset Color that is Green
+		static Color PresetGreen(){return Color(0.0f,1.0f,0.0f,1.0f);}
+		//! Quickly generate a preset Color that is Blue
+		static Color PresetBlue(){return Color(0.0f,0.0f,1.0f,1.0f);}
+		//! Quickly generate a preset Color that is White
+		static Color PresetWhite(){return Color(1.0f,1.0f,1.0f,1.0f);}
+		//! Quickly generate a preset Color that is Black
+		static Color PresetBlack(){return Color(0.0f,0.0f,0.0f,1.0f);}
+		//! Clamps the color channels between 0.0f and 1.0f
+		void clamp(){
+			if(Red<0.0f) Red=0.0f;
+			if(Red>1.0f) Red=1.0f;
+			if(Green<0.0f) Green=0.0f;
+			if(Green>1.0f) Green=1.0f;
+			if(Blue<0.0f) Blue=0.0f;
+			if(Blue>1.0f) Blue=1.0f;
+			if(Alpha<0.0f) Alpha=0.0f;
+			if(Alpha>1.0f) Alpha=1.0f;
+		}
+		//! Normalizes the color channels by scaling the channel ranges to fall within 0.0f and 1.0f
+		/*! If all channels have an equal value, the result will be the identity Color (all channels == 1.0f) */
+		void normalize(){
+			float min = 0.0f, max;
+			min = Red;
+			if(Green < min) min = Green;
+			if(Blue < min) min = Blue;
+			if(Alpha < min) min = Alpha;
+			Red -= min;
+			Green -= min;
+			Blue -= min;
+			Alpha -= min;
+
+			max = Red;
+			if(Green > max) max = Green;
+			if(Blue > max) max = Blue;
+			if(Alpha > max) max = Alpha;
+			Red /= max;
+			Green /= max;
+			Blue /= max;
+			Alpha /= max;
+			clamp(); //we need to clamp in case we just performed a divide by zero
+		}
 	};
 
 
