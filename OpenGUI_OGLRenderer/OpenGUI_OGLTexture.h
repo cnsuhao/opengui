@@ -8,16 +8,16 @@
 
 #include <OpenGUI.h>
 
-namespace OpenGUI{
-	class OGLTexture : public Texture
-	{
+namespace OpenGUI {
+	class OGLTexture : public Texture {
 		friend class OGLRenderer;
 	public:
 		OGLTexture();
 		~OGLTexture();
-	
+
 		GLuint textureId;
 
 	};
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{
 #endif
