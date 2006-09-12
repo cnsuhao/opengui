@@ -278,6 +278,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Object.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ObjectAccessor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_PluginManager.cpp"
 				>
 			</File>
@@ -331,6 +339,14 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_TimerManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Types.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Value.cpp"
 				>
 			</File>
 			<File
@@ -452,6 +468,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Object.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ObjectAccessor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Platform.h"
 				>
 			</File>
@@ -541,6 +565,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_UnusedTypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Value.h"
 				>
 			</File>
 			<File

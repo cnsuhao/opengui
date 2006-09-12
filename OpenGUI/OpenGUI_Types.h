@@ -310,7 +310,8 @@ namespace OpenGUI {
 	*/
 	class TextAlignment {
 	public:
-		typedef enum {
+		//! Enum definition for representing alignment style
+		enum Alignment {
 			ALIGN_LEFT = 0, //!< Aligns text to left of widget
 			ALIGN_TOP = 0, //!< Aligns text to top of widget
 			ALIGN_RIGHT = 1, //!< Aligns text to right of widget
@@ -322,7 +323,8 @@ namespace OpenGUI {
 			prevents short lines of text from being spaced unreasonable distances.
 			*/
 			ALIGN_JUSTIFIED = 3
-		}Alignment; //!< Enum definition for representing alignment style
+		};
+
 		TextAlignment& operator=( const Alignment& rhs ) {
 			value = rhs;
 			return *this;
@@ -416,7 +418,71 @@ namespace OpenGUI {
 	};
 
 
-};
+
+	//! A string based Enum system
+	/*! It's often necessary to provide a generic enum that can be created pragmatically.
+		This class addresses that need. All values are stored and retrieved in lower case form.
+	*/
+	class OPENGUI_API Enum {
+	public:
+		//! Set of acceptable string ENUM values.
+		typedef std::set<std::string> EnumList;
+		//! constructor
+		Enum();
+		//! destructor
+		virtual ~Enum();
+
+		//! Adds the given string to the Enum's list of possible values
+		/*! If this is the first item being added to the enum, it is automatically selected. */
+		void addValue( std::string value );
+		//! Sets the currently selected value
+		void setValue( std::string value );
+		//! Sets the currently selected value using a C-String
+		void setValue( const char* value );
+		//! Retrieves the currently selected value
+		std::string getValue();
+		//! Returns true if the given \c value is a valid selection for this Enum
+		bool testValue( std::string value );
+		//! Returns the complete list of possible values
+		EnumList getList() {
+			return mEnumList;
+		}
+	private:
+		EnumList mEnumList;
+		std::string mSelected;
+	};
+
+	//! \internal base class for TextAlignment based Enums
+	/*! This is just a functionality providing base class. You are most likely looking
+		for Enum_TextAligntment_H or Enum_TextAligntment_V.
+	*/
+	class OPENGUI_API Enum_TextAligntment_base : public Enum {
+	public:
+		//! Set the value by TextAligntment
+		void setValue( TextAlignment alignmentObj );
+		//! Set the value by TextAligntment::Alignment
+		virtual void setValue( TextAlignment::Alignment alignment ) = 0;
+		//! Return the current value as a TextAligntment
+		TextAlignment getTextAlignment();
+	};
+
+	//! Enum specialized for use in horizontal text alignments
+	class OPENGUI_API Enum_TextAligntment_H : public Enum_TextAligntment_base {
+	public:
+		Enum_TextAligntment_H();
+		virtual ~Enum_TextAligntment_H() {}
+		virtual void setValue( TextAlignment::Alignment alignment );
+	};
+
+	//! Enum specialized for use in vertical text alignments
+	class OPENGUI_API Enum_TextAligntment_V : public Enum_TextAligntment_base {
+	public:
+		Enum_TextAligntment_V();
+		virtual ~Enum_TextAligntment_V() {}
+		virtual void setValue( TextAlignment::Alignment alignment );
+	};
+
+}//namespace OpenGUI {
 
 #endif
 

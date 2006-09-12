@@ -221,6 +221,9 @@
 				RelativePath=".\OpenGUI_TimerManager.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Types.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Widget.cpp">
 			</File>
 			<File
