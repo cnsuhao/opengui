@@ -39,6 +39,7 @@ namespace OpenGUI {
 		will receive the property in lower case form \b only. If you want to save yourself some pain, I highly
 		recommend having your PropertySetter and PropertyGetter callbacks only perform case-insensitive string
 		comparisons if they need to do such tests.
+	\deprecated Replaced by ObjectAccessor system
 	*/
 	typedef bool( *PropertySetter )( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
 	/*! \brief This is the typedef used for callbacks to Property Get handlers.
@@ -63,6 +64,7 @@ namespace OpenGUI {
 	}
 	\endcode
 	\see \ref WhyCallbacks "Why Callbacks?"
+	\deprecated Replaced by ObjectAccessor system
 	*/
 	typedef bool( *PropertyGetter )( PropertySet* widget, const std::string& propertyName, std::string& curValue );
 
@@ -81,6 +83,8 @@ namespace OpenGUI {
 
 		\warning PT_Enum values are case \b insensitive. All values added or tested are first converted to
 		all lower case.
+
+		\deprecated This class is being replaced with the generic Enum class
 	*/
 	class OPENGUI_API PT_Enum {
 	public:
@@ -109,6 +113,7 @@ namespace OpenGUI {
 
 
 	//! This is a sub-class of PT_Enum that is already set up to handle horizontal TextAlignment requests.
+	/*! \deprecated This class is being replaced with the Enum_TextAligntment_H class */
 	class OPENGUI_API PT_Enum_TextAlignment_H : public PT_Enum {
 	public:
 		//! Everything important happens in the constructor automatically. I'm ready to use "out of the box".
@@ -116,6 +121,7 @@ namespace OpenGUI {
 	};
 
 	//! This is a sub-class of PT_Enum that is already set up to handle horizontal TextAlignment requests.
+	/*! \deprecated This class is being replaced with the Enum_TextAligntment_V class */
 	class OPENGUI_API PT_Enum_TextAlignment_V : public PT_Enum {
 	public:
 		//! Everything important happens in the constructor automatically. I'm ready to use "out of the box".
@@ -123,7 +129,7 @@ namespace OpenGUI {
 	};
 
 	//#####################################################################
-	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list.
+	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list. \deprecated 
 	typedef enum {
 		PT_STRING = 0, //!< String property type
 		PT_BOOL = 1, //!< Boolean property type
@@ -166,6 +172,7 @@ namespace OpenGUI {
 	- Type: IRect
 	  - Values:  { (1 x 1) X (1 x 1) }, curly braces and upper case 'X' are mandatory, spaces are optional. Each side of the 'X' is filled with a valid IVector2 in string form.
 
+	  \deprecated Replaced by ObjectAccessor system
 	*/
 	class OPENGUI_API PropertySet {
 	public:
@@ -188,12 +195,16 @@ namespace OpenGUI {
 			\see
 			- PropertySetter
 			- PropertyGetter
+
+			\deprecated Replaced by ObjectAccessor system
 		*/
 		void PropertySet_BindProperty( const std::string& name, PropertyType type, PropertySetter propertySetter, PropertyGetter propertyGetter );
 		//! As the other PropertySet_BindProperty() with the addition of \c pt_EnumPtr, which needs to be a pointer to a valid PT_Enum if \c type = PT_ENUM
 		/*! If \c type is PT_ENUM, then the passed \c pt_EnumPtr \b must remain valid for the life of the widget.
 			The easiest way to accomplish this is to place the PT_Enum directly into the widget's class as a member variable.
 			<i>Yes, this is the intended method.</i>
+
+			\deprecated Replaced by ObjectAccessor system
 		*/
 		void PropertySet_BindProperty( const std::string& name, PropertyType type, PT_Enum* pt_EnumPtr, PropertySetter propertySetter, PropertyGetter propertyGetter );
 	private:
@@ -224,6 +235,8 @@ namespace OpenGUI {
 
 		\note All of these functions are case insensitive. They always output the results of
 			toStr operations in all lower case.
+
+		\deprecated Will be folded into the Value class
 	*/
 	class OPENGUI_API PropertyParser {
 	public:
