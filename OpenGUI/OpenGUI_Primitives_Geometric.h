@@ -15,6 +15,7 @@ namespace OpenGUI {
 		for creating boxes of any dimension, location, and imagery.
 		It provides automatic Texture* linking and UV generation for
 		both textures and masks based on imagery.
+		\deprecated Replaced by Brush system
 		*/
 		class OPENGUI_API PrimitiveBox : public Primitive {
 		public:
@@ -46,7 +47,7 @@ namespace OpenGUI {
 		};
 
 
-		//! A primitive to draw a box shaped outline. The outline is drawn on the inside of the given rect
+		//! A primitive to draw a box shaped outline. The outline is drawn on the inside of the given rect \deprecated Replaced by Brush system
 		class OPENGUI_API PrimitiveBoxOutline : public Primitive {
 		public:
 			//! default constructor

@@ -19,6 +19,8 @@ namespace OpenGUI {
 		generated from the primitive is appended to existing output. This internal
 		positioning can be altered only by outputting text and the \c reset() and
 		\c advanceLine() functions.
+
+		\deprecated Replaced by Brush system
 		*/
 		class OPENGUI_API PrimitiveText : public Primitive {
 		public:
@@ -137,7 +139,7 @@ namespace OpenGUI {
 			FVector2 _getPixelScale();
 		};
 
-		//! Provides a simple interface for generating text areas (text in a box)
+		//! Provides a simple interface for generating text areas (text in a box) \deprecated Replaced by Brush system
 		class OPENGUI_API PrimitiveTextBox : public Primitive {
 		public:
 			//! constructor

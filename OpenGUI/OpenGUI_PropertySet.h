@@ -129,7 +129,7 @@ namespace OpenGUI {
 	};
 
 	//#####################################################################
-	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list. \deprecated 
+	//! Properties defined during calls to PropertySet::PropertySet_BindProperty() will require a type from this list. \deprecated Replaced by Enum
 	typedef enum {
 		PT_STRING = 0, //!< String property type
 		PT_BOOL = 1, //!< Boolean property type

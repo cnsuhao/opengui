@@ -27,6 +27,8 @@ namespace OpenGUI {
 	//! This is the base class for all GUI elements. It provides a very basic functionality set.
 	/*! The Element class should be inherited by all classes that need to exist within a GUI.
 	\note Users are probably looking for OpenGUI::Widgets::Widget
+
+	\deprecated Replaced by Object system
 	*/
 	class OPENGUI_API Element {
 		friend class System;
