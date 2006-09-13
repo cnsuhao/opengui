@@ -125,6 +125,14 @@ namespace OpenGUI {
 			ss << "{ " << min.toStr() << " X " << max.toStr() << " }" ;
 			return ss.str();
 		}
+		//! comparison operator
+		bool operator==( const IRect& right ) const  {
+			return min == right.min && max == right.max;
+		}
+		//! comparison operator
+		bool operator!=( const IRect& right ) const  {
+			return !operator==( right );
+		}
 		IVector2 min; //!< direct access to upper left point
 		IVector2 max; //!< direct access to lower right point
 	};
@@ -300,6 +308,14 @@ namespace OpenGUI {
 			ss << "{ " << min.toStr() << " X " << max.toStr() << " }" ;
 			return ss.str();
 		}
+		//! comparison operator
+		bool operator==( const FRect& right ) const  {
+			return min == right.min && max == right.max;
+		}
+		//! comparison operator
+		bool operator!=( const FRect& right ) const  {
+			return !operator==( right );
+		}
 		FVector2 min; //!< direct access to upper left point
 		FVector2 max; //!< direct access to lower right point
 	};
@@ -415,6 +431,17 @@ namespace OpenGUI {
 			Alpha /= max;
 			clamp(); //we need to clamp in case we just performed a divide by zero
 		}
+		//! comparison operator
+		bool operator==( const Color& right ) const  {
+			return (Red == right.Red 
+				&& Green == right.Green 
+				&& Blue == right.Blue 
+				&& Alpha == right.Alpha );
+		}
+		//! comparison operator
+		bool operator!=( const Color& right ) const  {
+			return !operator==( right );
+		}
 	};
 
 
@@ -442,10 +469,21 @@ namespace OpenGUI {
 		//! Retrieves the currently selected value
 		std::string getValue();
 		//! Returns true if the given \c value is a valid selection for this Enum
-		bool testValue( std::string value );
+		bool testValue( std::string value ) const;
 		//! Returns the complete list of possible values
-		EnumList getList() {
+		EnumList getList() const {
 			return mEnumList;
+		}
+
+		//! comparison operator
+		bool operator==( const Enum& right ) const  {
+			if( 0 != mSelected.compare(right.mSelected) )
+				return false;
+			return true;
+		}
+		//! comparison operator
+		bool operator!=( const Enum& right ) const  {
+			return !operator==( right );
 		}
 	private:
 		EnumList mEnumList;
