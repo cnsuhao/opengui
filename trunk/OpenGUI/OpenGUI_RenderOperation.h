@@ -17,10 +17,12 @@ namespace OpenGUI {
 		If you want to make a widget from scratch (rather than encapsulating
 		existing widgets), this is where you look to build the necessary render
 		operations.
+
+		\deprecated This entire namespace is scheduled for massive changes
 	*/
 	namespace Render {
 
-		//! Used to define the color of a vertex. The default color is White, with alpha=1.0f
+		//! Used to define the color of a vertex. The default color is White, with alpha=1.0f \deprecated Replaced by Color
 		class OPENGUI_API VertexColor {
 		public:
 			//! Constructor with optional in place initialization
@@ -53,7 +55,7 @@ namespace OpenGUI {
 			}
 		};
 
-		//! It's a vertex. RenderOperations consist of 3 of these to make a polygon.
+		//! It's a vertex. RenderOperations consist of 3 of these to make a polygon. \deprecated This needs re-evaluation. Texture masking may need to be moved
 		class OPENGUI_API Vertex {
 		public:
 			FVector2 position; //!< The X,Y position of this vertex
@@ -76,6 +78,10 @@ namespace OpenGUI {
 			\note
 			At the current implementation, the system can only guaranty that renderers will
 			receive render operations in a back to front order per widget. 
+
+			\deprecated 
+			Texture masking may be moved out, currently unsure on that.
+			Also, this class is scheduled for updates to provide support for quads, in addition to the current triangle only support.
 		*/
 		class OPENGUI_API RenderOperation {
 		public:
@@ -88,11 +94,11 @@ namespace OpenGUI {
 		//! This is a popular list type for holding render operations. You'll see it a lot.
 		typedef std::list<RenderOperation> RenderOperationList;
 		//! Appends the contents of inList to the end of outList. The contents of inList are preserved.
-		/*! \todo inline this in a way that GCC doesn't complain about */
+		/*! \todo inline this in a way that GCC doesn't complain about \deprecated Replaced by Brush system.*/
 		void OPENGUI_API AppendRenderOperationList( RenderOperationList& outList, const RenderOperationList& inList );
 
 		//! Prepends the contents of inList to the beginning of outList. The contents of inList are preserved.
-		/*! \todo inline this in a way that GCC doesn't complain about */
+		/*! \todo inline this in a way that GCC doesn't complain about \deprecated Replaced by Brush system.*/
 		void OPENGUI_API PrependRenderOperationList( RenderOperationList& outList, const RenderOperationList& inList );
 
 		//! Appends the contents of outList by splicing the contents of appendingList onto the end of outList.
@@ -102,6 +108,8 @@ namespace OpenGUI {
 			This operation is O(n), performing no free-store allocations, making it very efficient for appending
 			long lists.
 			\todo inline this in a way that GCC doesn't complain about
+
+			\deprecated Replaced by Brush system.
 		*/
 		inline void SpliceRenderOperationList( RenderOperationList& outList, RenderOperationList& appendingList ) {
 			outList.splice( outList.end(), appendingList );
@@ -115,6 +123,8 @@ namespace OpenGUI {
 			A widget does not have to use primitives to generate render
 			operations, it is merely a set of helper classes that make
 			generating render operations much easier.
+
+			\deprecated Replaced by Brush system
 
 		*/
 		class OPENGUI_API Primitive {

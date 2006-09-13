@@ -24,6 +24,7 @@ namespace OpenGUI {
 		that is common in widget coordinate space. You'll need to work around that
 		issue yourself if it matters to you.
 
+		\deprecated Replaced by Brush system
 		*/
 		class OPENGUI_API PrimitiveRotation : public Primitive {
 		public:
@@ -84,6 +85,8 @@ namespace OpenGUI {
 		\note The order in which render operations are received is preserved,
 		so this Primitive can be trusted with RenderOperations that have
 		a specific draw order.
+
+		\deprecated Replaced by Brush system
 		*/
 		class OPENGUI_API PrimitiveScissorRect : public Primitive {
 		public:
