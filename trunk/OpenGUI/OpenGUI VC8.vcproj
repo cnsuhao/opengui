@@ -588,6 +588,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UnknownImage.h"
 				>
 			</File>
@@ -597,6 +601,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\OpenGUI.rc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="BaseWidgets"

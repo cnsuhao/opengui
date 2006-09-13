@@ -42,7 +42,7 @@ namespace OpenGUI {
 		return mSelected;
 	}
 	//#####################################################################
-	bool Enum::testValue( std::string value ) {
+	bool Enum::testValue( std::string value ) const {
 		//make it lower case first
 		std::transform( value.begin(), value.end(), value.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
 
