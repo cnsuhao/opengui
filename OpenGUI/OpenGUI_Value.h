@@ -157,7 +157,7 @@ namespace OpenGUI {
 		};
 
 
-	}//namespace Test{
+	}//namespace Types{
 }//namespace OpenGUI{
 
 #endif
