@@ -17,6 +17,8 @@
 #include <map>
 #include <set>
 #include <list>
+#include <vector>
+#include <deque>
 #include <cassert>
 #include <locale>
 
