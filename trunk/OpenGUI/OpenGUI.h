@@ -68,5 +68,6 @@
 //Generic Cursor Implementation
 #include "OpenGUI_GenericCursor.h"
 
-
+#include "OpenGUI_Object.h"
+#include "OpenGUI_ObjectAccessor.h"
 #endif

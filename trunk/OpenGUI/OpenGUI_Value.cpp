@@ -311,52 +311,139 @@ namespace OpenGUI {
 			return mHasValue;
 		}
 		//#####################################################################
-		bool Value::operator==( const Value& right ) const{
-			if(mHasValue != right.mHasValue)
+		bool Value::operator==( const Value& right ) const {
+			if ( mHasValue != right.mHasValue )
 				return false; //false for comparisons of set and unset Values
-			if(mHasValue == false)
+			if ( mHasValue == false )
 				return true; //true if we're both unset
-			if(mType != right.mType)
+			if ( mType != right.mType )
 				return false; //false if we're both set but stored types differ
-			
+
 			switch ( mType ) {
-				case T_BOOL:
-					return right.getValueAsBool() == (*mBool);
-					break;
-				case T_COLOR:
-					return right.getValueAsColor() == (*mColor);
-					break;
-				case T_ENUM:
-					return right.getValueAsEnum() == (*mEnum);
-					break;
-				case T_FLOAT:
-					return right.getValueAsFloat() == (*mFloat);
-					break;
-				case T_FRECT:
-					return right.getValueAsFRect() == (*mFRect);
-					break;
-				case T_FVECTOR2:
-					return right.getValueAsFVector2() == (*mFVector2);
-					break;
-				case T_INTEGER:
-					return right.getValueAsInt() == (*mInt);
-					break;
-				case T_IRECT:
-					return right.getValueAsIRect() == (*mIRect);
-					break;
-				case T_IVECTOR2:
-					return right.getValueAsIVector2() == (*mIVector2);
-					break;
-				case T_STRING:
-					return right.getValueAsString() == (*mString);
-					break;
-				default:
-					return false; //should never happen
+			case T_BOOL:
+				return right.getValueAsBool() == ( *mBool );
+				break;
+			case T_COLOR:
+				return right.getValueAsColor() == ( *mColor );
+				break;
+			case T_ENUM:
+				return right.getValueAsEnum() == ( *mEnum );
+				break;
+			case T_FLOAT:
+				return right.getValueAsFloat() == ( *mFloat );
+				break;
+			case T_FRECT:
+				return right.getValueAsFRect() == ( *mFRect );
+				break;
+			case T_FVECTOR2:
+				return right.getValueAsFVector2() == ( *mFVector2 );
+				break;
+			case T_INTEGER:
+				return right.getValueAsInt() == ( *mInt );
+				break;
+			case T_IRECT:
+				return right.getValueAsIRect() == ( *mIRect );
+				break;
+			case T_IVECTOR2:
+				return right.getValueAsIVector2() == ( *mIVector2 );
+				break;
+			case T_STRING:
+				return right.getValueAsString() == ( *mString );
+				break;
+			default:
+				return false; //should never happen
 			}
 		}
 		//#####################################################################
 		bool Value::operator!=( const Value& right ) const {
-			return !operator==(right);
+			return !operator==( right );
 		}
+		//#####################################################################
+
+
+
+
+		//#####################################################################
+		//#####################################################################
+		//#####################################################################
+		void ValueList::push_front( const Value& value ) {
+			mValueDeQue.push_front( value );
+		}
+		//#####################################################################
+		void ValueList::push_back( const Value& value ) {
+			mValueDeQue.push_back( value );
+		}
+		//#####################################################################
+		/*! Throws an Exception if the Value stack is empty when called. */
+		Value ValueList::pop_front() {
+			if ( size() <= 0 )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "cannot pop an empty stack", "ValueList::pop_front" );
+
+			//deque doens't return values on pops
+			ValueDeQue::const_iterator iter = mValueDeQue.begin();
+			Value retval = *iter;
+			removeMappedValue( &( *iter ) );
+			mValueDeQue.pop_front();
+			return retval;
+		}
+		//#####################################################################
+		/*! Throws an Exception if the Value stack is empty when called. */
+		Value ValueList::pop_back() {
+			if ( size() <= 0 )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "cannot pop an empty stack", "ValueList::pop_back" );
+
+			//deque doens't return values on pops
+			ValueDeQue::const_reverse_iterator iter = mValueDeQue.rbegin();
+			Value retval = *iter;
+			removeMappedValue( &( *iter ) );
+			mValueDeQue.pop_back();
+			return retval;
+		}
+		//#####################################################################
+		size_t ValueList::size() const {
+			return  mValueDeQue.size();
+		}
+		//#####################################################################
+		/*! Setting the same \c name multiple times will redefine the \c name to link
+			to the new \c value each time. The old \c value will remain on the stack
+			in the position it was originally added, only it will be unnamed.
+		*/
+		void ValueList::set( const Value& value, const std::string& name ) {
+			push_back( value );
+			ValueDeQue::reverse_iterator iter = mValueDeQue.rbegin();
+			Value* valuePtr = &(*iter);
+			mValueMap[name] = valuePtr;
+		}
+		//#####################################################################
+		/*! If a Value by the requested \c name cannot be found, an Exception will be thrown. */
+		const Value& ValueList::get( const std::string& name ) const {
+			ValueMap::const_iterator iter = mValueMap.find( name );
+			if ( iter == mValueMap.end() )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Named value not found", "ValueList::get" );
+			const Value* valuePtr = iter->second;
+			return *( valuePtr );
+		}
+		//#####################################################################
+		/*! Throws an Exception if the given \c index is out of range. */
+		const Value& ValueList::get ( unsigned int index ) const {
+			//try to catch bad index attempts
+			if ( mValueDeQue.size() <= index )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "index is out of range", "ValueList::get" );
+			//then just return whatever is appropriate
+			return mValueDeQue[index];
+		}
+		//#####################################################################
+		void ValueList::removeMappedValue( const Value* valuePtr ) {
+			for ( ValueMap::iterator iter = mValueMap.begin();
+					iter != mValueMap.end(); iter++ ) {
+				if ( iter->second == valuePtr ) {
+					//need a copy of the iterator otherwise we'll chop ourself off the map
+					mValueMap.erase( iter );
+					removeMappedValue( valuePtr );
+					return;
+				}
+			}
+		}
+		//#####################################################################
 	}//namespace Types{
 }//namespace OpenGUI{

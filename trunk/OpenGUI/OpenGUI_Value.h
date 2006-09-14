@@ -143,17 +143,41 @@ namespace OpenGUI {
 			};
 		};
 
+
 		//############################################################################
-		class ValueListDecl {
-		public:
-			ValueListDecl();
-			~ValueListDecl();
-		};
-		//############################################################################
+		//! Container of multiple Value objects. Provides stack, and name based access.
+		/*! This class provides access to a grouping of Value objects with both a stack
+			interface as well as a by-name interface. Care must be taken when using the
+			by-name interface, as stack pops can remove named entries from the container,
+			causing subsequent by-name get() operations for the missing Value to result
+			in an Exception.
+		*/
 		class OPENGUI_API ValueList {
 		public:
-			void push();
-			void pop();
+			//! Push the given \c value to the front of the stack
+			void push_front(const Value& value);
+			//! Push the given \c value to the back of the stack
+			void push_back(const Value& value);
+			//! Pops a Value from the front of the stack
+			Value pop_front();
+			//! Pops a Value from the back of the stack
+			Value pop_back();
+			//! Returns the current stack size
+			size_t size() const;
+
+			//! Stores the given \c value both as a \c name based lookup, as well as pushed on the back of the stack.
+			void set(const Value& value, const std::string& name);
+			//! Retrieves a Value by the \c name used when it was originally set()
+			const Value& get(const std::string& name) const;
+			//! Retrieves a Value by its stack \c index
+			const Value& get (unsigned int index) const;
+		private:
+			typedef std::map<std::string,Value*> ValueMap;
+			typedef std::deque<Value> ValueDeQue;
+			ValueDeQue mValueDeQue;
+			ValueMap mValueMap ;
+			//walks the entire map and removes any matching pointers (performs remove by value)
+			void removeMappedValue(const Value* valuePtr);
 		};
 
 
