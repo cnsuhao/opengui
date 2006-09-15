@@ -21,6 +21,8 @@ namespace OpenGUI {
 	/*! Only a single Element may be attached at a time.
 		Attaching can be performed either by the EventListener::attach() method, or by
 		Element::attachEventListener().
+
+		\deprecated replaced by new event system 
 	*/
 	class OPENGUI_API EventListener {
 	public:

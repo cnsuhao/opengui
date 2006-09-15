@@ -226,6 +226,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Event.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_EventHandler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_EventListener.cpp"
 				>
 			</File>
@@ -397,6 +405,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Event.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_EventHandler.h"
 				>
 			</File>
 			<File

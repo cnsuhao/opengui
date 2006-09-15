@@ -34,6 +34,7 @@
 
 #include "OpenGUI_MouseButton.h"
 #include "OpenGUI_Event.h"
+#include "OpenGUI_EventHandler.h"
 #include "OpenGUI_Message.h"
 #include "OpenGUI_EventListener.h"
 #include "OpenGUI_PropertySet.h"
