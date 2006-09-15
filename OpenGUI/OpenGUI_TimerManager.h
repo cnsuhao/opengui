@@ -47,7 +47,7 @@ namespace OpenGUI {
 		unsigned long m_timeSinceStart;
 
 		//This performs an injection of ticks into the system. Only call this if the app is NOT supplying its own ticks
-		void _DoAutoTickInject();
+		//void _DoAutoTickInject();
 
 		//Resets _timePassedSinceLastCall
 		void _init_timePassedSinceLastCall();

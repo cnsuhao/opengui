@@ -6,6 +6,7 @@
 //#include "OpenGUI_LayoutLoader.h"
 //#include "OpenGUI_System.h"
 
+/*
 namespace OpenGUI {
 
 	//#####################################################################
@@ -151,5 +152,5 @@ namespace OpenGUI {
 
 }
 ;//namespace OpenGUI{
-
+*/
 

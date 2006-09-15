@@ -32,10 +32,9 @@ namespace OpenGUI {
 		virtual char* getClassName();
 
 		//! Returns the Event::EventReceiver for this Object instance
-		Event::EventReceiver* getEventReceiver();
+		Event::EventReceiver& getEvents();
 
 	private:
-		
 		Event::EventReceiver mEventReceiver;
 	};
 

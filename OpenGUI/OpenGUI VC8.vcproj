@@ -222,19 +222,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Element.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Event.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OpenGUI_EventHandler.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_EventListener.cpp"
 				>
 			</File>
 			<File
@@ -259,10 +251,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GUISheet.cpp"
 				>
 			</File>
 			<File
@@ -295,26 +283,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PluginManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Geometric.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Mutations.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Text.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_PropertySet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_RenderCache.cpp"
 				>
 			</File>
 			<File
@@ -358,18 +326,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Widget.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetFactoryManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetTemplateManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_XMLParser.cpp"
 				>
 			</File>
@@ -400,19 +356,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Element.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Event.h"
 				>
 			</File>
 			<File
 				RelativePath=".\OpenGUI_EventHandler.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_EventListener.h"
 				>
 			</File>
 			<File
@@ -445,10 +393,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GUISheet.h"
 				>
 			</File>
 			<File
@@ -500,31 +444,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Primitives.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Geometric.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Mutations.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Text.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_PropertySet.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_RefPtr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_RenderCache.h"
 				>
 			</File>
 			<File
@@ -584,18 +504,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Widget.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetFactoryManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetTemplateManager.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_XMLParser.h"
 				>
 			</File>
@@ -613,66 +521,6 @@
 		<Filter
 			Name="BaseWidgets"
 			>
-			<File
-				RelativePath=".\OpenGUI_BaseWidgets.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Container.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Container.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameButton.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameButton.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameImage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameImage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GenericCursor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GenericCursor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_SimpleButton.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_SimpleButton.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_StaticImage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_StaticImage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_TextLabel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_TextLabel.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\doc\AdditionalDoxygenInput.txt"

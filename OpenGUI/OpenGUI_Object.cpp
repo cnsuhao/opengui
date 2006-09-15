@@ -18,8 +18,8 @@ namespace OpenGUI {
 		return "OpenGUI::Object";
 	}
 	//############################################################################
-	Event::EventReceiver* Object::getEventReceiver() {
-		return &mEventReceiver;
+	Event::EventReceiver& Object::getEvents() {
+		return mEventReceiver;
 	}
 	//############################################################################
 	ObjectAccessorList* Object::getAccessors() {

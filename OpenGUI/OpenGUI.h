@@ -27,20 +27,25 @@
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_RenderOperation.h"
-#include "OpenGUI_Primitives.h"
+//#include "OpenGUI_Primitives.h" //REMOVED replacing with new Brush based system
 #include "OpenGUI_Renderer.h"
 
 //Includes necessary for core functionality
 
-#include "OpenGUI_MouseButton.h"
+//#include "OpenGUI_MouseButton.h"  //REMOVED replacing with new Object based system
+
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
-#include "OpenGUI_Message.h"
-#include "OpenGUI_EventListener.h"
-#include "OpenGUI_PropertySet.h"
+
+//#include "OpenGUI_Message.h"  //REMOVED replacing with new Object based system
+//#include "OpenGUI_EventListener.h" //REMOVED replacing with new Object based system
+//#include "OpenGUI_PropertySet.h"  //REMOVED replacing with new Object based system
+
 //#include "OpenGUI_RenderCache.h" //The RenderCache system is included where needed, and is not for use by client applications.
-#include "OpenGUI_Element.h"
-#include "OpenGUI_GUISheet.h"
+
+//#include "OpenGUI_Element.h" //REMOVED replacing with new Object based system
+//#include "OpenGUI_GUISheet.h" //REMOVED replacing with new Object based system
+
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_Imagery.h"
@@ -50,9 +55,12 @@
 #include "OpenGUI_CursorManager.h"
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
-#include "OpenGUI_LayoutLoader.h"
-#include "OpenGUI_WidgetTemplateManager.h"
-#include "OpenGUI_WidgetFactoryManager.h"
+
+
+//#include "OpenGUI_LayoutLoader.h" //temporarily removed. Will re-add after Object system in place
+//#include "OpenGUI_WidgetTemplateManager.h" //temporarily removed. Will re-add after Object system in place
+//#include "OpenGUI_WidgetFactoryManager.h" //temporarily removed. Will re-add after Object system in place
+
 #include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_PluginManager.h"
 #include "OpenGUI_Font.h"
@@ -64,10 +72,10 @@
 #include "OpenGUI_GenericResourceProvider.h"
 
 //Base Widget
-#include "OpenGUI_Widget.h"
+//#include "OpenGUI_Widget.h" //REMOVED replacing with new Object based system
 
 //Generic Cursor Implementation
-#include "OpenGUI_GenericCursor.h"
+//#include "OpenGUI_GenericCursor.h" //removed, maybe temporary. Yet to be determined.
 
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"

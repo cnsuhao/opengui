@@ -6,7 +6,7 @@
 namespace OpenGUI {
 	namespace Event {
 		//############################################################################
-		EventReceiver::EventReceiver(){
+		EventReceiver::EventReceiver() {
 			mParent = 0;
 		}
 		//############################################################################
@@ -45,6 +45,14 @@ namespace OpenGUI {
 				return iter->second;
 			}
 			return 0;
+		}
+		//############################################################################
+		EventHandlerList& EventReceiver::operator[]( const std::string& name ) {
+			EventHandlerList* retobj = getEventHandlers( name );
+			if(retobj == 0){
+				OG_THROW(Exception::ERR_ITEM_NOT_FOUND,"Event does not exist: " + name, __FUNCTION__);
+			}
+			return *retobj;
 		}
 		//############################################################################
 	}//namespace Event {
