@@ -2,7 +2,7 @@
 #include "tinyxml.h"
 
 #include "OpenGUI.h"
-
+/*
 namespace OpenGUI {
 	//############################################################################
 	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
@@ -74,4 +74,5 @@ namespace OpenGUI {
 	//############################################################################
 }
 ;//namespace OpenGUI{
+*/
 

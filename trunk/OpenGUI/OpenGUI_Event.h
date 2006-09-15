@@ -4,7 +4,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_MouseButton.h"
+
 
 namespace OpenGUI {
 
@@ -35,6 +35,8 @@ namespace OpenGUI {
 
 			//! Returns the list of EventHandler objects for the event of given \c name
 			EventHandlerList* getEventHandlers( const std::string& name );
+			//! Returns reference to the list of EventHandler objects for the event of given \c name, throws exception if event does not exist
+			EventHandlerList& operator[]( const std::string& name );
 		private:
 			EventReceiver();
 			~EventReceiver();
@@ -45,38 +47,6 @@ namespace OpenGUI {
 
 	}//namespace Event {
 
-
-	namespace Msg {
-
-		//! Contains all the event specific structs that are used
-		/*! \deprecated replaced by new event system */
-		namespace EventData {
-
-			//! Event specific data struct.
-			struct MouseButtonEvent {
-				unsigned int mouseButtonID;//!< The mouse button ID. \see OpenGUI::MouseButton
-			};
-
-			//! Event specific data struct.
-			struct MouseMoveEvent {
-				FVector2 mousePosition; //!< The new mouse position in absolute world space coordinates.
-			};
-
-			//! Event specific data struct.
-			struct KeyEvent {
-				char key; //!< ASCII char of the key
-			};
-
-			//! Event specific data struct.
-			struct TickEvent {
-				unsigned int timeDelta; //!< The time delta in milliseconds since the previous tick event
-			};
-
-
-		}
-		;//namespace EventData{
-	}
-	;//namespace Msg{
 }
 ;//namespace OpenGUI{
 #endif

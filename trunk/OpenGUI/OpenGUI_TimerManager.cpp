@@ -45,9 +45,9 @@ namespace OpenGUI {
 		m_timeSinceStart += amount;
 	}
 	//############################################################################
-	void TimerManager::_DoAutoTickInject() {
-		System::getSingleton().injectTick( _timePassedSinceLastCall() );
-	}
+	//void TimerManager::_DoAutoTickInject() {
+		//System::getSingleton().injectTick( _timePassedSinceLastCall() );
+	//}
 	//############################################################################
 	//############################################################################
 	void TimerManager::_init_timePassedSinceLastCall() {
