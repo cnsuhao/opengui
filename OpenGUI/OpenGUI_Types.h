@@ -9,7 +9,10 @@ namespace OpenGUI {
 #undef min
 #undef max
 
-
+	/*! \addtogroup Types
+		The base types used within %OpenGUI
+	@{
+	*/
 	//! IVector2s are two dimensional vectors based on integers.
 	class OPENGUI_API IVector2 {
 	public:
@@ -519,6 +522,8 @@ namespace OpenGUI {
 		virtual ~Enum_TextAligntment_V() {}
 		virtual void setValue( TextAlignment::Alignment alignment );
 	};
+
+	/*! @} */ //end of Types group
 
 }//namespace OpenGUI {
 

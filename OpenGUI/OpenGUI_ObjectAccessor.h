@@ -38,9 +38,9 @@ namespace OpenGUI {
 			return TYPE_PROPERTY;
 		}
 		//! Called to retrieve the current value
-		virtual void get( Types::Value& valueOut ) {}
+		virtual void get( Value& valueOut ) {}
 		//! Called to set the current value
-		virtual void set( Types::Value& valueIn ) {}
+		virtual void set( Value& valueIn ) {}
 	};
 
 
@@ -54,7 +54,7 @@ namespace OpenGUI {
 			return TYPE_METHOD;
 		}
 		//! Called when the method is invoked.
-		virtual void invoke( Types::ValueList& paramIn, Types::ValueList& returnOut ) = 0;
+		virtual void invoke( ValueList& paramIn, ValueList& returnOut ) = 0;
 	};
 
 

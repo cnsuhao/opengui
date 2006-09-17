@@ -26,7 +26,7 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	void Object::getProperty( const std::string& propertyName, Types::Value& valueOut ) {
+	void Object::getProperty( const std::string& propertyName, Value& valueOut ) {
 		ObjectAccessorList* oal = getAccessors();
 		if ( !oal ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "getAccessors() returned invalid ObjectAccessorList", "Object::getProperty" );
@@ -55,7 +55,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void Object::setProperty( const std::string& propertyName, Types::Value& valueIn ) {
+	void Object::setProperty( const std::string& propertyName, Value& valueIn ) {
 		ObjectAccessorList* oal = getAccessors();
 		if ( !oal ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "getAccessors() returned invalid ObjectAccessorList", "Object::setProperty" );
@@ -84,7 +84,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void Object::callMethod( const std::string& methodName, Types::ValueList& paramIn, Types::ValueList& returnOut ) {
+	void Object::callMethod( const std::string& methodName, ValueList& paramIn, ValueList& returnOut ) {
 		ObjectAccessorList* oal = getAccessors();
 		if ( !oal ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "getAccessors() returned invalid ObjectAccessorList", "Object::callMethod" );
