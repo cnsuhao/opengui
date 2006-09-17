@@ -19,11 +19,11 @@ namespace OpenGUI {
 		virtual ~Object();
 
 		//! returns the value of \c propertyName via \c valueOut
-		void getProperty( const std::string& propertyName, Types::Value& valueOut );
+		void getProperty( const std::string& propertyName, Value& valueOut );
 		//! sets the value of \c propertyName to the contents of \c valueIn
-		void setProperty( const std::string& propertyName, Types::Value& valueIn );
+		void setProperty( const std::string& propertyName, Value& valueIn );
 		//! invokes \c methodName, sending \c paramIn as arguments, and catching return values in \c returnOut
-		void callMethod( const std::string& methodName, Types::ValueList& paramIn, Types::ValueList& returnOut );
+		void callMethod( const std::string& methodName, ValueList& paramIn, ValueList& returnOut );
 
 		//! returns this object's ObjectAccessorList head
 		virtual ObjectAccessorList* getAccessors();

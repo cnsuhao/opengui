@@ -10,7 +10,7 @@ namespace OpenGUI {
 
 	class Object; //forward declaration
 
-	//! Contains all object types that directly involve the Event System
+	//! Contains all object types that only involve the processing of events
 	namespace Event {
 		//! Base class for event arguments
 		class OPENGUI_API EventArgs {

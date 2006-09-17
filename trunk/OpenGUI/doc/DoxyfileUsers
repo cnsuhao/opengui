@@ -84,9 +84,10 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = ../ \
                          AdditionalDoxygenInput.txt \
-                         EventDocs.txt \
-                         BaseWidgets.txt \
                          xmldocs.txt
+#                         EventDocs.txt \
+#                         BaseWidgets.txt \
+
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
