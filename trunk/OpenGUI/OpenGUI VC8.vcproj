@@ -278,6 +278,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Math.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Object.cpp"
 				>
 			</File>
@@ -421,6 +425,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_LogSystem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Math.h"
 				>
 			</File>
 			<File
