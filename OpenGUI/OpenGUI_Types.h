@@ -3,16 +3,267 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_Math.h"
 
 namespace OpenGUI {
-//No thanks Bill
+	//No thanks Bill
 #undef min
 #undef max
 
 	/*! \addtogroup Types
-		The base types used within %OpenGUI
+	The base types used within %OpenGUI
 	@{
 	*/
+
+	class Radian; //forward declaration
+	class Degree; //forward declaration
+
+	//! Represents radians and provide some basic utility functions.
+	/*! This class is used to store radian values, as well as provide some basic
+		conversion functions.
+	*/
+	class Radian {
+	public:
+		//! Constructor initialized with radian in a float
+		explicit Radian( float radian_value = 0.0f ) : value( radian_value ) {}
+		//! Constructor initialized with a Degree
+		Radian( const Degree& degree_value ); //defined after Degree
+
+		//! returns the current value as a float in degrees
+		float valueDegrees() const {
+			return Math::RadiansToDegrees( value );
+		}
+		//! returns the current value as a float in radians
+		float valueRadians() const {
+			return value;
+		}
+
+		//! assignment with a radian in a float
+		const Radian& operator = ( const float& radian_float ) {
+			value = radian_float;
+			return *this;
+		}
+
+		//! assignment with a Radian
+		const Radian& operator = ( const Radian& radian ) {
+			value = radian.value;
+			return *this;
+		}
+		//! assignment with a Degree
+		inline const Radian& operator = ( const Degree& degree ); //defined after Degree
+
+		//! addition with a Radian
+		Radian operator + ( const Radian& right ) const {
+			return Radian( value + right.value );
+		}
+		//! addition with a Degree
+		inline Radian operator + ( const Degree& right ) const; //defined after Degree
+
+		//! addition/assignment with a Radian
+		Radian& operator += ( const Radian& right ) {
+			value += right.value;
+			return *this;
+		}
+		//! addition/assignment with a Degree
+		inline Radian& operator += ( const Degree& right ); //defined after Degree
+
+		//! inverse operator
+		Radian operator - () {
+			return Radian( -value );
+		}
+
+		//! subtraction with a Radian
+		Radian operator - ( const Radian& right ) const {
+			return Radian( value - right.value );
+		}
+		//! subtraction with a Degree
+		inline Radian operator - ( const Degree& right ) const; //defined after Degree
+
+		//! subtraction/assignment  with a Radian
+		Radian& operator -= ( const Radian& right ) {
+			value -= right.value;
+			return *this;
+		}
+		//! subtraction/assignment  with a Degree
+		inline Radian& operator -= ( const Degree& right ); //defined after Degree
+
+		//! Equal
+		bool operator == ( const Radian& right ) const {
+			return value == right.value;
+		}
+		//! Not Equal
+		bool operator != ( const Radian& right ) const {
+			return value != right.value;
+		}
+
+		//! Less than
+		bool operator < ( const Radian& right ) const {
+			return value <  right.value;
+		}
+		//! Less than or equal
+		bool operator <= ( const Radian& right ) const {
+			return value <= right.value;
+		}
+
+		//Greater than
+		bool operator > ( const Radian& right ) const {
+			return value >  right.value;
+		}
+		//Greater than or equal
+		bool operator >= ( const Radian& right ) const {
+			return value >= right.value;
+		}
+
+	private:
+		float value;
+	};
+
+
+	//! Represents degrees and provide some basic utility functions.
+	/*! Degrees are not used by any functions in %OpenGUI, but are offered here
+	as a supported type since they are the most human familiar method of measuring
+	angles.
+	*/
+	class Degree {
+	public:
+		//! Constructor initialized with degree in a float
+		explicit Degree( float degree_value = 0.0f ) : value( degree_value ) {}
+		//! Constructor initialized with a Radian
+		Degree( const Radian& radian_value ) {
+			value = radian_value.valueDegrees();
+		}
+
+		//! returns the current value as a float in degrees
+		float valueDegrees() const {
+			return value;
+		}
+		//! returns the current value as a float in radians
+		float valueRadians() const {
+			return Math::DegreesToRadians( value );
+		}
+
+		//! assignment with a degree in a float
+		const Degree& operator = ( const float& degree_float ) {
+			value = degree_float;
+			return *this;
+		}
+
+		//! assignment with a Degree
+		const Degree& operator = ( const Degree& degree ) {
+			value = degree.value;
+			return *this;
+		}
+		//! assignment with a Radian
+		const Degree& operator = ( const Radian& radian ) {
+			value = radian.valueDegrees();
+			return *this;
+		}
+
+		//! addition with a Degree
+		Degree operator + ( const Degree& right ) const {
+			return Degree( value + right.value );
+		}
+		//! addition with a Radian
+		Degree operator + ( const Radian& right ) const {
+			return Degree( value + right.valueDegrees() );
+		}
+
+		//! addition/assignment with a Degree
+		Degree& operator += ( const Degree& right ) {
+			value += right.value;
+			return *this;
+		}
+		//! addition/assignment with a Radian
+		Degree& operator += ( const Radian& right ) {
+			value += right.valueDegrees();
+			return *this;
+		}
+
+		//! inverse operator
+		Degree operator - () {
+			return Degree( -value );
+		}
+
+		//! subtraction with a Degree
+		Degree operator - ( const Degree& right ) const {
+			return Degree( value - right.value );
+		}
+		//! subtraction with a Radian
+		Degree operator - ( const Radian& right ) const {
+			return Degree( value - right.valueDegrees() );
+		}
+
+		//! subtraction/assignment  with a Degree
+		Degree& operator -= ( const Degree& right ) {
+			value -= right.value;
+			return *this;
+		}
+		//! subtraction/assignment  with a Radian
+		Degree& operator -= ( const Radian& right ) {
+			value -= right.valueDegrees();
+			return *this;
+		}
+
+		//! Equal
+		bool operator == ( const Degree& right ) const {
+			return value == right.value;
+		}
+		//! Not Equal
+		bool operator != ( const Degree& right ) const {
+			return value != right.value;
+		}
+
+		//! Less than
+		bool operator < ( const Degree& right ) const {
+			return value <  right.value;
+		}
+		//! Less than or equal
+		bool operator <= ( const Degree& right ) const {
+			return value <= right.value;
+		}
+
+		//Greater than
+		bool operator > ( const Degree& right ) const {
+			return value >  right.value;
+		}
+		//Greater than or equal
+		bool operator >= ( const Degree& right ) const {
+			return value >= right.value;
+		}
+
+	private:
+		float value;
+	};
+
+	/*! @} */ //temporarily suspend grouping
+	// THESE RADIAN METHODS ARE DEFINED HERE DUE TO INTERDEPENDENCE WITH DEGREE
+	inline Radian::Radian( const Degree& degree_value ) {
+		value = degree_value.valueRadians();
+	}
+	inline const Radian& Radian::operator= ( const Degree& degree ){
+		value = degree.valueRadians();
+		return *this;
+	}
+
+	inline Radian Radian::operator+ ( const Degree& right ) const {
+		return Radian( value + right.valueRadians() );
+	}
+	inline Radian& Radian::operator+= ( const Degree& right ) {
+		value += right.valueRadians();
+		return *this;
+	}
+	inline Radian Radian::operator- ( const Degree& right ) const {
+		return Radian( value - right.valueRadians() );
+	}
+	inline Radian& Radian::operator-= ( const Degree& right ) {
+		value -= right.valueRadians();
+		return *this;
+	}
+	// END OF RADIAN/DEGREE DEPENDENT METHOD DEFINITIONS
+	/*! \addtogroup Types
+	@{
+	*/
+
 	//! IVector2s are two dimensional vectors based on integers.
 	class OPENGUI_API IVector2 {
 	public:
@@ -143,9 +394,9 @@ namespace OpenGUI {
 
 	//! The FVector2 is a two dimensional vector based on floats.
 	/*!
-		This object often represents a screen coordinate starting from the upper left corner of the screen.
-		The value a FVector2 represents is very much an issue of context.
-		In the rendering areas of OpenGUI, a FVector2 is quite often a representation of screen position between 0,0 (upper left) and 1,1 (lower right).
+	This object often represents a screen coordinate starting from the upper left corner of the screen.
+	The value a FVector2 represents is very much an issue of context.
+	In the rendering areas of OpenGUI, a FVector2 is quite often a representation of screen position between 0,0 (upper left) and 1,1 (lower right).
 	*/
 	class OPENGUI_API FVector2 {
 	public:
@@ -324,8 +575,8 @@ namespace OpenGUI {
 	};
 
 	/*! \brief
-		This type is used throughout %OpenGUI to represent the 4 horizontal
-		alignment types (Left,Center,Right,Justified)
+	This type is used throughout %OpenGUI to represent the 4 horizontal
+	alignment types (Left,Center,Right,Justified)
 	*/
 	class TextAlignment {
 	public:
@@ -436,10 +687,10 @@ namespace OpenGUI {
 		}
 		//! comparison operator
 		bool operator==( const Color& right ) const  {
-			return (Red == right.Red 
-				&& Green == right.Green 
-				&& Blue == right.Blue 
-				&& Alpha == right.Alpha );
+			return ( Red == right.Red
+					 && Green == right.Green
+					 && Blue == right.Blue
+					 && Alpha == right.Alpha );
 		}
 		//! comparison operator
 		bool operator!=( const Color& right ) const  {
@@ -451,7 +702,7 @@ namespace OpenGUI {
 
 	//! A string based Enum system
 	/*! It's often necessary to provide a generic enum that can be created pragmatically.
-		This class addresses that need. All values are stored and retrieved in lower case form.
+	This class addresses that need. All values are stored and retrieved in lower case form.
 	*/
 	class OPENGUI_API Enum {
 	public:
@@ -480,7 +731,7 @@ namespace OpenGUI {
 
 		//! comparison operator
 		bool operator==( const Enum& right ) const  {
-			if( 0 != mSelected.compare(right.mSelected) )
+			if ( 0 != mSelected.compare( right.mSelected ) )
 				return false;
 			return true;
 		}
@@ -495,7 +746,7 @@ namespace OpenGUI {
 
 	//! \internal base class for TextAlignment based Enums
 	/*! This is just a functionality providing base class. You are most likely looking
-		for Enum_TextAligntment_H or Enum_TextAligntment_V.
+	for Enum_TextAligntment_H or Enum_TextAligntment_V.
 	*/
 	class OPENGUI_API Enum_TextAligntment_base : public Enum {
 	public:

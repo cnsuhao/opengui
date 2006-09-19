@@ -17,6 +17,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Math.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_RefPtr.h"
