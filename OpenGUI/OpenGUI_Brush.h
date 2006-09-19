@@ -4,12 +4,24 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Imagery.h"
 
 namespace OpenGUI {
 
+	//! \todo this needs to change to a referenced pointer!
+	typedef Font* FontPtr;
+
+	class Brush; //forward declaration
+
 	//! Provides drawing methods for a few geometric primitives.
 	class OPENGUI_API BrushPrimitive{
+		friend class Brush;
+	private:
+		BrushPrimitive(){mParentBrush=0;}
+		void setBrush(Brush* brush){mParentBrush=brush;}
+		Brush* mParentBrush;
 	public:
+		~BrushPrimitive(){}
 		//! Draws a line between the given points at the given thickness.
 		/*! \param start_point The beginning of the line
 			\param end_point The end of the line
@@ -30,15 +42,52 @@ namespace OpenGUI {
 		void drawOutlineRect(const FRect& rect, int thickness = 1);
 	};
 
+	//! Provides methods for drawing Imagery covered rects
+	class OPENGUI_API BrushImagery{
+		friend class Brush;
+	private:
+		BrushImagery(){mParentBrush=0;}
+		void setBrush(Brush* brush){mParentBrush=brush;}
+		Brush* mParentBrush;
+	public:
+		~BrushImagery(){}
+
+		//! Draws the given imagery using the given rect
+		void drawImage(ImageryPtr imageryPtr, const FRect& rect);
+		//! Draws the given imagery at the given position and size
+		void drawImage(ImageryPtr imageryPtr, const FVector2& position, const FVector2& size);
+		//! Draws the given imagery at the given position at it's native pixel size
+		void drawImageUnscaled(ImageryPtr imageryPtr, const FVector2& position);
+		//! Draws the given imagery filling the given rect using the given number of tiles
+		void drawImageTiled(ImageryPtr imageryPtr, const FRect& rect, float x_tiles, float y_tiles);
+		//! Draws the given imagery at the given position at it's native pixel size, tiling or clipping it as necessary to fill the area
+		void drawImageUnscaledAndTiled(ImageryPtr imageryPtr, const FRect& rect);
+	};
+
+	//! Provides methods for rendering text
+	class BrushText{
+		friend class Brush;
+	private:
+		BrushText(){mParentBrush=0;}
+		void setBrush(Brush* brush){mParentBrush=brush;}
+		Brush* mParentBrush;
+	public:
+		~BrushText(){}
+		//! draws the given string of characters at the given position, using the given font at the give size, and optionally adjusting the glyph spacing
+		void drawText( const std::string& text, const FVector2& position, FontPtr font, float size, float spacing_adjust = 0.0f);
+		//! draws the given string within the given rect, using the given font and size, while applying the given text alignments and performing any necessary word wrapping
+		void drawTextArea( const std::string& text, const FRect& area, FontPtr font, float size, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP);
+	};
+
 	//! The base of all widget rendering operations
 	/*! The Brush object is provided during widget onDraw events, and is used
 		by the widget to draw itself. Functions that should use the Brush object
 		will be provided one as a function parameter. Users should have no
 		use for manually creating a Brush.
-		
+
 
 		\par Modifier Stack:
-		Brushes implement stack modifiers that are applied to all output they generate. 
+		Brushes implement stack modifiers that are applied to all output they generate.
 		The available modifiers are color, clipping rects, output mask, position offsets,
 		and rotations about the origin. These modifiers are \b not retroactive.
 		For instance, changing the color modifier will not alter the color of operations
@@ -65,7 +114,7 @@ namespace OpenGUI {
 		clipping rects and masks. You can perform a rotation to an arbitrary angle, and then
 		apply a clipping rect or mask, followed by the inverse of the previously used angle,
 		and you will have created a non-axis aligned clipping rect or mask. Very powerful indeed.
-		
+
 		\par
 		As much fun as these modifiers are, they come with a price tag. The more stack operations
 		you add, the more operations must be applied to your output. We do our best to optimize
@@ -75,12 +124,12 @@ namespace OpenGUI {
 		\par Position Modifier:
 		 - Type: Additive
 		 - Function: pushPosition()
-		
+
 		\par
 		Position modifiers are offsets that will be applied (added) to each
 		operation you perform. This is effectively like translating the origin to
 		the given position.
-		
+
 		\par Rotation Modifier:
 		- Type: Additive
 		- Function: pushRotation()
@@ -121,6 +170,8 @@ namespace OpenGUI {
 		Brush( /*context*/ );
 		~Brush();
 		BrushPrimitive Primitive;
+		BrushImagery Images;
+		BrushText Text;
 
 		//! Pushes a position offset onto the stack
 		void pushPosition(float x_offset, float y_offset);
@@ -141,14 +192,17 @@ namespace OpenGUI {
 		//! clears the offset stack
 		void clearStack();
 
-		//! returns the drawing area that this brush 
+		//! returns the drawing area that this brush
 		const FRect& getDrawArea();
 		//const IRect& getDrawArea_Pixels();
 
 		const FRect& getClippingRect();
 		void setClippingRect(const FRect& clipping_rect);
+
 	private:
+
 	};
+
 } // namespace OpenGUI{
 
 #endif // B955248E_7EDD_47CA_B588_BAA9C55E4380
