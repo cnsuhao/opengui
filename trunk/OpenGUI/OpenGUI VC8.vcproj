@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_BrushModifier.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Cursor.cpp"
 				>
 			</File>
@@ -349,6 +353,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Brush.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier.h"
 				>
 			</File>
 			<File
