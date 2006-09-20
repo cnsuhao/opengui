@@ -76,13 +76,18 @@ namespace OpenGUI {
 		BrushModifierStack();
 		~BrushModifierStack();
 
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Rotation& modifier );
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Position& modifier );
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Color& modifier );
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Mask& modifier );
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_ClipRect& modifier );
 		//! push a copy of the given modifier onto the stack
-		void push( A_BrushModifier* modifier ) ;
+		void push( A_BrushModifier* modifier );
 
 		//! pop the top modifier off the stack
 		void pop();
