@@ -8,7 +8,7 @@
 
 
 namespace OpenGUI {
-
+	//############################################################################
 	//! \internal Base class for brush modifiers stored by modifier stack
 	class OPENGUI_API A_BrushModifier {
 	public:
@@ -18,10 +18,12 @@ namespace OpenGUI {
 			POSITION,
 			ROTATION,
 			COLOR,
-			MASK
+			MASK,
+			CLIPRECT
 		};
 		virtual ModifierType getType() = 0;
 	};
+	//############################################################################
 	//! \internal Color modifier stored by modifier stack
 	class OPENGUI_API BrushModifier_Color : public A_BrushModifier {
 	public:
@@ -30,6 +32,7 @@ namespace OpenGUI {
 		}
 		Color mColor;
 	};
+	//############################################################################
 	//! \internal Rotation modifier stored by modifier stack
 	class OPENGUI_API BrushModifier_Rotation : public A_BrushModifier {
 	public:
@@ -38,6 +41,7 @@ namespace OpenGUI {
 		}
 		Radian mRotationAngle;
 	};
+	//############################################################################
 	//! \internal Position modifier stored by modifier stack
 	class OPENGUI_API BrushModifier_Position : public A_BrushModifier {
 	public:
@@ -46,7 +50,26 @@ namespace OpenGUI {
 		}
 		FVector2 mPosition;
 	};
-
+	//############################################################################
+	//! \internal Mask modifier stored by modifier stack
+	class OPENGUI_API BrushModifier_Mask : public A_BrushModifier {
+	public:
+		virtual ModifierType getType() {
+			return MASK;
+		}
+		ImageryPtr mImagery;
+		FRect mRect;
+	};
+	//############################################################################
+	//! \internal ClipRect modifier stored by modifier stack
+	class OPENGUI_API BrushModifier_ClipRect : public A_BrushModifier {
+	public:
+		virtual ModifierType getType() {
+			return CLIPRECT;
+		}
+		FRect mRect;
+	};
+	//############################################################################
 	//! \internal Modifier stack used by Brush class
 	class OPENGUI_API BrushModifierStack {
 	public:
@@ -56,6 +79,8 @@ namespace OpenGUI {
 		void push( const BrushModifier_Rotation& modifier );
 		void push( const BrushModifier_Position& modifier );
 		void push( const BrushModifier_Color& modifier );
+		void push( const BrushModifier_Mask& modifier );
+		void push( const BrushModifier_ClipRect& modifier );
 		//! push a copy of the given modifier onto the stack
 		void push( A_BrushModifier* modifier ) ;
 

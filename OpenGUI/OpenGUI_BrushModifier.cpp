@@ -48,6 +48,18 @@ namespace OpenGUI {
 		push( tmp );
 	}
 	//############################################################################
+	void BrushModifierStack::push( const BrushModifier_ClipRect& modifier ){
+		BrushModifier_ClipRect* tmp = new BrushModifier_ClipRect();
+		( *tmp ) = modifier;
+		push( tmp );
+	}
+	//############################################################################
+	void BrushModifierStack::push( const BrushModifier_Mask& modifier ){
+		BrushModifier_Mask* tmp = new BrushModifier_Mask();
+		( *tmp ) = modifier;
+		push( tmp );
+	}
+	//############################################################################
 	void BrushModifierStack::pop() {
 		A_BrushModifier* tmp = mStack.back();
 		mStack.pop_back();
