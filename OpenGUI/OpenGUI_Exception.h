@@ -13,6 +13,8 @@ namespace OpenGUI {
 #define OG_THROW(code, description, source) \
 	throw ( OpenGUI::Exception( code, description, source,  __FILE__, __LINE__ ) )
 
+#define OG_NYI \
+	OG_THROW( OpenGUI::Exception::ERR_NOT_IMPLEMENTED, "Not Yet Implemented", __FUNCTION__ )
 
 
 
