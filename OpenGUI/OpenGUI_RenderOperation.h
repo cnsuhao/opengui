@@ -4,9 +4,64 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_Imagery.h"
+#include "OpenGUI_Texture.h"
 
 namespace OpenGUI {
+	
+
+
+	//! It's a vertex. RenderOperations consist of 3 of these to make a polygon.
+	class OPENGUI_API Vertex {
+	public:
+		FVector2 position; //!< The X,Y position of this vertex
+		Color color; //!< The color of this vertex
+		FVector2 textureUV; //!< The UV coordinate for the texture of this vertex (if any)
+		FVector2 maskUV; //!< The UV coordinate for the mask texture of this vertex (if any)
+	};
+
+	//! Just a simple list of Vertex objects. Easily appended, inserted, etc.
+	/*! This data type
+	*/
+	typedef std::list<Vertex> VertexList;
+	
+	//!
+	class OPENGUI_API VertexBuffer{
+		size_t length;
+		Vertex* vertexArray;
+	};
+
+	/*! \brief
+	These are the representations of render operations that are sent to the renderer for
+	drawing.
+
+	\note
+	Though the Renderer implementation really should \b not care, it is highly
+	advised that you use counter clockwise vertex windings. All brush methods generate
+	CCW windings, so you can be assured that any Renderer implementation that is performing
+	winding culling will appear to absolutely not work correctly if it is culling CCW
+	wound polygons.
+
+	\note
+	At the current implementation, the system can only guarantee that renderers will
+	receive render operations in a back to front order per rendering surface.
+
+	*/
+	class OPENGUI_API RenderOperation {
+	public:
+		//! constructor
+		RenderOperation() : texture( 0 ), mask( 0 ) {}
+		//! Pointer to the VertexList that contains the vertices for this render operation
+		/*! 
+		*/
+		VertexList* vertexList;
+		VertexBuffer* vertexBuffer;
+		TexturePtr texture; //!< Pointer to the color texture, or 0 for none
+		TexturePtr mask; //!< Pointer to the mask texture, or 0 for none
+	};
+
+	typedef std::list<RenderOperation> RenderOperationList;
+
+
 	class Texture; //forward declaration
 	class Imagery; //forward declaration
 	class Element; //forward declaration

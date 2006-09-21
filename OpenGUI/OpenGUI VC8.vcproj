@@ -218,14 +218,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Cursor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_CursorManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_DynamicLib.cpp"
 				>
 			</File>
@@ -361,14 +353,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_CONFIG.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Cursor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_CursorManager.h"
 				>
 			</File>
 			<File

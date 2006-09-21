@@ -5,6 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Texture.h"
+#include "OpenGUI_Imagery.h"
 
 namespace OpenGUI {
 

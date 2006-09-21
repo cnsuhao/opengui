@@ -1,7 +1,10 @@
 #ifndef C4152441_F250_46dd_958F_D1007688400A
 #define C4152441_F250_46dd_958F_D1007688400A
 
+#include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_RefPtr.h"
 
 namespace OpenGUI {
 	/*! \brief
@@ -30,6 +33,9 @@ namespace OpenGUI {
 		std::string mTextureName;//!<It is required that this be set to the source filename by custom Renderers
 		IVector2 mTextureSize;//!<It is required that this be set to the texture dimensions by custom Renderers
 	};
+
+	//! \todo This needs to be finished. Right now there's no backing implementation to handle textures deleting themselves
+	typedef RefPtr<Texture> TexturePtr;
 }
 ;//namespace OpenGUI{
 #endif

@@ -52,8 +52,7 @@
 #include "OpenGUI_Imagery.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_ImageryManager.h"
-#include "OpenGUI_Cursor.h"
-#include "OpenGUI_CursorManager.h"
+
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
 
