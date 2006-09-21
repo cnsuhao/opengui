@@ -5,9 +5,11 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
-
+#include "OpenGUI_RenderOperation.h"
 
 namespace OpenGUI {
+	class Vertex; //forward declaration
+
 	//############################################################################
 	//! \internal Base class for brush modifiers stored by modifier stack
 	class OPENGUI_API A_BrushModifier {
@@ -22,6 +24,7 @@ namespace OpenGUI {
 			CLIPRECT
 		};
 		virtual ModifierType getType() = 0;
+		virtual void apply(RenderOperationList& in_out)=0;
 	};
 	//############################################################################
 	//! \internal Color modifier stored by modifier stack
@@ -31,6 +34,7 @@ namespace OpenGUI {
 			return COLOR;
 		}
 		Color mColor;
+		virtual void apply(RenderOperationList& in_out);
 	};
 	//############################################################################
 	//! \internal Rotation modifier stored by modifier stack
@@ -40,6 +44,7 @@ namespace OpenGUI {
 			return ROTATION;
 		}
 		Radian mRotationAngle;
+		virtual void apply(RenderOperationList& in_out);
 	};
 	//############################################################################
 	//! \internal Position modifier stored by modifier stack
@@ -49,6 +54,7 @@ namespace OpenGUI {
 			return POSITION;
 		}
 		FVector2 mPosition;
+		virtual void apply(RenderOperationList& in_out);
 	};
 	//############################################################################
 	//! \internal Mask modifier stored by modifier stack
@@ -59,6 +65,7 @@ namespace OpenGUI {
 		}
 		ImageryPtr mImagery;
 		FRect mRect;
+		virtual void apply(RenderOperationList& in_out);
 	};
 	//############################################################################
 	//! \internal ClipRect modifier stored by modifier stack
@@ -68,6 +75,7 @@ namespace OpenGUI {
 			return CLIPRECT;
 		}
 		FRect mRect;
+		virtual void apply(RenderOperationList& in_out);
 	};
 	//############################################################################
 	//! \internal Modifier stack used by Brush class
@@ -93,6 +101,8 @@ namespace OpenGUI {
 		void pop();
 		//! return the stack size
 		size_t size() const;
+
+		void applyStack(RenderOperationList& in_out);
 	private:
 		typedef std::list<A_BrushModifier*> BrushModifierPtrStack;
 		BrushModifierPtrStack mStack;

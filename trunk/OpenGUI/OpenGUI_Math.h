@@ -19,6 +19,83 @@ namespace OpenGUI {
 		static float RadiansToDegrees( float radians ) {
 			return radians * fRad2Deg;
 		}
+
+		//! sine
+		static float Sin (float fValue){
+			return sin( fValue );
+		}
+		//! cosine
+		static float Cos (float fValue){
+			return cos( fValue );
+		}
+		//! tangent
+		static float Tan (float fValue){
+			return tan( fValue );
+		}
+
+		//! arc sine
+		static float ASin (float fValue){
+			return asin( fValue );
+		}
+		//! arc cosine
+		static float ACos (float fValue){
+			return acos( fValue );
+		}
+		//! arc tangent
+		static float ATan (float fValue){
+			return atan( fValue );
+		}
+		//! arc tangent of y/x
+		static float ATan2 (float fY, float fX){
+			return atan2( fY, fX );
+		}
+
+		//! ceiling
+		static float Ceil (float fValue){
+			return ceil( fValue );
+		}
+		//! floor
+		static float Floor (float fValue){
+			return floor( fValue );
+		}
+
+		//! exponential
+		static float Exp (float fValue){
+			return exp( fValue );
+		}
+		//! absolute value of floating-point
+		static float FAbs (float fValue){
+			return fabs( fValue );
+		}
+		
+		//! floating point modular division
+		static float FMod (float fX, float fY){
+			return fmod( fX, fY );
+		}
+		
+		//! natural logarithm
+		static float Log (float fValue){
+			return log( fValue );
+		}
+		//! numeric power
+		static float Pow (float fBase, float fExponent){
+			return pow( fBase, fExponent );
+		}
+
+		//! square
+		static float Sqr (float fValue){
+			return fValue * fValue;
+		}
+		//! square root
+		static float Sqrt (float fValue){
+			return sqrt( fValue );
+		}
+		//! inverse square root
+		static float InvSqrt (float fValue){
+			return 1.0f / sqrt( fValue );
+		}
+
+
 	private:
 		static const float POS_INFINITY;
 		static const float NEG_INFINITY;

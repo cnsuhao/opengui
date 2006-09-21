@@ -180,6 +180,9 @@ namespace OpenGUI {
 		You can create alpha masks of any shape and apply them using this modifier.
 	*/
 	class OPENGUI_API Brush {
+		friend class BrushText;
+		friend class BrushPrimitive;
+		friend class BrushImagery;
 	public:
 		Brush( /*context*/ );
 		~Brush();
