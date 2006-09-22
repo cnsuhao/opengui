@@ -8,13 +8,13 @@ namespace OpenGUI {
 	// BRUSHMODIFIER_COLOR IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushModifier_Color::apply( RenderOperationList& in_out ) {
-		for ( RenderOperationList::iterator iter = in_out.begin();
-				iter != in_out.end(); iter++ ) {
-			RenderOperation& op = ( *iter );
-			op.vertices[0].color = mColor;
-			op.vertices[1].color = mColor;
-			op.vertices[2].color = mColor;
+	void BrushModifier_Color::apply( RenderOperation& in_out ) {
+		for ( TriangleList::iterator iter = in_out.triangleList->begin();
+				iter != in_out.triangleList->end(); iter++ ) {
+			Triangle& tri = ( *iter );
+			tri.vertex[0].color = mColor;
+			tri.vertex[1].color = mColor;
+			tri.vertex[2].color = mColor;
 		}
 	}
 	//############################################################################
@@ -23,7 +23,7 @@ namespace OpenGUI {
 	// BRUSHMODIFIER_ROTATION IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushModifier_Rotation::apply( RenderOperationList& in_out ) {
+	void BrushModifier_Rotation::apply( RenderOperation& in_out ) {
 		/*
 		We're performing the same rotation angle for all vertices,
 		so we can reuse pre calculated Sin and Cos results
@@ -31,16 +31,16 @@ namespace OpenGUI {
 		const float preCos = Math::Cos( mRotationAngle.valueRadians() );
 		const float preSin = Math::Sin( mRotationAngle.valueRadians() );
 
-		for ( RenderOperationList::iterator iter = in_out.begin();
-				iter != in_out.end(); iter++ ) {
-			RenderOperation& op = ( *iter );
-			for ( int i = 0; i < 3; i++ ) {
-				Vertex& vert = op.vertices[i];
-				float x = vert.position.x;
-				float y = vert.position.x;
-				vert.position.x = preCos * x - preSin * y;
-				vert.position.y = preSin * x + preCos * y;
-			}
+		for ( TriangleList::iterator iter = in_out.triangleList->begin();
+			iter != in_out.triangleList->end(); iter++ ) {
+				Triangle& tri = ( *iter );
+				for ( int i = 0; i < 3; i++ ) {
+					Vertex& vert = tri.vertex[i];
+					float x = vert.position.x;
+					float y = vert.position.x;
+					vert.position.x = preCos * x - preSin * y;
+					vert.position.y = preSin * x + preCos * y;
+				}
 		}
 	}
 	//############################################################################
@@ -49,14 +49,14 @@ namespace OpenGUI {
 	// BRUSHMODIFIER_POSITION IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushModifier_Position::apply( RenderOperationList& in_out ) {
-		for ( RenderOperationList::iterator iter = in_out.begin();
-				iter != in_out.end(); iter++ ) {
-			RenderOperation& op = ( *iter );
-			for ( int i = 0; i < 3; i++ ) {
-				Vertex& vert = op.vertices[i];
-				vert.position = mPosition + vert.position;
-			}
+	void BrushModifier_Position::apply( RenderOperation& in_out ) {
+		for ( TriangleList::iterator iter = in_out.triangleList->begin();
+			iter != in_out.triangleList->end(); iter++ ) {
+				Triangle& tri = ( *iter );
+				for ( int i = 0; i < 3; i++ ) {
+					Vertex& vert = tri.vertex[i];
+					vert.position = mPosition + vert.position;
+				}
 		}
 	}
 	//############################################################################
@@ -65,14 +65,14 @@ namespace OpenGUI {
 	// BRUSHMODIFIER_MASK IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushModifier_Mask::apply( RenderOperationList& in_out ) {}
+	void BrushModifier_Mask::apply( RenderOperation& in_out ) {}
 	//############################################################################
 
 
 	// BRUSHMODIFIER_CLIPRECT IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushModifier_ClipRect::apply( RenderOperationList& in_out ) {}
+	void BrushModifier_ClipRect::apply( RenderOperation& in_out ) {}
 	//############################################################################
 
 
@@ -132,5 +132,12 @@ namespace OpenGUI {
 		return mStack.size();
 	}
 	//############################################################################
+	void BrushModifierStack::applyStack(RenderOperation& in_out){
+		for( BrushModifierPtrStack::iterator iter = mStack.begin();
+			iter != mStack.end(); iter++ ){
+				A_BrushModifier* mod = (*iter);
+				mod->apply( in_out );
+		}
+	}
 
 }// namespace OpenGUI {
