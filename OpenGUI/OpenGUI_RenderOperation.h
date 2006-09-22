@@ -10,7 +10,7 @@ namespace OpenGUI {
 	
 
 
-	//! It's a vertex. RenderOperations consist of 3 of these to make a polygon.
+	//! It's a vertex. A Triangle consists of 3 of these.
 	class OPENGUI_API Vertex {
 	public:
 		FVector2 position; //!< The X,Y position of this vertex
@@ -19,16 +19,16 @@ namespace OpenGUI {
 		FVector2 maskUV; //!< The UV coordinate for the mask texture of this vertex (if any)
 	};
 
-	//! Just a simple list of Vertex objects. Easily appended, inserted, etc.
-	/*! This data type
-	*/
-	typedef std::list<Vertex> VertexList;
-	
-	//!
-	class OPENGUI_API VertexBuffer{
-		size_t length;
-		Vertex* vertexArray;
+
+	//! Triangle. Wow.
+	class OPENGUI_API Triangle {
+	public:
+		Vertex vertex[3];
 	};
+	//! TriangleList. More Wow.
+	typedef std::list<Triangle> TriangleList;
+
+	
 
 	/*! \brief
 	These are the representations of render operations that are sent to the renderer for
@@ -49,12 +49,11 @@ namespace OpenGUI {
 	class OPENGUI_API RenderOperation {
 	public:
 		//! constructor
-		RenderOperation() : texture( 0 ), mask( 0 ) {}
-		//! Pointer to the VertexList that contains the vertices for this render operation
-		/*! 
-		*/
-		VertexList* vertexList;
-		VertexBuffer* vertexBuffer;
+		RenderOperation() : texture( 0 ), mask( 0 ), triangleList( 0 ) {}
+		
+		//! pointer to a TriangleList that describes this render operation
+		TriangleList* triangleList;
+		
 		TexturePtr texture; //!< Pointer to the color texture, or 0 for none
 		TexturePtr mask; //!< Pointer to the mask texture, or 0 for none
 	};
