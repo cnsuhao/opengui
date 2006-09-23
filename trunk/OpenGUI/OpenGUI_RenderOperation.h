@@ -7,7 +7,7 @@
 #include "OpenGUI_Texture.h"
 
 namespace OpenGUI {
-	
+
 
 
 	//! It's a vertex. A Triangle consists of 3 of these.
@@ -28,7 +28,7 @@ namespace OpenGUI {
 	//! TriangleList. More Wow.
 	typedef std::list<Triangle> TriangleList;
 
-	
+
 
 	/*! \brief
 	These are the representations of render operations that are sent to the renderer for
@@ -50,10 +50,14 @@ namespace OpenGUI {
 	public:
 		//! constructor
 		RenderOperation() : texture( 0 ), mask( 0 ), triangleList( 0 ) {}
-		
+		~RenderOperation() {
+			if ( triangleList != 0 )
+				delete triangleList;
+		}
+
 		//! pointer to a TriangleList that describes this render operation
 		TriangleList* triangleList;
-		
+
 		TexturePtr texture; //!< Pointer to the color texture, or 0 for none
 		TexturePtr mask; //!< Pointer to the mask texture, or 0 for none
 	};

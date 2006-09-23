@@ -7,6 +7,7 @@
 #include "OpenGUI_Imagery.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_BrushModifier.h"
+#include "OpenGUI_RenderOperation.h"
 
 namespace OpenGUI {
 
@@ -96,8 +97,7 @@ namespace OpenGUI {
 	//! The base of all widget rendering operations
 	/*! The Brush object is provided during widget onDraw events, and is used
 		by the widget to draw itself. Functions that should use the Brush object
-		will be provided one as a function parameter. Users should have no
-		use for manually creating a Brush.
+		will be provided one as a function parameter. 
 
 
 		\par Modifier Stack:
@@ -184,7 +184,9 @@ namespace OpenGUI {
 		friend class BrushPrimitive;
 		friend class BrushImagery;
 	public:
-		Brush( /*context*/ );
+		//! Constructor requires a target rendering context
+		Brush( /* Object* context */ );
+		//! Destructor
 		~Brush();
 		//! access to primitive drawing operations
 		BrushPrimitive Primitive;
@@ -218,12 +220,19 @@ namespace OpenGUI {
 		const FRect& getDrawArea();
 		//const IRect& getDrawArea_Pixels();
 
+	protected:
+		//! \internal Adds the given render operation to the brush's output.
+		/*! This is used by the brush primitives to send rendering output.
+			Any modifier stack operations will be automatically applied in
+			this function.
+		*/
+		void addRenderOperation( RenderOperation& renderOp );
 	private:
 		BrushModifierStack mModifierStack;
 	};
 
 
-	
+
 } // namespace OpenGUI{
 
 #endif // B955248E_7EDD_47CA_B588_BAA9C55E4380
