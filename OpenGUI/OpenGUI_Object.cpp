@@ -73,7 +73,13 @@ namespace OpenGUI {
 				} else {
 					ObjectProperty* prop = dynamic_cast<ObjectProperty*>( accessor );
 					if ( prop ) {
-						prop->set( *this, valueIn );
+						if(!prop->getPermSettable()){
+							OG_THROW( Exception::OP_FAILED, "Property is read only: '"
+								+ propertyName
+								+ "'", "Object::setProperty" );
+						}else{
+							prop->set( *this, valueIn );
+						}
 					} else {
 						OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 								  + propertyName

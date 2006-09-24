@@ -79,4 +79,9 @@
 
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
+
+#include "OpenGUI_BrushModifier.h"
+#include "OpenGUI_Brush.h"
+
+#include "OpenGUI_Widget.h"
 #endif

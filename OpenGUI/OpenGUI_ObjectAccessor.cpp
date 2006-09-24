@@ -6,8 +6,12 @@
 namespace OpenGUI {
 
 	//############################################################################
-	const char* ObjectAccessor::getAccessorGroup(){
+	const char* ObjectAccessor::getAccessorGroup() {
 		return "General";
+	}
+	//############################################################################
+	bool ObjectProperty::getPermSettable() {
+		return true;
 	}
 	//############################################################################
 	ObjectAccessorList::ObjectAccessorList() {
@@ -50,5 +54,5 @@ namespace OpenGUI {
 		return mParent;
 	}
 	//############################################################################
-	
+
 }// namespace OpenGUI {

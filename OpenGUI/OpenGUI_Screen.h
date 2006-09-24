@@ -4,14 +4,18 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Widget.h"
+#include "OpenGUI_I_WidgetContainer.h"
 
 namespace OpenGUI{
 
-	class OPENGUI_API Screen{
+	//! Every GUI is built into a screen.
+	class OPENGUI_API Screen : public I_WidgetContainer{
 	public:
 		Screen(){}
 		virtual ~Screen(){}
 		void render();
+
 	protected:
 	private:
 	};
