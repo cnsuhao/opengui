@@ -37,14 +37,14 @@ namespace OpenGUI {
 						  + propertyName
 						  + "' ) returned invalid ObjectAccessor", "Object::getProperty" );
 			} else {
-				if ( accessor->getAccessorType() != ObjectAccessor::TYPE_PROPERTY ) {
+				if ( accessor->_getAccessorType() != ObjectAccessor::TYPE_PROPERTY ) {
 					OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 							  + propertyName
 							  + "' is not TYPE_PROPERTY", "Object::getProperty" );
 				} else {
 					ObjectProperty* prop = dynamic_cast<ObjectProperty*>( accessor );
 					if ( prop ) {
-						prop->get( valueOut );
+						prop->get( *this, valueOut );
 					} else {
 						OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 								  + propertyName
@@ -66,14 +66,14 @@ namespace OpenGUI {
 						  + propertyName
 						  + "' ) returned invalid ObjectAccessor", "Object::setProperty" );
 			} else {
-				if ( accessor->getAccessorType() != ObjectAccessor::TYPE_PROPERTY ) {
+				if ( accessor->_getAccessorType() != ObjectAccessor::TYPE_PROPERTY ) {
 					OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 							  + propertyName
 							  + "' is not TYPE_PROPERTY", "Object::setProperty" );
 				} else {
 					ObjectProperty* prop = dynamic_cast<ObjectProperty*>( accessor );
 					if ( prop ) {
-						prop->set( valueIn );
+						prop->set( *this, valueIn );
 					} else {
 						OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 								  + propertyName
@@ -95,14 +95,14 @@ namespace OpenGUI {
 						  + methodName
 						  + "' ) returned invalid ObjectAccessor", "Object::callMethod" );
 			} else {
-				if ( accessor->getAccessorType() != ObjectAccessor::TYPE_METHOD ) {
+				if ( accessor->_getAccessorType() != ObjectAccessor::TYPE_METHOD ) {
 					OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 							  + methodName
 							  + "' is not TYPE_METHOD", "Object::callMethod" );
 				} else {
 					ObjectMethod* method = dynamic_cast<ObjectMethod*>( accessor );
 					if ( method ) {
-						method->invoke( paramIn, returnOut );
+						method->invoke( *this, paramIn, returnOut );
 					} else {
 						OG_THROW( Exception::OP_FAILED, "ObjectAccessor: '"
 								  + methodName

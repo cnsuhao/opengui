@@ -298,6 +298,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Screen.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_System.cpp"
 				>
 			</File>
@@ -327,6 +331,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Value.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Widget.cpp"
 				>
 			</File>
 			<File
@@ -472,6 +480,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Screen.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Singleton.h"
 				>
 			</File>
@@ -509,6 +521,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Value.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Widget.h"
 				>
 			</File>
 			<File
