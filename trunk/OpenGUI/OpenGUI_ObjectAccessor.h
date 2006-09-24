@@ -51,6 +51,8 @@ namespace OpenGUI {
 		virtual void set( Object& objectRef, Value& valueIn ) = 0;
 		//! Needs to return the expected Value type
 		virtual Value::ValueType getPropertyType() = 0;
+		//! Used by ObjectAccessorList to determine if this property is write protected. Default returns \c TRUE ( property can be \c get and \c set )
+		virtual bool getPermSettable();
 	};
 
 

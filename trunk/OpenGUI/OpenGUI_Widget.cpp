@@ -1,5 +1,6 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Renderer.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -72,6 +73,14 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::setName( const std::string& name ) {
 		mWidgetName = name;
+	}
+	//############################################################################
+	void Widget::onDraw( Brush& brush ) {
+		
+	}
+	//############################################################################
+	void Widget::_render(Renderer* rendererPtr, FVector2 offset){
+
 	}
 	//############################################################################
 }//namespace OpenGUI{
