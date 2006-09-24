@@ -11,50 +11,62 @@ namespace OpenGUI {
 
 	//############################################################################
 	//! Base class for Accessor system
-	/*! All accessors must be
+	/*! This is an internal abstract base class. All accessors must be derived from either
+		ObjectProperty or ObjectMethod.
 	*/
 	class OPENGUI_API ObjectAccessor {
 	public:
 		ObjectAccessor() {}
 		virtual ~ObjectAccessor() {}
-
+		//! Returns the name of the group of this accessor, default is "General"
+		virtual const char* getAccessorGroup();
+		//! Returns the name of this accessor
 		virtual const char* getAccessorName() = 0;
+
+		//! \internal Accessor type identification
 		enum ObjectAccessorType {
 			TYPE_PROPERTY, TYPE_METHOD
 		};
-		//! Returns the type of Accessor
-		/*! This is automatically handled when you inherit from ObjectProperty or ObjectMethod */
-		virtual ObjectAccessorType getAccessorType() = 0;
+
+		//! \internal Returns the type of Accessor
+		/*! \internal This is automatically handled when you inherit from ObjectProperty or ObjectMethod */
+		virtual ObjectAccessorType _getAccessorType() = 0;
 	};
 
 
 	//############################################################################
 	//! Base class for Property Accessors
 	/*! Object Properties that applications wish to expose should inherit this class. */
-	class OPENGUI_API ObjectProperty : ObjectAccessor {
+	class OPENGUI_API ObjectProperty : public ObjectAccessor {
 	public:
-		//! Returns TYPE_PROPERTY. Do not override!
-		virtual ObjectAccessorType getAccessorType() {
+		virtual ~ObjectProperty() {}
+
+		//! \internal Returns TYPE_PROPERTY. Do not override!
+		virtual ObjectAccessorType _getAccessorType() {
 			return TYPE_PROPERTY;
 		}
 		//! Called to retrieve the current value
-		virtual void get( Value& valueOut ) {}
+		virtual void get( Object& objectRef, Value& valueOut ) = 0;
 		//! Called to set the current value
-		virtual void set( Value& valueIn ) {}
+		virtual void set( Object& objectRef, Value& valueIn ) = 0;
+		//! Needs to return the expected Value type
+		virtual Value::ValueType getPropertyType() = 0;
 	};
 
 
 	//############################################################################
 	//! Base class for Method Accessors
 	/*! Object Method that applications wish to expose should inherit this class. */
-	class OPENGUI_API ObjectMethod : ObjectAccessor {
+	class OPENGUI_API ObjectMethod : public ObjectAccessor {
 	public:
-		//! Returns TYPE_METHOD. Do not override!
-		virtual ObjectAccessorType getAccessorType() {
+		virtual ~ObjectMethod() {}
+
+		//! \internal Returns TYPE_METHOD. Do not override!
+		virtual ObjectAccessorType _getAccessorType() {
 			return TYPE_METHOD;
 		}
 		//! Called when the method is invoked.
-		virtual void invoke( ValueList& paramIn, ValueList& returnOut ) = 0;
+		virtual void invoke( Object& objectRef, ValueList& paramIn, ValueList& returnOut ) = 0;
 	};
 
 

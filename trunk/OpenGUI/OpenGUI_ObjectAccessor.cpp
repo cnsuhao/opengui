@@ -6,6 +6,10 @@
 namespace OpenGUI {
 
 	//############################################################################
+	const char* ObjectAccessor::getAccessorGroup(){
+		return "General";
+	}
+	//############################################################################
 	ObjectAccessorList::ObjectAccessorList() {
 		mParent = 0;
 	}
