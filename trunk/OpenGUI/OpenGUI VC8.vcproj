@@ -480,6 +480,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_RenderTexture.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Resource.h"
 				>
 			</File>

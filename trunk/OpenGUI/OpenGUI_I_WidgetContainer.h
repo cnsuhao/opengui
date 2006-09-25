@@ -55,6 +55,7 @@ namespace OpenGUI{
 		//! returns true if the given widget pointer is in the collection
 		bool hasWidget(Widget* widget);
 
+
 		//! WidgetCollection iterator
 		class OPENGUI_API iterator{
 			friend class WidgetCollection;
