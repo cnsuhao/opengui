@@ -6,7 +6,7 @@ namespace OpenGUI {
 	WidgetCollection::~WidgetCollection() {
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 				iter != mCollectionObjects.end(); iter++ ) {
-			hidden::WidgetCollectionItem* ptr = ( *iter );
+			WidgetCollectionItem* ptr = ( *iter );
 			if ( ptr ) {
 				if ( ptr->own && ptr->widgetPtr )
 					delete ptr->widgetPtr;
@@ -16,19 +16,25 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::add_front(Widget* widget, bool takeOwnership){
-		hidden::WidgetCollectionItem* ptr = new hidden::WidgetCollectionItem;
+		mIContainer->notifyChildAdding(widget);
+		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
 		ptr->widgetPtr = widget;
+		mCollectionObjects.push_front(ptr);
 	}
 	//############################################################################
 	void WidgetCollection::add_back(Widget* widget, bool takeOwnership){
-
+		mIContainer->notifyChildAdding(widget);
+		WidgetCollectionItem* ptr = new WidgetCollectionItem;
+		ptr->own = takeOwnership;
+		ptr->widgetPtr = widget;
+		mCollectionObjects.push_back(ptr);
 	}
 	//############################################################################
 	bool WidgetCollection::hasWidget(Widget* widget){
 		for(WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 			iter != mCollectionObjects.end(); iter++){
-				hidden::WidgetCollectionItem* ptr = (*iter);
+				WidgetCollectionItem* ptr = (*iter);
 				if( widget == ptr->widgetPtr )
 					return true;
 		}
@@ -42,9 +48,10 @@ namespace OpenGUI {
 		\throw Exception if the widget is not part of this collection
 	*/
 	void WidgetCollection::remove(Widget* widget){
+		mIContainer->notifyChildRemoving(widget);
 		for(WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 			iter != mCollectionObjects.end(); iter++){
-				hidden::WidgetCollectionItem* ptr = (*iter);
+				WidgetCollectionItem* ptr = (*iter);
 				if( widget == ptr->widgetPtr ){
 					mCollectionObjects.erase(iter);
 					return;
@@ -68,7 +75,7 @@ namespace OpenGUI {
 	Widget* WidgetCollection::getWidget(const std::string& widgetName){
 		for(WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 			iter != mCollectionObjects.end(); iter++){
-				hidden::WidgetCollectionItem* ptr = (*iter);
+				WidgetCollectionItem* ptr = (*iter);
 				if( ptr && ptr->widgetPtr && widgetName == ptr->widgetPtr->getName() ){
 					return ptr->widgetPtr;
 				}
@@ -85,20 +92,16 @@ namespace OpenGUI {
 		return *widget;
 	}
 	//############################################################################
-	hidden::WidgetCollectionItem* WidgetCollection::getWidgetHolder(Widget* widget){
+	WidgetCollection::WidgetCollectionItem* WidgetCollection::getWidgetHolder(Widget* widget){
 		for(WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 			iter != mCollectionObjects.end(); iter++){
-				hidden::WidgetCollectionItem* ptr = (*iter);
+				WidgetCollectionItem* ptr = (*iter);
 				if( widget == ptr->widgetPtr ){
 					return ptr;
 				}
 		}
 		OG_THROW(Exception::ERR_ITEM_NOT_FOUND,"Widget not found in WidgetCollection",__FUNCTION__);
-	}
-	//############################################################################
-	Widget* WidgetCollection::iterator::operator*(){
-		return 0;
-	}
+	}	
 	//############################################################################
 	WidgetCollection::iterator WidgetCollection::begin(){
 		WidgetCollection::iterator iter;
@@ -112,33 +115,36 @@ namespace OpenGUI {
 		return iter;
 	}
 	//############################################################################
-	WidgetCollection::iterator::iterator(){}
-	//############################################################################
-	WidgetCollection::iterator::iterator( const WidgetCollection::iterator& copy ) {
-		mIter = copy.mIter;
+	Widget* WidgetCollection::getContainingWidget(){
+		return dynamic_cast<Widget*>(mIContainer);
 	}
 	//############################################################################
-	bool WidgetCollection::iterator::operator==( const WidgetCollection::iterator& right ) {
-		return mIter == right.mIter;
+	//############################################################################
+
+
+
+	//############################################################################
+	//############################################################################
+	I_WidgetContainer::I_WidgetContainer(){
+		Children.mIContainer=this;
 	}
 	//############################################################################
-	bool WidgetCollection::iterator::operator!=( const WidgetCollection::iterator& right ) {
-		return mIter != right.mIter;
+	void I_WidgetContainer::notifyChildDelete(Widget* widgetToRemove){
+		Children.remove(widgetToRemove);
 	}
 	//############################################################################
-	WidgetCollection::iterator& WidgetCollection::iterator::operator=( const WidgetCollection::iterator& right ) {
-		mIter = right.mIter;
-		return *this;
+	void I_WidgetContainer::notifyChildAdding(Widget* widgetPtr){
+		if(widgetPtr->mContainer != 0)
+			OG_THROW(Exception::ERR_INTERNAL_ERROR,
+			"Widget is already a child of another container!",__FUNCTION__);
+		widgetPtr->mContainer = this;
 	}
 	//############################################################################
-	WidgetCollection::iterator& WidgetCollection::iterator::operator++() {
-		++mIter;
-		return *this;
-	}
-	//############################################################################
-	WidgetCollection::iterator& WidgetCollection::iterator::operator--() {
-		--mIter;
-		return *this;
+	void I_WidgetContainer::notifyChildRemoving(Widget* widgetPtr){
+		if(widgetPtr->mContainer != this)
+			OG_THROW(Exception::ERR_INTERNAL_ERROR,
+			"Widget is not a child of this container!",__FUNCTION__);
+		widgetPtr->mContainer = 0;
 	}
 	//############################################################################
 }

@@ -6,84 +6,119 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Widget.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
-
-
-
-	//! \internal Contains various classes and containers that have no reuse value for the end user
-	namespace hidden{
-		struct OPENGUI_API WidgetCollectionItem{
-			WidgetCollectionItem()
-				:widgetPtr(0), own(false){}
-			Widget* widgetPtr;
-			bool own;
-		};
-	}
+	class I_WidgetContainer; //forward declaration
 
 	//! Ordered collection of Widget objects.
 	/*! Maintains an ordered list of Widget pointers. Also provides the option to take
 		ownership of heap allocated memory, and delete the given widget pointer on
 		destruction.
 	*/
-	class OPENGUI_API WidgetCollection{
+	class OPENGUI_API WidgetCollection {
+		friend class I_WidgetContainer;
 	private:
-		typedef std::list<hidden::WidgetCollectionItem*> WidgetCollectionItemPtrList;
-		WidgetCollectionItemPtrList mCollectionObjects;
-
-		hidden::WidgetCollectionItem* getWidgetHolder(Widget* widget);
-	public:
-		WidgetCollection(){}
-		~WidgetCollection();
-		//! Adds given widget pointer to the front of the collection
-		void add_front(Widget* widget, bool takeOwnership = true);
-		//! Adds given widget pointer to the back of the collection
-		void add_back(Widget* widget, bool takeOwnership = true);
-		//! Remove the given widget pointer from the collection
-		void remove(Widget* widget);
-
-		//! Move the given widget pointer to the front of the collection
-		void moveToFront(Widget* widget);
-		//! Move the given widget to the back of the collection
-		void moveToBack(Widget* widget);
-
-		//! returns a pointer to the requested widget or 0 if not found
-		Widget* getWidget(const std::string& widgetName);
-		//! returns a reference to the requested widget or throws an exception if not found
-		Widget& operator[](const std::string& widgetName);
-
-		//! returns true if the given widget pointer is in the collection
-		bool hasWidget(Widget* widget);
-
-
-		//! WidgetCollection iterator
-		class OPENGUI_API iterator{
-			friend class WidgetCollection;
-		public:
-			iterator(); //!< iterator constructor
-			iterator(const iterator& copy);  //!< iterator copy constructor
-			bool operator==(const iterator& right); //!< iterator equality test
-			bool operator!=(const iterator& right); //!< iterator non equality test
-			iterator& operator=(const iterator& right); //!< iterator assignment
-			iterator& operator++(); //!< iterator increment
-			iterator& operator--(); //!< iterator decrement
-			Widget* operator*(); //!< iterator dereferencing
-		private:
-			WidgetCollectionItemPtrList::iterator mIter;
+		struct OPENGUI_API WidgetCollectionItem {
+			WidgetCollectionItem()
+					: widgetPtr( 0 ), own( false ) {}
+			Widget* widgetPtr;
+			bool own;
 		};
 
-		iterator begin(); //!< returns an iterator for the collection starting at the beginning
-		iterator end(); //!< returns an iterator for the collection starting at the end
+		typedef std::list<WidgetCollectionItem*> WidgetCollectionItemPtrList;
+		WidgetCollectionItemPtrList mCollectionObjects;
+		WidgetCollectionItem* getWidgetHolder( Widget* widget );
+		I_WidgetContainer* mIContainer;
+	protected:
+		//! Protects us from being created by anyone but an I_WidgetContainer
+		WidgetCollection() {}
+	public:
+		~WidgetCollection();
+		//! Adds given widget pointer to the front of the collection
+		void add_front( Widget* widget, bool takeOwnership = true );
+		//! Adds given widget pointer to the back of the collection
+		void add_back( Widget* widget, bool takeOwnership = true );
+		//! Remove the given widget pointer from the collection
+		void remove( Widget* widget );
 
+		//! Move the given widget pointer to the front of the collection
+		void moveToFront( Widget* widget );
+		//! Move the given widget to the back of the collection
+		void moveToBack( Widget* widget );
+
+		//! returns a pointer to the requested widget or 0 if not found
+		Widget* getWidget( const std::string& widgetName );
+		//! returns a reference to the requested widget or throws an exception if not found
+		Widget& operator[]( const std::string& widgetName );
+
+		//! returns true if the given widget pointer is in the collection
+		bool hasWidget( Widget* widget );
+
+		//! returns a Widget pointer to the 
+		Widget* getContainingWidget();
+
+		//! Template class providing iterator encapsulation
+		template <typename IterType>
+		class collection_iterator {
+			friend class WidgetCollection;
+		public:
+			collection_iterator() {}
+			collection_iterator( const collection_iterator& copy ) {
+				mIter = copy.mIter;
+			}
+			bool operator==( const collection_iterator& right ) {
+				return mIter == right.mIter;
+			}
+			bool operator!=( const collection_iterator& right ) {
+				return mIter != right.mIter;
+			}
+			collection_iterator& operator=( const collection_iterator& right ) {
+				mIter = right.mIter;
+				return *this;
+			}
+			collection_iterator& operator++() {
+				++mIter;
+				return *this;
+			}
+			collection_iterator& operator--() {
+				--mIter;
+				return *this;
+			}
+			Widget* operator*() {
+				return 0;
+			}
+		private:
+			IterType mIter;
+		};
+
+		//! WidgetCollection iterator
+		typedef collection_iterator<WidgetCollectionItemPtrList::iterator> iterator;
+		//! WidgetCollection reverse_iterator
+		typedef collection_iterator<WidgetCollectionItemPtrList::reverse_iterator> reverse_iterator;
+
+		iterator begin(); //!< returns an iterator for the collection starting at the beginning
+		iterator end(); //!< returns an iterator for the collection starting off the end
+		reverse_iterator rbegin(); //!< returns an iterator for the collection starting at the end
+		reverse_iterator rend(); //!< returns an iterator for the collection starting off the beginning
 	};
 
-	class OPENGUI_API I_WidgetContainer{
+	class OPENGUI_API I_WidgetContainer {
+		friend class Widget; //need this for child widget destruction notifications
+		friend class WidgetCollection; //need this for add/remove notifications
 	public:
-		I_WidgetContainer(){}
-		~I_WidgetContainer(){}
+		I_WidgetContainer();
+		virtual ~I_WidgetContainer() {}
+		//! Collection of contained children Widget objects
 		WidgetCollection Children;
 	protected:
+		
 	private:
+		//! automatically called by Widget during destruction to notify us so we can remove its entry
+		void notifyChildDelete(Widget* widgetToRemove);
+		//! automatically called by WidgetCollection before it adds a widget to the collection
+		void notifyChildAdding(Widget* widgetPtr);
+		//! automatically called by WidgetCollection before it removes a widget from the collection
+		void notifyChildRemoving(Widget* widgetPtr);
 	};
 
 }

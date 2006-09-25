@@ -12,8 +12,8 @@ namespace OpenGUI {
 	class OGLTexture : public Texture {
 		friend class OGLRenderer;
 	public:
-		OGLTexture();
-		~OGLTexture();
+		OGLTexture( Renderer* owner );
+		virtual ~OGLTexture();
 
 		GLuint textureId;
 
