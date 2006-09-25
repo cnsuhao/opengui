@@ -1,6 +1,7 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Renderer.h"
+#include "OpenGUI_I_WidgetContainer.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -52,11 +53,14 @@ namespace OpenGUI {
 
 
 	Widget::Widget() {
+		mContainer = 0; //we always start with no container
 		if ( gWidget_ObjectAccessorList.getParent() == 0 )
 			gWidget_ObjectAccessorList.setParent( Object::getAccessors() );
 	}
 	//############################################################################
 	Widget::~Widget() {
+		if(mContainer)
+			mContainer->notifyChildDelete(this);
 	}
 	//############################################################################
 	ObjectAccessorList* Widget::getAccessors() {

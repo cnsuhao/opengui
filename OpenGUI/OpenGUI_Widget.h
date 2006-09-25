@@ -11,9 +11,11 @@
 namespace OpenGUI {
 
 	class Renderer; //forward declaration
+	class I_WidgetContainer; //forward declaration
 
 	//! Base class for all visibly drawn GUI objects
 	class OPENGUI_API Widget : public Object {
+		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
 	public:
 		Widget();
 		virtual ~Widget();
@@ -26,6 +28,8 @@ namespace OpenGUI {
 		//! Called whenever this widget needs to redraw itself.
 		virtual void onDraw( Brush& brushRef );
 
+		//! returns the container this widget is held within
+		I_WidgetContainer* getContainer();
 
 		// inherited from Object
 		virtual ObjectAccessorList* getAccessors(); 
@@ -36,8 +40,7 @@ namespace OpenGUI {
 		virtual void _render(Renderer* rendererPtr, FVector2 offset);
 	private:
 		std::string mWidgetName;
-
-		
+		I_WidgetContainer* mContainer;		
 	};
 
 } //namespace OpenGUI{

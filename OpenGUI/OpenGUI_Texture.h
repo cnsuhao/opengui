@@ -24,7 +24,7 @@ namespace OpenGUI {
 		/*! The \c owner is a pointer to the renderer that created the texture.
 			It is later used to call owner->destroyTexture()
 		*/
-		Texture(Renderer* owner) {}
+		Texture( Renderer* owner ) {}
 		virtual ~Texture() {} //<! base class destructor
 		//! Returns the name of the texture.
 		/*! This will be the texture source filename if the texture was loaded from a file.
