@@ -60,6 +60,8 @@ namespace OpenGUI {
 			graphics api options that will be used on all (or most) render operations.
 		*/
 		virtual void preRenderSetup() = 0;
+
+		virtual void setRenderTexture() = 0;
 		//! This will be called for every render operation that needs to be performed.
 		/*! This function is passed a RenderOperation object, by reference, for every
 			render operation that needs to take place to properly draw the gui.

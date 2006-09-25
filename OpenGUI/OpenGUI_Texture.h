@@ -7,6 +7,8 @@
 #include "OpenGUI_RefPtr.h"
 
 namespace OpenGUI {
+	class Renderer; //forward declaration
+
 	/*! \brief
 		This is a base class for custom Texture implementations. Custom Renderer
 		implementations will also quite likely include a custom Texture
@@ -18,7 +20,11 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API Texture {
 	public:
-		Texture() {} //<! base class constructor
+		//! Textures should only be created by Renderer implementations.
+		/*! The \c owner is a pointer to the renderer that created the texture.
+			It is later used to call owner->destroyTexture()
+		*/
+		Texture(Renderer* owner) {}
 		virtual ~Texture() {} //<! base class destructor
 		//! Returns the name of the texture.
 		/*! This will be the texture source filename if the texture was loaded from a file.
