@@ -35,9 +35,9 @@ namespace OpenGUI {
 	public:
 		~WidgetCollection();
 		//! Adds given widget pointer to the front of the collection
-		void add_front( Widget* widget, bool takeOwnership = true );
+		void add_front( Widget* widget, bool takeOwnership = false );
 		//! Adds given widget pointer to the back of the collection
-		void add_back( Widget* widget, bool takeOwnership = true );
+		void add_back( Widget* widget, bool takeOwnership = false );
 		//! Remove the given widget pointer from the collection
 		void remove( Widget* widget );
 
