@@ -73,7 +73,7 @@ namespace OpenGUI {
 
 			\note Expect this function to be called a LOT. Keep it small, keep it fast.
 		*/
-		virtual void doRenderOperation( Render::RenderOperation& renderOp ) = 0;
+		virtual void doRenderOperation( RenderOperation& renderOp ) = 0;
 		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed.
 		/*! Much like preRenderSetup(), this gives the renderer an opportunity to perform
 			whatever tasks it feels are necessary to return the render system back to a
@@ -84,7 +84,7 @@ namespace OpenGUI {
 		//! This is called whenever a texture needs to be created from a file.
 		/*!
 			Custom renderers are required to implement this function to provide
-			the system a generalized method of referencing a texture. Basically,
+			the system a generalized method of creating a texture. Basically,
 			this function is given a file name, and through any amount of smoke
 			and magic, the system expects to receive back a pointer to a Texture
 			object that can be later referenced within RenderOperation objects
@@ -98,11 +98,7 @@ namespace OpenGUI {
 			we want drawn on a set of polygons.
 
 			\param filename The filename of the source image data.
-			\return A valid pointer to a Texture object on success, or 0 on fail.
-
-			\note Renderer is responsible for managing the memory committed for the
-			Texture object. The Renderer must ensure that until destroyTexture()
-			is called with the given Texture object, the pointer remains valid.
+			\return A TexturePtr to a Texture object on success, or TexturePtr(0) on fail.
 		*/
 		virtual Texture* createTextureFromFile( std::string filename ) = 0;
 
@@ -133,9 +129,12 @@ namespace OpenGUI {
 		/*! Whatever needs to happen to properly destroy a Texture object,
 			custom Renderers need to implement that functionality here.
 
-			\note Renderer is responsible for managing the memory committed for the
-			Texture object.  If	Texture objects are allocated via the new operator,
-			then they should be deleted by this function.
+			\note This function can be called automatically by Texture objects when
+			they are in the process of destructing. In that context, deleting the 
+			given Texture pointer will cause an error, as it is already being deleted.
+			Regardless of the reason for calling this function, the given Texture pointer
+			should \b never be deleted within this function. There are other mechanisms
+			in place to ensure proper deletion of Texture objects.
 		*/
 		virtual void destroyTexture( Texture* texturePtr ) = 0;
 	};

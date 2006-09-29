@@ -22,10 +22,12 @@ namespace OpenGUI {
 	public:
 		//! Textures should only be created by Renderer implementations.
 		/*! The \c owner is a pointer to the renderer that created the texture.
-			It is later used to call owner->destroyTexture()
+			It is later used to call renderer->destroyTexture()
 		*/
-		Texture( Renderer* owner ) {}
-		virtual ~Texture() {} //<! base class destructor
+		Texture( Renderer* renderer );
+		//! Textures automatically call Renderer::destroyTexture() during destruction if necessary
+		virtual ~Texture();
+
 		//! Returns the name of the texture.
 		/*! This will be the texture source filename if the texture was loaded from a file.
 			Otherwise its value is undefined.
@@ -38,9 +40,12 @@ namespace OpenGUI {
 	protected:
 		std::string mTextureName;//!<It is required that this be set to the source filename by custom Renderers
 		IVector2 mTextureSize;//!<It is required that this be set to the texture dimensions by custom Renderers
+	private:
+		bool mValid;
+		Renderer* mRenderer;
 	};
 
-	//! \todo This needs to be finished. Right now there's no backing implementation to handle textures deleting themselves
+	//! A self deleting reference counted pointer for Texture objects
 	typedef RefPtr<Texture> TexturePtr;
 }
 ;//namespace OpenGUI{

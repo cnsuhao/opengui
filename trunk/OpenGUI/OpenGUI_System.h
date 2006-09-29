@@ -26,6 +26,7 @@ namespace OpenGUI {
 	class FontManager;
 	class PluginManager;
 	class Renderer;
+	class TextureManager;
 	class ImageryManager;
 
 	/*!
@@ -40,9 +41,14 @@ namespace OpenGUI {
 		\todo implement me
 	*/
 	class OPENGUI_API System : public Singleton<System> {
-		//friend class Element;
 	public:
+		//Reimplementation required for this style of singleton implementation to work across DLLs
+		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
+		static System& getSingleton( void );
 
+		//Reimplementation required for this style of singleton implementation to work across DLLs
+		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
+		static System* getSingletonPtr( void );
 
 		//! The constructor for the System object.
 		/*! Firstly, the System object is a singleton, so only one can exist
@@ -71,13 +77,7 @@ namespace OpenGUI {
 
 		~System();
 
-		//Reimplementation required for this style of singleton implementation to work across DLLs
-		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
-		static System& getSingleton( void );
-
-		//Reimplementation required for this style of singleton implementation to work across DLLs
-		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
-		static System* getSingletonPtr( void );
+		
 
 		//! loads a plugin by filename
 		void loadPlugin( std::string filename );
@@ -165,6 +165,9 @@ namespace OpenGUI {
 		Renderer* mRenderer;
 		IVector2 mScreenResolution; //resolution of the entire screen (used for auto font scaling)
 		IVector2 mWindowResolution; //resolution of the viewport that we are rendering to (used for pixel alignment)
+
+		//TextureManager Related Members
+		TextureManager* mTextureManager;
 
 		//ImageryManager Related Members
 		ImageryManager* mImageryManager; //root pointer to the created ImageryManager singleton.
