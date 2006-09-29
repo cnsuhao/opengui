@@ -27,6 +27,7 @@
 //Abstract classes for custom renderers/data providers/etc
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
+#include "OpenGUI_RenderTexture.h"
 #include "OpenGUI_RenderOperation.h"
 //#include "OpenGUI_Primitives.h" //REMOVED replacing with new Brush based system
 #include "OpenGUI_Renderer.h"
@@ -47,6 +48,7 @@
 //#include "OpenGUI_Element.h" //REMOVED replacing with new Object based system
 //#include "OpenGUI_GUISheet.h" //REMOVED replacing with new Object based system
 
+#include "OpenGUI_TextureManager.h"
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_Imagery.h"

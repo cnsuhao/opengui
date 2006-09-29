@@ -4,6 +4,7 @@
 // to do absolutely nothing.
 
 #include "OpenGUI_PreRequisites.h"
+#include "OpenGUI.h"
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
 

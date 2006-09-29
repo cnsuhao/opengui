@@ -3976,14 +3976,17 @@ end user.
 <XPD:REF name="Views[0]">y4vmIiIpZ0+SGASU7Vh+/wAA</XPD:REF>
 <XPD:ATTR name="#Outgoings" type="integer">1</XPD:ATTR>
 <XPD:REF name="Outgoings[0]">GG/accHCGEiiJcjE9WxgKwAA</XPD:REF>
-<XPD:ATTR name="#Incomings" type="integer">1</XPD:ATTR>
+<XPD:ATTR name="#Incomings" type="integer">2</XPD:ATTR>
 <XPD:REF name="Incomings[0]">XyKHzFRb5UyfbOItMC5DagAA</XPD:REF>
+<XPD:REF name="Incomings[1]">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Subvertices[6]" type="UMLSignalSendState" guid="scZYHJML2U6iLsrInzWNmgAA">
 <XPD:ATTR name="Name" type="string">Render Widget</XPD:ATTR>
 <XPD:REF name="ContainerState">LxLf3r0m/0aKRC0WYrVrpgAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">1</XPD:ATTR>
 <XPD:REF name="Views[0]">QtgFYRZAG0mqFYjQlF781gAA</XPD:REF>
+<XPD:ATTR name="#Outgoings" type="integer">1</XPD:ATTR>
+<XPD:REF name="Outgoings[0]">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
 <XPD:ATTR name="#Incomings" type="integer">1</XPD:ATTR>
 <XPD:REF name="Incomings[0]">HuZGCuzvkkyKIRCt8Ys1CAAA</XPD:REF>
 </XPD:OBJ>
@@ -3994,7 +3997,7 @@ end user.
 <XPD:REF name="DiagramOwner">hy/woR8mu0WDaSQBwH4UpwAA</XPD:REF>
 <XPD:OBJ name="DiagramView" type="UMLActivityDiagramView" guid="K+wRZhS7PUqVDdJCoeKFmQAA">
 <XPD:REF name="Diagram">IaL6YuMWf0eQtLz9myQMjAAA</XPD:REF>
-<XPD:ATTR name="#OwnedViews" type="integer">14</XPD:ATTR>
+<XPD:ATTR name="#OwnedViews" type="integer">15</XPD:ATTR>
 <XPD:OBJ name="OwnedViews[0]" type="UMLActionStateView" guid="2y17TctvaUGtbYZFyKOP7AAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
@@ -4286,9 +4289,35 @@ end user.
 <XPD:REF name="Model">XyKHzFRb5UyfbOItMC5DagAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
+<XPD:OBJ name="OwnedViews[14]" type="UMLTransitionView" guid="j5yM3xGNXU6PqywNON6T1wAA">
+<XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
+<XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">359,340;134,128</XPD:ATTR>
+<XPD:REF name="Model">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
+<XPD:REF name="Head">y4vmIiIpZ0+SGASU7Vh+/wAA</XPD:REF>
+<XPD:REF name="Tail">QtgFYRZAG0mqFYjQlF781gAA</XPD:REF>
+<XPD:OBJ name="NameLabel" type="EdgeLabelView" guid="/53Frl4ynE6mS5BoFA8npQAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">1.5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">15</XPD:ATTR>
+<XPD:REF name="Model">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="StereotypeLabel" type="EdgeLabelView" guid="PMY/UYc7NEGI5ogIZYaZQAAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">1.5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">30</XPD:ATTR>
+<XPD:REF name="Model">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="PropertyLabel" type="EdgeLabelView" guid="wLDBKL/Zukuuug8vRnWGkAAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">-1.5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">15</XPD:ATTR>
+<XPD:REF name="Model">Fw3zDBuEt0eAsfzMJcKFQAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:ATTR name="#Transitions" type="integer">7</XPD:ATTR>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:ATTR name="#Transitions" type="integer">8</XPD:ATTR>
 <XPD:OBJ name="Transitions[0]" type="UMLTransition" guid="OwtTzqU43kWmgfzJhbA/0gAA">
 <XPD:ATTR name="Name" type="string">Has Children?</XPD:ATTR>
 <XPD:REF name="StateMachine">hy/woR8mu0WDaSQBwH4UpwAA</XPD:REF>
@@ -4361,6 +4390,16 @@ end user.
 <XPD:REF name="Views[1]">ifc4c1VfBEKFSLF00E8kpwAA</XPD:REF>
 <XPD:REF name="Views[2]">xQGq5mGgiEicrZdVwe/cIAAA</XPD:REF>
 <XPD:REF name="Views[3]">QcqcawGN10+aUU0UE8nE9wAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="Transitions[7]" type="UMLTransition" guid="Fw3zDBuEt0eAsfzMJcKFQAAA">
+<XPD:REF name="StateMachine">hy/woR8mu0WDaSQBwH4UpwAA</XPD:REF>
+<XPD:REF name="Source">scZYHJML2U6iLsrInzWNmgAA</XPD:REF>
+<XPD:REF name="Target">V5X1yKc7qEucIg82paPr2gAA</XPD:REF>
+<XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
+<XPD:REF name="Views[0]">j5yM3xGNXU6PqywNON6T1wAA</XPD:REF>
+<XPD:REF name="Views[1]">/53Frl4ynE6mS5BoFA8npQAA</XPD:REF>
+<XPD:REF name="Views[2]">PMY/UYc7NEGI5ogIZYaZQAAA</XPD:REF>
+<XPD:REF name="Views[3]">wLDBKL/Zukuuug8vRnWGkAAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:ATTR name="#OwnedElements" type="integer">59</XPD:ATTR>

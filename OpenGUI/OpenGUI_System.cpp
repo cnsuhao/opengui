@@ -89,6 +89,7 @@ namespace OpenGUI {
 			mUsingGenericResourceProvider = true;
 		}
 
+		mTextureManager = new TextureManager( renderer ); //create the texture manager
 		mImageryManager = new ImageryManager(); //create the imagery manager
 		
 
@@ -116,6 +117,9 @@ namespace OpenGUI {
 
 		if ( mImageryManager )
 			delete mImageryManager;
+
+		if( mTextureManager )
+			delete mTextureManager;
 
 		if ( mUsingGenericResourceProvider )
 			delete mResourceProvider;

@@ -322,6 +322,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_TextureManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Timer.cpp"
 				>
 			</File>
@@ -513,6 +517,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_TextureDataRect.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_TextureManager.h"
 				>
 			</File>
 			<File
