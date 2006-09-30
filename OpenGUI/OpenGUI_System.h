@@ -28,6 +28,7 @@ namespace OpenGUI {
 	class Renderer;
 	class TextureManager;
 	class ImageryManager;
+	class ScreenManager;
 
 	/*!
 		\brief
@@ -172,6 +173,8 @@ namespace OpenGUI {
 		//ImageryManager Related Members
 		ImageryManager* mImageryManager; //root pointer to the created ImageryManager singleton.
 
+		//ScreenManager
+		ScreenManager* mScreenManager;
 	};
 };
 
