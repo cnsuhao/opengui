@@ -1,7 +1,7 @@
 
 
 #include "OpenGUI.h"
-
+#include "OpenGUI_ScreenManager.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -95,6 +95,8 @@ namespace OpenGUI {
 
 		mFontManager = new FontManager();
 
+		mScreenManager = new ScreenManager();
+
 		LogManager::SlogMsg( "INIT", OGLL_INFO ) << "System Init Complete" << Log::endlog;
 	}
 
@@ -103,6 +105,8 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO ) << "OpenGUI Shutdown Started" << Log::endlog;
 
 		//System::_destroyAllGUISheets();
+		if( mScreenManager )
+			delete mScreenManager;
 
 		/*
 		plugins are always unloaded as soon as possible to ensure that

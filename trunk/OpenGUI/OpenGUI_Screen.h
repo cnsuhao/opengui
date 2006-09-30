@@ -8,16 +8,22 @@
 #include "OpenGUI_I_WidgetContainer.h"
 
 namespace OpenGUI{
+	class ScreenManager;
 
 	//! Every GUI is built into a screen.
 	class OPENGUI_API Screen : public I_WidgetContainer{
+		friend class ScreenManager;
 	public:
-		Screen(){}
-		virtual ~Screen(){}
-		void render();
+		
+		
 
+		void update();
 	protected:
+		Screen(const std::string& screenName, const FVector2& initialSize);
+		virtual ~Screen();
 	private:
+		std::string mName;
+		FVector2 mSize;
 	};
 
 } //namespace OpenGUI{
