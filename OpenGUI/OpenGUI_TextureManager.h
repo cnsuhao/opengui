@@ -6,6 +6,8 @@
 #include "OpenGUI_Exports.h"
 
 namespace OpenGUI {
+	class Renderer; //forward declaration
+
 	class OPENGUI_API TextureManager : public Singleton<TextureManager> {
 	public:
 		//Reimplementation required for this style of singleton implementation to work across DLLs
@@ -16,8 +18,10 @@ namespace OpenGUI {
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static TextureManager* getSingletonPtr( void );
 
-		TextureManager();
+		TextureManager( Renderer* renderer );
 		~TextureManager();
+	private:
+		Renderer* mRenderer;
 	};
 		
 } //namespace OpenGUI {
