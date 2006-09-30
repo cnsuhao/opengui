@@ -86,4 +86,8 @@
 #include "OpenGUI_Brush.h"
 
 #include "OpenGUI_Widget.h"
+
+#include "OpenGUI_Screen.h"
+#include "OpenGUI_ScreenManager.h"
+
 #endif
