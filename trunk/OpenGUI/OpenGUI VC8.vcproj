@@ -500,6 +500,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_ScreenManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ScreenManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Singleton.h"
 				>
 			</File>
