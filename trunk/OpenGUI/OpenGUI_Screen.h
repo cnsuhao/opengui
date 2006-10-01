@@ -12,6 +12,12 @@ namespace OpenGUI {
 	class ScreenManager;
 
 	//! Every GUI is built into a screen.
+	/*! Screens are the base of every GUI display, and it's often best to think
+		of them as a sort of virtual monitor. They contain widgets and windows,
+		they accept input on an individual basis, and they can draw their output
+		either to the main viewport (the default) or to a RenderTexture via
+		bindRenderTexture().
+	*/
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager;
 	public:

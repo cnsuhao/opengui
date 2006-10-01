@@ -3,7 +3,7 @@
 
 namespace OpenGUI {
 	//###########################################################
-	OGLTexture::OGLTexture(Renderer* owner):Texture(owner) {
+	OGLTexture::OGLTexture( Renderer* owner ): Texture( owner ) {
 		textureId = 0;
 	}
 	//###########################################################
