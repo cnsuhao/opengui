@@ -18,22 +18,28 @@ namespace OpenGUI {
 		~VectorIterator() {}
 
 		//! Moves to next item
-		void moveNext(){mCur++;}
+		void moveNext() {
+			mCur++;
+		}
 		//! Moves to previous item
-		void movePrev(){mCur--;}
+		void movePrev() {
+			mCur--;
+		}
 
 		//! Returns current item and moves to next item
-		ValueType getNext(){
+		ValueType getNext() {
 			return *mCur++;
 		}
 
 		//! Returns the value of the current item
-		ValueType getValue(){
+		ValueType getValue() {
 			return *mCur;
 		}
 
 		//! Returns true if there are more items
-		bool hasMore(){return !isEnd();}
+		bool hasMore() {
+			return !isEnd();
+		}
 		//! Returns true if there are no more items
 		bool isEnd() {
 			return mCur == mEnd;
@@ -57,26 +63,32 @@ namespace OpenGUI {
 		~MapIterator() {}
 
 		//! Moves to next item
-		void moveNext(){mCur++;}
+		void moveNext() {
+			mCur++;
+		}
 		//! Moves to previous item
-		void movePrev(){mCur--;}
+		void movePrev() {
+			mCur--;
+		}
 
 		//! Returns current item and moves to next item
-		MappedType getNext(){
-			return (mCur++)->second;
+		MappedType getNext() {
+			return ( mCur++ )->second;
 		}
 
 		//! Returns the value half of the current item
-		MappedType getValue(){
+		MappedType getValue() {
 			return mCur->second;
 		}
 		//! Returns the key half of the current item
-		KeyType getKey(){
+		KeyType getKey() {
 			return mCur->first;
 		}
 
 		//! Returns true if there are more items
-		bool hasMore(){return !isEnd();}
+		bool hasMore() {
+			return !isEnd();
+		}
 		//! Returns true if there are no more items
 		bool isEnd() {
 			return mCur == mEnd;
@@ -99,22 +111,28 @@ namespace OpenGUI {
 		~ListIterator() {}
 
 		//! Moves to next item
-		void moveNext(){mCur++;}
+		void moveNext() {
+			mCur++;
+		}
 		//! Moves to previous item
-		void movePrev(){mCur--;}
+		void movePrev() {
+			mCur--;
+		}
 
 		//! Returns current item and moves to next item
-		ValueType getNext(){
+		ValueType getNext() {
 			return *mCur++;
 		}
 
 		//! Returns the value of the current item
-		ValueType getValue(){
+		ValueType getValue() {
 			return *mCur;
 		}
 
 		//! Returns true if there are more items
-		bool hasMore(){return !isEnd();}
+		bool hasMore() {
+			return !isEnd();
+		}
 		//! Returns true if there are no more items
 		bool isEnd() {
 			return mCur == mEnd;
