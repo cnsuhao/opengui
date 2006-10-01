@@ -40,6 +40,8 @@
 
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
+#include "OpenGUI_Object.h"
+#include "OpenGUI_ObjectAccessor.h"
 
 //#include "OpenGUI_Message.h"  //REMOVED replacing with new Object based system
 //#include "OpenGUI_EventListener.h" //REMOVED replacing with new Object based system
@@ -81,13 +83,11 @@
 //Generic Cursor Implementation
 //#include "OpenGUI_GenericCursor.h" //removed, maybe temporary. Yet to be determined.
 
-#include "OpenGUI_Object.h"
-#include "OpenGUI_ObjectAccessor.h"
-
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_Brush.h"
 
 #include "OpenGUI_Widget.h"
+#include "OpenGUI_I_WidgetContainer.h"
 
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_ScreenManager.h"

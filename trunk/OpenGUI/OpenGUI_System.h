@@ -7,9 +7,6 @@
 
 #include "OpenGUI_Event.h"
 
-#include "OpenGUI_MouseButton.h"
-
-
 //! The base namespace contains the classes that applications will deal with the most.
 namespace OpenGUI {
 	//forward declarations
