@@ -1,7 +1,13 @@
 #ifndef C7BE5683_7863_41b9_A158_EF352D2B90C4
 #define C7BE5683_7863_41b9_A158_EF352D2B90C4
+
+#include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
+#include "OpenGUI_Exception.h"
+
 #include "OpenGUI_RenderOperation.h"
 #include "OpenGUI_Texture.h"
+#include "OpenGUI_RenderTexture.h"
 
 namespace OpenGUI {
 	class TextureData;//forward declaration
@@ -13,6 +19,7 @@ namespace OpenGUI {
 		Renderer() {}
 		//! virtual Destructor
 		virtual ~Renderer() {}
+
 
 		//! The renderer implementation must be able to properly supply %OpenGUI with viewport dimensions via this function.
 		/*! %OpenGUI requires the viewport dimensions for certain functionality
@@ -57,11 +64,40 @@ namespace OpenGUI {
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
 		/*! The primary purpose of this is to provide the renderer an opportunity to
 			configure the projection matrix as it feels necessary, as well as set any
-			graphics api options that will be used on all (or most) render operations.
+			graphics API options that will be used on all (or most) render operations.
+
+			Whether the renderer provides multiple rendering contexts (render to texture)
+			or not, the active context after this call should always be the "default context"
+			(ie. the whole viewport).
 		*/
 		virtual void preRenderSetup() = 0;
 
-		virtual void setRenderTexture() = 0;
+		/*! \brief
+		Renderer implementations that do support Render to Texture contexts should
+		\return \c true. The default is to return \c false;
+		*/
+		virtual bool supportsRenderToTexture(){return false;}
+
+		//! This is called to set the rendering context to the given RenderTexture.
+		/*! Calls to doRenderOperation() that occur after this function is called
+			should draw to the RenderTexture that was last sent via this function.
+			%OpenGUI will ensure that context switches only occur when the contents
+			of the new context can (and should) be cleared.
+
+			 \note This is not guaranteed to be called every frame. It is only called
+			 when a context change is absolutely necessary, and it is assumed that the
+			 contents of the render texture are cleared during this call.
+		*/
+		virtual void selectTextureContext( RenderTexture* context ) {}
+
+		//! This is called to select the default context (the actual viewport).
+		/*! \note This is not guaranteed to be called every frame, and quite likely
+			may never be called... ever. This is only called to reset the current context
+			to the default in the event that %OpenGUI needs to draw to the full viewport,
+			and the context was previously changed by a call to selectTextureContext().
+		*/
+		virtual void selectDefaultContext(){};
+
 		//! This will be called for every render operation that needs to be performed.
 		/*! This function is passed a RenderOperation object, by reference, for every
 			render operation that needs to take place to properly draw the gui.
@@ -74,6 +110,7 @@ namespace OpenGUI {
 			\note Expect this function to be called a LOT. Keep it small, keep it fast.
 		*/
 		virtual void doRenderOperation( RenderOperation& renderOp ) = 0;
+
 		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed.
 		/*! Much like preRenderSetup(), this gives the renderer an opportunity to perform
 			whatever tasks it feels are necessary to return the render system back to a
