@@ -105,7 +105,7 @@ namespace OpenGUI {
 		TextureData* td = TextureData::LoadTextureData( filename );
 		if ( !td ) return 0;
 
-		retval = new OGLTexture(this);
+		retval = new OGLTexture( this );
 		if ( !retval ) return 0;
 
 		retval->mTextureName = filename;
@@ -157,7 +157,7 @@ namespace OpenGUI {
 	Texture* OGLRenderer::createTextureFromTextureData( TextureData *textureData ) {
 		TextureData* td = textureData; // copy/paste quick fix
 		OGLTexture* retval = 0;
-		retval = new OGLTexture(this);
+		retval = new OGLTexture( this );
 		if ( !retval ) return 0;
 
 		retval->mTextureName = "__## TextureFromMemory ##__";
