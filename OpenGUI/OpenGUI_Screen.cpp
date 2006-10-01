@@ -8,6 +8,7 @@ namespace OpenGUI{
 	Screen::Screen(const std::string& screenName, const FVector2& initialSize){
 		mName = screenName;
 		mSize = initialSize;
+		mAutoUpdating = true;
 	}
 	//############################################################################
 	Screen::~Screen(){
