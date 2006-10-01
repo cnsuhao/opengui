@@ -29,6 +29,7 @@ namespace OpenGUI {
 			return mAutoUpdating;
 		}
 		//! sets if this screen is automatically updated
+		/*! All new Screens are auto updating by default, and must be individually set not to be if that is not desired. */
 		void setAutoUpdating( bool autoUpdate = true ) {
 			mAutoUpdating = autoUpdate;
 		}
