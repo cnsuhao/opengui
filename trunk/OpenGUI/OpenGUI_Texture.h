@@ -25,6 +25,7 @@ namespace OpenGUI {
 			It is later used to call renderer->destroyTexture()
 		*/
 		Texture( Renderer* renderer );
+
 		//! Textures automatically call Renderer::destroyTexture() during destruction if necessary
 		virtual ~Texture();
 
@@ -32,14 +33,17 @@ namespace OpenGUI {
 		/*! This will be the texture source filename if the texture was loaded from a file.
 			Otherwise its value is undefined.
 		*/
-		virtual std::string getName();
+		virtual const std::string& getName() const;
+
 		//! Returns the size of the texture, in pixels
-		IVector2 getSize() {
+		const IVector2& getSize() const {
 			return mTextureSize;
 		}
+
 	protected:
 		std::string mTextureName;//!<It is required that this be set to the source filename by custom Renderers
 		IVector2 mTextureSize;//!<It is required that this be set to the texture dimensions by custom Renderers
+
 	private:
 		bool mValid;
 		Renderer* mRenderer;

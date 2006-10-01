@@ -22,7 +22,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	ScreenManager::~ScreenManager() {
-		/**/
+		destroyAllScreens();
 	}
 	//############################################################################
 	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize ) {
@@ -37,7 +37,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ScreenManager::destroyScreen( Screen* screenPtr ) {
-		
+		Screen* tmp = getScreen( screenPtr->mName );
+		ScreenMap::iterator iter = mScreenMap.find( screenPtr->mName );
+		if ( iter == mScreenMap.end() )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR,
+				"Invalid Screen pointer", __FUNCTION__ );
 	}
 	//############################################################################
 	Screen* ScreenManager::getScreen( const std::string& screenName ) {
@@ -52,6 +56,16 @@ namespace OpenGUI {
 				iter != mScreenMap.end(); iter++ ) {
 			iter->second->update();
 		}
+	}
+	//############################################################################
+	void ScreenManager::destroyAllScreens(){
+		for ( ScreenMap::iterator iter = mScreenMap.begin();
+			iter != mScreenMap.end(); iter++ ) {
+				Screen* tmp = iter->second;
+				iter->second = 0;
+				delete tmp;
+		}
+		mScreenMap.clear();
 	}
 	//############################################################################
 }//namespace OpenGUI{
