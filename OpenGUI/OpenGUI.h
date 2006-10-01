@@ -36,7 +36,7 @@
 
 //Includes necessary for core functionality
 
-//#include "OpenGUI_MouseButton.h"  //REMOVED replacing with new Object based system
+//#include "OpenGUI_MouseButton.h"  //REMOVED replacing with more generic Input namespace to handle specifics of special input values
 
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"

@@ -452,14 +452,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Message.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_MouseButton.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Object.h"
 				>
 			</File>
