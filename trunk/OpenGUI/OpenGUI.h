@@ -21,6 +21,7 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_RefPtr.h"
+#include "OpenGUI_RefObject.h"
 #include "OpenGUI_Resource.h"
 
 
@@ -28,6 +29,7 @@
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_RenderTexture.h"
+#include "OpenGUI_TextureManager.h"
 #include "OpenGUI_RenderOperation.h"
 //#include "OpenGUI_Primitives.h" //REMOVED replacing with new Brush based system
 #include "OpenGUI_Renderer.h"

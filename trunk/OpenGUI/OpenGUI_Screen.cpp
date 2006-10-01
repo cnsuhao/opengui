@@ -31,6 +31,8 @@ namespace OpenGUI{
 		For screens rendering to a render texture, it is the texture size.
 	*/
 	IVector2 Screen::getRenderTargetSize()const{
+		OG_NYI;
+		/*
 		if(isBound()){
 			return renderTarget->getSize();
 		}else{
@@ -38,12 +40,18 @@ namespace OpenGUI{
 			IVector2 t; r->getViewportDimensions(t);
 			return t;
 		}
+		*/
 	}
 	//############################################################################
 	void Screen::bindRenderTexture( RenderTexturePtr renderTexture ){
-		OG_NYI;
 		renderTarget = renderTexture;
+		Texture* tex = 0;
+		RenderTexture* rtex = 0;
+
+		TexturePtr tptr(tex);
+		RenderTexturePtr rtexPtr( rtex );
 		//! \todo add recursive invalidation because pixel alignment guarantee is broken
+		OG_NYI;
 	}
 	//############################################################################
 	void Screen::unbindRenderTexture(){
@@ -53,5 +61,6 @@ namespace OpenGUI{
 	bool Screen::isBound()const{
 		return !renderTarget.isNull();
 	}
+	
 	//############################################################################
 }//namespace OpenGUI{

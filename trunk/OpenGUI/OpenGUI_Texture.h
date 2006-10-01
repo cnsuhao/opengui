@@ -4,10 +4,10 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_RefPtr.h"
+#include "OpenGUI_RefObject.h"
 
 namespace OpenGUI {
-	class Renderer; //forward declaration
+	class TextureManager; //forward declaration
 
 	/*! \brief
 		This is a base class for custom Texture implementations. Custom Renderer
@@ -18,16 +18,13 @@ namespace OpenGUI {
 			in order to access the protected data members. Setting the values of
 			these protected members is a required function of Renderer implementations.
 	*/
-	class OPENGUI_API Texture {
+	class OPENGUI_API Texture: public RefObject {
+		friend class TextureManager;
 	public:
 		//! Textures should only be created by Renderer implementations.
-		/*! The \c owner is a pointer to the renderer that created the texture.
-			It is later used to call renderer->destroyTexture()
-		*/
-		Texture( Renderer* renderer );
-
-		//! Textures automatically call Renderer::destroyTexture() during destruction if necessary
-		virtual ~Texture();
+		Texture(){}
+		//! Textures should only be destroyed by Renderer implementations.
+		virtual ~Texture(){}
 
 		//! Returns the name of the texture.
 		/*! This will be the texture source filename if the texture was loaded from a file.
@@ -40,17 +37,23 @@ namespace OpenGUI {
 			return mTextureSize;
 		}
 
+		//! returns \c true if this object is a RenderTexture, \c false otherwise
+		virtual bool isRenderTexture();
 	protected:
-		std::string mTextureName;//!<It is required that this be set to the source filename by custom Renderers
-		IVector2 mTextureSize;//!<It is required that this be set to the texture dimensions by custom Renderers
+		//! It is required that this be set to the source filename by custom Renderers
+		void _setName(const std::string& name){mTextureName = name;}
+		//! It is required that this be set to the texture dimensions by custom Renderers
+		void _setSize(const IVector2& size){mTextureSize = size;}
 
+		
 	private:
-		bool mValid;
-		Renderer* mRenderer;
+		virtual void finalize(); //finalizer from RefObject
+		std::string mTextureName;
+		IVector2 mTextureSize;
 	};
 
 	//! A self deleting reference counted pointer for Texture objects
-	typedef RefPtr<Texture> TexturePtr;
+	typedef RefObjHandle<Texture> TexturePtr;
 }
 ;//namespace OpenGUI{
 #endif

@@ -1,3 +1,7 @@
+* Complete widget system redesign.
+* New Brush based widget drawing system.
+* New Renderer implementation requirements. (Sorry guys, had to be done.)
+
 Version 0.7.7 - 08/11/2006)
 * Added alpha support for widgets
 * Reworked logic behind vertical text alignment ALIGN_CENTER to now take individual glyph height into consideration instead of relying solely on the font's provided line advance.
