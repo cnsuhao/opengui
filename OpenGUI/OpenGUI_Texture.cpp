@@ -8,13 +8,13 @@ namespace OpenGUI {
 		return mTextureName;
 	}
 	//############################################################################
-	bool Texture::isRenderTexture(){
+	bool Texture::isRenderTexture() {
 		return false;
 	}
 	//############################################################################
-	void Texture::finalize(){
+	void Texture::finalize() {
 		TextureManager* tm = TextureManager::getSingletonPtr();
-		tm->destroyTexture(this);
+		tm->destroyTexture( this );
 	}
 	//############################################################################
 

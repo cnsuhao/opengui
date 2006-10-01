@@ -55,10 +55,10 @@ namespace OpenGUI {
 		void destroyAllTextures();
 		Renderer* mRenderer;
 
-		
+
 		TextureCPtrList mTextureCPtrList;
 	};
-		
+
 } //namespace OpenGUI {
 
 #endif // E7C6D975_96DE_4E7B_BC8B_15FA981B1FEF

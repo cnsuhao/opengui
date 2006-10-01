@@ -21,77 +21,77 @@ namespace OpenGUI {
 		}
 
 		//! sine
-		static float Sin (float fValue){
+		static float Sin( float fValue ) {
 			return sin( fValue );
 		}
 		//! cosine
-		static float Cos (float fValue){
+		static float Cos( float fValue ) {
 			return cos( fValue );
 		}
 		//! tangent
-		static float Tan (float fValue){
+		static float Tan( float fValue ) {
 			return tan( fValue );
 		}
 
 		//! arc sine
-		static float ASin (float fValue){
+		static float ASin( float fValue ) {
 			return asin( fValue );
 		}
 		//! arc cosine
-		static float ACos (float fValue){
+		static float ACos( float fValue ) {
 			return acos( fValue );
 		}
 		//! arc tangent
-		static float ATan (float fValue){
+		static float ATan( float fValue ) {
 			return atan( fValue );
 		}
 		//! arc tangent of y/x
-		static float ATan2 (float fY, float fX){
+		static float ATan2( float fY, float fX ) {
 			return atan2( fY, fX );
 		}
 
 		//! ceiling
-		static float Ceil (float fValue){
+		static float Ceil( float fValue ) {
 			return ceil( fValue );
 		}
 		//! floor
-		static float Floor (float fValue){
+		static float Floor( float fValue ) {
 			return floor( fValue );
 		}
 
 		//! exponential
-		static float Exp (float fValue){
+		static float Exp( float fValue ) {
 			return exp( fValue );
 		}
 		//! absolute value of floating-point
-		static float FAbs (float fValue){
+		static float FAbs( float fValue ) {
 			return fabs( fValue );
 		}
-		
+
 		//! floating point modular division
-		static float FMod (float fX, float fY){
+		static float FMod( float fX, float fY ) {
 			return fmod( fX, fY );
 		}
-		
+
 		//! natural logarithm
-		static float Log (float fValue){
+		static float Log( float fValue ) {
 			return log( fValue );
 		}
 		//! numeric power
-		static float Pow (float fBase, float fExponent){
+		static float Pow( float fBase, float fExponent ) {
 			return pow( fBase, fExponent );
 		}
 
 		//! square
-		static float Sqr (float fValue){
+		static float Sqr( float fValue ) {
 			return fValue * fValue;
 		}
 		//! square root
-		static float Sqrt (float fValue){
+		static float Sqrt( float fValue ) {
 			return sqrt( fValue );
 		}
 		//! inverse square root
-		static float InvSqrt (float fValue){
+		static float InvSqrt( float fValue ) {
 			return 1.0f / sqrt( fValue );
 		}
 

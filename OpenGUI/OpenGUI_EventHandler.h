@@ -16,24 +16,24 @@ namespace OpenGUI {
 		//! Base class for custom event handler implementations
 		class OPENGUI_API EventHandler {
 		public:
-			EventHandler(){}
-			virtual ~EventHandler(){}
+			EventHandler() {}
+			virtual ~EventHandler() {}
 			//! Interface for receiving event notifications
-			virtual void onEvent(Object* sender, EventArgs& args)=0;
+			virtual void onEvent( Object* sender, EventArgs& args ) = 0;
 		};
 
 
 		//! Provides event handler multi cast service.
 		class OPENGUI_API EventHandlerList {
 		public:
-			EventHandlerList(){}
-			virtual ~EventHandlerList (){}
+			EventHandlerList() {}
+			virtual ~EventHandlerList() {}
 			//! add a new EventHandler to the list
-			void add(EventHandler* handler);
+			void add( EventHandler* handler );
 			//! remove an EventHandler from the list
-			void remove(EventHandler* handler);
+			void remove( EventHandler* handler );
 			//! executes all held EventHandlers with the given parameters
-			void invoke(Object* sender, EventArgs& args);
+			void invoke( Object* sender, EventArgs& args );
 		private:
 			typedef std::set<EventHandler*> EventHandlerSet;
 			EventHandlerSet mEventHandlerSet;

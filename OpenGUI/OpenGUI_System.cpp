@@ -52,7 +52,7 @@ namespace OpenGUI {
 		mTimerManager = new TimerManager; //get this up asap
 
 		m_PerformAutoTicks = true;
-		
+
 		//mActiveGUISheet = 0;
 		//m_CurrentMouseElement = 0;
 		//mCapturerMouse = 0;
@@ -91,7 +91,7 @@ namespace OpenGUI {
 
 		mTextureManager = new TextureManager( renderer ); //create the texture manager
 		mImageryManager = new ImageryManager(); //create the imagery manager
-		
+
 
 		mFontManager = new FontManager();
 
@@ -105,7 +105,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO ) << "OpenGUI Shutdown Started" << Log::endlog;
 
 		//System::_destroyAllGUISheets();
-		if( mScreenManager )
+		if ( mScreenManager )
 			delete mScreenManager;
 
 		/*
@@ -122,7 +122,7 @@ namespace OpenGUI {
 		if ( mImageryManager )
 			delete mImageryManager;
 
-		if( mTextureManager )
+		if ( mTextureManager )
 			delete mTextureManager;
 
 		if ( mUsingGenericResourceProvider )

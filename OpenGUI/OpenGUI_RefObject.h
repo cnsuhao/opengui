@@ -17,25 +17,25 @@
 */
 
 namespace OpenGUI {
-	
+
 	template<typename> class RefObjHandle; //forward declaration
 
-	//! Base abstract class for reference counted objects. 
-	class OPENGUI_API RefObject{
-		template<typename> friend class RefObjHandle; 
+	//! Base abstract class for reference counted objects.
+	class OPENGUI_API RefObject {
+		template<typename> friend class RefObjHandle;
 	public:
-		RefObject():mRefCount(0){}
-		virtual ~RefObject(){}
+		RefObject(): mRefCount( 0 ) {}
+		virtual ~RefObject() {}
 	protected:
 		//! This is called when the last handle to this object is destroyed.
 		virtual void finalize() = 0;
 	private:
-		void _reference(){
+		void _reference() {
 			mRefCount++;
 		}
-		void _unreference(){
+		void _unreference() {
 			mRefCount--;
-			if(mRefCount==0)
+			if ( mRefCount == 0 )
 				finalize();
 		}
 		size_t mRefCount;
@@ -44,18 +44,18 @@ namespace OpenGUI {
 
 	//! Handle object for RefObject derived classes
 	template<typename OBJECT>
-	class RefObjHandle{
+	class RefObjHandle {
 	private:
 		//template<>
 		RefObject* m_Handle;
 	public:
 		//! Create a handle from an existing object pointer, or empty
-		RefObjHandle(RefObject* counted_object = 0):m_Handle(counted_object){
-			if(m_Handle)
+		RefObjHandle( RefObject* counted_object = 0 ): m_Handle( counted_object ) {
+			if ( m_Handle )
 				m_Handle->_reference();
 		}
-		~RefObjHandle(){
-			if(m_Handle)
+		~RefObjHandle() {
+			if ( m_Handle )
 				m_Handle->_unreference();
 		}
 		//! Create a handle from another handle
@@ -87,7 +87,7 @@ namespace OpenGUI {
 		OBJECT* operator->() const {
 			return ( m_Handle );
 		}
-	
+
 		//! This makes "if( Handle )" work just like "if( !Handle.isNull() )"
 		operator bool() const {
 			return m_Handle == 0 ? false : true;
@@ -133,30 +133,9 @@ namespace OpenGUI {
 		}
 		//! Returns the carried pointer in raw form.
 		OBJECT* get() const {
-			return ( dynamic_cast<OBJECT*>(m_Handle) );
-		}
+				return ( dynamic_cast<OBJECT*>( m_Handle ) );
+			}
 	};
-
-//////////////////////////////////////////////////////////////////////////
-	/*
-	template<class OBJECT>
-	class RefObjHandle {
-	public:
-	
-
-
-		
-		
-
-		
-
-		
-	protected:
-		__RefObj<T> *m_refObjPtr;
-	};
-*/
-
-
 } //namespace OpenGUI {
 
 #endif // C936C273_AE27_4FE8_A112_4A1EF8A5D789

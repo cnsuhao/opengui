@@ -17,8 +17,12 @@ namespace OpenGUI {
 
 		GLuint textureId;
 
-		void setName(const std::string& name){_setName(name);}
-		void setSize(const IVector2& size){_setSize(size);}
+		void setName( const std::string& name ) {
+			_setName( name );
+		}
+		void setSize( const IVector2& size ) {
+			_setSize( size );
+		}
 	};
 }
 ;//namespace OpenGUI{

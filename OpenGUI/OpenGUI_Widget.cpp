@@ -43,8 +43,7 @@ namespace OpenGUI {
 		Widget_ObjectAccessorList() {
 			addAccessor( &gWidget_Name_ObjectProperty );
 		}
-		~Widget_ObjectAccessorList() {
-		}
+		~Widget_ObjectAccessorList() {}
 	}
 	gWidget_ObjectAccessorList;
 
@@ -59,8 +58,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	Widget::~Widget() {
-		if(mContainer)
-			mContainer->notifyChildDelete(this);
+		if ( mContainer )
+			mContainer->notifyChildDelete( this );
 	}
 	//############################################################################
 	ObjectAccessorList* Widget::getAccessors() {
@@ -80,11 +79,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDraw( Brush& brush ) {
-		
 	}
 	//############################################################################
-	void Widget::_render(Renderer* rendererPtr, FVector2 offset){
-
+	void Widget::_render( Renderer* rendererPtr, FVector2 offset ) {
 	}
 	//############################################################################
 }//namespace OpenGUI{

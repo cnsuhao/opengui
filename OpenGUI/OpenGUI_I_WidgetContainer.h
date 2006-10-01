@@ -54,7 +54,7 @@ namespace OpenGUI {
 		//! returns true if the given widget pointer is in the collection
 		bool hasWidget( Widget* widget );
 
-		//! returns a Widget pointer to the 
+		//! returns a pointer to the containing widget, or 0 if this is a root level container
 		Widget* getContainingWidget();
 
 		//! Template class providing iterator encapsulation
@@ -85,10 +85,10 @@ namespace OpenGUI {
 				return *this;
 			}
 			Widget& operator*() {
-				return &(mIter->widgetPtr);
+				return &( mIter->widgetPtr );
 			}
-			Widget* operator->(){
-				return (mIter->widgetPtr);
+			Widget* operator->() {
+				return ( mIter->widgetPtr );
 			}
 		private:
 			IterType mIter;
@@ -114,14 +114,14 @@ namespace OpenGUI {
 		//! Collection of contained children Widget objects
 		WidgetCollection Children;
 	protected:
-		
+
 	private:
 		//! automatically called by Widget during destruction to notify us so we can remove its entry
-		void notifyChildDelete(Widget* widgetToRemove);
+		void notifyChildDelete( Widget* widgetToRemove );
 		//! automatically called by WidgetCollection before it adds a widget to the collection
-		void notifyChildAdding(Widget* widgetPtr);
+		void notifyChildAdding( Widget* widgetPtr );
 		//! automatically called by WidgetCollection before it removes a widget from the collection
-		void notifyChildRemoving(Widget* widgetPtr);
+		void notifyChildRemoving( Widget* widgetPtr );
 	};
 
 }

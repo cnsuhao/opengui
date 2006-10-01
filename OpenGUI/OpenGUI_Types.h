@@ -240,7 +240,7 @@ namespace OpenGUI {
 	inline Radian::Radian( const Degree& degree_value ) {
 		value = degree_value.valueRadians();
 	}
-	inline const Radian& Radian::operator= ( const Degree& degree ){
+	inline const Radian& Radian::operator= ( const Degree& degree ) {
 		value = degree.valueRadians();
 		return *this;
 	}

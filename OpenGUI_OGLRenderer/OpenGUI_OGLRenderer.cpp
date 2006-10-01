@@ -108,7 +108,7 @@ namespace OpenGUI {
 		retval = new OGLTexture();
 		if ( !retval ) return 0;
 
-		retval->setName(filename);
+		retval->setName( filename );
 
 		retval->setSize( IVector2( td->getWidth(), td->getHeight() ) );
 
@@ -160,9 +160,9 @@ namespace OpenGUI {
 		retval = new OGLTexture( );
 		if ( !retval ) return 0;
 
-		retval->setName("__## TextureFromMemory ##__");
+		retval->setName( "__## TextureFromMemory ##__" );
 
-		retval->setSize(IVector2( td->getWidth(), td->getHeight() ));
+		retval->setSize( IVector2( td->getWidth(), td->getHeight() ) );
 
 		GLint internalFormat;
 		GLenum dataFormat;
@@ -213,9 +213,9 @@ namespace OpenGUI {
 		//throw away old data
 		glDeleteTextures( 1, &( retval->textureId ) );
 
-		retval->setName("__## TextureFromMemory ##__");
+		retval->setName( "__## TextureFromMemory ##__" );
 
-		retval->setSize(IVector2( td->getWidth(), td->getHeight() ));
+		retval->setSize( IVector2( td->getWidth(), td->getHeight() ) );
 
 		GLint internalFormat;
 		GLenum dataFormat;
@@ -258,7 +258,7 @@ namespace OpenGUI {
 	void OGLRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( !texturePtr ) return;
 		OGLTexture* texptr = dynamic_cast<OGLTexture*>( texturePtr );
-		if(texptr){
+		if ( texptr ) {
 			if ( texptr->textureId ) {
 				glDeleteTextures( 1, &( texptr->textureId ) );
 			}

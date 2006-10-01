@@ -32,15 +32,15 @@ namespace OpenGUI {
 		const float preSin = Math::Sin( mRotationAngle.valueRadians() );
 
 		for ( TriangleList::iterator iter = in_out.triangleList->begin();
-			iter != in_out.triangleList->end(); iter++ ) {
-				Triangle& tri = ( *iter );
-				for ( int i = 0; i < 3; i++ ) {
-					Vertex& vert = tri.vertex[i];
-					float x = vert.position.x;
-					float y = vert.position.x;
-					vert.position.x = preCos * x - preSin * y;
-					vert.position.y = preSin * x + preCos * y;
-				}
+				iter != in_out.triangleList->end(); iter++ ) {
+			Triangle& tri = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				Vertex& vert = tri.vertex[i];
+				float x = vert.position.x;
+				float y = vert.position.x;
+				vert.position.x = preCos * x - preSin * y;
+				vert.position.y = preSin * x + preCos * y;
+			}
 		}
 	}
 	//############################################################################
@@ -51,12 +51,12 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushModifier_Position::apply( RenderOperation& in_out ) {
 		for ( TriangleList::iterator iter = in_out.triangleList->begin();
-			iter != in_out.triangleList->end(); iter++ ) {
-				Triangle& tri = ( *iter );
-				for ( int i = 0; i < 3; i++ ) {
-					Vertex& vert = tri.vertex[i];
-					vert.position = mPosition + vert.position;
-				}
+				iter != in_out.triangleList->end(); iter++ ) {
+			Triangle& tri = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				Vertex& vert = tri.vertex[i];
+				vert.position = mPosition + vert.position;
+			}
 		}
 	}
 	//############################################################################
@@ -132,11 +132,11 @@ namespace OpenGUI {
 		return mStack.size();
 	}
 	//############################################################################
-	void BrushModifierStack::applyStack(RenderOperation& in_out){
-		for( BrushModifierPtrStack::iterator iter = mStack.begin();
-			iter != mStack.end(); iter++ ){
-				A_BrushModifier* mod = (*iter);
-				mod->apply( in_out );
+	void BrushModifierStack::applyStack( RenderOperation& in_out ) {
+		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
+				iter != mStack.end(); iter++ ) {
+			A_BrushModifier* mod = ( *iter );
+			mod->apply( in_out );
 		}
 	}
 
