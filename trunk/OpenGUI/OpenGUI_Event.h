@@ -26,7 +26,7 @@ namespace OpenGUI {
 			//Only allow Object to create and destroy us. We're not for random reuse.
 			friend class OpenGUI::Object;
 		public:
-			
+
 			//EventReceiver (){}
 			//! Adds the given \c name to the list of valid (and bindable) events
 			void createEvent( const std::string& name );

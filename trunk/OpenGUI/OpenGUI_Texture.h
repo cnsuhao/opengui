@@ -22,9 +22,9 @@ namespace OpenGUI {
 		friend class TextureManager;
 	public:
 		//! Textures should only be created by Renderer implementations.
-		Texture(){}
+		Texture() {}
 		//! Textures should only be destroyed by Renderer implementations.
-		virtual ~Texture(){}
+		virtual ~Texture() {}
 
 		//! Returns the name of the texture.
 		/*! This will be the texture source filename if the texture was loaded from a file.
@@ -41,11 +41,15 @@ namespace OpenGUI {
 		virtual bool isRenderTexture();
 	protected:
 		//! It is required that this be set to the source filename by custom Renderers
-		void _setName(const std::string& name){mTextureName = name;}
+		void _setName( const std::string& name ) {
+			mTextureName = name;
+		}
 		//! It is required that this be set to the texture dimensions by custom Renderers
-		void _setSize(const IVector2& size){mTextureSize = size;}
+		void _setSize( const IVector2& size ) {
+			mTextureSize = size;
+		}
 
-		
+
 	private:
 		virtual void finalize(); //finalizer from RefObject
 		std::string mTextureName;

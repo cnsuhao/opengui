@@ -19,7 +19,7 @@ namespace OpenGUI {
 	public:
 		Widget();
 		virtual ~Widget();
-		
+
 		//! returns the name of this Widget
 		const std::string& getName();
 		//! sets the name of this Widget
@@ -32,15 +32,15 @@ namespace OpenGUI {
 		I_WidgetContainer* getContainer();
 
 		// inherited from Object
-		virtual ObjectAccessorList* getAccessors(); 
-		virtual char* getClassName(); 
+		virtual ObjectAccessorList* getAccessors();
+		virtual char* getClassName();
 	protected:
 
 		//!
-		virtual void _render(Renderer* rendererPtr, FVector2 offset);
+		virtual void _render( Renderer* rendererPtr, FVector2 offset );
 	private:
 		std::string mWidgetName;
-		I_WidgetContainer* mContainer;		
+		I_WidgetContainer* mContainer;
 	};
 
 } //namespace OpenGUI{

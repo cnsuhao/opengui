@@ -46,7 +46,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//void TimerManager::_DoAutoTickInject() {
-		//System::getSingleton().injectTick( _timePassedSinceLastCall() );
+	//System::getSingleton().injectTick( _timePassedSinceLastCall() );
 	//}
 	//############################################################################
 	//############################################################################

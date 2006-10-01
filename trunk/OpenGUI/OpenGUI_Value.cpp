@@ -410,27 +410,27 @@ namespace OpenGUI {
 	void ValueList::set( const Value& value, const std::string& name ) {
 		push_back( value );
 		ValueDeQue::reverse_iterator iter = mValueDeQue.rbegin();
-		Value* valuePtr = &(*iter);
+		Value* valuePtr = &( *iter );
 		mValueMap[name] = valuePtr;
 	}
 	//#####################################################################
 	/*! If a Value by the requested \c name cannot be found, an Exception will be thrown. */
 	const Value& ValueList::get( const std::string& name ) const {
-		ValueMap::const_iterator iter = mValueMap.find( name );
-		if ( iter == mValueMap.end() )
-			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Named value not found", "ValueList::get" );
-		const Value* valuePtr = iter->second;
-		return *( valuePtr );
-	}
+			ValueMap::const_iterator iter = mValueMap.find( name );
+			if ( iter == mValueMap.end() )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Named value not found", "ValueList::get" );
+			const Value* valuePtr = iter->second;
+			return *( valuePtr );
+		}
 	//#####################################################################
 	/*! Throws an Exception if the given \c index is out of range. */
 	const Value& ValueList::get ( unsigned int index ) const {
-		//try to catch bad index attempts
-		if ( mValueDeQue.size() <= index )
-			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "index is out of range", "ValueList::get" );
-		//then just return whatever is appropriate
-		return mValueDeQue[index];
-	}
+			//try to catch bad index attempts
+			if ( mValueDeQue.size() <= index )
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "index is out of range", "ValueList::get" );
+			//then just return whatever is appropriate
+			return mValueDeQue[index];
+		}
 	//#####################################################################
 	void ValueList::removeMappedValue( const Value* valuePtr ) {
 		for ( ValueMap::iterator iter = mValueMap.begin();

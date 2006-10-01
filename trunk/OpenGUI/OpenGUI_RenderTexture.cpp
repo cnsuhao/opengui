@@ -3,7 +3,7 @@
 namespace OpenGUI {
 
 	//############################################################################
-	bool RenderTexture::isRenderTexture(){
+	bool RenderTexture::isRenderTexture() {
 		return true;
 	}
 	//############################################################################

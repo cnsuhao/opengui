@@ -78,7 +78,7 @@ namespace OpenGUI {
 
 		~System();
 
-		
+
 
 		//! loads a plugin by filename
 		void loadPlugin( std::string filename );
@@ -131,13 +131,13 @@ namespace OpenGUI {
 		float statRenderFPS();
 
 	protected:
-		
+
 	private:
 		// This is the actual constructor, the other 2 both call this one after getting the logs up and running.
 		void doConstructor( Renderer* renderer, ResourceProvider* resourceProvider );
 
 		//Generic
-		
+
 
 		//Statistics
 		void _stat_UpdateFPS();

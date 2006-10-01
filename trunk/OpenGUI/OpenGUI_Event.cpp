@@ -49,8 +49,8 @@ namespace OpenGUI {
 		//############################################################################
 		EventHandlerList& EventReceiver::operator[]( const std::string& name ) {
 			EventHandlerList* retobj = getEventHandlers( name );
-			if(retobj == 0){
-				OG_THROW(Exception::ERR_ITEM_NOT_FOUND,"Event does not exist: " + name, __FUNCTION__);
+			if ( retobj == 0 ) {
+				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Event does not exist: " + name, __FUNCTION__ );
 			}
 			return *retobj;
 		}
