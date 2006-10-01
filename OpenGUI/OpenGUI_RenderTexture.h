@@ -4,22 +4,20 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_RefPtr.h"
-
 #include "OpenGUI_Texture.h"
 
 namespace OpenGUI {
 	//! This is a base class for render textures (textures that are valid render targets)
 	class OPENGUI_API RenderTexture: public Texture {
 	public:
-		RenderTexture( Renderer* renderer ): Texture( renderer ) {}
+		RenderTexture() {}
 		virtual ~RenderTexture() {}
-
+		virtual bool isRenderTexture();
 	protected:
 	private:
 	};
 
-	typedef RefPtr<RenderTexture> RenderTexturePtr;
-}
+	typedef RefObjHandle<RenderTexture> RenderTexturePtr;
+} //namespace OpenGUI {
 
 #endif

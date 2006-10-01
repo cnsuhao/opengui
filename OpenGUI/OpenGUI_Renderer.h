@@ -100,7 +100,7 @@ namespace OpenGUI {
 			\param filename The filename of the source image data.
 			\return A TexturePtr to a Texture object on success, or TexturePtr(0) on fail.
 		*/
-		virtual Texture* createTextureFromFile( std::string filename ) = 0;
+		virtual Texture* createTextureFromFile( const std::string& filename ) = 0;
 
 		//! Create a texture from a TextureData object (memory)
 		/*! The passed in TextureData object does not become the sole property of
@@ -113,7 +113,7 @@ namespace OpenGUI {
 			destroy the texture that is based upon the TextureData.
 
 		*/
-		virtual Texture* createTextureFromTextureData( TextureData *textureData ) = 0;
+		virtual Texture* createTextureFromTextureData( TextureData* textureData ) = 0;
 
 		//! Replaces an existing texture with the given TextureData
 		/*! This should cause a Renderer implementation to completely replace the
@@ -123,18 +123,23 @@ namespace OpenGUI {
 			free to discard their hardware textures and rebuild from scratch if they
 			choose.
 		*/
-		virtual void updateTextureFromTextureData( Texture* texture, TextureData *textureData ) = 0;
+		virtual void updateTextureFromTextureData( Texture* texture, TextureData* textureData ) = 0;
 
 		//! Destroy a previously created Texture object.
-		/*! Whatever needs to happen to properly destroy a Texture object,
+		/*! Whatever needs to happen to properly destroy a Texture or RenderTexture object,
 			custom Renderers need to implement that functionality here.
 
-			\note This function can be called automatically by Texture objects when
-			they are in the process of destructing. In that context, deleting the 
-			given Texture pointer will cause an error, as it is already being deleted.
-			Regardless of the reason for calling this function, the given Texture pointer
-			should \b never be deleted within this function. There are other mechanisms
-			in place to ensure proper deletion of Texture objects.
+			\note This function is called automatically by the TextureManager to destroy
+			Texture objects. Since the Renderer created the Texture object (via \c new),
+			it is also responsible for performing the \c delete of that Texture. This
+			function is called after %OpenGUI is assured that no remaining handles to
+			the texture remain, so if the Renderer does not delete the memory here, it
+			will leak.
+
+			\warn
+			This function is called for both Texture and RenderTexture objects, so the
+			Renderer will need to determine the difference via Texture::isRenderTexture()
+			if it matters.
 		*/
 		virtual void destroyTexture( Texture* texturePtr ) = 0;
 	};

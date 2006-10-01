@@ -302,6 +302,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_RenderTexture.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Screen.cpp"
 				>
 			</File>
@@ -473,6 +477,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_PreRequisites.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_RefObject.h"
 				>
 			</File>
 			<File

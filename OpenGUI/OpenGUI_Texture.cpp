@@ -1,23 +1,23 @@
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_Renderer.h"
+#include "OpenGUI_TextureManager.h"
 
 namespace OpenGUI {
-	//#############################################
+	//############################################################################
 	const std::string& Texture::getName() const {
 		return mTextureName;
 	}
-	//#############################################
-	Texture::Texture( Renderer* renderer ) : mRenderer( renderer ) {
-		// always start out as a valid texture that requires deletion
-		mValid = true;
+	//############################################################################
+	bool Texture::isRenderTexture(){
+		return false;
 	}
-	//#############################################
-	Texture::~Texture() {
-		if ( mValid && mRenderer ) {
-			mRenderer->destroyTexture( this );
-			mValid = false;
-		}
+	//############################################################################
+	void Texture::finalize(){
+		TextureManager* tm = TextureManager::getSingletonPtr();
+		tm->destroyTexture(this);
 	}
+	//############################################################################
+
 }
 ;//namespace OpenGUI{
 
