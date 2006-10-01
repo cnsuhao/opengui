@@ -136,7 +136,7 @@ namespace OpenGUI {
 			the texture remain, so if the Renderer does not delete the memory here, it
 			will leak.
 
-			\warn
+			\attention
 			This function is called for both Texture and RenderTexture objects, so the
 			Renderer will need to determine the difference via Texture::isRenderTexture()
 			if it matters.
