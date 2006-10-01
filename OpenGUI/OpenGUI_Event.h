@@ -21,7 +21,7 @@ namespace OpenGUI {
 	//! Provides a unified event definition, binding, and relaying service.
 	class OPENGUI_API EventReceiver {
 		//Only allow Object to create and destroy us. We're not for random reuse.
-		friend class OpenGUI::Object;
+		friend class Object;
 	public:
 
 		//EventReceiver (){}
