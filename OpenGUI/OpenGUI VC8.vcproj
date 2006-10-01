@@ -432,6 +432,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Iterators.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_LayoutLoader.h"
 				>
 			</File>
