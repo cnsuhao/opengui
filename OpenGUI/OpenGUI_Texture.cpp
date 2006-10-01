@@ -3,7 +3,7 @@
 
 namespace OpenGUI {
 	//#############################################
-	std::string Texture::getName() {
+	const std::string& Texture::getName() const {
 		return mTextureName;
 	}
 	//#############################################

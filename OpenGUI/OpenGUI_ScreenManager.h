@@ -10,6 +10,9 @@ namespace OpenGUI {
 	class System;
 	class Screen;
 
+	
+
+	//! Manages creating, destroying, and lookup of Screen objects
 	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
 		friend class System;
 	public:
@@ -21,7 +24,6 @@ namespace OpenGUI {
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static ScreenManager* getSingletonPtr( void );
 
-
 		//! Creates a new screen with the given name at the given initial size
 		Screen* createScreen(const std::string& screenName, const FVector2& initialSize);
 		//! destroys the given screen
@@ -31,6 +33,8 @@ namespace OpenGUI {
 
 		//! performs an update on all screens
 		void updateScreens();
+	protected:
+		void destroyAllScreens();
 	private:
 		ScreenManager();
 		~ScreenManager();

@@ -84,8 +84,11 @@ namespace OpenGUI {
 				--mIter;
 				return *this;
 			}
-			Widget* operator*() {
-				return 0;
+			Widget& operator*() {
+				return &(mIter->widgetPtr);
+			}
+			Widget* operator->(){
+				return (mIter->widgetPtr);
 			}
 		private:
 			IterType mIter;

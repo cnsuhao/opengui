@@ -18,6 +18,8 @@ namespace OpenGUI {
 	protected:
 	private:
 	};
+
+	typedef RefPtr<RenderTexture> RenderTexturePtr;
 }
 
 #endif
