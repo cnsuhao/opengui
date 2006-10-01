@@ -12,15 +12,13 @@ namespace OpenGUI {
 	class System;
 	class Screen;
 
-
-
 	//! Manages creating, destroying, and lookup of Screen objects
 	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
 		friend class System;
 	public:
 		typedef std::map<std::string, Screen*> ScreenMap;
-		typedef MapIterator<ScreenMap,ScreenMap::iterator> iterator;
-		typedef MapIterator<ScreenMap,ScreenMap::const_iterator> const_iterator;
+		typedef MapIterator<ScreenMap, ScreenMap::iterator> iterator;
+		typedef MapIterator<ScreenMap, ScreenMap::const_iterator> const_iterator;
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
@@ -31,25 +29,25 @@ namespace OpenGUI {
 		static ScreenManager* getSingletonPtr( void );
 
 		//! Creates a new screen with the given name at the given initial size
-		Screen* createScreen(const std::string& screenName, const FVector2& initialSize);
+		Screen* createScreen( const std::string& screenName, const FVector2& initialSize );
 		//! destroys the given screen
-		void destroyScreen(Screen* screenPtr);
+		void destroyScreen( Screen* screenPtr );
 		//! returns the requested screen by name, or 0 on failure
-		Screen* getScreen(const std::string& screenName);
+		Screen* getScreen( const std::string& screenName );
 
 		//! performs an update on all screens that are auto updating
 		void updateScreens();
 
 		//! returns an iterator to walk the current list of screens
-		iterator getIterator(){
-			return iterator(mScreenMap.begin(),mScreenMap.end());
+		iterator getIterator() {
+			return iterator( mScreenMap.begin(), mScreenMap.end() );
 		}
 	protected:
 		void destroyAllScreens();
 	private:
 		ScreenManager();
 		~ScreenManager();
-		
+
 		ScreenMap mScreenMap;
 	};
 } //namespace OpenGUI {

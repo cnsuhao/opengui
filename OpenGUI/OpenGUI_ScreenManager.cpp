@@ -30,8 +30,8 @@ namespace OpenGUI {
 		if ( tmp != 0 )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM,
 					  "Screen by given name already exists:" + screenName, __FUNCTION__ );
-		
-		tmp = new Screen(screenName, initialSize);
+
+		tmp = new Screen( screenName, initialSize );
 		mScreenMap[screenName] = tmp;
 		return tmp;
 	}
@@ -41,7 +41,7 @@ namespace OpenGUI {
 		ScreenMap::iterator iter = mScreenMap.find( screenPtr->mName );
 		if ( iter == mScreenMap.end() )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-				"Invalid Screen pointer", __FUNCTION__ );
+					  "Invalid Screen pointer", __FUNCTION__ );
 	}
 	//############################################################################
 	Screen* ScreenManager::getScreen( const std::string& screenName ) {
@@ -54,16 +54,18 @@ namespace OpenGUI {
 	void ScreenManager::updateScreens() {
 		for ( ScreenMap::iterator iter = mScreenMap.begin();
 				iter != mScreenMap.end(); iter++ ) {
-			iter->second->update();
+			Screen* screen = iter->second;
+			if ( screen->isAutoUpdating() )
+				screen->update();
 		}
 	}
 	//############################################################################
-	void ScreenManager::destroyAllScreens(){
+	void ScreenManager::destroyAllScreens() {
 		for ( ScreenMap::iterator iter = mScreenMap.begin();
-			iter != mScreenMap.end(); iter++ ) {
-				Screen* tmp = iter->second;
-				iter->second = 0;
-				delete tmp;
+				iter != mScreenMap.end(); iter++ ) {
+			Screen* tmp = iter->second;
+			iter->second = 0;
+			delete tmp;
 		}
 		mScreenMap.clear();
 	}
