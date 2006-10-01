@@ -10,42 +10,37 @@ namespace OpenGUI {
 
 	class Object; //forward declaration
 
-	//! Contains all object types that only involve the processing of events
-	namespace Event {
-		//! Base class for event arguments
-		class OPENGUI_API EventArgs {
-		public:
-			virtual ~EventArgs() {}
-		};
+	//! Base class for event arguments
+	class OPENGUI_API EventArgs {
+	public:
+		virtual ~EventArgs() {}
+	};
 
+	class EventHandlerList; //forward declaration
 
-		class EventHandlerList; //forward declaration
+	//! Provides a unified event definition, binding, and relaying service.
+	class OPENGUI_API EventReceiver {
+		//Only allow Object to create and destroy us. We're not for random reuse.
+		friend class OpenGUI::Object;
+	public:
 
-		//! Provides a unified event definition, binding, and relaying service.
-		class OPENGUI_API EventReceiver {
-			//Only allow Object to create and destroy us. We're not for random reuse.
-			friend class OpenGUI::Object;
-		public:
+		//EventReceiver (){}
+		//! Adds the given \c name to the list of valid (and bindable) events
+		void createEvent( const std::string& name );
+		//! Sends an event of the given \c name to all such bound EventHandler instances
+		void sendEvent( const std::string& name, EventArgs& args );
 
-			//EventReceiver (){}
-			//! Adds the given \c name to the list of valid (and bindable) events
-			void createEvent( const std::string& name );
-			//! Sends an event of the given \c name to all such bound EventHandler instances
-			void sendEvent( const std::string& name, EventArgs& args );
-
-			//! Returns the list of EventHandler objects for the event of given \c name
-			EventHandlerList* getEventHandlers( const std::string& name );
-			//! Returns reference to the list of EventHandler objects for the event of given \c name, throws exception if event does not exist
-			EventHandlerList& operator[]( const std::string& name );
-		private:
-			EventReceiver();
-			~EventReceiver();
-			typedef std::map<std::string, EventHandlerList*> EventHandlerListMap;
-			EventHandlerListMap mEventHandlerListMap;
-			Object* mParent;
-		};
-
-	}//namespace Event {
+		//! Returns the list of EventHandler objects for the event of given \c name
+		EventHandlerList* getEventHandlers( const std::string& name );
+		//! Returns reference to the list of EventHandler objects for the event of given \c name, throws exception if event does not exist
+		EventHandlerList& operator[]( const std::string& name );
+	private:
+		EventReceiver();
+		~EventReceiver();
+		typedef std::map<std::string, EventHandlerList*> EventHandlerListMap;
+		EventHandlerListMap mEventHandlerListMap;
+		Object* mParent;
+	};
 
 }
 ;//namespace OpenGUI{

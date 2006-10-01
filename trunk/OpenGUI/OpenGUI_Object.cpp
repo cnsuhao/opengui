@@ -6,7 +6,6 @@
 
 
 namespace OpenGUI {
-
 	//############################################################################
 	Object::Object() {
 		mEventReceiver.mParent = this;
@@ -18,7 +17,7 @@ namespace OpenGUI {
 		return "OpenGUI::Object";
 	}
 	//############################################################################
-	Event::EventReceiver& Object::getEvents() {
+	EventReceiver& Object::getEvents() {
 		return mEventReceiver;
 	}
 	//############################################################################
@@ -119,6 +118,4 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-
-
 }//namespace OpenGUI{
