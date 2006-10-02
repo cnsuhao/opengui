@@ -1,6 +1,5 @@
 
 #include "tinyxml.h"
-#include "UnknownImage.h"
 #include "OpenGUI.h"
 
 namespace OpenGUI {
@@ -18,14 +17,11 @@ namespace OpenGUI {
 	//############################################################################
 	ImageryManager::ImageryManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ImageryManager" << Log::endlog;
-		mDefaultImageset = 0;
-		__buildDefaultImageset();
 	}
 	//############################################################################
 	ImageryManager::~ImageryManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying ImageryManager" << Log::endlog;
 		ImageryManager::destroyAllImagesets();
-		__destroyDefaultImageset();
 	}
 	//############################################################################
 	Imageset* ImageryManager::createImageset( std::string imageFilename ) {
@@ -36,12 +32,12 @@ namespace OpenGUI {
 
 		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "CreateImageset: " << imageFilename << Log::endlog;
 
-		Texture* tex = System::getSingleton()._getRenderer()->createTextureFromFile( imageFilename );
+		TexturePtr tex = TextureManager::getSingleton().createTextureFromFile( imageFilename );
+
 		if ( !tex ) return 0;
 
 		imgset = new Imageset( tex, imageFilename );
 		if ( !imgset ) {
-			System::getSingleton()._getRenderer()->destroyTexture( tex );
 			return 0;
 		}
 
@@ -49,27 +45,26 @@ namespace OpenGUI {
 		return imgset;
 	}
 	//############################################################################
-	Imageset* ImageryManager::createImagesetFromTexture( Texture* texture, std::string imageFilename ) {
-		if ( !texture ) {
-			OG_THROW( Exception::ERR_INVALIDPARAMS, "texture parameter must be non-zero", "ImageryManager::createImagesetFromTexture" );
+	Imageset* ImageryManager::createImagesetFromTexture( TexturePtr texture, std::string imageFilename ) {
+		if ( texture.isNull() ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "texture parameter must be a valid texture", "ImageryManager::createImagesetFromTexture" );
 		}
 
 		Imageset* imgset;
 
 		if ( imageFilename != "" ) {
 			if (( imgset = getImageset( imageFilename ) ) ) {
-				Texture* oldTexture = imgset->mpTexture;
+				TexturePtr oldTexture = imgset->mpTexture;
 				if ( oldTexture != texture ) {
 					LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 )
 					<< "CreateImagesetFromTexture: (update) "
 					<< imageFilename << " - old 0x"
-					<< (( unsigned int ) oldTexture )
+					<< (( unsigned int ) oldTexture.get() )
 					<< " / new 0x"
-					<< (( unsigned int ) texture )
+					<< (( unsigned int ) texture.get() )
 					<< Log::endlog;
 
 					imgset->mpTexture = texture;
-					System::getSingleton()._getRenderer()->destroyTexture( oldTexture );
 				}
 				return imgset;
 			}
@@ -79,7 +74,7 @@ namespace OpenGUI {
 			//this texture is already used under a different name
 			std::stringstream ss;
 			ss << "An imageset already exists based on the given texture: 0x";
-			ss << texture;
+			ss << texture.get();
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, ss.str(), "ImageryManager::createImagesetFromTexture" );
 		}
 
@@ -90,7 +85,7 @@ namespace OpenGUI {
 
 		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 )
 		<< "CreateImagesetFromTexture: (new) "
-		<< imageFilename << " 0x" << (( unsigned int ) texture ) << Log::endlog;
+		<< imageFilename << " 0x" << (( unsigned int ) texture.get() ) << Log::endlog;
 
 		imgset = new Imageset( texture, imageFilename );
 		if ( !imgset ) {
@@ -101,7 +96,7 @@ namespace OpenGUI {
 		return imgset;
 	}
 	//############################################################################
-	Imageset* ImageryManager::getImagesetByTexture( Texture* texture ) {
+	Imageset* ImageryManager::getImagesetByTexture( TexturePtr texture ) {
 		ImagesetCPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			if (( *iter )->getTexture() == texture ) {
@@ -152,28 +147,7 @@ namespace OpenGUI {
 			delete( *iter );
 			iter++;
 		}
-		mImagesetList.empty();
-	}
-	//############################################################################
-	void ImageryManager::__buildDefaultImageset() {
-		TextureData texdata;
-		texdata.setData( ::builtinDefaultImage.width,
-						 ::builtinDefaultImage.height,
-						 ::builtinDefaultImage.bytes_per_pixel,
-						 ( void* )::builtinDefaultImage.pixel_data );
-
-		Texture* texture =  System::getSingleton()._getRenderer()->createTextureFromTextureData( &texdata );
-		mDefaultImageset = new Imageset( texture, "" );
-	}
-	//############################################################################
-	void ImageryManager::__destroyDefaultImageset() {
-		if ( mDefaultImageset )
-			delete mDefaultImageset;
-		mDefaultImageset = 0;
-	}
-	//############################################################################
-	Imageset* ImageryManager::__getDefaultImageset() {
-		return mDefaultImageset;
+		mImagesetList.clear();
 	}
 	//############################################################################
 	ImageryPtr ImageryManager::getImagery( std::string imageryName ) {

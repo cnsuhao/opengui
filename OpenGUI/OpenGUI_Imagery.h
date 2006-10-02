@@ -5,6 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RefPtr.h"
+#include "OpenGUI_Texture.h"
 
 namespace OpenGUI {
 	class Texture; //forward declaration
@@ -29,13 +30,14 @@ namespace OpenGUI {
 			an XML file, as the XML loader always creates Imagery using pixel based rects.
 		*/
 		IRect getImagesetRect();
+
 		//! Returns a pointer to the Texture object for this Imagery's parent Imageset.
 		/*! \warning Widget writers: Do <b>not</b>, under any circumstances, cache this value within
 			your Widget. It absolutely \b must be retrieved every time you build a RenderOperation,
 			as it's value can change. Though the system caches render operations, it also guarantees
 			that it will rebuild that cache in the event that a texture pointer becomes invalid.
 		*/
-		Texture* getTexture();
+		TexturePtr getTexture();
 
 		//! Returns the name of this Imagery object
 		std::string getName();

@@ -1,11 +1,14 @@
 
 #include "tinyxml.h"
-#include "OpenGUI.h"
+#include "OpenGUI_ImageryManager.h"
+#include "OpenGUI_Imageset.h"
+#include "OpenGUI_Exception.h"
+#include "OpenGUI_LogSystem.h"
 
 namespace OpenGUI {
 
 	//############################################################################
-	Imageset::Imageset( Texture* texturePtr, std::string sourceImageFilename )
+	Imageset::Imageset( TexturePtr texturePtr, std::string sourceImageFilename )
 			: mFilename( sourceImageFilename ), mpTexture( texturePtr ) {
 		LogManager::SlogMsg( "Imageset", OGLL_INFO ) << "(" << mFilename << ") " << "Creation" << Log::endlog;
 	}
@@ -13,25 +16,9 @@ namespace OpenGUI {
 	Imageset::~Imageset() {
 		LogManager::SlogMsg( "Imageset", OGLL_INFO ) << "(" << mFilename << ") " << "Destruction" << Log::endlog;
 		Imageset::destroyAllImagery();
-		_unloadTexture();
 	}
 	//############################################################################
-	bool Imageset::_loadTexture() {
-		LogManager::SlogMsg( "Imageset", OGLL_VERB ) << "(" << mFilename << ") " << "Loading Texture" << Log::endlog;
-		mpTexture = System::getSingleton()._getRenderer()->createTextureFromFile( mFilename );
-		if ( mpTexture ) return true;
-		return false;
-	}
-	//############################################################################
-	void Imageset::_unloadTexture() {
-		if ( mpTexture ) {
-			LogManager::SlogMsg( "Imageset", OGLL_VERB ) << "(" << mFilename << ") " << "Unloading Texture" << Log::endlog;
-			System::getSingleton()._getRenderer()->destroyTexture( mpTexture );
-			mpTexture = 0;
-		}
-	}
-	//############################################################################
-	std::string Imageset::getName() {
+	const std::string& Imageset::getName() {
 		return mFilename;
 	}
 	//############################################################################
@@ -98,22 +85,14 @@ namespace OpenGUI {
 
 		ImageryPtrList::iterator iter = mChildImageryList.begin();
 		while ( mChildImageryList.end() != iter ) {
-			if (( *iter ).get() == pImagery ) {
-// 				if(this != ImageryManager::getSingleton().__getDefaultImageset()){
-// 					pImagery->mParentImageset=ImageryManager::getSingleton().__getDefaultImageset();
-// 					pImagery->mParentImageset->mChildImageryList.push_back(pImagery);
-// 					pImagery->mAreaRect=FRect(0.0f,0.0f,1.0f,1.0f);
-// 					mChildImageryList.erase(iter);
-// 					return;
-// 				}else{
+			if (( *iter ) == pImagery ) {
 				mChildImageryList.erase( iter );
 				return;
-//				}
 			}
 			iter++;
 		}
 		std::stringstream ss;
-		ss << pImagery;
+		ss << "(0x" << (unsigned int) pImagery << ") " << pImagery->getName();
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Could not find Imagery: " + ss.str(), "Imageset::destroyImagery" );
 	}
 	//############################################################################
@@ -132,7 +111,7 @@ namespace OpenGUI {
 		return ImageryPtr( 0 );
 	}
 	//############################################################################
-	Texture* Imageset::getTexture() {
+	TexturePtr Imageset::getTexture() {
 		return mpTexture;
 	}
 	//############################################################################

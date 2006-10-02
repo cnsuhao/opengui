@@ -74,13 +74,13 @@ namespace OpenGUI {
 				On failure the return value is 0, and the given \c texture does not become the
 				property of the Imageset.
 		*/
-		Imageset* createImagesetFromTexture( Texture* texture, std::string imageFilename = "" );
+		Imageset* createImagesetFromTexture( TexturePtr texture, std::string imageFilename = "" );
 
 		//! Returns a pointer to the Imageset that was created using the given filename, or 0 on failure.
 		Imageset* getImageset( std::string imageFilename );
 
 		//! Returns a pointer to the Imageset that is based on the given \c texture, or 0 on failure.
-		Imageset* getImagesetByTexture( Texture* texture );
+		Imageset* getImagesetByTexture( TexturePtr texture );
 
 		//! Destroys an Imageset.
 		void destroyImageset( Imageset* pImageset );
@@ -99,9 +99,6 @@ namespace OpenGUI {
 		*/
 		void LoadImagesetsFromXML( std::string xmlFilename );
 
-		//Internal use only
-		Imageset* __getDefaultImageset();
-
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
 
@@ -110,9 +107,7 @@ namespace OpenGUI {
 
 	private:
 		ImagesetCPtrList mImagesetList;
-		Imageset* mDefaultImageset;
-		void __buildDefaultImageset();
-		void __destroyDefaultImageset();
+
 		Imageset* _loadImagesetFromTinyXMLElement( void* tXelementPtr );
 
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery

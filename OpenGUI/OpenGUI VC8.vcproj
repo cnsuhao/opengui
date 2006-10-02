@@ -310,6 +310,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_ScreenManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_System.cpp"
 				>
 			</File>
@@ -504,10 +508,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_ScreenManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_ScreenManager.h"
 				>
 			</File>
@@ -561,10 +561,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_XMLParser.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UnknownImage.h"
 				>
 			</File>
 		</Filter>
