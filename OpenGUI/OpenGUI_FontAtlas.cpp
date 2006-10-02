@@ -12,6 +12,7 @@
 #include "OpenGUI_System.h"
 
 #include "OpenGUI_ImageryManager.h"
+#include "OpenGUI_TextureManager.h"
 
 #include "OpenGUI_FontAtlas.h"
 
@@ -49,15 +50,15 @@ namespace OpenGUI {
 
 		mFreeRectList.push_back( IRect( 0, 0, dimensions.x, dimensions.y ) );
 
-		Texture* tex = System::getSingleton()._getRenderer()->createTextureFromTextureData( &mTextureData );
-
 		//generate a "meaningful" imageset name
 		std::stringstream ss;
 		ss << "__FontAtlas:" << ( unsigned int ) this;
+
+		TexturePtr tex = TextureManager::getSingleton().createTextureFromTextureData( ss.str(), &mTextureData );
+		
 		mImageset = ImageryManager::getSingleton().createImagesetFromTexture( tex, ss.str() );
 
 		if ( !mImageset ) {
-			System::getSingleton()._getRenderer()->destroyTexture( tex );
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Error creating Imageset from manual texture", "FontAtlas::FontAtlas" );
 		}
 	}
@@ -216,7 +217,7 @@ namespace OpenGUI {
 	//############################################################################
 	void FontAtlas::_UpdateTexture( const IRect& updateRect ) {
 		//for now, we'll ignore the updateRect
-		System::getSingleton()._getRenderer()->updateTextureFromTextureData( mImageset->getTexture(), &mTextureData );
+		TextureManager::getSingleton().updateTextureFromTextureData( mImageset->getTexture(), &mTextureData );
 	}
 	//############################################################################
 
