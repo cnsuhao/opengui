@@ -13,6 +13,22 @@ namespace OpenGUI {
 	class TextureData;//forward declaration
 
 	//! Base class for all renderers. Any custom Renderer should inherit this base class.
+	/*!
+		\par "Rendering call order"
+		Here's a quick ordered list of what calls you can usually expect to receive during
+		rendering loops.
+		\code
+		- preRenderSetup()
+		- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+		- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+		- postRenderCleanup()
+		\endcode
+
+	*/
 	class OPENGUI_API Renderer {
 	public:
 		//! Constructor
@@ -51,15 +67,6 @@ namespace OpenGUI {
 		*/
 		virtual void getScreenDimensions( IVector2& dims ) = 0;
 
-		//! Signal the system object that the viewport dimensions have changed so that it may take appropriate action.
-		/*! Currently this function simply provides a safe avenue of calling System::notifyViewportDimensionsChanged(),
-			by ensuring that the call is only made if the System Singleton exists. */
-		void alertViewportDimensionsChanged();
-
-		//! Signal the system object that the screen dimensions have changed so that it may take appropriate action.
-		/*! Currently this function simply provides a safe avenue of calling System::alertScreenDimensionsChanged(),
-		by ensuring that the call is only made if the System Singleton exists. */
-		void alertScreenDimensionsChanged();
 
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
 		/*! The primary purpose of this is to provide the renderer an opportunity to
@@ -75,28 +82,53 @@ namespace OpenGUI {
 		/*! \brief
 		Renderer implementations that do support Render to Texture contexts should
 		\return \c true. The default is to return \c false;
+
+		\attention
+		This virtual function has a default implementation.
+		This allows renderer implementations that do not support render to texture
+		to simply ignore the existence of this function and the correct functionality
+		will take place.
 		*/
 		virtual bool supportsRenderToTexture(){return false;}
 
-		//! This is called to set the rendering context to the given RenderTexture.
+		//! This is called to set the current rendering context.
 		/*! Calls to doRenderOperation() that occur after this function is called
 			should draw to the RenderTexture that was last sent via this function.
-			%OpenGUI will ensure that context switches only occur when the contents
-			of the new context can (and should) be cleared.
+
+			\attention
+			This virtual function has a default implementation.
+			This allows renderer implementations that do not support render to texture
+			to simply ignore the existence of this function and the correct functionality
+			will take place.
+
+			\param
+			context A pointer to the render texture that is to become the new context,
+			or 0 (NULL) to set the context to the default (viewport) context.
 
 			 \note This is not guaranteed to be called every frame. It is only called
 			 when a context change is absolutely necessary, and it is assumed that the
 			 contents of the render texture are cleared during this call.
 		*/
-		virtual void selectTextureContext( RenderTexture* context ) {}
+		virtual void selectRenderContext( RenderTexture* context ) {}
 
-		//! This is called to select the default context (the actual viewport).
-		/*! \note This is not guaranteed to be called every frame, and quite likely
-			may never be called... ever. This is only called to reset the current context
-			to the default in the event that %OpenGUI needs to draw to the full viewport,
-			and the context was previously changed by a call to selectTextureContext().
+		//! Should clear the contents of the current rendering context as appropriate.
+		/*! When called, this function should clear the contents of the current
+			rendering context.
+
+			\note
+			This function is called at the beginning of rendering for each context,
+			\b including the default (viewport) context. You probably don't want
+			to clear the default context here, as it will erase your previously
+			rendered scene. So make sure you check your current context to ensure
+			that you really do want to clear it before you actually do!
+
+			\attention
+			This virtual function has a default implementation.
+			This allows renderer implementations that do not support render to texture
+			to simply ignore the existence of this function and the correct functionality
+			will take place.
 		*/
-		virtual void selectDefaultContext(){};
+		virtual void clearContents() {}
 
 		//! This will be called for every render operation that needs to be performed.
 		/*! This function is passed a RenderOperation object, by reference, for every
@@ -136,6 +168,9 @@ namespace OpenGUI {
 
 			\param filename The filename of the source image data.
 			\return A TexturePtr to a Texture object on success, or TexturePtr(0) on fail.
+
+			\note
+			It is expected that all textures are available for use by all rendering contexts.
 		*/
 		virtual Texture* createTextureFromFile( const std::string& filename ) = 0;
 
@@ -149,8 +184,27 @@ namespace OpenGUI {
 			it cannot be deleted until after destroyTexture() has been called to
 			destroy the texture that is based upon the TextureData.
 
+			\note
+			It is expected that all textures are available for use by all rendering contexts.
 		*/
 		virtual Texture* createTextureFromTextureData( TextureData* textureData ) = 0;
+
+		//! Creates a render texture at the given size
+		/*! If your renderer implementation supports render to texture, this is where those
+			render textures will be created.
+			
+			\note
+			It is expected that all render textures are available for use by all other 
+			rendering contexts. In other words, it must be usable in render operations
+			for every context, only excluding itself.
+
+			\attention
+			This virtual function has a default implementation.
+			This allows renderer implementations that do not support render to texture
+			to simply ignore the existence of this function and the correct functionality
+			will take place.
+		*/
+		virtual RenderTexture* createRenderTexture( const IVector2& size ) { return 0; }
 
 		//! Replaces an existing texture with the given TextureData
 		/*! This should cause a Renderer implementation to completely replace the
@@ -174,9 +228,9 @@ namespace OpenGUI {
 			will leak.
 
 			\attention
-			This function is called for both Texture and RenderTexture objects, so the
-			Renderer will need to determine the difference via Texture::isRenderTexture()
-			if it matters.
+			This function is called for both Texture and RenderTexture objects, so if the
+			Renderer implementation cares, you will need to determine the difference via
+			Texture::isRenderTexture().
 		*/
 		virtual void destroyTexture( Texture* texturePtr ) = 0;
 	};

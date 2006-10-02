@@ -1,17 +1,7 @@
 
-#include "OpenGUI.h"
+#include "OpenGUI_Renderer.h"
 
 namespace OpenGUI {
-	void Renderer::alertViewportDimensionsChanged() {
-		if ( System::getSingletonPtr() ) {
-			System::getSingletonPtr()->notifyViewportDimensionsChanged();
-		}
-	}
-	//############################################################################
-	void Renderer::alertScreenDimensionsChanged() {
-		if ( System::getSingletonPtr() ) {
-			System::getSingletonPtr()->notifyScreenDimensionsChanged();
-		}
-	}
+	// nothing to do...
 };
 
