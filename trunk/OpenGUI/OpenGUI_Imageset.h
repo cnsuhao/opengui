@@ -1,7 +1,7 @@
 #ifndef ADDA6F72_2373_43e0_A282_A8E205CAA876
 #define ADDA6F72_2373_43e0_A282_A8E205CAA876
 
-
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Texture.h"
@@ -15,7 +15,7 @@ namespace OpenGUI {
 		friend class Imagery;
 	public:
 		//! Applications should use the ImageryManager to creation Imagesets
-		Imageset( Texture* texturePtr, std::string sourceImageFilename );
+		Imageset( TexturePtr texturePtr, std::string sourceImageFilename );
 		~Imageset();
 
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
@@ -62,16 +62,14 @@ namespace OpenGUI {
 		ImageryList getImageryList();
 
 		//! Returns the texture backing this Imageset
-		Texture* getTexture();
+		TexturePtr getTexture();
 
 		//! Returns the name of this Imageset
-		std::string getName();
+		const std::string& getName();
 	private:
 		std::string mFilename;
-		Texture* mpTexture;
+		TexturePtr mpTexture;
 		ImageryPtrList mChildImageryList;
-		bool _loadTexture();
-		void _unloadTexture();
 
 		//Takes a TiXML element pointer of the Imageset element as an argument.
 		void _loadImageryFromRootTinyXMLElement( void* tXrootElementPtr );

@@ -81,11 +81,11 @@ namespace OpenGUI {
 
 		//! The usual *Handle resolving
 		OBJECT& operator*() const {
-			return *( m_Handle );
+			return *( dynamic_cast<OBJECT*>(m_Handle) );
 		}
 		//! The usual Handle->something resolving
 		OBJECT* operator->() const {
-			return ( m_Handle );
+			return dynamic_cast<OBJECT*>( m_Handle );
 		}
 
 		//! This makes "if( Handle )" work just like "if( !Handle.isNull() )"

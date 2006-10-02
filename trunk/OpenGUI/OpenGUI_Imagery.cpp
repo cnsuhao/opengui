@@ -1,5 +1,6 @@
 
-#include "OpenGUI.h"
+#include "OpenGUI_Imagery.h"
+#include "OpenGUI_Imageset.h"
 
 namespace OpenGUI {
 
@@ -12,7 +13,7 @@ namespace OpenGUI {
 		return mNativeRect;
 	}
 	//############################################################################
-	Texture* Imagery::getTexture() {
+	TexturePtr Imagery::getTexture() {
 		if ( !mParentImageset ) return 0;
 		return mParentImageset->mpTexture;
 	}
