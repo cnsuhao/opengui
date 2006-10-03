@@ -29,6 +29,14 @@ namespace OpenGUI {
 		virtual void onDraw( Brush& brushRef );
 
 		//! returns the container this widget is held within
+		/*! Every Widget is guaranteed to have a container, but not every container is
+			guaranteed to be a Widget. To test if the returned pointer is, in fact, another
+			Widget you should perform a dynamic_cast on the returned pointer.
+			\code
+			//optionally replace "this" with a pointer to the desired child Widget
+			Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
+			\endcode
+		*/
 		I_WidgetContainer* getContainer();
 
 		// inherited from Object
