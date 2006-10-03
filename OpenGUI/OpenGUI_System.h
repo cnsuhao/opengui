@@ -5,7 +5,13 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
 
-#include "OpenGUI_Event.h"
+#include "OpenGUI_Exports.h"
+#include "OpenGUI_LogSystem.h"
+#include "OpenGUI_Exception.h"
+#include "OpenGUI_Math.h"
+#include "OpenGUI_Types.h"
+
+//#include "OpenGUI_Event.h"
 
 //! The base namespace contains the classes that applications will deal with the most.
 namespace OpenGUI {
@@ -35,8 +41,6 @@ namespace OpenGUI {
 
 		This class is implemented using the Singleton system. There can only be one System
 		object instantiated at any point in time.
-
-		\todo implement me
 	*/
 	class OPENGUI_API System : public Singleton<System> {
 	public:
@@ -82,14 +86,16 @@ namespace OpenGUI {
 		//! unloads a plugin by filename
 		void unloadPlugin( std::string filename );
 
-		/*! \brief Renders the GUI using the current render system.	*/
+		/*! \brief Renders the GUI using the current render system.	\deprecated Will be replaced by a more generic "renderScreens" function. */
 		void renderGUI();
 
 		//! Returns a pointer to the registered ResourceProvider. Apps really shouldn't need, or use, this.
+		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
 		ResourceProvider* _getResourceProvider() {
 			return mResourceProvider;
 		}
 		//! Returns a pointer to the registered Renderer. Apps really shouldn't need, or use, this.
+		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
 		Renderer* _getRenderer() {
 			return mRenderer;
 		}

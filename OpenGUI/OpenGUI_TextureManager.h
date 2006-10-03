@@ -15,6 +15,10 @@ namespace OpenGUI {
 	class System; //forward declaration
 	class TextureData; //forward declaration
 
+	/*! \brief
+	Provides a common interface for creating textures from various sources.
+	\n \b [Singleton]
+	*/
 	class OPENGUI_API TextureManager : public Singleton<TextureManager> {
 		friend class System;
 		friend class Texture;
