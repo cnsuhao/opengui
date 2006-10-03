@@ -1,6 +1,10 @@
 #ifndef BE0F3698_B136_43b6_993F_F93035AB500C
 #define BE0F3698_B136_43b6_993F_F93035AB500C
 
+#include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
+#include "OpenGUI_Types.h"
+
 namespace OpenGUI {
 	//! Provides complete loading of xml files containing data for all different subsystems.
 	/*! This class provides complete parsing of XML files. It will delegate top level tags

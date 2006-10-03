@@ -1,6 +1,5 @@
 
-
-#include "OpenGUI.h"
+#include "OpenGUI.h" // <-- This is the one place I would consider this acceptable
 #include "OpenGUI_ScreenManager.h"
 
 namespace OpenGUI {
@@ -90,7 +89,7 @@ namespace OpenGUI {
 		}
 
 		mTextureManager = new TextureManager( renderer ); //create the texture manager
-		mImageryManager = new ImageryManager(); //create the imagery manager
+		mImageryManager = new ImageryManager( mResourceProvider ); //create the imagery manager
 
 
 		mFontManager = new FontManager();

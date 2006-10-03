@@ -9,6 +9,8 @@
 
 namespace OpenGUI {
 
+	class ResourceProvider; //forward declaration
+
 	/*! \brief
 		Provides management services for loading, unloading, keeping track of,
 		and searching for Imageset and the children Image objects.\n \b [Singleton]
@@ -17,7 +19,7 @@ namespace OpenGUI {
 		friend class XMLParser;
 		friend class Imageset;
 	public:
-		ImageryManager();
+		ImageryManager( ResourceProvider* resourceProvider );
 		~ImageryManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
@@ -111,6 +113,8 @@ namespace OpenGUI {
 		Imageset* _loadImagesetFromTinyXMLElement( void* tXelementPtr );
 
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
+
+		ResourceProvider* mResourceProvider;
 	};
 
 }

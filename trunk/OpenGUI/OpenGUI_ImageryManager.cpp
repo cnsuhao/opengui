@@ -1,6 +1,10 @@
 
 #include "tinyxml.h"
-#include "OpenGUI.h"
+#include "OpenGUI_ImageryManager.h"
+#include "OpenGUI_Exception.h"
+#include "OpenGUI_ResourceProvider.h"
+#include "OpenGUI_LogSystem.h"
+#include "OpenGUI_TextureManager.h"
 
 namespace OpenGUI {
 	template<> ImageryManager* Singleton<ImageryManager>::mptr_Singleton = 0;
@@ -15,7 +19,8 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	//############################################################################
-	ImageryManager::ImageryManager() {
+	ImageryManager::ImageryManager( ResourceProvider* resourceProvider ): mResourceProvider(resourceProvider)
+	{
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ImageryManager" << Log::endlog;
 	}
 	//############################################################################
@@ -167,7 +172,7 @@ namespace OpenGUI {
 		TiXmlDocument doc;
 		//doc.LoadFile(xmlFilename);
 		Resource_CStr res;
-		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
+		ResourceProvider* resProvider = mResourceProvider;
 		resProvider->loadResource( xmlFilename, res );
 		doc.Parse( res.getString() );
 		TiXmlElement* root = doc.RootElement();

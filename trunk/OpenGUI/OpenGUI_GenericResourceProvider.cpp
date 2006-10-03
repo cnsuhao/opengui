@@ -1,6 +1,6 @@
 
-#include "OpenGUI.h"
-
+#include "OpenGUI_GenericResourceProvider.h"
+#include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
 	//#####################################################################
