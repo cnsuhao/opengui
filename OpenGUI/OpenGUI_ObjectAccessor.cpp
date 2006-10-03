@@ -1,4 +1,3 @@
-//#include "OpenGUI.h"
 
 #include "OpenGUI_ObjectAccessor.h"
 #include "OpenGUI_Exception.h"

@@ -1,4 +1,3 @@
-//#include "OpenGUI.h"
 
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"

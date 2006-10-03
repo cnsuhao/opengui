@@ -1,5 +1,10 @@
 #include "corona.h"
-#include "OpenGUI.h"
+#include "OpenGUI_TextureData.h"
+#include "OpenGUI_System.h"
+#include "OpenGUI_Resource.h"
+#include "OpenGUI_ResourceProvider.h"
+#include "OpenGUI_Exception.h"
+
 namespace OpenGUI {
 	//#####################################################
 	TextureData::TextureData() {

@@ -1,5 +1,4 @@
 
-//#include "OpenGUI.h"
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"

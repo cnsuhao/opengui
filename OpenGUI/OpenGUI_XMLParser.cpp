@@ -1,7 +1,7 @@
 
 #include "tinyxml.h"
+#include "OpenGUI_XMLParser.h"
 
-#include "OpenGUI.h"
 /*
 namespace OpenGUI {
 	//############################################################################
