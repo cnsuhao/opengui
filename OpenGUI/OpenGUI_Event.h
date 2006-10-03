@@ -25,12 +25,22 @@ namespace OpenGUI {
 		a non-negative custom event ID works right now, there is no guarantee that it will
 		work in future versions.
 
+		\note You'll undoubtedly notice the presence of events that seem to be markers.
+		They are, in fact, just that. They are in the common format "_[section]_begin" and
+		"_[section]_end". These markers are used to group together similar events so that
+		they can be quickly sorted during event processing. Think of them like the letter
+		placards in a Rolodex. They aren't valid entries for use, but they allow us to
+		sacrifice a small amount of memory to achieve a net speed gain.
+
 	*/
 	namespace EventID{
 		//!
 		enum{
 			//! Does absolutely nothing. You're firing blanks!
 			BLANK = 0,
+
+			//! Marks the beginning of the event list
+			_events_begin,
 
 
 			/*! Invalidates the render cache of the target and recursively all its children
@@ -42,6 +52,9 @@ namespace OpenGUI {
 			Brush object as an interface to the renderer.
 			*/
 			DRAW,
+
+			//! Mark of beginning of input related events
+			_input_begin,
 
 			/*! Occurs when the cursor is moved around the scene. */
 			CURSOR_MOVE,
@@ -55,11 +68,18 @@ namespace OpenGUI {
 			/*! Occurs when the cursor is clicked (PRESSed and RELEASEd over the same target). */
 			CURSOR_CLICK,
 
+			//! Mark of end of input related events
+			_input_end,
+
 			/*! Some Widgets can be ACTIVATEd due to various circumstances. A button, for instance,
 			would be ACTIVATEd when it is CLICKed. This message allows for more generic activations
 			as well. The enter key being pressed while an input dialog has focus is another example
 			of an ACTIVATE condition. */
-			ACTIVATE
+			ACTIVATE,
+
+
+			//! Marks the end of the event list
+			_events_end
 
 		};
 	}
