@@ -54,9 +54,6 @@ namespace OpenGUI {
 		//! returns true if the given widget pointer is in the collection
 		bool hasWidget( Widget* widget );
 
-		//! returns a pointer to the containing widget, or 0 if this is a root level container
-		Widget* getContainingWidget();
-
 		//! Template class providing iterator encapsulation
 		template <typename IterType>
 		class collection_iterator {
@@ -105,6 +102,20 @@ namespace OpenGUI {
 		reverse_iterator rend(); //!< returns an iterator for the collection starting off the beginning
 	};
 
+	//############################################################################
+	//############################################################################
+	//! Interface for objects that contain a collection of children Widget objects
+	/*! This is mostly just an interface that exposes a new public member variable
+		"Children" (type WidgetCollection), which is a collection of child Widget
+		objects.
+
+		This class also provides some standard services, such as child widget
+		destruction so that the collection of children does not contain pointers
+		to children that are no longer available. It also ensures that child Widgets
+		are always kept up to date with an accurate pointer to their parenting object.
+
+		\see Widget::getContainer()
+	*/
 	class OPENGUI_API I_WidgetContainer {
 		friend class Widget; //need this for child widget destruction notifications
 		friend class WidgetCollection; //need this for add/remove notifications
