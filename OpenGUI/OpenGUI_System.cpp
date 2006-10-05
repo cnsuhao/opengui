@@ -72,7 +72,7 @@ namespace OpenGUI {
 			mUsingGenericResourceProvider = true;
 		}
 
-		mTextureManager = new TextureManager( renderer ); //create the texture manager
+		mTextureManager = new TextureManager( mRenderer ); //create the texture manager
 		mImageryManager = new ImageryManager( mResourceProvider ); //create the imagery manager
 
 
