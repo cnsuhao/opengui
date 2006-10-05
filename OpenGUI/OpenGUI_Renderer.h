@@ -4,6 +4,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Singleton.h"
 
 #include "OpenGUI_RenderOperation.h"
 #include "OpenGUI_Texture.h"
@@ -19,18 +20,29 @@ namespace OpenGUI {
 		rendering loops.
 		\code
 		- preRenderSetup()
-		- selectRenderContext()
-		- clearContents()
-		- doRenderOperation() (repeats as necessary)
-		- selectRenderContext()
-		- clearContents()
-		- doRenderOperation() (repeats as necessary)
+			- selectRenderContext()
+				- clearContents()
+				- doRenderOperation() (repeats as necessary)
+			- selectRenderContext()
+				- clearContents()
+				- doRenderOperation() (repeats as necessary)
 		- postRenderCleanup()
 		\endcode
 
+		\note Renderers are singletons, but do not require any special action on the part of
+		implementors. The singleton logic is automatically handled, so all you need to worry
+		about is getting your implementation working.
 	*/
-	class OPENGUI_API Renderer {
+	class OPENGUI_API Renderer : public Singleton<Renderer> {
 	public:
+		//Reimplementation required for this style of singleton implementation to work across DLLs
+		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
+		static Renderer& getSingleton( void );
+
+		//Reimplementation required for this style of singleton implementation to work across DLLs
+		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
+		static Renderer* getSingletonPtr( void );
+
 		//! Constructor
 		Renderer() {}
 		//! virtual Destructor
