@@ -25,10 +25,16 @@ namespace OpenGUI {
 			bool own;
 		};
 
+		// These are the actual functions that perform the adds/removes
+		// They are an additional level deep so we can reuse them without triggering Widget events
+		void _add_front( Widget* widget, bool takeOwnership = false );
+		void _add_back( Widget* widget, bool takeOwnership = false );
+		void _remove( Widget* widget );
+
 		typedef std::list<WidgetCollectionItem*> WidgetCollectionItemPtrList;
 		WidgetCollectionItemPtrList mCollectionObjects;
 		WidgetCollectionItem* getWidgetHolder( Widget* widget );
-		I_WidgetContainer* mIContainer;
+		I_WidgetContainer* mIContainer; //pointer to the I_WidgetContainer that owns this WidgetCollection
 	protected:
 		//! Protects us from being created by anyone but an I_WidgetContainer
 		WidgetCollection() {}
@@ -73,6 +79,17 @@ namespace OpenGUI {
 				mIter = right.mIter;
 				return *this;
 			}
+			collection_iterator operator++( int ) {
+				collection_iterator t( *this );
+				++mIter;
+				return t;
+			}
+			collection_iterator operator--( int ) {
+				collection_iterator t( *this );
+				--mIter;
+				return t;
+			}
+
 			collection_iterator& operator++() {
 				++mIter;
 				return *this;
@@ -82,17 +99,22 @@ namespace OpenGUI {
 				return *this;
 			}
 			Widget& operator*() {
-				return &( mIter->widgetPtr );
+				return *(( *mIter )->widgetPtr );
 			}
 			Widget* operator->() {
-				return ( mIter->widgetPtr );
+				return (( *mIter )->widgetPtr );
 			}
+			Widget* get() {
+				return (( *mIter )->widgetPtr );
+			}
+
 		private:
 			IterType mIter;
 		};
 
 		//! WidgetCollection iterator
 		typedef collection_iterator<WidgetCollectionItemPtrList::iterator> iterator;
+
 		//! WidgetCollection reverse_iterator
 		typedef collection_iterator<WidgetCollectionItemPtrList::reverse_iterator> reverse_iterator;
 
@@ -133,6 +155,10 @@ namespace OpenGUI {
 		void notifyChildAdding( Widget* widgetPtr );
 		//! automatically called by WidgetCollection before it removes a widget from the collection
 		void notifyChildRemoving( Widget* widgetPtr );
+		//! automatically called by WidgetCollection after it added a widget to the collection
+		void notifyChildAdded( Widget* widgetPtr );
+		//! automatically called by WidgetCollection after it removed a widget from the collection
+		void notifyChildRemoved( Widget* widgetPtr );
 	};
 
 }

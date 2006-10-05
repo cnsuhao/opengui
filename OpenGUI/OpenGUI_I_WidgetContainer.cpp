@@ -16,6 +16,21 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::add_front( Widget* widget, bool takeOwnership ) {
+		_add_front( widget, takeOwnership );
+		mIContainer->notifyChildAdded( widget );
+	}
+	//############################################################################
+	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
+		_add_back( widget, takeOwnership );
+		mIContainer->notifyChildAdded( widget );
+	}
+	//############################################################################
+	void WidgetCollection::remove( Widget* widget ) {
+		_remove( widget );
+		mIContainer->notifyChildRemoved( widget );
+	}
+	//############################################################################
+	void WidgetCollection::_add_front( Widget* widget, bool takeOwnership ) {
 		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
@@ -23,7 +38,7 @@ namespace OpenGUI {
 		mCollectionObjects.push_front( ptr );
 	}
 	//############################################################################
-	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
+	void WidgetCollection::_add_back( Widget* widget, bool takeOwnership ) {
 		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
@@ -47,7 +62,7 @@ namespace OpenGUI {
 
 		\throw Exception if the widget is not part of this collection
 	*/
-	void WidgetCollection::remove( Widget* widget ) {
+	void WidgetCollection::_remove( Widget* widget ) {
 		mIContainer->notifyChildRemoving( widget );
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 				iter != mCollectionObjects.end(); iter++ ) {
@@ -62,14 +77,14 @@ namespace OpenGUI {
 	//############################################################################
 	void WidgetCollection::moveToFront( Widget* widget ) {
 		bool owner = getWidgetHolder( widget )->own;
-		remove( widget );
-		add_front( widget, owner );
+		_remove( widget );
+		_add_front( widget, owner );
 	}
 	//############################################################################
 	void WidgetCollection::moveToBack( Widget* widget ) {
 		bool owner = getWidgetHolder( widget )->own;
-		remove( widget );
-		add_back( widget, owner );
+		_remove( widget );
+		_add_back( widget, owner );
 	}
 	//############################################################################
 	Widget* WidgetCollection::getWidget( const std::string& widgetName ) {
@@ -141,6 +156,14 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  "Widget is not a child of this container!", __FUNCTION__ );
 		widgetPtr->mContainer = 0;
+	}
+	//############################################################################
+	void I_WidgetContainer::notifyChildAdded( Widget* widgetPtr ) {
+		widgetPtr->eventAttached( this );
+	}
+	//############################################################################
+	void I_WidgetContainer::notifyChildRemoved( Widget* widgetPtr ) {
+		widgetPtr->eventDetached( this );
 	}
 	//############################################################################
 }

@@ -42,6 +42,10 @@ namespace OpenGUI {
 		iterator getIterator() {
 			return iterator( mScreenMap.begin(), mScreenMap.end() );
 		}
+
+		/*! \internal Notifies each Screen that the main viewport just changed size,
+		so it can take the appropriate action */
+		void _notifyViewportDimensionsChanged();
 	protected:
 		void destroyAllScreens();
 	private:

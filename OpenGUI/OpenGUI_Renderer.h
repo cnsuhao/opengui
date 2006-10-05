@@ -52,14 +52,13 @@ namespace OpenGUI {
 //@{
 		//! The renderer implementation must be able to properly supply %OpenGUI with viewport dimensions via this function.
 		/*! %OpenGUI requires the viewport dimensions for certain functionality
-			to work correctly. This function must fill the given IVector2 with the
-			current dimensions every time it is called, or things \b will break.
+			to work correctly.
 
 			Additionally, renderer implementations should call
 			System::notifyViewportDimensionsChanged() to inform %OpenGUI of
 			viewport size changes when they occur.
 		*/
-		virtual void getViewportDimensions( IVector2& dims ) = 0;
+		virtual const IVector2& getViewportDimensions() = 0;
 
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
 		/*! The primary purpose of this is to provide the renderer an opportunity to

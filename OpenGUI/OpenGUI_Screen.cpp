@@ -35,11 +35,7 @@ namespace OpenGUI {
 		<< Log::endlog;
 
 		mUPI = newUPI;
-		OG_NYI; //need to invalidate pixel alignment guarantee
-	}
-	//############################################################################
-	void Screen::update() {
-		OG_NYI;
+		invalidateAll();
 	}
 	//############################################################################
 	const std::string& Screen::getName() const {
@@ -58,23 +54,19 @@ namespace OpenGUI {
 
 		mSize = newSize;
 		_DirtyPPUcache();
-		OG_NYI; //need to invalidate pixel alignment guarantee
+		
+		invalidateAll();
 	}
 	//############################################################################
 	/*! For screens rendering to the full window, this is equal to the render window resolution.
 		For screens rendering to a render texture, it is the texture size.
 	*/
 	const IVector2& Screen::getRenderTargetSize()const {
-		OG_NYI; //can I get this so I don't call System::getSingleton()._getRenderer()??
-		/*
 		if(isBound()){
 			return renderTarget->getSize();
 		}else{
-			Renderer* r = System::getSingleton()._getRenderer();
-			IVector2 t; r->getViewportDimensions(t);
-			return t;
+			return Renderer::getSingleton().getViewportDimensions();
 		}
-		*/
 	}
 	//############################################################################
 	void Screen::bindRenderTexture( RenderTexturePtr renderTexture ) {
@@ -87,8 +79,7 @@ namespace OpenGUI {
 
 		_DirtyPPUcache();
 
-		//! \todo add recursive invalidation because pixel alignment guarantee is broken
-		OG_NYI;
+		invalidateAll();
 	}
 	//############################################################################
 	void Screen::unbindRenderTexture() {
@@ -99,6 +90,23 @@ namespace OpenGUI {
 	bool Screen::isBound()const {
 		return !renderTarget.isNull();
 	}
-
+	//############################################################################
+	void Screen::_notifyViewportDimensionsChanged(){
+		if(!isBound()){
+			invalidateAll();
+		}
+	}
+	//############################################################################
+	void Screen::invalidateAll() {
+		WidgetCollection::iterator iter = Children.begin();
+		while( iter != Children.end() ){
+			iter->flush();
+			iter++;
+		}			
+	}
+	//############################################################################
+	void Screen::update() {
+		OG_NYI;
+	}
 	//############################################################################
 }//namespace OpenGUI{
