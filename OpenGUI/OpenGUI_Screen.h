@@ -28,10 +28,6 @@ namespace OpenGUI {
 		//! changes the size/resolution of this Screen
 		void setSize( const FVector2& newSize );
 
-		//! returns the size of the render target of this Screen
-		/*! \deprecated This should probably become private */
-		const IVector2& getRenderTargetSize() const;
-
 		//! returns the PPU (pixels per unit) of this Screen
 		/*! PPU is different from DPI. PPU is the number of pixels per Screen size unit,
 		and is calculated from the Screen size divided by the pixel size of the Screen's
@@ -39,7 +35,7 @@ namespace OpenGUI {
 		\n Basically: PPU_Axis = ScreenSize_Axis / TargetSize_Axis
 		\n (where Axis is uniformly replaced with the X and Y axis) */
 		const FVector2& getPPU() const {
-			if( _ValidPPUcache() ){
+			if ( _ValidPPUcache() ) {
 				return mPPUcache;
 			}
 			_UpdatePPU();
@@ -62,7 +58,7 @@ namespace OpenGUI {
 		This system (combined with getDPU) allows us to render Screens with consistent font sizes
 		and consistent Widget sizes (basically uniformly scaling everything), while still preserving
 		pixel alignment where requested. */
-		void setUPI(const IVector2& newUPI );
+		void setUPI( const IVector2& newUPI );
 
 		//! renders this Screen to it's current render target
 		void update();
@@ -82,12 +78,17 @@ namespace OpenGUI {
 		void unbindRenderTexture();
 		//! returns true if this screen is bound to a RenderTexture
 		bool isBound() const;
+
 	protected:
 		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize );
 		// Not for deletion either
 		virtual ~Screen();
+
 	private:
+		//! returns the size of the render target of this Screen
+		const IVector2& getRenderTargetSize() const;
+
 		bool mAutoUpdating;
 		std::string mName;
 		FVector2 mSize;
@@ -97,7 +98,7 @@ namespace OpenGUI {
 		const bool _ValidPPUcache() const {
 			return mPPUcache_valid;
 		}
-		void _DirtyPPUcache(){
+		void _DirtyPPUcache() {
 			mPPUcache_valid = false;
 		}
 		void _UpdatePPU() const; //updates the PPU cache
