@@ -29,7 +29,8 @@ namespace OpenGUI {
 		*/
 	}
 	//###########################################################
-	void OGLRenderer::doRenderOperation( Render::RenderOperation& renderOp ) {
+	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
+		/*
 		if ( renderOp.texture ) {
 			glBindTexture( GL_TEXTURE_2D, static_cast<OGLTexture*>( renderOp.texture )->textureId );
 		} else {
@@ -59,6 +60,7 @@ namespace OpenGUI {
 		glTexCoord2f( renderOp.vertices[2].textureUV.x, renderOp.vertices[2].textureUV.y );
 		glVertex3f( renderOp.vertices[2].position.x, renderOp.vertices[2].position.y, 0.0f );
 		glEnd();
+		*/
 	}
 	//###########################################################
 	void OGLRenderer::preRenderSetup() {
@@ -85,7 +87,7 @@ namespace OpenGUI {
 	//###########################################################
 	void OGLRenderer::postRenderCleanup() {}
 	//###########################################################
-	Texture* OGLRenderer::createTextureFromFile( std::string filename ) {
+	Texture* OGLRenderer::createTextureFromFile( const std::string& filename ) {
 		OGLTexture* retval = 0;
 
 		//Load the image from the disk
@@ -141,8 +143,8 @@ namespace OpenGUI {
 		return retval;
 	}
 	//###########################################################
-	Texture* OGLRenderer::createTextureFromTextureData( TextureData *textureData ) {
-		TextureData* td = textureData; // copy/paste quick fix
+	Texture* OGLRenderer::createTextureFromTextureData( const TextureData *textureData ) {
+		const TextureData* td = textureData; // copy/paste quick fix
 		OGLTexture* retval = 0;
 		retval = new OGLTexture( );
 		if ( !retval ) return 0;
@@ -191,8 +193,8 @@ namespace OpenGUI {
 		return retval;
 	}
 	//###########################################################
-	void OGLRenderer::updateTextureFromTextureData( Texture* texture, TextureData *textureData ) {
-		TextureData* td = textureData; // copy/paste quick fix
+	void OGLRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
+		const TextureData* td = textureData; // copy/paste quick fix
 		OGLTexture* retval = 0;
 		retval = ( OGLTexture* ) texture;
 		if ( !retval ) return;
