@@ -8,6 +8,7 @@ namespace OpenGUI {
 	Screen::Screen( const std::string& screenName, const FVector2& initialSize ) {
 		mName = screenName;
 		mSize = initialSize;
+		_DirtyPPUcache();
 		mAutoUpdating = true;
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
 			<< " Creation" 
@@ -20,37 +21,43 @@ namespace OpenGUI {
 		/**/
 	}
 	//############################################################################
-	const FVector2& Screen::getPPU() const{
-		OG_NYI; //need to fix this to properly cache the result
+	void Screen::_UpdatePPU() const {
 		const IVector2& targetSize = getRenderTargetSize();
-		static FVector2 dpu;
-		dpu.x = ((float)targetSize.x) / mSize.x;
-		dpu.y = ((float)targetSize.y) / mSize.y;
-		return dpu;
+		mPPUcache.x = ((float)targetSize.x) / mSize.x;
+		mPPUcache.y = ((float)targetSize.y) / mSize.y;
+		mPPUcache_valid = true;
 	}
 	//############################################################################
-	const IVector2& Screen::getUPI() const{
-		return mUPI;
-	}
-	//############################################################################
-	void Screen::setUPI(const IVector2& newUPI ){
+	void Screen::setUPI( const IVector2& newUPI ) {
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
+			<< " Changed UnitsPerInch"
+			<< " From:" << mUPI.toStr() << " To:" << newUPI.toStr()
+			<< Log::endlog;
+
 		mUPI = newUPI;
 		OG_NYI; //need to invalidate pixel alignment guarantee
 	}
 	//############################################################################
 	void Screen::update() {
+		OG_NYI;
 	}
 	//############################################################################
-	const std::string& Screen::getName()const {
+	const std::string& Screen::getName() const {
 		return mName;
 	}
 	//############################################################################
-	const FVector2& Screen::getSize()const {
+	const FVector2& Screen::getSize() const {
 		return mSize;
 	}
 	//############################################################################
-	void Screen::setSize( const FVector2& newSize ){
+	void Screen::setSize( const FVector2& newSize ) {
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
+			<< " Changed Size"
+			<< " From:" << mSize.toStr() << " To:" << newSize.toStr()
+			<< Log::endlog;
+
 		mSize = newSize;
+		_DirtyPPUcache();
 		OG_NYI; //need to invalidate pixel alignment guarantee
 	}
 	//############################################################################
@@ -77,12 +84,16 @@ namespace OpenGUI {
 
 		TexturePtr tptr( tex );
 		RenderTexturePtr rtexPtr( rtex );
+
+		_DirtyPPUcache();
+
 		//! \todo add recursive invalidation because pixel alignment guarantee is broken
 		OG_NYI;
 	}
 	//############################################################################
 	void Screen::unbindRenderTexture() {
 		bindRenderTexture( 0 );
+		_DirtyPPUcache();
 	}
 	//############################################################################
 	bool Screen::isBound()const {
