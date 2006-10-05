@@ -492,10 +492,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_RenderTarget.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_RenderTexture.h"
 				>
 			</File>
@@ -574,10 +570,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<Filter
-			Name="BaseWidgets"
-			>
-		</Filter>
 		<File
 			RelativePath=".\doc\AdditionalDoxygenInput.txt"
 			>
@@ -588,6 +580,10 @@
 		</File>
 		<File
 			RelativePath=".\doc\EventDocs.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\LICENSE.TXT"
 			>
 		</File>
 	</Files>
