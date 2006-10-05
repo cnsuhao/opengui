@@ -74,4 +74,12 @@ namespace OpenGUI {
 		mScreenMap.clear();
 	}
 	//############################################################################
+	void ScreenManager::_notifyViewportDimensionsChanged(){
+		for ( ScreenMap::iterator iter = mScreenMap.begin();
+			iter != mScreenMap.end(); iter++ ) {
+				Screen* screen = iter->second;
+				screen->_notifyViewportDimensionsChanged();
+		}
+	}
+	//############################################################################
 }//namespace OpenGUI{

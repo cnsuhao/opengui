@@ -53,9 +53,8 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System" );
 		}
 
-		mRenderer->getViewportDimensions( mViewportResolution ); //get the viewport resolution
-
-		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: " << mViewportResolution.toStr() << Log::endlog;
+		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: "
+			<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
 
 		m_PluginManager = new PluginManager;
 
@@ -132,12 +131,10 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void System::notifyViewportDimensionsChanged() {
-		/*
-		//!\todo make sure this is all that needs to be done to properly handle viewport dimension changes
-		mRenderer->getViewportDimensions( mWindowResolution );
-		if ( mActiveGUISheet )
-		mActiveGUISheet->dirtyCache_Recursive();
-		*/
+		LogManager::SlogMsg( "System", OGLL_INFO3 ) << "Changed Viewport Resolution: "
+			<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
+
+		mScreenManager->_notifyViewportDimensionsChanged();
 	}
 	//############################################################################
 	void System::updateScreens() {

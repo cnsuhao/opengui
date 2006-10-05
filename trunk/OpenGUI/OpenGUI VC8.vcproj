@@ -218,6 +218,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_ContainerControl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Control.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_DynamicLib.cpp"
 				>
 			</File>
@@ -354,6 +362,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Window.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_XMLParser.cpp"
 				>
 			</File>
@@ -377,6 +389,14 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_CONFIG.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ContainerControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Control.h"
 				>
 			</File>
 			<File
@@ -557,6 +577,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Widget.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Window.h"
 				>
 			</File>
 			<File

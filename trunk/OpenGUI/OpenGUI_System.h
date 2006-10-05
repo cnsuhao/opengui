@@ -75,11 +75,8 @@ namespace OpenGUI {
 			\param logListener A valid pointer to a LogListener, or 0 for no logging.
 		*/
 		System( Renderer* renderer, ResourceProvider* resourceProvider, LogListener* logListener );
-		//System(Renderer* renderer);
 
 		~System();
-
-
 
 		//! loads a plugin by filename
 		void loadPlugin( std::string filename );
@@ -93,11 +90,6 @@ namespace OpenGUI {
 		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
 		ResourceProvider* _getResourceProvider() {
 			return mResourceProvider;
-		}
-		//! Returns a pointer to the registered Renderer. Apps really shouldn't need, or use, this.
-		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
-		Renderer* _getRenderer() {
-			return mRenderer;
 		}
 
 		//! Notify the System that the dimensions of the viewport it is drawing to have changed.
@@ -151,7 +143,6 @@ namespace OpenGUI {
 
 		//Renderer Related Members
 		Renderer* mRenderer;
-		IVector2 mViewportResolution; //resolution of the viewport that we are rendering to (used for pixel alignment)
 
 		//TextureManager Related Members
 		TextureManager* mTextureManager;

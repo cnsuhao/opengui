@@ -79,12 +79,16 @@ namespace OpenGUI {
 		//! returns true if this screen is bound to a RenderTexture
 		bool isBound() const;
 
+		//! Invalidates all contained Widgets, causing a complete redraw on next update()
+		void invalidateAll();
 	protected:
 		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize );
 		// Not for deletion either
 		virtual ~Screen();
 
+		//! \internal If this Screen renders to the main viewport, this matters. Otherwise it doesn't.
+		void _notifyViewportDimensionsChanged();
 	private:
 		//! returns the size of the render target of this Screen
 		const IVector2& getRenderTargetSize() const;

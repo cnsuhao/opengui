@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Renderer.h"
 #include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_Screen.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -78,10 +79,45 @@ namespace OpenGUI {
 		mWidgetName = name;
 	}
 	//############################################################################
-	void Widget::onDraw( Brush& brush ) {
+	I_WidgetContainer* Widget::getContainer() {
+		return mContainer;
 	}
 	//############################################################################
-	void Widget::_render( Renderer* rendererPtr, FVector2 offset ) {
+	void Widget::invalidate() {
+		eventInvalidated();
+		Widget* parent = dynamic_cast<Widget*>( getContainer() );
+		if ( parent )
+			parent->invalidate();
+	}
+	//############################################################################
+	void Widget::flush() {
+		Widget* parent = dynamic_cast<Widget*>( mContainer );
+		if ( parent )
+			parent->invalidate();
+		_doflush();
+	}
+	//############################################################################
+	void Widget::_doflush() {
+		eventInvalidated();
+		I_WidgetContainer* meContainer = dynamic_cast<I_WidgetContainer*>( this );
+		if ( meContainer ) {
+			WidgetCollection::iterator iter = meContainer->Children.begin();
+			while ( iter != meContainer->Children.end() ) {
+				iter->_doflush();
+				iter++;
+			}
+		}
+	}
+	//############################################################################
+	Screen* Widget::getScreen(){
+		if(!mContainer) return 0;
+		Widget* parentW = dynamic_cast<Widget*>( mContainer );
+		if ( parentW )
+			return parentW->getScreen();
+		Screen* parentS = dynamic_cast<Screen*>( mContainer );
+		if ( parentS )
+			return parentS;
+		return 0;
 	}
 	//############################################################################
 }//namespace OpenGUI{

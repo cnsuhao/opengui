@@ -90,6 +90,10 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_I_WidgetContainer.h"
 
+#include "OpenGUI_Control.h"
+#include "OpenGUI_ContainerControl.h"
+#include "OpenGUI_Window.h"
+
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_ScreenManager.h"
 
