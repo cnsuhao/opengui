@@ -116,7 +116,7 @@ namespace OpenGUI {
 			\note
 			It is expected that all textures are available for use by all rendering contexts.
 		*/
-		virtual Texture* createTextureFromTextureData( TextureData* textureData ) = 0;
+		virtual Texture* createTextureFromTextureData( const TextureData* textureData ) = 0;
 
 		//! Replaces an existing texture with the given TextureData
 		/*! This should cause a Renderer implementation to completely replace the
@@ -126,7 +126,7 @@ namespace OpenGUI {
 			free to discard their hardware textures and rebuild from scratch if they
 			choose.
 		*/
-		virtual void updateTextureFromTextureData( Texture* texture, TextureData* textureData ) = 0;
+		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData ) = 0;
 
 		//! Destroy a previously created Texture object.
 		/*! Whatever needs to happen to properly destroy a Texture or RenderTexture object,
