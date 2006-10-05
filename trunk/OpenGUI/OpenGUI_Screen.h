@@ -19,7 +19,7 @@ namespace OpenGUI {
 		bindRenderTexture().
 	*/
 	class OPENGUI_API Screen : public I_WidgetContainer {
-		friend class ScreenManager;
+		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
 		//! returns the name of this screen
 		const std::string& getName() const;
@@ -47,7 +47,9 @@ namespace OpenGUI {
 		//! returns true if this screen is bound to a RenderTexture
 		bool isBound() const;
 	protected:
+		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize );
+		// Not for deletion either
 		virtual ~Screen();
 	private:
 		bool mAutoUpdating;
