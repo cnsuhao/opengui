@@ -1,9 +1,6 @@
 
-
 #include "../DemoAppFramework/DemoAppFrameWork.h"
-#include "OpenGUI_BaseWidgets.h"
-
-#include "../TachometerWidget/Tachometer.h"
+//#include "../TachometerWidget/Tachometer.h"
 
 class Demo1App : public DemoApp
 {
@@ -13,14 +10,14 @@ public:
 	virtual void perframeRun();
 	virtual void postRun(){}
 private:
-	OpenGUI::Widgets::TextLabel* mLabel;
+	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
 };
 
 void Demo1App::preRun()
 {
 	
-
+/*
 	OpenGUI::XMLParser::LoadFromFile("demo1.xml");
 	OpenGUI::System::getSingleton().setGUISheet(
 		OpenGUI::System::getSingleton().getGUISheetByName("root")
@@ -45,10 +42,11 @@ void Demo1App::preRun()
 	mLabel->setText("FPS On the way!");
 
 	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-	
+	*/
 }
 void Demo1App::perframeRun()
 {
+	/*
 	static int val = 0;
 	static bool dirUp = true;
 	if(dirUp) val++;
@@ -70,6 +68,7 @@ void Demo1App::perframeRun()
 			mLabel->setText(ss.str());
 		}
 	}
+	*/
 }
 
 
