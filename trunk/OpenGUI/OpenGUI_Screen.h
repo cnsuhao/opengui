@@ -38,10 +38,18 @@ namespace OpenGUI {
 		render target.
 		\n Basically: PPU_Axis = ScreenSize_Axis / TargetSize_Axis
 		\n (where Axis is uniformly replaced with the X and Y axis) */
-		const FVector2& getPPU() const;
+		const FVector2& getPPU() const {
+			if( _ValidPPUcache() ){
+				return mPPUcache;
+			}
+			_UpdatePPU();
+			return mPPUcache;
+		}
 
 		//! Returns the UPI (units per inch) of this Screen. \see setUPI()
-		const IVector2& getUPI() const;
+		const IVector2& getUPI() const {
+			return mUPI;
+		}
 		//! Changes the UPI (units per inch) of this Screen.
 		/*! UPI is used to determine font scaling. The default of 96x96 is a copy
 		of the standard used under common operating systems. What this does is cause your
@@ -84,6 +92,15 @@ namespace OpenGUI {
 		std::string mName;
 		FVector2 mSize;
 		IVector2 mUPI;
+		mutable FVector2 mPPUcache; //mutable because overall it is state unrelated
+		mutable bool mPPUcache_valid; //mutable because overall it is state unrelated
+		const bool _ValidPPUcache() const {
+			return mPPUcache_valid;
+		}
+		void _DirtyPPUcache(){
+			mPPUcache_valid = false;
+		}
+		void _UpdatePPU() const; //updates the PPU cache
 		RenderTexturePtr renderTarget;
 	};
 
