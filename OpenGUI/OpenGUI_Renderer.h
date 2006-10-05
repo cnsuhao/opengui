@@ -41,32 +41,8 @@ namespace OpenGUI {
 		/*! %OpenGUI requires the viewport dimensions for certain functionality
 			to work correctly. This function must fill the given IVector2 with the
 			current dimensions every time it is called, or things \b will break.
-			This function is guaranteed to be called during creation of the System object.
-
-			This function is also automatically called when the System receives a call to
-			System::notifyViewportDimensionsChanged().
-
-			\note In addition, it is highly advisable that renderers call
-			alertViewportDimensionsChanged() whenever the viewport dimensions
-			change during operation.
 		*/
 		virtual void getViewportDimensions( IVector2& dims ) = 0;
-
-		//! The renderer implementation must be able to properly supply %OpenGUI with screen dimensions via this function.
-		/*! %OpenGUI requires the screen dimensions for certain functionality
-			to work correctly. This function must fill the given IVector2 with the
-			current dimensions every time it is called, or things \b will break.
-			This function is guaranteed to be called during creation of the System object.
-
-			This function is also automatically called when the System receives a call to
-			System::alertScreenDimensionsChanged().
-
-			\note In addition, it is highly advisable that renderers call
-			alertScreenDimensionsChanged() whenever the screen dimensions
-			change during operation.
-		*/
-		virtual void getScreenDimensions( IVector2& dims ) = 0;
-
 
 		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
 		/*! The primary purpose of this is to provide the renderer an opportunity to
