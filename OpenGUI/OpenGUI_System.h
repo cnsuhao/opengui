@@ -101,10 +101,9 @@ namespace OpenGUI {
 		}
 
 		//! Notify the System that the dimensions of the viewport it is drawing to have changed.
-		/*! This \b should be automatically called by the Renderer implementation via calling
-			Renderer::alertViewportDimensionsChanged(), however, if for some unknown reason
-			the renderer cannot be relied upon to make the call, the application can call
-			this function to inform the System of the dimension change instead.
+		/*! This \b should be automatically called by the Renderer implementation, however if
+		for some unknown reason the renderer cannot be relied upon to make the call, the
+		application can call this function to inform the System of the dimension change instead.
 		*/
 		void notifyViewportDimensionsChanged();
 
