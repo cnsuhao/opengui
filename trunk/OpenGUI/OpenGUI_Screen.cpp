@@ -11,9 +11,9 @@ namespace OpenGUI {
 		_DirtyPPUcache();
 		mAutoUpdating = true;
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
-			<< " Creation" 
-			<< " [" << mSize.toStr() << "]"
-			<< Log::endlog;
+		<< " Creation"
+		<< " [" << mSize.toStr() << "]"
+		<< Log::endlog;
 	}
 	//############################################################################
 	Screen::~Screen() {
@@ -23,16 +23,16 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::_UpdatePPU() const {
 		const IVector2& targetSize = getRenderTargetSize();
-		mPPUcache.x = ((float)targetSize.x) / mSize.x;
-		mPPUcache.y = ((float)targetSize.y) / mSize.y;
+		mPPUcache.x = (( float )targetSize.x ) / mSize.x;
+		mPPUcache.y = (( float )targetSize.y ) / mSize.y;
 		mPPUcache_valid = true;
 	}
 	//############################################################################
 	void Screen::setUPI( const IVector2& newUPI ) {
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
-			<< " Changed UnitsPerInch"
-			<< " From:" << mUPI.toStr() << " To:" << newUPI.toStr()
-			<< Log::endlog;
+		<< " Changed UnitsPerInch"
+		<< " From:" << mUPI.toStr() << " To:" << newUPI.toStr()
+		<< Log::endlog;
 
 		mUPI = newUPI;
 		OG_NYI; //need to invalidate pixel alignment guarantee
@@ -52,9 +52,9 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::setSize( const FVector2& newSize ) {
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
-			<< " Changed Size"
-			<< " From:" << mSize.toStr() << " To:" << newSize.toStr()
-			<< Log::endlog;
+		<< " Changed Size"
+		<< " From:" << mSize.toStr() << " To:" << newSize.toStr()
+		<< Log::endlog;
 
 		mSize = newSize;
 		_DirtyPPUcache();

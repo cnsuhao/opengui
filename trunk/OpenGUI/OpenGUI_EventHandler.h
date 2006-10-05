@@ -19,16 +19,15 @@ namespace OpenGUI {
 		virtual void onEvent( Object* sender, EventArgs& args ) = 0;
 
 		//! Called during destruction of a bound event
-		/*! Useful for auto deleting delegates */
+		/*! Useful for auto deleting anonymous delegates */
 		virtual void onEventDestruction() {}
 	};
 
 
 	//! Provides event handler multi cast service.
 	class OPENGUI_API EventHandlerList {
+		friend class EventReceiver; //allow access to constructor/destructor
 	public:
-		EventHandlerList() {}
-		virtual ~EventHandlerList();
 		//! add a new EventHandler to the list
 		void add( EventHandler* handler );
 		//! remove an EventHandler from the list
@@ -36,6 +35,10 @@ namespace OpenGUI {
 		//! executes all held EventHandlers with the given parameters
 		void invoke( Object* sender, EventArgs& args );
 	private:
+		// Only EventReceiver can create/destroy us
+		EventHandlerList() {}
+		virtual ~EventHandlerList();
+
 		typedef std::set<EventHandler*> EventHandlerSet;
 		EventHandlerSet mEventHandlerSet;
 		EventHandlerSet mHandlersToDelete;
