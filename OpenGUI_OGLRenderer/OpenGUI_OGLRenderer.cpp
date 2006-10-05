@@ -10,36 +10,23 @@
 
 namespace OpenGUI {
 	//###########################################################
-	OGLRenderer::OGLRenderer() {}
+	OGLRenderer::OGLRenderer( int initial_width, int initial_height ) {
+		mWidth = initial_width;
+		mHeight = initial_height;
+	}
 	//###########################################################
 	OGLRenderer::~OGLRenderer() {}
 	//###########################################################
 	void OGLRenderer::getViewportDimensions( IVector2& dims ) {
+		dims.x = mWidth;
+		dims.y = mHeight;
+		
+		/* - We'll just do this in the application
 		GLint viewportDims[4];
 		glGetIntegerv( GL_VIEWPORT, viewportDims );
 		dims.x = viewportDims[2];
 		dims.y = viewportDims[3];
-	}
-	//###########################################################
-	void OGLRenderer::getScreenDimensions( IVector2& dims ) {
-#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
-		DEVMODE devMode;
-		devMode.dmSize = sizeof( DEVMODE );
-		devMode.dmDriverExtra = 0;
-		BOOL ret = EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &devMode );
-		if ( ret ) {
-			mSWidth = devMode.dmPelsWidth;
-			mSHeight = devMode.dmPelsHeight;
-		}
-		dims.x = mSWidth;
-		dims.y = mSHeight;
-#else
-		//!\todo FIX ME! This is not the required action. Not sure what to do here for Linux. =/
-		GLint viewportDims[4];
-		glGetIntegerv( GL_VIEWPORT, viewportDims );
-		dims.x = viewportDims[2];
-		dims.y = viewportDims[3];
-#endif
+		*/
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation( Render::RenderOperation& renderOp ) {
