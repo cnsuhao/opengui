@@ -16,13 +16,13 @@ namespace OpenGUI {
 
 		// Required implementations for OpenGUI Renderer
 		virtual void getViewportDimensions( IVector2& dims );
-		virtual void doRenderOperation( Render::RenderOperation& renderOp );
 		virtual void preRenderSetup();
+		virtual void doRenderOperation( RenderOperation& renderOp );
 		virtual void postRenderCleanup();
-		Texture* createTextureFromFile( std::string filename );
-		Texture* createTextureFromTextureData( TextureData *textureData );
-		void updateTextureFromTextureData( Texture* texture, TextureData *textureData );
-		void destroyTexture( Texture* texturePtr );
+		virtual Texture* createTextureFromFile( const std::string& filename );
+		virtual Texture* createTextureFromTextureData( const TextureData* textureData );
+		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData );
+		virtual void destroyTexture( Texture* texturePtr );
 	private:
 		int mHeight;
 		int mWidth;
