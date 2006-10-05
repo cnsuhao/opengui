@@ -1,8 +1,6 @@
 
-
-
 #include "DemoAppFrameWork.h"
-#include "../../OpenGUI_OGLRenderer/OpenGUI_OGLRenderer.h"
+#include "OpenGUI_OGLRenderer.h"
 
 #ifdef WIN32
 int main( void );
@@ -45,14 +43,10 @@ DemoApp::DemoApp(std::string windowTitle)
 	glfwSetMousePosCallback( &DemoApp::_mousePosCallback );
 	glfwSetMouseButtonCallback( &DemoApp::_mouseBtnCallback );
 	glfwSetMouseWheelCallback( &DemoApp::_mouseWhlCallback );
-
-	mRenderer = new OpenGUI::OGLRenderer();
 	
 	int w,h;
 	glfwGetWindowSize(&w, &h);
-	DemoApp::windowSizeChanged(w, h);
-	static_cast<OpenGUI::OGLRenderer*>(mRenderer)->setScreenDim(w, h);
-
+	mRenderer = new OpenGUI::OGLRenderer(w, h);
 	mSystem = new OpenGUI::System(mRenderer);
 
 	
@@ -80,7 +74,7 @@ void DemoApp::run()
 		
 		perframeRun();
 
-		mSystem->renderGUI();
+		mSystem->updateScreens();
 
 		// Swap front and back rendering buffers
 		glfwSwapBuffers();

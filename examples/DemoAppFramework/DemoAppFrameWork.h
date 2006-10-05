@@ -8,7 +8,7 @@
 class DemoApp{
 public:
 	DemoApp(std::string windowTitle);
-	~DemoApp();
+	virtual ~DemoApp();
 	void run();
 protected:
 	OpenGUI::System* mSystem;
