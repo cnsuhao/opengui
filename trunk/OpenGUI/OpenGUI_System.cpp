@@ -1,6 +1,5 @@
 
 #include "OpenGUI.h" // <-- This is the one place I would consider this acceptable
-#include "OpenGUI_ScreenManager.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -13,18 +12,6 @@ namespace OpenGUI {
 	//############################################################################
 	System* System::getSingletonPtr( void ) {
 		return mptr_Singleton;
-	}
-	//############################################################################
-	//############################################################################
-	//############################################################################
-	//! \internal Just a little function to register all compiled in Widgets with the WidgetFactoryManager
-	void RegisterAllBaseWidgets() {
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "Container", WidgetFactoryCallback( &Widgets::Container::createContainerFactory ) );
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "StaticImage", WidgetFactoryCallback( &Widgets::StaticImage::createStaticImageFactory ) );
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "SimpleButton", WidgetFactoryCallback( &Widgets::SimpleButton::createSimpleButtonFactory ) );
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "TextLabel", WidgetFactoryCallback( &Widgets::TextLabel::createTextLabelFactory ) );
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "FrameImage", WidgetFactoryCallback( &Widgets::FrameImage::createFrameImageFactory ) );
-		//WidgetFactoryManager::getSingleton().registerWidgetFactory( "OpenGUI", "FrameButton", WidgetFactoryCallback( &Widgets::FrameButton::createFrameButtonFactory ) );
 	}
 	//############################################################################
 	System::System( Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile ) {
@@ -66,17 +53,14 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System" );
 		}
 
-		mRenderer->getViewportDimensions( mWindowResolution ); //get the viewport resolution
-		mRenderer->getScreenDimensions( mScreenResolution ); //get the screen resolution
+		mRenderer->getViewportDimensions( mViewportResolution ); //get the viewport resolution
 
-		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial GUI Resolution: Screen: " << mScreenResolution.toStr() << " Viewport: " << mWindowResolution.toStr() << Log::endlog;
+		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: " << mViewportResolution.toStr() << Log::endlog;
 
 		m_PluginManager = new PluginManager;
 
 		//mWidgetFactoryManager = new WidgetFactoryManager();
 		//mWidgetTemplateManager = new WidgetTemplateManager();
-
-		RegisterAllBaseWidgets(); //register base widget factories
 
 		if ( resourceProvider ) {
 			mResourceProvider = resourceProvider;
@@ -156,24 +140,9 @@ namespace OpenGUI {
 		*/
 	}
 	//############################################################################
-	void System::notifyScreenDimensionsChanged() {
-		/*
-		//!\todo make sure this is all that needs to be done to properly handle screen dimension changes
-		mRenderer->getScreenDimensions( mScreenResolution );
-		if ( mActiveGUISheet )
-		mActiveGUISheet->dirtyCache_Recursive();
-		*/
-	}
-	//############################################################################
-	IVector2 System::getViewportResolution() {
-		return mWindowResolution;
-	}
-	//############################################################################
-	IVector2 System::getScreenResolution() {
-		return mScreenResolution;
-	}
-	//############################################################################
-	void System::renderGUI() {
+	void System::updateScreens() {
+		mScreenManager->updateScreens();
+
 		//if ( m_PerformAutoTicks ) //only do this if we aren't getting time injections from the app
 		//	mTimerManager->_DoAutoTickInject();
 
@@ -198,10 +167,8 @@ namespace OpenGUI {
 		}
 		*/
 
-		System::_stat_UpdateFPS();
+		//System::_stat_UpdateFPS();
 	}
-	//############################################################################
-
 	//############################################################################
 	TimerPtr statFPSTimer;
 	typedef std::list<unsigned int> FPSList;

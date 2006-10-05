@@ -86,8 +86,8 @@ namespace OpenGUI {
 		//! unloads a plugin by filename
 		void unloadPlugin( std::string filename );
 
-		/*! \brief Renders the GUI using the current render system.	\deprecated Will be replaced by a more generic "renderScreens" function. */
-		void renderGUI();
+		//! Updates all screens that need it via ScreenManager::updateScreens()
+		void updateScreens();
 
 		//! Returns a pointer to the registered ResourceProvider. Apps really shouldn't need, or use, this.
 		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
@@ -107,21 +107,6 @@ namespace OpenGUI {
 			this function to inform the System of the dimension change instead.
 		*/
 		void notifyViewportDimensionsChanged();
-
-
-		//! Notify the System that the dimensions of the screen have changed.
-		/*! This \b should be automatically called by the Renderer implementation via calling
-			Renderer::alertScreenDimensionsChanged(), however, if for some unknown reason
-			the renderer cannot be relied upon to make the call, the application can call
-			this function to inform the System of the dimension change instead.
-		*/
-		void notifyScreenDimensionsChanged();
-
-		//! Returns the current viewport resolution
-		IVector2 getViewportResolution();
-		//! Returns the current screen resolution
-		IVector2 getScreenResolution();
-
 
 		//! Returns the current FPS
 		/*! The FPS value returned is an average over the last 5 frames. If less than
@@ -167,8 +152,7 @@ namespace OpenGUI {
 
 		//Renderer Related Members
 		Renderer* mRenderer;
-		IVector2 mScreenResolution; //resolution of the entire screen (used for auto font scaling)
-		IVector2 mWindowResolution; //resolution of the viewport that we are rendering to (used for pixel alignment)
+		IVector2 mViewportResolution; //resolution of the viewport that we are rendering to (used for pixel alignment)
 
 		//TextureManager Related Members
 		TextureManager* mTextureManager;
