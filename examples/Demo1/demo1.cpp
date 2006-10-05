@@ -12,11 +12,15 @@ public:
 private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
+	OpenGUI::Screen* mScreen;
 };
 
+using namespace OpenGUI;
 void Demo1App::preRun()
 {
+	mScreen = ScreenManager::getSingleton().createScreen("MainScreen", FVector2(800,600) );
 	
+	mScreen = ScreenManager::getSingleton().getScreen("MainScreen");
 /*
 	OpenGUI::XMLParser::LoadFromFile("demo1.xml");
 	OpenGUI::System::getSingleton().setGUISheet(
