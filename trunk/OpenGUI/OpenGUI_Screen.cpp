@@ -9,10 +9,33 @@ namespace OpenGUI {
 		mName = screenName;
 		mSize = initialSize;
 		mAutoUpdating = true;
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
+			<< " Creation" 
+			<< " [" << mSize.toStr() << "]"
+			<< Log::endlog;
 	}
 	//############################################################################
 	Screen::~Screen() {
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ") Destruction" << Log::endlog;
 		/**/
+	}
+	//############################################################################
+	const FVector2& Screen::getPPU() const{
+		OG_NYI; //need to fix this to properly cache the result
+		const IVector2& targetSize = getRenderTargetSize();
+		static FVector2 dpu;
+		dpu.x = ((float)targetSize.x) / mSize.x;
+		dpu.y = ((float)targetSize.y) / mSize.y;
+		return dpu;
+	}
+	//############################################################################
+	const IVector2& Screen::getUPI() const{
+		return mUPI;
+	}
+	//############################################################################
+	void Screen::setUPI(const IVector2& newUPI ){
+		mUPI = newUPI;
+		OG_NYI; //need to invalidate pixel alignment guarantee
 	}
 	//############################################################################
 	void Screen::update() {
@@ -26,11 +49,16 @@ namespace OpenGUI {
 		return mSize;
 	}
 	//############################################################################
+	void Screen::setSize( const FVector2& newSize ){
+		mSize = newSize;
+		OG_NYI; //need to invalidate pixel alignment guarantee
+	}
+	//############################################################################
 	/*! For screens rendering to the full window, this is equal to the render window resolution.
 		For screens rendering to a render texture, it is the texture size.
 	*/
-	IVector2 Screen::getRenderTargetSize()const {
-		OG_NYI;
+	const IVector2& Screen::getRenderTargetSize()const {
+		OG_NYI; //can I get this so I don't call System::getSingleton()._getRenderer()??
 		/*
 		if(isBound()){
 			return renderTarget->getSize();

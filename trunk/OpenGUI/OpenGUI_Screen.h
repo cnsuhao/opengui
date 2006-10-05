@@ -21,12 +21,40 @@ namespace OpenGUI {
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
-		//! returns the name of this screen
+		//! returns the name of this Screen
 		const std::string& getName() const;
-		//! returns the size of this screen
+		//! returns the size/resolution of this Screen
 		const FVector2& getSize() const;
-		//! returns the size of the render target of this screen
-		IVector2 getRenderTargetSize() const;
+		//! changes the size/resolution of this Screen
+		void setSize( const FVector2& newSize );
+
+		//! returns the size of the render target of this Screen
+		/*! \deprecated This should probably become private */
+		const IVector2& getRenderTargetSize() const;
+
+		//! returns the PPU (pixels per unit) of this Screen
+		/*! PPU is different from DPI. PPU is the number of pixels per Screen size unit,
+		and is calculated from the Screen size divided by the pixel size of the Screen's
+		render target.
+		\n Basically: PPU_Axis = ScreenSize_Axis / TargetSize_Axis
+		\n (where Axis is uniformly replaced with the X and Y axis) */
+		const FVector2& getPPU() const;
+
+		//! Returns the UPI (units per inch) of this Screen. \see setUPI()
+		const IVector2& getUPI() const;
+		//! Changes the UPI (units per inch) of this Screen.
+		/*! UPI is used to determine font scaling. The default of 96x96 is a copy
+		of the standard used under common operating systems. What this does is cause your
+		Screen to behave much like your desktop display when doing common tasks like word
+		processing, etc. This means that unless you change the DPI of your Screen, you should
+		really use a Screen resolution that is common, such as 800x600 or similar. Smaller
+		Screen resolutions makes fonts look bigger and larger Screen resolutions make them look
+		smaller, just like your computer already does.
+
+		This system (combined with getDPU) allows us to render Screens with consistent font sizes
+		and consistent Widget sizes (basically uniformly scaling everything), while still preserving
+		pixel alignment where requested. */
+		void setUPI(const IVector2& newUPI );
 
 		//! renders this Screen to it's current render target
 		void update();
@@ -55,6 +83,7 @@ namespace OpenGUI {
 		bool mAutoUpdating;
 		std::string mName;
 		FVector2 mSize;
+		IVector2 mUPI;
 		RenderTexturePtr renderTarget;
 	};
 

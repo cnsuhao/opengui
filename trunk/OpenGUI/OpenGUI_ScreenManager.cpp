@@ -1,6 +1,7 @@
 #include "OpenGUI_ScreenManager.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Screen.h"
+#include "OpenGUI_LogSystem.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -18,10 +19,12 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	ScreenManager::ScreenManager() {
+		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ScreenManager" << Log::endlog;
 		/**/
 	}
 	//############################################################################
 	ScreenManager::~ScreenManager() {
+		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying ScreenManager" << Log::endlog;
 		destroyAllScreens();
 	}
 	//############################################################################
@@ -61,6 +64,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ScreenManager::destroyAllScreens() {
+		LogManager::SlogMsg( "ScreenManager", OGLL_INFO2 ) << "Destroy All Screens..." << Log::endlog;
 		for ( ScreenMap::iterator iter = mScreenMap.begin();
 				iter != mScreenMap.end(); iter++ ) {
 			Screen* tmp = iter->second;
