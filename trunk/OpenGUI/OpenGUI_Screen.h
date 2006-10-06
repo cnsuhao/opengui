@@ -50,12 +50,12 @@ namespace OpenGUI {
 		/*! UPI is used to determine font scaling. The default of 96x96 is a copy
 		of the standard used under common operating systems. What this does is cause your
 		Screen to behave much like your desktop display when doing common tasks like word
-		processing, etc. This means that unless you change the DPI of your Screen, you should
+		processing, etc. This means that unless you change the UPI of your Screen, you should
 		really use a Screen resolution that is common, such as 800x600 or similar. Smaller
 		Screen resolutions makes fonts look bigger and larger Screen resolutions make them look
 		smaller, just like your computer already does.
 
-		This system (combined with getDPU) allows us to render Screens with consistent font sizes
+		This system (combined with getPPU) allows us to render Screens with consistent font sizes
 		and consistent Widget sizes (basically uniformly scaling everything), while still preserving
 		pixel alignment where requested. */
 		void setUPI( const IVector2& newUPI );
