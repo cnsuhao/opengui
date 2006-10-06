@@ -24,8 +24,7 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~Widget();
 
-//!\name Widget Functions
-//@{
+
 		//! returns the name of this Widget
 		const std::string& getName();
 		//! sets the name of this Widget
@@ -49,13 +48,13 @@ namespace OpenGUI {
 			Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
 			\endcode */
 		I_WidgetContainer* getContainer();
-//@}
 
-//!\name Object Functions
-//@{
+
+
+		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
-//@}
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -70,6 +69,11 @@ namespace OpenGUI {
 
 		virtual void onActivate();
 		*/
+
+		//! "Attached" event
+		virtual void onAttached();
+		//! "Detached" event
+		virtual void onDetached();
 //@}
 
 //!\name Event Triggers

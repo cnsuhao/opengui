@@ -17,8 +17,7 @@ namespace OpenGUI {
 	public:
 		Object();
 		virtual ~Object();
-//!\name Object Functions
-//@{
+
 		//! returns the value of \c propertyName via \c valueOut
 		void getProperty( const std::string& propertyName, Value& valueOut );
 		//! sets the value of \c propertyName to the contents of \c valueIn
@@ -34,7 +33,7 @@ namespace OpenGUI {
 
 		//! Returns the Event::EventReceiver for this Object instance
 		EventReceiver& getEvents();
-//@}
+
 	private:
 		EventReceiver mEventReceiver;
 	};

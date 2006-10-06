@@ -17,19 +17,18 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~Control();
 
-//!\name Control Functions
-//@{
+
 		//! Sets the alpha transparency of this Widget
 		void setAlpha( float alpha );
 		//! Returns the alpha transparency of this Widget
 		float getAlpha();
-//@}
 
-//!\name Object Functions
-//@{
+
+
+		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
-//@}
+
 	protected:
 	private:
 		float mAlpha;
