@@ -18,16 +18,14 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~ContainerControl();
 
-//!\name ContainerControl Functions
-//@{
 
-//@}
+		//! containercontrol
+		void containercontrol();
 
-//!\name Object Functions
-//@{
+
+		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
-//@}
 	protected:
 	private:
 	};
