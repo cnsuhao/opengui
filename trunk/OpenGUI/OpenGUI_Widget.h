@@ -81,7 +81,7 @@ namespace OpenGUI {
 		virtual void onDetached( Object* sender, Attach_EventArgs& evtArgs );
 
 		//! "Draw" event
-		virtual void onDraw( Object* sender, EventArgs& evtArgs );
+		virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 		//! "Invalidated" event
 		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
 

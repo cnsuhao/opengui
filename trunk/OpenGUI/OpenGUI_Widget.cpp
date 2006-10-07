@@ -213,7 +213,7 @@ namespace OpenGUI {
 		getEvents()["Detached"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::onDraw( Object* sender, EventArgs& evtArgs ) {
+	void Widget::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################

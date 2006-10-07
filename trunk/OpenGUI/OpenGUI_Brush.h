@@ -4,6 +4,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Event.h"
 #include "OpenGUI_Imagery.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_BrushModifier.h"
@@ -132,7 +133,7 @@ namespace OpenGUI {
 		\par
 		As much fun as these modifiers are, they come with a price tag. The more stack operations
 		you add, the more operations must be applied to your output. We do our best to optimize
-		the process, but nothing is perfect. Basically, if you're responsible, you'll never run
+		the process, but nothing is perfect. Basically, if you're responsible you'll never run
 		into performance issues.
 
 		\par Position Modifier:
@@ -230,6 +231,15 @@ namespace OpenGUI {
 	};
 
 
+	//! Specialization of EventArgs for Draw events
+	class OPENGUI_API Draw_EventArgs: public EventArgs {
+	public:
+		//! Constructor requires a pointer to the parent being attached/detached to/from
+		Draw_EventArgs( Brush& brush ): brush( brush ) {}
+		virtual ~Draw_EventArgs() {}
+		//! Pointer to the parent being attached/detached to/from
+		Brush& brush;
+	};
 
 } // namespace OpenGUI{
 
