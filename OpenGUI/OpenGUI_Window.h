@@ -21,14 +21,6 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~Window();
 
-
-		//! window
-		void window();
-		void onTest( Object* obj, Attach_EventArgs& evtArgs );
-		void onTest2( Object* obj, Widget& evtArgs );
-
-
-
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();

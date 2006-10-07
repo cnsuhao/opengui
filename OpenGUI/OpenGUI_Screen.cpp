@@ -14,6 +14,8 @@ namespace OpenGUI {
 		<< " Creation"
 		<< " [" << mSize.toStr() << "]"
 		<< Log::endlog;
+
+		mCursorPressed = false; // cursor starts not pressed
 	}
 	//############################################################################
 	Screen::~Screen() {
@@ -107,6 +109,57 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::update() {
 		OG_NYI;
+	}
+	//############################################################################
+	void Screen::injectCursorMovement( float x_rel, float y_rel ) {
+		x_rel += mCursorPos.x;
+		y_rel += mCursorPos.y;
+		injectCursorPosition( x_rel, y_rel );
+	}
+	//############################################################################
+	void Screen::injectCursorPosition( float x_pos, float y_pos ) {
+		//store the new cursor position for future use
+		mCursorPos.x = x_pos;
+		mCursorPos.y = y_pos;
+
+		WidgetCollection::iterator iter = Children.begin();
+		while( iter != Children.end() ){
+			iter->eventCursor_Move( x_pos, y_pos );
+			iter++;
+		}
+	}
+	//############################################################################
+	void Screen::injectCursorPosition_Percent( float x_perc, float y_perc ) {
+		x_perc *= mSize.x;
+		y_perc *= mSize.y;
+		injectCursorPosition( x_perc, y_perc );
+	}
+	//############################################################################
+	void Screen::injectCursorPress() {
+		mCursorPressed = true;
+		WidgetCollection::iterator iter = Children.begin();
+		while( iter != Children.end() ){
+			iter->eventCursor_Press( mCursorPos.x, mCursorPos.y );
+			iter++;
+		}
+	}
+	//############################################################################
+	void Screen::injectCursorRelease() {
+		mCursorPressed = false;
+		WidgetCollection::iterator iter = Children.begin();
+		while( iter != Children.end() ){
+			iter->eventCursor_Release( mCursorPos.x, mCursorPos.y );
+			iter++;
+		}
+	}
+	//############################################################################
+	void Screen::injectCursorPress_State( bool pressed ) {
+		if( pressed != mCursorPressed){
+			if( pressed )
+				injectCursorPress();
+			else
+				injectCursorRelease();
+		}
 	}
 	//############################################################################
 }//namespace OpenGUI{
