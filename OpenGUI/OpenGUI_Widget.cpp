@@ -232,23 +232,23 @@ namespace OpenGUI {
 		getEvents()["Invalidated"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::onCursor_Move( Object* sender, EventArgs& evtArgs ){
+	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Press( Object* sender, EventArgs& evtArgs ){
+	void Widget::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Release( Object* sender, EventArgs& evtArgs ){
+	void Widget::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Hidden( Object* sender, EventArgs& evtArgs ){
+	void Widget::onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Shown( Object* sender, EventArgs& evtArgs ){
+	void Widget::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################

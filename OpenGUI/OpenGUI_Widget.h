@@ -86,15 +86,15 @@ namespace OpenGUI {
 		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
 
 		//! "Cursor_Move" event
-		virtual void onCursor_Move( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Hidden" event
-		virtual void onCursor_Hidden( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Shown" event
-		virtual void onCursor_Shown( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
 //!\name Event Processors
