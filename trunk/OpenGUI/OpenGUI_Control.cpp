@@ -147,7 +147,7 @@ namespace OpenGUI {
 			return Value::T_FVECTOR2;
 		}
 		//############################################################################
-		virtual bool getPermSettable(){
+		virtual bool getPermSettable() {
 			return false; //read-only property
 		}
 	}
@@ -176,7 +176,7 @@ namespace OpenGUI {
 			return Value::T_FVECTOR2;
 		}
 		//############################################################################
-		virtual bool getPermSettable(){
+		virtual bool getPermSettable() {
 			return false; //read-only property
 		}
 	}
@@ -205,7 +205,7 @@ namespace OpenGUI {
 			return Value::T_FRECT;
 		}
 		//############################################################################
-		virtual bool getPermSettable(){
+		virtual bool getPermSettable() {
 			return false; //read-only property
 		}
 	}
@@ -242,12 +242,12 @@ namespace OpenGUI {
 		mRect = FRect( 0.0f, 0.0f, 1.0f, 1.0f );
 
 		//Set up events and default bindings
-		getEvents().createEvent("Cursor_Click");
-		getEvents().createEvent("Cursor_Enter");
-		getEvents().createEvent("Cursor_Leave");
-		getEvents()["Cursor_Click"].add( new EventDelegate(this, &Control::onCursor_Click) );
-		getEvents()["Cursor_Enter"].add( new EventDelegate(this, &Control::onCursor_Enter) );
-		getEvents()["Cursor_Leave"].add( new EventDelegate(this, &Control::onCursor_Leave) );
+		getEvents().createEvent( "Cursor_Click" );
+		getEvents().createEvent( "Cursor_Enter" );
+		getEvents().createEvent( "Cursor_Leave" );
+		getEvents()["Cursor_Click"].add( new EventDelegate( this, &Control::onCursor_Click ) );
+		getEvents()["Cursor_Enter"].add( new EventDelegate( this, &Control::onCursor_Enter ) );
+		getEvents()["Cursor_Leave"].add( new EventDelegate( this, &Control::onCursor_Leave ) );
 	}
 	//############################################################################
 	Control::~Control() {
@@ -262,91 +262,91 @@ namespace OpenGUI {
 		return "OpenGUI::Control";
 	}
 	//############################################################################
-	void Control::setLeft( float left ){
-		mRect.setPosition( FVector2(left, mRect.min.y) );
+	void Control::setLeft( float left ) {
+		mRect.setPosition( FVector2( left, mRect.min.y ) );
 	}
 	//############################################################################
-	float Control::getLeft(){
+	float Control::getLeft() {
 		return mRect.min.x;
 	}
 	//############################################################################
-	void Control::setTop( float top ){
-		mRect.setPosition( FVector2(mRect.min.x, top) );
+	void Control::setTop( float top ) {
+		mRect.setPosition( FVector2( mRect.min.x, top ) );
 	}
 	//############################################################################
-	float Control::getTop(){
+	float Control::getTop() {
 		return mRect.min.y;
 	}
 	//############################################################################
 	/*! Controls cannot have a width less than 0.0f, so negative values are clamped to 0.0f */
-	void Control::setWidth( float width ){
-		if( width < 0.0f ) width = 0.0f;
+	void Control::setWidth( float width ) {
+		if ( width < 0.0f ) width = 0.0f;
 		mRect.setWidth( width );
 	}
 	//############################################################################
-	float Control::getWidth(){
+	float Control::getWidth() {
 		return mRect.getWidth();
 	}
 	//############################################################################
 	/*! Controls cannot have a height less than 0.0f, so negative values are clamped to 0.0f */
-	void Control::setHeight( float height ){
-		if( height < 0.0f ) height = 0.0f;
+	void Control::setHeight( float height ) {
+		if ( height < 0.0f ) height = 0.0f;
 		mRect.setHeight( height );
 	}
 	//############################################################################
-	float Control::getHeight(){
+	float Control::getHeight() {
 		return mRect.getHeight();
 	}
 	//############################################################################
-	const FVector2& Control::getPosition(){
+	const FVector2& Control::getPosition() {
 		return mRect.min;
 	}
 	//############################################################################
-	FVector2 Control::getSize(){
+	FVector2 Control::getSize() {
 		return mRect.getSize();
 	}
 	//############################################################################
-	const FRect& Control::getRect(){
+	const FRect& Control::getRect() {
 		return mRect;
 	}
 	//############################################################################
-	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ){
+	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ) {
 		getEvents()["Cursor_Click"].invoke( this, evtArgs );
 	}
 	//############################################################################
-	void Control::eventCursor_Enter( Cursor_EventArgs& evtArgs ){
+	void Control::eventCursor_Enter( Cursor_EventArgs& evtArgs ) {
 		getEvents()["Cursor_Enter"].invoke( this, evtArgs );
 	}
 	//############################################################################
-	void Control::eventCursor_Leave( Cursor_EventArgs& evtArgs ){
+	void Control::eventCursor_Leave( Cursor_EventArgs& evtArgs ) {
 		getEvents()["Cursor_Leave"].invoke( this, evtArgs );
 	}
 	//############################################################################
 	/*! To preserve this functionality in future overrides, the base class
 	version of this method will need to be called. */
-	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
 		//mCursorEnterLeave_Sent
-		if( mCursorInside ){
+		if ( mCursorInside ) {
 			// test if cursor is outside
-			if( mRect.isInside( evtArgs.Position ) ){
+			if ( mRect.isInside( evtArgs.Position ) ) {
 				mCursorInside = false; // store the new state
 				eventCursor_Leave( evtArgs ); // let everyone know
 			}
 		} else {
 			// test if cursor is inside
-			if( mRect.isInside( evtArgs.Position ) ){
+			if ( mRect.isInside( evtArgs.Position ) ) {
 				mCursorInside = true; // store the new state
 				eventCursor_Enter( evtArgs ); // let everyone know
 			}
