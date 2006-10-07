@@ -45,6 +45,12 @@ namespace OpenGUI {
 	};
 
 
+	///////////////////////////////////////////////////////////////////////////
+	// Note to future editors:
+	// The following classes are intended only for inline compiling where used,
+	// and are not exported on purpose as that would allow for non-inline uses.
+	///////////////////////////////////////////////////////////////////////////
+
 
 	//! Self destroying C-callback style event delegate
 	/*!
@@ -89,14 +95,14 @@ namespace OpenGUI {
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//! \internal generic delegate class for member function callbacks
-	template <class CLASS>
+	template <class CLASS, class ARGS_TYPE>
 	class _Event_memberFunc: public _EventBinder_Interface {
 	public:
-		typedef void( CLASS::*MEMBER )( Object* sender, EventArgs& args );
+		typedef void( CLASS::*MEMBER )( Object* sender, ARGS_TYPE& args );
 		virtual ~_Event_memberFunc() {}
 		_Event_memberFunc( MEMBER memberPtr, CLASS* class_objPtr ): mMemberPtr( memberPtr ), mClassObject( class_objPtr ) {}
 		virtual void fire( Object* sender, EventArgs& args ) const {
-			( mClassObject->*mMemberPtr )( sender, args );
+			( mClassObject->*mMemberPtr )( sender, dynamic_cast<ARGS_TYPE&>(args) );
 		}
 	private:
 		CLASS* mClassObject;
@@ -163,9 +169,9 @@ namespace OpenGUI {
 		obj->getEvents()["desiredEvent"].add( new EventDelegate(myClassObj, &MyClass::myMethod) );
 		\endcode
 		*/
-		template <class CLASS>
-		EventDelegate( CLASS* classObjPtr, void( CLASS::*memberFunc )( Object*, EventArgs& ) ) {
-			mBoundFunc = new _Event_memberFunc<CLASS>( memberFunc, classObjPtr );
+		template <class CLASS,class ARGS_TYPE>
+		EventDelegate( CLASS* classObjPtr, void( CLASS::*memberFunc )( Object*, ARGS_TYPE& ) ) {
+			mBoundFunc = new _Event_memberFunc<CLASS,ARGS_TYPE>( memberFunc, classObjPtr );
 		}
 
 		//! Calls the function/member given at EventDelegate creation on event trigger

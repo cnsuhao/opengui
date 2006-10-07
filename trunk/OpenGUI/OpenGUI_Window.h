@@ -24,6 +24,8 @@ namespace OpenGUI {
 
 		//! window
 		void window();
+		void onTest( Object* obj, Attach_EventArgs& evtArgs );
+		void onTest2( Object* obj, Widget& evtArgs );
 
 
 

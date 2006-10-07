@@ -56,6 +56,12 @@ namespace OpenGUI {
 		mContainer = 0; //we always start with no container
 		if ( gWidget_ObjectAccessorList.getParent() == 0 )
 			gWidget_ObjectAccessorList.setParent( Object::getAccessors() );
+
+		//Set up events and default bindings
+		getEvents().createEvent("Attached");
+		getEvents().createEvent("Detached");
+		getEvents()["Attached"].add( new EventDelegate(this, &Widget::onAttached) );
+		getEvents()["Detached"].add( new EventDelegate(this, &Widget::onDetached) );
 	}
 	//############################################################################
 	Widget::~Widget() {
@@ -109,8 +115,8 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	Screen* Widget::getScreen(){
-		if(!mContainer) return 0;
+	Screen* Widget::getScreen() {
+		if ( !mContainer ) return 0;
 		Widget* parentW = dynamic_cast<Widget*>( mContainer );
 		if ( parentW )
 			return parentW->getScreen();
@@ -118,6 +124,24 @@ namespace OpenGUI {
 		if ( parentS )
 			return parentS;
 		return 0;
+	}
+	//############################################################################
+	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
+		/* By default, we do absolutely nothing */
+	}
+	//############################################################################
+	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
+		/* By default, we do absolutely nothing */
+	}
+	//############################################################################
+	void Widget::eventAttached( I_WidgetContainer* newParent ) {
+		Attach_EventArgs event( newParent );
+		getEvents()["Attached"].invoke( this, event );
+	}
+	//############################################################################
+	void Widget::eventDetached( I_WidgetContainer* prevParent ) {
+		Attach_EventArgs event( prevParent );
+		getEvents()["Detached"].invoke( this, event );
 	}
 	//############################################################################
 }//namespace OpenGUI{

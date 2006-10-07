@@ -11,22 +11,14 @@
 namespace OpenGUI {
 	//###########################################################
 	OGLRenderer::OGLRenderer( int initial_width, int initial_height ) {
-		mWidth = initial_width;
-		mHeight = initial_height;
+		mDimensions.x = initial_width;
+		mDimensions.y = initial_height;
 	}
 	//###########################################################
 	OGLRenderer::~OGLRenderer() {}
 	//###########################################################
-	void OGLRenderer::getViewportDimensions( IVector2& dims ) {
-		dims.x = mWidth;
-		dims.y = mHeight;
-		
-		/* - We'll just do this in the application
-		GLint viewportDims[4];
-		glGetIntegerv( GL_VIEWPORT, viewportDims );
-		dims.x = viewportDims[2];
-		dims.y = viewportDims[3];
-		*/
+	const IVector2& OGLRenderer::getViewportDimensions() {
+		return mDimensions;
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
