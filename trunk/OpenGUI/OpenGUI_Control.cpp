@@ -272,6 +272,7 @@ namespace OpenGUI {
 
 		// set up defaults for properties
 		mRect = FRect( 0.0f, 0.0f, 1.0f, 1.0f );
+		mVisible = true;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Cursor_Click" );
