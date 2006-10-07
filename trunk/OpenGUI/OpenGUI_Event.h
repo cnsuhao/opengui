@@ -26,6 +26,14 @@ namespace OpenGUI {
 		const I_WidgetContainer* parent;
 	};
 
+	class OPENGUI_API Cursor_EventArgs: public EventArgs {
+	public:
+		Cursor_EventArgs( float x_pos, float y_pos ): X(x_pos), Y(y_pos) {}
+		virtual ~Cursor_EventArgs() {}
+		const float X;
+		const float Y;
+	};
+
 
 
 	//! Provides a unified event definition, binding, and relaying service.
