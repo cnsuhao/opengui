@@ -36,6 +36,12 @@ namespace OpenGUI {
 		mModifierStack.push( colorOp );
 	}
 	//############################################################################
+	void Brush::pushAlpha( float alpha ) {
+		BrushModifier_Alpha alphaOp;
+		alphaOp.mAlpha = alpha;
+		mModifierStack.push( alphaOp );
+	}
+	//############################################################################
 	void Brush::pushClippingRect( const FRect& rect ) {
 		BrushModifier_ClipRect modifier;
 		modifier.mRect = rect;
@@ -56,15 +62,6 @@ namespace OpenGUI {
 	//############################################################################
 	void Brush::pop() {
 		mModifierStack.pop();
-	}
-	//############################################################################
-	void Brush::clearStack() {
-		while ( mModifierStack.size() > 0 )
-			mModifierStack.pop();
-	}
-	//############################################################################
-	size_t Brush::stackSize() {
-		return mModifierStack.size();
 	}
 	//############################################################################
 	const FRect& Brush::getDrawArea() {

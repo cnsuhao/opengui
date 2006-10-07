@@ -203,6 +203,8 @@ namespace OpenGUI {
 		void pushRotation( const Radian& angle );
 		//! Pushes a new color onto the stack
 		void pushColor( const Color& color );
+		//! Pushes another layer of alpha transparency onto the stack
+		void pushAlpha( float alpha );
 		//! Pushes a new clipping rect onto the stack
 		void pushClippingRect( const FRect& rect );
 		//! Pushes an imagery based mask onto the stack
@@ -211,10 +213,6 @@ namespace OpenGUI {
 		void pushMaskUnscaled( ImageryPtr mask_imagery, const FVector2& mask_position );
 		//! Pops the last modifier off the stack
 		void pop();
-		//! clears the offset stack
-		void clearStack();
-		//! returns the current size of the stack
-		size_t stackSize();
 
 		//! returns the drawing area that this brush
 		const FRect& getDrawArea();

@@ -12,14 +12,15 @@ namespace OpenGUI {
 
 	//############################################################################
 	//! \internal Base class for brush modifiers stored by modifier stack
-	class OPENGUI_API A_BrushModifier {
+	class OPENGUI_API BrushModifier {
 	public:
-		A_BrushModifier() {}
-		virtual ~A_BrushModifier() {}
+		BrushModifier() {}
+		virtual ~BrushModifier() {}
 		enum ModifierType{
 			POSITION,
 			ROTATION,
 			COLOR,
+			ALPHA,
 			MASK,
 			CLIPRECT
 		};
@@ -28,7 +29,7 @@ namespace OpenGUI {
 	};
 	//############################################################################
 	//! \internal Color modifier stored by modifier stack
-	class OPENGUI_API BrushModifier_Color : public A_BrushModifier {
+	class OPENGUI_API BrushModifier_Color : public BrushModifier {
 	public:
 		virtual ModifierType getType() {
 			return COLOR;
@@ -37,8 +38,18 @@ namespace OpenGUI {
 		virtual void apply( RenderOperation& in_out );
 	};
 	//############################################################################
+	//! \internal Color modifier stored by modifier stack
+	class OPENGUI_API BrushModifier_Alpha : public BrushModifier {
+	public:
+		virtual ModifierType getType() {
+			return ALPHA;
+		}
+		float mAlpha;
+		virtual void apply( RenderOperation& in_out );
+	};
+	//############################################################################
 	//! \internal Rotation modifier stored by modifier stack
-	class OPENGUI_API BrushModifier_Rotation : public A_BrushModifier {
+	class OPENGUI_API BrushModifier_Rotation : public BrushModifier {
 	public:
 		virtual ModifierType getType() {
 			return ROTATION;
@@ -48,7 +59,7 @@ namespace OpenGUI {
 	};
 	//############################################################################
 	//! \internal Position modifier stored by modifier stack
-	class OPENGUI_API BrushModifier_Position : public A_BrushModifier {
+	class OPENGUI_API BrushModifier_Position : public BrushModifier {
 	public:
 		virtual ModifierType getType() {
 			return POSITION;
@@ -58,7 +69,7 @@ namespace OpenGUI {
 	};
 	//############################################################################
 	//! \internal Mask modifier stored by modifier stack
-	class OPENGUI_API BrushModifier_Mask : public A_BrushModifier {
+	class OPENGUI_API BrushModifier_Mask : public BrushModifier {
 	public:
 		virtual ModifierType getType() {
 			return MASK;
@@ -69,7 +80,7 @@ namespace OpenGUI {
 	};
 	//############################################################################
 	//! \internal ClipRect modifier stored by modifier stack
-	class OPENGUI_API BrushModifier_ClipRect : public A_BrushModifier {
+	class OPENGUI_API BrushModifier_ClipRect : public BrushModifier {
 	public:
 		virtual ModifierType getType() {
 			return CLIPRECT;
@@ -91,11 +102,13 @@ namespace OpenGUI {
 		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Color& modifier );
 		//! push a copy of the given modifier onto the stack
+		void push( const BrushModifier_Alpha& modifier );
+		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_Mask& modifier );
 		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_ClipRect& modifier );
 		//! push a copy of the given modifier onto the stack
-		void push( A_BrushModifier* modifier );
+		void push( BrushModifier* modifier );
 
 		//! pop the top modifier off the stack
 		void pop();
@@ -104,7 +117,7 @@ namespace OpenGUI {
 
 		void applyStack( RenderOperation& in_out );
 	private:
-		typedef std::list<A_BrushModifier*> BrushModifierPtrStack;
+		typedef std::list<BrushModifier*> BrushModifierPtrStack;
 		BrushModifierPtrStack mStack;
 	};
 
