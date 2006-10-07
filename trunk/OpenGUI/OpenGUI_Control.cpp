@@ -236,6 +236,8 @@ namespace OpenGUI {
 		if ( gControl_ObjectAccessorList.getParent() == 0 )
 			gControl_ObjectAccessorList.setParent( Widget::getAccessors() );
 
+		mCursorInside = false; //cursor always starts "outside"
+
 		// set up defaults for properties
 		mRect = FRect( 0.0f, 0.0f, 1.0f, 1.0f );
 
@@ -308,31 +310,47 @@ namespace OpenGUI {
 		return mRect;
 	}
 	//############################################################################
-	void Control::onCursor_Click( Object* sender, EventArgs& evtArgs ){
+	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onCursor_Enter( Object* sender, EventArgs& evtArgs ){
+	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onCursor_Leave( Object* sender, EventArgs& evtArgs ){
+	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ){
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::eventCursor_Click(){
-		EventArgs event;
-		getEvents()["Cursor_Click"].invoke( this, event );
+	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ){
+		getEvents()["Cursor_Click"].invoke( this, evtArgs );
 	}
 	//############################################################################
-	void Control::eventCursor_Enter(){
-		EventArgs event;
-		getEvents()["Cursor_Enter"].invoke( this, event );
+	void Control::eventCursor_Enter( Cursor_EventArgs& evtArgs ){
+		getEvents()["Cursor_Enter"].invoke( this, evtArgs );
 	}
 	//############################################################################
-	void Control::eventCursor_Leave(){
-		EventArgs event;
-		getEvents()["Cursor_Leave"].invoke( this, event );
+	void Control::eventCursor_Leave( Cursor_EventArgs& evtArgs ){
+		getEvents()["Cursor_Leave"].invoke( this, evtArgs );
+	}
+	//############################################################################
+	/*! To preserve this functionality in future overrides, the base class
+	version of this method will need to be called. */
+	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
+		//mCursorEnterLeave_Sent
+		if( mCursorInside ){
+			// test if cursor is outside
+			if( mRect.isInside( evtArgs.Position ) ){
+				mCursorInside = false; // store the new state
+				eventCursor_Leave( evtArgs ); // let everyone know
+			}
+		} else {
+			// test if cursor is inside
+			if( mRect.isInside( evtArgs.Position ) ){
+				mCursorInside = true; // store the new state
+				eventCursor_Enter( evtArgs ); // let everyone know
+			}
+		}
 	}
 	//############################################################################
 } // namespace OpenGUI {
