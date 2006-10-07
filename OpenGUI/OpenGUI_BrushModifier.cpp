@@ -20,6 +20,21 @@ namespace OpenGUI {
 	//############################################################################
 
 
+	// BRUSHMODIFIER_ALPHA IMPLEMENTATIONS
+	//############################################################################
+	//############################################################################
+	void BrushModifier_Alpha::apply( RenderOperation& in_out ) {
+		for ( TriangleList::iterator iter = in_out.triangleList->begin();
+			iter != in_out.triangleList->end(); iter++ ) {
+				Triangle& tri = ( *iter );
+				tri.vertex[0].color.Alpha *= mAlpha;
+				tri.vertex[1].color.Alpha *= mAlpha;
+				tri.vertex[2].color.Alpha *= mAlpha;
+		}
+	}
+	//############################################################################
+
+
 	// BRUSHMODIFIER_ROTATION IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
@@ -88,7 +103,7 @@ namespace OpenGUI {
 			pop();
 	}
 	//############################################################################
-	void BrushModifierStack::push( A_BrushModifier* modifier ) {
+	void BrushModifierStack::push( BrushModifier* modifier ) {
 		mStack.push_back( modifier );
 	}
 	//############################################################################
@@ -110,6 +125,12 @@ namespace OpenGUI {
 		push( tmp );
 	}
 	//############################################################################
+	void BrushModifierStack::push( const BrushModifier_Alpha& modifier ) {
+		BrushModifier_Alpha* tmp = new BrushModifier_Alpha();
+		( *tmp ) = modifier;
+		push( tmp );
+	}
+	//############################################################################
 	void BrushModifierStack::push( const BrushModifier_ClipRect& modifier ) {
 		BrushModifier_ClipRect* tmp = new BrushModifier_ClipRect();
 		( *tmp ) = modifier;
@@ -123,7 +144,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushModifierStack::pop() {
-		A_BrushModifier* tmp = mStack.back();
+		BrushModifier* tmp = mStack.back();
 		mStack.pop_back();
 		delete tmp;
 	}
@@ -135,7 +156,7 @@ namespace OpenGUI {
 	void BrushModifierStack::applyStack( RenderOperation& in_out ) {
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
 				iter != mStack.end(); iter++ ) {
-			A_BrushModifier* mod = ( *iter );
+			BrushModifier* mod = ( *iter );
 			mod->apply( in_out );
 		}
 	}
