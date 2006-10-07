@@ -6,6 +6,7 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
+#include "OpenGUI_Event.h"
 #include "OpenGUI_Brush.h"
 
 namespace OpenGUI {
@@ -15,6 +16,21 @@ namespace OpenGUI {
 	class Screen;
 
 	//! Base class for all input processing, containable, and potentially visible GUI objects
+	/*!
+	\par Properties
+		- Name (setName, getName)
+		- Alpha (setAlpha, getAlpha)
+	\par Events
+		- Attached (onAttached, eventAttached)
+		- Detached (onDetached, eventDetached)
+		- Draw (onDraw, eventDraw)
+		- Invalidated (onInvalidated, eventInvalidated)
+		- Cursor_Move (onCursor_Move, eventCursor_Move)
+		- Cursor_Press (onCursor_Press, eventCursor_Press)
+		- Cursor_Release (onCursor_Release, eventCursor_Release)
+		- Cursor_Hidden (onCursor_Hidden, eventCursor_Hidden)
+		- Cursor_Shown (onCursor_Shown, eventCursor_Shown)
+	*/
 	class OPENGUI_API Widget : public Object {
 		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
 		friend class Screen; // Screen needs access to the protected input event triggers
@@ -24,11 +40,15 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~Widget();
 
-
 		//! returns the name of this Widget
 		const std::string& getName();
 		//! sets the name of this Widget
 		void setName( const std::string& name );
+
+		//! Sets the alpha transparency of this Widget
+		void setAlpha( float alpha );
+		//! Returns the alpha transparency of this Widget
+		float getAlpha();
 
 		//! invalidate any caches of this Widget's render output
 		/*! This will cause the Widget's Draw routine to be called on the next
@@ -37,7 +57,6 @@ namespace OpenGUI {
 
 		//! invalidate this Widget, as well as any and all potential children
 		void flush();
-
 
 		//! returns the container this widget is held within
 		/*! Every Widget is guaranteed to have a container, but not every container is
@@ -49,8 +68,6 @@ namespace OpenGUI {
 			\endcode */
 		I_WidgetContainer* getContainer();
 
-
-
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -58,22 +75,26 @@ namespace OpenGUI {
 	protected:
 //!\name Event Handlers
 //@{
-		/*
-		//! Called whenever this widget needs to redraw itself.
-		virtual void onDraw( Brush& brushRef );
-		virtual void onMove();
-
-		virtual void onCursor_Enter();
-		virtual void onCursor_Leave();
-		virtual void onCursor_Move();
-
-		virtual void onActivate();
-		*/
-
 		//! "Attached" event
 		virtual void onAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "Detached" event
 		virtual void onDetached( Object* sender, Attach_EventArgs& evtArgs );
+
+		//! "Draw" event
+		virtual void onDraw( Object* sender, EventArgs& evtArgs );
+		//! "Invalidated" event
+		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
+
+		//! "Cursor_Move" event
+		virtual void onCursor_Move( Object* sender, EventArgs& evtArgs );
+		//! "Cursor_Press" event
+		virtual void onCursor_Press( Object* sender, EventArgs& evtArgs );
+		//! "Cursor_Release" event
+		virtual void onCursor_Release( Object* sender, EventArgs& evtArgs );
+		//! "Cursor_Hidden" event
+		virtual void onCursor_Hidden( Object* sender, EventArgs& evtArgs );
+		//! "Cursor_Shown" event
+		virtual void onCursor_Shown( Object* sender, EventArgs& evtArgs );
 //@}
 
 //!\name Event Triggers
@@ -83,64 +104,30 @@ namespace OpenGUI {
 		//! Widget was removed from a container
 		virtual void eventDetached( I_WidgetContainer* prevParent );
 
-		//! Draws this object
-		virtual void eventDraw() {}
-		//! Widget is invalidate and will need to be redrawn next Screen::update()
-		virtual void eventInvalidated() {}
+		//! Draw this object
+		virtual void eventDraw();
+		//! Widget was invalidated and will need to be redrawn next Screen::update()
+		virtual void eventInvalidated();
 
-		
-
-		virtual void eventCursor_Enter() {}
-		virtual void eventCursor_Leave() {}
-		//! Called for cursor movement
-		virtual void eventCursor_Move() {}
-
-		virtual void eventCursor_Press() {}
-		virtual void eventCursor_Release() {}
-		virtual void eventCursor_Click() {}
-
-		/*
-
-		Move_Begin
-		Moving
-		Move_End
-		Moved
-
-		Resize_Being
-		Resizing
-		Resize_End
-		Resized
-
-		Cursor_Enter
-		Cursor_Leave
-		Cursor_Move
-		Cursor_Press
-		Cursor_Release
-		Cursor_Click
-
-		Menu_Up
-		Menu_Down
-		Menu_Left
-		Menu_Right
-		Menu_Targeted
-		Menu_UnTargeted
-		Menu_Activate
-
-		Targeted
-		UnTargeted
-
-		Focus
-		Focus_Lost
-
-		Activated
-		*/
+		//! Called for cursor movement, giving the X,Y position of the cursor
+		virtual void eventCursor_Move( float xPos, float yPos );
+		//! Called when the cursor button is pressed
+		virtual void eventCursor_Press( float xPos, float yPos );
+		//! Called when the cursor button is released
+		virtual void eventCursor_Release( float xPos, float yPos );
+		//! Called when the cursor is hidden
+		virtual void eventCursor_Hidden();
+		//! Called when the cursor is shown.
+		virtual void eventCursor_Shown( float xPos, float yPos );
 //@}
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen();
 		void _doflush();
 	private:
-		std::string mWidgetName;
 		I_WidgetContainer* mContainer;
+
+		std::string mWidgetName;
+		float mAlpha;
 	};
 
 } //namespace OpenGUI{
