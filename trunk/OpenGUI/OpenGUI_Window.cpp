@@ -53,14 +53,8 @@ namespace OpenGUI {
 	Window::Window() {
 		if ( gWindow_ObjectAccessorList.getParent() == 0 )
 			gWindow_ObjectAccessorList.setParent( ContainerControl::getAccessors() );
-
-		getEvents().createEvent("Test");
-		getEvents()["Test"].add( new EventDelegate(this, &Window::onTest) );
 	}
 	//############################################################################
-	void Window::onTest( Object* obj, Attach_EventArgs& evtArgs ){
-		/**/
-	}
 	Window::~Window() {
 		/**/
 	}

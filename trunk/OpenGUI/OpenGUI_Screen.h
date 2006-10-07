@@ -21,6 +21,27 @@ namespace OpenGUI {
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
+//!\name Input Injection
+//@{
+		//! Injects cursor movement by providing the relative movement from the last position
+		/*! Positive values causes right or downward movement depending on axis.
+		Values of 0.0f on both axis are ignored. */
+		void injectCursorMovement( float x_rel, float y_rel );
+		//! Injects cursor movement by providing the absolute cursor position on the screen
+		/*! 0.0 x 0.0 is the upper left corner of the screen */
+		void injectCursorPosition( float x_pos, float y_pos );
+		//! Injects cursor movement by providing the absolute cursor position as a percentage of the screen
+		/*! 0.0 x 0.0 is the upper left corner of the screen, 1.0 x 1.0 is the lower right of the screen */
+		void injectCursorPosition_Percent( float x_perc, float y_perc );
+		//! Injects cursor press at the last known cursor position
+		void injectCursorPress();
+		//! Injects cursor release at the last known cursor position
+		void injectCursorRelease();
+		//! Injects cursor press/release at the last known cursor position using built in state logic
+		void injectCursorPress_State( bool pressed );
+		
+//@}
+
 		//! returns the name of this Screen
 		const std::string& getName() const;
 		//! returns the size/resolution of this Screen
@@ -107,6 +128,10 @@ namespace OpenGUI {
 		}
 		void _UpdatePPU() const; //updates the PPU cache
 		RenderTexturePtr renderTarget;
+
+		//input state variables
+		FVector2 mCursorPos; // last known cursor position, used for relative cursor input injection
+		bool mCursorPressed; //
 	};
 
 } //namespace OpenGUI{
