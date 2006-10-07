@@ -97,7 +97,7 @@ namespace OpenGUI {
 		virtual void onCursor_Shown( Object* sender, EventArgs& evtArgs );
 //@}
 
-//!\name Event Triggers
+//!\name Event Processors
 //@{
 		//! Widget was attached to a container
 		virtual void eventAttached( I_WidgetContainer* newParent );
