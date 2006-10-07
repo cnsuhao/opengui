@@ -19,19 +19,29 @@ namespace OpenGUI {
 		virtual ~EventArgs() {}
 	};
 
+	//! Specialization of EventArgs for Attach/Detach events
 	class OPENGUI_API Attach_EventArgs: public EventArgs {
 	public:
+		//! Constructor requires a pointer to the parent being attached/detached to/from
 		Attach_EventArgs( I_WidgetContainer* parent ): parent( parent ) {}
 		virtual ~Attach_EventArgs() {}
+		//! Pointer to the parent being attached/detached to/from
 		const I_WidgetContainer* parent;
 	};
 
+	//! Specialization of EventArgs for Cursor events
 	class OPENGUI_API Cursor_EventArgs: public EventArgs {
 	public:
-		Cursor_EventArgs( float x_pos, float y_pos ): X(x_pos), Y(y_pos) {}
+		//! Constructor requires the X and Y position of the cursor
+		Cursor_EventArgs( float x_pos, float y_pos ):
+		  Position(x_pos,y_pos), X(Position.x), Y(Position.y) {}
 		virtual ~Cursor_EventArgs() {}
-		const float X;
-		const float Y;
+		//! The cursor position
+		const FVector2 Position;
+		//! The cursor X position
+		const float& X;
+		//! The cursor Y position
+		const float& Y;
 	};
 
 

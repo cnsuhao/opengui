@@ -64,21 +64,24 @@ namespace OpenGUI {
 //!\name Event Handlers
 //@{
 		//! "Cursor_Click" event
-		virtual void onCursor_Click( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Enter" event
-		virtual void onCursor_Enter( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Leave" event
-		virtual void onCursor_Leave( Object* sender, EventArgs& evtArgs );
+		virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
+
+		//! Adds cursor tracking to trigger Cursor_Enter and Cursor_Leave when appropriate.
+		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
 //!\name Event Processors
 //@{
 		//! Called when cursor was pressed and released within this Control
-		virtual void eventCursor_Click();
+		virtual void eventCursor_Click( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor enters this Control
-		virtual void eventCursor_Enter();
+		virtual void eventCursor_Enter( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor leaves this Control
-		virtual void eventCursor_Leave();
+		virtual void eventCursor_Leave( Cursor_EventArgs& evtArgs );
 //@}
 
 		/*
@@ -111,6 +114,8 @@ namespace OpenGUI {
 		*/
 	private:
 		FRect mRect; // position & size of this Control
+
+		bool mCursorInside; // cursor position state variable
 	};
 
 } // namespace OpenGUI{
