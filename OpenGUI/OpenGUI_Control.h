@@ -9,7 +9,7 @@
 
 namespace OpenGUI {
 
-	//! Base class for all visible GUI objects
+	//! Base class for all GUI objects that have position and size
 	class OPENGUI_API Control : public Widget {
 	public:
 		//! public constructor

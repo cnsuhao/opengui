@@ -14,7 +14,7 @@ namespace OpenGUI {
 	class I_WidgetContainer; //forward declaration
 	class Screen;
 
-	//! Base class for all input processing, containable GUI objects
+	//! Base class for all input processing, containable, and potentially visible GUI objects
 	class OPENGUI_API Widget : public Object {
 		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
 		friend class Screen; // Screen needs access to the protected input event triggers
@@ -71,32 +71,35 @@ namespace OpenGUI {
 		*/
 
 		//! "Attached" event
-		virtual void onAttached();
+		virtual void onAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "Detached" event
-		virtual void onDetached();
+		virtual void onDetached( Object* sender, Attach_EventArgs& evtArgs );
 //@}
 
 //!\name Event Triggers
 //@{
 		//! Widget was attached to a container
-		virtual void eventAttached( I_WidgetContainer* newParent ) {}
+		virtual void eventAttached( I_WidgetContainer* newParent );
 		//! Widget was removed from a container
-		virtual void eventDetached( I_WidgetContainer* prevParent ) {}
+		virtual void eventDetached( I_WidgetContainer* prevParent );
 
 		//! Draws this object
 		virtual void eventDraw() {}
 		//! Widget is invalidate and will need to be redrawn next Screen::update()
 		virtual void eventInvalidated() {}
 
+		
+
+		virtual void eventCursor_Enter() {}
+		virtual void eventCursor_Leave() {}
 		//! Called for cursor movement
 		virtual void eventCursor_Move() {}
 
-		/*
+		virtual void eventCursor_Press() {}
+		virtual void eventCursor_Release() {}
+		virtual void eventCursor_Click() {}
 
-		Move_Begin
-		Moving
-		Move_End
-		Moved
+		/*
 
 		Move_Begin
 		Moving

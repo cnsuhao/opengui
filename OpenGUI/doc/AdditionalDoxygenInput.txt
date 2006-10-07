@@ -26,8 +26,6 @@
 	
 	- \subpage MessageSystem  "The Message System"
 	
-	- \subpage BaseWidgets "Base Widget Documentation"
-	
 	- \subpage CustomWidgets "Extending via Custom Widgets"
 	
 	\n\n\n
@@ -69,16 +67,13 @@ The FreeType Project (www.freetype.org). All rights reserved.
 	\page Features
 		
 	- Easily integrated with any input system: All input is injected into the system by the application using simple function calls.
-	- Input injection logging with log playback feature.
 	- Cross API: Is easily used in native DirectX or OpenGL, as well as the OGRE rendering engine.
-	- Avoids custom containers when possible, using STL where available.
 	- Easily extendable widget set by class inheritance.
 	- Powerful message system with fully catchable and interruptable parent/child event propagation.
 	- Auto scaling, pixel aligned fonts, rendered via FreeType 2.
 	- Supports native loading of mutiple imagery formats via Corona (http://corona.sourceforge.net)
 	- Full alpha support for image types that support alpha channels. (Single channel imagery is interpretted as alpha only.)
 	- Free form render operations allow Widget imagery to be rotated and scaled in any way imaginable.
-	- Provides input logging and playback functionality for automated application testing.
 	- Plugin system so custom widgets can be used in any application without recompiling.
 	
 	\note

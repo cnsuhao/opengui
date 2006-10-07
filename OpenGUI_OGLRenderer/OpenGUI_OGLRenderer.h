@@ -8,14 +8,14 @@ namespace OpenGUI {
 		virtual ~OGLRenderer();
 		// Application should call this whenever viewport resolution changes
 		void setDim( int w, int h ) {
-			mHeight = h;
-			mWidth = w;
+			mDimensions.y = h;
+			mDimensions.x = w;
 			if ( System::getSingletonPtr() )
 				System::getSingleton().notifyViewportDimensionsChanged();
 		}
 
 		// Required implementations for OpenGUI Renderer
-		virtual void getViewportDimensions( IVector2& dims );
+		virtual const IVector2& getViewportDimensions();
 		virtual void preRenderSetup();
 		virtual void doRenderOperation( RenderOperation& renderOp );
 		virtual void postRenderCleanup();
@@ -24,8 +24,7 @@ namespace OpenGUI {
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData );
 		virtual void destroyTexture( Texture* texturePtr );
 	private:
-		int mHeight;
-		int mWidth;
+		IVector2 mDimensions;
 	};
 }
 ;//namespace OpenGUI{

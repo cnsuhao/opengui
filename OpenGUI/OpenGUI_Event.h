@@ -10,6 +10,7 @@ namespace OpenGUI {
 
 	class Object; //forward declaration
 	class EventHandlerList; //forward declaration
+	class I_WidgetContainer; //forward declaration
 
 	//! Base class for event arguments
 	class OPENGUI_API EventArgs {
@@ -18,7 +19,14 @@ namespace OpenGUI {
 		virtual ~EventArgs() {}
 	};
 
-	
+	class OPENGUI_API Attach_EventArgs: public EventArgs {
+	public:
+		Attach_EventArgs( I_WidgetContainer* parent ): parent( parent ) {}
+		virtual ~Attach_EventArgs() {}
+		const I_WidgetContainer* parent;
+	};
+
+
 
 	//! Provides a unified event definition, binding, and relaying service.
 	class OPENGUI_API EventReceiver {

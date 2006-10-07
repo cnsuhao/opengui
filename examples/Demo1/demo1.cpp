@@ -21,6 +21,11 @@ void Demo1App::preRun()
 	mScreen = ScreenManager::getSingleton().createScreen("MainScreen", FVector2(800,600) );
 	
 	mScreen = ScreenManager::getSingleton().getScreen("MainScreen");
+
+	Widget* w = new Widget();
+	w->setName("Blah");
+
+	mScreen->Children.add_back( w, true );
 /*
 	OpenGUI::XMLParser::LoadFromFile("demo1.xml");
 	OpenGUI::System::getSingleton().setGUISheet(
