@@ -19,6 +19,7 @@ namespace OpenGUI {
 	- Position (getPosition)
 	- Size (getSize)
 	- Rect (getRect)
+	- Visible (setVisible, getVisible)
 
 	\par Events
 	- Cursor_Click (onCursor_Click, eventCursor_Click)
@@ -56,6 +57,11 @@ namespace OpenGUI {
 		//! Returns the FRect describing this Control's size and position
 		const FRect& getRect();
 
+		//! Sets the visibility of this Control
+		void setVisible( bool visible );
+		//! Returns the visibility of this Control
+		bool getVisible();
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -65,13 +71,18 @@ namespace OpenGUI {
 //@{
 		//! "Cursor_Click" event
 		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Enter" event
+		//! "Cursor_Enter" event; invokes Targeted
 		virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Leave" event
+		//! "Cursor_Leave" event; invokes UnTargeted
 		virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
 
 		//! Adds cursor tracking to trigger Cursor_Enter and Cursor_Leave when appropriate.
 		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+
+		//! "Targeted" event
+		virtual void onTargeted( Object* sender, EventArgs& evtArgs );
+		//! "UnTargeted" event
+		virtual void onUnTargeted( Object* sender, EventArgs& evtArgs );
 //@}
 
 //!\name Event Processors
@@ -82,6 +93,11 @@ namespace OpenGUI {
 		virtual void eventCursor_Enter( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor leaves this Control
 		virtual void eventCursor_Leave( Cursor_EventArgs& evtArgs );
+
+		//! Called when this Control is targeted, either by cursor or by menu navigation
+		virtual void eventTargeted();
+		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
+		virtual void eventUnTargeted();
 //@}
 
 		/*
@@ -114,6 +130,7 @@ namespace OpenGUI {
 		*/
 	private:
 		FRect mRect; // position & size of this Control
+		bool mVisible; // visibility of this Control
 
 		bool mCursorInside; // cursor position state variable
 	};

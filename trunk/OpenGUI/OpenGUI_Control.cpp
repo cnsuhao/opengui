@@ -211,6 +211,36 @@ namespace OpenGUI {
 	}
 	gControl_Rect_ObjectProperty;
 	//############################################################################
+	class Control_Visible_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "Visible";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Control& c = dynamic_cast<Control&>( objectRef );
+				valueOut.setValue( c.getVisible() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Control& c = dynamic_cast<Control&>( objectRef );
+				c.setVisible( valueIn.getValueAsBool() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_BOOL;
+		}
+	}
+	gControl_Visible_ObjectProperty;
+	//############################################################################
 	//############################################################################
 	class Control_ObjectAccessorList : public ObjectAccessorList {
 	public:
@@ -223,6 +253,8 @@ namespace OpenGUI {
 			addAccessor( &gControl_Position_ObjectProperty );
 			addAccessor( &gControl_Size_ObjectProperty );
 			addAccessor( &gControl_Rect_ObjectProperty );
+
+			addAccessor( &gControl_Visible_ObjectProperty );
 		}
 		~Control_ObjectAccessorList() {}
 	}
@@ -248,6 +280,10 @@ namespace OpenGUI {
 		getEvents()["Cursor_Click"].add( new EventDelegate( this, &Control::onCursor_Click ) );
 		getEvents()["Cursor_Enter"].add( new EventDelegate( this, &Control::onCursor_Enter ) );
 		getEvents()["Cursor_Leave"].add( new EventDelegate( this, &Control::onCursor_Leave ) );
+		getEvents().createEvent( "Targeted" );
+		getEvents().createEvent( "UnTargeted" );
+		getEvents()["Targeted"].add( new EventDelegate( this, &Control::onTargeted ) );
+		getEvents()["UnTargeted"].add( new EventDelegate( this, &Control::onUnTargeted ) );
 	}
 	//############################################################################
 	Control::~Control() {
@@ -264,6 +300,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::setLeft( float left ) {
 		mRect.setPosition( FVector2( left, mRect.min.y ) );
+		invalidate(); // need to invalidate caches for position change
 	}
 	//############################################################################
 	float Control::getLeft() {
@@ -272,6 +309,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::setTop( float top ) {
 		mRect.setPosition( FVector2( mRect.min.x, top ) );
+		invalidate(); // need to invalidate caches for position change
 	}
 	//############################################################################
 	float Control::getTop() {
@@ -282,6 +320,7 @@ namespace OpenGUI {
 	void Control::setWidth( float width ) {
 		if ( width < 0.0f ) width = 0.0f;
 		mRect.setWidth( width );
+		invalidate(); // need to invalidate caches for size change
 	}
 	//############################################################################
 	float Control::getWidth() {
@@ -292,6 +331,7 @@ namespace OpenGUI {
 	void Control::setHeight( float height ) {
 		if ( height < 0.0f ) height = 0.0f;
 		mRect.setHeight( height );
+		invalidate(); // need to invalidate caches for size change
 	}
 	//############################################################################
 	float Control::getHeight() {
@@ -310,16 +350,25 @@ namespace OpenGUI {
 		return mRect;
 	}
 	//############################################################################
+	void Control::setVisible( bool visible ) {
+		mVisible = visible;
+		invalidate(); // need to invalidate caches for visibility change
+	}
+	//############################################################################
+	bool Control::getVisible() {
+		return mVisible;
+	}
+	//############################################################################
 	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		eventTargeted(); // notify targeted
 	}
 	//############################################################################
 	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		eventUnTargeted(); // notify untargeted
 	}
 	//############################################################################
 	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ) {
@@ -351,6 +400,24 @@ namespace OpenGUI {
 				eventCursor_Enter( evtArgs ); // let everyone know
 			}
 		}
+	}
+	//############################################################################
+	void Control::onTargeted( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Control::onUnTargeted( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Control::eventTargeted(){
+		EventArgs eventArgs;
+		getEvents()["Targeted"].invoke( this, eventArgs );
+	}
+	//############################################################################
+	void Control::eventUnTargeted(){
+		EventArgs eventArgs;
+		getEvents()["UnTargeted"].invoke( this, eventArgs );
 	}
 	//############################################################################
 } // namespace OpenGUI {
