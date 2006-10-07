@@ -13,8 +13,12 @@ namespace OpenGUI {
 	//! Base class for custom event handler implementations
 	class OPENGUI_API EventHandler {
 	public:
-		EventHandler() {}
-		virtual ~EventHandler() {}
+		EventHandler() {
+			/**/
+		}
+		virtual ~EventHandler() {
+			/**/
+		}
 		//! Interface for receiving event notifications
 		virtual void onEvent( Object* sender, EventArgs& args ) = 0;
 
@@ -36,7 +40,9 @@ namespace OpenGUI {
 		void invoke( Object* sender, EventArgs& args );
 	private:
 		// Only EventReceiver can create/destroy us
-		EventHandlerList() {}
+		EventHandlerList() {
+			/**/
+		}
 		virtual ~EventHandlerList();
 
 		typedef std::set<EventHandler*> EventHandlerSet;
@@ -99,10 +105,12 @@ namespace OpenGUI {
 	class _Event_memberFunc: public _EventBinder_Interface {
 	public:
 		typedef void( CLASS::*MEMBER )( Object* sender, ARGS_TYPE& args );
-		virtual ~_Event_memberFunc() {}
+		virtual ~_Event_memberFunc() {
+			/**/
+		}
 		_Event_memberFunc( MEMBER memberPtr, CLASS* class_objPtr ): mMemberPtr( memberPtr ), mClassObject( class_objPtr ) {}
 		virtual void fire( Object* sender, EventArgs& args ) const {
-			( mClassObject->*mMemberPtr )( sender, dynamic_cast<ARGS_TYPE&>(args) );
+			( mClassObject->*mMemberPtr )( sender, dynamic_cast<ARGS_TYPE&>( args ) );
 		}
 	private:
 		CLASS* mClassObject;
@@ -114,8 +122,12 @@ namespace OpenGUI {
 	class _Event_callbackFunc: public _EventBinder_Interface {
 	public:
 		typedef void EventCallbackFunc( Object* , EventArgs& );
-		_Event_callbackFunc( EventCallbackFunc* function ): mFunc( function ) {}
-		virtual ~_Event_callbackFunc() {}
+		_Event_callbackFunc( EventCallbackFunc* function ): mFunc( function ) {
+			/**/
+		}
+		virtual ~_Event_callbackFunc() {
+			/**/
+		}
 		virtual void fire( Object* sender, EventArgs& args ) const {
 			( *mFunc )( sender, args );
 		}
@@ -169,9 +181,9 @@ namespace OpenGUI {
 		obj->getEvents()["desiredEvent"].add( new EventDelegate(myClassObj, &MyClass::myMethod) );
 		\endcode
 		*/
-		template <class CLASS,class ARGS_TYPE>
+		template <class CLASS, class ARGS_TYPE>
 		EventDelegate( CLASS* classObjPtr, void( CLASS::*memberFunc )( Object*, ARGS_TYPE& ) ) {
-			mBoundFunc = new _Event_memberFunc<CLASS,ARGS_TYPE>( memberFunc, classObjPtr );
+			mBoundFunc = new _Event_memberFunc<CLASS, ARGS_TYPE>( memberFunc, classObjPtr );
 		}
 
 		//! Calls the function/member given at EventDelegate creation on event trigger

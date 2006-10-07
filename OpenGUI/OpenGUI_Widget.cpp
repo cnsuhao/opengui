@@ -94,24 +94,24 @@ namespace OpenGUI {
 		mAlpha = 1.0f;
 
 		//Set up events and default bindings
-		getEvents().createEvent("Attached");
-		getEvents().createEvent("Detached");
-		getEvents()["Attached"].add( new EventDelegate(this, &Widget::onAttached) );
-		getEvents()["Detached"].add( new EventDelegate(this, &Widget::onDetached) );
-		getEvents().createEvent("Draw");
-		getEvents().createEvent("Invalidated");
-		getEvents()["Draw"].add( new EventDelegate(this, &Widget::onDraw) );
-		getEvents()["Invalidated"].add( new EventDelegate(this, &Widget::onInvalidated) );
-		getEvents().createEvent("Cursor_Move");
-		getEvents().createEvent("Cursor_Press");
-		getEvents().createEvent("Cursor_Release");
-		getEvents().createEvent("Cursor_Hidden");
-		getEvents().createEvent("Cursor_Shown");
-		getEvents()["Cursor_Move"].add( new EventDelegate(this, &Widget::onCursor_Move) );
-		getEvents()["Cursor_Press"].add( new EventDelegate(this, &Widget::onCursor_Press) );
-		getEvents()["Cursor_Release"].add( new EventDelegate(this, &Widget::onCursor_Release) );
-		getEvents()["Cursor_Hidden"].add( new EventDelegate(this, &Widget::onCursor_Hidden) );
-		getEvents()["Cursor_Shown"].add( new EventDelegate(this, &Widget::onCursor_Shown) );
+		getEvents().createEvent( "Attached" );
+		getEvents().createEvent( "Detached" );
+		getEvents()["Attached"].add( new EventDelegate( this, &Widget::onAttached ) );
+		getEvents()["Detached"].add( new EventDelegate( this, &Widget::onDetached ) );
+		getEvents().createEvent( "Draw" );
+		getEvents().createEvent( "Invalidated" );
+		getEvents()["Draw"].add( new EventDelegate( this, &Widget::onDraw ) );
+		getEvents()["Invalidated"].add( new EventDelegate( this, &Widget::onInvalidated ) );
+		getEvents().createEvent( "Cursor_Move" );
+		getEvents().createEvent( "Cursor_Press" );
+		getEvents().createEvent( "Cursor_Release" );
+		getEvents().createEvent( "Cursor_Hidden" );
+		getEvents().createEvent( "Cursor_Shown" );
+		getEvents()["Cursor_Move"].add( new EventDelegate( this, &Widget::onCursor_Move ) );
+		getEvents()["Cursor_Press"].add( new EventDelegate( this, &Widget::onCursor_Press ) );
+		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Widget::onCursor_Release ) );
+		getEvents()["Cursor_Hidden"].add( new EventDelegate( this, &Widget::onCursor_Hidden ) );
+		getEvents()["Cursor_Shown"].add( new EventDelegate( this, &Widget::onCursor_Shown ) );
 	}
 	//############################################################################
 	Widget::~Widget() {
@@ -138,19 +138,19 @@ namespace OpenGUI {
 	/*! Alpha is clamped to 0.0f through 1.0f. Passing values outside of this
 	range will result in alpha being set to either 0.0f or 1.0f, whichever is
 	closer.
-	
+
 	In the case of Widgets that contain other Widgets, alpha of the parent is
 	also applied to the children in a multiplicative fashion. In other words,
 	if both the parent and child Widgets are set to 50% alpha, at final output the 
 	parent will draw at 50% alpha, and the child will draw at 25% alpha.
 	\n (50% * 50% = 25%) */
-	void Widget::setAlpha( float alpha ){
-		if( alpha < 0.0f ) alpha = 0.0f;
-		if( alpha > 1.0f ) alpha = 1.0f;
+	void Widget::setAlpha( float alpha ) {
+		if ( alpha < 0.0f ) alpha = 0.0f;
+		if ( alpha > 1.0f ) alpha = 1.0f;
 		mAlpha = alpha;
 	}
 	//############################################################################
-	float Widget::getAlpha(){
+	float Widget::getAlpha() {
 		return mAlpha;
 	}
 	//############################################################################
@@ -213,42 +213,42 @@ namespace OpenGUI {
 		getEvents()["Detached"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::onDraw( Object* sender, EventArgs& evtArgs ){
+	void Widget::onDraw( Object* sender, EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onInvalidated( Object* sender, EventArgs& evtArgs ){
+	void Widget::onInvalidated( Object* sender, EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 		/* If we were a caching object, we should invalidate our cache here */
 	}
 	//############################################################################
-	void Widget::eventDraw(){
+	void Widget::eventDraw() {
 		EventArgs event;
 		getEvents()["Draw"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::eventInvalidated(){
+	void Widget::eventInvalidated() {
 		EventArgs event;
 		getEvents()["Invalidated"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Widget::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Widget::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Widget::onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ){
+	void Widget::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
@@ -259,7 +259,7 @@ namespace OpenGUI {
 	\param xPos X position of the cursor 
 	\param yPos Y position of the cursor 
 	*/
-	void Widget::eventCursor_Move( float xPos, float yPos ){
+	void Widget::eventCursor_Move( float xPos, float yPos ) {
 		EventArgs event;
 		getEvents()["Cursor_Move"].invoke( this, event );
 	}
@@ -271,7 +271,7 @@ namespace OpenGUI {
 	\param xPos X position of the cursor 
 	\param yPos Y position of the cursor 
 	*/
-	void Widget::eventCursor_Press( float xPos, float yPos ){
+	void Widget::eventCursor_Press( float xPos, float yPos ) {
 		EventArgs event;
 		getEvents()["Cursor_Press"].invoke( this, event );
 	}
@@ -283,13 +283,13 @@ namespace OpenGUI {
 	\param xPos X position of the cursor 
 	\param yPos Y position of the cursor 
 	*/
-	void Widget::eventCursor_Release( float xPos, float yPos ){
+	void Widget::eventCursor_Release( float xPos, float yPos ) {
 		EventArgs event;
 		getEvents()["Cursor_Release"].invoke( this, event );
 	}
 	//############################################################################
 	/*! Containers should not cull this message. */
-	void Widget::eventCursor_Hidden(){
+	void Widget::eventCursor_Hidden() {
 		EventArgs event;
 		getEvents()["Cursor_Hidden"].invoke( this, event );
 	}
@@ -299,10 +299,10 @@ namespace OpenGUI {
 	\param xPos X position of the cursor 
 	\param yPos Y position of the cursor 
 	*/
-	void Widget::eventCursor_Shown( float xPos, float yPos ){
+	void Widget::eventCursor_Shown( float xPos, float yPos ) {
 		EventArgs event;
 		getEvents()["Cursor_Shown"].invoke( this, event );
 	}
 	//############################################################################
-	
+
 }//namespace OpenGUI{
