@@ -2,8 +2,21 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_System.h"
 #include "OpenGUI_Renderer.h"
+#include "OpenGUI_Brush.h"
 
 namespace OpenGUI {
+	class ScreenBrush: public Brush{
+	public:
+		ScreenBrush(Screen* screenPtr):mScreen(screenPtr){}
+		virtual ~ScreenBrush(){}
+	protected:
+		virtual void appendRenderOperation( RenderOperation& renderOp ){
+			Renderer::getSingleton().doRenderOperation( renderOp );
+		}
+	private:
+		Screen* mScreen;
+	};
+
 	//############################################################################
 	Screen::Screen( const std::string& screenName, const FVector2& initialSize ) {
 		mName = screenName;
@@ -108,7 +121,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		Brush b;
+		ScreenBrush b(this);
 		WidgetCollection::iterator iter = Children.begin();
 		while( iter != Children.end() ){
 			iter->eventDraw( b );
