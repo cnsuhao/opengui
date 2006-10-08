@@ -22,13 +22,34 @@ namespace OpenGUI {
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
-		/*
 		if ( renderOp.texture ) {
-			glBindTexture( GL_TEXTURE_2D, static_cast<OGLTexture*>( renderOp.texture )->textureId );
+			glBindTexture( GL_TEXTURE_2D, static_cast<OGLTexture*>( renderOp.texture.get() )->textureId );
 		} else {
 			glBindTexture( GL_TEXTURE_2D, 0 );
 		}
 
+		if( renderOp.triangleList ){
+			
+			glBegin( GL_TRIANGLES );
+
+			TriangleList& tl = *(renderOp.triangleList);
+			for( TriangleList::iterator iter = tl.begin();
+				iter != tl.end(); iter++ ){
+				Triangle& t = (*iter);
+				for(int i = 0; i < 3; i++){
+					glColor4f(	t.vertex[i].color.Red,
+						t.vertex[i].color.Green,
+						t.vertex[i].color.Blue,
+						t.vertex[i].color.Alpha );
+					glTexCoord2f( t.vertex[i].textureUV.x, t.vertex[i].textureUV.y );
+					glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
+				}
+			}
+
+			glEnd();
+
+		}
+/*
 		glBegin( GL_TRIANGLES );
 		//point 1
 		glColor4f(	renderOp.vertices[0].color.Red,
@@ -51,8 +72,7 @@ namespace OpenGUI {
 				   renderOp.vertices[2].color.Alpha );
 		glTexCoord2f( renderOp.vertices[2].textureUV.x, renderOp.vertices[2].textureUV.y );
 		glVertex3f( renderOp.vertices[2].position.x, renderOp.vertices[2].position.y, 0.0f );
-		glEnd();
-		*/
+		glEnd();*/
 	}
 	//###########################################################
 	void OGLRenderer::preRenderSetup() {
