@@ -222,9 +222,16 @@ namespace OpenGUI {
 		/* If we were a caching object, we should invalidate our cache here */
 	}
 	//############################################################################
-	void Widget::eventDraw() {
-		EventArgs event;
+	void Widget::eventDraw( Brush& brush ) {
+		Draw_EventArgs event( brush );
 		getEvents()["Draw"].invoke( this, event );
+
+		//debug
+		brush.pushAlpha( 0.5f );
+		brush.pushPosition( 10, 10 );
+		brush.pushColor( Color::PresetBlue() );
+		brush.pushColor( Color::PresetRed() );
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 1.0f, 1.0f ) );
 	}
 	//############################################################################
 	void Widget::eventInvalidated() {

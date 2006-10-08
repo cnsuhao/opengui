@@ -70,11 +70,11 @@ namespace OpenGUI {
 	//############################################################################
 	void Brush::addRenderOperation( RenderOperation& renderOp ) {
 		mModifierStack.applyStack( renderOp );
-		OG_NYI;
+		appendRenderOperation ( renderOp );
 	}
 	//############################################################################
-	void Brush::processRenderOperation( RenderOperation& renderOp ) {
-		/**/
+	void Brush::appendRenderOperation( RenderOperation& renderOp ) {
+		/* This is overridden by more specific brush classes */
 	}
 	//############################################################################
 	//############################################################################

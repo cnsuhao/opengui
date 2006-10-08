@@ -104,7 +104,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushModifierStack::push( BrushModifier* modifier ) {
-		mStack.push_back( modifier );
+		mStack.push_front( modifier );
 	}
 	//############################################################################
 	void BrushModifierStack::push( const BrushModifier_Rotation& modifier ) {
@@ -145,7 +145,7 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushModifierStack::pop() {
 		BrushModifier* tmp = mStack.back();
-		mStack.pop_back();
+		mStack.pop_front();
 		delete tmp;
 	}
 	//############################################################################
@@ -154,10 +154,26 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushModifierStack::applyStack( RenderOperation& in_out ) {
+		//reset stickies
+		mStickColor = false;
+		mStickMask = false;
+
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
 				iter != mStack.end(); iter++ ) {
 			BrushModifier* mod = ( *iter );
-			mod->apply( in_out );
+			if( mod->getType() == BrushModifier::COLOR ){
+				if(! mStickColor ) {
+					mStickColor = true;
+					mod->apply( in_out );
+				}
+			} else if ( mod->getType() == BrushModifier::MASK ) {
+				if( !mStickMask ){
+					mStickMask = true;
+					mod->apply( in_out );
+				}
+			}else{
+				mod->apply( in_out );
+			}
 		}
 	}
 

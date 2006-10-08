@@ -104,8 +104,8 @@ namespace OpenGUI {
 		//! Widget was removed from a container
 		virtual void eventDetached( I_WidgetContainer* prevParent );
 
-		//! Draw this object
-		virtual void eventDraw();
+		//! Draw this object using the given brush
+		virtual void eventDraw( Brush& brush );
 		//! Widget was invalidated and will need to be redrawn next Screen::update()
 		virtual void eventInvalidated();
 

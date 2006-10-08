@@ -107,7 +107,8 @@ namespace OpenGUI {
 		void push( const BrushModifier_Mask& modifier );
 		//! push a copy of the given modifier onto the stack
 		void push( const BrushModifier_ClipRect& modifier );
-		//! push a copy of the given modifier onto the stack
+		//! push the given modifier onto the stack
+		/*! Takes ownership of the memory (will delete internally) */
 		void push( BrushModifier* modifier );
 
 		//! pop the top modifier off the stack
@@ -119,6 +120,9 @@ namespace OpenGUI {
 	private:
 		typedef std::list<BrushModifier*> BrushModifierPtrStack;
 		BrushModifierPtrStack mStack;
+
+		bool mStickColor; // state variable for holding if sticky color has already been applied
+		bool mStickMask;  // state variable for holding if sticky mask has already been applied
 	};
 
 
