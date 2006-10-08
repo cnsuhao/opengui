@@ -158,11 +158,21 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void I_WidgetContainer::notifyChildAdded( Widget* widgetPtr ) {
-		widgetPtr->eventAttached( this );
+		eventChildAttached( this, widgetPtr );
+		widgetPtr->eventAttached( this, widgetPtr );
 	}
 	//############################################################################
 	void I_WidgetContainer::notifyChildRemoved( Widget* widgetPtr ) {
-		widgetPtr->eventDetached( this );
+		eventChildDetached( this, widgetPtr );
+		widgetPtr->eventDetached( this, widgetPtr );
+	}
+	//############################################################################
+	void I_WidgetContainer::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void I_WidgetContainer::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
 }

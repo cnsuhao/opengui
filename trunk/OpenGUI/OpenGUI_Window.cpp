@@ -39,7 +39,7 @@ namespace OpenGUI {
 	class Window_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		Window_ObjectAccessorList() {
-			//addAccessor( &gWidget_Name_ObjectProperty );
+			/* Currently has no accessors to bind */
 		}
 		~Window_ObjectAccessorList() {}
 	}

@@ -147,6 +147,10 @@ namespace OpenGUI {
 		//! Collection of contained children Widget objects
 		WidgetCollection Children;
 	protected:
+		//! Container had a child attached
+		virtual void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
+		//! Container had a child detached
+		virtual void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
 
 	private:
 		//! automatically called by Widget during destruction to notify us so we can remove its entry
