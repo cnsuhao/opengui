@@ -4,14 +4,13 @@
 namespace OpenGUI {
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
-		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
-				iter != mCollectionObjects.end(); iter++ ) {
-			WidgetCollectionItem* ptr = ( *iter );
-			if ( ptr ) {
-				if ( ptr->own && ptr->widgetPtr )
-					delete ptr->widgetPtr;
-				delete ptr;
-			}
+		while( mCollectionObjects.size() > 0 ){
+			WidgetCollectionItem* ptr = mCollectionObjects.front();
+			bool own = ptr->own;
+			Widget* w = ptr->widgetPtr;
+			remove( w );
+			if( own )
+				delete w;
 		}
 	}
 	//############################################################################

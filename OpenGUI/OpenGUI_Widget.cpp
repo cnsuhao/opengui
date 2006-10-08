@@ -228,10 +228,16 @@ namespace OpenGUI {
 
 		//debug
 		brush.pushAlpha( 0.5f );
-		brush.pushPosition( 10, 10 );
-		brush.pushColor( Color::PresetBlue() );
+		//brush.pushPosition( 10, 10 );
+		
 		brush.pushColor( Color::PresetRed() );
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 1.0f, 1.0f ) );
+		brush.Primitive.drawRect( FRect( 0.5f, 0.5f, 1.0f, 1.0f ) );
+		
+		brush.pushPosition( 0.25 , 0.25 );
+		brush.pushRotation( Degree(25) );
+		brush.pushColor( Color::PresetBlue() );
+
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.25f, 0.25f ) );
 	}
 	//############################################################################
 	void Widget::eventInvalidated() {
