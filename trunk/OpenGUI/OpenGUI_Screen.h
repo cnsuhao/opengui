@@ -39,7 +39,7 @@ namespace OpenGUI {
 		void injectCursorRelease();
 		//! Injects cursor press/release at the last known cursor position using built in state logic
 		void injectCursorPress_State( bool pressed );
-		
+
 //@}
 
 		//! returns the name of this Screen

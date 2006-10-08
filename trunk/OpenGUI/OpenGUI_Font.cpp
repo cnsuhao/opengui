@@ -155,7 +155,7 @@ namespace OpenGUI {
 		// otherwise, we need to scale our results according to the scale differences of
 		// the native res vs the current res
 		//! \todo fix me!
-		IVector2 screenRes = IVector2(800,600); // = System::getSingleton().getScreenResolution();
+		IVector2 screenRes = IVector2( 800, 600 ); // = System::getSingleton().getScreenResolution();
 		FVector2 scaleFactor;
 		scaleFactor.x = screenRes.x / ( float ) mNativeXres;
 		scaleFactor.y = screenRes.y / ( float ) mNativeYres;

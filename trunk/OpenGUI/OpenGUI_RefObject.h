@@ -81,7 +81,7 @@ namespace OpenGUI {
 
 		//! The usual *Handle resolving
 		OBJECT& operator*() const {
-			return *( dynamic_cast<OBJECT*>(m_Handle) );
+			return *( dynamic_cast<OBJECT*>( m_Handle ) );
 		}
 		//! The usual Handle->something resolving
 		OBJECT* operator->() const {

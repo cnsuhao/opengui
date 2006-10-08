@@ -34,7 +34,7 @@ namespace OpenGUI {
 	public:
 		//! Constructor requires the X and Y position of the cursor
 		Cursor_EventArgs( float x_pos, float y_pos ):
-		  Position(x_pos,y_pos), X(Position.x), Y(Position.y) {}
+				Position( x_pos, y_pos ), X( Position.x ), Y( Position.y ) {}
 		virtual ~Cursor_EventArgs() {}
 		//! The cursor position
 		const FVector2 Position;

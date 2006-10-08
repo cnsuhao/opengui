@@ -411,12 +411,12 @@ namespace OpenGUI {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::eventTargeted(){
+	void Control::eventTargeted() {
 		EventArgs eventArgs;
 		getEvents()["Targeted"].invoke( this, eventArgs );
 	}
 	//############################################################################
-	void Control::eventUnTargeted(){
+	void Control::eventUnTargeted() {
 		EventArgs eventArgs;
 		getEvents()["UnTargeted"].invoke( this, eventArgs );
 	}

@@ -84,7 +84,7 @@ namespace OpenGUI {
 		void unloadPlugin( std::string filename );
 
 		//! Updates all screens that need it via ScreenManager::updateScreens()
-		/*! This function also takes care of calling _preUpdate() and _postUpdate(). 
+		/*! This function also takes care of calling _preUpdate() and _postUpdate().
 			If you plan on updating Screens individually, or by calling
 			ScreenManager::updateScreens() yourself, you will need to call _preUpdate()
 			before you begin updating Screens, and _postUpdate() when you are done

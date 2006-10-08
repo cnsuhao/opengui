@@ -25,7 +25,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! \warning pushMarker and popMarker are \b dangerous. They are used internally
 	within %OpenGUI and really should not be required by any Widgets for drawing.
-	
+
 	When popping back to a marker, if the given marker cannot be found the
 	entire stack will be popped as a result of looking for it. If a marker is
 	found while popping that is not the marker given, an exception will be thrown.
