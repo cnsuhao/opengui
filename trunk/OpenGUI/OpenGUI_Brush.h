@@ -217,8 +217,12 @@ namespace OpenGUI {
 		//! Pops the last modifier off the stack
 		void pop();
 
-		//! returns the drawing area that this brush
-		const FRect& getDrawArea();
+		//! Returns the size of the drawing area that this brush works within
+		virtual const FVector2& getDrawSize() const;
+		//! returns the PPU (pixels per unit) of this Brush. \see Screen::getPPU()
+		virtual const FVector2& getPPU() const;
+		//! Returns the UPI (units per inch) of this Brush. \see Screen::getUPI()
+		virtual const IVector2& getUPI() const;
 		//const IRect& getDrawArea_Pixels();
 
 	protected:
@@ -227,6 +231,10 @@ namespace OpenGUI {
 		output with this function. */
 		virtual void appendRenderOperation( RenderOperation& renderOp );
 
+		//! Marks this brush as the active brush
+		void markActive();
+		//! returns \c true if this is marked as the active brush
+		bool isActive();
 	private:
 		//! \internal Adds the given render operation to the brush's output.
 		/*! This is used by the brush primitives to send rendering output.
@@ -236,6 +244,8 @@ namespace OpenGUI {
 		void addRenderOperation( RenderOperation& renderOp );
 
 		BrushModifierStack mModifierStack;
+
+		static Brush* ActiveBrush;
 	};
 
 
