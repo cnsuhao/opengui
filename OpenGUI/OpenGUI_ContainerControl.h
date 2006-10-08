@@ -11,6 +11,11 @@
 namespace OpenGUI {
 
 	//! base class for all Controls that are also containers
+	/*!
+	\par Events
+	- ChildAttached (onChildAttached, eventChildAttached)
+	- ChildDetached (onChildDetached, eventChildDetached)
+	*/
 	class OPENGUI_API ContainerControl : public Control, public I_WidgetContainer {
 	public:
 		//! public constructor
@@ -18,15 +23,18 @@ namespace OpenGUI {
 		//! public destructor
 		virtual ~ContainerControl();
 
-
-		//! containercontrol
-		void containercontrol();
-
-
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
+
 	protected:
+		//! "ChildAttached" event
+		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
+		//! "ChildDetached" event
+		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
+		virtual void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
+		virtual void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
+
 	private:
 	};
 

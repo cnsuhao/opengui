@@ -100,9 +100,9 @@ namespace OpenGUI {
 //!\name Event Processors
 //@{
 		//! Widget was attached to a container
-		virtual void eventAttached( I_WidgetContainer* newParent );
+		virtual void eventAttached( I_WidgetContainer* newParent, Widget* widget );
 		//! Widget was removed from a container
-		virtual void eventDetached( I_WidgetContainer* prevParent );
+		virtual void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
 
 		//! Draw this object using the given brush
 		virtual void eventDraw( Brush& brush );

@@ -148,6 +148,7 @@ namespace OpenGUI {
 		if ( alpha < 0.0f ) alpha = 0.0f;
 		if ( alpha > 1.0f ) alpha = 1.0f;
 		mAlpha = alpha;
+		invalidate(); // need to invalidate caches for alpha change
 	}
 	//############################################################################
 	float Widget::getAlpha() {
@@ -203,13 +204,13 @@ namespace OpenGUI {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::eventAttached( I_WidgetContainer* newParent ) {
-		Attach_EventArgs event( newParent );
+	void Widget::eventAttached( I_WidgetContainer* newParent, Widget* widget ) {
+		Attach_EventArgs event( newParent, widget );
 		getEvents()["Attached"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::eventDetached( I_WidgetContainer* prevParent ) {
-		Attach_EventArgs event( prevParent );
+	void Widget::eventDetached( I_WidgetContainer* prevParent, Widget* widget ) {
+		Attach_EventArgs event( prevParent, widget );
 		getEvents()["Detached"].invoke( this, event );
 	}
 	//############################################################################

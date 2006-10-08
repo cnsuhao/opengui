@@ -11,22 +11,31 @@ namespace OpenGUI {
 	class Object; //forward declaration
 	class EventHandlerList; //forward declaration
 	class I_WidgetContainer; //forward declaration
+	class Widget; //forward declaration
 
 	//! Base class for event arguments
 	class OPENGUI_API EventArgs {
 	public:
 		//! virtual destructor to support polymorphism
-		virtual ~EventArgs() {}
+		virtual ~EventArgs() {
+			/**/
+		}
 	};
 
 	//! Specialization of EventArgs for Attach/Detach events
 	class OPENGUI_API Attach_EventArgs: public EventArgs {
 	public:
 		//! Constructor requires a pointer to the parent being attached/detached to/from
-		Attach_EventArgs( I_WidgetContainer* parent ): parent( parent ) {}
-		virtual ~Attach_EventArgs() {}
+		Attach_EventArgs( I_WidgetContainer* parent, Widget* child ): parent( parent ), child( child ) {
+			/**/
+		}
+		virtual ~Attach_EventArgs() {
+			/**/
+		}
 		//! Pointer to the parent being attached/detached to/from
 		const I_WidgetContainer* parent;
+		//! Pointer to the child that was attached/detached
+		const Widget* child;
 	};
 
 	//! Specialization of EventArgs for Cursor events
@@ -34,8 +43,12 @@ namespace OpenGUI {
 	public:
 		//! Constructor requires the X and Y position of the cursor
 		Cursor_EventArgs( float x_pos, float y_pos ):
-				Position( x_pos, y_pos ), X( Position.x ), Y( Position.y ) {}
-		virtual ~Cursor_EventArgs() {}
+				Position( x_pos, y_pos ), X( Position.x ), Y( Position.y ) {
+					/**/
+				}
+		virtual ~Cursor_EventArgs() {
+			/**/
+		}
 		//! The cursor position
 		const FVector2 Position;
 		//! The cursor X position
