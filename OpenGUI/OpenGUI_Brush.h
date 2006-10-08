@@ -109,17 +109,20 @@ namespace OpenGUI {
 		you have already performed, it will only affect new operations.
 
 		\par
-		Each brush is created with a completely empty modifier stack.
+		Each brush is created with a completely empty modifier stack. That doesn't mean
+		that the brush you may have received in a draw function has an empty stack (as the
+		caller will likely have initialized the brush with some stack pushes) 
 
 		\par
-		The stack is always unwound from bottom to top. (The last modifier you
-		pushed is evaluated last.) This is important because certain modifiers are additive,
-		while others are replacing. For instance, the color modifier is replacing.
-		When the stack is unwound and a color modifier is found, it replaces the
-		previously used color. However, once that new color modifier is popped, the
-		previous color will once again be in effect. Conversely, the position modifier is
-		additive. So multiple pushed position modifiers will result in an overall origin
-		translation that equals their sum.
+		The stack is always processed from top to bottom. (The last modifier you
+		pushed is applied first, and the first modifier pushed is applied last.)
+		Also, certain stack modifiers are "sticky". This means that the first one of
+		these "sticky" modifiers evaluated will be the only modifier of that type that
+		is evaluated. For instance, color is sticky. If you push the color Blue and then
+		later push the color Red, the output will be Red (not purple) until the Red is
+		popped, at which time the color will return to Blue. Conversely, the position
+		modifier is additive. So multiple pushed position modifiers will result in an overall
+		origin translation that equals their sum.
 
 		\par
 		Another important concept to understand is that stack operations are
@@ -137,7 +140,6 @@ namespace OpenGUI {
 		into performance issues.
 
 		\par Position Modifier:
-		 - Type: Additive
 		 - Function: pushPosition()
 
 		\par
@@ -146,7 +148,6 @@ namespace OpenGUI {
 		the given position.
 
 		\par Rotation Modifier:
-		- Type: Additive
 		- Function: pushRotation()
 
 		\par
@@ -155,7 +156,7 @@ namespace OpenGUI {
 
 
 		\par Color Modifier:
-		- Type: Replacing
+		- \b sticky
 		- Function: pushColor()
 
 		\par
@@ -163,7 +164,6 @@ namespace OpenGUI {
 		If no color has ever been pushed, the default color is Color(1.0, 1.0, 1.0, 1.0)
 
 		\par Clipping Rect Modifier:
-		- Type: Additive
 		- Function: pushClippingRect()
 
 		\par
@@ -173,7 +173,7 @@ namespace OpenGUI {
 
 
 		\par Mask Modifier:
-		- Type: Replacing
+		- \b sticky
 		- Function: pushMask(), pushMaskUnscaled()
 
 		\par
@@ -226,6 +226,8 @@ namespace OpenGUI {
 			this function.
 		*/
 		void addRenderOperation( RenderOperation& renderOp );
+
+		virtual void processRenderOperation( RenderOperation& renderOp );
 	private:
 		BrushModifierStack mModifierStack;
 	};
