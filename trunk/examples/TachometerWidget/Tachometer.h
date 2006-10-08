@@ -31,10 +31,6 @@ namespace OpenGUI{
 
 			static Widget* createTachometerFactory();
 		protected:
-			virtual Render::RenderOperationList buildWidgetRenderOpList();
-
-			virtual bool defaultMessageHandler(const Msg::Message &message);
-
 			ImageryPtr mBGImageryPtr;
 			ImageryPtr mNeedleImageryPtr;
 			FVector2 mNeedlePivot; //where the needle pivots/attaches in the background imagery
@@ -47,28 +43,7 @@ namespace OpenGUI{
 			float mMaxValueAngle;
 
 		private:
- 			static bool _prop_SetBGImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
- 			static bool _prop_GetBGImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetNeedleImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetNeedleAnchor(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleAnchor(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetNeedlePivot(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedlePivot(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-
-			static bool _prop_SetNeedleValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-
-
-			static bool _prop_SetNeedleMinValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleMinValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-
-			static bool _prop_SetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue);
-			static bool _prop_SetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr);
-			static bool _prop_GetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue);
+ 			
 };
 	};//namespace Widgets{
 };//namespace OpenGUI{

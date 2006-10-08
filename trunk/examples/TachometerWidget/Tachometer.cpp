@@ -13,17 +13,17 @@ namespace OpenGUI{
 			float mMaxValue = 0.0f;
 			float mMaxValueAngle = 0.0f;
 
-			PropertySet_BindProperty("BGImagery", OpenGUI::PT_STRING, &Tachometer::_prop_SetBGImagery, &Tachometer::_prop_GetBGImagery );
-			PropertySet_BindProperty("NeedleImagery", OpenGUI::PT_STRING, &Tachometer::_prop_SetNeedleImagery, &Tachometer::_prop_GetNeedleImagery );
-			PropertySet_BindProperty("NeedlePivot", OpenGUI::PT_FVECTOR2, &Tachometer::_prop_SetNeedlePivot, &Tachometer::_prop_GetNeedlePivot );
-			PropertySet_BindProperty("NeedleAnchor", OpenGUI::PT_FVECTOR2, &Tachometer::_prop_SetNeedleAnchor, &Tachometer::_prop_GetNeedleAnchor );
+			BGImagery
+			NeedleImagery
+			NeedlePivot
+			NeedleAnchor
 
-			PropertySet_BindProperty("NeedleMinValue", OpenGUI::PT_FLOAT, &Tachometer::_prop_SetNeedleMinValue, &Tachometer::_prop_GetNeedleMinValue );
-			PropertySet_BindProperty("NeedleMaxValue", OpenGUI::PT_FLOAT, &Tachometer::_prop_SetNeedleMaxValue, &Tachometer::_prop_GetNeedleMaxValue );
-			PropertySet_BindProperty("NeedleMinAngle", OpenGUI::PT_FLOAT, &Tachometer::_prop_SetNeedleMinAngle, &Tachometer::_prop_GetNeedleMinAngle );
-			PropertySet_BindProperty("NeedleMaxAngle", OpenGUI::PT_FLOAT, &Tachometer::_prop_SetNeedleMaxAngle, &Tachometer::_prop_GetNeedleMaxAngle );
+			NeedleMinValue
+			NeedleMaxValue
+			NeedleMinAngle
+			NeedleMaxAngle
 
-			PropertySet_BindProperty("NeedleValue", OpenGUI::PT_FLOAT, &Tachometer::_prop_SetNeedleValue, &Tachometer::_prop_GetNeedleValue );
+			NeedleValue
 		}
 		//############################################################################
 		Tachometer::~Tachometer()

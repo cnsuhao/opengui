@@ -19,11 +19,10 @@ using namespace OpenGUI;
 void Demo1App::preRun()
 {
 	mScreen = ScreenManager::getSingleton().createScreen("MainScreen", FVector2(800,600) );
-	
-	mScreen = ScreenManager::getSingleton().getScreen("MainScreen");
 
-	Widget* w = new Widget();
+	Widget* w = new Control();
 	w->setName("Blah");
+	w->setProperty( "Name", Value( "TestName" ) );
 
 	mScreen->Children.add_back( w, true );
 /*
