@@ -149,7 +149,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void System::updateScreens() {
+		_preUpdate();
 		mScreenManager->updateScreens();
+		_postUpdate();
 
 		//if ( m_PerformAutoTicks ) //only do this if we aren't getting time injections from the app
 		//	mTimerManager->_DoAutoTickInject();

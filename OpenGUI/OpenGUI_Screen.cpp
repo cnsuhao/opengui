@@ -5,16 +5,42 @@
 #include "OpenGUI_Brush.h"
 
 namespace OpenGUI {
-	class ScreenBrush: public Brush{
+	class ScreenBrush: public Brush {
 	public:
-		ScreenBrush(Screen* screenPtr):mScreen(screenPtr){}
-		virtual ~ScreenBrush(){}
+		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture ):
+				mScreen( screenPtr ), mRenderTexture( renderTexture ) {}
+		virtual ~ScreenBrush() {
+			/**/
+		}
+
+		virtual const FVector2& getDrawSize() const {
+			return mScreen->getSize();
+		}
+		virtual const FVector2& getPPU() const {
+			return mScreen->getPPU();
+		}
+		virtual const IVector2& getUPI() const {
+			return mScreen->getUPI();
+		}
 	protected:
-		virtual void appendRenderOperation( RenderOperation& renderOp ){
+		virtual void appendRenderOperation( RenderOperation& renderOp ) {
+			if ( !isActive() ) {
+				Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
+				markActive();
+			}
+			for ( TriangleList::iterator iter = renderOp.triangleList->begin();
+					iter != renderOp.triangleList->end(); iter++ ) {
+				Triangle& t = ( *iter );
+				for ( int i = 0; i < 3; i++ ) {
+					t.vertex[i].position.x /= getDrawSize().x;
+					t.vertex[i].position.y /= getDrawSize().y;
+				}
+			}
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
 	private:
 		Screen* mScreen;
+		RenderTexturePtr mRenderTexture;
 	};
 
 	//############################################################################
@@ -69,7 +95,7 @@ namespace OpenGUI {
 
 		mSize = newSize;
 		_DirtyPPUcache();
-		
+
 		invalidateAll();
 	}
 	//############################################################################
@@ -77,9 +103,9 @@ namespace OpenGUI {
 		For screens rendering to a render texture, it is the texture size.
 	*/
 	const IVector2& Screen::getRenderTargetSize()const {
-		if(isBound()){
+		if ( isBound() ) {
 			return renderTarget->getSize();
-		}else{
+		} else {
 			return Renderer::getSingleton().getViewportDimensions();
 		}
 	}
@@ -106,30 +132,28 @@ namespace OpenGUI {
 		return !renderTarget.isNull();
 	}
 	//############################################################################
-	void Screen::_notifyViewportDimensionsChanged(){
-		if(!isBound()){
+	void Screen::_notifyViewportDimensionsChanged() {
+		if ( !isBound() ) {
 			invalidateAll();
 		}
 	}
 	//############################################################################
 	void Screen::invalidateAll() {
 		WidgetCollection::iterator iter = Children.begin();
-		while( iter != Children.end() ){
+		while ( iter != Children.end() ) {
 			iter->flush();
 			iter++;
-		}			
+		}
 	}
 	//############################################################################
 	void Screen::update() {
 
-		ScreenBrush b(this);
+		ScreenBrush b( this, 0 );
 		WidgetCollection::iterator iter = Children.begin();
-		while( iter != Children.end() ){
+		while ( iter != Children.end() ) {
 			iter->eventDraw( b );
 			iter++;
 		}
-
-		//OG_NYI;
 	}
 	//############################################################################
 	void Screen::injectCursorMovement( float x_rel, float y_rel ) {
@@ -144,7 +168,7 @@ namespace OpenGUI {
 		mCursorPos.y = y_pos;
 
 		WidgetCollection::iterator iter = Children.begin();
-		while( iter != Children.end() ){
+		while ( iter != Children.end() ) {
 			iter->eventCursor_Move( x_pos, y_pos );
 			iter++;
 		}
@@ -159,7 +183,7 @@ namespace OpenGUI {
 	void Screen::injectCursorPress() {
 		mCursorPressed = true;
 		WidgetCollection::iterator iter = Children.begin();
-		while( iter != Children.end() ){
+		while ( iter != Children.end() ) {
 			iter->eventCursor_Press( mCursorPos.x, mCursorPos.y );
 			iter++;
 		}
@@ -168,15 +192,15 @@ namespace OpenGUI {
 	void Screen::injectCursorRelease() {
 		mCursorPressed = false;
 		WidgetCollection::iterator iter = Children.begin();
-		while( iter != Children.end() ){
+		while ( iter != Children.end() ) {
 			iter->eventCursor_Release( mCursorPos.x, mCursorPos.y );
 			iter++;
 		}
 	}
 	//############################################################################
 	void Screen::injectCursorPress_State( bool pressed ) {
-		if( pressed != mCursorPressed){
-			if( pressed )
+		if ( pressed != mCursorPressed ) {
+			if ( pressed )
 				injectCursorPress();
 			else
 				injectCursorRelease();

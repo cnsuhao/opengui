@@ -2,6 +2,9 @@
 #include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
+	//initialize static variable
+	Brush* Brush::ActiveBrush = 0;
+
 	// BRUSH IMPLEMENTATIONS
 	//############################################################################
 	Brush::Brush() {
@@ -11,7 +14,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	Brush::~Brush() {
-		//OG_NYI;
+		if ( this == ActiveBrush )
+			ActiveBrush = 0;
 	}
 	//############################################################################
 	void Brush::pushPosition( float x_offset, float y_offset ) {
@@ -64,13 +68,29 @@ namespace OpenGUI {
 		mModifierStack.pop();
 	}
 	//############################################################################
-	const FRect& Brush::getDrawArea() {
+	const FVector2& Brush::getDrawSize() const {
 		OG_NYI;
+	}
+	//############################################################################
+	const FVector2& Brush::getPPU() const {
+		OG_NYI;
+	}
+	//############################################################################
+	const IVector2& Brush::getUPI() const {
+		OG_NYI;
+	}
+	//############################################################################
+	void Brush::markActive() {
+		ActiveBrush = this;
+	}
+	//############################################################################
+	bool Brush::isActive() {
+		return this == ActiveBrush;
 	}
 	//############################################################################
 	void Brush::addRenderOperation( RenderOperation& renderOp ) {
 		mModifierStack.applyStack( renderOp );
-		appendRenderOperation ( renderOp );
+		appendRenderOperation( renderOp );
 	}
 	//############################################################################
 	void Brush::appendRenderOperation( RenderOperation& renderOp ) {
