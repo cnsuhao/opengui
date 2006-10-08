@@ -33,6 +33,9 @@ namespace OpenGUI {
 	void System::doConstructor( Renderer* renderer, ResourceProvider* resourceProvider ) {
 		LogManager::SlogMsg( "INIT", OGLL_MSG ) << "OpenGUI (ver ";
 		LogManager::SlogMsg( "INIT", OGLL_MSG ) << OPENGUI_VERSION_STR << ") ";
+#ifdef OPENGUI_DEBUG
+		LogManager::SlogMsg( "INIT", OGLL_MSG ) << "[[[DEBUG]]] ";
+#endif
 		LogManager::SlogMsg( "INIT", OGLL_MSG ) << "http://OpenGUI.SourceForge.net/" << Log::endlog;
 		LogManager::SlogMsg( "INIT", OGLL_INFO ) << "System Init Started" << Log::endlog;
 		mTimerManager = new TimerManager; //get this up asap
@@ -135,6 +138,14 @@ namespace OpenGUI {
 			<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
 
 		mScreenManager->_notifyViewportDimensionsChanged();
+	}
+	//############################################################################
+	void System::_preUpdate(){
+		mRenderer->preRenderSetup();
+	}
+	//############################################################################
+	void System::_postUpdate(){
+		mRenderer->postRenderCleanup();
 	}
 	//############################################################################
 	void System::updateScreens() {
