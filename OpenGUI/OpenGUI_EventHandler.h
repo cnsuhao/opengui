@@ -4,6 +4,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Exception.h"
 #include "OpenGUI_Event.h"
 
 namespace OpenGUI {
@@ -110,7 +111,12 @@ namespace OpenGUI {
 		}
 		_Event_memberFunc( MEMBER memberPtr, CLASS* class_objPtr ): mMemberPtr( memberPtr ), mClassObject( class_objPtr ) {}
 		virtual void fire( Object* sender, EventArgs& args ) const {
-			( mClassObject->*mMemberPtr )( sender, dynamic_cast<ARGS_TYPE&>( args ) );
+			try {
+				ARGS_TYPE& args_spec = dynamic_cast<ARGS_TYPE&>( args );
+				( mClassObject->*mMemberPtr )( sender, args_spec );
+			} catch (std::bad_cast e) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad reference cast in event delegate. Probably failed to upward cast EventArgs to a more specific type.", __FUNCTION__ );
+			}	
 		}
 	private:
 		CLASS* mClassObject;
