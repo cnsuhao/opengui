@@ -188,7 +188,7 @@ namespace OpenGUI {
 		//! Constructor requires a target rendering context
 		Brush( /* Object* context */ );
 		//! Destructor
-		~Brush();
+		virtual ~Brush();
 		//! access to primitive drawing operations
 		BrushPrimitive Primitive;
 		//! access to imagery based drawing operations
@@ -219,6 +219,11 @@ namespace OpenGUI {
 		const FRect& getDrawArea();
 		//const IRect& getDrawArea_Pixels();
 
+		//! Final output RenderOperations are passed to this function.
+		/*! It is up to specialized Brush implementations to capture final
+		output with this function. */
+		virtual void appendRenderOperation( RenderOperation& renderOp );
+
 	protected:
 		//! \internal Adds the given render operation to the brush's output.
 		/*! This is used by the brush primitives to send rendering output.
@@ -227,7 +232,7 @@ namespace OpenGUI {
 		*/
 		void addRenderOperation( RenderOperation& renderOp );
 
-		virtual void processRenderOperation( RenderOperation& renderOp );
+		
 	private:
 		BrushModifierStack mModifierStack;
 	};

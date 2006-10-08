@@ -108,6 +108,12 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
+		Brush b;
+		WidgetCollection::iterator iter = Children.begin();
+		while( iter != Children.end() ){
+			iter->eventDraw( b );
+			iter++;
+		}
 		OG_NYI;
 	}
 	//############################################################################
