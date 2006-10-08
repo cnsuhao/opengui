@@ -201,7 +201,8 @@ namespace OpenGUI {
 		void pushPosition( float x_offset, float y_offset );
 		//! Pushes a position offset onto the stack
 		void pushPosition( const FVector2& offset );
-		//! Pushes a counter clockwise rotation offset onto the stack
+		//! Pushes a rotation offset onto the stack.
+		/*! Positive values result in clockwise rotation. */
 		void pushRotation( const Radian& angle );
 		//! Pushes a new color onto the stack
 		void pushColor( const Color& color );

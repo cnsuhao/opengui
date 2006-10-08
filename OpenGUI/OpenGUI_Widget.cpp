@@ -215,6 +215,42 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
+		//debug
+		static bool rot_dir_up = false;
+		static float rot = 0.0f;
+		if(rot_dir_up){
+			rot += 0.05f;
+			if(rot > 50)
+				rot_dir_up = false;
+		}else{
+			rot -= 0.05f;
+			if(rot < -50)
+				rot_dir_up = true;
+		}
+
+		Brush& brush = evtArgs.brush;
+		brush.pushAlpha( 0.5f );
+		//brush.pushPosition( 10, 10 );
+
+		brush.pushColor( Color::PresetRed() );
+		brush.Primitive.drawRect( FRect( 0.5f, 0.5f, 1.0f, 1.0f ) );
+
+		brush.pushPosition( 0.0f , 0.5f );
+
+		brush.pushRotation( Degree(rot) );
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.25f, 0.05f ) );
+		brush.pushPosition( 0.25f , 0.0f );
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.05f, 0.05f ) );
+		brush.pushRotation( Degree(-rot) );
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.05f, 0.25f ) );
+		brush.pushPosition( 0.0f , 0.25f );
+		
+
+		brush.pushAlpha( 0.5f );
+		brush.pushRotation( Degree(rot * 4) );
+		brush.pushColor( Color::PresetBlue() );
+
+		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.25f, 0.25f ) );
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* sender, EventArgs& evtArgs ) {
@@ -225,19 +261,6 @@ namespace OpenGUI {
 	void Widget::eventDraw( Brush& brush ) {
 		Draw_EventArgs event( brush );
 		getEvents()["Draw"].invoke( this, event );
-
-		//debug
-		brush.pushAlpha( 0.5f );
-		//brush.pushPosition( 10, 10 );
-		
-		brush.pushColor( Color::PresetRed() );
-		brush.Primitive.drawRect( FRect( 0.5f, 0.5f, 1.0f, 1.0f ) );
-		
-		brush.pushPosition( 0.25 , 0.25 );
-		brush.pushRotation( Degree(25) );
-		brush.pushColor( Color::PresetBlue() );
-
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 0.25f, 0.25f ) );
 	}
 	//############################################################################
 	void Widget::eventInvalidated() {

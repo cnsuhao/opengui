@@ -84,7 +84,17 @@ namespace OpenGUI {
 		void unloadPlugin( std::string filename );
 
 		//! Updates all screens that need it via ScreenManager::updateScreens()
+		/*! This function also takes care of calling _preUpdate() and _postUpdate(). 
+			If you plan on updating Screens individually, or by calling
+			ScreenManager::updateScreens() yourself, you will need to call _preUpdate()
+			before you begin updating Screens, and _postUpdate() when you are done
+			updating Screens this pass. */
 		void updateScreens();
+
+		//! Called before any rendering takes place
+		void _preUpdate();
+		//! Called after all rendering has taken place
+		void _postUpdate();
 
 		//! Returns a pointer to the registered ResourceProvider. Apps really shouldn't need, or use, this.
 		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
