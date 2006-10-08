@@ -181,6 +181,7 @@ namespace OpenGUI {
 		You can create alpha masks of any shape and apply them using this modifier.
 	*/
 	class OPENGUI_API Brush {
+		//friend classes to access addRenderOperation
 		friend class BrushText;
 		friend class BrushPrimitive;
 		friend class BrushImagery;
@@ -219,21 +220,20 @@ namespace OpenGUI {
 		const FRect& getDrawArea();
 		//const IRect& getDrawArea_Pixels();
 
+	protected:
 		//! Final output RenderOperations are passed to this function.
 		/*! It is up to specialized Brush implementations to capture final
 		output with this function. */
 		virtual void appendRenderOperation( RenderOperation& renderOp );
 
-	protected:
+	private:
 		//! \internal Adds the given render operation to the brush's output.
 		/*! This is used by the brush primitives to send rendering output.
-			Any modifier stack operations will be automatically applied in
-			this function.
+		Any modifier stack operations will be automatically applied in
+		this function.
 		*/
 		void addRenderOperation( RenderOperation& renderOp );
 
-		
-	private:
 		BrushModifierStack mModifierStack;
 	};
 
