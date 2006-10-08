@@ -5,6 +5,13 @@
 #include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
+	// BRUSHMODIFIER_MARKER IMPLEMENTATIONS
+	//############################################################################
+	//############################################################################
+	void BrushModifier_Marker::apply( RenderOperation& in_out ) {
+	}
+	//############################################################################
+
 	// BRUSHMODIFIER_COLOR IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
@@ -25,11 +32,11 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushModifier_Alpha::apply( RenderOperation& in_out ) {
 		for ( TriangleList::iterator iter = in_out.triangleList->begin();
-			iter != in_out.triangleList->end(); iter++ ) {
-				Triangle& tri = ( *iter );
-				tri.vertex[0].color.Alpha *= mAlpha;
-				tri.vertex[1].color.Alpha *= mAlpha;
-				tri.vertex[2].color.Alpha *= mAlpha;
+				iter != in_out.triangleList->end(); iter++ ) {
+			Triangle& tri = ( *iter );
+			tri.vertex[0].color.Alpha *= mAlpha;
+			tri.vertex[1].color.Alpha *= mAlpha;
+			tri.vertex[2].color.Alpha *= mAlpha;
 		}
 	}
 	//############################################################################
@@ -161,20 +168,44 @@ namespace OpenGUI {
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
 				iter != mStack.end(); iter++ ) {
 			BrushModifier* mod = ( *iter );
-			if( mod->getType() == BrushModifier::COLOR ){
-				if(! mStickColor ) {
+			if ( mod->getType() == BrushModifier::COLOR ) {
+				if ( ! mStickColor ) {
 					mStickColor = true;
 					mod->apply( in_out );
 				}
 			} else if ( mod->getType() == BrushModifier::MASK ) {
-				if( !mStickMask ){
+				if ( !mStickMask ) {
 					mStickMask = true;
 					mod->apply( in_out );
 				}
-			}else{
+			} else {
 				mod->apply( in_out );
 			}
 		}
 	}
+	//############################################################################
+	void BrushModifierStack::pushMarker( void* markerID ) {
+		BrushModifier_Marker* tmp = new BrushModifier_Marker;
+		tmp->mID = markerID;
+		push( tmp );
+	}
+	//############################################################################
+	void BrushModifierStack::popMarker( void* markerID ) {
+		if ( mStack.size() == 0 )
+			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Failed to find stack marker", __FUNCTION__ );
+
+		if ( mStack.front()->getType() == BrushModifier::MARKER ) {
+			BrushModifier_Marker* tmp = dynamic_cast<BrushModifier_Marker*>( mStack.front() );
+			void* t = tmp->mID;
+			if ( t == markerID )
+				pop();
+			else
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Found non-matching stack marker", __FUNCTION__ );
+		} else {
+			pop();
+			popMarker( markerID );
+		}
+	}
+	//############################################################################
 
 }// namespace OpenGUI {

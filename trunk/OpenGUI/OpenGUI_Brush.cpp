@@ -18,6 +18,22 @@ namespace OpenGUI {
 			ActiveBrush = 0;
 	}
 	//############################################################################
+	/*! \see _popMarker() */
+	void Brush::_pushMarker( void* markerID ) {
+		mModifierStack.pushMarker( markerID );
+	}
+	//############################################################################
+	/*! \warning pushMarker and popMarker are \b dangerous. They are used internally
+	within %OpenGUI and really should not be required by any Widgets for drawing.
+	
+	When popping back to a marker, if the given marker cannot be found the
+	entire stack will be popped as a result of looking for it. If a marker is
+	found while popping that is not the marker given, an exception will be thrown.
+	*/
+	void Brush::_popMarker( void* markerID ) {
+		mModifierStack.popMarker( markerID );
+	}
+	//############################################################################
 	void Brush::pushPosition( float x_offset, float y_offset ) {
 		pushPosition( FVector2( x_offset, y_offset ) );
 	}

@@ -22,6 +22,7 @@ namespace OpenGUI {
 		virtual const IVector2& getUPI() const {
 			return mScreen->getUPI();
 		}
+
 	protected:
 		virtual void appendRenderOperation( RenderOperation& renderOp ) {
 			if ( !isActive() ) {
@@ -147,7 +148,6 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-
 		ScreenBrush b( this, 0 );
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {

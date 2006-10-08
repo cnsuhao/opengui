@@ -217,6 +217,11 @@ namespace OpenGUI {
 		//! Pops the last modifier off the stack
 		void pop();
 
+		//! \internal Pushes a marker onto the stack used to pop back to the same marker later.
+		void _pushMarker( void* markerID );
+		//! \internal Pops the stack until the marker with the given \c markerID is found.
+		void _popMarker( void* markerID );
+
 		//! Returns the size of the drawing area that this brush works within
 		virtual const FVector2& getDrawSize() const;
 		//! returns the PPU (pixels per unit) of this Brush. \see Screen::getPPU()
@@ -235,6 +240,7 @@ namespace OpenGUI {
 		void markActive();
 		//! returns \c true if this is marked as the active brush
 		bool isActive();
+
 	private:
 		//! \internal Adds the given render operation to the brush's output.
 		/*! This is used by the brush primitives to send rendering output.
