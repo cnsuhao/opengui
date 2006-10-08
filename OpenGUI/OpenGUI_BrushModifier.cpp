@@ -9,6 +9,7 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	void BrushModifier_Marker::apply( RenderOperation& in_out ) {
+		/**/
 	}
 	//############################################################################
 
@@ -152,6 +153,8 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushModifierStack::pop() {
 		BrushModifier* tmp = mStack.front();
+		if ( tmp->getType() == BrushModifier::MARKER )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot pop stack past marker", __FUNCTION__ );
 		mStack.pop_front();
 		delete tmp;
 	}
@@ -197,9 +200,10 @@ namespace OpenGUI {
 		if ( mStack.front()->getType() == BrushModifier::MARKER ) {
 			BrushModifier_Marker* tmp = dynamic_cast<BrushModifier_Marker*>( mStack.front() );
 			void* t = tmp->mID;
-			if ( t == markerID )
-				pop();
-			else
+			if ( t == markerID ) {
+				mStack.pop_front();
+				delete tmp;
+			} else
 				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Found non-matching stack marker", __FUNCTION__ );
 		} else {
 			pop();
