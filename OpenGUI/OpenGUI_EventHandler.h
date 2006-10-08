@@ -114,9 +114,9 @@ namespace OpenGUI {
 			try {
 				ARGS_TYPE& args_spec = dynamic_cast<ARGS_TYPE&>( args );
 				( mClassObject->*mMemberPtr )( sender, args_spec );
-			} catch (std::bad_cast e) {
+			} catch ( std::bad_cast e ) {
 				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad reference cast in event delegate. Probably failed to upward cast EventArgs to a more specific type.", __FUNCTION__ );
-			}	
+			}
 		}
 	private:
 		CLASS* mClassObject;

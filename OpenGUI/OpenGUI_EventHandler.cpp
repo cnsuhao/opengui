@@ -4,12 +4,12 @@
 
 namespace OpenGUI {
 	//############################################################################
-	EventHandlerList::~EventHandlerList(){
+	EventHandlerList::~EventHandlerList() {
 		for ( EventHandlerSet::iterator iter = mEventHandlerSet.begin();
-			iter != mEventHandlerSet.end();
-			iter++ ) {
-				EventHandler* handler = ( *iter );
-				handler->onEventDestruction();
+				iter != mEventHandlerSet.end();
+				iter++ ) {
+			EventHandler* handler = ( *iter );
+			handler->onEventDestruction();
 		}
 	}
 	//############################################################################

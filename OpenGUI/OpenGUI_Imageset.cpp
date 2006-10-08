@@ -92,7 +92,7 @@ namespace OpenGUI {
 			iter++;
 		}
 		std::stringstream ss;
-		ss << "(0x" << (unsigned int) pImagery << ") " << pImagery->getName();
+		ss << "(0x" << ( unsigned int ) pImagery << ") " << pImagery->getName();
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Could not find Imagery: " + ss.str(), "Imageset::destroyImagery" );
 	}
 	//############################################################################

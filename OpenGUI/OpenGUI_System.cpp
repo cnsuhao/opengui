@@ -57,7 +57,7 @@ namespace OpenGUI {
 		}
 
 		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: "
-			<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
+		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
 
 		m_PluginManager = new PluginManager;
 
@@ -135,16 +135,16 @@ namespace OpenGUI {
 	//############################################################################
 	void System::notifyViewportDimensionsChanged() {
 		LogManager::SlogMsg( "System", OGLL_INFO3 ) << "Changed Viewport Resolution: "
-			<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
+		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
 
 		mScreenManager->_notifyViewportDimensionsChanged();
 	}
 	//############################################################################
-	void System::_preUpdate(){
+	void System::_preUpdate() {
 		mRenderer->preRenderSetup();
 	}
 	//############################################################################
-	void System::_postUpdate(){
+	void System::_postUpdate() {
 		mRenderer->postRenderCleanup();
 	}
 	//############################################################################

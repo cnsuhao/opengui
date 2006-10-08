@@ -19,8 +19,7 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	//############################################################################
-	ImageryManager::ImageryManager( ResourceProvider* resourceProvider ): mResourceProvider(resourceProvider)
-	{
+	ImageryManager::ImageryManager( ResourceProvider* resourceProvider ): mResourceProvider( resourceProvider ) {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ImageryManager" << Log::endlog;
 	}
 	//############################################################################

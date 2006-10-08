@@ -4,12 +4,12 @@
 namespace OpenGUI {
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
-		while( mCollectionObjects.size() > 0 ){
+		while ( mCollectionObjects.size() > 0 ) {
 			WidgetCollectionItem* ptr = mCollectionObjects.front();
 			bool own = ptr->own;
 			Widget* w = ptr->widgetPtr;
 			remove( w );
-			if( own )
+			if ( own )
 				delete w;
 		}
 	}

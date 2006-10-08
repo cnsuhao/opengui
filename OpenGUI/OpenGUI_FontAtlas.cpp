@@ -55,7 +55,7 @@ namespace OpenGUI {
 		ss << "__FontAtlas:" << ( unsigned int ) this;
 
 		TexturePtr tex = TextureManager::getSingleton().createTextureFromTextureData( ss.str(), &mTextureData );
-		
+
 		mImageset = ImageryManager::getSingleton().createImagesetFromTexture( tex, ss.str() );
 
 		if ( !mImageset ) {
