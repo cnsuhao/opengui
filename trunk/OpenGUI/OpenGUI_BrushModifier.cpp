@@ -52,7 +52,7 @@ namespace OpenGUI {
 			for ( int i = 0; i < 3; i++ ) {
 				Vertex& vert = tri.vertex[i];
 				float x = vert.position.x;
-				float y = vert.position.x;
+				float y = vert.position.y;
 				vert.position.x = preCos * x - preSin * y;
 				vert.position.y = preSin * x + preCos * y;
 			}
@@ -144,7 +144,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushModifierStack::pop() {
-		BrushModifier* tmp = mStack.back();
+		BrushModifier* tmp = mStack.front();
 		mStack.pop_front();
 		delete tmp;
 	}

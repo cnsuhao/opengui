@@ -121,13 +121,15 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
+		Renderer::getSingleton().preRenderSetup();
 		ScreenBrush b(this);
 		WidgetCollection::iterator iter = Children.begin();
 		while( iter != Children.end() ){
 			iter->eventDraw( b );
 			iter++;
 		}
-		OG_NYI;
+		Renderer::getSingleton().postRenderCleanup();
+		//OG_NYI;
 	}
 	//############################################################################
 	void Screen::injectCursorMovement( float x_rel, float y_rel ) {
