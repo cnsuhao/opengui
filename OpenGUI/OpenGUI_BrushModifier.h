@@ -22,10 +22,21 @@ namespace OpenGUI {
 			COLOR,
 			ALPHA,
 			MASK,
-			CLIPRECT
+			CLIPRECT,
+			MARKER
 		};
 		virtual ModifierType getType() = 0;
 		virtual void apply( RenderOperation& in_out ) = 0;
+	};
+	//############################################################################
+	//! \internal Marker modifier used to mark the stack size for guaranteed pop-backs
+	class OPENGUI_API BrushModifier_Marker : public BrushModifier {
+	public:
+		virtual ModifierType getType() {
+			return MARKER;
+		}
+		void* mID;
+		virtual void apply( RenderOperation& in_out );
 	};
 	//############################################################################
 	//! \internal Color modifier stored by modifier stack
@@ -110,6 +121,11 @@ namespace OpenGUI {
 		//! push the given modifier onto the stack
 		/*! Takes ownership of the memory (will delete internally) */
 		void push( BrushModifier* modifier );
+
+		//! push a stack marker
+		void pushMarker( void* markerID );
+		//! pop back to the stack marker
+		void popMarker( void* markerID );
 
 		//! pop the top modifier off the stack
 		void pop();

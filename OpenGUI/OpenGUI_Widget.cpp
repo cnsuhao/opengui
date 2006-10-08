@@ -215,48 +215,6 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
-		//debug
-		static bool rot_dir_up = false;
-		static float rot = 0.0f;
-		if(rot_dir_up){
-			rot += 0.08f;
-			if(rot > 50)
-				rot_dir_up = false;
-		}else{
-			rot -= 0.08f;
-			if(rot < -50)
-				rot_dir_up = true;
-		}
-
-		Brush& brush = evtArgs.brush;
-		brush.pushAlpha( 0.5f );
-		//brush.pushPosition( 10, 10 );
-
-		brush.pushColor( Color::PresetRed() );
-		//brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 800.0f, 600.0f ) );
-
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 10.0f, 10.0f ) );
-
-		brush.Primitive.drawRect( FRect( 790.0f, 0.0f, 800.0f, 10.0f ) );
-
-		brush.pushPosition( 200.0f , 600.0f );
-
-		brush.pushRotation( Degree(-90) );
-
-		brush.pushRotation( Degree(rot) );
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 250.0f, 10.0f ) );
-		brush.pushPosition( 250.0f , 0.0f );
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 10.0f, 10.0f ) );
-		brush.pushRotation( Degree(-rot * (rot*0.01f) * 5) );
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 10.0f, 250.0f ) );
-		brush.pushPosition( 0.0f , 250.0f );
-		
-
-		brush.pushAlpha( 0.5f );
-		brush.pushRotation( Degree(rot * 4) );
-		brush.pushColor( Color::PresetBlue() );
-
-		brush.Primitive.drawRect( FRect( 0.0f, 0.0f, 250.0f, 250.0f ) );
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* sender, EventArgs& evtArgs ) {
