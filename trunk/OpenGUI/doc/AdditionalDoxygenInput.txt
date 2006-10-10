@@ -24,7 +24,7 @@
 	
 	- \subpage CreatingWidgets "Creating Widgets"
 	
-	- \subpage MessageSystem  "The Message System"
+	- \subpage Events  "Events"
 	
 	- \subpage CustomWidgets "Extending via Custom Widgets"
 	
