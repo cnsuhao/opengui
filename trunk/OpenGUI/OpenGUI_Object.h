@@ -25,6 +25,14 @@ namespace OpenGUI {
 		//! invokes \c methodName, sending \c paramIn as arguments, and catching return values in \c returnOut
 		void callMethod( const std::string& methodName, ValueList& paramIn, ValueList& returnOut );
 
+		//! triggers the event of the given \c eventName, sending the given \c evtArgs
+		/*!	\param eventName The name of the event to trigger
+			\param evtArgs The EventArgs based event data, by reference */
+		void triggerEvent( const std::string& eventName, EventArgs& evtArgs ) {
+			getEvents()[eventName].invoke( this, evtArgs );
+		}
+		//############################################################################
+
 		//! returns this object's ObjectAccessorList head
 		virtual ObjectAccessorList* getAccessors();
 		//! Returns the most specific class name available for this object
