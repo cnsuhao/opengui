@@ -71,7 +71,7 @@ namespace OpenGUI {
 	public:
 		//! Function signature required for use as C-style event callback
 		/*! \code void myCallback( Object* , EventArgs* ); \endcode */
-		typedef void EventCallbackFunc( Object* , EventArgs& );
+		typedef void EventCallbackFunc( Object* sender, EventArgs& args );
 		//! Constructor requires a pointer to a valid C function pointer
 		EventCallback( EventCallbackFunc* C_funcPtr ): mFunc( C_funcPtr ) {}
 		//! Calls the function given at event callback creation on event trigger
@@ -175,17 +175,27 @@ namespace OpenGUI {
 		\code
 		class MyClass{
 		public:
-			void myMethod(Object* sender,EventArgs& args){
+			void myMethod( Object* sender, EventArgs& args ){
 				//do something important
 			}
 		};
 		\endcode
+
 		And now an example of binding an object of the example class and its method to an event.
 		Assume \c obj is a pointer to a valid Object, \c desiredEvent is a valid event for that 
 		Object, and \c myClassObj is a valid pointer to an instance of \c MyClass.
 		\code
 		obj->getEvents()["desiredEvent"].add( new EventDelegate(myClassObj, &MyClass::myMethod) );
 		\endcode
+		\note 
+		In the first code area, the \a sender is a pointer to the Object that is experiencing the event,
+		and \a args is a reference to the appropriate EventArgs derived class. You can use either EventArgs
+		specifically, and cast it yourself later, or you can use the specific EventArgs derived class
+		for the particular event you plan on receiving. If you try to send an event to a handler that
+		tries to cast \a args to the wrong type, it will compile fine but will suffer a run time
+		exception because of a bad reference cast when the event is invoked. The \a sender is
+		sent because you may be binding the same event across several different instances of Widgets,
+		and in that case a pointer back to the Widget that is experiencing the event is most useful.
 		*/
 		template <class CLASS, class ARGS_TYPE>
 		EventDelegate( CLASS* classObjPtr, void( CLASS::*memberFunc )( Object*, ARGS_TYPE& ) ) {

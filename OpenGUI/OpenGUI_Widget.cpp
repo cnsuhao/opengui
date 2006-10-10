@@ -206,12 +206,12 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::eventAttached( I_WidgetContainer* newParent, Widget* widget ) {
 		Attach_EventArgs event( newParent, widget );
-		getEvents()["Attached"].invoke( this, event );
+		triggerEvent( "Attached", event );
 	}
 	//############################################################################
 	void Widget::eventDetached( I_WidgetContainer* prevParent, Widget* widget ) {
 		Attach_EventArgs event( prevParent, widget );
-		getEvents()["Detached"].invoke( this, event );
+		triggerEvent( "Detached", event );
 	}
 	//############################################################################
 	void Widget::onDraw( Object* obj, Draw_EventArgs& evtArgs ) {
@@ -225,12 +225,12 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::eventDraw( Brush& brush ) {
 		Draw_EventArgs event( brush );
-		getEvents()["Draw"].invoke( this, event );
+		triggerEvent( "Draw", event );
 	}
 	//############################################################################
 	void Widget::eventInvalidated() {
 		EventArgs event;
-		getEvents()["Invalidated"].invoke( this, event );
+		triggerEvent( "Invalidated", event );
 	}
 	//############################################################################
 	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
@@ -262,7 +262,7 @@ namespace OpenGUI {
 	*/
 	void Widget::eventCursor_Move( float xPos, float yPos ) {
 		EventArgs event;
-		getEvents()["Cursor_Move"].invoke( this, event );
+		triggerEvent( "Cursor_Move", event );
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
@@ -274,7 +274,7 @@ namespace OpenGUI {
 	*/
 	void Widget::eventCursor_Press( float xPos, float yPos ) {
 		EventArgs event;
-		getEvents()["Cursor_Press"].invoke( this, event );
+		triggerEvent( "Cursor_Press", event );
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
@@ -286,13 +286,13 @@ namespace OpenGUI {
 	*/
 	void Widget::eventCursor_Release( float xPos, float yPos ) {
 		EventArgs event;
-		getEvents()["Cursor_Release"].invoke( this, event );
+		triggerEvent( "Cursor_Release", event );
 	}
 	//############################################################################
 	/*! Containers should not cull this message. */
 	void Widget::eventCursor_Hidden() {
 		EventArgs event;
-		getEvents()["Cursor_Hidden"].invoke( this, event );
+		triggerEvent( "Cursor_Hidden", event );
 	}
 	//############################################################################
 	/*! Containers should not cull this message.
@@ -302,7 +302,7 @@ namespace OpenGUI {
 	*/
 	void Widget::eventCursor_Shown( float xPos, float yPos ) {
 		EventArgs event;
-		getEvents()["Cursor_Shown"].invoke( this, event );
+		triggerEvent( "Cursor_Shown", event );
 	}
 	//############################################################################
 
