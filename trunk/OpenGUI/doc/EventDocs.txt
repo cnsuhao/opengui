@@ -12,7 +12,8 @@
 	
 \section EventList Events List
 	The following is a list of all events that %OpenGUI supports internally. This does not mean that these are the only events that are possible, as any Widget can define new events that it is willing to accept. This is merely the complete list of events that %OpenGUI expects Widgets, Controls, ContainerControls, and Windows to have. Since more specialized Widgets tend to have more events, these events are broken up into smaller lists to illustrate the class hierarchy level where each becomes available.
-
+	
+	As the Widget classes become more specific, they also include the events of their base classes.
 <hr>
 
 \section EventList_Widget Widget Events
@@ -26,12 +27,19 @@
 - \subpage Event_Cursor_Hidden "Cursor_Hidden"
 - \subpage Event_Cursor_Shown "Cursor_Shown"
 
+\section EventList_Control Control Events
+- \subpage Event_Cursor_Click "Cursor_Click"
+- \subpage Event_Cursor_Enter "Cursor_Enter"
+- \subpage Event_Cursor_Leave "Cursor_Leave"
+
+
+
 \page Event_Attached Attached
 Occurs when the Widget was attached to a container.
 	\par Occurs In:
 	OpenGUI::Widget
 	\par EventArgs:
-	Attach_EventArgs
+	OpenGUI::Attach_EventArgs
 
 
 
@@ -40,7 +48,7 @@ Occurs when the Widget was removed from its container.
 	\par Occurs In:
 	OpenGUI::Widget
 	\par EventArgs:
-	Attach_EventArgs
+	OpenGUI::Attach_EventArgs
 
 
 
@@ -49,7 +57,7 @@ Draw this object using the given brush.
 	\par Occurs In:
 	OpenGUI::Widget
 	\par EventArgs:
-	Draw_EventArgs
+	OpenGUI::Draw_EventArgs
 
 
 
@@ -58,6 +66,81 @@ The Widget was invalidated and will need to be redrawn next Screen::update()
 	\par Occurs In:
 	OpenGUI::Widget
 	\par EventArgs:
-	Draw_EventArgs
+	OpenGUI::Draw_EventArgs
 	\see OpenGUI::Screen::update(), OpenGUI::Screen::invalidateAll(), OpenGUI::Widget::invalidate(), \link Event_Draw Draw Event \endlink
+
+
+
+\page Event_Cursor_Move Cursor_Move
+The cursor has moved.
+
+OpenGUI::ContainerControl culls these messages, only sending them to siblings when the cursor is currently inside of itself as well.
+	\par Occurs In:
+	OpenGUI::Widget
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Press Cursor_Press
+Called when the cursor button was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Release Cursor_Release
+Called when the cursor button was released.
+	\par Occurs In:
+	OpenGUI::Widget
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Hidden Cursor_Hidden
+The cursor was hidden.
+	\par Occurs In:
+	OpenGUI::Widget
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Shown Cursor_Shown
+The cursor was shown.
+	\par Occurs In:
+	OpenGUI::Widget
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+	
+
+
+\page Event_Cursor_Click Cursor_Click
+The cursor was pressed and released within this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Enter Cursor_Enter
+The cursor cursor entered this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Leave Cursor_Leave
+The cursor left this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
 */

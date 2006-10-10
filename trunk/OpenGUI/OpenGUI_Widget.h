@@ -21,15 +21,16 @@ namespace OpenGUI {
 		- Name (setName, getName)
 		- Alpha (setAlpha, getAlpha)
 	\par Events
-		- Attached (onAttached, eventAttached)
-		- Detached (onDetached, eventDetached)
-		- Draw (onDraw, eventDraw)
-		- Invalidated (onInvalidated, eventInvalidated)
-		- Cursor_Move (onCursor_Move, eventCursor_Move)
-		- Cursor_Press (onCursor_Press, eventCursor_Press)
-		- Cursor_Release (onCursor_Release, eventCursor_Release)
-		- Cursor_Hidden (onCursor_Hidden, eventCursor_Hidden)
-		- Cursor_Shown (onCursor_Shown, eventCursor_Shown)
+		- Attached
+		- Detached
+		- Draw
+		- Invalidated
+		- Cursor_Move
+		- Cursor_Press
+		- Cursor_Release
+		- Cursor_Hidden
+		- Cursor_Shown
+		\see \ref EventList_Widget "Widget Events"
 	*/
 	class OPENGUI_API Widget : public Object {
 		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them

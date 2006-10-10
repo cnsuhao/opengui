@@ -22,9 +22,12 @@ namespace OpenGUI {
 	- Visible (setVisible, getVisible)
 
 	\par Events
-	- Cursor_Click (onCursor_Click, eventCursor_Click)
-	- Cursor_Enter (onCursor_Enter, eventCursor_Enter)
-	- Cursor_Leave (onCursor_Leave, eventCursor_Leave)
+	- Cursor_Click
+	- Cursor_Enter
+	- Cursor_Leave
+	- Targeted
+	- UnTargeted
+	\see \ref EventList_Control "Control Events"
 	*/
 	class OPENGUI_API Control : public Widget {
 	public:
@@ -100,34 +103,6 @@ namespace OpenGUI {
 		virtual void eventUnTargeted();
 //@}
 
-		/*
-		Move_Begin
-		Moving
-		Move_End
-		Moved
-
-		Resize_Being
-		Resizing
-		Resize_End
-		Resized
-
-
-		Menu_Up
-		Menu_Down
-		Menu_Left
-		Menu_Right
-		Menu_Activate
-		Menu_Targeted
-		Menu_UnTargeted
-
-		Targeted
-		UnTargeted
-
-		Focus
-		Focus_Lost
-
-		Activated
-		*/
 	private:
 		FRect mRect; // position & size of this Control
 		bool mVisible; // visibility of this Control
