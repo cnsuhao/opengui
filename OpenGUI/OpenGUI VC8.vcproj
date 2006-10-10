@@ -568,10 +568,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_UnusedTypes.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Value.h"
 				>
 			</File>
