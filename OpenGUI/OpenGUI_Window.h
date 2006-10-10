@@ -12,7 +12,7 @@
 namespace OpenGUI {
 
 	//! base class for Windows
-	/*! Windows are ContainerControls that cache the output of their children
+	/*! Windows are ContainerControls that cache the output of their children.
 	*/
 	class OPENGUI_API Window : public ContainerControl {
 	public:
