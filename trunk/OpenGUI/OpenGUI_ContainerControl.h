@@ -13,8 +13,9 @@ namespace OpenGUI {
 	//! base class for all Controls that are also containers
 	/*!
 	\par Events
-	- ChildAttached (onChildAttached, eventChildAttached)
-	- ChildDetached (onChildDetached, eventChildDetached)
+	- ChildAttached
+	- ChildDetached
+	\see \ref EventList_ContainerControl "ContainerControl Events"
 	*/
 	class OPENGUI_API ContainerControl : public Control, public I_WidgetContainer {
 	public:
