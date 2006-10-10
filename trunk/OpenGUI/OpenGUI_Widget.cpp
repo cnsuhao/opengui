@@ -214,11 +214,11 @@ namespace OpenGUI {
 		getEvents()["Detached"].invoke( this, event );
 	}
 	//############################################################################
-	void Widget::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+	void Widget::onDraw( Object* obj, Draw_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onInvalidated( Object* sender, EventArgs& evtArgs ) {
+	void Widget::onInvalidated( Object* obj, EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 		/* If we were a caching object, we should invalidate our cache here */
 	}
