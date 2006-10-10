@@ -373,15 +373,15 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ) {
-		getEvents()["Cursor_Click"].invoke( this, evtArgs );
+		triggerEvent( "Cursor_Click", evtArgs );
 	}
 	//############################################################################
 	void Control::eventCursor_Enter( Cursor_EventArgs& evtArgs ) {
-		getEvents()["Cursor_Enter"].invoke( this, evtArgs );
+		triggerEvent( "Cursor_Enter", evtArgs );
 	}
 	//############################################################################
 	void Control::eventCursor_Leave( Cursor_EventArgs& evtArgs ) {
-		getEvents()["Cursor_Leave"].invoke( this, evtArgs );
+		triggerEvent( "Cursor_Leave", evtArgs );
 	}
 	//############################################################################
 	/*! To preserve this functionality in future overrides, the base class
@@ -413,12 +413,12 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::eventTargeted() {
 		EventArgs eventArgs;
-		getEvents()["Targeted"].invoke( this, eventArgs );
+		triggerEvent( "Targeted", eventArgs );
 	}
 	//############################################################################
 	void Control::eventUnTargeted() {
 		EventArgs eventArgs;
-		getEvents()["UnTargeted"].invoke( this, eventArgs );
+		triggerEvent( "UnTargeted", eventArgs );
 	}
 	//############################################################################
 } // namespace OpenGUI {
