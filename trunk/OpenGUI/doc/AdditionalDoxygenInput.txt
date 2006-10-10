@@ -83,11 +83,98 @@ The FreeType Project (www.freetype.org). All rights reserved.
 
 
 /*!
-	\page CustomWidgets
-	This page explains how to create custom widgets to extend the gui.
-	\todo finish me
-	\section RecievingEvents Receiving Events
-	\section IssuingAlerts Issuing Alerts
+\page CustomWidgets Creating Custom Widgets
+	Creating custom widgets in %OpenGUI, like most programming endeavors, is a task of variable difficulty depending on what you are trying to accomplish. One of the design goals of %OpenGUI is to mimic the common GUI systems where possible so that there is some level of existing familiarity with how everything works together. If you are simply looking to slightly alter the functionality of an existing Widget, you're quest will be quite simple. On the other hand, if you're looking to build an entirely brand new Widget from a core base class, you're in for a slightly bumpier ride.
+	
+\section SelectingBaseClass Selecting a base class
+	One of the most critical decisions you make comes right at the very beginning: <em> Choosing the right base class</em>. You always have the option to start with one of the core Widget types, but if there is an existing Widget from another library that already does most of what you want \em functionally, you're often best to use that as your base. The key in that statement is \em functionally. The appearance of a Widget can be changed so easily that it is almost irrelevant, so you're much better off to select your base class based on the existing functionality that it provides. Again, higher level Widgets provided by an external library, such as Amethyst, often make much better base classes for application style needs. Keep in mind though, that using one of these as a base class means that your Widget will be dependent on the presence of that library even if that library is not used anywhere else in your application. If this is unacceptable, then you're stuck using one of the core base classes.
+	
+	If you're still bound and determined to use one of the core Widget types as a base class, or simply have no other choice, it is crucial that you select the correct one. Here are the list of core base Widget classes, and some brief descriptions about them. Hopefully this will make your decision a little easier.
+	
+	\par OpenGUI::Widget
+	\ref OpenGUI::Widget "View class documentation"\n
+	This is the very bottom of the barrel. It offers the least amount of functionality, and has very few predefined properties and events. A Widget is a GUI object that can be contained but cannot contain others, possibly be drawn yet has no size or position, and can receive input events yet does nothing with them by default. If you want to make your Widget renderable, you're likely better off using Control as a base. You could use a Widget
+	as an event snooper/logger, or as an event triggering timer object, just as a few examples. Basically
+	any Widget that needs to have a name and exist in a GUI somewhere, yet produce no real output, is a good fit for Widget. Beyond that, you're probably better off to start looking further up the class tree.
+
+	\par OpenGUI::Control
+	\ref OpenGUI::Control "View class documentation"\n
+	This is an adequate option for most Widgets. Controls are Widgets that have a size and position, and offer a host of built in functionality, properties, and events. They have all of the abilities of the Widget class, plus define the most common attributes of well behaved GUI objects. If your custom Widget doesn't need to contain other widgets, this is most likely what you want to use.
+	
+	
+	\par OpenGUI::ContainerControl
+	\ref OpenGUI::ContainerControl "View class documentation"\n
+	If you want your custom widget to contain other widgets, ContainerControl is often the best choice. It provides all of the functionality of Control, with the added ability to contain child widgets.
+	
+	\par
+	Most user created widgets are actually conglomerations of existing widgets, handily wrapped up into a single ContainerControl. This has the downside of depending on the widget library that provides the widgets you are embedding. If this isn't acceptable, you have no other choice but reimplement all of the functionality and draw routines for the widgets you were planning on embedding, in which case Control may be a better base class.
+	
+	\par OpenGUI::Window
+	\ref OpenGUI::Window "View class documentation"\n
+	This base class is specifically designed for use by controls that plan on embedding several other controls in a movable window setting. Window provides a caching system to prevent the endless redrawing of contained widgets. Until a widget is contained within a Window, the invalidate() function does literally nothing of any value as the widget is fully redrawn each frame. This caching functionality allows the Window, along with all of its contents, to be moved around at no additional child redraw cost. Window caches are only invalidated when a contained Widget is invalidated. This optimization, like most in the computing world, comes at the cost of memory. Unless you're writing a framed window widget, or something similar, this probably isn't what you're after, as it is unrealistic to forcefully impose the additional memory usage on a GUI "just because".
+
+
+\section MakingTheWidget Making the Widget
+	At this point you've selected your base class, so it's time to start writing your widget. For the intent of this document we'll assume that you selected OpenGUI::Control as your base class. The concepts used to create custom widgets are common regardless of your base class, and Control is the most common selection, so it makes sense.
+	
+\subsection Creating_your_class_definition Creating your class definition
+	Creating the class definition itself is fairly straight forward, and is illustrated below.
+\includelineno custom_widget.h
+	We obviously need the \c #include on line 1. The "using namespace OpenGUI;" (line 3) is just so that we don't need to constantly prepend "OpenGUI::" to every %OpenGUI specific type. We could just as easily do the prepending, or wrap this entire class in a namespace scope such as:
+\code
+#include "OpenGUI.h"
+namespace OpenGUI {
+	/* Class definition in here */
+}
+\endcode
+	The methods on lines 11 and 12 provide access to our make believe property "MyBool". We expose the property via methods like this to allow native C++ code to access them directly, as well as make our life a little easier when it comes time to implement the actual Property Accessor. Line 15 is a wrapper function for invoking "MyEvent", and it's mostly a convenience function. Line 16 is a default event handler, with a signature capable of being bound by an \ref OpenGUI::EventDelegate EventDelegate. The "private" section, obviously just holds a state variable for the "MyBool" property.
+
+\subsection ClassImplementation Class Implementation
+	This next section is where the fun really begins. In the following section we're going to go step by step implementing our new widget. But before we do that, here's the obligatory complete dump:
+\include custom_widget.cpp
+That's an awful lot to chew on, so now we'll break it down into more manageable pieces with some more detailed explainations as to what is going on.
+
+Its funny how the most initially obscure looking code is always first. ;) The following code exposes access to the "MyBool" property. This is done by creating a new class that derives from OpenGUI::ObjectProperty and performing the necessary virtual function implementations to achieve the desired effect. You should notice that within get() and set() we end up simply calling our native property accessor functions.
+\skip MyWidget_MyBool_ObjectProperty
+\until gMyWidget_MyBool_ObjectProperty
+This particular object is a combined class definition and static creation all rolled into one. It doesn't necessarily have to be a static object like this. It could just as easily have been defined in the class header and then simply had a new instance created for each instance of MyWidget. The above method is used throughout %OpenGUI because it conserves memory, as unless you plan on having different property accessor logic for each object (unlikely), there's no reason to create a new accessor on the heap for each one.
+
+The next chunk of code is, once again, an in place definition and static creation rolled into one. This time it is for the \ref OpenGUI::ObjectAccessorList ObjectAccessorList, which is a sort of property lookup hub. It groups all of the individual properties into a single object for lookup.
+\skip MyWidget_ObjectAccessorList
+\until gMyWidget_ObjectAccessorList
+
+And finally we get to the actual meat of our widget class. We're just not quite out of the "freaky" woods just yet though. In the first few lines of the class constructor, we need to make sure that our static ObjectAccessorList is property initialized by giving it the parent of our base class if it doesn't already have one. This allows failed lookups of property names to fall back to the next parent class. If we don't do this, we won't inherit the property accessors of our base class, and will either have to live with not having them, or implement brand new accessors ourselves. Since the code soup involved in making properties work is probably less than appealing at this point, we'll happily point our ObjectAccessorList to out base classes ObjectAccessorList.
+
+\skip MyWidget::MyWidget
+\until }
+The last 2 statements create the event "MyEvent", and then bind our default event handler using an \ref OpenGUI::EventDelegate EventDelegate. Obviously events are currently far easier to bind than properties. One day this may change, but for now we'll live with it.
+
+On to the destructor. If your class requires special clean up actions, you can obviousl perform them here. Our destructor does nothing special, so we'll move on.
+\until }
+
+The following 2 methods are the native property accessors. They were used in the property binding to access the the internal state variable. You obviously don't \em need to use a state variable, and can happily generate the results purely progmatically if you so desire. But since this is just an example, we took the easy way out.
+\until }
+\until }
+
+And here's the event processor. Remember how I said it was mostly a convenience function? I wasn't kidding. %OpenGUI uses event processors similar to this quite extensively to ensure we properly build event structs and don't typo the event name.
+\until }
+Given that event processors are usually quite brief, they are a good candidate for inlining into your class definition.
+
+And finally we reach the default event handler. As you can see, we're supposed to do something important here, but again, this is only an example so there's nothing to do.
+\until }
+
+Last but not least, we have a new onDraw implementation. The onDraw method is the default event handler for draw operations and is initially exposed by the \ref OpenGUI::Control Control class.
+\until }
+As you can see, we call the base class's implementation first so that our draw operations come afterward, which would allow us to draw over top of their's. Since Control::onDraw doesn't draw anything by default, this particular instance of calling the base implementation is a waste of time, but I added it as an example to show that you should normally call the base implementation within your override. A cursory glance at the rest of our implementation shows that we're just drawing a red rect that fills our control. You should notice 3 important things about this. First off, we're checking if we're supposed to be visible before we draw. Yes, we're allowed to completely ignore things like visibility settings if we choose, but good little widgets pay attention to things like that, so we will too. Additionally, we're obeying our Alpha setting. And lastly, we're popping off the brush modifiers that we pushed. Popping the modifiers is good practice, but %OpenGUI brushes have some internal tracking that allows it to auto pop whatever onDraw's leave behind. Still, if you're calling base implementations in addition to your own code, if you fail to pop the brush you'll leave it in an unknown state for the next user, which usually results in strange things happening. But if you're clever you can use this to your advantage and make interesting things. Like buttons that draw upside down... ;)
+
+\subsection RinseRepeat Rinse Repeat
+And that's pretty much the end. Aside from property binding, creating new widgets is pretty simple. All you need to do is find a suitable base class to inherit from, and fill your new creation with all sorts of nifty functionality. If you'd like more example code, it's probably best to refer directly to the source. The source is regularly ran through code beautifiers to maintain readability, and is fairly straight forward in its purpose.
+
+The source for the base widget classes can be found in the following files:
+- OpenGUI_Widget.h/cpp
+- OpenGUI_Control.h/cpp
+- OpenGUI_ContainerControl.h/cpp
+- OpenGUI_Window.h/cpp
 */
 
 
