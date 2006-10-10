@@ -47,6 +47,8 @@
 Occurs when the Widget was attached to a container.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onAttached
+	- OpenGUI::Widget::eventAttached
 	\par EventArgs:
 	OpenGUI::Attach_EventArgs
 
@@ -56,6 +58,8 @@ Occurs when the Widget was attached to a container.
 Occurs when the Widget was removed from its container.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onDetached
+	- OpenGUI::Widget::eventDetached
 	\par EventArgs:
 	OpenGUI::Attach_EventArgs
 
@@ -65,6 +69,8 @@ Occurs when the Widget was removed from its container.
 Draw this object using the given brush.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onDraw
+	- OpenGUI::Widget::eventDraw
 	\par EventArgs:
 	OpenGUI::Draw_EventArgs
 
@@ -74,9 +80,13 @@ Draw this object using the given brush.
 The Widget was invalidated and will need to be redrawn next Screen::update()
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onInvalidated
+	- OpenGUI::Widget::eventInvalidated
+	
 	\par EventArgs:
 	OpenGUI::Draw_EventArgs
 	\see OpenGUI::Screen::update(), OpenGUI::Screen::invalidateAll(), OpenGUI::Widget::invalidate(), \link Event_Draw Draw Event \endlink
+
 
 
 
@@ -86,6 +96,8 @@ The cursor has moved.
 OpenGUI::ContainerControl culls these messages, only sending them to siblings when the cursor is currently inside of itself as well.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Move
+	- OpenGUI::Widget::eventCursor_Move
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -95,6 +107,8 @@ OpenGUI::ContainerControl culls these messages, only sending them to siblings wh
 Called when the cursor button was pressed.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Press
+	- OpenGUI::Widget::eventCursor_Press
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -104,6 +118,8 @@ Called when the cursor button was pressed.
 Called when the cursor button was released.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Release
+	- OpenGUI::Widget::eventCursor_Release
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -113,6 +129,8 @@ Called when the cursor button was released.
 The cursor was hidden.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Hidden
+	- OpenGUI::Widget::eventCursor_Hidden
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -122,6 +140,8 @@ The cursor was hidden.
 The cursor was shown.
 	\par Occurs In:
 	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Shown
+	- OpenGUI::Widget::eventCursor_Shown
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 	
@@ -131,6 +151,8 @@ The cursor was shown.
 The cursor was pressed and released within this Control.
 	\par Occurs In:
 	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Click
+	- OpenGUI::Control::eventCursor_Click
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -140,6 +162,8 @@ The cursor was pressed and released within this Control.
 The cursor cursor entered this Control.
 	\par Occurs In:
 	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Shown
+	- OpenGUI::Control::eventCursor_Shown
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -149,6 +173,8 @@ The cursor cursor entered this Control.
 The cursor left this Control.
 	\par Occurs In:
 	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Leave
+	- OpenGUI::Control::eventCursor_Leave
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -158,6 +184,8 @@ The cursor left this Control.
 The Control was targeted, either by cursor or by menu navigation.
 	\par Occurs In:
 	OpenGUI::Control
+	- OpenGUI::Control::onTargeted
+	- OpenGUI::Control::eventTargeted
 	\par EventArgs:
 	OpenGUI::EventArgs
 
@@ -167,6 +195,8 @@ The Control was targeted, either by cursor or by menu navigation.
 The Control is no longer targeted, as a result of either cursor or menu navigation.
 	\par Occurs In:
 	OpenGUI::Control
+	- OpenGUI::Control::onUnTargeted
+	- OpenGUI::Control::eventUnTargeted
 	\par EventArgs:
 	OpenGUI::EventArgs
 
@@ -176,6 +206,8 @@ The Control is no longer targeted, as a result of either cursor or menu navigati
 A child Widget has been attached to this ContainerControl.
 	\par Occurs In:
 	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildAttached
+	- OpenGUI::ContainerControl::eventChildAttached
 	\par EventArgs:
 	OpenGUI::Attach_EventArgs
 
@@ -185,6 +217,8 @@ A child Widget has been attached to this ContainerControl.
 A child Widget has been detached from this ContainerControl.
 	\par Occurs In:
 	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildDetached
+	- OpenGUI::ContainerControl::eventChildDetached
 	\par EventArgs:
 	OpenGUI::Attach_EventArgs
 
