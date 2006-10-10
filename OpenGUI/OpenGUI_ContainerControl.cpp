@@ -54,7 +54,7 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
 		Attach_EventArgs event( container, prevChild );
-		getEvents()["ChildDetached"].invoke( this, event );
+		triggerEvent("ChildDetached", event);
 	}
 	//############################################################################
 } // namespace OpenGUI {

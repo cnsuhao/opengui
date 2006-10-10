@@ -38,7 +38,7 @@ namespace OpenGUI {
 			prevent crashes if you "pull the Imagery rug out from under a Widget",
 			while still providing obvious visual feedback that something is wrong.
 
-			The default image can be seen \ref DefaultImageset "here"
+			\todo fix this documentation. It's no longer complete accurate
 		*/
 		void destroyImagery( ImageryPtr imageryPtr );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
