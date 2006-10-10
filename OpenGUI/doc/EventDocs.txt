@@ -3,11 +3,11 @@
 	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
 	
 	To provide a consistent event system that offers the most flexibility for applications to customize, %OpenGUI uses a standardized method of event processing. Every standard event that a Widget receives in OpenGUI, either due to input injection or as the result of another event, is initiated by calling the appropriate event processor. Event processors only have a single purpose, to build the necessary EventArgs and trigger the event via Object::triggerEvent(). They have a standard naming convention:
-	\code event[Event Name](params) \endcode
+	\code event<Event Name>(params) \endcode
 	An example would be \c eventActivate, which would (as implied) triggers the "Activate" event. While event processors are currently virtual functions, their virtuality should be considered deprecated, and overriding their functionality should be avoided whenever possible.
 	
 	The actual default event actions are handled in the event handlers. These have a standard naming convention as well:
-	\code on[Event Name](Object* sender,Attach_EventArgs& evtArgs) \endcode
+	\code on<Event Name>(Object* sender,Attach_EventArgs& evtArgs) \endcode
 	All default actions for events occur within these default event handlers. They are virtual functions so that they can be overridden when the current default action is not the necessary action for a new derived Widget type. It is also legal to override an event handler in a subclass of a Widget just to receive notification of the event without registering another handler, but you should take care to call the existing handler during your override to ensure the previous functionality remains.
 	
 \section EventList Events List
@@ -31,6 +31,15 @@
 - \subpage Event_Cursor_Click "Cursor_Click"
 - \subpage Event_Cursor_Enter "Cursor_Enter"
 - \subpage Event_Cursor_Leave "Cursor_Leave"
+- \subpage Event_Targeted "Targeted"
+- \subpage Event_UnTargeted "UnTargeted"
+
+\section EventList_ContainerControl ContainerControl Events
+- \subpage Event_ChildAttached "ChildAttached"
+- \subpage Event_ChildDetached "ChildDetached"
+
+\section EventList_Window Window Events
+
 
 
 
@@ -142,5 +151,41 @@ The cursor left this Control.
 	OpenGUI::Control
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Targeted Targeted
+The Control was targeted, either by cursor or by menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_UnTargeted UnTargeted
+The Control is no longer targeted, as a result of either cursor or menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_ChildAttached ChildAttached
+A child Widget has been attached to this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_ChildDetached ChildDetached
+A child Widget has been detached from this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
 
 */
