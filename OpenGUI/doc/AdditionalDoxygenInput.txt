@@ -120,7 +120,7 @@ The FreeType Project (www.freetype.org). All rights reserved.
 \subsection Creating_your_class_definition Creating your class definition
 	Creating the class definition itself is fairly straight forward, and is illustrated below.
 \includelineno custom_widget.h
-	We obviously need the \c #include on line 1. The "using namespace OpenGUI;" (line 3) is just so that we don't need to constantly prepend "OpenGUI::" to every %OpenGUI specific type. We could just as easily do the prepending, or wrap this entire class in a namespace scope such as:
+	We obviously need the \c include on line 1. The "using namespace OpenGUI;" (line 3) is just so that we don't need to constantly prepend "OpenGUI::" to every %OpenGUI specific type. We could just as easily do the prepending, or wrap this entire class in a namespace scope such as:
 \code
 #include "OpenGUI.h"
 namespace OpenGUI {
