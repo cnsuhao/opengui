@@ -20,6 +20,7 @@ namespace OpenGUI {
 	- Size (getSize)
 	- Rect (getRect)
 	- Visible (setVisible, getVisible)
+	- Alpha (setAlpha, getAlpha)
 
 	\par Events
 	- Cursor_Click
@@ -65,6 +66,11 @@ namespace OpenGUI {
 		//! Returns the visibility of this Control
 		bool getVisible();
 
+		//! Sets the alpha transparency of this Control
+		void setAlpha( float alpha );
+		//! Returns the alpha transparency of this Control
+		float getAlpha();
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -106,6 +112,7 @@ namespace OpenGUI {
 	private:
 		FRect mRect; // position & size of this Control
 		bool mVisible; // visibility of this Control
+		float mAlpha; // alpha of this Control
 
 		bool mCursorInside; // cursor position state variable
 	};

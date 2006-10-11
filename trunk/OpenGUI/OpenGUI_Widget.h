@@ -19,7 +19,7 @@ namespace OpenGUI {
 	/*!
 	\par Properties
 		- Name (setName, getName)
-		- Alpha (setAlpha, getAlpha)
+
 	\par Events
 		- Attached
 		- Detached
@@ -45,11 +45,6 @@ namespace OpenGUI {
 		const std::string& getName();
 		//! sets the name of this Widget
 		void setName( const std::string& name );
-
-		//! Sets the alpha transparency of this Widget
-		void setAlpha( float alpha );
-		//! Returns the alpha transparency of this Widget
-		float getAlpha();
 
 		//! invalidate any caches of this Widget's render output
 		/*! This will cause the Widget's Draw routine to be called on the next
@@ -128,7 +123,6 @@ namespace OpenGUI {
 		I_WidgetContainer* mContainer;
 
 		std::string mWidgetName;
-		float mAlpha;
 	};
 
 } //namespace OpenGUI{

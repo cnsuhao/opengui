@@ -35,46 +35,13 @@ namespace OpenGUI {
 		}
 	}
 	gWidget_Name_ObjectProperty;
-
-	//############################################################################
-	class Widget_Alpha_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Alpha";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Widget& w = dynamic_cast<Widget&>( objectRef );
-				valueOut.setValue( w.getAlpha() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Widget& w = dynamic_cast<Widget&>( objectRef );
-				w.setAlpha( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gWidget_Alpha_ObjectProperty;
 	//############################################################################
 	//############################################################################
-
 
 	class Widget_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		Widget_ObjectAccessorList() {
 			addAccessor( &gWidget_Name_ObjectProperty );
-			addAccessor( &gWidget_Alpha_ObjectProperty );
 		}
 		~Widget_ObjectAccessorList() {}
 	}
@@ -91,7 +58,6 @@ namespace OpenGUI {
 
 		// set up defaults for properties
 		mWidgetName = "";
-		mAlpha = 1.0f;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Attached" );
@@ -133,26 +99,6 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::setName( const std::string& name ) {
 		mWidgetName = name;
-	}
-	//############################################################################
-	/*! Alpha is clamped to 0.0f through 1.0f. Passing values outside of this
-	range will result in alpha being set to either 0.0f or 1.0f, whichever is
-	closer.
-
-	In the case of Widgets that contain other Widgets, alpha of the parent is
-	also applied to the children in a multiplicative fashion. In other words,
-	if both the parent and child Widgets are set to 50% alpha, at final output the 
-	parent will draw at 50% alpha, and the child will draw at 25% alpha.
-	\n (50% * 50% = 25%) */
-	void Widget::setAlpha( float alpha ) {
-		if ( alpha < 0.0f ) alpha = 0.0f;
-		if ( alpha > 1.0f ) alpha = 1.0f;
-		mAlpha = alpha;
-		invalidate(); // need to invalidate caches for alpha change
-	}
-	//############################################################################
-	float Widget::getAlpha() {
-		return mAlpha;
 	}
 	//############################################################################
 	I_WidgetContainer* Widget::getContainer() {
