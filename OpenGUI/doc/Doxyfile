@@ -23,7 +23,7 @@ ABBREVIATE_BRIEF       = "The $name class" \
                          an \
                          the
 ALWAYS_DETAILED_SEC    = YES
-INLINE_INHERITED_MEMB  = YES
+INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = NO
 STRIP_FROM_PATH        = 
 STRIP_FROM_INC_PATH    = 
@@ -84,9 +84,9 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = ../ \
                          AdditionalDoxygenInput.txt \
-                         EventDocs.txt \
-                         BaseWidgets.txt \
-                         xmldocs.txt
+                         xmldocs.txt \
+                         EventDocs.txt
+
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
@@ -119,7 +119,8 @@ EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXAMPLE_PATH           = ../ \
-                         ./
+                         ./ \
+                         ./examples/
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = ./
