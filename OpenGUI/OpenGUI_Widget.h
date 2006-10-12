@@ -21,6 +21,8 @@ namespace OpenGUI {
 		- Name (setName, getName)
 
 	\par Events
+		- Enabled
+		- Disabled
 		- Attached
 		- Detached
 		- Draw
