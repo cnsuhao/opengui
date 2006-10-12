@@ -97,16 +97,16 @@ namespace OpenGUI {
 //!\name Event Processors
 //@{
 		//! Called when cursor was pressed and released within this Control
-		virtual void eventCursor_Click( Cursor_EventArgs& evtArgs );
+		void eventCursor_Click( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor enters this Control
-		virtual void eventCursor_Enter( Cursor_EventArgs& evtArgs );
+		void eventCursor_Enter( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor leaves this Control
-		virtual void eventCursor_Leave( Cursor_EventArgs& evtArgs );
+		void eventCursor_Leave( Cursor_EventArgs& evtArgs );
 
 		//! Called when this Control is targeted, either by cursor or by menu navigation
-		virtual void eventTargeted();
+		void eventTargeted();
 		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
-		virtual void eventUnTargeted();
+		void eventUnTargeted();
 //@}
 
 	private:
