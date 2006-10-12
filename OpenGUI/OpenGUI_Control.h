@@ -23,6 +23,8 @@ namespace OpenGUI {
 	- Alpha (setAlpha, getAlpha)
 
 	\par Events
+	- Moved
+	- Resized
 	- Cursor_Click
 	- Cursor_Enter
 	- Cursor_Leave
@@ -87,6 +89,11 @@ namespace OpenGUI {
 	protected:
 //!\name Event Handlers
 //@{
+		//! "Moved" event
+		virtual void onMoved( Object* sender, Moved_EventArgs& evtArgs );
+		//! "Resized" event
+		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
+
 		//! "Cursor_Click" event
 		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Enter" event; invokes Targeted
@@ -105,6 +112,11 @@ namespace OpenGUI {
 
 //!\name Event Processors
 //@{
+		//! Control has been moved
+		void eventMoved( const FVector2& oldPosition, const FVector2& newPosition );
+		//! Control has been resized
+		void eventResized( const FVector2& oldSize, const FVector2& newSize );
+
 		//! Called when cursor was pressed and released within this Control
 		void eventCursor_Click( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor enters this Control
