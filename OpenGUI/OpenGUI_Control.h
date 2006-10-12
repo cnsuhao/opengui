@@ -61,6 +61,15 @@ namespace OpenGUI {
 		//! Returns the FRect describing this Control's size and position
 		const FRect& getRect();
 
+		//! Returns the minimum size this Control will allow itself to be resized to
+		const FVector2& getMinimumSize();
+		//! Sets the minimum size this Control will allow itself to be resized to
+		void setMinimumSize(const FVector2& size);
+		//! Returns the maximum size this Control will allow itself to be resized to
+		const FVector2& getMaximumSize();
+		//! Sets the maximum size this Control will allow itself to be resized to
+		void setMaximumSize(const FVector2& size);
+
 		//! Sets the visibility of this Control
 		void setVisible( bool visible );
 		//! Returns the visibility of this Control
@@ -113,6 +122,8 @@ namespace OpenGUI {
 		FRect mRect; // position & size of this Control
 		bool mVisible; // visibility of this Control
 		float mAlpha; // alpha of this Control
+		FVector2 mMinSize; // Minimum Size
+		FVector2 mMaxSize; // Maximum Size
 
 		bool mCursorInside; // cursor position state variable
 	};

@@ -270,7 +270,7 @@ namespace OpenGUI {
 		}
 	}
 	gControl_Alpha_ObjectProperty;
-	
+
 	//############################################################################
 	//############################################################################
 	class Control_ObjectAccessorList : public ObjectAccessorList {
@@ -306,6 +306,8 @@ namespace OpenGUI {
 		// set up defaults for properties
 		mRect = FRect( 0.0f, 0.0f, 1.0f, 1.0f );
 		mVisible = true;
+		mMinSize = FVector2( 0, 0 );
+		mMaxSize = FVector2( 0, 0 );
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Cursor_Click" );
@@ -350,9 +352,17 @@ namespace OpenGUI {
 		return mRect.min.y;
 	}
 	//############################################################################
-	/*! Controls cannot have a width less than 0.0f, so negative values are clamped to 0.0f */
+	/*! Controls cannot have a width less than 0.0f, so negative values are clamped to 0.0f.
+
+	This function obeys the MinimumSize and MaximumSize properties, and the given size
+	will be adjusted to fit within the constraints if applicable.
+	*/
 	void Control::setWidth( float width ) {
 		if ( width < 0.0f ) width = 0.0f;
+		if ( mMinSize.x > 0 && width < mMinSize.x )
+			width = mMinSize.x;
+		if ( mMaxSize.x > 0 && width > mMaxSize.x )
+			width = mMaxSize.x;
 		mRect.setWidth( width );
 		invalidate(); // need to invalidate caches for size change
 	}
@@ -361,9 +371,17 @@ namespace OpenGUI {
 		return mRect.getWidth();
 	}
 	//############################################################################
-	/*! Controls cannot have a height less than 0.0f, so negative values are clamped to 0.0f */
+	/*! Controls cannot have a height less than 0.0f, so negative values are clamped to 0.0f.
+
+	This function obeys the MinimumSize and MaximumSize properties, and the given size
+	will be adjusted to fit within the constraints if applicable.
+	*/
 	void Control::setHeight( float height ) {
 		if ( height < 0.0f ) height = 0.0f;
+		if ( mMinSize.y > 0 && height < mMinSize.y )
+			height = mMinSize.y;
+		if ( mMaxSize.y > 0 && height > mMaxSize.y )
+			height = mMaxSize.y;
 		mRect.setHeight( height );
 		invalidate(); // need to invalidate caches for size change
 	}
@@ -382,6 +400,64 @@ namespace OpenGUI {
 	//############################################################################
 	const FRect& Control::getRect() {
 		return mRect;
+	}
+	//############################################################################
+	const FVector2& Control::getMinimumSize() {
+		return mMinSize;
+	}
+	//############################################################################
+	/*! During this call the current size is tested against the new minimum size
+	and calls to setWidth and setHeight may be invoked to bring the Controls
+	size back into the allowed constraints.
+
+	If the the minimum size is set larger than the maximum size, the maximum size
+	is adjusted to match the minimum size for any offending axis.
+
+	If any axis == 0, that axis will be ignored in size tests. Negative values for
+	an axis are illegal and are automatically assigned to 0.
+	*/
+	void Control::setMinimumSize( const FVector2& size ) {
+		mMinSize = size;
+		if ( mMinSize.x < 0 ) mMinSize.x = 0;
+		if ( mMinSize.y < 0 ) mMinSize.y = 0;
+		FVector2 curSize = getSize();
+		if ( mMinSize.x > 0 ) {
+			if ( mMaxSize.x > 0 && mMinSize.x > mMaxSize.x ) mMaxSize.x = mMinSize.x;
+			if ( curSize.x < mMinSize.x ) setWidth( mMinSize.x );
+		}
+		if ( mMinSize.x > 0 ) {
+			if ( mMaxSize.y > 0 && mMinSize.y > mMaxSize.y ) mMaxSize.y = mMinSize.y;
+			if ( curSize.y < mMinSize.y ) setHeight( mMinSize.y );
+		}
+	}
+	//############################################################################
+	const FVector2& Control::getMaximumSize() {
+		return mMaxSize;
+	}
+	//############################################################################
+	/*! During this call the current size is tested against the new maximum size
+	and calls to setWidth and setHeight may be invoked to bring the Controls
+	size back into the allowed constraints.
+
+	If the the maximum size is set smaller than the minimum size, the minimum size
+	is adjusted to match the maximum size for any offending axis.
+
+	If any axis == 0, that axis will be ignored in size tests. Negative values for
+	an axis are illegal and are automatically assigned to 0.
+	*/
+	void Control::setMaximumSize( const FVector2& size ) {
+		mMaxSize = size;
+		if ( mMaxSize.x < 0 ) mMaxSize.x = 0;
+		if ( mMaxSize.y < 0 ) mMaxSize.y = 0;
+		FVector2 curSize = getSize();
+		if ( mMaxSize.x > 0 ) {
+			if ( mMinSize.x > 0 && mMinSize.x > mMaxSize.x ) mMinSize.x = mMaxSize.x;
+			if ( curSize.x > mMaxSize.x ) setWidth( mMaxSize.x );
+		}
+		if ( mMaxSize.x > 0 ) {
+			if ( mMinSize.y > 0 && mMinSize.y > mMaxSize.y ) mMinSize.y = mMaxSize.y;
+			if ( curSize.y > mMaxSize.y ) setHeight( mMaxSize.y );
+		}
 	}
 	//############################################################################
 	void Control::setVisible( bool visible ) {
