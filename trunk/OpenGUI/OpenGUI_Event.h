@@ -57,6 +57,39 @@ namespace OpenGUI {
 		const float& Y;
 	};
 
+	//! Specialization of EventArgs for Control Moved events
+	class OPENGUI_API Moved_EventArgs: public EventArgs {
+	public:
+		//! Constructor requires the new and old positions
+		Moved_EventArgs(const FVector2& newPosition, const FVector2& prevPosition)
+		:newPosition(newPosition), prevPosition(prevPosition) {
+			  /**/
+		  }
+		  virtual ~Moved_EventArgs() {
+			  /**/
+		  }
+		  //! The new position after the move
+		  const FVector2 newPosition;
+		  //! The previous position from before the move
+		  const FVector2 prevPosition;
+	};
+
+	//! Specialization of EventArgs for Control Size events
+	class OPENGUI_API Resized_EventArgs: public EventArgs {
+	public:
+		//! Constructor requires the new and old sizes
+		Resized_EventArgs(const FVector2& newSize, const FVector2& prevSize)
+			:newSize(newSize), prevSize(prevSize) {
+				/**/
+		}
+		virtual ~Resized_EventArgs() {
+			/**/
+		}
+		//! The new position after the move
+		const FVector2 newSize;
+		//! The previous position from before the move
+		const FVector2 prevSize;
+	};
 
 
 	//! Provides a unified event definition, binding, and relaying service.

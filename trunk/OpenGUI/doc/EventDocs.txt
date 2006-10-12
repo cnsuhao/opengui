@@ -17,6 +17,8 @@
 <hr>
 
 \section EventList_Widget Widget Events
+- \subpage Event_Enabled "Enabled"
+- \subpage Event_Disabled "Disabled"
 - \subpage Event_Attached "Attached"
 - \subpage Event_Detached "Detached"
 - \subpage Event_Draw "Draw"
@@ -28,6 +30,8 @@
 - \subpage Event_Cursor_Shown "Cursor_Shown"
 
 \section EventList_Control Control Events
+- \subpage Event_Moved "Moved"
+- \subpage Event_Resized "Resized"
 - \subpage Event_Cursor_Click "Cursor_Click"
 - \subpage Event_Cursor_Enter "Cursor_Enter"
 - \subpage Event_Cursor_Leave "Cursor_Leave"
@@ -40,6 +44,28 @@
 
 \section EventList_Window Window Events
 
+
+
+
+\page Event_Enabled Enabled
+Occurs when the Widget has been enabled
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onEnabled
+	- OpenGUI::Widget::eventEnabled
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Disabled Disabled
+Occurs when the Widget has been disabled
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onDisabled
+	- OpenGUI::Widget::eventDisabled
+	\par EventArgs:
+	OpenGUI::EventArgs
 
 
 
@@ -222,4 +248,25 @@ A child Widget has been detached from this ContainerControl.
 	\par EventArgs:
 	OpenGUI::Attach_EventArgs
 
+
+\page Event_Moved Moved
+The Control has been moved
+
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onMoved
+	- OpenGUI::Control::eventMoved
+	\par EventArgs:
+	OpenGUI::Moved_EventArgs
+
+
+\page Event_Resized Resized
+The Control has been resized
+
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onResized
+	- OpenGUI::Control::eventResized
+	\par EventArgs:
+	OpenGUI::Resized_EventArgs
 */
