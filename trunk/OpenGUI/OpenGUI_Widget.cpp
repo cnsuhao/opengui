@@ -36,12 +36,43 @@ namespace OpenGUI {
 	}
 	gWidget_Name_ObjectProperty;
 	//############################################################################
+	class Widget_Enabled_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "Enabled";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Widget& w = dynamic_cast<Widget&>( objectRef );
+				valueOut.setValue( w.getEnabled() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Widget& w = dynamic_cast<Widget&>( objectRef );
+				w.setEnabled( valueIn.getValueAsBool() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_BOOL;
+		}
+	}
+	gWidget_Enabled_ObjectProperty;
+	//############################################################################
 	//############################################################################
 
 	class Widget_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		Widget_ObjectAccessorList() {
 			addAccessor( &gWidget_Name_ObjectProperty );
+			addAccessor( &gWidget_Enabled_ObjectProperty );
 		}
 		~Widget_ObjectAccessorList() {}
 	}
@@ -58,6 +89,8 @@ namespace OpenGUI {
 
 		// set up defaults for properties
 		mWidgetName = "";
+		mEnabled = true;
+		mValid = false;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Attached" );
@@ -78,6 +111,10 @@ namespace OpenGUI {
 		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Widget::onCursor_Release ) );
 		getEvents()["Cursor_Hidden"].add( new EventDelegate( this, &Widget::onCursor_Hidden ) );
 		getEvents()["Cursor_Shown"].add( new EventDelegate( this, &Widget::onCursor_Shown ) );
+		getEvents().createEvent( "Enabled" );
+		getEvents().createEvent( "Disabled" );
+		getEvents()["Enabled"].add( new EventDelegate( this, &Widget::onEnabled ) );
+		getEvents()["Disabled"].add( new EventDelegate( this, &Widget::onDisabled ) );
 	}
 	//############################################################################
 	Widget::~Widget() {
@@ -101,12 +138,30 @@ namespace OpenGUI {
 		mWidgetName = name;
 	}
 	//############################################################################
+	bool Widget::getEnabled() {
+		return mEnabled;
+	}
+	//############################################################################
+	void Widget::setEnabled( bool value ) {
+		if ( mEnabled != value ) {
+			mEnabled = value;
+			if ( mEnabled )
+				eventEnabled();
+			else
+				eventDisabled();
+			invalidate();
+		}
+	}
+	//############################################################################
 	I_WidgetContainer* Widget::getContainer() {
 		return mContainer;
 	}
 	//############################################################################
 	void Widget::invalidate() {
-		eventInvalidated();
+		if ( mValid ) { // only trigger "Invalidated" once per invalidation period
+			mValid = false;
+			eventInvalidated();
+		}
 		Widget* parent = dynamic_cast<Widget*>( getContainer() );
 		if ( parent )
 			parent->invalidate();
@@ -165,11 +220,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* obj, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
 		/* If we were a caching object, we should invalidate our cache here */
 	}
 	//############################################################################
 	void Widget::eventDraw( Brush& brush ) {
+		mValid = true;
 		Draw_EventArgs event( brush );
 		triggerEvent( "Draw", event );
 	}
@@ -251,5 +306,22 @@ namespace OpenGUI {
 		triggerEvent( "Cursor_Shown", event );
 	}
 	//############################################################################
-
+	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventEnabled() {
+		EventArgs event;
+		triggerEvent( "Enabled", event );
+	}
+	//############################################################################
+	void Widget::eventDisabled() {
+		EventArgs event;
+		triggerEvent( "Disabled", event );
+	}
+	//############################################################################
 }//namespace OpenGUI{

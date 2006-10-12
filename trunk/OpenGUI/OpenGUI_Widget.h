@@ -46,6 +46,11 @@ namespace OpenGUI {
 		//! sets the name of this Widget
 		void setName( const std::string& name );
 
+		//! returns the enabled/disabled state of this Widget
+		bool getEnabled();
+		//! sets the enabled/disabled state of this Widget
+		void setEnabled( bool value );
+
 		//! invalidate any caches of this Widget's render output
 		/*! This will cause the Widget's Draw routine to be called on the next
 		update of the Screen this Widget is attached to. */
@@ -81,6 +86,11 @@ namespace OpenGUI {
 		//! "Invalidated" event
 		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
 
+		//! "Enabled" event
+		virtual void onEnabled( Object* sender, EventArgs& evtArgs );
+		//! "Disabled" event
+		virtual void onDisabled( Object* sender, EventArgs& evtArgs );
+
 		//! "Cursor_Move" event
 		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Press" event
@@ -96,32 +106,39 @@ namespace OpenGUI {
 //!\name Event Processors
 //@{
 		//! Widget was attached to a container
-		virtual void eventAttached( I_WidgetContainer* newParent, Widget* widget );
+		void eventAttached( I_WidgetContainer* newParent, Widget* widget );
 		//! Widget was removed from a container
-		virtual void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
+		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
 
 		//! Draw this object using the given brush
-		virtual void eventDraw( Brush& brush );
+		void eventDraw( Brush& brush );
 		//! Widget was invalidated and will need to be redrawn next Screen::update()
-		virtual void eventInvalidated();
+		void eventInvalidated();
+
+		//! Widget's state has changed to Enabled
+		void eventEnabled();
+		//! Widget's state has changed to Disabled
+		void eventDisabled();
 
 		//! Called for cursor movement, giving the X,Y position of the cursor
-		virtual void eventCursor_Move( float xPos, float yPos );
+		void eventCursor_Move( float xPos, float yPos );
 		//! Called when the cursor button is pressed
-		virtual void eventCursor_Press( float xPos, float yPos );
+		void eventCursor_Press( float xPos, float yPos );
 		//! Called when the cursor button is released
-		virtual void eventCursor_Release( float xPos, float yPos );
+		void eventCursor_Release( float xPos, float yPos );
 		//! Called when the cursor is hidden
-		virtual void eventCursor_Hidden();
+		void eventCursor_Hidden();
 		//! Called when the cursor is shown.
-		virtual void eventCursor_Shown( float xPos, float yPos );
+		void eventCursor_Shown( float xPos, float yPos );
 //@}
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen();
 		void _doflush();
 	private:
 		I_WidgetContainer* mContainer;
+		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events
 
+		bool mEnabled;
 		std::string mWidgetName;
 	};
 

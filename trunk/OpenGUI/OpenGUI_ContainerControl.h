@@ -29,13 +29,21 @@ namespace OpenGUI {
 		virtual char* getClassName();
 
 	protected:
+//!\name Event Handlers
+//@{
 		//! "ChildAttached" event
 		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "ChildDetached" event
 		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
-		virtual void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
-		virtual void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
+//@}
 
+//!\name Event Processors
+//@{
+		//! A new child has been attached to this container
+		void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
+		//! A child has been detached from this container
+		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
+//@}
 	private:
 	};
 
