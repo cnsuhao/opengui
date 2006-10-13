@@ -713,9 +713,6 @@ namespace OpenGUI {
 		//! destructor
 		virtual ~Enum();
 
-		//! Adds the given string to the Enum's list of possible values
-		/*! If this is the first item being added to the enum, it is automatically selected. */
-		void addValue( std::string value );
 		//! Sets the currently selected value
 		void setValue( std::string value );
 		//! Sets the currently selected value using a C-String
@@ -739,6 +736,10 @@ namespace OpenGUI {
 		bool operator!=( const Enum& right ) const  {
 			return !operator==( right );
 		}
+	protected:
+		//! Adds the given string to the Enum's list of possible values
+		/*! If this is the first item being added to the enum, it is automatically selected. */
+		void addValue( std::string value );
 	private:
 		EnumList mEnumList;
 		std::string mSelected;
