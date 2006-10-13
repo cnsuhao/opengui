@@ -44,8 +44,8 @@ namespace OpenGUI {
 		//! Constructor requires the X and Y position of the cursor
 		Cursor_EventArgs( float x_pos, float y_pos ):
 				Position( x_pos, y_pos ), X( Position.x ), Y( Position.y ) {
-					/**/
-				}
+			/**/
+		}
 		virtual ~Cursor_EventArgs() {
 			/**/
 		}
@@ -61,26 +61,26 @@ namespace OpenGUI {
 	class OPENGUI_API Moved_EventArgs: public EventArgs {
 	public:
 		//! Constructor requires the new and old positions
-		Moved_EventArgs(const FVector2& newPosition, const FVector2& prevPosition)
-		:newPosition(newPosition), prevPosition(prevPosition) {
-			  /**/
-		  }
-		  virtual ~Moved_EventArgs() {
-			  /**/
-		  }
-		  //! The new position after the move
-		  const FVector2 newPosition;
-		  //! The previous position from before the move
-		  const FVector2 prevPosition;
+		Moved_EventArgs( const FVector2& newPosition, const FVector2& prevPosition )
+				: newPosition( newPosition ), prevPosition( prevPosition ) {
+			/**/
+		}
+		virtual ~Moved_EventArgs() {
+			/**/
+		}
+		//! The new position after the move
+		const FVector2 newPosition;
+		//! The previous position from before the move
+		const FVector2 prevPosition;
 	};
 
 	//! Specialization of EventArgs for Control Size events
 	class OPENGUI_API Resized_EventArgs: public EventArgs {
 	public:
 		//! Constructor requires the new and old sizes
-		Resized_EventArgs(const FVector2& newSize, const FVector2& prevSize)
-			:newSize(newSize), prevSize(prevSize) {
-				/**/
+		Resized_EventArgs( const FVector2& newSize, const FVector2& prevSize )
+				: newSize( newSize ), prevSize( prevSize ) {
+			/**/
 		}
 		virtual ~Resized_EventArgs() {
 			/**/
