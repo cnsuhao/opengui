@@ -8,6 +8,7 @@
 #include "OpenGUI_I_WidgetContainer.h"
 
 namespace OpenGUI {
+	class ContainerControl; //forward declaration
 
 	//! Base class for all GUI objects that have position and size
 	/*!
@@ -33,6 +34,7 @@ namespace OpenGUI {
 	\see \ref EventList_Control "Control Events"
 	*/
 	class OPENGUI_API Control : public Widget {
+		friend class ContainerControl; //needed for layout state protection
 	public:
 		//! public constructor
 		Control();
@@ -152,6 +154,11 @@ namespace OpenGUI {
 //@}
 
 	private:
+		//! Call for any operation that invalidates layouts, like moves and resizes.
+		void _invalidateLayout();
+		//! Call for any operation that breaks docking. (Moves and resizes along a conflicting axis)
+		void _breakDocking();
+
 		FRect mRect; // position & size of this Control
 		bool mVisible; // visibility of this Control
 		float mAlpha; // alpha of this Control
@@ -162,6 +169,10 @@ namespace OpenGUI {
 		int mDock; // docking preference
 
 		bool mCursorInside; // cursor position state variable
+		bool m_InDockAnchor; // prevents re-entry into setDocking/setAnchor
+		bool m_InLayout; // managed entirely by ContainerControl.
+		// ^-- Signifies that layout is in process, so ignore invalidations and docking breaking operations
+
 	};
 
 } // namespace OpenGUI{

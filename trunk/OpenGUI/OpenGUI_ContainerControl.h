@@ -12,6 +12,10 @@ namespace OpenGUI {
 
 	//! base class for all Controls that are also containers
 	/*!
+	In addition to simply being a Control that contains child Controls, this Widget
+	also supplies an automatic layout system that will reposition and resize child controls
+	according to their exposed layout preferences.
+
 	\par Events
 	- ChildAttached
 	- ChildDetached
@@ -23,6 +27,17 @@ namespace OpenGUI {
 		ContainerControl();
 		//! public destructor
 		virtual ~ContainerControl();
+
+		//! suspends automatic layout updates until resumeLayout() is called
+		void suspendLayout();
+		//! resumes automatic layout updates and performs an immediate layout update if the current layout is out of date
+		void resumeLayout();
+		//! returns true if the current layout schema is still valid
+		bool layoutValid();
+		//! Performs the layout operation for child widgets, marking the new layout as valid.
+		void updateLayout();
+		//! Marks the current layout schema as invalid.
+		void invalidateLayout();
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
@@ -44,7 +59,15 @@ namespace OpenGUI {
 		//! A child has been detached from this container
 		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
 //@}
+
+		//! This performs the actual layout operation
+		virtual void _doUpdateLayout();
+
+
 	private:
+		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
+		bool m_LayoutValid; // state variable: holds layout validity
+		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
 	};
 
 } // namespace OpenGUI{
