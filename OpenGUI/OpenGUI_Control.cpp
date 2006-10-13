@@ -1,5 +1,6 @@
 #include "OpenGUI_Control.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_ContainerControl.h"
 
 namespace OpenGUI {
 #pragma region Accessors
@@ -364,10 +365,13 @@ namespace OpenGUI {
 		if ( gControl_ObjectAccessorList.getParent() == 0 )
 			gControl_ObjectAccessorList.setParent( Widget::getAccessors() );
 
+		// initialize state variables
 		mCursorInside = false; //cursor always starts "outside"
-		mAlpha = 1.0f; //start with 100% alpha (fully opaque)
+		m_InDockAnchor = false; // we're not in a dock/anchor operation, since we just instantiated
+		m_InLayout = false; // we're not in a layout operation, since we just instantiated
 
 		// set up defaults for properties
+		mAlpha = 1.0f; //start with 100% alpha (fully opaque)
 		mRect = FRect( 0.0f, 0.0f, 1.0f, 1.0f );
 		mVisible = true;
 		mMinSize = FVector2( 0, 0 );
@@ -406,9 +410,17 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::setLeft( float left ) {
 		FVector2 oldPos = getPosition();
-		mRect.setPosition( FVector2( left, mRect.min.y ) );
-		eventMoved( oldPos, getPosition() );
-		invalidate(); // need to invalidate caches for position change
+		if ( oldPos.x != left ) { // only bother with all this if the value is different
+			mRect.setPosition( FVector2( left, oldPos.y ) );
+			eventMoved( oldPos, getPosition() );
+			if ( !m_InLayout ) { // only do this if we are not under control of the container during layouts
+				if ( mDock ) { // if we aren't docking, no one will be depending on us for the layout
+					// need to break docking because moving while docked is illegal
+					_breakDocking(); // this will call _invalidateLayout() as a byproduct
+				}
+			}
+			invalidate(); // need to invalidate caches for position change
+		}
 	}
 	//############################################################################
 	float Control::getLeft() {
@@ -417,9 +429,17 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::setTop( float top ) {
 		FVector2 oldPos = getPosition();
-		mRect.setPosition( FVector2( mRect.min.x, top ) );
-		eventMoved( oldPos, getPosition() );
-		invalidate(); // need to invalidate caches for position change
+		if ( oldPos.y != top ) { // only bother with all this if the value is different
+			mRect.setPosition( FVector2( oldPos.x, top ) );
+			eventMoved( oldPos, getPosition() );
+			if ( !m_InLayout ) { // only do this if we are not under control of the container during layouts
+				if ( mDock ) { // if we aren't docking, no one will be depending on us for the layout
+					// need to break docking because moving while docked is illegal
+					_breakDocking(); // this will call _invalidateLayout() as a byproduct
+				}
+			}
+			invalidate(); // need to invalidate caches for position change
+		}
 	}
 	//############################################################################
 	float Control::getTop() {
@@ -439,9 +459,22 @@ namespace OpenGUI {
 			width = mMaxSize.x;
 
 		FVector2 oldSize = getSize();
-		mRect.setWidth( width );
-		eventResized( oldSize, getSize() );
-		invalidate(); // need to invalidate caches for size change
+		if ( oldSize.x != width ) { // only bother with all this if the value is different
+			mRect.setWidth( width );
+			eventResized( oldSize, getSize() );
+			if ( !m_InLayout ) { // only do this if we are not under control of the container during layouts
+				if ( mDock ) { // if we aren't docking, no one will be depending on us for the layout
+					if (( mDock & Top ) || ( mDock & Bottom ) ) { // (mDock & Full) is implied
+						// need to break docking because we resized along a layout controlled axis
+						_breakDocking(); // this will call _invalidateLayout() as a byproduct
+					} else {
+						// otherwise we just need to invalidate our layout
+						_invalidateLayout();
+					}
+				}
+			}
+			invalidate(); // need to invalidate caches for size change
+		}
 	}
 	//############################################################################
 	float Control::getWidth() {
@@ -461,9 +494,22 @@ namespace OpenGUI {
 			height = mMaxSize.y;
 
 		FVector2 oldSize = getSize();
-		mRect.setHeight( height );
-		eventResized( oldSize, getSize() );
-		invalidate(); // need to invalidate caches for size change
+		if ( oldSize.y != height ) { // only bother with all this if the value is different
+			mRect.setHeight( height );
+			eventResized( oldSize, getSize() );
+			if ( !m_InLayout ) { // only do this if we are not under control of the container during layouts
+				if ( mDock ) { // if we aren't docking, no one will be depending on us for the layout
+					if (( mDock & Left ) || ( mDock & Right ) ) { // (mDock & Full) is implied
+						// need to break docking because we resized along a layout controlled axis
+						_breakDocking(); // this will call _invalidateLayout() as a byproduct
+					} else {
+						// otherwise we just need to invalidate our layout
+						_invalidateLayout();
+					}
+				}
+			}
+			invalidate(); // need to invalidate caches for size change
+		}
 	}
 	//############################################################################
 	float Control::getHeight() {
@@ -653,18 +699,32 @@ namespace OpenGUI {
 		triggerEvent( "Resized", event );
 	}
 	//############################################################################
-	/*! Docking is a service provided by the container. */
+	/*! Docking is a service provided by the container. It
+	\note Docking and Anchoring are mutually exclusive. Defining new anchors will remove
+	any docking preferences. Conversely, selecting dockings will reset anchoring to the
+	default (Top/Left).
+	*/
 	void Control::setDocking( int dockStyle ) {
 		dockStyle = dockStyle & Fill; //mask down to only relevant values
-		mDock = 0; // clear the existing setting in case we don't match anything
+		int dockType = 0; // start with a clear setting in case we don't match anything
 
 		// now only accept valid single values
-		if ( dockStyle == Fill ) mDock = Fill;
-		if ( dockStyle == Top ) mDock = Top;
-		if ( dockStyle == Left ) mDock = Left;
-		if ( dockStyle == Bottom ) mDock = Bottom;
-		if ( dockStyle == Right ) mDock = Right;
-		invalidate();
+		if ( dockStyle == Fill ) dockType = Fill;
+		if ( dockStyle == Top ) dockType = Top;
+		if ( dockStyle == Left ) dockType = Left;
+		if ( dockStyle == Bottom ) dockType = Bottom;
+		if ( dockStyle == Right ) dockType = Right;
+
+		if ( dockType != mDock ) { // we only need to do this if we came up with a new result
+			mDock = dockType;
+			if ( !m_InDockAnchor ) {
+				m_InDockAnchor = true;
+				setAnchor( Top | Left );
+				invalidate();
+				_invalidateLayout();
+				m_InDockAnchor = false;
+			}
+		}
 	}
 	//############################################################################
 	/*! Return value will be a single value within ControlSides. */
@@ -690,6 +750,9 @@ namespace OpenGUI {
 	- None
 	Failure to specify an axis' anchor preference will result in the default of Top or Left
 	being assigned as necessary to fulfill the anchor requirements.
+	\note Docking and Anchoring are mutually exclusive. Defining new anchors will remove
+	any docking preferences. Conversely, selecting dockings will reset anchoring to the
+	default (Top/Left).
 	*/
 	void Control::setAnchor( int anchoredSides ) {
 		// ensure one of Left/Right is selected
@@ -702,13 +765,34 @@ namespace OpenGUI {
 				&& ( anchoredSides & Bottom ) != Bottom )
 			anchoredSides |= Top;
 
-		mAnchors = anchoredSides;
-		invalidate();
+		if ( mAnchors != anchoredSides ) { // we only need to do this if we came up with a new result
+			mAnchors = anchoredSides;
+			if ( !m_InDockAnchor ) {
+				m_InDockAnchor = true;
+				setDocking( None );
+				invalidate();
+				_invalidateLayout();
+				m_InDockAnchor = false;
+			}
+		}
 	}
 	//############################################################################
 	/*! Return value will be a bit mask comprised of values within ControlSides. */
 	int Control::getAnchor() {
 		return mAnchors;
+	}
+	//############################################################################
+	void Control::_invalidateLayout() {
+		if ( !m_InLayout ) {
+			ContainerControl* c = dynamic_cast<ContainerControl*>( getContainer() );
+			if ( c )
+				c->invalidateLayout();
+		}
+	}
+	//############################################################################
+	void Control::_breakDocking() {
+		if ( !m_InLayout )
+			setDocking( None );
 	}
 	//############################################################################
 } // namespace OpenGUI {
