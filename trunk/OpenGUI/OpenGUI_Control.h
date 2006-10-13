@@ -66,11 +66,11 @@ namespace OpenGUI {
 		//! Returns the minimum size this Control will allow itself to be resized to
 		const FVector2& getMinimumSize();
 		//! Sets the minimum size this Control will allow itself to be resized to
-		void setMinimumSize(const FVector2& size);
+		void setMinimumSize( const FVector2& size );
 		//! Returns the maximum size this Control will allow itself to be resized to
 		const FVector2& getMaximumSize();
 		//! Sets the maximum size this Control will allow itself to be resized to
-		void setMaximumSize(const FVector2& size);
+		void setMaximumSize( const FVector2& size );
 
 		//! Sets the visibility of this Control
 		void setVisible( bool visible );

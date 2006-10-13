@@ -341,7 +341,7 @@ namespace OpenGUI {
 	void Control::setLeft( float left ) {
 		FVector2 oldPos = getPosition();
 		mRect.setPosition( FVector2( left, mRect.min.y ) );
-		eventMoved(oldPos, getPosition());
+		eventMoved( oldPos, getPosition() );
 		invalidate(); // need to invalidate caches for position change
 	}
 	//############################################################################
@@ -352,7 +352,7 @@ namespace OpenGUI {
 	void Control::setTop( float top ) {
 		FVector2 oldPos = getPosition();
 		mRect.setPosition( FVector2( mRect.min.x, top ) );
-		eventMoved(oldPos, getPosition());
+		eventMoved( oldPos, getPosition() );
 		invalidate(); // need to invalidate caches for position change
 	}
 	//############################################################################
@@ -374,7 +374,7 @@ namespace OpenGUI {
 
 		FVector2 oldSize = getSize();
 		mRect.setWidth( width );
-		eventResized(oldSize, getSize());
+		eventResized( oldSize, getSize() );
 		invalidate(); // need to invalidate caches for size change
 	}
 	//############################################################################
@@ -396,7 +396,7 @@ namespace OpenGUI {
 
 		FVector2 oldSize = getSize();
 		mRect.setHeight( height );
-		eventResized(oldSize, getSize());
+		eventResized( oldSize, getSize() );
 		invalidate(); // need to invalidate caches for size change
 	}
 	//############################################################################
@@ -569,22 +569,22 @@ namespace OpenGUI {
 		triggerEvent( "UnTargeted", eventArgs );
 	}
 	//############################################################################
-	void Control::onMoved( Object* sender, Moved_EventArgs& evtArgs ){
+	void Control::onMoved( Object* sender, Moved_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onResized( Object* sender, Resized_EventArgs& evtArgs ){
+	void Control::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Control::eventMoved( const FVector2& oldPosition, const FVector2& newPosition ){
-		Moved_EventArgs event(oldPosition,newPosition);
-		triggerEvent("Moved",event);
+	void Control::eventMoved( const FVector2& oldPosition, const FVector2& newPosition ) {
+		Moved_EventArgs event( oldPosition, newPosition );
+		triggerEvent( "Moved", event );
 	}
 	//############################################################################
-	void Control::eventResized( const FVector2& oldSize, const FVector2& newSize ){
-		Resized_EventArgs event(oldSize,newSize);
-		triggerEvent("Resized",event);
+	void Control::eventResized( const FVector2& oldSize, const FVector2& newSize ) {
+		Resized_EventArgs event( oldSize, newSize );
+		triggerEvent( "Resized", event );
 	}
 	//############################################################################
 } // namespace OpenGUI {
