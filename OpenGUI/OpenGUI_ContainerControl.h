@@ -60,14 +60,20 @@ namespace OpenGUI {
 		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
 //@}
 
+		//! Returns the client area position and size
+		virtual const FRect& getClientArea();
+
 		//! This performs the actual layout operation
 		virtual void _doUpdateLayout();
 
 
 	private:
+		void _setChildControlLayoutState(bool state);
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
+
+		FRect m_RemClntArea;
 	};
 
 } // namespace OpenGUI{
