@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
+#pragma region Accessors
 	//############################################################################
 	class Control_Left_ObjectProperty : public ObjectProperty {
 	public:
@@ -270,6 +271,66 @@ namespace OpenGUI {
 		}
 	}
 	gControl_Alpha_ObjectProperty;
+	//############################################################################
+	class Control_MaxSize_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "MaximumSize";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Control& w = dynamic_cast<Control&>( objectRef );
+				valueOut.setValue( w.getMaximumSize() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Control& w = dynamic_cast<Control&>( objectRef );
+				w.setMaximumSize( valueIn.getValueAsFVector2() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_FVECTOR2;
+		}
+	}
+	gControl_MaxSize_ObjectProperty;
+	//############################################################################
+	class Control_MinSize_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "MinimumSize";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Control& w = dynamic_cast<Control&>( objectRef );
+				valueOut.setValue( w.getMinimumSize() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Control& w = dynamic_cast<Control&>( objectRef );
+				w.setMinimumSize( valueIn.getValueAsFVector2() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_FVECTOR2;
+		}
+	}
+	gControl_MinSize_ObjectProperty;
 
 	//############################################################################
 	//############################################################################
@@ -287,13 +348,16 @@ namespace OpenGUI {
 
 			addAccessor( &gControl_Visible_ObjectProperty );
 			addAccessor( &gControl_Alpha_ObjectProperty );
+
+			addAccessor( &gControl_MaxSize_ObjectProperty );
+			addAccessor( &gControl_MinSize_ObjectProperty );
 		}
 		~Control_ObjectAccessorList() {}
 	}
 	gControl_ObjectAccessorList;
 	//############################################################################
 	//############################################################################
-
+#pragma endregion
 
 	//############################################################################
 	Control::Control() {
