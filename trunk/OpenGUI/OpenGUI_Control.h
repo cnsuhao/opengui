@@ -86,6 +86,27 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
 
+		//! Values used by get/setDocking and get/setAnchor
+		enum ControlSides {
+			None = 0, //!< No side
+			Left = 1, //!< Left side
+			Right = 1 << 1, //!< Right side
+			Top = 1 << 2, //!< Top side
+			Bottom = 1 << 3, //!< Bottom side
+			All = Left | Right | Top | Bottom, //!< All sides
+			Fill = All //!< Alias for All sides
+		};
+
+		//! Sets the docking preference for this Control
+		void setDocking( int dockStyle );
+		//! Gets the current docking preference for this Control
+		int getDocking();
+
+		//! Sets the anchored sides for this Control
+		void setAnchor( int anchoredSides );
+		//! Gets the current anchored sides for this control
+		int getAnchor();
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -136,6 +157,9 @@ namespace OpenGUI {
 		float mAlpha; // alpha of this Control
 		FVector2 mMinSize; // Minimum Size
 		FVector2 mMaxSize; // Maximum Size
+
+		int mAnchors; // anchored sides
+		int mDock; // docking preference
 
 		bool mCursorInside; // cursor position state variable
 	};

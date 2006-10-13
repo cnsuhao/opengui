@@ -651,4 +651,62 @@ namespace OpenGUI {
 		triggerEvent( "Resized", event );
 	}
 	//############################################################################
+	/*! Docking is a service provided by the container. */
+	void Control::setDocking( int dockStyle ) {
+		dockStyle = dockStyle & Fill; //mask down to only relevant values
+		mDock = 0; // clear the existing setting in case we don't match anything
+
+		// now only accept valid single values
+		if ( dockStyle == Fill ) mDock = Fill;
+		if ( dockStyle == Top ) mDock = Top;
+		if ( dockStyle == Left ) mDock = Left;
+		if ( dockStyle == Bottom ) mDock = Bottom;
+		if ( dockStyle == Right ) mDock = Right;
+		invalidate();
+	}
+	//############################################################################
+	/*! Return value will be a single value within ControlSides. */
+	int Control::getDocking() {
+		return mDock;
+	}
+	//############################################################################
+	/*! Anchoring is a service provided by the container. During resizes the container
+	will check all of its children for Anchor preference. The children can specify anchoring
+	preference to any sides they wish, but at least one top/bottom and one left/right side
+	must be specified at all times.\n
+	For example, it is legal to anchor against:
+	- Top/Left
+	- Top/Right
+	- Top/Left/Right
+	- Bottom/Left
+	- All (also known as Fill)
+	It is not legal to anchor against:
+	- Top
+	- Right
+	- Left
+	- Bottom
+	- None
+	Failure to specify an axis' anchor preference will result in the default of Top or Left
+	being assigned as necessary to fulfill the anchor requirements.
+	*/
+	void Control::setAnchor( int anchoredSides ) {
+		// ensure one of Left/Right is selected
+		if (( anchoredSides & Left ) != Left
+				&& ( anchoredSides & Right ) != Right )
+			anchoredSides |= Left;
+
+		// ensure one of Top/Bottom is selected
+		if (( anchoredSides & Top ) != Top
+				&& ( anchoredSides & Bottom ) != Bottom )
+			anchoredSides |= Top;
+
+		mAnchors = anchoredSides;
+		invalidate();
+	}
+	//############################################################################
+	/*! Return value will be a bit mask comprised of values within ControlSides. */
+	int Control::getAnchor() {
+		return mAnchors;
+	}
+	//############################################################################
 } // namespace OpenGUI {
