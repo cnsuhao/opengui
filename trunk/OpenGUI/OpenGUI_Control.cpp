@@ -372,6 +372,8 @@ namespace OpenGUI {
 		mVisible = true;
 		mMinSize = FVector2( 0, 0 );
 		mMaxSize = FVector2( 0, 0 );
+		mAnchors = Left | Top;
+		mDock = None;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Cursor_Click" );
