@@ -115,7 +115,7 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushModifierStack::push( BrushModifier* modifier ) {
 		mStack.push_front( modifier );
-		if( modifier->getType() == BrushModifier::ROTATION )
+		if ( modifier->getType() == BrushModifier::ROTATION )
 			mRotCacheValid = false;
 	}
 	//############################################################################
@@ -159,7 +159,7 @@ namespace OpenGUI {
 		BrushModifier* tmp = mStack.front();
 		if ( tmp->getType() == BrushModifier::MARKER )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot pop stack past marker", __FUNCTION__ );
-		if( tmp->getType() == BrushModifier::ROTATION )
+		if ( tmp->getType() == BrushModifier::ROTATION )
 			mRotCacheValid = false;
 		mStack.pop_front();
 		delete tmp;
@@ -219,17 +219,17 @@ namespace OpenGUI {
 	//############################################################################
 	const Radian& BrushModifierStack::getRotation() {
 		// if the cache is valid, just return it
-		if( mRotCacheValid )
+		if ( mRotCacheValid )
 			return mRotCache;
 		//otherwise we'll need to rebuild the cache before we return
 		mRotCache = 0;
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
-			iter != mStack.end(); iter++ ) {
-				BrushModifier* mod = ( *iter );
-				if( mod->getType() == BrushModifier::ROTATION ){
-					BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>(mod);
-					mRotCache = mRotCache + rot->mRotationAngle;
-				}
+				iter != mStack.end(); iter++ ) {
+			BrushModifier* mod = ( *iter );
+			if ( mod->getType() == BrushModifier::ROTATION ) {
+				BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>( mod );
+				mRotCache = mRotCache + rot->mRotationAngle;
+			}
 		}
 		mRotCacheValid = true;
 		return mRotCache;

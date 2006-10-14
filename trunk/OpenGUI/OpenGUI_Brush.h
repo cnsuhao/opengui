@@ -255,7 +255,7 @@ namespace OpenGUI {
 		void addRenderOperation( RenderOperation& renderOp );
 
 		BrushModifierStack mModifierStack;
-		
+
 		bool m_RotationCacheValid; // cache validity state var
 		FVector2 m_PPUcache; // cache for rotated PPU
 		FVector2 m_UPIcache; // cache for rotated UPI
