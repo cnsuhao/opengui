@@ -95,6 +95,11 @@ namespace OpenGUI {
 			return 1.0f / sqrt( fValue );
 		}
 
+		//! Returns the angle from the origin to the given point, in float radians
+		static float AngleOfPoint( float x, float y ) {
+			return ATan2( y, x );
+		}
+
 
 	private:
 		static const float POS_INFINITY;
