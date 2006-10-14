@@ -186,6 +186,12 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	void Widget::_draw( Brush& brush ) {
+		brush._pushMarker( this );
+		eventDraw( brush );
+		brush._popMarker( this );
+	}
+	//############################################################################
 	Screen* Widget::getScreen() {
 		if ( !mContainer ) return 0;
 		Widget* parentW = dynamic_cast<Widget*>( mContainer );

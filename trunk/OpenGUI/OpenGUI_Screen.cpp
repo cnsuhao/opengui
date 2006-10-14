@@ -151,7 +151,7 @@ namespace OpenGUI {
 		ScreenBrush b( this, 0 );
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			iter->eventDraw( b );
+			iter->_draw( b );
 			iter++;
 		}
 	}

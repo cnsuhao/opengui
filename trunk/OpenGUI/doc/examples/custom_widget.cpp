@@ -91,12 +91,8 @@ void MyWidget::onDraw(Object* sender, Draw_EventArgs& args){
 	//call base first so we draw over top of it
 	Control::onDraw(sender, args);
 
-	if( !getVisible() ) return; // don't draw if we aren't supposed to
-
 	Brush& b = args.brush; // get a new reference to brush so it's easier to use
-	b.pushAlpha( getAlpha() ); // obey alpha
 	b.pushColor( Color::PresetRed() ); // set the brush color to red
 	b.Primitive.drawRect( getRect() ); // draw a rectangle using our position and size
 	b.pop(); // pop off our previous color push, because pop'ing what you push is neighborly
-	b.pop(); // pop off the alpha push. Won't you be my neighbor?
 }

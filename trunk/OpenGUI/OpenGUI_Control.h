@@ -109,6 +109,9 @@ namespace OpenGUI {
 		//! Gets the current anchored sides for this control
 		int getAnchor();
 
+		//! \internal In addition to previous functionality, this enforces Alpha and Visibility before the Draw event is issued
+		virtual void _draw( Brush& brush );
+
 	protected:
 //!\name Event Handlers
 //@{
