@@ -129,6 +129,18 @@ namespace OpenGUI {
 		return iter;
 	}
 	//############################################################################
+	WidgetCollection::reverse_iterator WidgetCollection::rbegin() {
+		WidgetCollection::reverse_iterator iter;
+		iter.mIter = mCollectionObjects.rbegin();
+		return iter;
+	}
+	//############################################################################
+	WidgetCollection::reverse_iterator WidgetCollection::rend() {
+		WidgetCollection::reverse_iterator iter;
+		iter.mIter = mCollectionObjects.rend();
+		return iter;
+	}
+	//############################################################################
 	//############################################################################
 
 
