@@ -70,6 +70,9 @@ namespace OpenGUI {
 			\endcode */
 		I_WidgetContainer* getContainer();
 
+		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
+		virtual void _draw( Brush& brush );
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -111,7 +114,7 @@ namespace OpenGUI {
 		//! Widget was removed from a container
 		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
 
-		//! Draw this object using the given brush
+		//! Draw this object's foreground using the given brush
 		void eventDraw( Brush& brush );
 		//! Widget was invalidated and will need to be redrawn next Screen::update()
 		void eventInvalidated();
@@ -135,6 +138,7 @@ namespace OpenGUI {
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen();
 		void _doflush();
+
 	private:
 		I_WidgetContainer* mContainer;
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events

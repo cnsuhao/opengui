@@ -28,6 +28,8 @@ namespace OpenGUI {
 		// set up defaults for properties
 
 		//Set up events and default bindings
+		getEvents().createEvent( "DrawBG" );
+		getEvents()["DrawBG"].add( new EventDelegate( this, &ContainerControl::onDrawBG ) );
 		getEvents().createEvent( "ChildAttached" );
 		getEvents().createEvent( "ChildDetached" );
 		getEvents()["ChildAttached"].add( new EventDelegate( this, &ContainerControl::onChildAttached ) );
@@ -46,6 +48,15 @@ namespace OpenGUI {
 		return "OpenGUI::ContainerControl";
 	}
 	//############################################################################
+	void ContainerControl::eventDrawBG( Brush& brush ) {
+		Draw_EventArgs event( brush );
+		triggerEvent( "DrawBG", event );
+	}
+	//############################################################################
+	void ContainerControl::onDrawBG( Object* sender, Draw_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
 	void ContainerControl::onChildAttached( Object* sender, Attach_EventArgs& evtArgs ) {
 		invalidate(); // need to invalidate caches for hierarchy change
 	}
@@ -62,6 +73,32 @@ namespace OpenGUI {
 	void ContainerControl::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
 		Attach_EventArgs event( container, prevChild );
 		triggerEvent( "ChildDetached", event );
+	}
+	//############################################################################
+	void ContainerControl::_draw( Brush& brush ) {
+		if ( getVisible() ) {
+			brush.pushAlpha( getAlpha() );
+
+			//draw background
+			brush._pushMarker( this );
+			eventDrawBG( brush );
+			brush._popMarker( this );
+
+			//draw children
+			brush.pushPosition( getPosition() );
+			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
+					iter != Children.rend(); iter++ ) {
+				iter->_draw( brush );
+			}
+			brush.pop(); // pop client area position offset
+
+			//draw foreground
+			brush._pushMarker( this );
+			eventDraw( brush );
+			brush._popMarker( this );
+
+			brush.pop(); // pop alpha
+		}
 	}
 	//############################################################################
 	/*! If layout is not suspended, this triggers an immediate update of the layout.
@@ -190,21 +227,21 @@ namespace OpenGUI {
 				int dock = ctrl->getDocking();
 				if ( dock == Control::None ) {
 					int anchor = ctrl->getAnchor();
-					if(anchor & Control::Left){
+					if ( anchor & Control::Left ) {
 						ctrl->setLeft( ctrl->getLeft() + deltaLeft );
-						if(anchor & Control::Right)
-							ctrl->setWidth( (ctrl->getWidth() - deltaLeft) + deltaRight);
+						if ( anchor & Control::Right )
+							ctrl->setWidth(( ctrl->getWidth() - deltaLeft ) + deltaRight );
 					}
-					if( (anchor & Control::Left) == 0 && (anchor & Control::Right)){
+					if (( anchor & Control::Left ) == 0 && ( anchor & Control::Right ) ) {
 						ctrl->setLeft( ctrl->getLeft() + deltaRight );
 					}
 
-					if(anchor & Control::Top){
+					if ( anchor & Control::Top ) {
 						ctrl->setTop( ctrl->getTop() + deltaTop );
-						if(anchor & Control::Bottom)
-							ctrl->setHeight( (ctrl->getHeight() - deltaTop) + deltaBottom);
+						if ( anchor & Control::Bottom )
+							ctrl->setHeight(( ctrl->getHeight() - deltaTop ) + deltaBottom );
 					}
-					if( (anchor & Control::Top) == 0 && (anchor & Control::Bottom)){
+					if (( anchor & Control::Top ) == 0 && ( anchor & Control::Bottom ) ) {
 						ctrl->setTop( ctrl->getTop() + deltaBottom );
 					}
 				}

@@ -408,6 +408,14 @@ namespace OpenGUI {
 		return "OpenGUI::Control";
 	}
 	//############################################################################
+	void Control::_draw( Brush& brush ) {
+		if ( mVisible ) {
+			brush.pushAlpha( mAlpha );
+			Widget::_draw( brush );
+			brush.pop();
+		}
+	}
+	//############################################################################
 	void Control::setLeft( float left ) {
 		FVector2 oldPos = getPosition();
 		if ( oldPos.x != left ) { // only bother with all this if the value is different

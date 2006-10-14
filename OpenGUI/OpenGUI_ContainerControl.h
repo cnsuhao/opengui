@@ -39,6 +39,9 @@ namespace OpenGUI {
 		//! Marks the current layout schema as invalid.
 		void invalidateLayout();
 
+		//! \internal In addition to previous functionality, this adds a "DrawBG" operation and calls the children _draw between the foreground and background onDraws
+		virtual void _draw( Brush& brush );
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -46,6 +49,8 @@ namespace OpenGUI {
 	protected:
 //!\name Event Handlers
 //@{
+		//! "DrawBG" event
+		virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
 		//! "ChildAttached" event
 		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "ChildDetached" event
@@ -54,6 +59,8 @@ namespace OpenGUI {
 
 //!\name Event Processors
 //@{
+		//! Draw this object's background using the given brush
+		void eventDrawBG( Brush& brush );
 		//! A new child has been attached to this container
 		void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
 		//! A child has been detached from this container
@@ -66,9 +73,8 @@ namespace OpenGUI {
 		//! This performs the actual layout operation
 		virtual void _doUpdateLayout();
 
-
 	private:
-		void _setChildControlLayoutState(bool state);
+		void _setChildControlLayoutState( bool state );
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
