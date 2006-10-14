@@ -110,14 +110,14 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	const FVector2& Brush::getPPU() {
-		if( m_RotationCacheValid )
+		if ( m_RotationCacheValid )
 			return m_PPUcache;
 		_UpdateRotationCache();
 		return m_PPUcache;
 	}
 	//############################################################################
 	const FVector2& Brush::getUPI() {
-		if( m_RotationCacheValid )
+		if ( m_RotationCacheValid )
 			return m_UPIcache;
 		_UpdateRotationCache();
 		return m_UPIcache;
@@ -127,7 +127,7 @@ namespace OpenGUI {
 		/*
 		This works by adding angle dependent weights from each of the two axis for
 		both UPI and PPU.
-		
+
 		When at 0/180 degree rotation, the values are returned unmodified.
 		When at 90/270 degree rotation, the values are fully swapped.
 
@@ -142,12 +142,12 @@ namespace OpenGUI {
 		FVector2 tmp;
 
 		tmp = getPPU_Raw();
-		m_PPUcache.x = (tmp.x * abscos) + (tmp.y * abssin);
-		m_PPUcache.y = (tmp.x * abssin) + (tmp.y * abscos);
+		m_PPUcache.x = ( tmp.x * abscos ) + ( tmp.y * abssin );
+		m_PPUcache.y = ( tmp.x * abssin ) + ( tmp.y * abscos );
 
 		tmp = getUPI_Raw();
-		m_UPIcache.x = (tmp.x * abscos) + (tmp.y * abssin);
-		m_UPIcache.y = (tmp.x * abssin) + (tmp.y * abscos);		
+		m_UPIcache.x = ( tmp.x * abscos ) + ( tmp.y * abssin );
+		m_UPIcache.y = ( tmp.x * abssin ) + ( tmp.y * abscos );
 
 		m_RotationCacheValid = true;
 	}
@@ -194,7 +194,7 @@ namespace OpenGUI {
 		mParentBrush->pushRotation( angle );
 
 		//generate float_thick based on current PPU map
-		float float_thick = ((float)thickness) * mParentBrush->getPPU().y;
+		float float_thick = (( float )thickness ) * mParentBrush->getPPU().y;
 
 		//draw a rect of thickness height and length width, centered on the current origin
 		drawRect( FRect( 0.0f, -float_thick / 2, len, float_thick / 2 ) );
@@ -228,12 +228,114 @@ namespace OpenGUI {
 		mParentBrush->addRenderOperation( renderOp );
 	}
 	//############################################################################
+	/*! Positive \c thickness places the line around the outside of the \c rect.
+		Negative \c thickness places the line around the inside of the \c rect.
+	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, float thickness ) {
-		OG_NYI;
+		if ( thickness == 0 ) return; // 0? wtf?
+		float fthickx = thickness;
+		float fthicky = thickness;
+		FRect drect; // used for drawing the component rects
+		bool drawOutside = true;
+		if ( thickness < 0.0f ) drawOutside = false;
+
+		// ### draw horizontal lines ###
+		drect = rect;
+		drect.setHeight( Math::FAbs( fthicky ) );
+		// top first
+		if ( drawOutside ) {
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+			drawRect( drect );
+			drect.offset( FVector2( 0.0f, fthicky ) );
+		} else { // draw inside
+			drawRect( drect );
+		}
+		// then draw the bottom line
+		drect.offset( FVector2( 0.0f, rect.getHeight() ) );
+		if ( drawOutside ) {
+			drawRect( drect );
+		} else { // draw inside
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+			drawRect( drect );
+		}
+
+		// ### draw vertical lines ###
+		drect = rect;
+		drect.setWidth( Math::FAbs( fthickx ) );
+		if ( thickness < 0 ) {
+			drect.setHeight( drect.getHeight() - ( Math::FAbs( fthicky ) * 2 ) );
+		}
+		// first left side
+		if ( drawOutside ) {
+			drect.offset( FVector2( -fthickx, 0.0f ) );
+			drawRect( drect );
+			drect.offset( FVector2( fthickx, 0.0f ) );
+		} else { // draw inside
+			drawRect( drect );
+		}
+		// then right side
+		drect.offset( FVector2( rect.getWidth(), 0.0f ) );
+		if ( drawOutside ) {
+			drawRect( drect );
+		} else { // draw inside
+			drect.offset( FVector2( -fthickx, 0.0f ) );
+			drawRect( drect );
+		}
 	}
 	//############################################################################
+	/*! Positive \c thickness places the line around the outside of the \c rect.
+		Negative \c thickness places the line around the inside of the \c rect.
+	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, int thickness ) {
-		OG_NYI;
+		if ( thickness == 0 ) return; // 0? wtf?
+		float fthickx = (( float )thickness ) * mParentBrush->getPPU().x;
+		float fthicky = (( float )thickness ) * mParentBrush->getPPU().y;
+		FRect drect; // used for drawing the component rects
+		bool drawOutside = true;
+		if ( thickness < 0 ) drawOutside = false;
+
+		// ### draw horizontal lines ###
+		drect = rect;
+		drect.setHeight( Math::FAbs( fthicky ) );
+		// top first
+		if ( drawOutside ) {
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+			drawRect( drect );
+			drect.offset( FVector2( 0.0f, fthicky ) );
+		} else { // draw inside
+			drawRect( drect );
+		}
+		// then draw the bottom line
+		drect.offset( FVector2( 0.0f, rect.getHeight() ) );
+		if ( drawOutside ) {
+			drawRect( drect );
+		} else { // draw inside
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+			drawRect( drect );
+		}
+
+		// ### draw vertical lines ###
+		drect = rect;
+		drect.setWidth( Math::FAbs( fthickx ) );
+		if ( thickness < 0 ) {
+			drect.setHeight( drect.getHeight() - ( Math::FAbs( fthicky ) * 2 ) );
+		}
+		// first left side
+		if ( drawOutside ) {
+			drect.offset( FVector2( -fthickx, 0.0f ) );
+			drawRect( drect );
+			drect.offset( FVector2( fthickx, 0.0f ) );
+		} else { // draw inside
+			drawRect( drect );
+		}
+		// then right side
+		drect.offset( FVector2( rect.getWidth(), 0.0f ) );
+		if ( drawOutside ) {
+			drawRect( drect );
+		} else { // draw inside
+			drect.offset( FVector2( -fthickx, 0.0f ) );
+			drawRect( drect );
+		}
 	}
 	//############################################################################
 	//############################################################################
