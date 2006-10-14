@@ -132,6 +132,9 @@ namespace OpenGUI {
 		//! return the stack size
 		size_t size() const;
 
+		//! Returns the total of all pushed rotations
+		const Radian& getRotation();
+
 		void applyStack( RenderOperation& in_out );
 	private:
 		typedef std::list<BrushModifier*> BrushModifierPtrStack;
@@ -139,6 +142,8 @@ namespace OpenGUI {
 
 		bool mStickColor; // state variable for holding if sticky color has already been applied
 		bool mStickMask;  // state variable for holding if sticky mask has already been applied
+		bool mRotCacheValid; // state variable, holds if rotation cache is still valid
+		Radian mRotCache; // rotation cache
 	};
 
 

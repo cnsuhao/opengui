@@ -64,7 +64,7 @@ namespace OpenGUI {
 		}
 
 		//! Returns the UPI (units per inch) of this Screen. \see setUPI()
-		const IVector2& getUPI() const {
+		const FVector2& getUPI() const {
 			return mUPI;
 		}
 		//! Changes the UPI (units per inch) of this Screen.
@@ -79,7 +79,7 @@ namespace OpenGUI {
 		This system (combined with getPPU) allows us to render Screens with consistent font sizes
 		and consistent Widget sizes (basically uniformly scaling everything), while still preserving
 		pixel alignment where requested. */
-		void setUPI( const IVector2& newUPI );
+		void setUPI( const FVector2& newUPI );
 
 		//! renders this Screen to it's current render target
 		void update();
@@ -117,7 +117,7 @@ namespace OpenGUI {
 		bool mAutoUpdating;
 		std::string mName;
 		FVector2 mSize;
-		IVector2 mUPI;
+		FVector2 mUPI;
 		mutable FVector2 mPPUcache; //mutable because overall it is state unrelated
 		mutable bool mPPUcache_valid; //mutable because overall it is state unrelated
 		const bool _ValidPPUcache() const {

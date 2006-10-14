@@ -222,13 +222,18 @@ namespace OpenGUI {
 		//! \internal Pops the stack until the marker with the given \c markerID is found.
 		void _popMarker( void* markerID );
 
-		//! Returns the size of the drawing area that this brush works within
-		virtual const FVector2& getDrawSize() const;
-		//! returns the PPU (pixels per unit) of this Brush. \see Screen::getPPU()
-		virtual const FVector2& getPPU() const;
-		//! Returns the UPI (units per inch) of this Brush. \see Screen::getUPI()
-		virtual const IVector2& getUPI() const;
+		//! Returns the raw (uncorrected) PPU (pixels per unit) of this Brush. \see Screen::getPPU()
+		virtual const FVector2& getPPU_Raw() const = 0;
+		//! Returns the raw (uncorrected) UPI (units per inch) of this Brush. \see Screen::getUPI()
+		virtual const FVector2& getUPI_Raw() const = 0;
 		//const IRect& getDrawArea_Pixels();
+
+		//! returns the Brush's current total rotation
+		const Radian& getRotation();
+		//! Returns the PPU mapped against the Brush's current rotation.  \see Screen::getPPU()
+		const FVector2& getPPU();
+		//! Returns the UPI mapped against the Brush's current rotation.  \see Screen::getPPU()
+		const FVector2& getUPI();
 
 	protected:
 		//! Final output RenderOperations are passed to this function.
@@ -250,6 +255,11 @@ namespace OpenGUI {
 		void addRenderOperation( RenderOperation& renderOp );
 
 		BrushModifierStack mModifierStack;
+		
+		bool m_RotationCacheValid; // cache validity state var
+		FVector2 m_PPUcache; // cache for rotated PPU
+		FVector2 m_UPIcache; // cache for rotated UPI
+		void _UpdateRotationCache(); // updates the rotation dependent cache objects
 
 		static Brush* ActiveBrush;
 	};

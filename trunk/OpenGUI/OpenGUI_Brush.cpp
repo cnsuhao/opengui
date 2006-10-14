@@ -11,6 +11,7 @@ namespace OpenGUI {
 		Text.setBrush( this );
 		Primitive.setBrush( this );
 		Image.setBrush( this );
+		m_RotationCacheValid = false;
 	}
 	//############################################################################
 	Brush::~Brush() {
@@ -32,6 +33,7 @@ namespace OpenGUI {
 	*/
 	void Brush::_popMarker( void* markerID ) {
 		mModifierStack.popMarker( markerID );
+		m_RotationCacheValid = false; // we don't know what was popped, so we have to assume the worst
 	}
 	//############################################################################
 	void Brush::pushPosition( float x_offset, float y_offset ) {
@@ -48,6 +50,7 @@ namespace OpenGUI {
 		BrushModifier_Rotation rot;
 		rot.mRotationAngle = angle;
 		mModifierStack.push( rot );
+		m_RotationCacheValid = false; // need to invalidate rotation dependent cache on all rotation changes
 	}
 	//############################################################################
 	void Brush::pushColor( const Color& color ) {
@@ -82,18 +85,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Brush::pop() {
 		mModifierStack.pop();
-	}
-	//############################################################################
-	const FVector2& Brush::getDrawSize() const {
-		OG_NYI;
-	}
-	//############################################################################
-	const FVector2& Brush::getPPU() const {
-		OG_NYI;
-	}
-	//############################################################################
-	const IVector2& Brush::getUPI() const {
-		OG_NYI;
+		m_RotationCacheValid = false; // we don't know what was popped, so we have to assume the worst
 	}
 	//############################################################################
 	void Brush::markActive() {
@@ -113,6 +105,53 @@ namespace OpenGUI {
 		/* This is overridden by more specific brush classes */
 	}
 	//############################################################################
+	const Radian& Brush::getRotation() {
+		return mModifierStack.getRotation();
+	}
+	//############################################################################
+	const FVector2& Brush::getPPU() {
+		if( m_RotationCacheValid )
+			return m_PPUcache;
+		_UpdateRotationCache();
+		return m_PPUcache;
+	}
+	//############################################################################
+	const FVector2& Brush::getUPI() {
+		if( m_RotationCacheValid )
+			return m_UPIcache;
+		_UpdateRotationCache();
+		return m_UPIcache;
+	}
+	//############################################################################
+	void Brush::_UpdateRotationCache() {
+		/*
+		This works by adding angle dependent weights from each of the two axis for
+		both UPI and PPU.
+		
+		When at 0/180 degree rotation, the values are returned unmodified.
+		When at 90/270 degree rotation, the values are fully swapped.
+
+		All angles in between perform a linear interpolation between the two values
+		based on the current angle. The result of sin/cos is reused since the angle
+		is constant per function execution, and is absoluted to remove the quadrant
+		logic that sin/cos normally come with, since we can't have negative scales.
+		*/
+		float rad = getRotation().valueRadians();
+		const float abssin = Math::FAbs( Math::Sin( rad ) );
+		const float abscos = Math::FAbs( Math::Cos( rad ) );
+		FVector2 tmp;
+
+		tmp = getPPU_Raw();
+		m_PPUcache.x = (tmp.x * abscos) + (tmp.y * abssin);
+		m_PPUcache.y = (tmp.x * abssin) + (tmp.y * abscos);
+
+		tmp = getUPI_Raw();
+		m_UPIcache.x = (tmp.x * abscos) + (tmp.y * abssin);
+		m_UPIcache.y = (tmp.x * abssin) + (tmp.y * abscos);		
+
+		m_RotationCacheValid = true;
+	}
+	//############################################################################
 	//############################################################################
 
 
@@ -121,11 +160,48 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	void BrushPrimitive::drawLine( const FVector2& start_point, const FVector2& end_point, float thickness ) {
-		OG_NYI;
+		//translate to the start position
+		mParentBrush->pushPosition( start_point );
+		FVector2 newEnd = end_point - start_point;
+
+		//rotate to needed angle and transform end point into a line length
+		float len = newEnd.length();
+		Radian angle( Math::AngleOfPoint( newEnd.x, newEnd.y ) );
+		mParentBrush->pushRotation( angle );
+
+		//draw a rect of thickness height and length width, centered on the current origin
+		drawRect( FRect( 0.0f, -thickness / 2, len, thickness / 2 ) );
+
+		//pop rotation & translation
+		mParentBrush->pop();
+		mParentBrush->pop();
 	}
 	//############################################################################
 	void BrushPrimitive::drawLine( const FVector2& start_point, const FVector2& end_point, int thickness ) {
-		OG_NYI;
+		/*
+		Just like our float based thickness counterpart, except we transform the thickness
+		from true pixels into the equivalent (rotation aware) thickness according to the
+		rendering context's Pixels Per Unit (PPU)
+		*/
+
+		//translate to the start position
+		mParentBrush->pushPosition( start_point );
+		FVector2 newEnd = end_point - start_point;
+
+		//rotate to needed angle and transform end point into a line length
+		float len = newEnd.length();
+		Radian angle( Math::AngleOfPoint( newEnd.x, newEnd.y ) );
+		mParentBrush->pushRotation( angle );
+
+		//generate float_thick based on current PPU map
+		float float_thick = ((float)thickness) * mParentBrush->getPPU().y;
+
+		//draw a rect of thickness height and length width, centered on the current origin
+		drawRect( FRect( 0.0f, -float_thick / 2, len, float_thick / 2 ) );
+
+		//pop rotation & translation
+		mParentBrush->pop();
+		mParentBrush->pop();
 	}
 	//############################################################################
 	void BrushPrimitive::drawRect( const FRect& rect ) {

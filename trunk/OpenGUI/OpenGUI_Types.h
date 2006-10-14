@@ -447,6 +447,10 @@ namespace OpenGUI {
 		float length() {
 			return sqrt(( x*x ) + ( y*y ) );
 		}
+		FVector2 normalize() {
+			float l = length();
+			return FVector2( x / l, y / l );
+		}
 		//! Return a string representation of this value
 		std::string toStr() const {
 			std::stringstream ss;

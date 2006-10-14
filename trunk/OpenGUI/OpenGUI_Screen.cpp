@@ -16,10 +16,10 @@ namespace OpenGUI {
 		virtual const FVector2& getDrawSize() const {
 			return mScreen->getSize();
 		}
-		virtual const FVector2& getPPU() const {
+		virtual const FVector2& getPPU_Raw() const {
 			return mScreen->getPPU();
 		}
-		virtual const IVector2& getUPI() const {
+		virtual const FVector2& getUPI_Raw() const {
 			return mScreen->getUPI();
 		}
 
@@ -70,7 +70,7 @@ namespace OpenGUI {
 		mPPUcache_valid = true;
 	}
 	//############################################################################
-	void Screen::setUPI( const IVector2& newUPI ) {
+	void Screen::setUPI( const FVector2& newUPI ) {
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
 		<< " Changed UnitsPerInch"
 		<< " From:" << mUPI.toStr() << " To:" << newUPI.toStr()
