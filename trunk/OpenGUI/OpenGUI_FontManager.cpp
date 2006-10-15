@@ -61,8 +61,9 @@ namespace OpenGUI {
 	FontManager::~FontManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying FontManager..." << Log::endlog;
 
-		//destroy all loaded Fonts
-		//DestroyAllFonts();
+		//free all registered FontSets
+		SetDefaultFont( Font() );
+		mFontSetMap.clear();
 
 		//destroy the font cache
 		if ( mFontCache )
@@ -124,6 +125,7 @@ namespace OpenGUI {
 		mFontSetMap[fontName] = retvalPtr;
 
 		if ( mDefaultFont.isNull() ) {
+			LogManager::SlogMsg( "FontManager", OGLL_INFO2 ) << "Auto setting default font..." << Log::endlog;
 			SetDefaultFont( Font( fontName, 12 ) );
 		}
 
