@@ -405,12 +405,12 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	void BrushText::drawText( const std::string& text, const FVector2& position,
-							  Font font, float size, float spacing_adjust ) {
-		OG_NYI;
+							  Font& font, float spacing_adjust ) {
+		//OG_NYI;
 	}
 	//############################################################################
-	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font font,
-								  float size, TextAlignment horizAlign, TextAlignment vertAlign ) {
+	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
+								  TextAlignment horizAlign, TextAlignment vertAlign ) {
 		OG_NYI;
 	}
 	//############################################################################

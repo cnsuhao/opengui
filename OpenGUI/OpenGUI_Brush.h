@@ -74,7 +74,7 @@ namespace OpenGUI {
 	};
 
 	//! Provides methods for rendering text
-	class BrushText {
+	class OPENGUI_API BrushText {
 		friend class Brush;
 	private:
 		BrushText() {
@@ -86,10 +86,10 @@ namespace OpenGUI {
 		Brush* mParentBrush;
 	public:
 		~BrushText() {}
-		//! draws the given string of characters at the given position, using the given font at the give size, and optionally adjusting the glyph spacing
-		void drawText( const std::string& text, const FVector2& position, Font font, float size, float spacing_adjust = 0.0f );
-		//! draws the given string within the given rect, using the given font and size, while applying the given text alignments and performing any necessary word wrapping
-		void drawTextArea( const std::string& text, const FRect& area, Font font, float size, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
+		//! draws the given string of characters at the given position, using the given font, and optionally adjusting the glyph spacing
+		void drawText( const std::string& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
+		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
+		void drawTextArea( const std::string& text, const FRect& area, Font& font, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
 	};
 
 	//! The base of all widget rendering operations

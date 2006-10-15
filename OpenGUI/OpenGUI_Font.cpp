@@ -32,8 +32,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	FontSet::FontSet( const std::string& sourceFilename, const std::string& fontName ) {
-		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << fontName << ") " << "Creation:"
-		<< " Source file: " << sourceFilename << Log::endlog;
+		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << fontName << ") [" << sourceFilename << "]"
+			<< " Creation" << Log::endlog;
 
 		mFilename = sourceFilename;
 		mFontName = fontName;
@@ -67,7 +67,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	FontSet::~FontSet() {
-		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << mFilename << ") " << "Destruction" << Log::endlog;
+		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << mFontName << ") [" << mFilename << "]"
+			<< " Destruction" << Log::endlog;
 		if ( FontManager::getSingletonPtr() )
 			if ( FontManager::getSingleton().mFontCache ) {
 				FontManager::getSingleton().mFontCache->FlushFont( this );
