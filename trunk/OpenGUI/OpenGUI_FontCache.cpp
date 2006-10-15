@@ -96,7 +96,7 @@ namespace OpenGUI {
 		_DestroyAllFontAtlas();
 	}
 	//############################################################################
-	void FontCache::GetGlyph( Font* font, char glyph_charCode, const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph ) {
+	void FontCache::GetGlyph( FontSet* font, char glyph_charCode, const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph ) {
 		FontCacheGlyphSet* glyphSet;
 		glyphSet = _GetFontCacheGlyphSet( font, glyph_pixelSize );
 
@@ -121,7 +121,7 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_INTERNAL_ERROR, "Recently rendered glyph not found in glyphSet->mGlyphMap", "FontCache::GetGlyph" );
 	}
 	//############################################################################
-	FontCacheGlyphSet* FontCache::_GetFontCacheGlyphSet( Font* font, const IVector2& glyph_pixelSize ) {
+	FontCacheGlyphSet* FontCache::_GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize ) {
 		//search for the glyph set in the existing cache
 		FontCacheGlyphSetList::iterator iter = mFontCacheGlyphSetList.begin();
 		while ( iter != mFontCacheGlyphSetList.end() ) {
@@ -218,7 +218,7 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
-	void FontCache::FlushFont( Font* font ) {
+	void FontCache::FlushFont( FontSet* font ) {
 		LogManager::SlogMsg( "FontCache", OGLL_INFO3 ) << "Flushing Font Glyphs ("
 		<< font->getFilename() << ")..." << Log::endlog;
 

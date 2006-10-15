@@ -1,5 +1,6 @@
 #include "OpenGUI_Brush.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Font.h"
 
 namespace OpenGUI {
 	//initialize static variable
@@ -404,11 +405,11 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	void BrushText::drawText( const std::string& text, const FVector2& position,
-							  FontPtr font, float size, float spacing_adjust ) {
+							  Font font, float size, float spacing_adjust ) {
 		OG_NYI;
 	}
 	//############################################################################
-	void BrushText::drawTextArea( const std::string& text, const FRect& area, FontPtr font,
+	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font font,
 								  float size, TextAlignment horizAlign, TextAlignment vertAlign ) {
 		OG_NYI;
 	}

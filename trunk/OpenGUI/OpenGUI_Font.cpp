@@ -16,15 +16,28 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Font::Font( std::string sourceFilename, unsigned int nativeXres, unsigned int nativeYres, bool autoscale ) {
-		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << sourceFilename << ") " << "Creation:"
-		<< " Native Resolution [" << nativeXres << "x" << nativeYres << "]"
-		<< " Autoscale=" << ( autoscale ? "true" : "false" )  << Log::endlog;
+	Font::Font( const std::string& fontName, float fontSize ) {
+		FontManager* fm = FontManager::getSingletonPtr();
+		if ( !fm )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot create Font handle by font name without FontManager", __FUNCTION__ );
+		if ( fontSize < 0.1f ) fontSize = 0.1f;
+		m_FontSize = fontSize;
+		m_FontSetPtr = fm->GetFontSet( fontName );
+	}
+	//############################################################################
+	//////////////////////////////////////////////////////////////////////////////
+	//############################################################################
+	void FontSet::finalize() {
+		delete this;
+	}
+	//############################################################################
+	FontSet::FontSet( const std::string& sourceFilename, const std::string& fontName ) {
+		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << fontName << ") " << "Creation:"
+		<< " Source file: " << sourceFilename << Log::endlog;
 
 		mFilename = sourceFilename;
-		mAutoscale = autoscale;
-		mNativeXres = nativeXres;
-		mNativeYres = nativeYres;
+		mFontName = fontName;
+
 		mFT_Face = 0;
 		mFontResource = new Resource;
 
@@ -48,15 +61,17 @@ namespace OpenGUI {
 			tFace = 0;
 			delete mFontResource;
 			mFontResource = 0;
-			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Fatal Error loading Font. Freetype error occurred during Font creation.", "Font::Font" );
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Fatal Error loading Font. Freetype error occurred during Font creation.", "FontSet::Font" );
 		}
 		mFT_Face = tFace;
 	}
 	//############################################################################
-	Font::~Font() {
+	FontSet::~FontSet() {
 		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << mFilename << ") " << "Destruction" << Log::endlog;
-		if ( FontManager::getSingleton().mFontCache )
-			FontManager::getSingleton().mFontCache->FlushFont( this );
+		if ( FontManager::getSingletonPtr() )
+			if ( FontManager::getSingleton().mFontCache ) {
+				FontManager::getSingleton().mFontCache->FlushFont( this );
+			}
 
 		FT_Face* tFace = ( FT_Face* ) mFT_Face;
 		if ( tFace ) {
@@ -76,8 +91,8 @@ namespace OpenGUI {
 		mFontResource = 0;
 	}
 	//############################################################################
-	void Font::renderGlyph( char glyph_charCode, const IVector2& pixelSize,
-							TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics ) {
+	void FontSet::renderGlyph( char glyph_charCode, const IVector2& pixelSize,
+							   TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics ) {
 		FT_Error error;
 		FT_Face* tFace = ( FT_Face* ) mFT_Face;
 
@@ -132,41 +147,11 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void Font::calcPixelSizeFromPoints( unsigned int pointSize, IVector2& pixelSize ) {
-		/*
-			Average point size -> pixel size calculation
-			pixel_size = point_size * resolution / 72
-			where resolution is the dpi (dots per inch)
-		*/
-
-		/*
-			Since we can't possibly determine the true dpi of the user's screen, we assume 72 dpi
-			and instead provide the option for an automatic scaling system to ensure consistent
-			glyph sizes despite changes in screen resolution.
-		*/
-
-		//if they didn't want auto scaling, this is really easy
-		if ( !mAutoscale ) {
-			pixelSize.x = pointSize;
-			pixelSize.y = pointSize;
-			return;
-		}
-
-		// otherwise, we need to scale our results according to the scale differences of
-		// the native res vs the current res
-		//! \todo fix me!
-		IVector2 screenRes = IVector2( 800, 600 ); // = System::getSingleton().getScreenResolution();
-		FVector2 scaleFactor;
-		scaleFactor.x = screenRes.x / ( float ) mNativeXres;
-		scaleFactor.y = screenRes.y / ( float ) mNativeYres;
-		pixelSize.x = ( int )( pointSize * scaleFactor.x );
-		pixelSize.y = ( int )( pointSize * scaleFactor.y );
-	}
-	//############################################################################
 	//! Returns the line height in pixels for a given pixelSizeY
-	unsigned int Font::getLineSpacing( unsigned int pointSize ) {
+	unsigned int FontSet::getLineSpacing( unsigned int pointSize ) {
 		IVector2 pixelRes;
-		calcPixelSizeFromPoints( pointSize, pixelRes );
+		pixelRes.x = pointSize;
+		pixelRes.y = pointSize;
 
 		FT_Error error;
 		FT_Face* tFace = ( FT_Face* ) mFT_Face;
@@ -178,16 +163,13 @@ namespace OpenGUI {
 			<< "FreeType 2 Error: (" << (( int )error ) << ") "
 			<< FontManager::getSingleton()._GetFTErrorString( error )
 			<< Log::endlog;
-			return pixelRes.y; //fugly fallback value
+			return pointSize; //fugly fallback value
 		}
 		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
 		return sMetrics->height / 64;
 	}
 	//############################################################################
-	bool Font::getGlyph( char glyph_charCode, unsigned int pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph ) {
-		ImageryPtr imgPtr;
-		IVector2 pixelRes;
-		calcPixelSizeFromPoints( pointSize, pixelRes );
+	bool FontSet::getGlyph( const char glyph_charCode, const IVector2& pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph ) {
 
 		if ( !FontManager::getSingletonPtr() ) {
 			//err msg
@@ -196,7 +178,7 @@ namespace OpenGUI {
 
 
 		FontManager::getSingletonPtr()->mFontCache
-		->GetGlyph( this, glyph_charCode, pixelRes, outFontGlyph );
+		->GetGlyph( this, glyph_charCode, pointSize, outFontGlyph );
 
 		return true;
 	}
