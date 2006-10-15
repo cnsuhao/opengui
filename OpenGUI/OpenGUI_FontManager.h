@@ -4,19 +4,18 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
-
+#include "OpenGUI_Font.h"
 #include "OpenGUI_FontGlyph.h"
 
 
 namespace OpenGUI {
-	class Font;		//forward declaration
 	class Texture;	//forward declaration
 	class FontCache; //forward declaration
 
 
 	//! Provides font loading and texture UV generation for glyphs loaded from fonts.
 	class OPENGUI_API FontManager : public Singleton<FontManager> {
-		friend class Font;
+		friend class FontSet;
 		friend class XMLParser;
 	public:
 		FontManager();
@@ -32,94 +31,50 @@ namespace OpenGUI {
 		static FontManager* getSingletonPtr( void );
 
 
-		//! Creates a new font
-		/*! If an existing font already exists with the same \c fontName, it will destroyed and replaced
-			by the new font. This will, of course, cause a complete cache unload for that font.
+		//! Registers a new font
+		/*! If an existing font already exists with the same \c fontName, it will replaced
+			by the new font. This will only affect newly created Font handles, and does not
+			update the default font if the replaced font was also the default font.
 			\note
-			The first font loaded is automatically set as the default. To manually set the default
-			font to something else, use \c SetDefaultFont().
+			The first font registered is automatically set as the default using fontSize = 12.
+			To manually set the default font to something else, use \c SetDefaultFont().
 		*/
-		Font* CreateFont( std::string filename, std::string fontName, bool autoscale = true, unsigned int xres = 800, unsigned int yres = 600 );
+		FontSetPtr RegisterFontSet( std::string filename, std::string fontName );
 
 		//! Sets the default font
 		/*! This sets the default font and font size (in points) that is used when no font is specified.
 		*/
-		void SetDefaultFont( std::string fontName, unsigned int fontSize = 12 );
-		//! Destroys a loaded font
-		void DestroyFont( std::string fontName );
+		void SetDefaultFont( Font font );
 
-		//! Destroys all loaded fonts
-		/*! Performed automatically as part of FontManager shutdown */
-		void DestroyAllFonts();
+		//! Retrieves the default font
+		Font GetDefaultFont();
+
+		//! UnRegisters a loaded font by handle
+		void UnRegisterFontSet( Font font ) {
+			if ( !font.isNull() ) {
+				UnRegisterFontSet( font.getFontSetPtr() );
+			}
+		}
+
+		//! UnRegisters a loaded font by name
+		void UnRegisterFontSet( const std::string& fontName );
+
+		//! UnRegisters a loaded font by FontSetPtr
+		void UnRegisterFontSet( FontSetPtr fontSet );
 
 		//! Retrieves a font by name
-		Font* GetFont( std::string name );
+		FontSetPtr GetFontSet( const std::string& fontName );
 
-		//! Retrieves a pointer to the default font, or 0 if no default font is available
-		Font* GetDefaultFont() {
-			if ( mDefaultFontName != "" ) {
-				return GetFont( mDefaultFontName );
-			} else
-				return 0;
-		}
-		//! Retrieves the default font size, if no default size was set, then 12 is returned
-		unsigned int GetDefaultFontSize() {
-			return mDefaultFontSize ? mDefaultFontSize : 12;
-		}
-
-		//! Retrieves a single glyph from the given fontName at the specified point size.
-		/*! This function will automatically substitute the default font if the requested
-			font cannot be found (or you request ""), and will also substitute the default
-			size if you request a size of 0;
-		*/
-		void getGlyph( IRect& outPixelRect, FontGlyph& outFontGlyph,
-					   char glyph_charCode, const std::string& fontName = "", unsigned int pointSize = 0 );
-
-		//! Retrieves the line spacing of the requested font and the given size.
-		/*! This function will automatically substitute the default font if the requested
-			font cannot be found (or you request ""), and will also substitute the default
-			size if you request a size of 0;
-		*/
-		unsigned int getLineSpacing( const std::string& fontName = "", unsigned int pointSize = 0 );
-
-		//! Retrieves the height of the tallest glyph in the given string \c str at the given font and font size.
-		/*! This is useful if you need the \em actual height of a set of glyphs for vertically centering
-			of a string for display.
-
-			This function will automatically substitute the default font if the requested
-			font cannot be found (or you request ""), and will also substitute the default
-			size if you request a size of 0;
-
-			In case you are unfamiliar with the common glyph metrics, here is an image that should help
-			clarify what this function returns.
-			\image html glyphMetrics.jpg "Glyph Metrics"
-		*/
-		unsigned int getStringHeight( const std::string& str, const std::string& fontName = "", unsigned int pointSize = 0 );
-
-		//! Retrieves the largest BearingY of all the glyphs in the given string \c str at the given font and font size.
-		/*! This is useful if you need the \em actual height of a set of glyphs for vertically centering
-		of a string for display.
-
-		This function will automatically substitute the default font if the requested
-		font cannot be found (or you request ""), and will also substitute the default
-		size if you request a size of 0;
-
-		In case you are unfamiliar with the common glyph metrics, here is an image that should help
-		clarify what this function returns.
-		\image html glyphMetrics.jpg "Glyph Metrics"
-		*/
-		unsigned int getStringBearingY( const std::string& str, const std::string& fontName = "", unsigned int pointSize = 0 );
-
-		//! Loads Fonts from an XML document.
-		/*! Any conflicting Fonts will be overwritten, any non-font related
+		// Loads Fonts from an XML document.
+		/* Any conflicting Fonts will be overwritten, any non-font related
 			XML entities are silently ignored (only processes \<Font\> tags).
 		*/
-		void LoadFontsFromXML( std::string xmlFilename );
+		//void LoadFontsFromXML( std::string xmlFilename );
 
 		//! a list of font names that are currently loaded in the FontManager, retrieved by FontManager::getFontList()
 		typedef std::list<std::string> FontList;
 
-		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFont().
+		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFontSet() or used with Font
 		FontList getFontList();
 
 	private:
@@ -134,12 +89,10 @@ namespace OpenGUI {
 
 		FontCache* mFontCache;
 
-		typedef std::map<std::string, Font*> FontCPtrMap;
-		FontCPtrMap mFontMap;
+		typedef std::map<std::string, FontSetPtr> FontSetPtrMap;
+		FontSetPtrMap mFontSetMap;
 
-		std::string mDefaultFontName;
-		unsigned int mDefaultFontSize;
-
+		Font mDefaultFont;
 	};
 }//namespace OpenGUI{
 #endif

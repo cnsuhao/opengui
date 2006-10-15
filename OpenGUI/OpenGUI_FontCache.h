@@ -18,14 +18,14 @@ A few quick notes on this design:
 ///////////////////////////////////////////////*/
 
 namespace OpenGUI {
-	class Font;
+	class FontSet;
 	class FontAtlas;
 
 
 
 	class FontCacheGlyphSet {
 	public:
-		Font* font;
+		FontSet* font;
 		IVector2 glyphSize;
 		typedef std::map<char, FontGlyph> GlyphMap;
 		GlyphMap mGlyphMap;
@@ -42,15 +42,15 @@ namespace OpenGUI {
 	public:
 		FontCache();
 		~FontCache();
-		void GetGlyph( Font* font, char glyph_charCode,
+		void GetGlyph( FontSet* font, char glyph_charCode,
 					   const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph );
 
 		//! Flushes all glyphs from a given font
-		void FlushFont( Font* font );
+		void FlushFont( FontSet* font );
 
 	private:
 		IVector2 _calcNewAtlasSize( const IVector2& estimatedGlyphSize );
-		FontCacheGlyphSet* _GetFontCacheGlyphSet( Font* font, const IVector2& glyph_pixelSize );
+		FontCacheGlyphSet* _GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize );
 		void _RenderGlyph( FontCacheGlyphSet* glyphSet, char glyph_charCode );
 
 		void _DestroyAllGlyphSets();

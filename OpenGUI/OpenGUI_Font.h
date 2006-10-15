@@ -15,22 +15,24 @@ namespace OpenGUI {
 
 
 	//! Used to load fonts and render glyphs from those fonts into memory segments.
-	class OPENGUI_API Font {
+	class OPENGUI_API FontSet: public RefObject {
 		friend class FontManager;
 	protected:
 		//! Font creation implies loading of the font via FreeType.
-		/*! \param sourceFilename filename of the font to load
-			\param nativeXres Used to determine the horizontal scale factor for glyphs rendered from this font. Only used if \c autoscale is true.
-			\param nativeYres Used to determine the vertical scale factor for glyphs rendered from this font. Only used if \c autoscale is true.
-			\param autoscale Determines of glyphs from this font need to be scaled to compensate for resolution differences between layout creation and layout display.
-		*/
-		Font( std::string sourceFilename, unsigned int nativeXres, unsigned int nativeYres, bool autoscale );
+		/*! \param sourceFilename filename of the font to load */
+		FontSet( const std::string& sourceFilename, const std::string& fontName );
 		//! Destruction also unloads the font from FreeType
-		~Font();
+		~FontSet();
+		virtual void finalize();
 	public:
 		//! Returns the filename used to load the font
-		std::string getFilename() {
+		const std::string& getFilename() {
 			return mFilename;
+		}
+
+		//! Returns the name of this font
+		const std::string& getName() {
+			return mFontName;
 		}
 
 		//! Retrieves the imagery backing a font glyph, as well as a pixel based rect defining the glyph extents.
@@ -50,14 +52,12 @@ namespace OpenGUI {
 			alignment. In most cases, users should use the PrimitiveText object to generate their text output,
 			as it will perform the necessary steps to provide pixel alignment.
 		*/
-		bool getGlyph( char glyph_charCode, unsigned int pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph );
+		bool getGlyph( const char glyph_charCode, const IVector2& pointSize, IRect& outPixelRect, FontGlyph& outFontGlyph );
 
 		//! Returns the line height in pixels for a given pointSize
 		/*! \see To obtain the pixelSizeY, refer to \c calcPixelSizeFromPoints()
 		*/
 		unsigned int getLineSpacing( unsigned int pointSize );
-
-
 
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
 		/*!
@@ -69,15 +69,45 @@ namespace OpenGUI {
 		*/
 		void renderGlyph( char glyph_charCode, const IVector2& pixelSize, TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics );
 
-		//! Calculates the pixel size of a generic glyph from this Font based on the scale settings given at Font creation.
-		void calcPixelSizeFromPoints( unsigned int pointSize, IVector2& pixelSize );
 	private:
 		void* mFT_Face;
 		std::string mFilename;
-		unsigned int mNativeXres;
-		unsigned int mNativeYres;
-		bool mAutoscale;
+		std::string mFontName;
 		Resource *mFontResource;
+	};
+	typedef RefObjHandle<FontSet> FontSetPtr;
+
+
+	class OPENGUI_API Font {
+	public:
+		Font()
+				: m_FontSetPtr( 0 ), m_FontSize( 0.0f ) {}
+
+		Font( FontSetPtr fontSet, float fontSize )
+				: m_FontSetPtr( fontSet ), m_FontSize( fontSize ) {
+			if ( m_FontSize < 0.1f ) m_FontSize = 0.1f;
+		}
+
+		Font( const std::string& fontName, float fontSize );
+
+	~Font() {}
+
+		bool isNull() {
+			return m_FontSetPtr.isNull();
+		}
+		const std::string& getName() {
+			return m_FontSetPtr->getName();
+		}
+		float getSize() {
+			return m_FontSize;
+		}
+		FontSetPtr getFontSetPtr() {
+			return m_FontSetPtr;
+		}
+
+	private:
+		FontSetPtr m_FontSetPtr;
+		float m_FontSize;
 	};
 };
 

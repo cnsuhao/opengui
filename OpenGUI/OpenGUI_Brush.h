@@ -12,9 +12,6 @@
 
 namespace OpenGUI {
 
-	//! \todo this needs to change to a referenced pointer!
-	typedef Font* FontPtr;
-
 	class Brush; //forward declaration
 
 	//! Provides drawing methods for a few geometric primitives.
@@ -90,9 +87,9 @@ namespace OpenGUI {
 	public:
 		~BrushText() {}
 		//! draws the given string of characters at the given position, using the given font at the give size, and optionally adjusting the glyph spacing
-		void drawText( const std::string& text, const FVector2& position, FontPtr font, float size, float spacing_adjust = 0.0f );
+		void drawText( const std::string& text, const FVector2& position, Font font, float size, float spacing_adjust = 0.0f );
 		//! draws the given string within the given rect, using the given font and size, while applying the given text alignments and performing any necessary word wrapping
-		void drawTextArea( const std::string& text, const FRect& area, FontPtr font, float size, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
+		void drawTextArea( const std::string& text, const FRect& area, Font font, float size, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
 	};
 
 	//! The base of all widget rendering operations
