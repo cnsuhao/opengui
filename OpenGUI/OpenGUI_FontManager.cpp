@@ -62,7 +62,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying FontManager..." << Log::endlog;
 
 		//free all registered FontSets
-		SetDefaultFont( Font() );
+		mDefaultFont = Font();
 		mFontSetMap.clear();
 
 		//destroy the font cache
@@ -124,7 +124,7 @@ namespace OpenGUI {
 
 		mFontSetMap[fontName] = retvalPtr;
 
-		if ( mDefaultFont.isNull() ) {
+		if ( mDefaultFont.isBound() ) {
 			LogManager::SlogMsg( "FontManager", OGLL_INFO2 ) << "Auto setting default font..." << Log::endlog;
 			SetDefaultFont( Font( fontName, 12 ) );
 		}
@@ -133,13 +133,10 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void FontManager::SetDefaultFont( Font font ) {
-		if ( font.isNull() ) {
-			LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Releasing Default Font"
-			<< Log::endlog;
-		} else {
-			LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Set Default Font: "
-			<< font.getName() << " @" << font.getSize() << "pt" << Log::endlog;
-		}
+		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Setting Default Font..."<< Log::endlog;
+		font.bind();
+		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Set Default Font: "
+		<< font.getName() << " @" << font.getSize() << "pt" << Log::endlog;
 		mDefaultFont = font;
 	}
 	//############################################################################
@@ -187,6 +184,18 @@ namespace OpenGUI {
 			retval.push_back( iter->first );
 		}
 		retval.sort();
+		return retval;
+	}
+	//############################################################################
+	/*! This is a debugging tool, so you can retrieve and display font atlases in their raw form.
+	The validity of the returned list is very short, and it can easily become invalidated by calls
+	to render new font glyphs or by the loading and unloading of FontSets. The best course of action
+	is to use the obtained information immediately, and re-request it each time you need it (especially
+	between frames) as its contents could have changed.
+	\note This function is by no means fast, as it is not optimized for production use. */
+	ImageryPtrList FontManager::_getFontAtlases(){
+		ImageryPtrList retval;
+		mFontCache->FillImageryPtrList( retval );
 		return retval;
 	}
 	//############################################################################

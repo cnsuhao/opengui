@@ -61,9 +61,13 @@ namespace OpenGUI {
 		if ( !mImageset ) {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Error creating Imageset from manual texture", "FontAtlas::FontAtlas" );
 		}
+
+		ss << ":" << "Full";
+		mFullImagery = mImageset->createImagery( ss.str() );
 	}
 	//############################################################################
 	FontAtlas::~FontAtlas() {
+		mFullImagery = 0;
 		if ( mImageset )
 			ImageryManager::getSingleton().destroyImageset( mImageset );
 	}

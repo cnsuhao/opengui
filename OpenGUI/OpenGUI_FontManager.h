@@ -50,10 +50,10 @@ namespace OpenGUI {
 		Font GetDefaultFont();
 
 		//! UnRegisters a loaded font by handle
+		/*! This function will bind the given Font handle if it is not already bound. */
 		void UnRegisterFontSet( Font font ) {
-			if ( !font.isNull() ) {
-				UnRegisterFontSet( font.getFontSetPtr() );
-			}
+			font.bind();
+			UnRegisterFontSet( font.getFontSetPtr() );
 		}
 
 		//! UnRegisters a loaded font by name
@@ -76,6 +76,9 @@ namespace OpenGUI {
 
 		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFontSet() or used with Font
 		FontList getFontList();
+
+		//! Returns an ImageryPtrList containing ImageryPtrs for each font atlas.
+		ImageryPtrList _getFontAtlases();
 
 	private:
 

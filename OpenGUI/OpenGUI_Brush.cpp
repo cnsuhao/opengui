@@ -1,3 +1,4 @@
+#include "OpenGUI_CONFIG.h"
 #include "OpenGUI_Brush.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Font.h"
@@ -133,23 +134,27 @@ namespace OpenGUI {
 		When at 0/180 degree rotation, the values are returned unmodified.
 		When at 90/270 degree rotation, the values are fully swapped.
 
-		All angles in between perform a linear interpolation between the two values
-		based on the current angle. The result of sin/cos is reused since the angle
-		is constant per function execution, and is absoluted to remove the quadrant
-		logic that sin/cos normally come with, since we can't have negative scales.
+		All angles in between perform a circular interpolation between the two values
+		based on the current angle.
 		*/
 		float rad = getRotation().valueRadians();
-		const float abssin = Math::FAbs( Math::Sin( rad ) );
-		const float abscos = Math::FAbs( Math::Cos( rad ) );
+		//const float abssin = Math::FAbs( Math::Sin( rad ) );
+		//const float abscos = Math::FAbs( Math::Cos( rad ) );
+		const float dev = ( Math::Cos( rad * 2.0f ) / 2.0f ) + 0.5f;
+		const float invdev = 1.0f - dev;
+
 		FVector2 tmp;
 
 		tmp = getPPU_Raw();
-		m_PPUcache.x = ( tmp.x * abscos ) + ( tmp.y * abssin );
-		m_PPUcache.y = ( tmp.x * abssin ) + ( tmp.y * abscos );
+		m_PPUcache.x = ( tmp.x * dev ) + ( tmp.y * invdev );
+		m_PPUcache.y = ( tmp.y * dev ) + ( tmp.x * invdev );
+		// This is technically the right way, but produces jittery results with motion (sweeping rotation)
+		//m_PPUcache.x = ( tmp.x * abscos ) + ( tmp.y * abssin );
+		//m_PPUcache.y = ( tmp.y * abssin ) + ( tmp.x * abscos );
 
 		tmp = getUPI_Raw();
-		m_UPIcache.x = ( tmp.x * abscos ) + ( tmp.y * abssin );
-		m_UPIcache.y = ( tmp.x * abssin ) + ( tmp.y * abscos );
+		m_UPIcache.x = ( tmp.x * dev ) + ( tmp.y * invdev );
+		m_UPIcache.y = ( tmp.y * dev ) + ( tmp.x * invdev );
 
 		m_RotationCacheValid = true;
 	}
@@ -172,7 +177,7 @@ namespace OpenGUI {
 		mParentBrush->pushRotation( angle );
 
 		//draw a rect of thickness height and length width, centered on the current origin
-		drawRect( FRect( 0.0f, -thickness / 2, len, thickness / 2 ) );
+		drawRect( FRect( 0.0f, -thickness / 2.0f, len, thickness / 2.0f ) );
 
 		//pop rotation & translation
 		mParentBrush->pop();
@@ -199,7 +204,7 @@ namespace OpenGUI {
 		float float_thick = (( float )thickness ) * mParentBrush->getPPU().y;
 
 		//draw a rect of thickness height and length width, centered on the current origin
-		drawRect( FRect( 0.0f, -float_thick / 2, len, float_thick / 2 ) );
+		drawRect( FRect( 0.0f, -float_thick / 2.0f, len, float_thick / 2.0f ) );
 
 		//pop rotation & translation
 		mParentBrush->pop();
@@ -234,7 +239,7 @@ namespace OpenGUI {
 		Negative \c thickness places the line around the inside of the \c rect.
 	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, float thickness ) {
-		if ( thickness == 0 ) return; // 0? wtf?
+		if ( thickness == 0.0f ) return; // 0? wtf?
 		float fthickx = thickness;
 		float fthicky = thickness;
 		FRect drect; // used for drawing the component rects
@@ -349,6 +354,7 @@ namespace OpenGUI {
 	void BrushImagery::drawImage( ImageryPtr imageryPtr, const FRect& rect ) {
 		RenderOperation renderOp;
 		renderOp.triangleList = new TriangleList;
+		renderOp.texture = imageryPtr->getTexture();
 		TriangleList& tl = *renderOp.triangleList;
 
 		FVector2 ul = rect.min;
@@ -407,21 +413,76 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushText::drawText( const std::string& text, const FVector2& position,
 							  Font& font, float spacing_adjust ) {
-		FontSet* fontset = font.getFontSetPtr().get();
-		if(!fontset)
-			fontset = FontManager::getSingleton().GetDefaultFont().getFontSetPtr().get();
-		if(!fontset) OG_THROW(Exception::ERR_INTERNAL_ERROR,"Could not obtain a valid fontset handle.",__FUNCTION__);
+		PenPosition = position;
+		for ( size_t i = 0; i < text.length(); i++ ) {
+			if ( text[i] == '\n' ) {
+				PenPosition.x = position.x;
+				unsigned int lineSpace = font->getLineSpacing( pointsToPixels( font.getSize() ).y );
+				PenPosition.y += (( float )lineSpace ) / mParentBrush->getPPU().y;
+			} else {
+				drawCharacter( text[i], font );
+				PenPosition.x += spacing_adjust;
+			}
+		}
 
-		IVector2 glyphSize(72,72);
-		IRect glyphRect;
-		FontGlyph glyph;
-		fontset->getGlyph('a', glyphSize, glyphRect, glyph);
-								  //OG_NYI;
+		ImageryPtrList imgrylist = FontManager::getSingleton()._getFontAtlases();
+		if ( imgrylist.size() > 0 )
+			mParentBrush->Image.drawImage( imgrylist.front(), FVector2( 400, 300 ), FVector2( 400, 300 ) );
 	}
 	//############################################################################
 	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
 								  TextAlignment horizAlign, TextAlignment vertAlign ) {
 		OG_NYI;
+	}
+	//############################################################################
+	void BrushText::drawCharacter( const char character, Font& font ) {
+		font.bind();
+		const FVector2& PPU = mParentBrush->getPPU();
+
+		IVector2 glyphSize = pointsToPixels( font.getSize() );
+
+		if ( glyphSize.x == 0 || glyphSize.y == 0 )
+			return; // abort if we have nothing worth drawing
+
+		FontGlyph glyph;
+		font->getGlyph( character, glyphSize, glyph );
+
+		FVector2 glyphSizeU;
+		glyphSizeU.x = glyph.metrics.width / PPU.x;
+		glyphSizeU.y = glyph.metrics.height / PPU.y;
+
+		FVector2 glyphPosition = PenPosition;
+
+		// we need to do our best to provide pixel alignment, so here we fix the glyph position according to PPU
+		float tmp = fmodf( PenPosition.x, PPU.x );
+		glyphPosition.x -= tmp;
+		tmp = fmodf( PenPosition.y, PPU.y );
+		glyphPosition.y -= tmp;
+
+		glyphPosition.y -= (( float )glyph.metrics.horiBearingY ) / PPU.y;
+		glyphPosition.x += (( float )glyph.metrics.horiBearingX ) / PPU.x;
+
+		mParentBrush->Image.drawImage( glyph.imageryPtr, glyphPosition, glyphSizeU );
+		PenPosition.x += (( float )glyph.metrics.horiAdvance ) / PPU.x;
+	}
+	//############################################################################
+	IVector2 BrushText::pointsToPixels( float pointSize ) {
+		const FVector2& PPU = mParentBrush->getPPU();
+		const FVector2& UPI = mParentBrush->getUPI();
+
+		float inchSize = pointSize / 72; // points are 1/72 of an inch
+
+		FVector2 glyphUnitSize; // unit size = units per inch * inch size
+		glyphUnitSize.x = inchSize * UPI.x;
+		glyphUnitSize.y = inchSize * UPI.y;
+
+		// pixel size = unit size * pixels per unit
+		IVector2 glyphSize(
+			(( int )( glyphUnitSize.x * PPU.x ) ),
+			(( int )( glyphUnitSize.y * PPU.y ) )
+		);
+
+		return glyphSize;
 	}
 	//############################################################################
 	//############################################################################
