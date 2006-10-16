@@ -177,6 +177,10 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
+	Font FontManager::GetDefaultFont(){
+		return mDefaultFont;
+	}
+	//############################################################################
 	FontManager::FontList FontManager::getFontList() {
 		FontList retval;
 		for ( FontSetPtrMap::iterator iter = mFontSetMap.begin(); iter != mFontSetMap.end(); iter++ ) {

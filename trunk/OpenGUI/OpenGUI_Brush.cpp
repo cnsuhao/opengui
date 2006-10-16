@@ -1,6 +1,7 @@
 #include "OpenGUI_Brush.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Font.h"
+#include "OpenGUI_FontManager.h"
 
 namespace OpenGUI {
 	//initialize static variable
@@ -406,7 +407,16 @@ namespace OpenGUI {
 	//############################################################################
 	void BrushText::drawText( const std::string& text, const FVector2& position,
 							  Font& font, float spacing_adjust ) {
-		//OG_NYI;
+		FontSet* fontset = font.getFontSetPtr().get();
+		if(!fontset)
+			fontset = FontManager::getSingleton().GetDefaultFont().getFontSetPtr().get();
+		if(!fontset) OG_THROW(Exception::ERR_INTERNAL_ERROR,"Could not obtain a valid fontset handle.",__FUNCTION__);
+
+		IVector2 glyphSize(72,72);
+		IRect glyphRect;
+		FontGlyph glyph;
+		fontset->getGlyph('a', glyphSize, glyphRect, glyph);
+								  //OG_NYI;
 	}
 	//############################################################################
 	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
