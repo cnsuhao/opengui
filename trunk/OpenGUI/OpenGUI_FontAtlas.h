@@ -30,6 +30,9 @@ namespace OpenGUI {
 		Imageset* GetImageset() {
 			return mImageset;
 		}
+		const ImageryPtr& GetFullImagery() {
+			return mFullImagery;
+		}
 
 		unsigned int statUsedArea() const;
 		unsigned int statAvailableArea() const;
@@ -50,7 +53,8 @@ namespace OpenGUI {
 		unsigned int mOpenRowStartPos;
 
 		TextureData mTextureData;
-		Imageset* mImageset;
+		Imageset* mImageset; //pointer to out imageset
+		ImageryPtr mFullImagery; //handle to an imagery that covers the full area of the imageset
 
 
 		IRectList mFreeRectList;

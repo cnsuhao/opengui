@@ -8,7 +8,9 @@ public:
 	Demo1App() : DemoApp("OpenGUI - Demo 1") {}
 	virtual void preRun();
 	virtual void perframeRun();
-	virtual void postRun(){}
+	virtual void postRun(){
+		int i = 0;
+	}
 private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
@@ -16,13 +18,23 @@ private:
 };
 
 using namespace OpenGUI;
+
+class MyWidget:public Widget{
+protected:
+	void onDraw(Object* sender, Draw_EventArgs& evtArgs ){
+		Brush& b = evtArgs.brush;
+		FVector2 pos(100,100);
+		Font fnt("pecot",20);
+		b.Text.drawText("yjyjyjyj\nCAPITOL", pos, fnt);
+	}
+};
 void Demo1App::preRun()
 {
 	mScreen = ScreenManager::getSingleton().createScreen("MainScreen", FVector2(800,600) );
+	FontManager::getSingleton().RegisterFontSet("pecot.ttf","pecot");
 
-	Widget* w = new Control();
+	Widget* w = new MyWidget();
 	w->setName("Blah");
-	w->setProperty( "Name", Value( "TestName" ) );
 
 	mScreen->Children.add_back( w, true );
 /*

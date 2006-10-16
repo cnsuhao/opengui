@@ -1,3 +1,4 @@
+#include "OpenGUI_CONFIG.h"
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_System.h"
@@ -48,6 +49,7 @@ namespace OpenGUI {
 	Screen::Screen( const std::string& screenName, const FVector2& initialSize ) {
 		mName = screenName;
 		mSize = initialSize;
+		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
 		mAutoUpdating = true;
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
@@ -137,6 +139,7 @@ namespace OpenGUI {
 		if ( !isBound() ) {
 			invalidateAll();
 		}
+		_DirtyPPUcache();
 	}
 	//############################################################################
 	void Screen::invalidateAll() {

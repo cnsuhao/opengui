@@ -84,12 +84,25 @@ namespace OpenGUI {
 			mParentBrush = brush;
 		}
 		Brush* mParentBrush;
+
 	public:
 		~BrushText() {}
-		//! draws the given string of characters at the given position, using the given font, and optionally adjusting the glyph spacing
+
+		//! draws the given string of \c text at the given \c position, using the given \c font, and optionally adjusting the glyph spacing by \c spacing_adjust
 		void drawText( const std::string& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
+
 		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
 		void drawTextArea( const std::string& text, const FRect& area, Font& font, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
+
+		//! draws the given \c character at the given \c position using the given \c font.
+		void drawCharacter( const char character, Font& font );
+
+		//! Converts the given \c pointSize to the individual X and Y pixel sizes according to PPU and UPI
+		IVector2 pointsToPixels( float pointSize );
+
+		//! The position that the next font glyph should be drawn to continue the last string of text.
+		/*! PenPosition is used by drawCharacter to support typewriter-like text operations. */
+		FVector2 PenPosition;
 	};
 
 	//! The base of all widget rendering operations
