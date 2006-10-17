@@ -240,15 +240,15 @@ namespace OpenGUI {
 	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, float thickness ) {
 		if ( thickness == 0.0f ) return; // 0? wtf?
-		float fthickx = thickness;
-		float fthicky = thickness;
+		float fthickx = Math::FAbs( thickness );
+		float fthicky = Math::FAbs( thickness );
 		FRect drect; // used for drawing the component rects
 		bool drawOutside = true;
 		if ( thickness < 0.0f ) drawOutside = false;
 
 		// ### draw horizontal lines ###
 		drect = rect;
-		drect.setHeight( Math::FAbs( fthicky ) );
+		drect.setHeight( fthicky );
 		// top first
 		if ( drawOutside ) {
 			drect.offset( FVector2( 0.0f, -fthicky ) );
@@ -269,9 +269,15 @@ namespace OpenGUI {
 		// ### draw vertical lines ###
 		drect = rect;
 		drect.setWidth( Math::FAbs( fthickx ) );
-		if ( thickness < 0 ) {
-			drect.setHeight( drect.getHeight() - ( Math::FAbs( fthicky ) * 2 ) );
+
+		if ( drawOutside ) {
+			drect.setHeight( drect.getHeight() + ( fthicky * 2 ) );
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+		}else{
+			drect.setHeight( drect.getHeight() - ( fthicky * 2 ) );
+			drect.offset( FVector2( 0.0f, fthicky ) );
 		}
+
 		// first left side
 		if ( drawOutside ) {
 			drect.offset( FVector2( -fthickx, 0.0f ) );
@@ -295,15 +301,15 @@ namespace OpenGUI {
 	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, int thickness ) {
 		if ( thickness == 0 ) return; // 0? wtf?
-		float fthickx = (( float )thickness ) * mParentBrush->getPPU().x;
-		float fthicky = (( float )thickness ) * mParentBrush->getPPU().y;
+		float fthickx = Math::FAbs( (( float )thickness ) * mParentBrush->getPPU().x );
+		float fthicky = Math::FAbs( (( float )thickness ) * mParentBrush->getPPU().y );
 		FRect drect; // used for drawing the component rects
 		bool drawOutside = true;
 		if ( thickness < 0 ) drawOutside = false;
 
 		// ### draw horizontal lines ###
 		drect = rect;
-		drect.setHeight( Math::FAbs( fthicky ) );
+		drect.setHeight( fthicky );
 		// top first
 		if ( drawOutside ) {
 			drect.offset( FVector2( 0.0f, -fthicky ) );
@@ -324,9 +330,15 @@ namespace OpenGUI {
 		// ### draw vertical lines ###
 		drect = rect;
 		drect.setWidth( Math::FAbs( fthickx ) );
-		if ( thickness < 0 ) {
-			drect.setHeight( drect.getHeight() - ( Math::FAbs( fthicky ) * 2 ) );
+		
+		if ( drawOutside ) {
+			drect.setHeight( drect.getHeight() + ( fthicky * 2 ) );
+			drect.offset( FVector2( 0.0f, -fthicky ) );
+		}else{
+			drect.setHeight( drect.getHeight() - ( fthicky * 2 ) );
+			drect.offset( FVector2( 0.0f, fthicky ) );
 		}
+
 		// first left side
 		if ( drawOutside ) {
 			drect.offset( FVector2( -fthickx, 0.0f ) );
@@ -389,7 +401,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushImagery::drawImage( ImageryPtr imageryPtr, const FVector2& position, const FVector2& size ) {
-		FRect rect = FRect( position, position + size );
+		FRect rect( position, position + size );
 		drawImage( imageryPtr, rect );
 	}
 	//############################################################################
