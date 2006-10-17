@@ -62,15 +62,15 @@ namespace OpenGUI {
 		~BrushImagery() {}
 
 		//! Draws the given imagery using the given rect
-		void drawImage( ImageryPtr imageryPtr, const FRect& rect );
+		void drawImage( const ImageryPtr& imageryPtr, const FRect& rect );
 		//! Draws the given imagery at the given position and size
-		void drawImage( ImageryPtr imageryPtr, const FVector2& position, const FVector2& size );
+		void drawImage( const ImageryPtr& imageryPtr, const FVector2& position, const FVector2& size );
 		//! Draws the given imagery at the given position at it's native pixel size
-		void drawImageUnscaled( ImageryPtr imageryPtr, const FVector2& position );
+		void drawImageUnscaled( const ImageryPtr& imageryPtr, const FVector2& position );
 		//! Draws the given imagery filling the given rect using the given number of tiles
-		void drawImageTiled( ImageryPtr imageryPtr, const FRect& rect, float x_tiles, float y_tiles );
+		void drawImageTiled( const ImageryPtr& imageryPtr, const FRect& rect, float x_tiles, float y_tiles );
 		//! Draws the given imagery at the given position at it's native pixel size, tiling or clipping it as necessary to fill the area
-		void drawImageUnscaledAndTiled( ImageryPtr imageryPtr, const FRect& rect );
+		void drawImageUnscaledAndTiled( const ImageryPtr& imageryPtr, const FRect& rect );
 	};
 
 	//! Provides methods for rendering text
