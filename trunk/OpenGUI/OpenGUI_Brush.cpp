@@ -363,7 +363,7 @@ namespace OpenGUI {
 	// BRUSHIMAGERY IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushImagery::drawImage( ImageryPtr imageryPtr, const FRect& rect ) {
+	void BrushImagery::drawImage( const ImageryPtr& imageryPtr, const FRect& rect ) {
 		RenderOperation renderOp;
 		renderOp.triangleList = new TriangleList;
 		renderOp.texture = imageryPtr->getTexture();
@@ -400,12 +400,12 @@ namespace OpenGUI {
 		mParentBrush->addRenderOperation( renderOp );
 	}
 	//############################################################################
-	void BrushImagery::drawImage( ImageryPtr imageryPtr, const FVector2& position, const FVector2& size ) {
+	void BrushImagery::drawImage( const ImageryPtr& imageryPtr, const FVector2& position, const FVector2& size ) {
 		FRect rect( position, position + size );
 		drawImage( imageryPtr, rect );
 	}
 	//############################################################################
-	void BrushImagery::drawImageUnscaled( ImageryPtr imageryPtr, const FVector2& position ) {
+	void BrushImagery::drawImageUnscaled( const ImageryPtr& imageryPtr, const FVector2& position ) {
 		const FVector2& PPU = mParentBrush->getPPU();
 		IVector2 size = imageryPtr->getImagesetRect().getSize();
 		FVector2 fsize;
@@ -414,11 +414,11 @@ namespace OpenGUI {
 		drawImage( imageryPtr, position, fsize );
 	}
 	//############################################################################
-	void BrushImagery::drawImageTiled( ImageryPtr imageryPtr, const FRect& rect, float x_tiles, float y_tiles ) {
+	void BrushImagery::drawImageTiled( const ImageryPtr& imageryPtr, const FRect& rect, float x_tiles, float y_tiles ) {
 		OG_NYI;
 	}
 	//############################################################################
-	void BrushImagery::drawImageUnscaledAndTiled( ImageryPtr imageryPtr, const FRect& rect ) {
+	void BrushImagery::drawImageUnscaledAndTiled( const ImageryPtr& imageryPtr, const FRect& rect ) {
 		OG_NYI;
 	}
 	//############################################################################
