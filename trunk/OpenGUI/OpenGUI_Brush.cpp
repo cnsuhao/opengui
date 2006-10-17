@@ -273,7 +273,7 @@ namespace OpenGUI {
 		if ( drawOutside ) {
 			drect.setHeight( drect.getHeight() + ( fthicky * 2 ) );
 			drect.offset( FVector2( 0.0f, -fthicky ) );
-		}else{
+		} else {
 			drect.setHeight( drect.getHeight() - ( fthicky * 2 ) );
 			drect.offset( FVector2( 0.0f, fthicky ) );
 		}
@@ -301,8 +301,8 @@ namespace OpenGUI {
 	*/
 	void BrushPrimitive::drawOutlineRect( const FRect& rect, int thickness ) {
 		if ( thickness == 0 ) return; // 0? wtf?
-		float fthickx = Math::FAbs( (( float )thickness ) * mParentBrush->getPPU().x );
-		float fthicky = Math::FAbs( (( float )thickness ) * mParentBrush->getPPU().y );
+		float fthickx = Math::FAbs((( float )thickness ) * mParentBrush->getPPU().x );
+		float fthicky = Math::FAbs((( float )thickness ) * mParentBrush->getPPU().y );
 		FRect drect; // used for drawing the component rects
 		bool drawOutside = true;
 		if ( thickness < 0 ) drawOutside = false;
@@ -330,11 +330,11 @@ namespace OpenGUI {
 		// ### draw vertical lines ###
 		drect = rect;
 		drect.setWidth( Math::FAbs( fthickx ) );
-		
+
 		if ( drawOutside ) {
 			drect.setHeight( drect.getHeight() + ( fthicky * 2 ) );
 			drect.offset( FVector2( 0.0f, -fthicky ) );
-		}else{
+		} else {
 			drect.setHeight( drect.getHeight() - ( fthicky * 2 ) );
 			drect.offset( FVector2( 0.0f, fthicky ) );
 		}
@@ -406,7 +406,12 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushImagery::drawImageUnscaled( ImageryPtr imageryPtr, const FVector2& position ) {
-		OG_NYI;
+		const FVector2& PPU = mParentBrush->getPPU();
+		IVector2 size = imageryPtr->getImagesetRect().getSize();
+		FVector2 fsize;
+		fsize.x = (( float )size.x ) / PPU.x;
+		fsize.y = (( float )size.y ) / PPU.y;
+		drawImage( imageryPtr, position, fsize );
 	}
 	//############################################################################
 	void BrushImagery::drawImageTiled( ImageryPtr imageryPtr, const FRect& rect, float x_tiles, float y_tiles ) {
@@ -436,10 +441,6 @@ namespace OpenGUI {
 				PenPosition.x += spacing_adjust;
 			}
 		}
-
-		ImageryPtrList imgrylist = FontManager::getSingleton()._getFontAtlases();
-		if ( imgrylist.size() > 0 )
-			mParentBrush->Image.drawImage( imgrylist.front(), FVector2( 400, 300 ), FVector2( 400, 300 ) );
 	}
 	//############################################################################
 	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
@@ -465,7 +466,9 @@ namespace OpenGUI {
 
 		FVector2 glyphPosition = PenPosition;
 
-		// we need to do our best to provide pixel alignment, so here we fix the glyph position according to PPU
+		// We need to do our best to provide pixel alignment, so here we fix the glyph position according to PPU.
+		// This will cause proper pixel alignment when it is available.
+		// (Drawing context is translated a pixel aligned amount
 		float tmp = fmodf( PenPosition.x, PPU.x );
 		glyphPosition.x -= tmp;
 		tmp = fmodf( PenPosition.y, PPU.y );
