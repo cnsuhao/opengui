@@ -16,9 +16,6 @@ namespace OpenGUI {
 				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				extra.vertex[0].color = Color::PresetRed();
-				extra.vertex[1].color = Color::PresetGreen();
-				extra.vertex[2].color = Color::PresetBlue();
 				tlist.push_back( extra );
 			}
 
@@ -28,9 +25,6 @@ namespace OpenGUI {
 				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				extra.vertex[0].color = Color::PresetRed();
-				extra.vertex[1].color = Color::PresetGreen();
-				extra.vertex[2].color = Color::PresetBlue();
 				tlist.push_back( extra );
 			}
 
@@ -40,9 +34,6 @@ namespace OpenGUI {
 				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				extra.vertex[0].color = Color::PresetRed();
-				extra.vertex[1].color = Color::PresetGreen();
-				extra.vertex[2].color = Color::PresetBlue();
 				tlist.push_back( extra );
 			}
 
@@ -52,9 +43,6 @@ namespace OpenGUI {
 				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				extra.vertex[0].color = Color::PresetRed();
-				extra.vertex[1].color = Color::PresetGreen();
-				extra.vertex[2].color = Color::PresetBlue();
 				tlist.push_back( extra );
 			}
 		}
