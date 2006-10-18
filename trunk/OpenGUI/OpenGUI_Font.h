@@ -54,10 +54,14 @@ namespace OpenGUI {
 		*/
 		bool getGlyph( const char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph );
 
-		//! Returns the line height in pixels for a given pointSize
-		/*! \see To obtain the pixelSizeY, refer to \c calcPixelSizeFromPoints()
-		*/
+		//! Returns the line height in pixels for a given \c pointSize
 		unsigned int getLineSpacing( unsigned int pointSize );
+
+		//! Returns the font wide ascender in pixels for a given \c pointSize
+		unsigned int getAscender( unsigned int pointSize );
+
+		//! Returns the font wide descender in pixels for a given \c pointSize
+		unsigned int getDescender( unsigned int pointSize );
 
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
 		/*!

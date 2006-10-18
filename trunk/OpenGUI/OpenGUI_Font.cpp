@@ -234,6 +234,46 @@ namespace OpenGUI {
 		return sMetrics->height / 64;
 	}
 	//############################################################################
+	unsigned int FontSet::getAscender( unsigned int pointSize ){
+		IVector2 pixelRes;
+		pixelRes.x = pointSize;
+		pixelRes.y = pointSize;
+
+		FT_Error error;
+		FT_Face* tFace = ( FT_Face* ) mFT_Face;
+
+		//set the glyph size requested
+		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
+		if ( error ) {
+			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
+				<< "FreeType 2 Error: (" << (( int )error ) << ") "
+				<< FontManager::getSingleton()._GetFTErrorString( error )
+				<< Log::endlog;
+			return pointSize; //fugly fallback value
+		}
+		return ( *tFace )->ascender / 64;
+	}
+	//############################################################################
+	unsigned int FontSet::getDescender( unsigned int pointSize ){
+		IVector2 pixelRes;
+		pixelRes.x = pointSize;
+		pixelRes.y = pointSize;
+
+		FT_Error error;
+		FT_Face* tFace = ( FT_Face* ) mFT_Face;
+
+		//set the glyph size requested
+		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
+		if ( error ) {
+			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
+				<< "FreeType 2 Error: (" << (( int )error ) << ") "
+				<< FontManager::getSingleton()._GetFTErrorString( error )
+				<< Log::endlog;
+			return pointSize; //fugly fallback value
+		}
+		return ( *tFace )->descender / 64;
+	}
+	//############################################################################
 	bool FontSet::getGlyph( const char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph ) {
 
 		if ( !FontManager::getSingletonPtr() ) {
