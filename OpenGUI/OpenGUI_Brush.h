@@ -8,6 +8,7 @@
 #include "OpenGUI_Imagery.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_BrushModifier.h"
+#include "OpenGUI_BrushModifierStack.h"
 #include "OpenGUI_RenderOperation.h"
 
 namespace OpenGUI {

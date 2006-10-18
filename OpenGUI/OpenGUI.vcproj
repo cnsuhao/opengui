@@ -133,7 +133,25 @@
 				RelativePath=".\OpenGUI_Brush.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_BrushModifier.cpp">
+				RelativePath=".\OpenGUI_BrushModifier_Alpha.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_ClipRect.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Color.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Mask.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Position.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Rotation.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifierStack.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_ContainerControl.cpp">
@@ -262,6 +280,30 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_BrushModifier.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Alpha.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_ClipRect.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Color.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Marker.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Mask.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Position.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier_Rotation.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifierStack.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_CONFIG.h">
