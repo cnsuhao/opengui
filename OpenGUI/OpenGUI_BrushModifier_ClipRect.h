@@ -5,6 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_BrushModifier.h"
+#include "OpenGUI_RenderOperation.h"
 
 namespace OpenGUI {
 	//! \internal ClipRect modifier stored by modifier stack
@@ -15,6 +16,12 @@ namespace OpenGUI {
 		}
 		FRect mRect;
 		virtual void apply( RenderOperation& in_out );
+	private:
+		void _sliceLineSegment( const Vertex& vert1, const Vertex& vert2, Vertex& resultVert, float cutPosition, bool cutHorizontal );
+		void _SliceRenderOp_Vert_SaveLeft( Triangle& in_out1, Triangle& out2, unsigned int& outCount, float cutPosition );
+		void _SliceRenderOp_Vert_SaveRight( Triangle& in_out1, Triangle& out2, unsigned int& outCount, float cutPosition );
+		void _SliceRenderOp_Horiz_SaveTop( Triangle& in_out1, Triangle& out2, unsigned int& outCount, float cutPosition );
+		void _SliceRenderOp_Horiz_SaveBottom( Triangle& in_out1, Triangle& out2, unsigned int& outCount, float cutPosition );
 	};
 }
 
