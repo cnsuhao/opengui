@@ -415,11 +415,40 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushImagery::drawImageTiled( const ImageryPtr& imageryPtr, const FRect& rect, float x_tiles, float y_tiles ) {
-		OG_NYI;
+		if ( x_tiles <= 0.0f || y_tiles <= 0.0f )
+			return; // we cannot run with garbage input
+		FVector2 rect_size = rect.getSize();
+		const FVector2 tilesize( rect_size.x / x_tiles, rect_size.y / y_tiles );
+		IVector2 tilecount(( int )( rect_size.x / tilesize.x ), ( int )( rect_size.y / tilesize.y ) );
+
+		FVector2 pos;
+		FVector2 size = tilesize;
+
+		mParentBrush->pushClippingRect( rect );
+		for ( int y = 0; y <= tilecount.y; y++ ) {
+			pos.y = rect.getPosition().y + ((( float )y ) * tilesize.y );
+			if ( y == tilecount.y ) {
+				if ( pos.y >= rect.max.y )
+					break;
+			}
+			for ( int x = 0; x <= tilecount.x; x++ ) {
+				pos.x = rect.getPosition().x + ((( float )x ) * tilesize.x );
+				if ( pos.x >= rect.max.x )
+					break;
+				drawImage( imageryPtr, pos, size );
+			}
+		}
+		mParentBrush->pop();
 	}
 	//############################################################################
 	void BrushImagery::drawImageUnscaledAndTiled( const ImageryPtr& imageryPtr, const FRect& rect ) {
-		OG_NYI;
+		const FVector2& PPU = mParentBrush->getPPU();
+		FVector2 size = rect.getSize();
+		IVector2 imgsize = imageryPtr->getImagesetRect().getSize();
+		float xtiles, ytiles;
+		xtiles = size.x / ((( float )imgsize.x ) / PPU.x );
+		ytiles = size.y / ((( float )imgsize.y ) / PPU.y );
+		drawImageTiled( imageryPtr, rect, xtiles, ytiles );
 	}
 	//############################################################################
 	//############################################################################
