@@ -66,6 +66,9 @@ namespace OpenGUI {
 		//! Returns the maximum horizontal advance for all characters at the given \c pointSize
 		int getMaxAdvance( unsigned int pointSize );
 
+		//! Returns the true width for the given \c text at the given \c pointSize
+		int getTextWidth( const IVector2& pixelSize, const std::string& text );
+
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
 		/*!
 			\note The TextureDataRect will be resized to exactly hold the glyph. \c destGlyphMetrics will

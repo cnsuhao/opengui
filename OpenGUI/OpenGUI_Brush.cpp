@@ -457,8 +457,92 @@ namespace OpenGUI {
 	// BRUSHTEXT IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
+	void BrushText::_Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
+		std::string tmpStr;
+		const char* cstr = inputStr.c_str();
+		unsigned int epos, spos;
+		spos = epos = 0;
+		while ( cstr[epos] != 0 ) {
+			if ( cstr[epos] == token ) {
+				tmpStr = inputStr.substr( spos, epos - spos );
+				outputStrList.push_back( tmpStr );
+				spos = epos + 1;
+			}
+			epos++;
+		}
+		if ( spos != epos ) {
+			tmpStr = inputStr.substr( spos, epos - spos );
+			outputStrList.push_back( tmpStr );
+		}
+	}
+	//############################################################################
+// 	std::string BrushText::_SubTextByWidth(std::string input, float width)
+// 	{
+// // 		Render::PrimitiveText text;
+// // 		text.setContext(mContext);
+// // 		text.setFont(mFontName,mFontSize);
+//
+// 		std::string outstr = input;
+// 		unsigned int len = input.length();
+//
+// 		while(len > 0){
+// 			outstr = input.substr(0, len);
+// 			text.setText(outstr);
+// 			if(text.getTextWidth() < width){
+// 				return outstr;
+// 			}
+// 			len--;
+// 		}
+//
+// 		return outstr; //at the minimum, we return 1 character
+// 	}
+	//############################################################################
+	void BrushText::_WrapText( StringList& strList_in_out, unsigned int charWidth,
+							   unsigned int wrapWidth ) {
+		if ( charWidth > wrapWidth ) return; // We're not going to split every character. That's insane.
+		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2;
+		for ( StringList::iterator iter = strList_in_out.begin();
+				iter != strList_in_out.end(); iter++ ) {
+			std::string& line = ( *iter );
+			if ( line.length() <= maxChars )
+				continue; // skip lines that already fit
+
+			unsigned int lastSplit = 0;
+			unsigned int lastSpace = 0;
+			unsigned int lineCnt = 0;
+			unsigned int i = 0;
+			const char* curLine = line.c_str();
+			while ( curLine[i] != 0 ) {
+				if ( curLine[i] == ' ' )
+					lastSpace = i;
+
+				lineCnt++;
+
+				if ( lineCnt > maxChars ) {
+					std::string tmpStr;
+					if ( lastSpace > lastSplit ) {
+						tmpStr = line.substr( lastSplit, lastSpace - lastSplit );
+						lastSplit = lastSpace + 1;
+						lastSpace = lastSpace + 1;
+					} else {
+						tmpStr = line.substr( lastSplit, i - lastSplit );
+						lastSplit = i;
+						lastSpace = lastSplit;
+					}
+					strList_in_out.insert( iter, tmpStr );
+					lineCnt = 0;
+				}
+				i++;
+			}
+			std::string tmpStr;
+			tmpStr = line.substr( lastSplit, lineCnt - lastSplit );
+			line = tmpStr;
+		}
+	}
+	//############################################################################
 	void BrushText::drawText( const std::string& text, const FVector2& position,
 							  Font& font, float spacing_adjust ) {
+		font.bind();
 		PenPosition = position;
 		for ( size_t i = 0; i < text.length(); i++ ) {
 			if ( text[i] == '\n' ) {
@@ -473,8 +557,95 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
-								  TextAlignment horizAlign, TextAlignment vertAlign ) {
-		OG_NYI;
+								  bool wrap, TextAlignment horizAlign, TextAlignment vertAlign ) {
+		font.bind();
+		const FVector2& PPU = mParentBrush->getPPU();
+		IVector2 glyphSize = pointsToPixels( font.getSize() );
+		const FVector2 rect_size = area.getSize();
+		const float lineAdvance = (( float )font->getLineSpacing( glyphSize.y ) ) / PPU.y;
+		float lineSpaceAdjust = 0.0f; // this is applied after each line advance
+		FVector2 myPen;
+
+		StringList strList;
+		_Tokenize( text, strList, '\n' );
+
+		if ( wrap ) {
+			unsigned int ma = font->getMaxAdvance( glyphSize.x );
+			unsigned int mw = ( int )( rect_size.x * PPU.x );
+			_WrapText( strList, ma, mw );
+		}
+
+		if ( strList.size() == 0 ) return; //just in case...
+
+		//set up vertical alignment
+		if ( vertAlign == TextAlignment::ALIGN_TOP ) {
+			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
+			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
+			myPen.y = area.getPosition().y + lineAdvance + descender;
+		} else if ( vertAlign == TextAlignment::ALIGN_BOTTOM ) {
+			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
+			myPen.y = area.max.y - ((( strList.size() - 1 ) * lineAdvance ) - descender ); // descender is negative, so we subtract to add
+		} else if ( vertAlign == TextAlignment::ALIGN_CENTER ) {
+			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
+			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
+			float totalheight;
+			totalheight = (( strList.size() - 1 ) * lineAdvance );
+			totalheight += ascender;
+			totalheight -= descender; // descender is negative, so we subtract to add
+			myPen.y = area.getPosition().y + ( rect_size.y / 2.0f ); // move to center
+			myPen.y -= totalheight / 2.0f; // retract half of the total height
+		} else if ( vertAlign == TextAlignment::ALIGN_JUSTIFIED ) {
+			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
+			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
+			float totalheight;
+			totalheight = (( strList.size() - 1 ) * lineAdvance );
+			totalheight += lineAdvance - descender;
+			//totalheight -= descender; // descender is negative, so we subtract to add
+			if ( totalheight > rect_size.y ) {
+				//fall back to ALIGN_TOP if we can't justify correctly
+				myPen.y = area.getPosition().y + lineAdvance;
+			} else {
+				myPen.y = area.getPosition().y + lineAdvance;
+				//lineSpaceAdjust = (rect_size.y - totalheight) / (float)(strList.size() -1.0f);
+				lineSpaceAdjust = ( float )( rect_size.y - totalheight ) / ( float )strList.size();
+			}
+		}
+
+
+		//for each line of text, we will render as necessary according to horizontal alignment
+		StringList::iterator iter = strList.begin();
+		while ( iter != strList.end() ) {
+			std::string& text = ( *iter );
+			if ( horizAlign == TextAlignment::ALIGN_LEFT ) {
+				myPen.x = area.getPosition().x;
+				drawText( text, myPen, font );
+			} else if ( horizAlign == TextAlignment::ALIGN_CENTER ) {
+				int w = font->getTextWidth( glyphSize, text );
+				float fw = (( float )w ) / PPU.x;
+				myPen.x = (( area.max.x + area.min.x ) / 2.0f ) - ( fw / 2.0f );
+				drawText( text, myPen, font );
+			} else if ( horizAlign == TextAlignment::ALIGN_RIGHT ) {
+				int w = font->getTextWidth( glyphSize, text );
+				float fw = (( float )w ) / PPU.x;
+				myPen.x = area.max.x - fw;
+				drawText( text, myPen, font );
+			} else if ( horizAlign == TextAlignment::ALIGN_JUSTIFIED ) {
+				int w = font->getTextWidth( glyphSize, text );
+				float fw = (( float )w ) / PPU.x;
+				myPen.x = area.getPosition().x;
+				float adjust;
+				if ( fw < rect_size.x && fw > rect_size.x * 0.65f )
+					adjust = ( rect_size.x - fw ) / text.length();
+				else
+					adjust = 0.0f;
+				drawText( text, myPen, font, adjust );
+			}
+
+			myPen.y += lineAdvance;
+			myPen.y += lineSpaceAdjust;
+			iter++;
+		}
+
 	}
 	//############################################################################
 	void BrushText::drawCharacter( const char character, Font& font ) {
