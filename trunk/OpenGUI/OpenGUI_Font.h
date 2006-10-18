@@ -58,10 +58,13 @@ namespace OpenGUI {
 		unsigned int getLineSpacing( unsigned int pointSize );
 
 		//! Returns the font wide ascender in pixels for a given \c pointSize
-		unsigned int getAscender( unsigned int pointSize );
+		int getAscender( unsigned int pointSize );
 
 		//! Returns the font wide descender in pixels for a given \c pointSize
-		unsigned int getDescender( unsigned int pointSize );
+		int getDescender( unsigned int pointSize );
+
+		//! Returns the maximum horizontal advance for all characters at the given \c pointSize
+		int getMaxAdvance( unsigned int pointSize );
 
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
 		/*!
