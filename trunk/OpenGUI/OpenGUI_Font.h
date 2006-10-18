@@ -79,7 +79,7 @@ namespace OpenGUI {
 
 
 	//! A handle representing font type and size
-	/*! Fonts are referenced using the Font object, which contain a reference to a FontSet and 
+	/*! Fonts are referenced using the Font object, which contain a reference to a FontSet and
 	the desired size. These handles can be created at will by the user, and are automatically
 	bound to the appropriate FontSet during the constructor. These handles are also capable of
 	referencing the default FontSet at the default size, and this is usually accomplished by
@@ -141,7 +141,7 @@ namespace OpenGUI {
 
 		//! Provides direct access to the bound FontSet's functions
 		/*! This causes an immediate bind, throwing an exception if the bind fails. */
-		FontSet* operator->(){
+		FontSet* operator->() {
 			bind();
 			return m_FontSetPtr.operator ->();
 		}

@@ -1,6 +1,6 @@
 #include "OpenGUI_BrushModifier_Rotation.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//############################################################################
 	void BrushModifier_Rotation::apply( RenderOperation& in_out ) {
 		/*
@@ -11,15 +11,15 @@ namespace OpenGUI{
 		const float preSin = Math::Sin( mRotationAngle.valueRadians() );
 
 		for ( TriangleList::iterator iter = in_out.triangleList->begin();
-			iter != in_out.triangleList->end(); iter++ ) {
-				Triangle& tri = ( *iter );
-				for ( int i = 0; i < 3; i++ ) {
-					Vertex& vert = tri.vertex[i];
-					float x = vert.position.x;
-					float y = vert.position.y;
-					vert.position.x = preCos * x - preSin * y;
-					vert.position.y = preSin * x + preCos * y;
-				}
+				iter != in_out.triangleList->end(); iter++ ) {
+			Triangle& tri = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				Vertex& vert = tri.vertex[i];
+				float x = vert.position.x;
+				float y = vert.position.y;
+				vert.position.x = preCos * x - preSin * y;
+				vert.position.y = preSin * x + preCos * y;
+			}
 		}
 	}
 	//############################################################################

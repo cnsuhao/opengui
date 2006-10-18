@@ -7,7 +7,7 @@
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_RenderOperation.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	//! \internal Position modifier stored by modifier stack
 	class OPENGUI_API BrushModifier_Position : public BrushModifier {

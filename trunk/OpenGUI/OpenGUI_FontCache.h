@@ -49,7 +49,7 @@ namespace OpenGUI {
 		void FlushFont( FontSet* font );
 
 		//! Appends the ImageryPtrs for each atlas to the given list
-		void FillImageryPtrList(ImageryPtrList& imageryList);
+		void FillImageryPtrList( ImageryPtrList& imageryList );
 	private:
 		IVector2 _calcNewAtlasSize( const IVector2& estimatedGlyphSize );
 		FontCacheGlyphSet* _GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize );
