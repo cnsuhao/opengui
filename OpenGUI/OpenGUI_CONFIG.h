@@ -40,7 +40,7 @@
 // These settings are used to hold the default Screen UPI (Units per Inch). These are used to
 // determine constant font glyph scaling along each axis. These defaults are normally adequate
 // for most situations. They are held here in a #define to allow easy changing in the event
-// that the desired UPI for all Screens should change uniformly across your application. 
+// that the desired UPI for all Screens should change uniformly across your application.
 #define DEFAULT_SCREEN_UPI_X 96.0f
 #define DEFAULT_SCREEN_UPI_Y 96.0f
 

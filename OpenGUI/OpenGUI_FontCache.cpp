@@ -276,7 +276,7 @@ namespace OpenGUI {
 		mFontAtlasList.clear();
 	}
 	//############################################################################
-	void FontCache::FillImageryPtrList(ImageryPtrList& imageryList) {
+	void FontCache::FillImageryPtrList( ImageryPtrList& imageryList ) {
 		FontAtlasList::iterator iter = mFontAtlasList.begin();
 		while ( iter != mFontAtlasList.end() ) {
 			FontAtlas* atlas = ( *iter );

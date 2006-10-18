@@ -133,7 +133,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void FontManager::SetDefaultFont( Font font ) {
-		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Setting Default Font..."<< Log::endlog;
+		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Setting Default Font..." << Log::endlog;
 		font.bind();
 		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "Set Default Font: "
 		<< font.getName() << " @" << font.getSize() << "pt" << Log::endlog;
@@ -174,7 +174,7 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	Font FontManager::GetDefaultFont(){
+	Font FontManager::GetDefaultFont() {
 		return mDefaultFont;
 	}
 	//############################################################################
@@ -193,7 +193,7 @@ namespace OpenGUI {
 	is to use the obtained information immediately, and re-request it each time you need it (especially
 	between frames) as its contents could have changed.
 	\note This function is by no means fast, as it is not optimized for production use. */
-	ImageryPtrList FontManager::_getFontAtlases(){
+	ImageryPtrList FontManager::_getFontAtlases() {
 		ImageryPtrList retval;
 		mFontCache->FillImageryPtrList( retval );
 		return retval;

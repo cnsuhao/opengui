@@ -2,7 +2,7 @@
 #include "OpenGUI_BrushModifier_Marker.h"
 #include "OpenGUI_Exception.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 	//############################################################################
 	BrushModifierStack::BrushModifierStack() {
 		mRotCacheValid = false; // rotation cache starts invalid
@@ -75,21 +75,21 @@ namespace OpenGUI{
 		mStickMask = false;
 
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
-			iter != mStack.end(); iter++ ) {
-				BrushModifier* mod = ( *iter );
-				if ( mod->getType() == BrushModifier::COLOR ) {
-					if ( ! mStickColor ) {
-						mStickColor = true;
-						mod->apply( in_out );
-					}
-				} else if ( mod->getType() == BrushModifier::MASK ) {
-					if ( !mStickMask ) {
-						mStickMask = true;
-						mod->apply( in_out );
-					}
-				} else {
+				iter != mStack.end(); iter++ ) {
+			BrushModifier* mod = ( *iter );
+			if ( mod->getType() == BrushModifier::COLOR ) {
+				if ( ! mStickColor ) {
+					mStickColor = true;
 					mod->apply( in_out );
 				}
+			} else if ( mod->getType() == BrushModifier::MASK ) {
+				if ( !mStickMask ) {
+					mStickMask = true;
+					mod->apply( in_out );
+				}
+			} else {
+				mod->apply( in_out );
+			}
 		}
 	}
 	//############################################################################
@@ -124,12 +124,12 @@ namespace OpenGUI{
 		//otherwise we'll need to rebuild the cache before we return
 		mRotCache = 0;
 		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
-			iter != mStack.end(); iter++ ) {
-				BrushModifier* mod = ( *iter );
-				if ( mod->getType() == BrushModifier::ROTATION ) {
-					BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>( mod );
-					mRotCache = mRotCache + rot->mRotationAngle;
-				}
+				iter != mStack.end(); iter++ ) {
+			BrushModifier* mod = ( *iter );
+			if ( mod->getType() == BrushModifier::ROTATION ) {
+				BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>( mod );
+				mRotCache = mRotCache + rot->mRotationAngle;
+			}
 		}
 		mRotCacheValid = true;
 		return mRotCache;
