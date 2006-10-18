@@ -25,6 +25,7 @@
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -75,6 +76,7 @@
 				AdditionalIncludeDirectories="..\dependancies\corona\src;..\dependancies\tinyxml;..\dependancies\freetype2\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OPENGUI_EXPORTS"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -128,19 +130,25 @@
 				RelativePath=".\OpenGUI.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Cursor.cpp">
+				RelativePath=".\OpenGUI_Brush.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_CursorManager.cpp">
+				RelativePath=".\OpenGUI_BrushModifier.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ContainerControl.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Control.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_DynamicLib.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Element.cpp">
+				RelativePath=".\OpenGUI_Event.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_EventListener.cpp">
+				RelativePath=".\OpenGUI_EventHandler.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Exception.cpp">
@@ -161,7 +169,7 @@
 				RelativePath=".\OpenGUI_GenericResourceProvider.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_GUISheet.cpp">
+				RelativePath=".\OpenGUI_I_WidgetContainer.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Imagery.cpp">
@@ -179,28 +187,31 @@
 				RelativePath=".\OpenGUI_LogSystem.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Math.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Object.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ObjectAccessor.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_PluginManager.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Geometric.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Mutations.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Text.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_PropertySet.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_RenderCache.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Renderer.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_RenderOperation.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_RenderTexture.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Screen.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ScreenManager.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_System.cpp">
@@ -215,6 +226,9 @@
 				RelativePath=".\OpenGUI_TextureDataRect.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_TextureManager.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Timer.cpp">
 			</File>
 			<File
@@ -224,13 +238,13 @@
 				RelativePath=".\OpenGUI_Types.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Value.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Widget.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_WidgetFactoryManager.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetTemplateManager.cpp">
+				RelativePath=".\OpenGUI_Window.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_XMLParser.cpp">
@@ -244,25 +258,28 @@
 				RelativePath=".\OpenGUI.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Brush.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_BrushModifier.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_CONFIG.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Cursor.h">
+				RelativePath=".\OpenGUI_ContainerControl.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_CursorManager.h">
+				RelativePath=".\OpenGUI_Control.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_DynamicLib.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Element.h">
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Event.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_EventListener.h">
+				RelativePath=".\OpenGUI_EventHandler.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Exception.h">
@@ -289,7 +306,7 @@
 				RelativePath=".\OpenGUI_GenericResourceProvider.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_GUISheet.h">
+				RelativePath=".\OpenGUI_I_WidgetContainer.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Imagery.h">
@@ -301,16 +318,22 @@
 				RelativePath=".\OpenGUI_Imageset.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Iterators.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_LayoutLoader.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_LogSystem.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Message.h">
+				RelativePath=".\OpenGUI_Math.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_MouseButton.h">
+				RelativePath=".\OpenGUI_Object.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ObjectAccessor.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Platform.h">
@@ -322,25 +345,10 @@
 				RelativePath=".\OpenGUI_PreRequisites.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_Primitives.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Geometric.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Mutations.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Primitives_Text.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_PropertySet.h">
+				RelativePath=".\OpenGUI_RefObject.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_RefPtr.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_RenderCache.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Renderer.h">
@@ -349,10 +357,19 @@
 				RelativePath=".\OpenGUI_RenderOperation.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_RenderTexture.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Resource.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_ResourceProvider.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Screen.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_ScreenManager.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Singleton.h">
@@ -370,6 +387,9 @@
 				RelativePath=".\OpenGUI_TextureDataRect.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_TextureManager.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Timer.h">
 			</File>
 			<File
@@ -379,77 +399,22 @@
 				RelativePath=".\OpenGUI_Types.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_UnusedTypes.h">
+				RelativePath=".\OpenGUI_Value.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Widget.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_WidgetFactoryManager.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_WidgetTemplateManager.h">
+				RelativePath=".\OpenGUI_Window.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_XMLParser.h">
-			</File>
-			<File
-				RelativePath=".\UnknownImage.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-		</Filter>
-		<Filter
-			Name="BaseWidgets"
-			Filter="">
-			<File
-				RelativePath=".\OpenGUI_BaseWidgets.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Container.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_Container.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameButton.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameButton.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameImage.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_FrameImage.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GenericCursor.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_GenericCursor.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_SimpleButton.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_SimpleButton.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_StaticImage.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_StaticImage.h">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_TextLabel.cpp">
-			</File>
-			<File
-				RelativePath=".\OpenGUI_TextLabel.h">
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\doc\AdditionalDoxygenInput.txt">
