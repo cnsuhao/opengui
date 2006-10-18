@@ -251,7 +251,8 @@ namespace OpenGUI {
 			<< Log::endlog;
 			return pointSize; //fugly fallback value
 		}
-		return ( *tFace )->ascender / 64;
+		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
+		return sMetrics->ascender / 64;
 	}
 	//############################################################################
 	int FontSet::getDescender( unsigned int pointSize ) {
@@ -271,7 +272,8 @@ namespace OpenGUI {
 			<< Log::endlog;
 			return pointSize; //fugly fallback value
 		}
-		return ( *tFace )->descender / 64;
+		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
+		return sMetrics->descender / 64;
 	}
 	//############################################################################
 	int FontSet::getMaxAdvance( unsigned int pointSize ) {
@@ -291,7 +293,20 @@ namespace OpenGUI {
 			<< Log::endlog;
 			return pointSize; //fugly fallback value
 		}
-		return ( *tFace )->max_advance_width / 64;
+		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
+		return sMetrics->max_advance / 64;
+	}
+	//############################################################################
+	int FontSet::getTextWidth( const IVector2& pixelSize, const std::string& text ) {
+		int retval = 0;
+		FontGlyph glyph;
+		const char* str = text.c_str();
+		const size_t len = text.length();
+		for ( size_t i = 0; i < len; i++ ) {
+			getGlyph( str[i], pixelSize, glyph );
+			retval += glyph.metrics.horiAdvance;
+		}
+		return retval;
 	}
 	//############################################################################
 	bool FontSet::getGlyph( const char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph ) {

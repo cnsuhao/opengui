@@ -85,7 +85,11 @@ namespace OpenGUI {
 			mParentBrush = brush;
 		}
 		Brush* mParentBrush;
-
+		typedef std::list<std::string> StringList;
+		//! \internal explodes the given \c inputStr into an \c outputStrList by \c token
+		void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token );
+		//! \internal Performs wrapping on \c strList_in_out, assuming each character is \c charWidth and lines are allowed a maximum of \c wrapWidth
+		void _WrapText( StringList& strList_in_out, unsigned int charWidth, unsigned int wrapWidth );
 	public:
 		~BrushText() {}
 
@@ -93,7 +97,7 @@ namespace OpenGUI {
 		void drawText( const std::string& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
 
 		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
-		void drawTextArea( const std::string& text, const FRect& area, Font& font, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
+		void drawTextArea( const std::string& text, const FRect& area, Font& font, bool wrap = false, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
 
 		//! draws the given \c character at the given \c position using the given \c font.
 		void drawCharacter( const char character, Font& font );
