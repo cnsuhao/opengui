@@ -23,21 +23,24 @@ class MyWidget:public Widget{
 protected:
 	void onDraw(Object* sender, Draw_EventArgs& evtArgs ){
 		Brush& b = evtArgs.brush;
-		FVector2 pos(500,500);
-		Font fnt("pecot",20);
-		b.Text.drawText("yjyjyjyj\nCAPITOL", pos, fnt);
-		FRect outlineRect(pos, FVector2(pos.x + 40, pos.y + 40));
+		FVector2 pos(400,300);
+		Font fnt("pecot",12);
+		
+		FRect outlineRect(pos, FVector2(pos.x + 200, pos.y + 200));
+		b.Text.drawTextArea("CAPITOL\nI am a sentence\nyjyjsupercalafragalisticexpialidocious",
+			outlineRect, fnt, true, TextAlignment::ALIGN_JUSTIFIED, TextAlignment::ALIGN_CENTER);
 		b.pushAlpha(0.5f);
 		b.pushColor(Color::PresetBlue());
 		b.Primitive.drawRect( outlineRect );
 		b.pop();
-		b.Primitive.drawOutlineRect( outlineRect, 5);
+		b.Primitive.drawOutlineRect( outlineRect, -5);
 		b.pop();
 
 
 		ImageryPtrList imgrylist = FontManager::getSingleton()._getFontAtlases();
 		if ( imgrylist.size() > 0 ){
-			b.Image.drawImageUnscaled( imgrylist.front(), FVector2( 0, 0 ) );
+			//b.Image.drawImageUnscaled( imgrylist.front(), FVector2( 0, 0 ) );
+			b.Image.drawImageUnscaledAndTiled(imgrylist.front(), FRect(0,0,150,400));
 		}
 	}
 };
