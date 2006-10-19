@@ -12,6 +12,7 @@ public:
 		int i = 0;
 	}
 	virtual void mousePositionCallback(int x, int y);
+	virtual void mouseButtonCallback(int button, int action);
 private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
@@ -121,6 +122,14 @@ void Demo1App::perframeRun()
 }
 void Demo1App::mousePositionCallback(int x, int y){
 	mScreen->injectCursorPosition((float)x, (float)y);
+}
+void Demo1App::mouseButtonCallback(int button, int action){
+	if(button == 0){
+		if( action == 1)
+			mScreen->injectCursorPress();
+		else
+			mScreen->injectCursorRelease();
+	}
 }
 
 int main( void )

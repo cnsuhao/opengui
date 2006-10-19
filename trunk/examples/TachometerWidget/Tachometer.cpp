@@ -3,286 +3,158 @@
 #include "Tachometer.h"
 
 namespace OpenGUI{
-	namespace Widgets{
-		//############################################################################
-		Tachometer::Tachometer()
-		{
-			float mCurrentValue = 0.0f;
-			float mMinValue = 0.0f;
-			float mMinValueAngle = 0.0f;
-			float mMaxValue = 0.0f;
-			float mMaxValueAngle = 0.0f;
+	//############################################################################
+	Tachometer::Tachometer()
+	{
+		float mCurrentValue = 0.0f;
+		float mMinValue = 0.0f;
+		float mMinValueAngle = 0.0f;
+		float mMaxValue = 0.0f;
+		float mMaxValueAngle = 0.0f;
 
-			BGImagery
-			NeedleImagery
-			NeedlePivot
-			NeedleAnchor
+		//BGImagery
+		//NeedleImagery
+// 		NeedlePivot
+// 		NeedleAnchor
+// 
+// 		NeedleMinValue
+// 		NeedleMaxValue
+// 		NeedleMinAngle
+// 		NeedleMaxAngle
+// 
+// 		NeedleValue
+	}
+	//############################################################################
+	Tachometer::~Tachometer()
+	{
+		//
+	}
+	//############################################################################
+	Widget* Tachometer::createTachometerFactory()
+	{
+		return new Tachometer;
+	}
+	//############################################################################
+	void Tachometer::onDraw(Object* sender, Draw_EventArgs& evtArgs){
+		/**/
+		float scale; // scale is the multiplier we apply to the imagery
+		Brush& b = evtArgs.brush;
+		b.Image.drawImage(mBGImageryPtr, getRect() );
 
-			NeedleMinValue
-			NeedleMaxValue
-			NeedleMinAngle
-			NeedleMaxAngle
+		//calculate necessary rotation to represent current needle value
+		float anglePerUnit;
+		anglePerUnit = (mMaxValueAngle - mMinValueAngle) / (mMaxValue - mMinValue);
+		float desiredAngle = (mCurrentValue * anglePerUnit) - mMinValueAngle;
 
-			NeedleValue
-		}
-		//############################################################################
-		Tachometer::~Tachometer()
-		{
-			//
-		}
-		//############################################################################
-		Widget* Tachometer::createTachometerFactory()
-		{
-			return new Tachometer;
-		}
-		//############################################################################
-		Render::RenderOperationList Tachometer::buildWidgetRenderOpList()
-		{
-			if(!mBGImageryPtr || !mNeedleImageryPtr)
-				return Render::RenderOperationList();
+		FVector2 anchorPos;
+		FVector2 needleOffset;
 
-			Render::RenderOperationList outList;
+		b.pushPosition(anchorPos);
+		b.pushRotation(Degree(desiredAngle));
+		b.pushPosition(needleOffset);
+		// draw needle
+		b.pop(); //b.pushPosition(needleOffset);
+		b.pop(); //b.pushRotation(Degree(desiredAngle));
+		b.pop(); //b.pushPosition(anchorPos);
+	}
+	/*
+	Render::RenderOperationList Tachometer::buildWidgetRenderOpList()
+	{
+		if(!mBGImageryPtr || !mNeedleImageryPtr)
+			return Render::RenderOperationList();
 
-			//render background image
-			Render::PrimitiveBox box;
-			box.setRect(this->getRect());
-			box.setTextureImagery(mBGImageryPtr);
-			Render::AppendRenderOperationList(outList, box.getRenderOperationList());
+		Render::RenderOperationList outList;
 
-
-			//render needle to a temp buffer
-			Render::RenderOperationList tmpList;
-			FRect needleRect;
-			needleRect.setWidth(
-				(float)mNeedleImageryPtr->getImagesetRect().getWidth() / (float)mBGImageryPtr->getImagesetRect().getWidth()
-				);
-			needleRect.setHeight(
-				(float)mNeedleImageryPtr->getImagesetRect().getHeight() / (float)mBGImageryPtr->getImagesetRect().getHeight()
-				);
-			FVector2 anchorOffset =	needleRect.getOuterCoord(mNeedleAnchor);
-			needleRect.offset( -anchorOffset );
-			needleRect.offset( mNeedlePivot );
-			box.setRect(needleRect);
-			box.setTextureImagery(mNeedleImageryPtr);
-			tmpList = box.getRenderOperationList();
-
-			//calculate necessary rotation to represent current needle value
-			float anglePerUnit;
-			anglePerUnit = (mMaxValueAngle - mMinValueAngle) / (mMaxValue - mMinValue);
-			float desiredAngle = (mCurrentValue * anglePerUnit) - mMinValueAngle;
-
-			//apply rotation to temp needle buffer
-			Render::PrimitiveRotation rot;
-			rot.addRenderOperation(tmpList);
-			rot.setOrigin( mNeedlePivot );
-			rot.setAngleDegrees( desiredAngle );
-			tmpList = rot.getRenderOperationList();
-			
-			//transform needle render operations from the imaginary coord system to the necessary output coords
-			Render::RenderOperationList::iterator iter = tmpList.begin();
-			while(iter != tmpList.end()){
-				iter->vertices[0].position = convCoordInnerToLocal(iter->vertices[0].position);
-				iter->vertices[1].position = convCoordInnerToLocal(iter->vertices[1].position);
-				iter->vertices[2].position = convCoordInnerToLocal(iter->vertices[2].position);
-				iter++;
-			}
-
-			//write temp needle buffer to the output buffer
-			Render::AppendRenderOperationList(outList, tmpList);
-
-			return outList;
-		}
-		//############################################################################
-		bool Tachometer::defaultMessageHandler(const Msg::Message &message)
-		{
-			return true;
-		}
-		//############################################################################
-		void Tachometer::setBackgroundImagery(std::string imageryName)
-		{
-			dirtyCache();
-			mBGImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
-		}
-		//############################################################################
-		void Tachometer::setNeedlePivot(const FVector2& pivotLocation)
-		{
-			dirtyCache();
-			mNeedlePivot = pivotLocation;
-		}
-		//############################################################################
-		void Tachometer::setNeedleImagery(std::string imageryName)
-		{
-			dirtyCache();
-			mNeedleImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
-		}
-		//############################################################################
-		void Tachometer::setNeedleAnchor(const FVector2& anchorLocation)
-		{
-			dirtyCache();
-			mNeedleAnchor = anchorLocation;
-		}
-		//############################################################################
-		void Tachometer::setNeedleScale(float minValue, float minValueAngle, float maxValue, float maxValueAngle)
-		{
-			dirtyCache();
-			mMinValue = minValue;
-			mMinValueAngle = minValueAngle;
-			mMaxValue = maxValue;
-			mMaxValueAngle = maxValueAngle;
-		}
-		//############################################################################
-		void Tachometer::setNeedleValue(float currentValue)
-		{
-			dirtyCache();
-			mCurrentValue = currentValue;
-		}
-		//############################################################################
+		//render background image
+		Render::PrimitiveBox box;
+		box.setRect(this->getRect());
+		box.setTextureImagery(mBGImageryPtr);
+		Render::AppendRenderOperationList(outList, box.getRenderOperationList());
 
 
+		//render needle to a temp buffer
+		Render::RenderOperationList tmpList;
+		FRect needleRect;
+		needleRect.setWidth(
+			(float)mNeedleImageryPtr->getImagesetRect().getWidth() / (float)mBGImageryPtr->getImagesetRect().getWidth()
+			);
+		needleRect.setHeight(
+			(float)mNeedleImageryPtr->getImagesetRect().getHeight() / (float)mBGImageryPtr->getImagesetRect().getHeight()
+			);
+		FVector2 anchorOffset =	needleRect.getOuterCoord(mNeedleAnchor);
+		needleRect.offset( -anchorOffset );
+		needleRect.offset( mNeedlePivot );
+		box.setRect(needleRect);
+		box.setTextureImagery(mNeedleImageryPtr);
+		tmpList = box.getRenderOperationList();
 
+		//calculate necessary rotation to represent current needle value
+		float anglePerUnit;
+		anglePerUnit = (mMaxValueAngle - mMinValueAngle) / (mMaxValue - mMinValue);
+		float desiredAngle = (mCurrentValue * anglePerUnit) - mMinValueAngle;
 
-		//############################################################################
-		bool Tachometer::_prop_SetBGImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setBackgroundImagery(newValueStr);
-			return true;
+		//apply rotation to temp needle buffer
+		Render::PrimitiveRotation rot;
+		rot.addRenderOperation(tmpList);
+		rot.setOrigin( mNeedlePivot );
+		rot.setAngleDegrees( desiredAngle );
+		tmpList = rot.getRenderOperationList();
+		
+		//transform needle render operations from the imaginary coord system to the necessary output coords
+		Render::RenderOperationList::iterator iter = tmpList.begin();
+		while(iter != tmpList.end()){
+			iter->vertices[0].position = convCoordInnerToLocal(iter->vertices[0].position);
+			iter->vertices[1].position = convCoordInnerToLocal(iter->vertices[1].position);
+			iter->vertices[2].position = convCoordInnerToLocal(iter->vertices[2].position);
+			iter++;
 		}
-		//############################################################################
-		bool Tachometer::_prop_GetBGImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			curValue = w->mBGImageryPtr ? w->mBGImageryPtr->getName() : "";
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleImagery(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleImagery(newValueStr);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleImagery(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			curValue = w->mNeedleImageryPtr ? w->mNeedleImageryPtr->getName() : "";
-			return true;
-		}
-		//############################################################################
 
-		bool Tachometer::_prop_SetNeedleAnchor(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			FVector2* newValue = (FVector2*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleAnchor(*newValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleAnchor(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFVector2(w->mNeedleAnchor, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedlePivot(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			FVector2* newValue = (FVector2*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedlePivot(*newValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedlePivot(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFVector2(w->mNeedlePivot, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			float* newValue = (float*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleValue(*newValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleValue(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFloat(w->mCurrentValue, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleMinValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			float* newValue = (float*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleScale(*newValue, w->mMinValueAngle, w->mMaxValue, w->mMaxValueAngle);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleMinValue(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFloat(w->mMinValue, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			float* newValue = (float*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleScale(w->mMinValue, w->mMinValueAngle, *newValue, w->mMaxValueAngle);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleMaxValue(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFloat(w->mMaxValue, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			float* newValue = (float*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleScale(w->mMinValue, *newValue, w->mMaxValue, w->mMaxValueAngle);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleMinAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFloat(w->mMinValueAngle, curValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_SetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr)
-		{
-			if(!newValuePtr) return false;
-			float* newValue = (float*)newValuePtr;
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			w->setNeedleScale(w->mMinValue, w->mMinValueAngle, w->mMaxValue, *newValue);
-			return true;
-		}
-		//############################################################################
-		bool Tachometer::_prop_GetNeedleMaxAngle(PropertySet* widget, const std::string& propertyName, std::string& curValue)
-		{
-			Tachometer* w = static_cast<Tachometer*>(widget);
-			PropertyParser::toStrFloat(w->mMaxValueAngle, curValue);
-			return true;
-		}
-		//############################################################################
+		//write temp needle buffer to the output buffer
+		Render::AppendRenderOperationList(outList, tmpList);
 
-	};//namespace Widgets{
+		return outList;
+	}
+	//############################################################################
+	*/
+	
+	//############################################################################
+	void Tachometer::setBackgroundImagery(std::string imageryName)
+	{
+		invalidate();
+		mBGImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
+	}
+	//############################################################################
+	void Tachometer::setNeedlePivot(const FVector2& pivotLocation)
+	{
+		invalidate();
+		mNeedlePivot = pivotLocation;
+	}
+	//############################################################################
+	void Tachometer::setNeedleImagery(std::string imageryName)
+	{
+		invalidate();
+		mNeedleImageryPtr = ImageryManager::getSingleton().getImagery(imageryName);
+	}
+	//############################################################################
+	void Tachometer::setNeedleAnchor(const FVector2& anchorLocation)
+	{
+		invalidate();
+		mNeedleAnchor = anchorLocation;
+	}
+	//############################################################################
+	void Tachometer::setNeedleScale(float minValue, float minValueAngle, float maxValue, float maxValueAngle)
+	{
+		invalidate();
+		mMinValue = minValue;
+		mMinValueAngle = minValueAngle;
+		mMaxValue = maxValue;
+		mMaxValueAngle = maxValueAngle;
+	}
+	//############################################################################
+	void Tachometer::setNeedleValue(float currentValue)
+	{
+		invalidate();
+		mCurrentValue = currentValue;
+	}
+	//############################################################################
 };//namespace OpenGUI{
