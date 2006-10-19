@@ -10,7 +10,7 @@ extern "C"{
 		OpenGUI::LogManager::SlogMsg("Tachometer", OGLL_MSG)
 			<< "pluginStart() was called" << OpenGUI::Log::endlog;
 		
-		OpenGUI::WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUIExt", "Tachometer", OpenGUI::WidgetFactoryCallback( &OpenGUI::Widgets::Tachometer::createTachometerFactory ) );
+		//OpenGUI::WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUIExt", "Tachometer", OpenGUI::WidgetFactoryCallback( &OpenGUI::Widgets::Tachometer::createTachometerFactory ) );
 	}
 
 	void OPENGUI_WIDGET_API pluginStop(){
