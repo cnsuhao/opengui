@@ -58,6 +58,11 @@ namespace OpenGUI {
 		<< Log::endlog;
 
 		mCursorPressed = false; // cursor starts not pressed
+		mCursorPos.x = mSize.x / 2.0f; // cursor starts in the middle of the Screen
+		mCursorPos.y = mSize.y / 2.0f;
+
+		m_CursorEnabled = false; // cursor starts disabled
+		m_CursorVisible = true;  // cursor starts shown
 	}
 	//############################################################################
 	Screen::~Screen() {
@@ -157,57 +162,115 @@ namespace OpenGUI {
 			iter->_draw( b );
 			iter++;
 		}
+		if(m_CursorEnabled && m_CursorVisible){
+			// Draw the cursor
+			FRect tmpCursor;
+			tmpCursor.setHeight(30.0f);
+			tmpCursor.setWidth(30.0f);
+			b.pushPosition(mCursorPos);
+			b.pushRotation(Degree(45.0f));
+			b.Primitive.drawRect(tmpCursor);
+			b.pop();b.pop();
+		}
 	}
 	//############################################################################
-	void Screen::injectCursorMovement( float x_rel, float y_rel ) {
+	/*! Positive values causes right or downward movement depending on axis.
+	Values of 0.0f on both axis are ignored. If the cursor is disabled, this will always return false. */
+	bool Screen::injectCursorMovement( float x_rel, float y_rel ) {
 		x_rel += mCursorPos.x;
 		y_rel += mCursorPos.y;
-		injectCursorPosition( x_rel, y_rel );
+		return injectCursorPosition( x_rel, y_rel );
 	}
 	//############################################################################
-	void Screen::injectCursorPosition( float x_pos, float y_pos ) {
+	/*! 0.0 x 0.0 is the upper left corner of the screen.
+	If the cursor is disabled, this will always return false.*/
+	bool Screen::injectCursorPosition( float x_pos, float y_pos ) {
+		if(!m_CursorEnabled) return false;
 		//store the new cursor position for future use
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
-
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			iter->eventCursor_Move( x_pos, y_pos );
+			retval = iter->eventCursor_Move( x_pos, y_pos ) ? true : retval;
 			iter++;
 		}
+		return retval;
 	}
 	//############################################################################
-	void Screen::injectCursorPosition_Percent( float x_perc, float y_perc ) {
+	/*! 0.0 x 0.0 is the upper left corner of the screen, 1.0 x 1.0 is the lower right of the screen.
+	If the cursor is disabled, this will always return false.*/
+	bool Screen::injectCursorPosition_Percent( float x_perc, float y_perc ) {
 		x_perc *= mSize.x;
 		y_perc *= mSize.y;
-		injectCursorPosition( x_perc, y_perc );
+		return injectCursorPosition( x_perc, y_perc );
 	}
 	//############################################################################
-	void Screen::injectCursorPress() {
+	/*! If the cursor is disabled, this will always return false. */
+	bool Screen::injectCursorPress() {
+		if(!m_CursorEnabled) return false;
 		mCursorPressed = true;
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			iter->eventCursor_Press( mCursorPos.x, mCursorPos.y );
+			retval = iter->eventCursor_Press( mCursorPos.x, mCursorPos.y ) ? true : retval;
 			iter++;
 		}
+		return retval;
 	}
 	//############################################################################
-	void Screen::injectCursorRelease() {
+	/*! If the cursor is disabled, this will always return false. */
+	bool Screen::injectCursorRelease() {
+		if(!m_CursorEnabled) return false;
 		mCursorPressed = false;
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			iter->eventCursor_Release( mCursorPos.x, mCursorPos.y );
+			retval = iter->eventCursor_Release( mCursorPos.x, mCursorPos.y ) ? true : retval;
 			iter++;
 		}
+		return retval;
 	}
 	//############################################################################
-	void Screen::injectCursorPress_State( bool pressed ) {
+	/*! If the cursor is disabled, this will always return false. */
+	bool Screen::injectCursorPress_State( bool pressed ) {
 		if ( pressed != mCursorPressed ) {
 			if ( pressed )
-				injectCursorPress();
+				return injectCursorPress();
 			else
-				injectCursorRelease();
+				return injectCursorRelease();
 		}
+		return false;
+	}
+	//############################################################################
+	/*! Cursor starts disabled, so you will need to call this to enabled it before
+	you can realistically use it. Multiple calls have no ill effect. */
+	void Screen::enableCursor() {
+		m_CursorEnabled = true;
+	}
+	//############################################################################
+	/*! Multiple calls have no ill effect. */
+	void Screen::disableCursor() {
+		m_CursorEnabled = false;
+	}
+	//############################################################################
+	bool Screen::cursorEnabled() {
+		return m_CursorEnabled;
+	}
+	//############################################################################
+	/*! Cursor starts shown, so you do not need to call this unless you've previously
+	hidden the cursor. Multiple calls have no ill effect. */
+	void Screen::showCursor() {
+		m_CursorVisible = true;
+	}
+	//############################################################################
+	/*! Multiple calls have no ill effect. */
+	void Screen::hideCursor() {
+		m_CursorVisible = false;
+	}
+	//############################################################################
+	bool Screen::cursorVisible() {
+		return m_CursorVisible;
 	}
 	//############################################################################
 }//namespace OpenGUI{

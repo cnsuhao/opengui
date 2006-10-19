@@ -11,6 +11,7 @@ public:
 	virtual void postRun(){
 		int i = 0;
 	}
+	virtual void mousePositionCallback(int x, int y);
 private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
@@ -23,18 +24,28 @@ class MyWidget:public Widget{
 protected:
 	void onDraw(Object* sender, Draw_EventArgs& evtArgs ){
 		Brush& b = evtArgs.brush;
+		//b.pushRotation( Degree(12) );
 		FVector2 pos(400,300);
-		Font fnt("pecot",12);
+		Font fnt("pecot",30);
 		
 		FRect outlineRect(pos, FVector2(pos.x + 200, pos.y + 200));
-		b.Text.drawTextArea("CAPITOL\nI am a sentence\nyjyjsupercalafragalisticexpialidocious",
+		
+		b.pushColor(Color::PresetRed());
+		b.Text.drawTextArea("lowery CASE text",
 			outlineRect, fnt, true, TextAlignment::ALIGN_JUSTIFIED, TextAlignment::ALIGN_CENTER);
-		b.pushAlpha(0.5f);
+		b.pop();
+
+		b.Primitive.drawLine(FVector2(outlineRect.min.x, outlineRect.min.y + outlineRect.getHeight()/2 ),
+			FVector2(outlineRect.max.x, outlineRect.min.y + outlineRect.getHeight()/2 ), 2.0f);
+
+		b.pushAlpha(0.25f);
 		b.pushColor(Color::PresetBlue());
 		b.Primitive.drawRect( outlineRect );
 		b.pop();
 		b.Primitive.drawOutlineRect( outlineRect, -5);
 		b.pop();
+
+		//b.pop();
 
 
 		ImageryPtrList imgrylist = FontManager::getSingleton()._getFontAtlases();
@@ -48,6 +59,8 @@ void Demo1App::preRun()
 {
 	mScreen = ScreenManager::getSingleton().createScreen("MainScreen", FVector2(800,600) );
 	FontManager::getSingleton().RegisterFontSet("pecot.ttf","pecot");
+
+	mScreen->enableCursor();
 
 	Widget* w = new MyWidget();
 	w->setName("Blah");
@@ -106,7 +119,9 @@ void Demo1App::perframeRun()
 	}
 	*/
 }
-
+void Demo1App::mousePositionCallback(int x, int y){
+	mScreen->injectCursorPosition((float)x, (float)y);
+}
 
 int main( void )
 {

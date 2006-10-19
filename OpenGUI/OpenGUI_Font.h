@@ -19,7 +19,8 @@ namespace OpenGUI {
 		friend class FontManager;
 	protected:
 		//! Font creation implies loading of the font via FreeType.
-		/*! \param sourceFilename filename of the font to load */
+		/*! \param sourceFilename filename of the font to load
+			\param fontName the friendly name for this FontSet */
 		FontSet( const std::string& sourceFilename, const std::string& fontName );
 		//! Destruction also unloads the font from FreeType
 		~FontSet();
@@ -39,12 +40,8 @@ namespace OpenGUI {
 		/*!
 			\return \c true on success, \c false if the glyph cannot be generated because of some FreeType error
 			\param glyph_charCode The character code (currently ASCII) of the glyph you are requesting
-			\param pointSize The size of the glyph you'd like, in font points. <i>This value is automatically
-				adjusted according to the native resolution of the font if autoscale is enabled for the font.
-				This is used to provide font glyphs that scale with resolution changes while still preserving
-				the opportunity for proper pixel alignment.</i>
-			\param outPixelRect On success, this is rect is set to the extents of the glyph produced. 0,0 will
-				always be the glyph's horizontal baseline.
+			\param pixelSize The size of the glyph you'd like, in pixels. Translation to/from pixels is up to
+				the user. (See: Screen::getPPU(), Screen::getUPI())
 			\param outFontGlyph On success, this is initialized with information about the glyph.
 			
 			The imagery provided by \c outImageryPtr will provide pixel alignment if the glyph is drawn to the

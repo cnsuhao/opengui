@@ -13,7 +13,7 @@
 
 //#include "OpenGUI_Event.h"
 
-//! The base namespace contains the classes that applications will deal with the most.
+//! All %OpenGUI classes are contained under the "OpenGUI" namespace
 namespace OpenGUI {
 	//forward declarations
 

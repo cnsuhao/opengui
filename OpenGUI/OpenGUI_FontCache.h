@@ -33,7 +33,7 @@ namespace OpenGUI {
 
 
 	//! \internal This class provides Allocation and Management of the Textures, Imagesets, and Imagery that are used to hold glyphs rendered by Freetype.
-	/*! Basically, you can't draw a glyph to the screen unless it is first drawn onto a texture. This
+	/*! \internal Basically, you can't draw a glyph to the screen unless it is first drawn onto a texture. This
 		class performs texture space management, and allows Fonts to simply ask for storage space for
 		glyph renderings, and it shall be provided.
 
