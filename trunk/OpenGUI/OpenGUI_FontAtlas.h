@@ -19,7 +19,6 @@ namespace OpenGUI {
 	FontAtlasRow;
 
 	//! \internal A FontAtlas is a Texture containing several rendered font glyphs, this implementation provides additional space management functionality, and is used internally by the Font system.
-	/*! \todo Redo the way real estate is managed. This current system sucks. It works, but it sucks. */
 	class FontAtlas {
 	public:
 		FontAtlas( IVector2 dimensions );

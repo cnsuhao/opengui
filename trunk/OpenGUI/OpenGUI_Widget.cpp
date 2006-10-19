@@ -264,36 +264,42 @@ namespace OpenGUI {
 	This message may be culled by containers if the cursor is not within their bounds.
 	(Meaning that children may not receive this event unless it is potentially relevant
 	to them as determined by the container.)
-	\param xPos X position of the cursor 
-	\param yPos Y position of the cursor 
+	\param xPos X position of the cursor
+	\param yPos Y position of the cursor
+	\return true if the input was consumed, false otherwise
 	*/
-	void Widget::eventCursor_Move( float xPos, float yPos ) {
-		EventArgs event;
+	bool Widget::eventCursor_Move( float xPos, float yPos ) {
+		Cursor_EventArgs event(xPos, yPos);
 		triggerEvent( "Cursor_Move", event );
+		return event.Consumed;
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
 	This message may be culled by containers if the cursor is not within their bounds.
 	(Meaning that children may not receive this event unless it is potentially relevant
 	to them as determined by the container.)
-	\param xPos X position of the cursor 
-	\param yPos Y position of the cursor 
+	\param xPos X position of the cursor
+	\param yPos Y position of the cursor
+	\return true if the input was consumed, false otherwise
 	*/
-	void Widget::eventCursor_Press( float xPos, float yPos ) {
-		EventArgs event;
+	bool Widget::eventCursor_Press( float xPos, float yPos ) {
+		Cursor_EventArgs event(xPos, yPos);
 		triggerEvent( "Cursor_Press", event );
+		return event.Consumed;
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
 	This message may be culled by containers if the cursor is not within their bounds.
 	(Meaning that children may not receive this event unless it is potentially relevant
 	to them as determined by the container.)
-	\param xPos X position of the cursor 
-	\param yPos Y position of the cursor 
+	\param xPos X position of the cursor
+	\param yPos Y position of the cursor
+	\return true if the input was consumed, false otherwise
 	*/
-	void Widget::eventCursor_Release( float xPos, float yPos ) {
-		EventArgs event;
+	bool Widget::eventCursor_Release( float xPos, float yPos ) {
+		Cursor_EventArgs event(xPos, yPos);
 		triggerEvent( "Cursor_Release", event );
+		return event.Consumed;
 	}
 	//############################################################################
 	/*! Containers should not cull this message. */

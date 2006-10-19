@@ -750,7 +750,7 @@ namespace OpenGUI {
 	};
 
 	//! \internal base class for TextAlignment based Enums
-	/*! This is just a functionality providing base class. You are most likely looking
+	/*! \internal This is just a functionality providing base class. You are most likely looking
 	for Enum_TextAligntment_H or Enum_TextAligntment_V.
 	*/
 	class OPENGUI_API Enum_TextAligntment_base : public Enum {

@@ -125,11 +125,11 @@ namespace OpenGUI {
 		void eventDisabled();
 
 		//! Called for cursor movement, giving the X,Y position of the cursor
-		void eventCursor_Move( float xPos, float yPos );
+		bool eventCursor_Move( float xPos, float yPos );
 		//! Called when the cursor button is pressed
-		void eventCursor_Press( float xPos, float yPos );
+		bool eventCursor_Press( float xPos, float yPos );
 		//! Called when the cursor button is released
-		void eventCursor_Release( float xPos, float yPos );
+		bool eventCursor_Release( float xPos, float yPos );
 		//! Called when the cursor is hidden
 		void eventCursor_Hidden();
 		//! Called when the cursor is shown.

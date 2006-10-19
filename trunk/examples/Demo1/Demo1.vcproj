@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
 				PreprocessorDefinitions="WIN32;_WINDOWS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"

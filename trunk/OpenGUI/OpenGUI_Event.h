@@ -22,6 +22,26 @@ namespace OpenGUI {
 		}
 	};
 
+	//! Base class for input related events
+	/*! The purpose of this class is to ensure a standard interface for signaling
+	input consumption. */
+	class OPENGUI_API Input_EventArgs:public EventArgs{
+	public:
+		Input_EventArgs():Consumed(false){
+			/**/
+		}
+		//! consume this input event
+		/*! This does not necessarily prevent the event from continuing its propagation,
+		it merely marks it as having been used somewhere, so that the input injection
+		routine that created it will return true, rather than false. */
+		void eat() {
+			bool& tmp = const_cast<bool&>(Consumed);
+			tmp = true;
+		}
+		//! Ready only member for getting the current consumption state of this event
+		const bool Consumed;
+	};
+
 	//! Specialization of EventArgs for Attach/Detach events
 	class OPENGUI_API Attach_EventArgs: public EventArgs {
 	public:
@@ -39,7 +59,7 @@ namespace OpenGUI {
 	};
 
 	//! Specialization of EventArgs for Cursor events
-	class OPENGUI_API Cursor_EventArgs: public EventArgs {
+	class OPENGUI_API Cursor_EventArgs: public Input_EventArgs {
 	public:
 		//! Constructor requires the X and Y position of the cursor
 		Cursor_EventArgs( float x_pos, float y_pos ):

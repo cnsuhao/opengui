@@ -17,29 +17,42 @@ namespace OpenGUI {
 		they accept input on an individual basis, and they can draw their output
 		either to the main viewport (the default) or to a RenderTexture via
 		bindRenderTexture().
+
+		Each Screen has it's own cursor, which can be shown or hidden and enabled
+		or disabled individually from all other screens.
 	*/
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
-//!\name Input Injection
+//!\name Input Injection & Cursor Functions
 //@{
 		//! Injects cursor movement by providing the relative movement from the last position
-		/*! Positive values causes right or downward movement depending on axis.
-		Values of 0.0f on both axis are ignored. */
-		void injectCursorMovement( float x_rel, float y_rel );
+		bool injectCursorMovement( float x_rel, float y_rel );
 		//! Injects cursor movement by providing the absolute cursor position on the screen
-		/*! 0.0 x 0.0 is the upper left corner of the screen */
-		void injectCursorPosition( float x_pos, float y_pos );
+		
+		bool injectCursorPosition( float x_pos, float y_pos );
 		//! Injects cursor movement by providing the absolute cursor position as a percentage of the screen
-		/*! 0.0 x 0.0 is the upper left corner of the screen, 1.0 x 1.0 is the lower right of the screen */
-		void injectCursorPosition_Percent( float x_perc, float y_perc );
+		bool injectCursorPosition_Percent( float x_perc, float y_perc );
 		//! Injects cursor press at the last known cursor position
-		void injectCursorPress();
+		bool injectCursorPress();
 		//! Injects cursor release at the last known cursor position
-		void injectCursorRelease();
+		bool injectCursorRelease();
 		//! Injects cursor press/release at the last known cursor position using built in state logic
-		void injectCursorPress_State( bool pressed );
+		bool injectCursorPress_State( bool pressed );
 
+		//! Enables the cursor if it is currently disabled
+		void enableCursor();
+		//! Disables the cursor if it is currently enabled
+		void disableCursor();
+		//! Returns \c true if the cursor is enabled, \c false otherwise
+		bool cursorEnabled();
+
+		//! Shows the cursor if it is currently hidden
+		void showCursor();
+		//! Hides the cursor if it is currently shown
+		void hideCursor();
+		//! Returns \c true if the cursor is shown, \c false if it is hidden.
+		bool cursorVisible();
 //@}
 
 		//! returns the name of this Screen
@@ -131,7 +144,10 @@ namespace OpenGUI {
 
 		//input state variables
 		FVector2 mCursorPos; // last known cursor position, used for relative cursor input injection
-		bool mCursorPressed; //
+		bool mCursorPressed; // last known cursor press state
+
+		bool m_CursorEnabled; // cursor enabled/disabled
+		bool m_CursorVisible; // cursor show/hide
 	};
 
 } //namespace OpenGUI{

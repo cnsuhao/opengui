@@ -186,7 +186,33 @@ namespace OpenGUI {
 
 
 /*! \page IntegratingOpenGUI Integration
-	This will cover how to add OpenGUI to your application
+	This guide covers how to use %OpenGUI in a C++ project. Interfaces to %OpenGUI may exist for other languages, and those interfaces should provide their own usage documentation as they are not covered here.
+	
+	Should you need assistance using %OpenGUI beyond the scope of this documentation, the following sources are made available for public use:
+	- <a href="http://opengui.sourceforge.net/" target=_new>OpenGUI Website</a>
+	- <a href="http://opengui.rightbracket.com/trac/" target=_new>OpenGUI Wiki/Trac</a>
+	- <a href="http://opengui.rightbracket.com/phpBB2/" target=_new>OpenGUI Forums</a>
+	
+\section inc_link Includes and Linker Input
+	In order to begin usin %OpenGUI in your application, you will need to include \c OpenGUI.h in every source file that will use parts of the library. This can be performed by the following code:
+	\code #include "OpenGUI.h" \endcode
+	Due to the scale of %OpenGUI, it is not practical for all classes to be defined within a single header file. As such, \c OpenGUI.h is a super header that automatically includes all other necessary headers. You will need to add the location of \c OpenGUI.h as an include search path for your compiler. The steps required to perform this are compiler specific, so they are not covered here.
+	\note
+	It is completely safe to include only the specific headers you need at any given time, but it is much easier to simply include this super header.
+	
+	In addition to the header file, you'll also need to provide your linker with the appropriate library (\c *.lib ) file when building fully linked binaries. The name of this file is either \c OpenGUI_d.lib for the debug library, or \c OpenGUI.lib for the release library.
+	
+	Currently %OpenGUI only supports use as a DLL, so you'll also need to place the appropriate DLL into the same directory as your application binary. There are a few other options available for this, but they are out of the scope of this document. The debug DLL is \c OpenGUI_d.dll, the release DLL is \c OpenGUI.dll.
+	
+	\par Summary Information
+	\code #include "OpenGUI.h" \endcode
+	- OpenGUI_d.lib - Debug Library
+	- OpenGUI_d.dll - Debug DLL
+	- OpenGUI.lib - Release Library
+	- OpenGUI.dll - Release DLL
+	
+\section initalize Initializing %OpenGUI
+	finish me! \todo finish me
 */
 
 /*!

@@ -35,7 +35,7 @@
 namespace OpenGUI {
 	//############################################################################
 	//! \internal splits a given full path into separate path and filename components.
-	/*! Always succeeds, even if the path portion is blank. Tests for / only  */
+	/*! \internal Always succeeds, even if the path portion is blank. Tests for / only  */
 	void _splitFileFromPath( const std::string& fullPath, std::string& pathHalf, std::string& fileHalf ) {
 		size_t pathSize;
 		pathSize = fullPath.rfind( "/" );
@@ -49,7 +49,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//! \internal extracts the extension from a filename/filename+path.
-	/*! Returns false if no extension was found */
+	/*! \internal Returns false if no extension was found */
 	bool _getFileExt( const std::string& filename, std::string& ext ) {
 		size_t prefixLen;
 		prefixLen = filename.rfind( "." );
@@ -60,7 +60,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//! \internal Tests the existence of a file
-	/*! Returns true if file exists, false otherwise */
+	/*! \internal Returns true if file exists, false otherwise */
 	bool _fileExists( const std::string& filename ) {
 		std::ifstream inputFile( filename.c_str(), std::ios::binary | std::ios::ate );
 		if ( inputFile.fail() ) {
