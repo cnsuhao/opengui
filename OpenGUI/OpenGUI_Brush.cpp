@@ -535,7 +535,7 @@ namespace OpenGUI {
 				i++;
 			}
 			std::string tmpStr;
-			tmpStr = line.substr( lastSplit, lineCnt - lastSplit );
+			tmpStr = line.substr( lastSplit, line.length() - lastSplit );
 			line = tmpStr;
 		}
 	}
@@ -592,10 +592,10 @@ namespace OpenGUI {
 			float extraSpace = lineAdvance - (ascender - descender) ;
 			totalheight = (( strList.size() ) * lineAdvance );
 			totalheight -= ascender;
-			totalheight += descender; // descender is negative, so we subtract to add
+			totalheight += descender;
 			myPen.y = area.getPosition().y + ( rect_size.y / 2.0f ); // move to center
 			myPen.y -= totalheight / 2.0f; // retract half of the total height
-			myPen.y += (ascender / 2.0f) + extraSpace;
+			myPen.y += ((ascender + descender) / 2.0f) + extraSpace;
 		} else if ( vertAlign == TextAlignment::ALIGN_JUSTIFIED ) {
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
