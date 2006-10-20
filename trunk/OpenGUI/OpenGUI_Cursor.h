@@ -67,9 +67,6 @@ namespace OpenGUI {
 		Cursor();
 		virtual ~Cursor();
 
-		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
-		virtual void _draw( Brush& brush );
-
 	protected:
 //!\name Event Handlers
 //@{

@@ -42,10 +42,6 @@ namespace OpenGUI {
 		/**/
 	}
 	//############################################################################
-	void Cursor::_draw( Brush& brush ){
-		/**/
-	}
-	//############################################################################
 	void Cursor::onDraw( Object* sender, DrawCursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
