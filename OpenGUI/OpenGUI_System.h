@@ -32,6 +32,7 @@ namespace OpenGUI {
 	class TextureManager;
 	class ImageryManager;
 	class ScreenManager;
+	class CursorManager;
 
 	/*!
 		\brief
@@ -142,6 +143,8 @@ namespace OpenGUI {
 		//Plugin Manager
 		PluginManager* m_PluginManager;
 
+		//CursorManager
+		CursorManager* mCursorManager;
 
 		//TimerManager
 		TimerManager* mTimerManager;

@@ -283,7 +283,7 @@ namespace OpenGUI {
 	//! Specialization of EventArgs for Draw events
 	class OPENGUI_API Draw_EventArgs: public EventArgs {
 	public:
-		//! Constructor requires a pointer to the parent being attached/detached to/from
+		//! Constructor requires a valid Brush reference to contain
 		Draw_EventArgs( Brush& brush ): brush( brush ) {}
 		virtual ~Draw_EventArgs() {}
 		//! Pointer to the parent being attached/detached to/from

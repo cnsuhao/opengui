@@ -77,8 +77,9 @@ namespace OpenGUI {
 		mTextureManager = new TextureManager( mRenderer ); //create the texture manager
 		mImageryManager = new ImageryManager( mResourceProvider ); //create the imagery manager
 
-
 		mFontManager = new FontManager();
+
+		mCursorManager = new CursorManager();
 
 		mScreenManager = new ScreenManager();
 
@@ -100,6 +101,9 @@ namespace OpenGUI {
 		*/
 		if ( m_PluginManager )
 			delete m_PluginManager;
+
+		if( mCursorManager )
+			delete mCursorManager;
 
 		if ( mFontManager )
 			delete mFontManager;
