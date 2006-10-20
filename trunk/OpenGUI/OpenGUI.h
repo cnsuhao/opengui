@@ -74,6 +74,8 @@
 #include "OpenGUI_FontManager.h"
 #include "OpenGUI_System.h"
 
+#include "OpenGUI_Cursor.h"
+#include "OpenGUI_CursorManager.h"
 
 //Generic Implementation of ResourceProvider
 #include "OpenGUI_GenericResourceProvider.h"

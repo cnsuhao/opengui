@@ -18,6 +18,7 @@ namespace OpenGUI {
 	private:
 		unsigned int m_TimePoint;
 	};
+	//! Reference counted, auto deleting Timer pointer
 	typedef RefPtr<Timer> TimerPtr;
 };
 

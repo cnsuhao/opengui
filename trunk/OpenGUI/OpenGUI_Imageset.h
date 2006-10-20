@@ -76,6 +76,7 @@ namespace OpenGUI {
 		//Takes a TiXML element pointer of the Imageset element as an argument.
 		void _loadImageryFromRootTinyXMLElement( void* tXrootElementPtr );
 	};
+	//! Reference counted, auto deleting Imageset pointer
 	typedef RefPtr<Imageset> ImagesetPtr;
 	typedef std::list<ImagesetPtr> ImagesetPtrList;
 	typedef std::list<Imageset*> ImagesetCPtrList;

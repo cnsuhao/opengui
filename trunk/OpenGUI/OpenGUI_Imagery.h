@@ -50,7 +50,9 @@ namespace OpenGUI {
 		IRect mNativeRect;
 		Imageset* mParentImageset;
 	};
+	//! Reference counted, auto deleting Imagery pointer
 	typedef RefPtr<Imagery> ImageryPtr;
+	//! list of ImageryPtrs
 	typedef std::list<ImageryPtr> ImageryPtrList;
 }
 ;//namespace OpenGUI{
