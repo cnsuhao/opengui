@@ -57,7 +57,7 @@ namespace OpenGUI {
 		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
 //@}
 
-//!\name Event Processors
+//!\name Event Injectors
 //@{
 		//! Draw this object's background using the given brush
 		void eventDrawBG( Brush& brush );
