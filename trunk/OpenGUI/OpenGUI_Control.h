@@ -136,7 +136,7 @@ namespace OpenGUI {
 		virtual void onUnTargeted( Object* sender, EventArgs& evtArgs );
 //@}
 
-//!\name Event Processors
+//!\name Event Injectors
 //@{
 		//! Control has been moved
 		void eventMoved( const FVector2& oldPosition, const FVector2& newPosition );

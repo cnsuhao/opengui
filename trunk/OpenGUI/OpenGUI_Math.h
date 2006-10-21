@@ -100,8 +100,6 @@ namespace OpenGUI {
 			return ATan2( y, x );
 		}
 
-
-	private:
 		static const float POS_INFINITY;
 		static const float NEG_INFINITY;
 		static const float PI; //!< value for Pi

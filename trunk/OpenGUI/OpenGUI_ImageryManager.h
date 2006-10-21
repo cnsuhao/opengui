@@ -41,6 +41,10 @@ namespace OpenGUI {
 			\return pointer to the newly created imageset, or 0 on failure.
 		*/
 		Imageset* createImageset( std::string imageFilename );
+		//! Static pass through function to createImageset()
+		static Imageset* createImagesetEx( std::string imageFilename ){
+			return ImageryManager::getSingleton().createImageset(imageFilename);
+		}
 
 		//! Create a new Imageset from an existing texture.
 		/*! This acts much like the file-based \c createImageset() function, with the

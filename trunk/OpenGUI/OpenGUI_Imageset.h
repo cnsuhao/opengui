@@ -30,6 +30,12 @@ namespace OpenGUI {
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
 		ImageryPtr createImagery( std::string imageryName, IRect areaRect );
 
+		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery.  The new Imagery will encompass the Imageset area defined by top,left,height,width
+		ImageryPtr createImagery( const std::string imageryName, int top, int left, int height, int width ) {
+			IRect rect( left, top, left + width, top + height );
+			return createImagery( imageryName, rect );
+		}
+
 		//! Destroys an Imagery object.
 		/*! This performs a "safe destruction" of the Imagery object. Since Imagery
 			object references are handed out only by RefPtrs, the object will never

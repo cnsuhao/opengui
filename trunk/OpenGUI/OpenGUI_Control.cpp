@@ -703,7 +703,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::eventResized( const FVector2& oldSize, const FVector2& newSize ) {
-		Resized_EventArgs event( oldSize, newSize );
+		Resized_EventArgs event( newSize, oldSize );
 		triggerEvent( "Resized", event );
 	}
 	//############################################################################

@@ -37,7 +37,11 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "INIT", OGLL_MSG ) << "[[[DEBUG]]] ";
 #endif
 		LogManager::SlogMsg( "INIT", OGLL_MSG ) << "http://OpenGUI.SourceForge.net/" << Log::endlog;
-		LogManager::SlogMsg( "INIT", OGLL_INFO ) << "System Init Started" << Log::endlog;
+		LogManager::SlogMsg( "INIT", OGLL_INFO )
+		<< " ################################ "
+		<< "System Init Started"
+		<< " ################################ "
+		<< Log::endlog;
 		mTimerManager = new TimerManager; //get this up asap
 
 		m_PerformAutoTicks = true;
@@ -83,12 +87,20 @@ namespace OpenGUI {
 
 		mScreenManager = new ScreenManager();
 
-		LogManager::SlogMsg( "INIT", OGLL_INFO ) << "System Init Complete" << Log::endlog;
+		LogManager::SlogMsg( "INIT", OGLL_INFO )
+		<< " ################################ "
+		<< "System Init Complete"
+		<< " ################################ "
+		<< Log::endlog;
 	}
 
 	//############################################################################
 	System::~System() {
-		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO ) << "OpenGUI Shutdown Started" << Log::endlog;
+		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO )
+		<< " ################################ "
+		<< "System Shutdown Started"
+		<< " ################################ "
+		<< Log::endlog;
 
 		//System::_destroyAllGUISheets();
 		if ( mScreenManager )
@@ -102,7 +114,7 @@ namespace OpenGUI {
 		if ( m_PluginManager )
 			delete m_PluginManager;
 
-		if( mCursorManager )
+		if ( mCursorManager )
 			delete mCursorManager;
 
 		if ( mFontManager )
@@ -120,7 +132,11 @@ namespace OpenGUI {
 		if ( mTimerManager )
 			delete mTimerManager; //delete this last
 
-		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO ) << "OpenGUI Shutdown Ending" << Log::endlog;
+		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO )
+		<< " ################################ "
+		<< "System Shutdown Ending"
+		<< " ################################ "
+		<< Log::endlog;
 
 		//End logging facilities last
 		if ( m_LogManager )
