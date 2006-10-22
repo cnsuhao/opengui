@@ -33,6 +33,7 @@ namespace OpenGUI {
 	class ImageryManager;
 	class ScreenManager;
 	class CursorManager;
+	class XMLParser;
 
 	/*!
 		\brief
@@ -165,6 +166,9 @@ namespace OpenGUI {
 
 		//ScreenManager
 		ScreenManager* mScreenManager;
+
+		//XMLParser
+		XMLParser* mXMLParser;
 	};
 };
 

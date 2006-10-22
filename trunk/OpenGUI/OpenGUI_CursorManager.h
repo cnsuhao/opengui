@@ -24,16 +24,16 @@ namespace OpenGUI {
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static CursorManager* getSingletonPtr( void );
-		
+
 		//! Create a Cursor that was registered under the given \c Name and optionally \c Library
-		CursorPtr CreateCursor(const std::string& Name, const std::string& Library="");
+		CursorPtr CreateCursor( const std::string& Name, const std::string& Library = "" );
 		//! Register a Cursor factory
-		void RegisterCursorFactory(const std::string& Name, const std::string& Library, CursorFactoryCallback* factoryCallback);
+		void RegisterCursorFactory( const std::string& Name, const std::string& Library, CursorFactoryCallback* factoryCallback );
 		//! Unregister a Cursor factory
-		void UnregisterCursorFactory(const std::string& Name, const std::string& Library);
+		void UnregisterCursorFactory( const std::string& Name, const std::string& Library );
 
 	private:
-		
+
 		typedef std::map<std::string, CursorFactoryCallback*> CursorFactoryMap;
 		typedef std::map<std::string, CursorFactoryMap> LibraryMap;
 		LibraryMap mLibraryMap;

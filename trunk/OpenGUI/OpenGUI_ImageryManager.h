@@ -42,8 +42,8 @@ namespace OpenGUI {
 		*/
 		Imageset* createImageset( std::string imageFilename );
 		//! Static pass through function to createImageset()
-		static Imageset* createImagesetEx( std::string imageFilename ){
-			return ImageryManager::getSingleton().createImageset(imageFilename);
+		static Imageset* createImagesetEx( std::string imageFilename ) {
+			return ImageryManager::getSingleton().createImageset( imageFilename );
 		}
 
 		//! Create a new Imageset from an existing texture.
