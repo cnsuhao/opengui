@@ -36,6 +36,9 @@ namespace OpenGUI {
 	public:
 		//! Reads the given XML file from the registered resource manager and parses the file according to the \ref XMLDOC "XML specifications"
 		static void LoadFromFile( const std::string& xmlFilename );
+
+		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing
+		void UnloadFromFile( const std::string& xmlFilename );
 	private:
 		typedef std::set<std::string> IncludeSet;
 		static void ParseXMLFile( const std::string& xmlFilename, IncludeSet& includesToIgnore, unsigned int depth );
