@@ -87,6 +87,8 @@ namespace OpenGUI {
 
 		mScreenManager = new ScreenManager();
 
+		mXMLParser = new XMLParser();
+
 		LogManager::SlogMsg( "INIT", OGLL_INFO )
 		<< " ################################ "
 		<< "System Init Complete"
@@ -113,6 +115,9 @@ namespace OpenGUI {
 		*/
 		if ( m_PluginManager )
 			delete m_PluginManager;
+
+		if ( mXMLParser )
+			delete mXMLParser;
 
 		if ( mCursorManager )
 			delete mCursorManager;

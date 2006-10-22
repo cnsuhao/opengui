@@ -5,14 +5,39 @@
 
 namespace OpenGUI {
 	//############################################################################
+	template<> XMLParser* Singleton<XMLParser>::mptr_Singleton = 0;
+	//############################################################################
+	XMLParser& XMLParser::getSingleton( void ) {
+		assert( mptr_Singleton );
+		return ( *mptr_Singleton );
+	}
+	//############################################################################
+	XMLParser* XMLParser::getSingletonPtr( void ) {
+		return mptr_Singleton;
+	}
+	//############################################################################
+	//############################################################################
+	//############################################################################
+	XMLParser::XMLParser() {
+		/**/
+		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating XMLParser" << Log::endlog;
+	}
+	//############################################################################
+	XMLParser::~XMLParser() {
+		/**/
+		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying XMLParser" << Log::endlog;
+	}
+	//############################################################################
 	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
-		doc.loadFile(xmlFilename);
+		doc.loadFile( xmlFilename );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
 }//namespace OpenGUI {
+
+
 /*
 namespace OpenGUI {
 	//############################################################################

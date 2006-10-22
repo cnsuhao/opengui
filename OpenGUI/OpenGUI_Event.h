@@ -25,9 +25,9 @@ namespace OpenGUI {
 	//! Base class for input related events
 	/*! The purpose of this class is to ensure a standard interface for signaling
 	input consumption. */
-	class OPENGUI_API Input_EventArgs:public EventArgs{
+	class OPENGUI_API Input_EventArgs: public EventArgs {
 	public:
-		Input_EventArgs():Consumed(false){
+		Input_EventArgs(): Consumed( false ) {
 			/**/
 		}
 		//! consume this input event
@@ -35,7 +35,7 @@ namespace OpenGUI {
 		it merely marks it as having been used somewhere, so that the input injection
 		routine that created it will return true, rather than false. */
 		void eat() {
-			bool& tmp = const_cast<bool&>(Consumed);
+			bool& tmp = const_cast<bool&>( Consumed );
 			tmp = true;
 		}
 		//! Ready only member for getting the current consumption state of this event

@@ -29,7 +29,7 @@ namespace OpenGUI {
 		//! Injects cursor movement by providing the relative movement from the last position
 		bool injectCursorMovement( float x_rel, float y_rel );
 		//! Injects cursor movement by providing the absolute cursor position on the screen
-		
+
 		bool injectCursorPosition( float x_pos, float y_pos );
 		//! Injects cursor movement by providing the absolute cursor position as a percentage of the screen
 		bool injectCursorPosition_Percent( float x_perc, float y_perc );

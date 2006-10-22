@@ -162,15 +162,16 @@ namespace OpenGUI {
 			iter->_draw( b );
 			iter++;
 		}
-		if(m_CursorEnabled && m_CursorVisible){
+		if ( m_CursorEnabled && m_CursorVisible ) {
 			// Draw the cursor
 			FRect tmpCursor;
-			tmpCursor.setHeight(30.0f);
-			tmpCursor.setWidth(30.0f);
-			b.pushPosition(mCursorPos);
-			b.pushRotation(Degree(45.0f));
-			b.Primitive.drawRect(tmpCursor);
-			b.pop();b.pop();
+			tmpCursor.setHeight( 30.0f );
+			tmpCursor.setWidth( 30.0f );
+			b.pushPosition( mCursorPos );
+			b.pushRotation( Degree( 45.0f ) );
+			b.Primitive.drawRect( tmpCursor );
+			b.pop();
+			b.pop();
 		}
 	}
 	//############################################################################
@@ -185,7 +186,7 @@ namespace OpenGUI {
 	/*! 0.0 x 0.0 is the upper left corner of the screen.
 	If the cursor is disabled, this will always return false.*/
 	bool Screen::injectCursorPosition( float x_pos, float y_pos ) {
-		if(!m_CursorEnabled) return false;
+		if ( !m_CursorEnabled ) return false;
 		//store the new cursor position for future use
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
@@ -208,7 +209,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
 	bool Screen::injectCursorPress() {
-		if(!m_CursorEnabled) return false;
+		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = true;
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
@@ -221,7 +222,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
 	bool Screen::injectCursorRelease() {
-		if(!m_CursorEnabled) return false;
+		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = false;
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();

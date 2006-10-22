@@ -589,13 +589,13 @@ namespace OpenGUI {
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
 			float totalheight;
-			float extraSpace = lineAdvance - (ascender - descender) ;
+			float extraSpace = lineAdvance - ( ascender - descender ) ;
 			totalheight = (( strList.size() ) * lineAdvance );
 			totalheight -= ascender;
 			totalheight += descender;
 			myPen.y = area.getPosition().y + ( rect_size.y / 2.0f ); // move to center
 			myPen.y -= totalheight / 2.0f; // retract half of the total height
-			myPen.y += ((ascender + descender) / 2.0f) + extraSpace;
+			myPen.y += (( ascender + descender ) / 2.0f ) + extraSpace;
 		} else if ( vertAlign == TextAlignment::ALIGN_JUSTIFIED ) {
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;

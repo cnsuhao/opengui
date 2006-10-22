@@ -15,9 +15,9 @@ namespace OpenGUI {
 	typedef std::map<std::string, std::string> XMLAttributeMap;
 
 	//! Interface class for classes that contain XMLNode children
-	class OPENGUI_API XMLNodeContainer{
+	class OPENGUI_API XMLNodeContainer {
 	public:
-		XMLNodeContainer(){}
+		XMLNodeContainer() {}
 		virtual ~XMLNodeContainer();
 		//! Returns a complete copy of the list of children
 		XMLNodeList getChildren() const;
@@ -25,25 +25,25 @@ namespace OpenGUI {
 		XMLNodeList getChildren( const std::string& tagName ) const;
 
 	protected:
-		void _notifyChildDetach(XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
-		void _notifyChildAttach(XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
+		void _notifyChildDetach( XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
+		void _notifyChildAttach( XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
 		void _doNotifyChildDetach( XMLNode* childPtr ); // handles event
 		void _doNotifyChildAttach( XMLNode* childPtr ); // handles event
 		XMLNodeList mChildren; // add/remove is handled entirely by the _notifyX functions. Calling them is responsibility of child
 	};
 
 	//! Root level container for XML documents
-	class OPENGUI_API XMLDoc:public XMLNodeContainer{
+	class OPENGUI_API XMLDoc: public XMLNodeContainer {
 		friend class XMLParser; // XMLParser can reach the protected functions
 	public:
-		XMLDoc(){}
-		virtual ~XMLDoc(){}
+		XMLDoc() {}
+		virtual ~XMLDoc() {}
 		//! clears the contents of this XMLDoc
 		void clear();
 		//! loads an existing XML file into this XMLDoc using the registered resource manager
-		void loadFile(const std::string& filename);
+		void loadFile( const std::string& filename );
 		//! saves this XMLDoc to a file, bypassing the resource manager (writes directly to disk)
-		void saveFile(const std::string& filename);
+		void saveFile( const std::string& filename );
 	protected:
 
 	};
@@ -75,7 +75,7 @@ namespace OpenGUI {
 	attributes, and only the first found \c &lt;TEXT&gt; node is ever read by the parent.
 
 	*/
-	class OPENGUI_API XMLNode:public XMLNodeContainer {
+	class OPENGUI_API XMLNode: public XMLNodeContainer {
 		friend class XMLParser; // XMLParser can reach the protected functions
 		friend class XMLDoc;
 	public:
@@ -104,11 +104,11 @@ namespace OpenGUI {
 		//! return the content of this node's text
 		const std::string& getText()const;
 		//! set the text content of this node
-		void setText(const std::string& text);
+		void setText( const std::string& text );
 
 	protected:
 		//! \internal build the given tinyXML tree into a node tree
-		XMLNode(void* txmle, XMLNodeContainer* parentPtr);
+		XMLNode( void* txmle, XMLNodeContainer* parentPtr );
 		//! \internal writes the contents of this node tree into a tinyXML tree
 		void* _totxml();
 
@@ -117,7 +117,7 @@ namespace OpenGUI {
 		std::string mText;
 		XMLAttributeMap mAttributes;
 		XMLNodeContainer* mParent;
-		
+
 	};
 } // namespace OpenGUI{
 

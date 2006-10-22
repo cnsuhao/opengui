@@ -269,7 +269,7 @@ namespace OpenGUI {
 	\return true if the input was consumed, false otherwise
 	*/
 	bool Widget::eventCursor_Move( float xPos, float yPos ) {
-		Cursor_EventArgs event(xPos, yPos);
+		Cursor_EventArgs event( xPos, yPos );
 		triggerEvent( "Cursor_Move", event );
 		return event.Consumed;
 	}
@@ -283,7 +283,7 @@ namespace OpenGUI {
 	\return true if the input was consumed, false otherwise
 	*/
 	bool Widget::eventCursor_Press( float xPos, float yPos ) {
-		Cursor_EventArgs event(xPos, yPos);
+		Cursor_EventArgs event( xPos, yPos );
 		triggerEvent( "Cursor_Press", event );
 		return event.Consumed;
 	}
@@ -297,7 +297,7 @@ namespace OpenGUI {
 	\return true if the input was consumed, false otherwise
 	*/
 	bool Widget::eventCursor_Release( float xPos, float yPos ) {
-		Cursor_EventArgs event(xPos, yPos);
+		Cursor_EventArgs event( xPos, yPos );
 		triggerEvent( "Cursor_Release", event );
 		return event.Consumed;
 	}
