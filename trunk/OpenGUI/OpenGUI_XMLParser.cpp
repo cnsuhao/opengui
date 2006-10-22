@@ -1,7 +1,19 @@
-
 #include "tinyxml.h"
 #include "OpenGUI_XMLParser.h"
+#include "OpenGUI_XML.h"
+#include "OpenGUI_LogSystem.h"
 
+namespace OpenGUI {
+	//############################################################################
+	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
+		XMLDoc doc;
+		doc.loadFile(xmlFilename);
+		doc.saveFile("another_" + xmlFilename );
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
+	}
+	//############################################################################
+}//namespace OpenGUI {
 /*
 namespace OpenGUI {
 	//############################################################################
