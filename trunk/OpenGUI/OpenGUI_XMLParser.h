@@ -52,7 +52,7 @@ namespace OpenGUI {
 		//! Reads the given XML file from the registered resource manager and parses the file according to the \ref XMLDOC "XML specifications"
 		void LoadFromFile( const std::string& xmlFilename );
 
-		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing
+		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing unloads instead of loads
 		void UnloadFromFile( const std::string& xmlFilename );
 	private:
 		typedef std::set<std::string> IncludeSet;

@@ -2,6 +2,7 @@
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_XML.h"
 #include "OpenGUI_LogSystem.h"
+#include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -32,7 +33,16 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
+		OG_NYI;
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
+	}
+	//############################################################################
+	void XMLParser::UnloadFromFile( const std::string& xmlFilename ) {
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN UnloadFromFile: " << xmlFilename << Log::endlog;
+		XMLDoc doc;
+		doc.loadFile( xmlFilename );
+		OG_NYI;
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END UnloadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
 }//namespace OpenGUI {
