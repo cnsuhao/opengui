@@ -24,6 +24,10 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	Cursor::Cursor() {
+		// initialize defaults for properties
+		mSize = FVector2( 10.0f, 10.0f );
+
+		// set up events
 		getEvents().createEvent( "Draw" );
 		getEvents()["Draw"].add( new EventDelegate( this, &Cursor::onDraw ) );
 		getEvents().createEvent( "Cursor_Move" );

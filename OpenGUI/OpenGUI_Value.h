@@ -12,37 +12,48 @@ namespace OpenGUI {
 
 	//############################################################################
 	//! An encapsulation class used for passing values back and forth in the Accessor system
+	/*! Each Value has a stored value of \c ValueType as well as the option to carry
+	a string based \c Name.  */
 	class OPENGUI_API Value {
 	public:
-		//! Constructor
-		Value();
+		//! Constructor. \c Name is optional, but will set the name of this Value if given
+		Value( const std::string& Name = "" );
 		//! Copy Constructor
 		Value( const Value& copy );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const std::string& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const char* value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( bool boolean );
-		//! Constructor, initializes object with copy of given \c value
-		Value( float value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const FVector2& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const FRect& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( int value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const IVector2& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const IRect& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const Enum& value );
-		//! Constructor, initializes object with copy of given \c value
-		Value( const Color& value );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const std::string& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const char* value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( bool boolean, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( float value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const FVector2& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const FRect& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( int value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const IVector2& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const IRect& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const Enum& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const Color& value, const std::string& Name = "" );
 
 		//! Destructor
 		~Value();
+
+		//! gets the name of this Value
+		const std::string& getName()const {
+			return mName;
+		}
+		//! sets the name of this Value
+		void setName( const std::string& Name = "" ) {
+			mName = Name;
+		}
 
 		//! signifies the stored value type
 		enum ValueType {
@@ -124,7 +135,6 @@ namespace OpenGUI {
 		//! Gets the stored value, throws exception if no value is stored
 		Color getValueAsColor() const;
 
-
 	private:
 		void constructor();
 		bool mHasValue;
@@ -142,8 +152,8 @@ namespace OpenGUI {
 			Enum* mEnum;
 			Color* mColor;
 		};
+		std::string mName;
 	};
-
 
 	//############################################################################
 	//! Container of multiple Value objects. Provides stack, and name based access.
@@ -166,19 +176,13 @@ namespace OpenGUI {
 		//! Returns the current stack size
 		size_t size() const;
 
-		//! Stores the given \c value both as a \c name based lookup, as well as pushed on the back of the stack.
-		void set( const Value& value, const std::string& name );
-		//! Retrieves a Value by the \c name used when it was originally set()
+		//! Retrieves the first Value in the list with the given \c name
 		const Value& get( const std::string& name ) const;
 		//! Retrieves a Value by its stack \c index
 		const Value& get ( unsigned int index ) const;
 	private:
-		typedef std::map<std::string, Value*> ValueMap;
 		typedef std::deque<Value> ValueDeQue;
 		ValueDeQue mValueDeQue;
-		ValueMap mValueMap ;
-		//walks the entire map and removes any matching pointers (performs remove by value)
-		void removeMappedValue( const Value* valuePtr );
 	};
 
 	/*! @} */ //end of Types group

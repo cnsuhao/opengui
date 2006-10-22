@@ -13,6 +13,7 @@
 namespace OpenGUI {
 
 	class Screen; // forward declaration
+	class CursorManager; // forward declaration
 
 	//! Specialization of Draw_EventArgs for Cursor objects
 	class OPENGUI_API DrawCursor_EventArgs: public Draw_EventArgs {
@@ -45,7 +46,7 @@ namespace OpenGUI {
 	cursor, the current cursor will be given a \c Cursor_Hidden event, while the new cursor is
 	given \c Cursor_Shown. All cursors can expect (and rely upon) a \c Cursor_Shown event before
 	being receiving \c Draw events, but should not rely upon receiving \c Cursor_Hidden before
-	they are destroyed. A cursor will never received \c Draw events after receiving \c Cursor_Hidden
+	they are destroyed. A cursor will never receive \c Draw events after receiving \c Cursor_Hidden
 	until a new \c Cursor_Shown is issued. Additionally, a cursor will only receive the other events
 	(\c Cursor_Move, \c Cursor_Press, \c Cursor_Release) in between \c Cursor_Shown and \c Cursor_Hidden
 	events. After receiving \c Cursor_Hidden, these events will no longer be issued to this cursor,
@@ -63,9 +64,24 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API Cursor: public Object {
 		friend class Screen; // Screen needs access to the protected input event triggers
+		friend class CursorManager;
 	public:
 		Cursor();
 		virtual ~Cursor();
+
+		//! return the name of this cursor
+		const std::string& getName() const {
+			return mName;
+		}
+
+		//! returns the size of this cursor
+		const FVector2& getSize() const {
+			return mSize;
+		}
+		//! sets the size of this cursor
+		void setSize( const FVector2& newSize ) {
+			mSize = newSize;
+		}
 
 	protected:
 //!\name Event Handlers
@@ -105,6 +121,10 @@ namespace OpenGUI {
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
+
+	private:
+		std::string mName;
+		FVector2 mSize;
 	};
 
 	//! Reference counted, auto deleting Cursor pointer
