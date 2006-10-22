@@ -9,7 +9,6 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile(xmlFilename);
-		doc.saveFile("another_" + xmlFilename );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
