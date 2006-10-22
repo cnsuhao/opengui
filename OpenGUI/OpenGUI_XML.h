@@ -48,7 +48,7 @@ namespace OpenGUI {
 
 	};
 
-	//! Official XML interface class
+	//! Represents an XML tag
 	/*! XMLNode is used to represent a single node in an XML tree. Each node is
 	capable of having a single parent node, multiple children nodes, multiple
 	attributes, and a contained text string.
@@ -66,13 +66,13 @@ namespace OpenGUI {
 	You'll notice that this class returns copies of lists and maps under certain conditions.
 	While this does impose a speed penalty, XML configuration files aren't meant to be read
 	within time critical areas of your application, so it really isn't an issue. On top of
-	that, the lists returned tend to be fairly small, so it's really not that big of an issue.
+	that, the lists returned tend to be fairly small.
 
 	\attention
 	%OpenGUI uses XML in a unique way. Specifically, %OpenGUI does not support inner text for
 	nodes in the standard XML fashion. All text strings that are placed in the "text" region
-	are placed within a special /c TEXT child node. These nodes do not have any parsed
-	attributes, and only the first found \c TEXT node is ever read by the parent.
+	are placed within a special \c &lt;TEXT&gt; child node. These nodes do not have any parsed
+	attributes, and only the first found \c &lt;TEXT&gt; node is ever read by the parent.
 
 	*/
 	class OPENGUI_API XMLNode:public XMLNodeContainer {
