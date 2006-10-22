@@ -9,7 +9,6 @@ namespace OpenGUI {
 	//#####################################################################
 	Value::Value( const Value& copy ) {
 		constructor();
-
 		if ( copy.isSet() ) {
 			switch ( copy.getType() ) {
 			case T_BOOL:
@@ -44,65 +43,78 @@ namespace OpenGUI {
 				break;
 			}
 		}
+		setName( copy.getName() );
 	}
 	//#####################################################################
-	Value::Value( const std::string& value ) {
+	Value::Value( const std::string& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const char* value ) {
+	Value::Value( const char* value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( bool value ) {
+	Value::Value( bool value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( float value ) {
+	Value::Value( float value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FVector2& value ) {
+	Value::Value( const FVector2& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FRect& value ) {
+	Value::Value( const FRect& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( int value ) {
+	Value::Value( int value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const IVector2& value ) {
+	Value::Value( const IVector2& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const IRect& value ) {
+	Value::Value( const IRect& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const Enum& value ) {
+	Value::Value( const Enum& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const Color& value ) {
+	Value::Value( const Color& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
+		setName( Name );
 	}
 	//#####################################################################
-	Value::Value() {
+	Value::Value( const std::string& Name ) {
 		constructor();
+		setName( Name );
 	}
 	//#####################################################################
 	Value::~Value() {
@@ -381,7 +393,6 @@ namespace OpenGUI {
 		//deque doens't return values on pops
 		ValueDeQue::const_iterator iter = mValueDeQue.begin();
 		Value retval = *iter;
-		removeMappedValue( &( *iter ) );
 		mValueDeQue.pop_front();
 		return retval;
 	}
@@ -394,7 +405,6 @@ namespace OpenGUI {
 		//deque doens't return values on pops
 		ValueDeQue::const_reverse_iterator iter = mValueDeQue.rbegin();
 		Value retval = *iter;
-		removeMappedValue( &( *iter ) );
 		mValueDeQue.pop_back();
 		return retval;
 	}
@@ -403,24 +413,16 @@ namespace OpenGUI {
 		return  mValueDeQue.size();
 	}
 	//#####################################################################
-	/*! Setting the same \c name multiple times will redefine the \c name to link
-		to the new \c value each time. The old \c value will remain on the stack
-		in the position it was originally added, only it will be unnamed.
-	*/
-	void ValueList::set( const Value& value, const std::string& name ) {
-		push_back( value );
-		ValueDeQue::reverse_iterator iter = mValueDeQue.rbegin();
-		Value* valuePtr = &( *iter );
-		mValueMap[name] = valuePtr;
-	}
-	//#####################################################################
 	/*! If a Value by the requested \c name cannot be found, an Exception will be thrown. */
 	const Value& ValueList::get( const std::string& name ) const {
-			ValueMap::const_iterator iter = mValueMap.find( name );
-			if ( iter == mValueMap.end() )
-				OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Named value not found", "ValueList::get" );
-			const Value* valuePtr = iter->second;
-			return *( valuePtr );
+			ValueDeQue::const_iterator iter = mValueDeQue.begin();
+			while ( iter != mValueDeQue.end() ) {
+				const Value& val = ( *iter );
+				if ( val.getName() == name )
+					return val;
+				iter++;
+			}
+			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Named value not found", "ValueList::get" );
 		}
 	//#####################################################################
 	/*! Throws an Exception if the given \c index is out of range. */
@@ -431,18 +433,6 @@ namespace OpenGUI {
 			//then just return whatever is appropriate
 			return mValueDeQue[index];
 		}
-	//#####################################################################
-	void ValueList::removeMappedValue( const Value* valuePtr ) {
-		for ( ValueMap::iterator iter = mValueMap.begin();
-				iter != mValueMap.end(); iter++ ) {
-			if ( iter->second == valuePtr ) {
-				//need a copy of the iterator otherwise we'll chop ourself off the map
-				mValueMap.erase( iter );
-				removeMappedValue( valuePtr );
-				return;
-			}
-		}
-	}
 	//#####################################################################
 
 }//namespace OpenGUI{
