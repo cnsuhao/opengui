@@ -398,6 +398,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_XML.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_XMLParser.cpp"
 				>
 			</File>
@@ -649,6 +653,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Window.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_XML.h"
 				>
 			</File>
 			<File

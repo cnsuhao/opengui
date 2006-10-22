@@ -25,6 +25,12 @@ namespace OpenGUI {
 		are generally discouraged.)</i>
 
 		\see \ref XMLDOC "The XML Documentation" for a complete reference to using XML with %OpenGUI.
+
+		XML is processed by %OpenGUI using a mixed DOM/SAX system. XML documents are fully loaded
+		into a DOM tree comprised of XMLNode objects and is then walked in the appropriate direction
+		for the current operation. Callbacks register to handle a particular tag signature, for
+		a given direction. When a matching signature is found, the registered 
+
 	*/
 	class OPENGUI_API XMLParser {
 	public:
@@ -36,5 +42,5 @@ namespace OpenGUI {
 	};
 };
 
-#endif
+#endif // BE0F3698_B136_43b6_993F_F93035AB500C
 
