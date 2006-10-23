@@ -416,6 +416,12 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! Control implementation returns true if the point is within its rect,
+	otherwise false */
+	bool Control::_isInside( const FVector2& position ) {
+		return mRect.isInside( position );
+	}
+	//############################################################################
 	void Control::setLeft( float left ) {
 		FVector2 oldPos = getPosition();
 		if ( oldPos.x != left ) { // only bother with all this if the value is different
@@ -653,18 +659,21 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! To preserve this functionality in future overrides, the base class
-	version of this method will need to be called. */
+	version of this method will need to be called.
+
+	Control implementation tracks cursor position and generates \c Cursor_Enter and
+	\c Cursor_Leave as appropriate according to the result of _isInside(). */
 	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
 		//mCursorEnterLeave_Sent
 		if ( mCursorInside ) {
 			// test if cursor is outside
-			if ( mRect.isInside( evtArgs.Position ) ) {
+			if ( !_isInside( evtArgs.Position ) ) {
 				mCursorInside = false; // store the new state
 				eventCursor_Leave( evtArgs ); // let everyone know
 			}
 		} else {
 			// test if cursor is inside
-			if ( mRect.isInside( evtArgs.Position ) ) {
+			if ( _isInside( evtArgs.Position ) ) {
 				mCursorInside = true; // store the new state
 				eventCursor_Enter( evtArgs ); // let everyone know
 			}

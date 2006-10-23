@@ -112,6 +112,26 @@ namespace OpenGUI {
 		//! \internal In addition to previous functionality, this enforces Alpha and Visibility before the Draw event is issued
 		virtual void _draw( Brush& brush );
 
+//!\name Event Injectors
+//@{
+		//! Control has been moved
+		void eventMoved( const FVector2& oldPosition, const FVector2& newPosition );
+		//! Control has been resized
+		void eventResized( const FVector2& oldSize, const FVector2& newSize );
+
+		//! Called when cursor was pressed and released within this Control
+		void eventCursor_Click( Cursor_EventArgs& evtArgs );
+		//! Called when the cursor enters this Control
+		void eventCursor_Enter( Cursor_EventArgs& evtArgs );
+		//! Called when the cursor leaves this Control
+		void eventCursor_Leave( Cursor_EventArgs& evtArgs );
+
+		//! Called when this Control is targeted, either by cursor or by menu navigation
+		void eventTargeted();
+		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
+		void eventUnTargeted();
+//@}
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -136,25 +156,8 @@ namespace OpenGUI {
 		virtual void onUnTargeted( Object* sender, EventArgs& evtArgs );
 //@}
 
-//!\name Event Injectors
-//@{
-		//! Control has been moved
-		void eventMoved( const FVector2& oldPosition, const FVector2& newPosition );
-		//! Control has been resized
-		void eventResized( const FVector2& oldSize, const FVector2& newSize );
-
-		//! Called when cursor was pressed and released within this Control
-		void eventCursor_Click( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor enters this Control
-		void eventCursor_Enter( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor leaves this Control
-		void eventCursor_Leave( Cursor_EventArgs& evtArgs );
-
-		//! Called when this Control is targeted, either by cursor or by menu navigation
-		void eventTargeted();
-		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
-		void eventUnTargeted();
-//@}
+		//! Returns true if the given point is inside this Widget
+		virtual bool _isInside( const FVector2& position );
 
 	private:
 		//! Call for any operation that invalidates layouts, like moves and resizes.

@@ -7,6 +7,7 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_I_WidgetContainer.h"
 #include "OpenGUI_RenderTexture.h"
+#include "OpenGUI_Cursor.h"
 
 namespace OpenGUI {
 	class ScreenManager;
@@ -19,7 +20,10 @@ namespace OpenGUI {
 		bindRenderTexture().
 
 		Each Screen has it's own cursor, which can be shown or hidden and enabled
-		or disabled individually from all other screens.
+		or disabled individually from all other screens. While the cursor is disabled
+		it is not rendered, all cursor based input injections are skipped (no state
+		updates, no input consumption), and the cursor is considered non-existent
+		so it will not interact with the GUI in any way.
 	*/
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
@@ -40,6 +44,9 @@ namespace OpenGUI {
 		//! Injects cursor press/release at the last known cursor position using built in state logic
 		bool injectCursorPress_State( bool pressed );
 
+		//! sets the default Cursor for this Screen.
+		void setCursor( CursorPtr cursor );
+
 		//! Enables the cursor if it is currently disabled
 		void enableCursor();
 		//! Disables the cursor if it is currently enabled
@@ -54,6 +61,11 @@ namespace OpenGUI {
 		//! Returns \c true if the cursor is shown, \c false if it is hidden.
 		bool cursorVisible();
 //@}
+
+		//! Returns a pointer to the topmost Widget at the given location, or 0 (NULL) if no match found
+		Widget* getWidgetAt( const FVector2& position );
+		//! convenience function for getWidgetAt()
+		Widget* getWidgetAt( float x_pos, float y_pos );
 
 		//! returns the name of this Screen
 		const std::string& getName() const;
@@ -148,6 +160,7 @@ namespace OpenGUI {
 
 		bool m_CursorEnabled; // cursor enabled/disabled
 		bool m_CursorVisible; // cursor show/hide
+		CursorPtr mDefaultCursor; // the default cursor for this Screen
 	};
 
 } //namespace OpenGUI{

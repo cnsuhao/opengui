@@ -46,17 +46,6 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
 
-	protected:
-//!\name Event Handlers
-//@{
-		//! "DrawBG" event
-		virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
-		//! "ChildAttached" event
-		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
-		//! "ChildDetached" event
-		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
-//@}
-
 //!\name Event Injectors
 //@{
 		//! Draw this object's background using the given brush
@@ -66,9 +55,28 @@ namespace OpenGUI {
 		//! A child has been detached from this container
 		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
 //@}
+	protected:
+//!\name Event Handlers
+//@{
+		//! "DrawBG" event
+		virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
+		//! "ChildAttached" event
+		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
+		//! "ChildDetached" event
+		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
+		//! Re-issues the \c Cursor_Move to children a proper offset
+		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+//@}
 
-		//! Returns the client area position and size
-		virtual const FRect& getClientArea();
+
+
+		//! Returns the client area position and size as an FRect
+		const FRect& getClientArea();
+
+		//! The client area offset from the upper left of the ContainerControl
+		FVector2 m_ClientAreaOffset_UL;
+		//! The client area offset from the lower right of the ContainerControl
+		FVector2 m_ClientAreaOffset_LR;
 
 		//! This performs the actual layout operation
 		virtual void _doUpdateLayout();
@@ -78,8 +86,6 @@ namespace OpenGUI {
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
-
-		FRect m_RemClntArea;
 	};
 
 } // namespace OpenGUI{

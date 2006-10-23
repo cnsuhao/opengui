@@ -290,6 +290,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_GenericCursor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.cpp"
 				>
 			</File>
@@ -513,6 +517,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_FontManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_GenericCursor.h"
 				>
 			</File>
 			<File

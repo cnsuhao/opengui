@@ -36,7 +36,7 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API Widget : public Object {
 		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
-		friend class Screen; // Screen needs access to the protected input event triggers
+		//friend class Screen; // Screen needs access to the protected input event triggers
 	public:
 		//! public constructor
 		Widget();
@@ -77,6 +77,35 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
 
+//!\name Event Injectors
+//@{
+		//! Widget was attached to a container
+		void eventAttached( I_WidgetContainer* newParent, Widget* widget );
+		//! Widget was removed from a container
+		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
+
+		//! Draw this object's foreground using the given brush
+		void eventDraw( Brush& brush );
+		//! Widget was invalidated and will need to be redrawn next Screen::update()
+		void eventInvalidated();
+
+		//! Widget's state has changed to Enabled
+		void eventEnabled();
+		//! Widget's state has changed to Disabled
+		void eventDisabled();
+
+		//! Called for cursor movement, giving the X,Y position of the cursor
+		bool eventCursor_Move( float xPos, float yPos );
+		//! Called when the cursor button is pressed
+		bool eventCursor_Press( float xPos, float yPos );
+		//! Called when the cursor button is released
+		bool eventCursor_Release( float xPos, float yPos );
+		//! Called when the cursor is disabled
+		void eventCursor_Disabled();
+		//! Called when the cursor is enabled.
+		void eventCursor_Enabled( float xPos, float yPos );
+//@}
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -102,42 +131,17 @@ namespace OpenGUI {
 		//! "Cursor_Release" event
 		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Hidden" event
-		virtual void onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Shown" event
-		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
-//!\name Event Injectors
-//@{
-		//! Widget was attached to a container
-		void eventAttached( I_WidgetContainer* newParent, Widget* widget );
-		//! Widget was removed from a container
-		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
-
-		//! Draw this object's foreground using the given brush
-		void eventDraw( Brush& brush );
-		//! Widget was invalidated and will need to be redrawn next Screen::update()
-		void eventInvalidated();
-
-		//! Widget's state has changed to Enabled
-		void eventEnabled();
-		//! Widget's state has changed to Disabled
-		void eventDisabled();
-
-		//! Called for cursor movement, giving the X,Y position of the cursor
-		bool eventCursor_Move( float xPos, float yPos );
-		//! Called when the cursor button is pressed
-		bool eventCursor_Press( float xPos, float yPos );
-		//! Called when the cursor button is released
-		bool eventCursor_Release( float xPos, float yPos );
-		//! Called when the cursor is hidden
-		void eventCursor_Hidden();
-		//! Called when the cursor is shown.
-		void eventCursor_Shown( float xPos, float yPos );
-//@}
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen();
 		void _doflush();
+
+		//! Returns true if the given point is inside this Widget
+		virtual bool _isInside( const FVector2& position );
 
 	private:
 		I_WidgetContainer* mContainer;

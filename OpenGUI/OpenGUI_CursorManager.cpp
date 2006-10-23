@@ -1,6 +1,7 @@
 #include "OpenGUI_CursorManager.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_LogSystem.h"
+#include "OpenGUI_GenericCursor.h"
 
 namespace OpenGUI {
 	template<> CursorManager* Singleton<CursorManager>::mptr_Singleton = 0;
@@ -17,9 +18,11 @@ namespace OpenGUI {
 	//############################################################################
 	CursorManager::CursorManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating CursorManager" << Log::endlog;
+		RegisterCursorFactory( "Generic", "OpenGUI", &GenericCursor::GenericCursorFactory );
 	}
 	//############################################################################
 	CursorManager::~CursorManager() {
+		UnregisterCursorFactory( "Generic", "OpenGUI" );
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying CursorManager" << Log::endlog;
 	}
 	//############################################################################

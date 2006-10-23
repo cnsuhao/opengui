@@ -104,13 +104,13 @@ namespace OpenGUI {
 		getEvents().createEvent( "Cursor_Move" );
 		getEvents().createEvent( "Cursor_Press" );
 		getEvents().createEvent( "Cursor_Release" );
-		getEvents().createEvent( "Cursor_Hidden" );
-		getEvents().createEvent( "Cursor_Shown" );
+		getEvents().createEvent( "Cursor_Disabled" );
+		getEvents().createEvent( "Cursor_Enabled" );
 		getEvents()["Cursor_Move"].add( new EventDelegate( this, &Widget::onCursor_Move ) );
 		getEvents()["Cursor_Press"].add( new EventDelegate( this, &Widget::onCursor_Press ) );
 		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Widget::onCursor_Release ) );
-		getEvents()["Cursor_Hidden"].add( new EventDelegate( this, &Widget::onCursor_Hidden ) );
-		getEvents()["Cursor_Shown"].add( new EventDelegate( this, &Widget::onCursor_Shown ) );
+		getEvents()["Cursor_Disabled"].add( new EventDelegate( this, &Widget::onCursor_Disabled ) );
+		getEvents()["Cursor_Enabled"].add( new EventDelegate( this, &Widget::onCursor_Enabled ) );
 		getEvents().createEvent( "Enabled" );
 		getEvents().createEvent( "Disabled" );
 		getEvents()["Enabled"].add( new EventDelegate( this, &Widget::onEnabled ) );
@@ -192,6 +192,11 @@ namespace OpenGUI {
 		brush._popMarker( this );
 	}
 	//############################################################################
+	/*! Widget implementation always returns false */
+	bool Widget::_isInside( const FVector2& position ) {
+		return false;
+	}
+	//############################################################################
 	Screen* Widget::getScreen() {
 		if ( !mContainer ) return 0;
 		Widget* parentW = dynamic_cast<Widget*>( mContainer );
@@ -252,11 +257,11 @@ namespace OpenGUI {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Widget::onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Widget::onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
@@ -303,9 +308,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! Containers should not cull this message. */
-	void Widget::eventCursor_Hidden() {
+	void Widget::eventCursor_Disabled() {
 		EventArgs event;
-		triggerEvent( "Cursor_Hidden", event );
+		triggerEvent( "Cursor_Disabled", event );
 	}
 	//############################################################################
 	/*! Containers should not cull this message.
@@ -313,9 +318,9 @@ namespace OpenGUI {
 	\param xPos X position of the cursor 
 	\param yPos Y position of the cursor 
 	*/
-	void Widget::eventCursor_Shown( float xPos, float yPos ) {
+	void Widget::eventCursor_Enabled( float xPos, float yPos ) {
 		EventArgs event;
-		triggerEvent( "Cursor_Shown", event );
+		triggerEvent( "Cursor_Enabled", event );
 	}
 	//############################################################################
 	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
