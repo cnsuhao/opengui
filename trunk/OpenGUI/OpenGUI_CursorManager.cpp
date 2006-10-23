@@ -115,6 +115,11 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "BaseName cannot be 0 length", __FUNCTION__ );
 		if ( BaseLibrary.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "BaseLibrary cannot be 0 length", __FUNCTION__ );
+
+		LogManager::SlogMsg( "CursorManager", OGLL_INFO ) << "Define Cursor: "
+		<< Name << " -> " << BaseName << ":" << BaseLibrary
+		<< Log::endlog;
+
 		CursorDefinition& cd = mCursorDefinitionMap[Name];
 		cd.Name = BaseName;
 		cd.Library = BaseLibrary;
@@ -123,14 +128,15 @@ namespace OpenGUI {
 	//############################################################################
 	void CursorManager::UndefineCursor( const std::string& Name ) {
 		CursorDefinitionMap::iterator iter = mCursorDefinitionMap.find( Name );
-		if ( iter != mCursorDefinitionMap.end() )
+		if ( iter == mCursorDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Cursor defined with given Name: " + Name, __FUNCTION__ );
+		LogManager::SlogMsg( "CursorManager", OGLL_INFO ) << "Undefine Cursor: " << Name << Log::endlog;
 		mCursorDefinitionMap.erase( iter );
 	}
 	//############################################################################
 	CursorPtr CursorManager::CreateDefinedCursor( const std::string& Name ) {
 		CursorDefinitionMap::iterator iter = mCursorDefinitionMap.find( Name );
-		if ( iter != mCursorDefinitionMap.end() )
+		if ( iter == mCursorDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Cursor defined with given Name: " + Name, __FUNCTION__ );
 		CursorDefinition& cd = iter->second;
 		CursorPtr cursor = CreateRawCursor( cd.Name, cd.Library );

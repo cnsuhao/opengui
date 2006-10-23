@@ -75,10 +75,10 @@ namespace OpenGUI {
 		triggerEvent( "ChildDetached", event );
 	}
 	//############################################################################
-	/*! The \c Cursor_Move event is only re-issued to children if the cursor is 
+	/*! The \c Cursor_Move event is only re-issued to children if the cursor is
 	currently inside the container, or if the cursor just left the container. */
-	void ContainerControl::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
-		Control::onCursor_Move(sender,evtArgs);
+	void ContainerControl::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		Control::onCursor_Move( sender, evtArgs );
 		static bool lastInside = false;
 		bool reissue = lastInside;
 		if ( _isInside( evtArgs.Position ) )
@@ -86,14 +86,14 @@ namespace OpenGUI {
 		else
 			lastInside = false;
 
-		if(reissue){
+		if ( reissue ) {
 			FVector2 newPos;
 			newPos = evtArgs.Position;
 			newPos.x += m_ClientAreaOffset_UL.x;
 			newPos.y += m_ClientAreaOffset_UL.y;
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-				iter != Children.rend(); iter++ ) {
-					iter->eventCursor_Move(newPos.x, newPos.y);
+					iter != Children.rend(); iter++ ) {
+				iter->eventCursor_Move( newPos.x, newPos.y );
 			}
 		}
 	}
@@ -266,6 +266,40 @@ namespace OpenGUI {
 			}
 		}
 		oldClntArea = getClientArea(); // update oldClntArea for next pass
+	}
+	//############################################################################
+	void ContainerControl::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
+		FVector2 pos = position;
+		pos.x += m_ClientAreaOffset_UL.x;
+		pos.y += m_ClientAreaOffset_UL.y;
+		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
+			Widget* child = iter.get();
+			if ( child->_isInside( pos ) ) {
+				if ( recursive ) {
+					child->getChildrenAt( pos, outList, true );
+				}
+				outList.push_back( child );
+			}
+		}
+	}
+	//############################################################################
+	Widget* ContainerControl::_getChildAt( const FVector2& position, bool recursive ) {
+		FVector2 pos = position;
+		pos.x += m_ClientAreaOffset_UL.x;
+		pos.y += m_ClientAreaOffset_UL.y;
+		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
+			Widget* child = iter.get();
+			if ( child->_isInside( pos ) ) {
+				Widget* ret = child;
+				if ( recursive ) {
+					child = child->getChildAt( pos, true );
+					if ( child )
+						ret = child;
+				}
+				return ret;
+			}
+		}
+		return 0;
 	}
 	//############################################################################
 } // namespace OpenGUI {

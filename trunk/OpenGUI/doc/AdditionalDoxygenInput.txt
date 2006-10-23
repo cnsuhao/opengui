@@ -156,9 +156,9 @@ namespace OpenGUI {
 	\until }
 	\until }
 
-	And here's the event processor. Remember how I said it was mostly a convenience function? I wasn't kidding. %OpenGUI uses event processors similar to this quite extensively to ensure we properly build event structs and don't typo the event name.
+	And here's the event injector. Remember how I said it was mostly a convenience function? I wasn't kidding. %OpenGUI uses event processors similar to this quite extensively to ensure we properly build event structs and don't typo the event name.
 	\until }
-	Given that event processors are usually quite brief, they are a good candidate for inlining into your class definition.
+	Given that event injectors are usually quite brief, they are a good candidate for inlining into your class definition.
 
 	And finally we reach the default event handler. As you can see, we're supposed to do something important here, but again, this is only an example so there's nothing to do.
 	\until }

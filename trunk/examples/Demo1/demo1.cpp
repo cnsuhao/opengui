@@ -68,6 +68,9 @@ void Demo1App::preRun() {
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
 	FontManager::getSingleton().RegisterFontSet( "pecot.ttf", "pecot" );
+	CursorManager::getSingleton().DefineCursor("Square", ValueList(), "Generic", "OpenGUI");
+	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor("Square");
+	mScreen->setCursor(cursorPtr);
 	mScreen->enableCursor();
 
 	mTach = new Examples::Tachometer;

@@ -341,4 +341,20 @@ namespace OpenGUI {
 		triggerEvent( "Disabled", event );
 	}
 	//############################################################################
+	void Widget::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
+		return; // Widget has no children
+	}
+	//############################################################################
+	Widget* Widget::_getChildAt( const FVector2& position, bool recursive ) {
+		return 0; //Widget has no children
+	}
+	//############################################################################
+	void Widget::getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
+		_getChildrenAt( position, outList, recursive );
+	}
+	//############################################################################
+	Widget* Widget::getChildAt( const FVector2& position, bool recursive ) {
+		return _getChildAt( position, recursive );
+	}
+	//############################################################################
 }//namespace OpenGUI{
