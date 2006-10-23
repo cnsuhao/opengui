@@ -62,7 +62,7 @@ namespace OpenGUI {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Cursor::onCursor_Hidden( Object* sender, EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
@@ -96,7 +96,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Cursor::eventCursor_Shown( float xPos, float yPos ) {
-		EventArgs event;
+		Cursor_EventArgs event( xPos, yPos );
 		triggerEvent( "Cursor_Shown", event );
 	}
 	//############################################################################

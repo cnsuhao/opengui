@@ -116,7 +116,7 @@ namespace OpenGUI {
 		//! "Cursor_Release" event
 		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Hidden" event
-		virtual void onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursor_Hidden( Object* sender, EventArgs& evtArgs );
 		//! "Cursor_Shown" event
 		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
