@@ -63,9 +63,9 @@ namespace OpenGUI {
 //@}
 
 		//! Returns a pointer to the topmost Widget at the given location, or 0 (NULL) if no match found
-		Widget* getWidgetAt( const FVector2& position );
-		//! convenience function for getWidgetAt()
-		Widget* getWidgetAt( float x_pos, float y_pos );
+		Widget* getWidgetAt( const FVector2& position, bool recursive = false );
+		//! Returns a list of all widgets at the given location, sorted by depth from top to bottom
+		void getWidgetsAt( const FVector2& position, WidgetPtrList& outList, bool recursive = false );
 
 		//! returns the name of this Screen
 		const std::string& getName() const;
@@ -161,6 +161,7 @@ namespace OpenGUI {
 		bool m_CursorEnabled; // cursor enabled/disabled
 		bool m_CursorVisible; // cursor show/hide
 		CursorPtr mDefaultCursor; // the default cursor for this Screen
+		CursorPtr mPrevCursor; // the cursor drawn in the previous render
 	};
 
 } //namespace OpenGUI{

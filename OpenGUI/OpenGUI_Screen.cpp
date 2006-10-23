@@ -164,7 +164,7 @@ namespace OpenGUI {
 		}
 		if ( m_CursorEnabled && m_CursorVisible ) {
 			// Draw the cursor
-
+			mDefaultCursor->eventDraw( mCursorPos.x, mCursorPos.y, b );
 		}
 	}
 	//############################################################################
@@ -243,7 +243,7 @@ namespace OpenGUI {
 	has been set. If no default cursor is set when this is called, the cursor will
 	be immediately hidden via \c hideCursor().*/
 	void Screen::enableCursor() {
-		if(!m_CursorEnabled){
+		if ( !m_CursorEnabled ) {
 			m_CursorEnabled = true;
 			if ( mDefaultCursor.isNull() && cursorVisible() ) {
 				hideCursor();
@@ -258,7 +258,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Multiple calls have no ill effect. */
 	void Screen::disableCursor() {
-		if(m_CursorEnabled){
+		if ( m_CursorEnabled ) {
 			m_CursorEnabled = false;
 			WidgetCollection::iterator iter = Children.begin();
 			while ( iter != Children.end() ) {
@@ -300,6 +300,34 @@ namespace OpenGUI {
 			hideCursor();
 		}
 		mDefaultCursor = cursor;
+	}
+	//############################################################################
+	Widget* Screen::getWidgetAt( const FVector2& position, bool recursive ) {
+		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
+			Widget* child = iter.get();
+			if ( child->_isInside( position ) ) {
+				Widget* ret = child;
+				if ( recursive ) {
+					child = child->getChildAt( position, true );
+					if ( child )
+						ret = child;
+				}
+				return ret;
+			}
+		}
+		return 0;
+	}
+	//############################################################################
+	void Screen::getWidgetsAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
+		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
+			Widget* child = iter.get();
+			if ( child->_isInside( position ) ) {
+				if ( recursive ) {
+					child->getChildrenAt( position, outList, true );
+				}
+				outList.push_back( child );
+			}
+		}
 	}
 	//############################################################################
 }//namespace OpenGUI{

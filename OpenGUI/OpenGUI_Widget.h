@@ -13,7 +13,11 @@ namespace OpenGUI {
 
 	class Renderer; //forward declaration
 	class I_WidgetContainer; //forward declaration
-	class Screen;
+	class Screen; //forward declaration
+	class Widget; //forward declaration
+
+	//! List of Widget pointers
+	typedef std::list<Widget*> WidgetPtrList;
 
 	//! Base class for all input processing, containable, and potentially visible GUI objects
 	/*!
@@ -70,6 +74,18 @@ namespace OpenGUI {
 			\endcode */
 		I_WidgetContainer* getContainer();
 
+		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
+		/*! The list is depth sorted, with top-most widgets at the top and bottom-most widgets at the bottom.
+		\param position The position to test in the same coordinates that \em this widget is defined in.
+		\param recursive \c TRUE to recurse into the matching children, asking the same question. \c FALSE to only test the direct children of this widget.
+		*/
+		void getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive = false );
+		//! Returns a pointer to the top-most child at the given \c position. Returns 0 if no child is found at the position.
+		/*! \param position The position to test in the same coordinates that \em this widget is defined in.
+		\param recursive \c TRUE to recurse into the matching child, asking the same question. \c FALSE to only test the direct children of this widget.
+		*/
+		Widget* getChildAt( const FVector2& position, bool recursive = false );
+
 		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
 		virtual void _draw( Brush& brush );
 
@@ -106,6 +122,9 @@ namespace OpenGUI {
 		void eventCursor_Enabled( float xPos, float yPos );
 //@}
 
+		//! Returns true if the given point is inside this Widget
+		virtual bool _isInside( const FVector2& position );
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -140,8 +159,10 @@ namespace OpenGUI {
 		Screen* getScreen();
 		void _doflush();
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
+		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
+		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );
+		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
+		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
 	private:
 		I_WidgetContainer* mContainer;

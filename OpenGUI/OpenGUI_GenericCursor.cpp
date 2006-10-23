@@ -32,8 +32,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void GenericCursor::onDraw( Object* sender, DrawCursor_EventArgs& evtArgs ) {
-		if ( mImagery ) {
-		}
+		if ( mImagery ) {}
 		Brush& b = evtArgs.brush;
 		FRect tmpCursor;
 		tmpCursor.setHeight( 30.0f );

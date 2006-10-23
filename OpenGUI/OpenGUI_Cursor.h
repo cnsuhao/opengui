@@ -82,26 +82,7 @@ namespace OpenGUI {
 		void setSize( const FVector2& newSize ) {
 			mSize = newSize;
 		}
-
-	protected:
-//!\name Event Handlers
-//@{
-		//! "Draw" event
-		virtual void onDraw( Object* sender, DrawCursor_EventArgs& evtArgs );
-
-		//! "Cursor_Move" event
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Hidden" event
-		virtual void onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Shown" event
-		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
-//@}
-
-//!\name Event Processors
+//!\name Event Injectors
 //@{
 		//! Draw this object's foreground using the given brush
 		void eventDraw( float xPos, float yPos, Brush& brush );
@@ -121,6 +102,24 @@ namespace OpenGUI {
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
+
+	protected:
+//!\name Event Handlers
+//@{
+		//! "Draw" event
+		virtual void onDraw( Object* sender, DrawCursor_EventArgs& evtArgs );
+
+		//! "Cursor_Move" event
+		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Press" event
+		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Release" event
+		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Hidden" event
+		virtual void onCursor_Hidden( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Shown" event
+		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
+//@}
 
 	private:
 		std::string mName;

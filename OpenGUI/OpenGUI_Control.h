@@ -6,6 +6,7 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_Cursor.h"
 
 namespace OpenGUI {
 	class ContainerControl; //forward declaration
@@ -112,6 +113,11 @@ namespace OpenGUI {
 		//! \internal In addition to previous functionality, this enforces Alpha and Visibility before the Draw event is issued
 		virtual void _draw( Brush& brush );
 
+		//! \internal  Returns a reference to the cursor to draw over this Control
+		const CursorPtr& _getCursor() {
+			return m_Cursor;
+		}
+
 //!\name Event Injectors
 //@{
 		//! Control has been moved
@@ -131,6 +137,9 @@ namespace OpenGUI {
 		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
 		void eventUnTargeted();
 //@}
+
+		//! Returns true if the given point is inside this Widget
+		virtual bool _isInside( const FVector2& position );
 
 	protected:
 //!\name Event Handlers
@@ -156,8 +165,11 @@ namespace OpenGUI {
 		virtual void onUnTargeted( Object* sender, EventArgs& evtArgs );
 //@}
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
+		//! Cursor to draw when over this Control.
+		/*! The cursor contained here will be drawn whenever the cursor is over this control.
+		If this object holds a null pointer, the Screen's default cursor will be used instead.
+		*/
+		CursorPtr m_Cursor;
 
 	private:
 		//! Call for any operation that invalidates layouts, like moves and resizes.

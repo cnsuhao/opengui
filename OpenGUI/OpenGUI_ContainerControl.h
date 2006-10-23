@@ -81,6 +81,11 @@ namespace OpenGUI {
 		//! This performs the actual layout operation
 		virtual void _doUpdateLayout();
 
+		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
+		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );
+		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
+		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
+
 	private:
 		void _setChildControlLayoutState( bool state );
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
