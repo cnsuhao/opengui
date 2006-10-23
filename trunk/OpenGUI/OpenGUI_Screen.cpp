@@ -4,6 +4,7 @@
 #include "OpenGUI_System.h"
 #include "OpenGUI_Renderer.h"
 #include "OpenGUI_Brush.h"
+#include "OpenGUI_Control.h"
 
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
@@ -163,8 +164,30 @@ namespace OpenGUI {
 			iter++;
 		}
 		if ( m_CursorEnabled && m_CursorVisible ) {
+			// determine the cursor we're drawing
+			CursorPtr drawCursor;
+			Widget* overWidget = getWidgetAt( mCursorPos, true );
+			if ( overWidget ) {
+				Control* overControl = dynamic_cast<Control*>( overWidget );
+				if ( overControl ) {
+					drawCursor = overControl->_getCursor();
+				}
+			}
+			if ( !drawCursor )
+				drawCursor = mDefaultCursor;
+
+			// send notifications if necessary
+			if ( drawCursor != mPrevCursor ) {
+				if ( mPrevCursor )
+					mPrevCursor->eventCursor_Hidden();
+				mPrevCursor = drawCursor;
+				if ( mPrevCursor )
+					mPrevCursor->eventCursor_Shown( mCursorPos.x, mCursorPos.y );
+			}
+
 			// Draw the cursor
-			mDefaultCursor->eventDraw( mCursorPos.x, mCursorPos.y, b );
+			if ( drawCursor )
+				drawCursor->eventDraw( mCursorPos.x, mCursorPos.y, b );
 		}
 	}
 	//############################################################################
@@ -259,6 +282,10 @@ namespace OpenGUI {
 	/*! Multiple calls have no ill effect. */
 	void Screen::disableCursor() {
 		if ( m_CursorEnabled ) {
+			if ( mPrevCursor ) {
+				mPrevCursor->eventCursor_Hidden();
+				mPrevCursor = 0;
+			}
 			m_CursorEnabled = false;
 			WidgetCollection::iterator iter = Children.begin();
 			while ( iter != Children.end() ) {
@@ -286,7 +313,13 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Multiple calls have no ill effect. */
 	void Screen::hideCursor() {
-		m_CursorVisible = false;
+		if ( m_CursorVisible ) {
+			m_CursorVisible = false;
+			if ( mPrevCursor ) {
+				mPrevCursor->eventCursor_Hidden();
+				mPrevCursor = 0;
+			}
+		}
 	}
 	//############################################################################
 	bool Screen::cursorVisible() {
