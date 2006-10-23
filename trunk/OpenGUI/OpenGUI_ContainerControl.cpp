@@ -75,6 +75,29 @@ namespace OpenGUI {
 		triggerEvent( "ChildDetached", event );
 	}
 	//############################################################################
+	/*! The \c Cursor_Move event is only re-issued to children if the cursor is 
+	currently inside the container, or if the cursor just left the container. */
+	void ContainerControl::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ){
+		Control::onCursor_Move(sender,evtArgs);
+		static bool lastInside = false;
+		bool reissue = lastInside;
+		if ( _isInside( evtArgs.Position ) )
+			lastInside = reissue = true;
+		else
+			lastInside = false;
+
+		if(reissue){
+			FVector2 newPos;
+			newPos = evtArgs.Position;
+			newPos.x += m_ClientAreaOffset_UL.x;
+			newPos.y += m_ClientAreaOffset_UL.y;
+			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
+				iter != Children.rend(); iter++ ) {
+					iter->eventCursor_Move(newPos.x, newPos.y);
+			}
+		}
+	}
+	//############################################################################
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
 			brush.pushAlpha( getAlpha() );
@@ -126,21 +149,17 @@ namespace OpenGUI {
 		return m_LayoutValid;
 	}
 	//############################################################################
-	/*! This is virtual so that derived classes can redefine it to provide new client
-	area sizes and positions as desired.
-
-	The Client Area is the area of the ContainerControl that child widgets are drawn
-	within. The Client Area's position is an offset from this ContainerControl's
-	position. So a Client Area position of 0,0 would place the upper left of the
-	Client Area exactly in the upper left corner of this ContainerControl, regardless
-	of where this ContainerControl is actually placed on the Screen.
-
-	The default implementation always returns a client area that fully encompasses
-	the ContainerControl's drawing area.*/
+	/*! This is a convenience function that calculates the client area into a rect
+	from the defined offsets \c m_ClientAreaOffset_UL and \c m_ClientAreaOffset_LR.
+	*/
 	const FRect& ContainerControl::getClientArea() {
-		static FRect tmp;
-		tmp.setSize( getSize() );
-		return tmp;
+		static FRect retval;
+		FVector2 size = getSize();
+		retval.min.x = m_ClientAreaOffset_UL.x;
+		retval.min.y = m_ClientAreaOffset_UL.y;
+		retval.max.x = size.x + m_ClientAreaOffset_LR.x;
+		retval.max.y = size.y + m_ClientAreaOffset_LR.y;
+		return retval;
 	}
 	//############################################################################
 	/*! The update is performed regardless of layout being currently suspended,
@@ -169,9 +188,8 @@ namespace OpenGUI {
 	/*! This is virtual in the case that a subclass wishes to perform their own layout logic.
 	Toolbars and other specialty containers would likely need this functionality. */
 	void ContainerControl::_doUpdateLayout() {
-		//store previous client area space
-		FRect oldClntArea = m_RemClntArea;
-		m_RemClntArea = getClientArea();
+		static FRect oldClntArea = getClientArea();
+		FRect clntArea = getClientArea();
 
 		//update all docked controls
 		for ( WidgetCollection::iterator iter = Children.begin();
@@ -183,42 +201,42 @@ namespace OpenGUI {
 
 					//Next two IF's cover position and height for 'Fill' as well
 					if (( dock & Control::Left ) || ( dock & Control::Right ) ) {
-						ctrl->setTop( m_RemClntArea.getPosition().y );
-						ctrl->setHeight( m_RemClntArea.getHeight() );
+						ctrl->setTop( clntArea.getPosition().y );
+						ctrl->setHeight( clntArea.getHeight() );
 					}
 					if (( dock & Control::Top ) || ( dock & Control::Bottom ) ) {
-						ctrl->setLeft( m_RemClntArea.getPosition().x );
-						ctrl->setWidth( m_RemClntArea.getWidth() );
+						ctrl->setLeft( clntArea.getPosition().x );
+						ctrl->setWidth( clntArea.getWidth() );
 					}
 
 					if ( dock == Control::Left ) {
-						ctrl->setLeft( m_RemClntArea.getPosition().x );
-						m_RemClntArea.setWidth( m_RemClntArea.getWidth() - ctrl->getWidth() );
-						m_RemClntArea.offset( FVector2( ctrl->getWidth(), 0.0f ) );
+						ctrl->setLeft( clntArea.getPosition().x );
+						clntArea.setWidth( clntArea.getWidth() - ctrl->getWidth() );
+						clntArea.offset( FVector2( ctrl->getWidth(), 0.0f ) );
 					}
 					if ( dock == Control::Right ) {
-						ctrl->setLeft( m_RemClntArea.getPosition().x + m_RemClntArea.getWidth() - ctrl->getWidth() );
-						m_RemClntArea.setWidth( m_RemClntArea.getWidth() - ctrl->getWidth() );
+						ctrl->setLeft( clntArea.getPosition().x + clntArea.getWidth() - ctrl->getWidth() );
+						clntArea.setWidth( clntArea.getWidth() - ctrl->getWidth() );
 					}
 
 					if ( dock == Control::Top ) {
-						ctrl->setTop( m_RemClntArea.getPosition().y );
-						m_RemClntArea.setHeight( m_RemClntArea.getHeight() - ctrl->getHeight() );
-						m_RemClntArea.offset( FVector2( 0.0f, ctrl->getHeight() ) );
+						ctrl->setTop( clntArea.getPosition().y );
+						clntArea.setHeight( clntArea.getHeight() - ctrl->getHeight() );
+						clntArea.offset( FVector2( 0.0f, ctrl->getHeight() ) );
 					}
 					if ( dock == Control::Bottom ) {
-						ctrl->setTop( m_RemClntArea.getPosition().y + m_RemClntArea.getHeight() - ctrl->getHeight() );
-						m_RemClntArea.setHeight( m_RemClntArea.getHeight() - ctrl->getHeight() );
+						ctrl->setTop( clntArea.getPosition().y + clntArea.getHeight() - ctrl->getHeight() );
+						clntArea.setHeight( clntArea.getHeight() - ctrl->getHeight() );
 					}
 				}
 			}
 		}
 
 		//use difference of new and previous client area space to update anchored controls
-		float deltaLeft = m_RemClntArea.getPosition().x - oldClntArea.getPosition().x;
-		float deltaTop = m_RemClntArea.getPosition().y - oldClntArea.getPosition().y ;
-		float deltaRight = ( m_RemClntArea.getPosition().x + m_RemClntArea.getWidth() ) - ( oldClntArea.getPosition().x + oldClntArea.getWidth() ) ;
-		float deltaBottom = ( m_RemClntArea.getPosition().y + m_RemClntArea.getHeight() ) - ( oldClntArea.getPosition().y + oldClntArea.getHeight() ) ;
+		float deltaLeft = clntArea.getPosition().x - oldClntArea.getPosition().x;
+		float deltaTop = clntArea.getPosition().y - oldClntArea.getPosition().y ;
+		float deltaRight = ( clntArea.getPosition().x + clntArea.getWidth() ) - ( oldClntArea.getPosition().x + oldClntArea.getWidth() ) ;
+		float deltaBottom = ( clntArea.getPosition().y + clntArea.getHeight() ) - ( oldClntArea.getPosition().y + oldClntArea.getHeight() ) ;
 
 		for ( WidgetCollection::iterator iter = Children.begin();
 				iter != Children.end(); iter++ ) {
@@ -247,6 +265,7 @@ namespace OpenGUI {
 				}
 			}
 		}
+		oldClntArea = getClientArea(); // update oldClntArea for next pass
 	}
 	//############################################################################
 } // namespace OpenGUI {

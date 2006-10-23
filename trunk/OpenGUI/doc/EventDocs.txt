@@ -26,8 +26,8 @@
 - \subpage Event_Cursor_Move "Cursor_Move"
 - \subpage Event_Cursor_Press "Cursor_Press"
 - \subpage Event_Cursor_Release "Cursor_Release"
-- \subpage Event_Cursor_Hidden "Cursor_Hidden"
-- \subpage Event_Cursor_Shown "Cursor_Shown"
+- \subpage Event_Cursor_Disabled "Cursor_Disabled"
+- \subpage Event_Cursor_Enabled "Cursor_Enabled"
 
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
@@ -151,25 +151,27 @@ Called when the cursor button was released.
 
 
 
-\page Event_Cursor_Hidden Cursor_Hidden
-The cursor was hidden.
+\page Event_Cursor_Disabled Cursor_Disabled
+The cursor was disabled.
 	\par Occurs In:
 	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Hidden
-	- OpenGUI::Widget::eventCursor_Hidden
+	- OpenGUI::Widget::onCursor_Disabled
+	- OpenGUI::Widget::eventCursor_Disabled
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
+	\see OpenGUI::Screen::disableCursor()
 
 
 
-\page Event_Cursor_Shown Cursor_Shown
-The cursor was shown.
+\page Event_Cursor_Enabled Cursor_Enabled
+The cursor was enabled.
 	\par Occurs In:
 	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Shown
-	- OpenGUI::Widget::eventCursor_Shown
+	- OpenGUI::Widget::onCursor_Enabled
+	- OpenGUI::Widget::eventCursor_Enabled
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
+	\see OpenGUI::Screen::enableCursor()
 	
 
 

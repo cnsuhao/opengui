@@ -2,6 +2,7 @@
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "../TachometerWidget/Tachometer.h"
 
+
 class Demo1App : public DemoApp {
 public:
 	Demo1App() : DemoApp( "OpenGUI - Demo 1" ) {}
@@ -21,70 +22,77 @@ private:
 
 using namespace OpenGUI;
 
-class MyWidget: public Widget {
-protected:
-	void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
-		Brush& b = evtArgs.brush;
-		//b.pushRotation( Degree(12) );
-		FVector2 pos( 400, 300 );
-		Font fnt( "pecot", 30 );
-
-		FRect outlineRect( pos, FVector2( pos.x + 200, pos.y + 200 ) );
-
-		b.pushColor( Color::PresetRed() );
-		b.Text.drawTextArea( "lowery CASE text",
-							 outlineRect, fnt, true, TextAlignment::ALIGN_JUSTIFIED, TextAlignment::ALIGN_CENTER );
-		b.pop();
-
-		b.Primitive.drawLine( FVector2( outlineRect.min.x, outlineRect.min.y + outlineRect.getHeight() / 2 ),
-							  FVector2( outlineRect.max.x, outlineRect.min.y + outlineRect.getHeight() / 2 ), 2.0f );
-
-		b.pushAlpha( 0.25f );
-		b.pushColor( Color::PresetBlue() );
-		b.Primitive.drawRect( outlineRect );
-		b.pop();
-		b.Primitive.drawOutlineRect( outlineRect, -5 );
-		b.pop();
-
-		//b.pop();
-
-
-		ImageryPtrList imgrylist = FontManager::getSingleton()._getFontAtlases();
-		if ( imgrylist.size() > 0 ) {
-			//b.Image.drawImageUnscaled( imgrylist.front(), FVector2( 0, 0 ) );
-			b.Image.drawImageUnscaledAndTiled( imgrylist.front(), FRect( 0, 0, 150, 400 ) );
-		}
+class SimpleText: public Control {
+public:
+	SimpleText(){
+		mVAlign = TextAlignment::ALIGN_TOP;
+		mHAlign = TextAlignment::ALIGN_LEFT;
 	}
+	~SimpleText(){}
+	void setText( const std::string& text ) {
+		invalidate();
+		mText = text;
+	}
+	const std::string& getText() const {
+		return mText;
+	}
+	void setFont( const Font& font ) {
+		invalidate();
+		mFont = font;
+	}
+	const Font& getFont() const {
+		return mFont;
+	}
+	void setAlignment(TextAlignment h_align, TextAlignment v_align){
+		invalidate();
+		mVAlign = v_align;
+		mHAlign = h_align;
+	}
+protected:
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Text.drawTextArea( mText, getRect(), mFont, false, mHAlign, mVAlign );
+	}
+private:
+	std::string mText;
+	Font mFont;
+	TextAlignment mVAlign;
+	TextAlignment mHAlign;
 };
+
 void Demo1App::preRun() {
+
 	Imageset* imgset = ImageryManager::createImagesetEx( "tachometer.png" );
 	imgset->createImagery( "TachBG", 2, 2, 321, 321 );
 	imgset->createImagery( "TachNeedle", 348, 42, 7, 131 );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
 	FontManager::getSingleton().RegisterFontSet( "pecot.ttf", "pecot" );
-
 	mScreen->enableCursor();
 
 	mTach = new Examples::Tachometer;
-	
-	mTach->setName("Tachometer");
-	mTach->setBackgroundImagery("TachBG");
-	mTach->setNeedleImagery("TachNeedle");
-	mTach->setNeedleScale(135.0f, 900.0f, 225.0f);
-	mTach->setNeedlePivot(FVector2(0.5f,0.5f));
-	mTach->setNeedleAnchor(FVector2(0.10f,0.50f));
-	
-	mTach->setNeedleValue(0.0f);
-
-	mTach->setLeft( 300.0f );
-	mTach->setTop( 100.0f );
+	mTach->setName( "Tachometer" );
+	mTach->setBackgroundImagery( "TachBG" );
+	mTach->setNeedleImagery( "TachNeedle" );
+	mTach->setNeedleScale( 135.0f, 900.0f, 225.0f );
+	mTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
+	mTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
+	mTach->setNeedleValue( 0.0f );
+	mTach->setLeft( 800.0f - 322.0f );
+	mTach->setTop( 600.0f - 322.0f );
 	mTach->setWidth( 321.0f );
 	mScreen->Children.add_back( mTach, true );
 
-	Widget* w = new MyWidget();
-	w->setName( "Blah" );
-	mScreen->Children.add_back( w, true );
+	SimpleText* headerText = new SimpleText();
+	headerText->setName( "Header" );
+	headerText->setFont( Font( "pecot", 40 ) );
+	headerText->setText( "OpenGUI Demo 1" );
+	headerText->setTop( 0 );
+	headerText->setLeft( 0 );
+	headerText->setWidth( 400 );
+	headerText->setHeight( 60 );
+	headerText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
+	mScreen->Children.add_back( headerText, true );
 	/*
 		OpenGUI::XMLParser::LoadFromFile("demo1.xml");
 		OpenGUI::System::getSingleton().setGUISheet(
@@ -115,24 +123,26 @@ void Demo1App::preRun() {
 void Demo1App::perframeRun() {
 	static int val = 0;
 	static bool dirUp = true;
-	if(dirUp) val++;
+	if ( dirUp ) val++;
 	else val--;
-	if(val <= 0) dirUp=true;
-	if(val >= 900) dirUp=false;
+	if ( val <= 0 ) dirUp = true;
+	if ( val >= 900 ) dirUp = false;
 
-	if(OpenGUI::System::getSingletonPtr()){
-		mTach->setNeedleValue((float) val);
+	if ( OpenGUI::System::getSingletonPtr() ) {
+		mTach->setNeedleValue(( float ) val );
 
 		//if(mTimer->getMilliseconds() > 200){
 		//	mTimer->reset();
 		//	std::stringstream ss;
-			//ss << "FPS: " << OpenGUI::System::getSingleton().statRenderFPS();
-			//mLabel->setText(ss.str());
+		//ss << "FPS: " << OpenGUI::System::getSingleton().statRenderFPS();
+		//mLabel->setText(ss.str());
 		//}
 	}
 }
 void Demo1App::mousePositionCallback( int x, int y ) {
-	mScreen->injectCursorPosition(( float )x, ( float )y );
+	int sx,sy;
+	getWindowSize(sx,sy);
+	mScreen->injectCursorPosition_Percent(((float)x) / ((float)sx),((float)y) / ((float)sy) );
 }
 void Demo1App::mouseButtonCallback( int button, int action ) {
 	if ( button == 0 ) {

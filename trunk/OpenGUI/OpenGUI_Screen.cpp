@@ -164,14 +164,7 @@ namespace OpenGUI {
 		}
 		if ( m_CursorEnabled && m_CursorVisible ) {
 			// Draw the cursor
-			FRect tmpCursor;
-			tmpCursor.setHeight( 30.0f );
-			tmpCursor.setWidth( 30.0f );
-			b.pushPosition( mCursorPos );
-			b.pushRotation( Degree( 45.0f ) );
-			b.Primitive.drawRect( tmpCursor );
-			b.pop();
-			b.pop();
+
 		}
 	}
 	//############################################################################
@@ -245,14 +238,34 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! Cursor starts disabled, so you will need to call this to enabled it before
-	you can realistically use it. Multiple calls have no ill effect. */
+	you can realistically use it. Multiple calls have no ill effect.
+	\note You cannot enable a visible cursor until the default cursor for the Screen
+	has been set. If no default cursor is set when this is called, the cursor will
+	be immediately hidden via \c hideCursor().*/
 	void Screen::enableCursor() {
-		m_CursorEnabled = true;
+		if(!m_CursorEnabled){
+			m_CursorEnabled = true;
+			if ( mDefaultCursor.isNull() && cursorVisible() ) {
+				hideCursor();
+			}
+			WidgetCollection::iterator iter = Children.begin();
+			while ( iter != Children.end() ) {
+				iter->eventCursor_Enabled( mCursorPos.x, mCursorPos.y );
+				iter++;
+			}
+		}
 	}
 	//############################################################################
 	/*! Multiple calls have no ill effect. */
 	void Screen::disableCursor() {
-		m_CursorEnabled = false;
+		if(m_CursorEnabled){
+			m_CursorEnabled = false;
+			WidgetCollection::iterator iter = Children.begin();
+			while ( iter != Children.end() ) {
+				iter->eventCursor_Disabled();
+				iter++;
+			}
+		}
 	}
 	//############################################################################
 	bool Screen::cursorEnabled() {
@@ -260,8 +273,14 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! Cursor starts shown, so you do not need to call this unless you've previously
-	hidden the cursor. Multiple calls have no ill effect. */
+	hidden the cursor. Multiple calls have no ill effect.
+	\note As stated in enableCursor(), you cannot show the cursor until a default
+	cursor for the Screen has been set. You can toggle cursor visibility freely
+	while the cursor is disabled, but attempting to force showing of the cursor
+	while it is enabled and there is no default will throw an exception. */
 	void Screen::showCursor() {
+		if ( cursorEnabled() && mDefaultCursor.isNull() )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot show enabled cursor on Screen without a default cursor", __FUNCTION__ );
 		m_CursorVisible = true;
 	}
 	//############################################################################
@@ -272,6 +291,15 @@ namespace OpenGUI {
 	//############################################################################
 	bool Screen::cursorVisible() {
 		return m_CursorVisible;
+	}
+	//############################################################################
+	/*! If you assign a null pointer as the new cursor and the cursor is enabled,
+	this will cause the cursor to become hidden automatically. */
+	void Screen::setCursor( CursorPtr cursor ) {
+		if ( cursor.isNull() && cursorEnabled() && cursorVisible() ) {
+			hideCursor();
+		}
+		mDefaultCursor = cursor;
 	}
 	//############################################################################
 }//namespace OpenGUI{
