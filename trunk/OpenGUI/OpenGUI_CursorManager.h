@@ -13,6 +13,7 @@ namespace OpenGUI {
 	//! Cursor factory callback declaration/template
 	typedef CursorPtr CursorFactoryCallback();
 
+	//! Provides Cursor registration and definition functionality
 	class OPENGUI_API CursorManager : public Singleton<CursorManager> {
 		friend class System; //so System can create and destroy us
 		CursorManager(); // private constructor
