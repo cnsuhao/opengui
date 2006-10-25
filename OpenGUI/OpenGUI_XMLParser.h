@@ -25,7 +25,7 @@ namespace OpenGUI {
 	\return \c true if you handled the tag, \c false if you didn't (in which case the
 	next registered handler for that tag will have the opportunity to handle it)
 	*/
-	typedef bool XMLNodeHandler(const XMLNode& node, const std::string& nodePath );
+	typedef bool XMLNodeHandler( const XMLNode& node, const std::string& nodePath );
 
 	//! Provides complete loading of xml files containing data for all different subsystems.
 	/*! This class provides complete parsing of XML files. It will delegate top level tags
@@ -84,27 +84,26 @@ namespace OpenGUI {
 		void UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
 		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath
-		void ProcessXML_Load(XMLNodeContainer& container, const std::string& nodePath);
+		void ProcessXML_Load( XMLNodeContainer& container, const std::string& nodePath );
 		//! Processes the given node with XMLLoad handlers, using the given \c nodePath
-		void ProcessXML_Load(XMLNode& node, const std::string& nodePath);
+		void ProcessXML_Load( XMLNode& node, const std::string& nodePath );
 		//! Processes the given \c container with XMLUnload handlers, using the given \c nodePath
-		void ProcessXML_Unload(XMLNodeContainer& container, const std::string& nodePath);
+		void ProcessXML_Unload( XMLNodeContainer& container, const std::string& nodePath );
 		//! Processes the given node with XMLUnload handlers, using the given \c nodePath
-		void ProcessXML_Unload(XMLNode& node, const std::string& nodePath);
+		void ProcessXML_Unload( XMLNode& node, const std::string& nodePath );
 
 	private:
-		static bool _IncludeLoadHandler(const XMLNode& node, const std::string& nodePath );
-		static bool _IncludeUnloadHandler(const XMLNode& node, const std::string& nodePath );
-		static bool _Included(const std::string& filename);
+		static bool _IncludeLoadHandler( const XMLNode& node, const std::string& nodePath );
+		static bool _IncludeUnloadHandler( const XMLNode& node, const std::string& nodePath );
+		static bool _Included( const std::string& filename );
 		typedef std::list<std::string> IncludeList;
 		static IncludeList mIncludeList;
 
-		//static void ParseXMLFile( const std::string& xmlFilename, IncludeSet& includesToIgnore, unsigned int depth );
 		typedef std::list<XMLNodeHandler*> HandlerList;
 		typedef std::map<std::string, HandlerList> XMLHandlerMap;
 		XMLHandlerMap mLoadMap;
 		XMLHandlerMap mUnloadMap;
-		bool fireCallback(XMLHandlerMap& handlerMap, const XMLNode& node, const std::string& nodePath);
+		bool fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const std::string& nodePath );
 	};
 };
 
