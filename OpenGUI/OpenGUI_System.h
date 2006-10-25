@@ -33,6 +33,7 @@ namespace OpenGUI {
 	class ImageryManager;
 	class ScreenManager;
 	class CursorManager;
+	class WidgetManager;
 	class XMLParser;
 
 	/*!
@@ -146,6 +147,9 @@ namespace OpenGUI {
 
 		//CursorManager
 		CursorManager* mCursorManager;
+
+		//WidgetManager
+		WidgetManager* mWidgetManager;
 
 		//TimerManager
 		TimerManager* mTimerManager;

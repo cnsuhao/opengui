@@ -398,6 +398,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_WidgetManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Window.cpp"
 				>
 			</File>
@@ -657,6 +661,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Widget.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_WidgetManager.h"
 				>
 			</File>
 			<File

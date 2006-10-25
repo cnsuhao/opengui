@@ -85,6 +85,8 @@ namespace OpenGUI {
 
 		mCursorManager = new CursorManager();
 
+		mWidgetManager = new WidgetManager();
+
 		mScreenManager = new ScreenManager();
 
 		mXMLParser = new XMLParser();
@@ -118,6 +120,9 @@ namespace OpenGUI {
 
 		if ( mXMLParser )
 			delete mXMLParser;
+
+		if ( mWidgetManager )
+			delete mWidgetManager;
 
 		if ( mCursorManager )
 			delete mCursorManager;
