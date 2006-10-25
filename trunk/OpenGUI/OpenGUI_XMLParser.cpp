@@ -22,18 +22,22 @@ namespace OpenGUI {
 	XMLParser::XMLParser() {
 		/**/
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating XMLParser" << Log::endlog;
+		RegisterLoadHandler( "Include", &XMLParser::_IncludeLoadHandler );
+		RegisterUnloadHandler( "Include", &XMLParser::_IncludeUnloadHandler );
 	}
 	//############################################################################
 	XMLParser::~XMLParser() {
 		/**/
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying XMLParser" << Log::endlog;
+		UnregisterLoadHandler( "Include", &XMLParser::_IncludeLoadHandler );
+		UnregisterUnloadHandler( "Include", &XMLParser::_IncludeUnloadHandler );
 	}
 	//############################################################################
 	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
-		OG_NYI;
+		ProcessXML_Load( doc, "" );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
@@ -41,84 +45,218 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN UnloadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
-		OG_NYI;
+		ProcessXML_Unload( doc, "" );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END UnloadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
-}//namespace OpenGUI {
-
-
-/*
-namespace OpenGUI {
-	//############################################################################
-	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
-		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
-		IncludeSet includesToIgnore;
-		XMLParser::ParseXMLFile( xmlFilename, includesToIgnore, 1 );
-		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
+	/*! Registering for a path that is already registered is legal, and will override the
+	existing registration. Unregistering your override will restore the previously registered
+	handler. */
+	void XMLParser::RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+		HandlerList& handlers = mLoadMap[tagName];
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+			XMLNodeHandler* handler = ( *iter );
+			if ( handler == handler_callback ) {
+				std::stringstream ss;
+				ss << "XMLLoad: ";
+				ss << tagName;
+				ss << " @ ";
+				ss << "0x" << (( size_t ) handler_callback );
+				ss << " Already registered";
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, ss.str(), __FUNCTION__ );
+			}
+		}
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
+		<< "Register XMLLoad: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+		handlers.push_front( handler_callback );
 	}
 	//############################################################################
-	void XMLParser::ParseXMLFile( const std::string& xmlFilename, IncludeSet& includesToIgnore, unsigned int depth ) {
-		for ( unsigned int i = 0; i < depth; i++ ) //stupid log indent trick
-			LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "  ";
-		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "Parsing XML file: " << xmlFilename << Log::endlog;
-
-		includesToIgnore.insert( xmlFilename );
-
-		TiXmlDocument doc;
-		//doc.LoadFile(xmlFilename);
-		Resource_CStr res;
-		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
-		resProvider->loadResource( xmlFilename, res );
-		doc.Parse( res.getString() );
-		TiXmlElement* root = doc.RootElement();
-		TiXmlElement* section;
-		section = root;
-
-
-		if ( section ) {
-			do {
-				if ( 0 == strcmpi( section->Value(), "Include" ) ) {
-					TiXmlAttribute* attrib = section->FirstAttribute();
-					const char* fileName = 0;
-					if ( attrib ) {
-						do {
-							if ( 0 == strcmpi( attrib->Name(), "file" ) ) {
-								fileName = attrib->Value();
-							}
-						} while (( attrib = attrib->Next() ) );
-					}
-					if ( fileName ) {
-						if ( includesToIgnore.find( std::string( fileName ) ) == includesToIgnore.end() ) {
-							XMLParser::ParseXMLFile( fileName, includesToIgnore, depth + 1 );
-						} else {
-							LogManager::SlogMsg( "XMLParser", OGLL_WARN )
-							<< "Skipping reference to \"" << fileName << "\" in file \""
-							<< xmlFilename << "\". (" << fileName << " has already been included previously)"
-							<< Log::endlog;
-						}
-					}
-				}
-				if ( 0 == strcmpi( section->Value(), "imageset" ) ) {
-					ImageryManager::getSingleton()._loadImagesetFromTinyXMLElement( section );
-				}
-				if ( 0 == strcmpi( section->Value(), "template" ) ) {
-					WidgetTemplateManager::getSingleton()._loadTemplateFromTinyXMLElement( section );
-				}
-				if ( 0 == strcmpi( section->Value(), "GUISheet" ) ) {
-					LayoutLoader::_loadGUISheetFromTinyXMLElement( section );
-				}
-				if ( 0 == strcmpi( section->Value(), "font" ) ) {
-					FontManager::getSingleton()._loadFontFromTinyXMLElement( section );
-				}
-				if ( 0 == strcmpi( section->Value(), "plugin" ) ) {
-					PluginManager::getSingleton()._loadFromTinyXMLElement( section );
-				}
-			} while (( section = section->NextSiblingElement() ) );
+	/*! \see RegisterLoadHandler() */
+	void XMLParser::UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+		HandlerList& handlers = mLoadMap[tagName];
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+			XMLNodeHandler* handler = ( *iter );
+			if ( handler == handler_callback ) {
+				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
+				<< "Unregister XMLLoad: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+				handlers.erase( iter );
+				return;
+			}
+		}
+		std::stringstream ss;
+		ss << "XMLLoad: ";
+		ss << tagName;
+		ss << " @ ";
+		ss << "0x" << (( size_t ) handler_callback );
+		ss << " Not Found!";
+		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, ss.str(), __FUNCTION__ );
+	}
+	//############################################################################
+	void XMLParser::RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+		HandlerList& handlers = mUnloadMap[tagName];
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+			XMLNodeHandler* handler = ( *iter );
+			if ( handler == handler_callback ) {
+				std::stringstream ss;
+				ss << "XMLUnload: ";
+				ss << tagName;
+				ss << " @ ";
+				ss << "0x" << (( size_t ) handler_callback );
+				ss << " Already registered";
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, ss.str(), __FUNCTION__ );
+			}
+		}
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
+		<< "Register XMLUnload: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+		handlers.push_front( handler_callback );
+	}
+	//############################################################################
+	void XMLParser::UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+		HandlerList& handlers = mUnloadMap[tagName];
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+			XMLNodeHandler* handler = ( *iter );
+			if ( handler == handler_callback ) {
+				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
+				<< "Unregister XMLUnload: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+				handlers.erase( iter );
+				return;
+			}
+		}
+		std::stringstream ss;
+		ss << "XMLUnload: ";
+		ss << tagName;
+		ss << " @ ";
+		ss << "0x" << (( size_t ) handler_callback );
+		ss << " Not Found!";
+		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, ss.str(), __FUNCTION__ );
+	}
+	//############################################################################
+	void XMLParser::ProcessXML_Load( XMLNode& node, const std::string& nodePath ) {
+		if ( !fireCallback( mLoadMap, node, nodePath ) ) {
+			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
+			<< "No XMLLoad handler processed tag: " << node.getTagName() << Log::endlog;
 		}
 	}
 	//############################################################################
-}
-;//namespace OpenGUI{
-*/
+	void XMLParser::ProcessXML_Unload( XMLNode& node, const std::string& nodePath ) {
+		if ( !fireCallback( mUnloadMap, node, nodePath ) ) {
+			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
+			<< "No XMLUnload handler processed tag: " << node.getTagName() << Log::endlog;
+		}
+	}
+	//############################################################################
+	void XMLParser::ProcessXML_Load( XMLNodeContainer& container, const std::string& nodePath ) {
+		XMLNodeList list = container.getChildren();
+		for ( XMLNodeList::iterator iter = list.begin();list.end() != iter;iter++ ) {
+			XMLNode& node = *( *iter );
+			ProcessXML_Load( node, nodePath );
+		}
+	}
+	//############################################################################
+	void XMLParser::ProcessXML_Unload( XMLNodeContainer& container, const std::string& nodePath ) {
+		XMLNodeList list = container.getChildren();
+		for ( XMLNodeList::iterator iter = list.begin();list.end() != iter;iter++ ) {
+			XMLNode& node = *( *iter );
+			ProcessXML_Unload( node, nodePath );
+		}
+	}
+	//############################################################################
+	bool XMLParser::fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const std::string& nodePath ) {
+		XMLHandlerMap::iterator mapIter = handlerMap.find( node.getTagName() );
+		if ( mapIter != handlerMap.end() && mapIter->second.size() > 0 ) {
+			HandlerList& handleList = mapIter->second;
+			for ( HandlerList::iterator iter = handleList.begin(); iter != handleList.end();iter++ ) {
+				XMLNodeHandler* handler_callback = ( *iter );
+				bool retval;
+				try {
+					retval = ( *handler_callback )( node, nodePath );
+				} catch ( ... ) {
+					OG_THROW( Exception::ERR_INTERNAL_ERROR,
+							  "Unhandled exception in XML handler callback!", __FUNCTION__ );
+				}
+				if ( retval )
+					return true;
+			}
+		} else {
+			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
+			<< "No handler registered for tag: " << node.getTagName() << Log::endlog;
+		}
+		return false;
+	}
+	//############################################################################
+	bool XMLParser::_IncludeLoadHandler( const XMLNode& node, const std::string& nodePath ) {
+		std::string filename = node.getAttribute( "file" );
+		if ( filename.length() <= 0 ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'file' attribute.", __FUNCTION__ );
+		}
+		// test include list for recursion
+		if ( _Included( filename ) ) {
+			// if failed, warn and skip
+			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
+			<< "XML Include loop detected, breaking include: " << filename << Log::endlog;
+			return true;
+		}
 
+		// otherwise store it and do it
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> >>>: " << filename << Log::endlog;
+		mIncludeList.push_front( filename );
+		XMLDoc doc;
+		doc.loadFile( filename );
+		XMLNodeList children = doc.getChildren();
+		XMLNode& freeNode = const_cast<XMLNode&>(node);
+		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
+			XMLNode& child = *( *iter );
+			child.setParent(&freeNode);
+			XMLParser::getSingleton().ProcessXML_Load( child, nodePath );
+			child.setParent(&doc);
+		}
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> <<<: " << filename << Log::endlog;
+
+		// pop our recursion from the list
+		mIncludeList.pop_front();
+		return true;
+	}
+	//############################################################################
+	bool XMLParser::_IncludeUnloadHandler( const XMLNode& node, const std::string& nodePath ) {
+		std::string filename = node.getAttribute( "file" );
+		if ( filename.length() <= 0 ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'file' attribute.", __FUNCTION__ );
+		}
+		// test include list for recursion
+		if ( _Included( filename ) ) {
+			// if failed, warn and skip
+			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
+			<< "XML Include loop detected, breaking include: " << filename << Log::endlog;
+			return true;
+		}
+
+		// otherwise store it and do it
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> >>>: " << filename << Log::endlog;
+		mIncludeList.push_front( filename );
+		XMLDoc doc;
+		doc.loadFile( filename );
+		XMLNodeList children = doc.getChildren();
+		XMLNode& freeNode = const_cast<XMLNode&>(node);
+		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
+			XMLNode& child = *( *iter );
+			child.setParent(&freeNode);
+			XMLParser::getSingleton().ProcessXML_Unload( child, nodePath );
+			child.setParent(&doc);
+		}
+		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> <<<: " << filename << Log::endlog;
+
+		// pop our recursion from the list
+		mIncludeList.pop_front();
+		return true;
+	}
+	//############################################################################
+	XMLParser::IncludeList XMLParser::mIncludeList;
+	//############################################################################
+	bool XMLParser::_Included( const std::string& filename ) {
+		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end();iter++ ) {
+			if (( *iter ) == filename )
+				return true;
+		}
+		return false;
+	}
+}//namespace OpenGUI {
