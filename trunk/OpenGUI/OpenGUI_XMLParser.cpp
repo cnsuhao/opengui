@@ -203,12 +203,12 @@ namespace OpenGUI {
 		XMLDoc doc;
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
-		XMLNode& freeNode = const_cast<XMLNode&>(node);
+		XMLNode& freeNode = const_cast<XMLNode&>( node );
 		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
 			XMLNode& child = *( *iter );
-			child.setParent(&freeNode);
+			child.setParent( &freeNode );
 			XMLParser::getSingleton().ProcessXML_Load( child, nodePath );
-			child.setParent(&doc);
+			child.setParent( &doc );
 		}
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> <<<: " << filename << Log::endlog;
 
@@ -236,12 +236,12 @@ namespace OpenGUI {
 		XMLDoc doc;
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
-		XMLNode& freeNode = const_cast<XMLNode&>(node);
+		XMLNode& freeNode = const_cast<XMLNode&>( node );
 		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
 			XMLNode& child = *( *iter );
-			child.setParent(&freeNode);
+			child.setParent( &freeNode );
 			XMLParser::getSingleton().ProcessXML_Unload( child, nodePath );
-			child.setParent(&doc);
+			child.setParent( &doc );
 		}
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 ) << "XML <Include> <<<: " << filename << Log::endlog;
 
