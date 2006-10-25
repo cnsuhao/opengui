@@ -61,7 +61,7 @@ private:
 };
 
 void Demo1App::preRun() {
-
+	XMLParser::getSingleton().LoadFromFile("another_demo1.xml");
 	Imageset* imgset = ImageryManager::createImagesetEx( "tachometer.png" );
 	imgset->createImagery( "TachBG", 2, 2, 321, 321 );
 	imgset->createImagery( "TachNeedle", 348, 42, 7, 131 );

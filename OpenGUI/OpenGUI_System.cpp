@@ -44,6 +44,8 @@ namespace OpenGUI {
 		<< Log::endlog;
 		mTimerManager = new TimerManager; //get this up asap
 
+		mXMLParser = new XMLParser(); //subsystems register with XML system, so this needs to be available immediately
+
 		m_PerformAutoTicks = true;
 
 		//mActiveGUISheet = 0;
@@ -89,8 +91,6 @@ namespace OpenGUI {
 
 		mScreenManager = new ScreenManager();
 
-		mXMLParser = new XMLParser();
-
 		LogManager::SlogMsg( "INIT", OGLL_INFO )
 		<< " ################################ "
 		<< "System Init Complete"
@@ -118,9 +118,6 @@ namespace OpenGUI {
 		if ( m_PluginManager )
 			delete m_PluginManager;
 
-		if ( mXMLParser )
-			delete mXMLParser;
-
 		if ( mWidgetManager )
 			delete mWidgetManager;
 
@@ -138,6 +135,9 @@ namespace OpenGUI {
 
 		if ( mUsingGenericResourceProvider )
 			delete mResourceProvider;
+
+		if ( mXMLParser )
+			delete mXMLParser;
 
 		if ( mTimerManager )
 			delete mTimerManager; //delete this last

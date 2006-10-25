@@ -38,7 +38,7 @@ namespace OpenGUI {
 	TexturePtr TextureManager::createTextureFromTextureData( const std::string& name, TextureData* textureData ) {
 		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "Create Texture from TextureData: "
 		<< name
-		<< " (0x" << ( unsigned int ) textureData << ")"
+		<< " (" << ( size_t ) textureData << ")"
 		<< Log::endlog;
 		Texture* tex = mRenderer->createTextureFromTextureData( textureData );
 		tex->_setName( name );
@@ -49,7 +49,7 @@ namespace OpenGUI {
 	void TextureManager::updateTextureFromTextureData( TexturePtr texturePtr, TextureData* textureData ) {
 		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "Update Texture from TextureData: "
 		<< texturePtr->getName()
-		<< " (0x" << ( unsigned int ) textureData << ")"
+		<< " (" << ( size_t ) textureData << ")"
 		<< Log::endlog;
 
 		Texture* tex;
