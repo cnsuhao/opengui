@@ -37,10 +37,14 @@ namespace OpenGUI{
 		static void fromFRect(const FRect& in, std::string& out);
 		//! Turn a string into an FRect
 		static void toFRect(const std::string& in, FRect& out);
-
-
-		//static void fromColor(const Color& in, std::string& out);
-		//static void toColor(const std::string& in, Color& out);
+		//! Turn a Color into a string
+		static void fromColor(const Color& in, std::string& out);
+		//! Turn a string into a Color
+		static void toColor(const std::string& in, Color& out);
+		//! Turn a bool into a string
+		static void fromBool(bool in, std::string& out);
+		//! Turn a string into a bool
+		static void toBool(const std::string& in, bool& out);
 	};
 }
 

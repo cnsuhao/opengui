@@ -178,4 +178,89 @@ namespace OpenGUI {
 		toFVector2( maxHalf, out.max );
 	}
 	//############################################################################
+	void StrConv::fromColor( const Color& in, std::string& out ) {
+		std::stringstream ss;
+		std::string r, g, b, a;
+		fromFloat( in.Red, r );
+		fromFloat( in.Green, g );
+		fromFloat( in.Blue, b );
+		fromFloat( in.Alpha, a );
+		ss << r << ":" << g << ":" << b << ":" << a;
+		out = ss.str();
+	}
+	//############################################################################
+	typedef std::list<std::string> StringList;
+	void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
+		std::string tmpStr;
+		const char* cstr = inputStr.c_str();
+		unsigned int epos, spos;
+		spos = epos = 0;
+		while ( cstr[epos] != 0 ) {
+			if ( cstr[epos] == token ) {
+				tmpStr = inputStr.substr( spos, epos - spos );
+				outputStrList.push_back( tmpStr );
+				spos = epos + 1;
+			}
+			epos++;
+		}
+		if ( spos != epos ) {
+			tmpStr = inputStr.substr( spos, epos - spos );
+			outputStrList.push_back( tmpStr );
+		}
+	}
+	//############################################################################
+	void StrConv::toColor( const std::string& in, Color& out ) {
+		//!\todo add support for #RRGGBBAA style color representation
+		StringList strList;
+		_Tokenize( in, strList, ':' );
+		int i = 0;
+		StringList::iterator iter = strList.begin();
+		while ( i < 4 && iter != strList.end() ) {
+			if ( i == 0 )
+				toFloat(( *iter ), out.Red );
+			if ( i == 1 )
+				toFloat(( *iter ), out.Green );
+			if ( i == 2 )
+				toFloat(( *iter ), out.Blue );
+			if ( i == 3 )
+				toFloat(( *iter ), out.Alpha );
+			iter++;
+			i++;
+		}
+		if ( i != 4 )
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+	}
+	//############################################################################
+	void StrConv::fromBool( bool in, std::string& out ) {
+		if ( in )
+			out = "true";
+		else
+			out = "false";
+	}
+	//############################################################################
+	void StrConv::toBool( const std::string& in, bool& out ) {
+		std::string tmp = in;
+		_strTrim( tmp );
+		if ( tmp == "0" ) {
+			out = false;
+			return;
+		}
+		if ( tmp == "1" ) {
+			out = true;
+			return;
+		}
+		std::transform( tmp.begin(), tmp.end(), tmp.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
+		// If the previous fails to work, use this instead
+		//std::transform(tmp.begin(),tmp.end(),tmp.begin(),chrLower);
+		if ( tmp == "true" ) {
+			out = true;
+			return;
+		}
+		if ( tmp == "false" ) {
+			out = false;
+			return;
+		}
+		OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+	}
+	//############################################################################
 }
