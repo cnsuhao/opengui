@@ -373,7 +373,7 @@ namespace OpenGUI {
 			return right.getValueAsString() == ( *mString );
 			break;
 		default:
-			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__);
+			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__ );
 			return false; //should never happen
 		}
 	}
@@ -383,15 +383,56 @@ namespace OpenGUI {
 		return !operator==( right );
 	}
 	//#####################################################################
-	void Value::setValueAsInt( const std::string& intStr ){
+	void Value::setValueAsInt( const std::string& intStr ) {
 		int value;
-		StrConv::toInt(intStr, value);
+		StrConv::toInt( intStr, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsFloat( const std::string& floatStr ){
+	void Value::setValueAsFloat( const std::string& floatStr ) {
 		float value;
-		StrConv::toFloat(floatStr, value);
+		StrConv::toFloat( floatStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValueAsFVector2( const std::string& fv2Str ) {
+		FVector2 value;
+		StrConv::toFVector2( fv2Str, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValueAsFRect( const std::string& frectStr ) {
+		FRect value;
+		StrConv::toFRect( frectStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValueAsIVector2( const std::string& iv2Str ) {
+		IVector2 value;
+		StrConv::toIVector2( iv2Str, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValueAsIRect( const std::string& irectStr ) {
+		IRect value;
+		StrConv::toIRect( irectStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValueAsColor( const std::string& colorStr ) {
+		Color value;
+		StrConv::toColor( colorStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	/*! Yes, this is redundant. */
+	void Value::setValueAsString( const std::string& stringStr ) {
+		setValue( stringStr );
+	}
+	//#####################################################################
+	void Value::setValueAsBool( const std::string& boolStr ) {
+		bool value;
+		StrConv::toBool( boolStr, value );
 		setValue( value );
 	}
 	//#####################################################################

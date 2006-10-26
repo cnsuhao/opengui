@@ -14,7 +14,8 @@ namespace OpenGUI {
 	//! An encapsulation class used for passing values back and forth in the Accessor system
 	/*! Each Value has a stored value of \c ValueType as well as the option to carry
 	a string based \c Name.
-	
+
+	\todo setValueAsEnum
 	*/
 	class OPENGUI_API Value {
 	public:
@@ -132,19 +133,20 @@ namespace OpenGUI {
 		void setValueAsInt( const std::string& intStr );
 		//! Sets the value from a string, parsed into a float
 		void setValueAsFloat( const std::string& floatStr );
-
 		//! Sets the value from a string, parsed into an FVector2
 		void setValueAsFVector2( const std::string& fv2Str );
 		//! Sets the value from a string, parsed into an FRect
 		void setValueAsFRect( const std::string& frectStr );
-
 		//! Sets the value from a string, parsed into an IVector2
 		void setValueAsIVector2( const std::string& iv2Str );
 		//! Sets the value from a string, parsed into an IRect
 		void setValueAsIRect( const std::string& irectStr );
-
 		//! Sets the value from a string, parsed into a Color
 		void setValueAsColor( const std::string& colorStr );
+		//! Sets the value from a string, parsed into a string
+		void setValueAsString( const std::string& stringStr );
+		//! Sets the value from a string, parsed into a boolean
+		void setValueAsBool( const std::string& boolStr );
 //@}
 
 //!\name Get value as explicit type

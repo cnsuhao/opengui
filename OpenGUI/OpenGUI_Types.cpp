@@ -4,27 +4,27 @@
 
 namespace OpenGUI {
 	//#####################################################################
-	std::string IVector2::toStr() const{
+	std::string IVector2::toStr() const {
 		std::string ret;
-		StrConv::fromIVector2(*this,ret);
+		StrConv::fromIVector2( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string FVector2::toStr() const{
+	std::string FVector2::toStr() const {
 		std::string ret;
-		StrConv::fromFVector2(*this,ret);
+		StrConv::fromFVector2( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string IRect::toStr() const{
+	std::string IRect::toStr() const {
 		std::string ret;
-		StrConv::fromIRect(*this,ret);
+		StrConv::fromIRect( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string FRect::toStr() const{
+	std::string FRect::toStr() const {
 		std::string ret;
-		StrConv::fromFRect(*this,ret);
+		StrConv::fromFRect( *this, ret );
 		return ret;
 	}
 	//#####################################################################
