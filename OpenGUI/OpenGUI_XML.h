@@ -44,8 +44,12 @@ namespace OpenGUI {
 		void loadFile( const std::string& filename );
 		//! saves this XMLDoc to a file, bypassing the resource manager (writes directly to disk)
 		void saveFile( const std::string& filename );
+		//! returns the last filename this XMLDoc was saved to or loaded from
+		const std::string& getFileName() {
+			return mFileName;
+		}
 	protected:
-
+		std::string mFileName;
 	};
 
 	//! Represents an XML tag
@@ -83,6 +87,8 @@ namespace OpenGUI {
 		XMLNode( const std::string& tagName, XMLNodeContainer* parentPtr = 0 );
 		//! destructor automatically performs safe cleanup
 		virtual ~XMLNode();
+		//! Returns the containing XMLDoc of this node
+		XMLDoc* getDoc() const;
 		//! returns the parent of this node
 		XMLNodeContainer* getParent() const;
 		//! changes the parent of this node
@@ -101,6 +107,8 @@ namespace OpenGUI {
 		void setAttribute( const std::string& name, const std::string& value );
 		//! removes the given attribute
 		void removeAttribute( const std::string& name );
+		//! Returns \c true if the given attribute exists, \c false otherwise
+		bool hasAttribute( const std::string& name );
 		//! returns a copy of all attributes
 		XMLAttributeMap getAttributes() const;
 
@@ -108,6 +116,9 @@ namespace OpenGUI {
 		const std::string& getText() const;
 		//! set the text content of this node
 		void setText( const std::string& text );
+
+		//! Dumps the full contents of this node into a human readable format that is XML-like, but not real xml
+		std::string dump() const;
 
 	protected:
 		//! \internal build the given tinyXML tree into a node tree

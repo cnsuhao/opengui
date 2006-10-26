@@ -13,6 +13,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void XMLDoc::loadFile( const std::string& filename ) {
+		mFileName = filename;
 		TiXmlDocument doc;
 		Resource_CStr res;
 		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
@@ -27,6 +28,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void XMLDoc::saveFile( const std::string& filename ) {
+		mFileName = filename;
 		TiXmlDocument doc;
 		TiXmlDeclaration decl( "1.0", "", "" );
 		doc.InsertEndChild( decl );
@@ -125,12 +127,35 @@ namespace OpenGUI {
 		mAttributes.erase( name );
 	}
 	//############################################################################
+	bool XMLNode::hasAttribute( const std::string& name ) {
+		XMLAttributeMap::const_iterator iter = mAttributes.find( name );
+		if ( iter != mAttributes.end() )
+			return true;
+		return false;
+	}
+	//############################################################################
 	const std::string& XMLNode::getText() const {
 		return mText;
 	}
 	//############################################################################
 	void XMLNode::setText( const std::string& text ) {
 		mText = text;
+	}
+	//############################################################################
+	XMLDoc* XMLNode::getDoc() const {
+		if ( mParent ) {
+			XMLDoc* doc = dynamic_cast<XMLDoc*>( mParent );
+			if ( doc )
+				return doc;
+			else {
+				XMLNode* pnode = dynamic_cast<XMLNode*>( mParent );
+				if ( pnode )
+					return pnode->getDoc();
+				else
+					return 0;
+			}
+		}
+		return 0;
 	}
 	//############################################################################
 	XMLNode::XMLNode( void* txmle, XMLNodeContainer* parentPtr ): mParent( parentPtr ) {
@@ -216,4 +241,18 @@ namespace OpenGUI {
 		}
 		path = path + mTagName + "/";
 	}
+	//############################################################################
+	std::string XMLNode::dump() const {
+		std::stringstream out;
+		out << "<" << mTagName;
+		for ( XMLAttributeMap::const_iterator iter = mAttributes.begin(); iter != mAttributes.end(); iter++ ) {
+			out << " " << iter->first << "=\"" << iter->second << "\"";
+		}
+		out << ">";
+		if ( mText.length() > 0 ) {
+			out << "#- " << mText;
+		}
+		return out.str();
+	}
+	//############################################################################
 }//namespace OpenGUI{
