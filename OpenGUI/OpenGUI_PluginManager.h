@@ -2,10 +2,13 @@
 #define C6B5FF01_4797_4ddd_A312_AE5468E80F5D
 
 #include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
-#include "OpenGUI_DynamicLib.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
+	class System; // forward declaration
+	class DynamicLib; // forward declaration
 
 	//! Plugin manager for tracking the proper loading and unloading of plugins.
 	/*!
@@ -22,12 +25,11 @@ namespace OpenGUI {
 		comment from that section of the config file is available \ref PMANGLE "here".
 
 	*/
-	class PluginManager : public Singleton<PluginManager> {
-		friend class XMLParser;
-	public:
+	class OPENGUI_API PluginManager : public Singleton<PluginManager> {
+		friend class System; // so System can create/destroy
 		PluginManager();
 		~PluginManager();
-
+	public:
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
 		static PluginManager& getSingleton( void );
@@ -37,23 +39,23 @@ namespace OpenGUI {
 		static PluginManager* getSingletonPtr( void );
 
 		//! Loads a plugin by filename.
-
 		void loadPlugin( std::string filename );
+
 		//! Unloads a plugin by filename.
-		/*! */
 		void unloadPlugin( std::string filename );
+
 		//! Unloads all currently loaded plugins
 		void unloadAllPlugins();
 
-		//! Loads plugins as defined by an xml file.
-		/*! Any non-Plugin related XML entities are silently ignored (only processes \<Plugin\> tags). */
-		void LoadPluginsFromXML( std::string xmlFilename );
 	private:
-		void _loadFromTinyXMLElement( void* tXelementPtr );
-		static void firePluginStart( DynamicLib* lib );
-		static void firePluginStop( DynamicLib* lib );
+		void firePluginStart( DynamicLib* lib );
+		void firePluginStop( DynamicLib* lib );
 		typedef std::map<std::string, DynamicLib*> PluginMap;
 		PluginMap mPluginMap;
+
+		// XML tag handlers for <Plugin> tags
+		static bool _Plugin_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Plugin_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 
 }

@@ -6,7 +6,7 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontGlyph.h"
-
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 	class Texture;	//forward declaration
@@ -65,12 +65,6 @@ namespace OpenGUI {
 		//! Retrieves a font by name
 		FontSetPtr GetFontSet( const std::string& fontName );
 
-		// Loads Fonts from an XML document.
-		/* Any conflicting Fonts will be overwritten, any non-font related
-			XML entities are silently ignored (only processes \<Font\> tags).
-		*/
-		//void LoadFontsFromXML( std::string xmlFilename );
-
 		//! a list of font names that are currently loaded in the FontManager, retrieved by FontManager::getFontList()
 		typedef std::list<std::string> FontList;
 
@@ -81,9 +75,6 @@ namespace OpenGUI {
 		ImageryPtrList _getFontAtlases();
 
 	private:
-
-		Font* _loadFontFromTinyXMLElement( void* tXelementPtr );
-
 		//! \internal Returns a string containing the error description from FreeType for the given FreeType error code. If the error is not found, "*UNKNOWN ERROR*" is returned.
 		std::string _GetFTErrorString( int errorCode );
 
@@ -96,6 +87,10 @@ namespace OpenGUI {
 		FontSetPtrMap mFontSetMap;
 
 		Font mDefaultFont;
+
+		// XML tag handlers for <Font> tags
+		static bool _Font_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Font_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 }//namespace OpenGUI{
 #endif

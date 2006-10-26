@@ -74,13 +74,11 @@ namespace OpenGUI {
 
 		//! Returns the name of this Imageset
 		const std::string& getName();
+
 	private:
 		std::string mFilename;
 		TexturePtr mpTexture;
 		ImageryPtrList mChildImageryList;
-
-		//Takes a TiXML element pointer of the Imageset element as an argument.
-		void _loadImageryFromRootTinyXMLElement( void* tXrootElementPtr );
 	};
 	//! Reference counted, auto deleting Imageset pointer
 	typedef RefPtr<Imageset> ImagesetPtr;

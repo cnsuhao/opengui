@@ -1,5 +1,3 @@
-
-#include "tinyxml.h"
 #include "OpenGUI_ImageryManager.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_Exception.h"
@@ -125,66 +123,6 @@ namespace OpenGUI {
 			iter++;
 		}
 		mChildImageryList.clear();
-	}
-	//############################################################################
-	void Imageset::_loadImageryFromRootTinyXMLElement( void* tXrootElementPtr ) {
-		TiXmlElement* tXelement = ( TiXmlElement* )tXrootElementPtr;
-		TiXmlElement* section = tXelement->FirstChildElement();
-		if ( section ) {
-			do { //for each <imagery>: test input validity, if everything is good create an imagery from it
-				if ( 0 == strcmpi( section->Value(), "imagery" ) ) {
-					const char* iname = 0;
-
-					const char* xpos = 0;
-					int xpos_i;
-
-					const char* ypos = 0;
-					int ypos_i;
-
-					const char* height = 0;
-					int height_i;
-
-					const char* width = 0;
-					int width_i;
-
-					TiXmlAttribute* attrib = section->FirstAttribute();
-					if ( attrib ) {
-						do { //scan all attributes and keep the ones we actually care about
-							if ( 0 == strcmpi( attrib->Name(), "name" ) )
-								iname = attrib->Value();
-							if ( 0 == strcmpi( attrib->Name(), "xpos" ) &&
-									attrib->QueryIntValue( &xpos_i ) == TIXML_SUCCESS )
-								xpos = attrib->Value();
-							if ( 0 == strcmpi( attrib->Name(), "ypos" ) &&
-									attrib->QueryIntValue( &ypos_i ) == TIXML_SUCCESS )
-								ypos = attrib->Value();
-							if ( 0 == strcmpi( attrib->Name(), "width" ) &&
-									attrib->QueryIntValue( &width_i ) == TIXML_SUCCESS )
-								width = attrib->Value();
-							if ( 0 == strcmpi( attrib->Name(), "height" ) &&
-									attrib->QueryIntValue( &height_i ) == TIXML_SUCCESS )
-								height = attrib->Value();
-						} while (( attrib = attrib->Next() ) );
-						if ( iname && xpos && ypos && width && height ) {
-							//if we manager to acquire all the necessary data, create the imagery object
-							IRect irect;
-							irect.setPosition( IVector2( xpos_i, ypos_i ) );
-							irect.setSize( IVector2( width_i, height_i ) );
-							createImagery( iname, irect );
-						} else {
-							std::string msg = "Missing <Imagery> attributes";
-							if ( !iname ) msg += ": (Imagery Name) ";
-							else msg += "for '" + std::string( iname ) + "'";
-							if ( !xpos ) msg += "(XPos) ";
-							if ( !ypos ) msg += "(YPos) ";
-							if ( !width ) msg += "(Width) ";
-							if ( !height ) msg += "(Height) ";
-							OG_THROW( Exception::ERR_INVALIDPARAMS, msg, "_loadImageryFromRootTinyXMLElement" );
-						}
-					}
-				}
-			} while (( section = section->NextSiblingElement() ) );
-		}
 	}
 	//############################################################################
 	Imageset::ImageryList Imageset::getImageryList() {

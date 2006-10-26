@@ -189,9 +189,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool XMLParser::_IncludeLoadHandler( const XMLNode& node, const std::string& nodePath ) {
-		std::string filename = node.getAttribute( "file" );
+		std::string filename = node.getAttribute( "File" );
 		if ( filename.length() <= 0 ) {
-			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'file' attribute.", __FUNCTION__ );
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'File' attribute.", __FUNCTION__ );
 		}
 		// test include list for recursion
 		if ( _Included( filename ) ) {
@@ -221,9 +221,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool XMLParser::_IncludeUnloadHandler( const XMLNode& node, const std::string& nodePath ) {
-		std::string filename = node.getAttribute( "file" );
+		std::string filename = node.getAttribute( "File" );
 		if ( filename.length() <= 0 ) {
-			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'file' attribute.", __FUNCTION__ );
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'File' attribute.", __FUNCTION__ );
 		}
 		// test include list for recursion
 		if ( _Included( filename ) ) {

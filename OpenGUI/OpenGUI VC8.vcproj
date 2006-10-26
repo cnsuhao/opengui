@@ -358,6 +358,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_StrConv.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_System.cpp"
 				>
 			</File>
@@ -621,6 +625,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Singleton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_StrConv.h"
 				>
 			</File>
 			<File

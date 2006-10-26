@@ -2,10 +2,10 @@
 #define A7EB8CEB_DF02_4714_AD1E_53FDCDD6C2E2
 
 #include "OpenGUI_PreRequisites.h"
-
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Imageset.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 
@@ -99,12 +99,6 @@ namespace OpenGUI {
 		/*! \returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
 		ImageryPtr getImagery( std::string imageryName );
 
-		//! Loads Imagesets from an XML document.
-		/*! Any conflicting Imagesets will be overwritten, any non-imageset related
-			XML entities are silently ignored (only processes \<Imageset\> and enclosed \<Imagery\> tags).
-		*/
-		void LoadImagesetsFromXML( std::string xmlFilename );
-
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
 
@@ -113,12 +107,12 @@ namespace OpenGUI {
 
 	private:
 		ImagesetCPtrList mImagesetList;
-
-		Imageset* _loadImagesetFromTinyXMLElement( void* tXelementPtr );
-
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
-
 		ResourceProvider* mResourceProvider;
+
+		// XML tag handlers for <Imageset> tags
+		static bool _Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 
 }

@@ -1,13 +1,13 @@
 #include "tinyxml.h"
 
-#include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_PluginManager.h"
+#include "OpenGUI_DynamicLib.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
-#include "OpenGUI_DynamicLib.h"
-#include "OpenGUI_PluginManager.h"
 #include "OpenGUI_System.h"
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Resource.h"
+#include "OpenGUI_XMLParser.h"
 
 typedef void( *PLUGIN_START_FUNC )( void );
 typedef void( *PLUGIN_STOP_FUNC )( void );
@@ -29,11 +29,15 @@ namespace OpenGUI {
 	//############################################################################
 	PluginManager::PluginManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Created PluginManager" << Log::endlog;
+		XMLParser::getSingleton().RegisterLoadHandler( "Plugin", &PluginManager::_Plugin_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "Plugin", &PluginManager::_Plugin_XMLNode_Unload );
 	}
 	//############################################################################
 	PluginManager::~PluginManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying PluginManager" << Log::endlog;
 		PluginManager::unloadAllPlugins();
+		XMLParser::getSingleton().UnregisterLoadHandler( "Plugin", &PluginManager::_Plugin_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "Plugin", &PluginManager::_Plugin_XMLNode_Unload );
 	}
 	//############################################################################
 	void PluginManager::loadPlugin( std::string filename ) {
@@ -60,7 +64,7 @@ namespace OpenGUI {
 		mPluginMap[filename] = lib;
 
 		//run start plugin
-		PluginManager::firePluginStart( lib );
+		firePluginStart( lib );
 	}
 	//############################################################################
 	void PluginManager::unloadPlugin( std::string filename ) {
@@ -76,7 +80,7 @@ namespace OpenGUI {
 		mPluginMap.erase( iter );
 
 		//run stop plugin
-		PluginManager::firePluginStop( lib );
+		firePluginStop( lib );
 
 		//detach the module
 		lib->unload();
@@ -92,7 +96,7 @@ namespace OpenGUI {
 		while ( iter != mPluginMap.end() ) {
 			lib = iter->second;
 			//run stop plugin
-			PluginManager::firePluginStop( lib );
+			firePluginStop( lib );
 			//detach the module
 			lib->unload();
 			delete lib;
@@ -120,44 +124,28 @@ namespace OpenGUI {
 			func();
 	}
 	//############################################################################
-	void PluginManager::_loadFromTinyXMLElement( void* tXelementPtr ) {
-		TiXmlElement* tXelement = ( TiXmlElement* )tXelementPtr;
-		const char* pluginFilename = 0;
-		TiXmlAttribute* attrib = tXelement->FirstAttribute();
-		if ( attrib ) {
-			do {
-				if ( 0 == strcmpi( attrib->Name(), "file" ) ) {
-					pluginFilename = attrib->Value();
-					break;
-				}
-			} while (( attrib = attrib->Next() ) );
-		}
-		if ( pluginFilename ) {
-			loadPlugin( pluginFilename );
-		}
+	bool PluginManager::_Plugin_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		PluginManager& manager = PluginManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string file = node.getAttribute( "File" );
+		manager.loadPlugin( file );
+		return true;
 	}
 	//############################################################################
-	void PluginManager::LoadPluginsFromXML( std::string xmlFilename ) {
-		LogManager::SlogMsg( "PluginManager", OGLL_INFO ) << "LoadPluginsFromXML: " << xmlFilename << Log::endlog;
+	bool PluginManager::_Plugin_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		PluginManager& manager = PluginManager::getSingleton();
 
-		TiXmlDocument doc;
-		//doc.LoadFile(xmlFilename);
-		Resource_CStr res;
-		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
-		resProvider->loadResource( xmlFilename, res );
-		doc.Parse( res.getString() );
-		TiXmlElement* root = doc.RootElement();
-		TiXmlElement* section;
-		section = root;
-		if ( section ) {
-			do {
-				//iterate through all of the root level elements and react to every "Plugin" found
-				if ( 0 == strcmpi( section->Value(), "Plugin" ) ) {
-					PluginManager::_loadFromTinyXMLElement( section );
-				}
-			} while (( section = section->NextSiblingElement() ) );
-		}
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
 
+		const std::string file = node.getAttribute( "File" );
+		manager.unloadPlugin( file );
+		return true;
 	}
 	//############################################################################
 };
