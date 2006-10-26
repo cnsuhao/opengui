@@ -112,6 +112,11 @@ namespace OpenGUI {
 		return iter->second;
 	}
 	//############################################################################
+	XMLAttributeMap XMLNode::getAttributes() const {
+		XMLAttributeMap attribs = mAttributes;
+		return attribs;
+	}
+	//############################################################################
 	void XMLNode::setAttribute( const std::string& name, const std::string& value ) {
 		mAttributes[name] = value;
 	}
@@ -120,7 +125,7 @@ namespace OpenGUI {
 		mAttributes.erase( name );
 	}
 	//############################################################################
-	const std::string& XMLNode::getText()const {
+	const std::string& XMLNode::getText() const {
 		return mText;
 	}
 	//############################################################################
@@ -183,4 +188,32 @@ namespace OpenGUI {
 		return ( void* )mytxml;
 	}
 	//############################################################################
+	/*! For example, if the tag were \c thisTag in the following code:
+	\code
+	<level1>
+	<level2>
+		<thisTag />
+	</level2>
+	</level1>
+	\endcode
+	Then the returned path would be "/level1/level2/".
+	The path is always comprised of a leading "/", following by \c tagName + "/" for each proceeding
+	node before the current node.
+	*/
+	std::string XMLNode::getPath() const {
+		std::string path = "/";
+		XMLNode* parentNode = dynamic_cast<XMLNode*>( mParent );
+		if ( parentNode ) {
+			parentNode->_buildPath( path );
+		}
+		return path;
+	}
+	//############################################################################
+	void XMLNode::_buildPath( std::string& path ) {
+		XMLNode* parentNode = dynamic_cast<XMLNode*>( mParent );
+		if ( parentNode ) {
+			parentNode->_buildPath( path );
+		}
+		path = path + mTagName + "/";
+	}
 }//namespace OpenGUI{

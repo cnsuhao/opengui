@@ -37,7 +37,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
-		ProcessXML_Load( doc, "" );
+		ProcessXML_Load( doc, "/" );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
@@ -45,7 +45,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN UnloadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
-		ProcessXML_Unload( doc, "" );
+		ProcessXML_Unload( doc, "/" );
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END UnloadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
@@ -203,10 +203,9 @@ namespace OpenGUI {
 		XMLDoc doc;
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
-		XMLNode& freeNode = const_cast<XMLNode&>( node );
 		for ( XMLNodeList::iterator iter = children.begin(); children.end() != iter; iter++ ) {
 			XMLNode& child = *( *iter );
-			child.setParent( &freeNode );
+			child.setParent( node.getParent() );
 			XMLParser::getSingleton().ProcessXML_LoadNode( child, nodePath );
 			child.setParent( &doc );
 		}
@@ -236,10 +235,9 @@ namespace OpenGUI {
 		XMLDoc doc;
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
-		XMLNode& freeNode = const_cast<XMLNode&>( node );
 		for ( XMLNodeList::reverse_iterator iter = children.rbegin(); children.rend() != iter; iter++ ) {
 			XMLNode& child = *( *iter );
-			child.setParent( &freeNode );
+			child.setParent( node.getParent() );
 			XMLParser::getSingleton().ProcessXML_UnloadNode( child, nodePath );
 			child.setParent( &doc );
 		}
