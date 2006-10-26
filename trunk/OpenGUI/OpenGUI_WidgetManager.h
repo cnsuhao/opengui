@@ -58,8 +58,8 @@ namespace OpenGUI {
 		WidgetDefinitionMap mWidgetDefinitionMap;
 
 		// XML tag handlers for <WidgetDef> tags
-		static bool _Imageset_WidgetDef_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Imageset_WidgetDef_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 }//namespace OpenGUI{
 
