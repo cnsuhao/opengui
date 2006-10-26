@@ -61,14 +61,9 @@ private:
 };
 
 void Demo1App::preRun() {
-	XMLParser::getSingleton().LoadFromFile("another_demo1.xml");
-	Imageset* imgset = ImageryManager::createImagesetEx( "tachometer.png" );
-	imgset->createImagery( "TachBG", 2, 2, 321, 321 );
-	imgset->createImagery( "TachNeedle", 348, 42, 7, 131 );
+	XMLParser::getSingleton().LoadFromFile("demo1.xml");
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	FontManager::getSingleton().RegisterFontSet( "pecot.ttf", "pecot" );
-	CursorManager::getSingleton().DefineCursor("Square", ValueList(), "Generic", "OpenGUI");
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor("Square");
 	mScreen->setCursor(cursorPtr);
 	mScreen->enableCursor();

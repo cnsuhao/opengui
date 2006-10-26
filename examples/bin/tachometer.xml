@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Font name="TachMPH" file="kongtext.ttf" autoscale="true" xres="800" yres="600" />
-<Plugin file="TachometerWidget" />
+
+
 
 <Template name="tachometer2" group="OpenGUI" type="StaticImage">
 	<Property name="Imagery" value="TachBG" />
@@ -26,7 +26,3 @@
 	<Property name="needlevalue" value="0" />
 </Template>
 
-<Imageset sourceimage="tachometer.png">
-	<Imagery Name="TachBG" XPos="2" YPos="2" Width="321" Height="321" />
-	<Imagery Name="TachNeedle" XPos="42" YPos="348" Width="131" Height="7" />
-</Imageset>
