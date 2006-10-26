@@ -21,7 +21,6 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating WidgetManager" << Log::endlog;
 		XMLParser::getSingleton().RegisterLoadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Load );
 		XMLParser::getSingleton().RegisterUnloadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Unload );
-
 	}
 	//############################################################################
 	WidgetManager::~WidgetManager() {
@@ -29,6 +28,14 @@ namespace OpenGUI {
 		XMLParser::getSingleton().UnregisterLoadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Load );
 		XMLParser::getSingleton().UnregisterUnloadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Unload );
 
+		size_t w, l, d;
+		getStats( w, l, d );
+		LogManager::SlogMsg( "WidgetManager", OGLL_INFO )
+		<< "Stagnant Entries Tally - "
+		<< "Registration (Widget:Library): "
+		<< "[" << w << ":" << l << "] "
+		<< "Definitions: " << d
+		<< Log::endlog;
 	}
 	//############################################################################
 	/*! If \a Library is not given or is "", the value of \a Name will be tested to see
@@ -154,6 +161,46 @@ namespace OpenGUI {
 			}
 		}
 		return widget;
+	}
+	//############################################################################
+	WidgetManager::WidgetRegPairList WidgetManager::GetRegisteredWidgets() {
+		WidgetRegPairList retval;
+		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
+			std::string LibName = iter->first;
+			WidgetFactoryMap& factoryMap = iter->second;
+			for ( WidgetFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
+				std::string BaseName = iter->first;
+				retval.push_back( WidgetRegPair( BaseName, LibName ) );
+			}
+		}
+		return retval;
+	}
+	//############################################################################
+	WidgetManager::WidgetDefList WidgetManager::GetDefinedWidgets() {
+		WidgetDefList retval;
+		for ( WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.begin(); iter != mWidgetDefinitionMap.end(); iter++ ) {
+			retval.push_back( iter->first );
+		}
+		return retval;
+	}
+	//############################################################################
+	void WidgetManager::getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets ) {
+		RegLibs = 0;
+		RegWidgets = 0;
+		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
+			bool hadValue = false;
+			WidgetFactoryMap& factoryMap = iter->second;
+			for ( WidgetFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
+				hadValue = true;
+				RegWidgets++;
+			}
+			if ( hadValue ) RegLibs++;
+		}
+
+		DefWidgets = 0;
+		for ( WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.begin(); iter != mWidgetDefinitionMap.end(); iter++ ) {
+			DefWidgets++;
+		}
 	}
 	//############################################################################
 	bool WidgetManager::_WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {

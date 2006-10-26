@@ -6,6 +6,7 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Cursor.h"
 #include "OpenGUI_Value.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 	class System; // forward declaration
@@ -43,6 +44,21 @@ namespace OpenGUI {
 		//! Unregister a Cursor factory
 		void UnregisterCursorFactory( const std::string& Name, const std::string& Library );
 
+		//! inner type of CursorRegPairList
+		typedef std::pair<std::string, std::string> CursorRegPair;
+		//! return type of GetRegisteredCursors()
+		typedef std::list<CursorRegPair> CursorRegPairList;
+		//! returns a pair list of all registered Cursors
+		CursorRegPairList GetRegisteredCursors();
+
+		//! return type of GetDefinedCursors()
+		typedef std::list<std::string> CursorDefList;
+		//! returns a list of all defined Cursors
+		CursorDefList GetDefinedCursors();
+
+		//! returns the number of registered widgets across the number of libraries, as well as the number of widget definitions
+		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
+
 	private:
 		typedef std::map<std::string, CursorFactoryCallback*> CursorFactoryMap;
 		typedef std::map<std::string, CursorFactoryMap> LibraryMap;
@@ -55,6 +71,10 @@ namespace OpenGUI {
 		};
 		typedef std::map<std::string, CursorDefinition> CursorDefinitionMap;
 		CursorDefinitionMap mCursorDefinitionMap;
+
+		// XML tag handlers for <WidgetDef> tags
+		static bool _CursorDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _CursorDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 } //namespace OpenGUI {
 #endif // DEA5BEFE_2592_4893_B0D2_AB7A54DF71A7

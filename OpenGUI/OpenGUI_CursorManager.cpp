@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_GenericCursor.h"
+#include "OpenGUI_XMLParser.h"
 
 namespace OpenGUI {
 	template<> CursorManager* Singleton<CursorManager>::mptr_Singleton = 0;
@@ -18,12 +19,30 @@ namespace OpenGUI {
 	//############################################################################
 	CursorManager::CursorManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating CursorManager" << Log::endlog;
+		XMLParser::getSingleton().RegisterLoadHandler( "CursorDef", &CursorManager::_CursorDef_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "CursorDef", &CursorManager::_CursorDef_XMLNode_Unload );
+
+		// register generic cursor
 		RegisterCursorFactory( "Generic", "OpenGUI", &GenericCursor::GenericCursorFactory );
 	}
 	//############################################################################
 	CursorManager::~CursorManager() {
-		UnregisterCursorFactory( "Generic", "OpenGUI" );
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying CursorManager" << Log::endlog;
+
+		// unregister generic cursor
+		UnregisterCursorFactory( "Generic", "OpenGUI" );
+
+		XMLParser::getSingleton().UnregisterLoadHandler( "CursorDef", &CursorManager::_CursorDef_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "CursorDef", &CursorManager::_CursorDef_XMLNode_Unload );
+
+		size_t w, l, d;
+		getStats( w, l, d );
+		LogManager::SlogMsg( "CursorManager", OGLL_INFO )
+		<< "Stagnant Entries Tally - "
+		<< "Registration (Cursor:Library): "
+		<< "[" << w << ":" << l << "] "
+		<< "Definitions: " << d
+		<< Log::endlog;
 	}
 	//############################################################################
 	/*! If \a Library is not given or is "", the value of \a Name will be tested to see
@@ -149,6 +168,85 @@ namespace OpenGUI {
 		}
 		cursor->mName = Name;
 		return cursor;
+	}
+	//############################################################################
+	CursorManager::CursorRegPairList CursorManager::GetRegisteredCursors() {
+		CursorRegPairList retval;
+		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
+			std::string LibName = iter->first;
+			CursorFactoryMap& factoryMap = iter->second;
+			for ( CursorFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
+				std::string BaseName = iter->first;
+				retval.push_back( CursorRegPair( BaseName, LibName ) );
+			}
+		}
+		return retval;
+	}
+	//############################################################################
+	CursorManager::CursorDefList CursorManager::GetDefinedCursors() {
+		CursorDefList retval;
+		for ( CursorDefinitionMap::iterator iter = mCursorDefinitionMap.begin(); iter != mCursorDefinitionMap.end(); iter++ ) {
+			retval.push_back( iter->first );
+		}
+		return retval;
+	}
+	//############################################################################
+	void CursorManager::getStats( size_t& RegCursors, size_t& RegLibs, size_t& DefCursors ) {
+		RegLibs = 0;
+		RegCursors = 0;
+		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
+			bool hadValue = false;
+			CursorFactoryMap& factoryMap = iter->second;
+			for ( CursorFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
+				hadValue = true;
+				RegCursors++;
+			}
+			if ( hadValue ) RegLibs++;
+		}
+
+		DefCursors = 0;
+		for ( CursorDefinitionMap::iterator iter = mCursorDefinitionMap.begin(); iter != mCursorDefinitionMap.end(); iter++ ) {
+			DefCursors++;
+		}
+	}
+	//############################################################################
+	bool CursorManager::_CursorDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		CursorManager& manager = CursorManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string name = node.getAttribute( "Name" );
+		const std::string basename = node.getAttribute( "BaseName" );
+		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		ValueList propertyList;
+		XMLNodeList xmlProps = node.getChildren( "Property" );
+		for ( XMLNodeList::iterator iter = xmlProps.begin(); iter != xmlProps.end(); iter++ ) {
+			XMLNode* prop = ( *iter );
+			const std::string pname = prop->getAttribute( "Name" );
+			const std::string pvalue = prop->getAttribute( "Value" );
+			Value value;
+			value.setName( pname );
+			value.setValue( pvalue );
+			propertyList.push_back( value );
+		}
+		manager.DefineCursor( name, propertyList, basename, baselib );
+		return true;
+	}
+	//############################################################################
+	bool CursorManager::_CursorDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		CursorManager& manager = CursorManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string name = node.getAttribute( "Name" );
+		const std::string basename = node.getAttribute( "BaseName" );
+		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		manager.UndefineCursor( name );
+		return true;
 	}
 	//############################################################################
 }//namespace OpenGUI {
