@@ -1,5 +1,7 @@
 #include "OpenGUI_Value.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_StrConv.h"
+
 namespace OpenGUI {
 	//#####################################################################
 	void Value::constructor() {
@@ -322,6 +324,15 @@ namespace OpenGUI {
 		return mHasValue;
 	}
 	//#####################################################################
+	/*! Values are only equal under fairly strict conditions.
+		- They have the same "set" state (either set or not set)
+		- Their stored values are of the same type
+		- Their stored values are equal according to the == C++ operator as defined for that type
+		\note The \c Name of the Values is \b not compared, as it is considered to be metadata
+		\exception Exception::ERR_NOT_IMPLEMENTED
+		If this is received it is because you tried to compare two values of a type that
+		\b should have been implemented but wasn't. This would make it a bug, so please report it!
+	*/
 	bool Value::operator==( const Value& right ) const {
 		if ( mHasValue != right.mHasValue )
 			return false; //false for comparisons of set and unset Values
@@ -362,20 +373,35 @@ namespace OpenGUI {
 			return right.getValueAsString() == ( *mString );
 			break;
 		default:
+			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__);
 			return false; //should never happen
 		}
 	}
 	//#####################################################################
+	/*! \code return !operator==( right ); \endcode \see operator==()*/
 	bool Value::operator!=( const Value& right ) const {
 		return !operator==( right );
 	}
 	//#####################################################################
-
-
-
-
+	void Value::setValueAsInt( const std::string& intStr ){
+		int value;
+		StrConv::toInt(intStr, value);
+		setValue( value );
+	}
 	//#####################################################################
+	void Value::setValueAsFloat( const std::string& floatStr ){
+		float value;
+		StrConv::toFloat(floatStr, value);
+		setValue( value );
+	}
 	//#####################################################################
+
+
+//##########################################################################################################################################
+//################  Can you tell I like fencing?  ##########################################################################################
+//##########################################################################################################################################
+
+
 	//#####################################################################
 	void ValueList::push_front( const Value& value ) {
 		mValueDeQue.push_front( value );
@@ -390,7 +416,7 @@ namespace OpenGUI {
 		if ( size() <= 0 )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "cannot pop an empty stack", "ValueList::pop_front" );
 
-		//deque doens't return values on pops
+		//deque doesn't return values on pops
 		ValueDeQue::const_iterator iter = mValueDeQue.begin();
 		Value retval = *iter;
 		mValueDeQue.pop_front();
@@ -402,7 +428,7 @@ namespace OpenGUI {
 		if ( size() <= 0 )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "cannot pop an empty stack", "ValueList::pop_back" );
 
-		//deque doens't return values on pops
+		//deque doesn't return values on pops
 		ValueDeQue::const_reverse_iterator iter = mValueDeQue.rbegin();
 		Value retval = *iter;
 		mValueDeQue.pop_back();

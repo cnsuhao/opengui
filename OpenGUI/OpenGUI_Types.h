@@ -297,11 +297,7 @@ namespace OpenGUI {
 			return !operator==( right );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const {
-			std::stringstream ss;
-			ss << "( " << x << " x " << y << " )" ;
-			return ss.str();
-		}
+		std::string toStr() const;
 		int x; //!< direct access to x
 		int y; //!< direct access to y
 	};
@@ -374,11 +370,7 @@ namespace OpenGUI {
 			return false;
 		}
 		//! Return a string representation of this value
-		std::string toStr() const {
-			std::stringstream ss;
-			ss << "{ " << min.toStr() << " X " << max.toStr() << " }" ;
-			return ss.str();
-		}
+		std::string toStr() const;
 		//! comparison operator
 		bool operator==( const IRect& right ) const  {
 			return min == right.min && max == right.max;
@@ -452,11 +444,7 @@ namespace OpenGUI {
 			return FVector2( x / l, y / l );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const {
-			std::stringstream ss;
-			ss << "( " << x << " x " << y << " )" ;
-			return ss.str();
-		}
+		std::string toStr() const;
 		float x; //!< direct access to x
 		float y; //!< direct access to y
 	};
@@ -561,11 +549,7 @@ namespace OpenGUI {
 			return FRect( min.pixelAligned( resolution ), max.pixelAligned( resolution ) );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const {
-			std::stringstream ss;
-			ss << "{ " << min.toStr() << " X " << max.toStr() << " }" ;
-			return ss.str();
-		}
+		std::string toStr() const;
 		//! comparison operator
 		bool operator==( const FRect& right ) const  {
 			return min == right.min && max == right.max;
