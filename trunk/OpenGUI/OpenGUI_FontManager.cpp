@@ -1,8 +1,6 @@
-#include "tinyxml.h"
 #include "ft2build.h"
 #include FT_FREETYPE_H
-
-
+//////////////////////////////////////////////////////////////////////////
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
@@ -16,6 +14,7 @@
 #include "OpenGUI_System.h"
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_Resource.h"
+#include "OpenGUI_XMLParser.h"
 
 #include "OpenGUI_CONFIG.h"
 
@@ -40,6 +39,8 @@ namespace OpenGUI {
 	//############################################################################
 	FontManager::FontManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating FontManager..." << Log::endlog;
+		XMLParser::getSingleton().RegisterLoadHandler( "Font", &FontManager::_Font_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "Font", &FontManager::_Font_XMLNode_Unload );
 
 		mFTLibrary = 0;
 
@@ -80,6 +81,9 @@ namespace OpenGUI {
 			<< Log::endlog;
 		}
 		delete library;
+
+		XMLParser::getSingleton().UnregisterLoadHandler( "Font", &FontManager::_Font_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "Font", &FontManager::_Font_XMLNode_Unload );
 	}
 	//############################################################################
 	std::string FontManager::_GetFTErrorString( int errorCode ) {
@@ -199,96 +203,29 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
-	/*void FontManager::LoadFontsFromXML( std::string xmlFilename ) {
-		LogManager::SlogMsg( "FontManager", OGLL_INFO ) << "LoadFontsFromXML: " << xmlFilename << Log::endlog;
+	bool FontManager::_Font_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		FontManager& manager = FontManager::getSingleton();
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
 
-		TiXmlDocument doc;
-		//doc.LoadFile(xmlFilename);
-		Resource_CStr res;
-		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
-		resProvider->loadResource( xmlFilename, res );
-		doc.Parse( res.getString() );
-		TiXmlElement* root = doc.RootElement();
-		TiXmlElement* section;
-		section = root;
-		if ( section ) {
-			do {
-				//iterate through all of the root level elements and react to every "Imageset" found
-				if ( 0 == strcmpi( section->Value(), "font" ) ) {
-					FontManager::_loadFontFromTinyXMLElement( section );
-				}
-			} while (( section = section->NextSiblingElement() ) );
-		}
+		const std::string name = node.getAttribute( "Name" );
+		const std::string file = node.getAttribute( "File" );
+		manager.RegisterFontSet( file, name );
+		return true;
 	}
 	//############################################################################
-	Font* FontManager::_loadFontFromTinyXMLElement( void* tXelementPtr ) {
-		TiXmlElement* tXelement = ( TiXmlElement* )tXelementPtr;
-		Font* resultFont = 0;
-		std::string fontFilename = "";
-		std::string fontName = "";
-		const char* fontAutoscale = 0;
-		const char* fontXRes = 0;
-		const char* fontYRes = 0;
+	bool FontManager::_Font_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		FontManager& manager = FontManager::getSingleton();
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
 
-		TiXmlAttribute* attrib = tXelement->FirstAttribute();
-		if ( attrib ) {
-			do {
-				if ( 0 == strcmpi( attrib->Name(), "name" ) )
-					fontName = attrib->Value();
-
-				if ( 0 == strcmpi( attrib->Name(), "file" ) )
-					fontFilename = attrib->Value();
-
-				if ( 0 == strcmpi( attrib->Name(), "autoscale" ) )
-					fontAutoscale = attrib->Value();
-
-				if ( 0 == strcmpi( attrib->Name(), "xres" ) )
-					fontXRes = attrib->Value();
-
-				if ( 0 == strcmpi( attrib->Name(), "yres" ) )
-					fontYRes = attrib->Value();
-
-			} while (( attrib = attrib->Next() ) );
-		}
-
-		bool autoscale = false;
-		unsigned int xres = 800;
-		unsigned int yres = 600;
-
-		if ( fontAutoscale ) {
-			if ( 0 == strcmpi( fontAutoscale, "true" ) || 0 == strcmpi( fontAutoscale, "1" ) )
-				autoscale = true;
-		}
-		if ( fontXRes ) {
-			std::stringstream ss;
-			std::string tmp = fontXRes;
-			ss.str( tmp );
-			ss >> xres;
-		}
-		if ( fontYRes ) {
-			std::stringstream ss;
-			std::string tmp = fontYRes;
-			ss.str( tmp );
-			ss >> yres;
-		}
-
-		if ( fontFilename != "" && fontName != "" ) {
-			resultFont = FontManager::CreateFont( fontFilename, fontName, autoscale, xres, yres );
-		} else {
-			if ( fontFilename == "" ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS,
-						  "<Font> XML Element missing required attribute 'file'",
-						  "FontManager::_loadFontFromTinyXMLElement" );
-			}
-			if ( fontName == "" ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS,
-						  "<Font> XML Element missing required attribute 'name'",
-						  "FontManager::_loadFontFromTinyXMLElement" );
-			}
-		}
-
-		return resultFont;
-	}*/
+		const std::string name = node.getAttribute( "Name" );
+		const std::string file = node.getAttribute( "File" );
+		manager.UnRegisterFontSet( name );
+		return true;
+	}
 	//############################################################################
 }//namespace OpenGUI{
 

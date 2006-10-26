@@ -1,10 +1,10 @@
-
-#include "tinyxml.h"
 #include "OpenGUI_ImageryManager.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_ResourceProvider.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_TextureManager.h"
+#include "OpenGUI_XMLParser.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 	template<> ImageryManager* Singleton<ImageryManager>::mptr_Singleton = 0;
@@ -21,10 +21,14 @@ namespace OpenGUI {
 	//############################################################################
 	ImageryManager::ImageryManager( ResourceProvider* resourceProvider ): mResourceProvider( resourceProvider ) {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ImageryManager" << Log::endlog;
+		XMLParser::getSingleton().RegisterLoadHandler( "Imageset", &ImageryManager::_Imageset_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "Imageset", &ImageryManager::_Imageset_XMLNode_Unload );
 	}
 	//############################################################################
 	ImageryManager::~ImageryManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying ImageryManager" << Log::endlog;
+		XMLParser::getSingleton().UnregisterLoadHandler( "Imageset", &ImageryManager::_Imageset_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "Imageset", &ImageryManager::_Imageset_XMLNode_Unload );
 		ImageryManager::destroyAllImagesets();
 	}
 	//############################################################################
@@ -165,51 +169,6 @@ namespace OpenGUI {
 		return ImageryPtr( 0 );
 	}
 	//############################################################################
-	void ImageryManager::LoadImagesetsFromXML( std::string xmlFilename ) {
-		LogManager::SlogMsg( "ImageryManager", OGLL_INFO ) << "LoadImagesetsFromXML: " << xmlFilename << Log::endlog;
-
-		TiXmlDocument doc;
-		//doc.LoadFile(xmlFilename);
-		Resource_CStr res;
-		ResourceProvider* resProvider = mResourceProvider;
-		resProvider->loadResource( xmlFilename, res );
-		doc.Parse( res.getString() );
-		TiXmlElement* root = doc.RootElement();
-		TiXmlElement* section;
-		section = root;
-		if ( section ) {
-			do {
-				//iterate through all of the root level elements and react to every "Imageset" found
-				if ( 0 == strcmpi( section->Value(), "imageset" ) ) {
-					ImageryManager::_loadImagesetFromTinyXMLElement( section );
-				}
-			} while (( section = section->NextSiblingElement() ) );
-		}
-
-	}
-	//############################################################################
-	Imageset* ImageryManager::_loadImagesetFromTinyXMLElement( void* tXelementPtr ) {
-		TiXmlElement* tXelement = ( TiXmlElement* )tXelementPtr;
-		Imageset* resultImageset = 0;
-		const char* imgFilename = 0;
-		TiXmlAttribute* attrib = tXelement->FirstAttribute();
-		if ( attrib ) {
-			do {
-				if ( 0 == strcmpi( attrib->Name(), "sourceimage" ) ) {
-					imgFilename = attrib->Value();
-					break;
-				}
-			} while (( attrib = attrib->Next() ) );
-		}
-
-		if ( imgFilename ) {
-			resultImageset = createImageset( imgFilename );
-			if ( resultImageset )
-				resultImageset->_loadImageryFromRootTinyXMLElement( tXelement );
-		}
-		return resultImageset;
-	}
-	//############################################################################
 	std::string ImageryManager::_generateRandomName() {
 		static unsigned int mRandomNameGeneratorIndex = 0;
 		std::stringstream ss;
@@ -234,6 +193,37 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
+	bool ImageryManager::_Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		ImageryManager& manager = ImageryManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string filename = node.getAttribute( "File" );
+		Imageset* imgset = manager.createImageset( filename );
+
+		XMLNodeList imageryNodes = node.getChildren( "Imagery" );
+		for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
+			XMLNode* child = ( *iter );
+			const std::string name = child->getAttribute("Name");
+			int t,l,w,h;
+			StrConv::toInt(child->getAttribute("Top"), t);
+			StrConv::toInt(child->getAttribute("Left"), l);
+			StrConv::toInt(child->getAttribute("Width"), w);
+			StrConv::toInt(child->getAttribute("Height"), h);
+			imgset->createImagery(name, t, l, h, w);
+		}
+		return true;
+	}
+	//############################################################################
+	bool ImageryManager::_Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+		OG_NYI;
+		return true;
+	}
 }
 ; //namespace OpenGUI{
 

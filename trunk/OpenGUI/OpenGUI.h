@@ -20,6 +20,7 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Math.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_StrConv.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_RefPtr.h"
 #include "OpenGUI_RefObject.h"
@@ -69,7 +70,7 @@
 //#include "OpenGUI_WidgetTemplateManager.h" //temporarily removed. Will re-add after Object system in place
 //#include "OpenGUI_WidgetFactoryManager.h" //temporarily removed. Will re-add after Object system in place
 
-#include "OpenGUI_DynamicLib.h"
+//#include "OpenGUI_DynamicLib.h" // This shouldn't be needed by applications, or any other part of OpenGUI except the plugin manager
 #include "OpenGUI_PluginManager.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontManager.h"

@@ -45,6 +45,8 @@ namespace OpenGUI {
 		mTimerManager = new TimerManager; //get this up asap
 
 		mXMLParser = new XMLParser(); //subsystems register with XML system, so this needs to be available immediately
+		mXMLParser->RegisterLoadHandler( "OpenGUI", &System::_OpenGUI_XMLNode_Load );
+		mXMLParser->RegisterUnloadHandler( "OpenGUI", &System::_OpenGUI_XMLNode_Unload );
 
 		m_PerformAutoTicks = true;
 
@@ -64,8 +66,6 @@ namespace OpenGUI {
 
 		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: "
 		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
-
-		m_PluginManager = new PluginManager;
 
 		//mWidgetFactoryManager = new WidgetFactoryManager();
 		//mWidgetTemplateManager = new WidgetTemplateManager();
@@ -88,6 +88,8 @@ namespace OpenGUI {
 		mCursorManager = new CursorManager();
 
 		mWidgetManager = new WidgetManager();
+
+		m_PluginManager = new PluginManager();
 
 		mScreenManager = new ScreenManager();
 
@@ -136,8 +138,11 @@ namespace OpenGUI {
 		if ( mUsingGenericResourceProvider )
 			delete mResourceProvider;
 
-		if ( mXMLParser )
+		if ( mXMLParser ) {
+			mXMLParser->UnregisterLoadHandler( "OpenGUI", &System::_OpenGUI_XMLNode_Load );
+			mXMLParser->UnregisterUnloadHandler( "OpenGUI", &System::_OpenGUI_XMLNode_Unload );
 			delete mXMLParser;
+		}
 
 		if ( mTimerManager )
 			delete mTimerManager; //delete this last
@@ -236,6 +241,24 @@ namespace OpenGUI {
 			while ( statFPSList.size() > 100 )
 				statFPSList.pop_front();
 		}
+	}
+	//############################################################################
+	bool System::_OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		if ( nodePath == "/" ) {
+			std::string path = nodePath + node.getTagName() + "/";
+			XMLParser::getSingleton().ProcessXML_Load( node, path );
+			return true;
+		}
+		return false;
+	}
+	//############################################################################
+	bool System::_OpenGUI_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		if ( nodePath == "/" ) {
+			std::string path = nodePath + node.getTagName() + "/";
+			XMLParser::getSingleton().ProcessXML_Unload( node, path );
+			return true;
+		}
+		return false;
 	}
 	//############################################################################
 }

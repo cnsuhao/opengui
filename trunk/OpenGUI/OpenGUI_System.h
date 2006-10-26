@@ -4,14 +4,11 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
-
-#include "OpenGUI_Exports.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Math.h"
 #include "OpenGUI_Types.h"
-
-//#include "OpenGUI_Event.h"
+#include "OpenGUI_XML.h"
 
 //! All %OpenGUI classes are contained under the "OpenGUI" namespace
 namespace OpenGUI {
@@ -128,7 +125,9 @@ namespace OpenGUI {
 		// This is the actual constructor, the other 2 both call this one after getting the logs up and running.
 		void doConstructor( Renderer* renderer, ResourceProvider* resourceProvider );
 
-		//Generic
+		// XML tag handlers for <OpenGUI> root tag
+		static bool _OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _OpenGUI_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 
 
 		//Statistics
