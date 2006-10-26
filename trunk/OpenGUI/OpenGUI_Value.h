@@ -13,13 +13,20 @@ namespace OpenGUI {
 	//############################################################################
 	//! An encapsulation class used for passing values back and forth in the Accessor system
 	/*! Each Value has a stored value of \c ValueType as well as the option to carry
-	a string based \c Name.  */
+	a string based \c Name.
+	
+	*/
 	class OPENGUI_API Value {
 	public:
 		//! Constructor. \c Name is optional, but will set the name of this Value if given
 		Value( const std::string& Name = "" );
 		//! Copy Constructor
 		Value( const Value& copy );
+		//! Destructor
+		~Value();
+
+//!\name Assigning constructors that auto detect type based on parameter type
+//@{
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const std::string& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
@@ -42,9 +49,7 @@ namespace OpenGUI {
 		Value( const Enum& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const Color& value, const std::string& Name = "" );
-
-		//! Destructor
-		~Value();
+//@}
 
 		//! gets the name of this Value
 		const std::string& getName()const {
@@ -89,6 +94,8 @@ namespace OpenGUI {
 			return isSet();
 		}
 
+//!\name Auto detect type based on parameter type
+//@{
 		//! Sets the value, stored value is a copy
 		void setValue( const std::string& std_string );
 		//! Sets the value, stored value is a copy
@@ -111,7 +118,37 @@ namespace OpenGUI {
 		void setValue( const Enum& string_enumeration );
 		//! Sets the value, stored value is a copy
 		void setValue( const Color& color );
+//@}
 
+//!\name Auto detect type based on string contents
+//@{
+		//! Sets the value from a string, performing auto detection to try to fit it into the best type
+		void setValueAuto( const std::string& std_string );
+//}@
+
+//!\name Set from string with explicit type conversion
+//@{
+		//! Sets the value from a string, parsed into an int
+		void setValueAsInt( const std::string& intStr );
+		//! Sets the value from a string, parsed into a float
+		void setValueAsFloat( const std::string& floatStr );
+
+		//! Sets the value from a string, parsed into an FVector2
+		void setValueAsFVector2( const std::string& fv2Str );
+		//! Sets the value from a string, parsed into an FRect
+		void setValueAsFRect( const std::string& frectStr );
+
+		//! Sets the value from a string, parsed into an IVector2
+		void setValueAsIVector2( const std::string& iv2Str );
+		//! Sets the value from a string, parsed into an IRect
+		void setValueAsIRect( const std::string& irectStr );
+
+		//! Sets the value from a string, parsed into a Color
+		void setValueAsColor( const std::string& colorStr );
+//@}
+
+//!\name Get value as explicit type
+//@{
 		//! Gets the stored value, throws exception if no value is stored
 		std::string getValueAsString() const;
 		//! Gets the stored value, throws exception if no value is stored
@@ -134,6 +171,7 @@ namespace OpenGUI {
 		Enum getValueAsEnum() const;
 		//! Gets the stored value, throws exception if no value is stored
 		Color getValueAsColor() const;
+//@}
 
 	private:
 		void constructor();
