@@ -4,18 +4,21 @@
 #include "Tachometer.h"
 
 
-extern "C"{
+extern "C" {
 
-	void OPENGUI_WIDGET_API pluginStart(){
-		OpenGUI::LogManager::SlogMsg("Tachometer", OGLL_MSG)
-			<< "pluginStart() was called" << OpenGUI::Log::endlog;
-		
-		//OpenGUI::WidgetFactoryManager::getSingleton().registerWidgetFactory("OpenGUIExt", "Tachometer", OpenGUI::WidgetFactoryCallback( &OpenGUI::Widgets::Tachometer::createTachometerFactory ) );
+	void OPENGUI_WIDGET_API pluginStart() {
+		using namespace OpenGUI;
+		using namespace OpenGUI::Examples;
+		LogManager::SlogMsg( "Tachometer", OGLL_MSG ) << "pluginStart() was called" << Log::endlog;
+		WidgetManager& wm = WidgetManager::getSingleton();
+		wm.RegisterWidgetFactory( "Tachometer", "OpenGUIEx", &Tachometer::createTachometerFactory );
 	}
 
-	void OPENGUI_WIDGET_API pluginStop(){
-		OpenGUI::LogManager::SlogMsg("Tachometer", OGLL_MSG)
-			<< "pluginStop() was called" << OpenGUI::Log::endlog;
+	void OPENGUI_WIDGET_API pluginStop() {
+		using namespace OpenGUI;
+		LogManager::SlogMsg( "Tachometer", OGLL_MSG ) << "pluginStop() was called" << Log::endlog;
+		WidgetManager& wm = WidgetManager::getSingleton();
+		wm.UnregisterWidgetFactory( "Tachometer", "OpenGUIEx" );
 	}
 
 };
