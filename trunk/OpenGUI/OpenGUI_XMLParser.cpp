@@ -54,7 +54,7 @@ namespace OpenGUI {
 	handler. */
 	void XMLParser::RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mLoadMap[tagName];
-		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				std::stringstream ss;
@@ -74,7 +74,7 @@ namespace OpenGUI {
 	/*! \see RegisterLoadHandler() */
 	void XMLParser::UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mLoadMap[tagName];
-		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
@@ -94,7 +94,7 @@ namespace OpenGUI {
 	//############################################################################
 	void XMLParser::RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mUnloadMap[tagName];
-		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				std::stringstream ss;
@@ -113,7 +113,7 @@ namespace OpenGUI {
 	//############################################################################
 	void XMLParser::UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mUnloadMap[tagName];
-		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end();iter++ ) {
+		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
@@ -147,7 +147,7 @@ namespace OpenGUI {
 	//############################################################################
 	void XMLParser::ProcessXML_Load( XMLNodeContainer& container, const std::string& nodePath ) {
 		XMLNodeList list = container.getChildren();
-		for ( XMLNodeList::iterator iter = list.begin();list.end() != iter;iter++ ) {
+		for ( XMLNodeList::iterator iter = list.begin(); list.end() != iter; iter++ ) {
 			XMLNode& node = *( *iter );
 			ProcessXML_Load( node, nodePath );
 		}
@@ -155,7 +155,7 @@ namespace OpenGUI {
 	//############################################################################
 	void XMLParser::ProcessXML_Unload( XMLNodeContainer& container, const std::string& nodePath ) {
 		XMLNodeList list = container.getChildren();
-		for ( XMLNodeList::iterator iter = list.begin();list.end() != iter;iter++ ) {
+		for ( XMLNodeList::reverse_iterator iter = list.rbegin(); list.rend() != iter; iter++ ) {
 			XMLNode& node = *( *iter );
 			ProcessXML_Unload( node, nodePath );
 		}
@@ -165,7 +165,7 @@ namespace OpenGUI {
 		XMLHandlerMap::iterator mapIter = handlerMap.find( node.getTagName() );
 		if ( mapIter != handlerMap.end() && mapIter->second.size() > 0 ) {
 			HandlerList& handleList = mapIter->second;
-			for ( HandlerList::iterator iter = handleList.begin(); iter != handleList.end();iter++ ) {
+			for ( HandlerList::iterator iter = handleList.begin(); iter != handleList.end(); iter++ ) {
 				XMLNodeHandler* handler_callback = ( *iter );
 				bool retval;
 				try {
@@ -204,7 +204,7 @@ namespace OpenGUI {
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
 		XMLNode& freeNode = const_cast<XMLNode&>( node );
-		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
+		for ( XMLNodeList::iterator iter = children.begin(); children.end() != iter; iter++ ) {
 			XMLNode& child = *( *iter );
 			child.setParent( &freeNode );
 			XMLParser::getSingleton().ProcessXML_Load( child, nodePath );
@@ -237,7 +237,7 @@ namespace OpenGUI {
 		doc.loadFile( filename );
 		XMLNodeList children = doc.getChildren();
 		XMLNode& freeNode = const_cast<XMLNode&>( node );
-		for ( XMLNodeList::iterator iter = children.begin();children.end() != iter;iter++ ) {
+		for ( XMLNodeList::reverse_iterator iter = children.rbegin(); children.rend() != iter; iter++ ) {
 			XMLNode& child = *( *iter );
 			child.setParent( &freeNode );
 			XMLParser::getSingleton().ProcessXML_Unload( child, nodePath );
