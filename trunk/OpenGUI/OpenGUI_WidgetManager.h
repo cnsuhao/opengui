@@ -44,6 +44,21 @@ namespace OpenGUI {
 		//! Unregister a Widget factory
 		void UnregisterWidgetFactory( const std::string& Name, const std::string& Library );
 
+		//! inner type of WidgetRegPairList
+		typedef std::pair<std::string, std::string> WidgetRegPair;
+		//! return type of GetRegisteredWidgets()
+		typedef std::list<WidgetRegPair> WidgetRegPairList;
+		//! returns a pair list of all registered widgets
+		WidgetRegPairList GetRegisteredWidgets();
+
+		//! return type of GetDefinedWidgets()
+		typedef std::list<std::string> WidgetDefList;
+		//! returns a list of all defined widgets
+		WidgetDefList GetDefinedWidgets();
+
+		//! returns the number of registered widgets across the number of libraries, as well as the number of widget definitions
+		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
+
 	private:
 		typedef std::map<std::string, WidgetFactoryCallback*> WidgetFactoryMap;
 		typedef std::map<std::string, WidgetFactoryMap> LibraryMap;
