@@ -92,6 +92,9 @@ namespace OpenGUI {
 			return mTagName;
 		}
 
+		//! Returns the XML DOM path leading up to this node. Ex: /path/to/
+		std::string getPath() const;
+
 		//! returns the value of a single attribute
 		const std::string& getAttribute( const std::string& name ) const;
 		//! sets the value of an attribute, creating it if it does not already exist
@@ -99,10 +102,10 @@ namespace OpenGUI {
 		//! removes the given attribute
 		void removeAttribute( const std::string& name );
 		//! returns a copy of all attributes
-		XMLAttributeMap getAttributes();
+		XMLAttributeMap getAttributes() const;
 
 		//! return the content of this node's text
-		const std::string& getText()const;
+		const std::string& getText() const;
 		//! set the text content of this node
 		void setText( const std::string& text );
 
@@ -111,6 +114,7 @@ namespace OpenGUI {
 		XMLNode( void* txmle, XMLNodeContainer* parentPtr );
 		//! \internal writes the contents of this node tree into a tinyXML tree
 		void* _totxml();
+		void _buildPath( std::string& path );
 
 	private:
 		std::string mTagName;
