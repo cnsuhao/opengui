@@ -131,21 +131,21 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, ss.str(), __FUNCTION__ );
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_LoadNode( XMLNode& node, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_LoadNode( const XMLNode& node, const std::string& nodePath ) {
 		if ( !fireCallback( mLoadMap, node, nodePath ) ) {
 			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
 			<< "No XMLLoad handler processed tag: " << node.getTagName() << Log::endlog;
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_UnloadNode( XMLNode& node, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_UnloadNode( const XMLNode& node, const std::string& nodePath ) {
 		if ( !fireCallback( mUnloadMap, node, nodePath ) ) {
 			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
 			<< "No XMLUnload handler processed tag: " << node.getTagName() << Log::endlog;
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_Load( XMLNodeContainer& container, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_Load( const XMLNodeContainer& container, const std::string& nodePath ) {
 		XMLNodeList list = container.getChildren();
 		for ( XMLNodeList::iterator iter = list.begin(); list.end() != iter; iter++ ) {
 			XMLNode& node = *( *iter );
@@ -153,7 +153,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_Unload( XMLNodeContainer& container, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_Unload( const XMLNodeContainer& container, const std::string& nodePath ) {
 		XMLNodeList list = container.getChildren();
 		for ( XMLNodeList::reverse_iterator iter = list.rbegin(); list.rend() != iter; iter++ ) {
 			XMLNode& node = *( *iter );

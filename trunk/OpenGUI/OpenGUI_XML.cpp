@@ -107,7 +107,7 @@ namespace OpenGUI {
 		XMLAttributeMap::const_iterator iter = mAttributes.find( name );
 		if ( iter == mAttributes.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND,
-					  "Attribute not found:" + getTagName() + " - " + name,
+					  "Attribute \"" + name + "\" not found in tag <" + getTagName() + ">",
 					  __FUNCTION__ );
 		return iter->second;
 	}
