@@ -83,14 +83,14 @@ namespace OpenGUI {
 		//! Unregisters an XML Unload handler for the given \x xmlPath
 		void UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
-		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath
+		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath (Calls ProcessXML_LoadNode() for all container children)
 		void ProcessXML_Load( XMLNodeContainer& container, const std::string& nodePath );
 		//! Processes the given node with XMLLoad handlers, using the given \c nodePath
-		void ProcessXML_Load( XMLNode& node, const std::string& nodePath );
-		//! Processes the given \c container with XMLUnload handlers, using the given \c nodePath
+		void ProcessXML_LoadNode( XMLNode& node, const std::string& nodePath );
+		//! Processes the given \c container with XMLUnload handlers, using the given \c nodePath (Calls ProcessXML_UnloadNode() for all container children)
 		void ProcessXML_Unload( XMLNodeContainer& container, const std::string& nodePath );
 		//! Processes the given node with XMLUnload handlers, using the given \c nodePath
-		void ProcessXML_Unload( XMLNode& node, const std::string& nodePath );
+		void ProcessXML_UnloadNode( XMLNode& node, const std::string& nodePath );
 
 	private:
 		static bool _IncludeLoadHandler( const XMLNode& node, const std::string& nodePath );
