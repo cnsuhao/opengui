@@ -19,15 +19,15 @@ namespace OpenGUI {
 	//############################################################################
 	WidgetManager::WidgetManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating WidgetManager" << Log::endlog;
-		XMLParser::getSingleton().RegisterLoadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Load );
-		XMLParser::getSingleton().RegisterUnloadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Unload );
+		XMLParser::getSingleton().RegisterLoadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Unload );
 
 	}
 	//############################################################################
 	WidgetManager::~WidgetManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying WidgetManager" << Log::endlog;
-		XMLParser::getSingleton().UnregisterLoadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Load );
-		XMLParser::getSingleton().UnregisterUnloadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Unload );
+		XMLParser::getSingleton().UnregisterLoadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "WidgetDef", &WidgetManager::_WidgetDef_XMLNode_Unload );
 
 	}
 	//############################################################################
@@ -156,7 +156,7 @@ namespace OpenGUI {
 		return widget;
 	}
 	//############################################################################
-	bool WidgetManager::_Imageset_WidgetDef_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool WidgetManager::_WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
 		WidgetManager& manager = WidgetManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
@@ -181,7 +181,7 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool WidgetManager::_Imageset_WidgetDef_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool WidgetManager::_WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
 		WidgetManager& manager = WidgetManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
