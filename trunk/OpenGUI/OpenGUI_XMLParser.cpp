@@ -171,8 +171,12 @@ namespace OpenGUI {
 				try {
 					retval = ( *handler_callback )( node, nodePath );
 				} catch ( ... ) {
+					XMLDoc* doc = node.getDoc();
+					std::string file;
+					if ( doc ) file = doc->getFileName();
 					OG_THROW( Exception::ERR_INTERNAL_ERROR,
-							  "Unhandled exception in XML handler callback!", __FUNCTION__ );
+							  "Unhandled exception in XML handler callback! @" + file + ":"
+							  + nodePath + node.dump(), __FUNCTION__ );
 				}
 				if ( retval )
 					return true;
