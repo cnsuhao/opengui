@@ -5,6 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Value.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 	class System; // forward declaration
@@ -55,6 +56,10 @@ namespace OpenGUI {
 		};
 		typedef std::map<std::string, WidgetDefinition> WidgetDefinitionMap;
 		WidgetDefinitionMap mWidgetDefinitionMap;
+
+		// XML tag handlers for <WidgetDef> tags
+		static bool _Imageset_WidgetDef_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Imageset_WidgetDef_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 }//namespace OpenGUI{
 
