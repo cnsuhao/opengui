@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Widget.h"
+#include "OpenGUI_XMLParser.h"
 
 namespace OpenGUI {
 	template<> WidgetManager* Singleton<WidgetManager>::mptr_Singleton = 0;
@@ -18,10 +19,16 @@ namespace OpenGUI {
 	//############################################################################
 	WidgetManager::WidgetManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating WidgetManager" << Log::endlog;
+		XMLParser::getSingleton().RegisterLoadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Unload );
+
 	}
 	//############################################################################
 	WidgetManager::~WidgetManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying WidgetManager" << Log::endlog;
+		XMLParser::getSingleton().UnregisterLoadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "WidgetDef", &WidgetManager::_Imageset_WidgetDef_Unload );
+
 	}
 	//############################################################################
 	/*! If \a Library is not given or is "", the value of \a Name will be tested to see
@@ -108,6 +115,8 @@ namespace OpenGUI {
 		WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.find( Name );
 		if ( iter != mWidgetDefinitionMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Widget already defined with given Name: " + Name, __FUNCTION__ );
+		if ( Name.length() == 0 )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
 		if ( BaseName.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "BaseName cannot be 0 length", __FUNCTION__ );
 		if ( BaseLibrary.length() == 0 )
@@ -145,6 +154,45 @@ namespace OpenGUI {
 			}
 		}
 		return widget;
+	}
+	//############################################################################
+	bool WidgetManager::_Imageset_WidgetDef_Load( const XMLNode& node, const std::string& nodePath ) {
+		WidgetManager& manager = WidgetManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string name = node.getAttribute( "Name" );
+		const std::string basename = node.getAttribute( "BaseName" );
+		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		ValueList propertyList;
+		XMLNodeList xmlProps = node.getChildren( "Property" );
+		for ( XMLNodeList::iterator iter = xmlProps.begin(); iter != xmlProps.end(); iter++ ) {
+			XMLNode* prop = ( *iter );
+			const std::string pname = prop->getAttribute( "Name" );
+			const std::string pvalue = prop->getAttribute( "Value" );
+			Value value;
+			value.setName( pname );
+			value.setValue( pvalue );
+			propertyList.push_back( value );
+		}
+		manager.DefineWidget( name, propertyList, basename, baselib );
+		return true;
+	}
+	//############################################################################
+	bool WidgetManager::_Imageset_WidgetDef_Unload( const XMLNode& node, const std::string& nodePath ) {
+		WidgetManager& manager = WidgetManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string name = node.getAttribute( "Name" );
+		const std::string basename = node.getAttribute( "BaseName" );
+		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		manager.UndefineWidget( name );
+		return true;
 	}
 	//############################################################################
 }//namespace OpenGUI{
