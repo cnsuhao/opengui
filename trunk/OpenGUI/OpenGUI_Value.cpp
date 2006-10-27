@@ -666,23 +666,25 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	/*! This function will overwrite the given XMLNode including the tag name.
-	However, any existing parent XMLNodeContainer linkage will be preserved. */
+	/*! This works by storing the necessary information in attributes of the given tag.
+	If any of the attributes already exist, their contents are silently overwritten. 
+	\n The used attributes are:
+	- ValueType - identifies the type of data held within ValueData
+	- ValueName - the Name of this Value
+	- ValueData - the data of this Value in string format
+	*/
 	void Value::SaveToXMLNode( XMLNode& node ) const {
-		XMLNode tmpNode( "Value" );
-		tmpNode.setParent( node.getParent() );
-		node = tmpNode;
-		node.setAttribute( "Type", _TypeToString( mType ) );
-		node.setAttribute( "Name", mName );
-		node.setAttribute( "Value", toStr() );
+		node.setAttribute( "ValueType", _TypeToString( mType ) );
+		node.setAttribute( "ValueName", mName );
+		node.setAttribute( "ValueData", toStr() );
 	}
 	//#####################################################################
 	void Value::LoadFromXMLNode( const XMLNode& node ) {
-		std::string typestr = node.getAttribute( "Type" );
-		std::string valuestr = node.getAttribute( "Value" );
+		std::string typestr = node.getAttribute( "ValueType" );
+		std::string valuestr = node.getAttribute( "ValueData" );
 
-		if ( node.hasAttribute( "Name" ) ) {
-			std::string namestr = node.getAttribute( "Name" );
+		if ( node.hasAttribute( "ValueName" ) ) {
+			std::string namestr = node.getAttribute( "ValueName" );
 			setName( namestr );
 		} else {
 			setName( "" );
