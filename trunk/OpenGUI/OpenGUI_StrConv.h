@@ -59,7 +59,7 @@ namespace OpenGUI {
 		//! Explodes a string into a StringList based on separator tokens.
 		static void tokenize( const std::string& inputStr, StringList& outputStrList, char token );
 		//! Converts a string to all lower case
-		static void toLower(std::string& in_out);
+		static void toLower( std::string& in_out );
 //@}
 	};
 }
