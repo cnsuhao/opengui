@@ -1,6 +1,7 @@
 #include "OpenGUI_Value.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_StrConv.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 	//#####################################################################
@@ -298,6 +299,45 @@ namespace OpenGUI {
 		return mHasValue;
 	}
 	//#####################################################################
+	/*! If you want to create a complete clone, including the name, use the copy constructor. */
+	Value& Value::operator=( const Value& right ) {
+		clearValue();
+		if ( right.isSet() ) {
+			switch ( right.getType() ) {
+			case T_BOOL:
+				setValue( right.getValueAsBool() );
+				break;
+			case T_COLOR:
+				setValue( right.getValueAsColor() );
+				break;
+			case T_FLOAT:
+				setValue( right.getValueAsFloat() );
+				break;
+			case T_FRECT:
+				setValue( right.getValueAsFRect() );
+				break;
+			case T_FVECTOR2:
+				setValue( right.getValueAsFVector2() );
+				break;
+			case T_INTEGER:
+				setValue( right.getValueAsInt() );
+				break;
+			case T_IRECT:
+				setValue( right.getValueAsIRect() );
+				break;
+			case T_IVECTOR2:
+				setValue( right.getValueAsIVector2() );
+				break;
+			case T_STRING:
+				setValue( right.getValueAsString() );
+				break;
+			default:
+				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
+			}
+		}
+		return *this;
+	}
+	//#####################################################################
 	/*! Values are only equal under fairly strict conditions.
 		- They have the same "set" state (either set or not set)
 		- Their stored values are of the same type
@@ -583,7 +623,7 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	std::string Value::toStr() {
+	std::string Value::toStr() const {
 		std::string ret;
 		switch ( mType ) {
 		case T_BOOL:
@@ -624,6 +664,124 @@ namespace OpenGUI {
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
+	}
+	//#####################################################################
+	/*! This function will overwrite the given XMLNode including the tag name.
+	However, any existing parent XMLNodeContainer linkage will be preserved. */
+	void Value::SaveToXMLNode( XMLNode& node ) const {
+		XMLNode tmpNode( "Value" );
+		tmpNode.setParent( node.getParent() );
+		node = tmpNode;
+		node.setAttribute( "Type", _TypeToString( mType ) );
+		node.setAttribute( "Name", mName );
+		node.setAttribute( "Value", toStr() );
+	}
+	//#####################################################################
+	void Value::LoadFromXMLNode( const XMLNode& node ) {
+		std::string typestr = node.getAttribute( "Type" );
+		std::string valuestr = node.getAttribute( "Value" );
+
+		if ( node.hasAttribute( "Name" ) ) {
+			std::string namestr = node.getAttribute( "Name" );
+			setName( namestr );
+		} else {
+			setName( "" );
+		}
+
+		ValueType type = _TypeFromString( typestr );
+		switch ( type ) {
+		case T_BOOL:
+			setValueAsBool( valuestr );
+			break;
+		case T_COLOR:
+			setValueAsColor( valuestr );
+			break;
+		case T_FLOAT:
+			setValueAsFloat( valuestr );
+			break;
+		case T_FRECT:
+			setValueAsFRect( valuestr );
+			break;
+		case T_FVECTOR2:
+			setValueAsFVector2( valuestr );
+			break;
+		case T_INTEGER:
+			setValueAsInt( valuestr );
+			break;
+		case T_IRECT:
+			setValueAsIRect( valuestr );
+			break;
+		case T_IVECTOR2:
+			setValueAsIVector2( valuestr );
+			break;
+		case T_STRING:
+			setValueAsString( valuestr );
+			break;
+		default:
+			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unhandled type", __FUNCTION__ );
+		}
+	}
+	//#####################################################################
+	std::string Value::_TypeToString( ValueType type ) {
+		switch ( type ) {
+		case T_BOOL:
+			return "BOOL";
+			break;
+		case T_COLOR:
+			return "COLOR";
+			break;
+		case T_FLOAT:
+			return "FLOAT";
+			break;
+		case T_FRECT:
+			return "FRECT";
+			break;
+		case T_FVECTOR2:
+			return "FVECTOR2";
+			break;
+		case T_INTEGER:
+			return "INTEGER";
+			break;
+		case T_IRECT:
+			return "IRECT";
+			break;
+		case T_IVECTOR2:
+			return "IVECTOR2";
+			break;
+		case T_STRING:
+			return "STRING";
+			break;
+		default:
+			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
+		}
+	}
+	//#####################################################################
+	Value::ValueType Value::_TypeFromString( const std::string& type ) {
+		if ( type == "STRING" )
+			return T_STRING;
+
+		if ( type == "FLOAT" )
+			return T_FLOAT;
+
+		if ( type == "INTEGER" )
+			return T_INTEGER;
+
+		if ( type == "FVECTOR2" )
+			return T_FVECTOR2;
+		if ( type == "FRECT" )
+			return T_FRECT;
+		if ( type == "IVECTOR2" )
+			return T_IVECTOR2;
+		if ( type == "IRECT" )
+			return T_IRECT;
+
+		if ( type == "BOOL" )
+			return T_BOOL;
+
+		if ( type == "COLOR" )
+			return T_COLOR;
+
+		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Given string does not match a known type: " + type, __FUNCTION__ );
 	}
 	//#####################################################################
 

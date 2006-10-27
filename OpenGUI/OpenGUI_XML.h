@@ -14,7 +14,9 @@ namespace OpenGUI {
 	//! Map of attributes
 	typedef std::map<std::string, std::string> XMLAttributeMap;
 
-	//! Interface class for classes that contain XMLNode children
+	//! Interface class for classes that contain XMLNode children.
+	/*! The memory attached to all children is considered property of this container,
+	and is deleted during container destruction. */
 	class OPENGUI_API XMLNodeContainer {
 	public:
 		XMLNodeContainer() {}
@@ -108,7 +110,7 @@ namespace OpenGUI {
 		//! removes the given attribute
 		void removeAttribute( const std::string& name );
 		//! Returns \c true if the given attribute exists, \c false otherwise
-		bool hasAttribute( const std::string& name );
+		bool hasAttribute( const std::string& name ) const;
 		//! returns a copy of all attributes
 		XMLAttributeMap getAttributes() const;
 

@@ -127,7 +127,7 @@ namespace OpenGUI {
 		mAttributes.erase( name );
 	}
 	//############################################################################
-	bool XMLNode::hasAttribute( const std::string& name ) {
+	bool XMLNode::hasAttribute( const std::string& name ) const {
 		XMLAttributeMap::const_iterator iter = mAttributes.find( name );
 		if ( iter != mAttributes.end() )
 			return true;
