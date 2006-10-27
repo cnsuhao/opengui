@@ -6,9 +6,13 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Cursor.h"
 #include "OpenGUI_CursorManager.h"
+#include "OpenGUI_Imagery.h"
 
 namespace OpenGUI {
-
+	//! A generic Cursor implementation based on static Imagery
+	/*! Static Imagery based cursors are one of the most common cursor types across all
+	GUIs, so this implementation is built directly into %OpenGUI for production use, as
+	well as being an example of how to make your own cursors. */
 	class OPENGUI_API GenericCursor: public Cursor {
 	public:
 		GenericCursor();
@@ -18,19 +22,27 @@ namespace OpenGUI {
 		//! returns a pointer to the imagery of this cursor
 		ImageryPtr getImagery();
 		//! sets the pointer location offset within the imagery for this cursor
-		void setOffset( const FVector2& offset );
+		void setOffset( const IVector2& offset );
 		//! returns the pointer location offset within the imagery for this cursor
-		const FVector2& getOffset();
+		const IVector2& getOffset();
 
 		//! factory callback for creating GenericCursor
 		static CursorPtr GenericCursorFactory();
+
+		//Object Functions
+		virtual ObjectAccessorList* getAccessors();
+		virtual char* getClassName();
+
 	protected:
 		//! draws this cursor
 		virtual void onDraw( Object* sender, DrawCursor_EventArgs& evtArgs );
 
 	private:
+		void _updateOffsetCache();
+
 		ImageryPtr mImagery;
-		FVector2 mOffset;
+		IVector2 mOffset;
+		FVector2 mOffsetCache;
 	};
 
 }//namespace OpenGUI{

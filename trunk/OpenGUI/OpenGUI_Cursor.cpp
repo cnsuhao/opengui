@@ -3,10 +3,41 @@
 namespace OpenGUI {
 
 	//############################################################################
-	// The base Cursor class has no properties, so there are no Accessors
+	class Cursor_Size_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "Size";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Cursor& c = dynamic_cast<Cursor&>( objectRef );
+				valueOut.setValue( c.getSize() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Cursor& c = dynamic_cast<Cursor&>( objectRef );
+				c.setSize( valueIn.getValueAsFVector2() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_FVECTOR2;
+		}
+	}
+	gCursor_Size_ObjectProperty;
+	//############################################################################
 	class Cursor_ObjectAccessorList : public ObjectAccessorList {
 	public:
-		Cursor_ObjectAccessorList() {}
+		Cursor_ObjectAccessorList() {
+			addAccessor( &gCursor_Size_ObjectProperty );
+		}
 		~Cursor_ObjectAccessorList() {}
 	}
 	gCursor_ObjectAccessorList;
@@ -24,8 +55,11 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	Cursor::Cursor() {
+		if ( gCursor_ObjectAccessorList.getParent() == 0 )
+			gCursor_ObjectAccessorList.setParent( Object::getAccessors() );
+
 		// initialize defaults for properties
-		mSize = FVector2( 10.0f, 10.0f );
+		mSize = FVector2( 20.0f, 20.0f );
 
 		// set up events
 		getEvents().createEvent( "Draw" );

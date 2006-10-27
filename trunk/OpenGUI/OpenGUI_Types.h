@@ -296,6 +296,10 @@ namespace OpenGUI {
 		bool operator!=( const IVector2& right ) const  {
 			return !operator==( right );
 		}
+		//! inverse operator
+		IVector2 operator - () {
+			return IVector2( -x, -y );
+		}
 		//! Return a string representation of this value
 		std::string toStr() const;
 		int x; //!< direct access to x
@@ -442,6 +446,10 @@ namespace OpenGUI {
 		FVector2 normalize() {
 			float l = length();
 			return FVector2( x / l, y / l );
+		}
+		//! inverse operator
+		FVector2 operator - () {
+			return FVector2( -x, -y );
 		}
 		//! Return a string representation of this value
 		std::string toStr() const;

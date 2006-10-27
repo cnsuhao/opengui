@@ -179,7 +179,6 @@ namespace OpenGUI {
 		//! Loads this value from the given XMLNode object
 		void LoadFromXMLNode( const XMLNode& node );
 
-
 	private:
 		void constructor();
 		bool mHasValue;

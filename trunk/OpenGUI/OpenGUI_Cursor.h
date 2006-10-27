@@ -37,7 +37,8 @@ namespace OpenGUI {
 	onDraw event logic that Widgets utilize, so creating custom cursors should be a fairly
 	simple task for anyone with experience creating custom widgets. The only major differences
 	between drawing a Widget and drawing a Cursor is that the onDraw event is called each time
-	the Screen is updated, and the event arguments are of a different type (DrawCursor_EventArgs).
+	the Screen is updated and is never cached, and the event arguments are of a different type
+	(DrawCursor_EventArgs).
 
 	You'll also notice that certain cursor related events are provided in the case that the Cursor
 	requires this information. There is, however, a slight variation for the \c Cursor_Shown and
@@ -61,6 +62,12 @@ namespace OpenGUI {
 	\note
 	Take notice that, while the input related events reuse the same EventArgs, cursors cannot
 	consume events. So whether you \c eat() the event or not makes no difference.
+
+	\note
+	When implementing your own cursors, you should take notice of the \c Size property that
+	the Cursor base class exposes. This property represents the display size of the cursor
+	for both the X and Y axis in Screen units. If the size is never specified by the application
+	it will be the default size of (20.0x20.0f).
 	*/
 	class OPENGUI_API Cursor: public Object {
 		friend class Screen; // Screen needs access to the protected input event triggers
@@ -69,7 +76,7 @@ namespace OpenGUI {
 		Cursor();
 		virtual ~Cursor();
 
-		//! return the name of this cursor
+		//! return the name of this cursor, as set by the CursorManager at creation
 		const std::string& getName() const {
 			return mName;
 		}
