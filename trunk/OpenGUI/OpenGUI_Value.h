@@ -6,6 +6,8 @@
 #include "OpenGUI_Types.h"
 
 namespace OpenGUI {
+	class XMLNode; // forward declaration
+
 	/*! \addtogroup Types
 		@{
 	*/
@@ -91,6 +93,8 @@ namespace OpenGUI {
 		operator bool() const {
 			return isSet();
 		}
+		//! Assignment operation creates a complete copy of the contents (clones), but does \b not alter the \c Name of the assign target.
+		Value& operator=( const Value& right );
 
 //!\name Auto detect type based on parameter type
 //@{
@@ -168,8 +172,13 @@ namespace OpenGUI {
 		void setValueAuto( const std::string& std_string );
 
 		//! Returns a string representation of the stored value
-		std::string toStr();
+		std::string toStr() const;
 //}@
+		//! Saves this Value to the given XMLNode object, completely overwriting its previous content
+		void SaveToXMLNode( XMLNode& node ) const;
+		//! Loads this value from the given XMLNode object
+		void LoadFromXMLNode( const XMLNode& node );
+
 
 	private:
 		void constructor();
@@ -188,6 +197,9 @@ namespace OpenGUI {
 			Color* mColor;
 		};
 		std::string mName;
+
+		static std::string _TypeToString( ValueType type );
+		static ValueType _TypeFromString( const std::string& type );
 	};
 
 	//############################################################################
