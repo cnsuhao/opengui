@@ -206,13 +206,13 @@ namespace OpenGUI {
 		XMLNodeList imageryNodes = node.getChildren( "Imagery" );
 		for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
 			XMLNode* child = ( *iter );
-			const std::string name = child->getAttribute("Name");
-			int t,l,w,h;
-			StrConv::toInt(child->getAttribute("Top"), t);
-			StrConv::toInt(child->getAttribute("Left"), l);
-			StrConv::toInt(child->getAttribute("Width"), w);
-			StrConv::toInt(child->getAttribute("Height"), h);
-			imgset->createImagery(name, t, l, h, w);
+			const std::string name = child->getAttribute( "Name" );
+			int t, l, w, h;
+			StrConv::toInt( child->getAttribute( "Top" ), t );
+			StrConv::toInt( child->getAttribute( "Left" ), l );
+			StrConv::toInt( child->getAttribute( "Width" ), w );
+			StrConv::toInt( child->getAttribute( "Height" ), h );
+			imgset->createImagery( name, t, l, h, w );
 		}
 		return true;
 	}

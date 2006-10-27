@@ -40,7 +40,7 @@ namespace OpenGUI {
 		_Tokenize( inputStr, outputStrList, token );
 	}
 	//############################################################################
-	void StrConv::toLower(std::string& in_out){
+	void StrConv::toLower( std::string& in_out ) {
 		std::transform( in_out.begin(), in_out.end(), in_out.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
 	}
 	//############################################################################
@@ -262,7 +262,7 @@ namespace OpenGUI {
 			return;
 		}
 
-		toLower(tmp);
+		toLower( tmp );
 
 		if ( tmp == "true" ) {
 			out = true;
