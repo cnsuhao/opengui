@@ -174,7 +174,7 @@ namespace OpenGUI {
 		//! Returns a string representation of the stored value
 		std::string toStr() const;
 //}@
-		//! Saves this Value to the given XMLNode object, completely overwriting its previous content
+		//! Saves this Value to the given XMLNode object, overwriting any colliding content
 		void SaveToXMLNode( XMLNode& node ) const;
 		//! Loads this value from the given XMLNode object
 		void LoadFromXMLNode( const XMLNode& node );

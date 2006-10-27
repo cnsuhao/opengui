@@ -217,11 +217,8 @@ namespace OpenGUI {
 		XMLNodeList xmlProps = node.getChildren( "Property" );
 		for ( XMLNodeList::iterator iter = xmlProps.begin(); iter != xmlProps.end(); iter++ ) {
 			XMLNode* prop = ( *iter );
-			const std::string pname = prop->getAttribute( "Name" );
-			const std::string pvalue = prop->getAttribute( "Value" );
 			Value value;
-			value.setName( pname );
-			value.setValue( pvalue );
+			value.LoadFromXMLNode( *prop );
 			propertyList.push_back( value );
 		}
 		manager.DefineWidget( name, propertyList, basename, baselib );
