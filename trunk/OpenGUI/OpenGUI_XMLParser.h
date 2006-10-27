@@ -73,14 +73,14 @@ namespace OpenGUI {
 		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing unloads instead of loads
 		void UnloadFromFile( const std::string& xmlFilename );
 
-		//! Registers an XML Load handler for the given \x xmlPath
+		//! Registers an XML Load handler for the given \c xmlPath
 		void RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
-		//! Unregisters an XML Load handler for the given \x xmlPath
+		//! Unregisters an XML Load handler for the given \c xmlPath
 		void UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
-		//! Registers an XML Unload handler for the given \x xmlPath
+		//! Registers an XML Unload handler for the given \c xmlPath
 		void RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
-		//! Unregisters an XML Unload handler for the given \x xmlPath
+		//! Unregisters an XML Unload handler for the given \c xmlPath
 		void UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
 		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath (Calls ProcessXML_LoadNode() for all container children)

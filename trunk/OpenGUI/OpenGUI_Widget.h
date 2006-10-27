@@ -77,6 +77,7 @@ namespace OpenGUI {
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
 		/*! The list is depth sorted, with top-most widgets at the top and bottom-most widgets at the bottom.
 		\param position The position to test in the same coordinates that \em this widget is defined in.
+		\param outList Filled with pointers to the Widgets that matched the query criteria
 		\param recursive \c TRUE to recurse into the matching children, asking the same question. \c FALSE to only test the direct children of this widget.
 		*/
 		void getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive = false );
