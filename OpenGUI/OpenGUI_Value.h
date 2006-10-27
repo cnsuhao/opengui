@@ -47,8 +47,6 @@ namespace OpenGUI {
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const IRect& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const Enum& value, const std::string& Name = "" );
-		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const Color& value, const std::string& Name = "" );
 //@}
 
@@ -71,8 +69,7 @@ namespace OpenGUI {
 			T_INTEGER = 5, //!< Integer value type
 			T_IVECTOR2 = 6, //!< IVector2 value type
 			T_IRECT = 7, //!< IRect value type
-			T_ENUM = 8, //!< Enum value type
-			T_COLOR = 9 //!< Color value type
+			T_COLOR = 8 //!< Color value type
 		};
 
 		//! Returns the type of this value
@@ -116,37 +113,7 @@ namespace OpenGUI {
 		//! Sets the value, stored value is a copy
 		void setValue( const IRect& intRect );
 		//! Sets the value, stored value is a copy
-		void setValue( const Enum& string_enumeration );
-		//! Sets the value, stored value is a copy
 		void setValue( const Color& color );
-//@}
-
-//!\name Auto detect type based on string contents
-//@{
-		//! Sets the value from a string, performing auto detection to try to fit it into the best type
-		void setValueAuto( const std::string& std_string );
-//}@
-
-//!\name Set from string with explicit type conversion
-//@{
-		//! Sets the value from a string, parsed into an int
-		void setValueAsInt( const std::string& intStr );
-		//! Sets the value from a string, parsed into a float
-		void setValueAsFloat( const std::string& floatStr );
-		//! Sets the value from a string, parsed into an FVector2
-		void setValueAsFVector2( const std::string& fv2Str );
-		//! Sets the value from a string, parsed into an FRect
-		void setValueAsFRect( const std::string& frectStr );
-		//! Sets the value from a string, parsed into an IVector2
-		void setValueAsIVector2( const std::string& iv2Str );
-		//! Sets the value from a string, parsed into an IRect
-		void setValueAsIRect( const std::string& irectStr );
-		//! Sets the value from a string, parsed into a Color
-		void setValueAsColor( const std::string& colorStr );
-		//! Sets the value from a string, parsed into a string
-		void setValueAsString( const std::string& stringStr );
-		//! Sets the value from a string, parsed into a boolean
-		void setValueAsBool( const std::string& boolStr );
 //@}
 
 //!\name Get value as explicit type
@@ -170,10 +137,39 @@ namespace OpenGUI {
 		//! Gets the stored value, throws exception if no value is stored
 		IRect getValueAsIRect() const;
 		//! Gets the stored value, throws exception if no value is stored
-		Enum getValueAsEnum() const;
-		//! Gets the stored value, throws exception if no value is stored
 		Color getValueAsColor() const;
 //@}
+
+//!\name Set from string with explicit type conversion
+//@{
+		//! Sets the value from a string, parsed into an int
+		void setValueAsInt( const std::string& intStr );
+		//! Sets the value from a string, parsed into a float
+		void setValueAsFloat( const std::string& floatStr );
+		//! Sets the value from a string, parsed into an FVector2
+		void setValueAsFVector2( const std::string& fv2Str );
+		//! Sets the value from a string, parsed into an FRect
+		void setValueAsFRect( const std::string& frectStr );
+		//! Sets the value from a string, parsed into an IVector2
+		void setValueAsIVector2( const std::string& iv2Str );
+		//! Sets the value from a string, parsed into an IRect
+		void setValueAsIRect( const std::string& irectStr );
+		//! Sets the value from a string, parsed into a Color
+		void setValueAsColor( const std::string& colorStr );
+		//! Sets the value from a string, parsed into a string
+		void setValueAsString( const std::string& stringStr );
+		//! Sets the value from a string, parsed into a boolean
+		void setValueAsBool( const std::string& boolStr );
+//@}
+
+//!\name Purely string based functions
+//@{
+		//! Sets the value from a string, performing auto detection to try to fit it into the best type
+		void setValueAuto( const std::string& std_string );
+
+		//! Returns a string representation of the stored value
+		std::string toStr();
+//}@
 
 	private:
 		void constructor();
@@ -189,7 +185,6 @@ namespace OpenGUI {
 			int* mInt;
 			IVector2* mIVector2;
 			IRect* mIRect;
-			Enum* mEnum;
 			Color* mColor;
 		};
 		std::string mName;

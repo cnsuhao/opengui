@@ -19,9 +19,6 @@ namespace OpenGUI {
 			case T_COLOR:
 				setValue( copy.getValueAsColor() );
 				break;
-			case T_ENUM:
-				setValue( copy.getValueAsEnum() );
-				break;
 			case T_FLOAT:
 				setValue( copy.getValueAsFloat() );
 				break;
@@ -102,12 +99,6 @@ namespace OpenGUI {
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const Enum& value, const std::string& Name ) {
-		constructor();
-		setValue( value );
-		setName( Name );
-	}
-	//#####################################################################
 	Value::Value( const Color& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
@@ -138,7 +129,7 @@ namespace OpenGUI {
 	//#####################################################################
 	std::string Value::getValueAsString() const {
 		if ( !isSet() || getType() != T_STRING )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a string", "Value::getValueAsString" );
 		return *mString;
 	}
 	//#####################################################################
@@ -163,7 +154,7 @@ namespace OpenGUI {
 	//#####################################################################
 	bool Value::getValueAsBool() const {
 		if ( !isSet() || getType() != T_BOOL )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsBool" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a bool", "Value::getValueAsString" );
 		return *mBool;
 	}
 	//#####################################################################
@@ -177,7 +168,7 @@ namespace OpenGUI {
 	//#####################################################################
 	float Value::getValueAsFloat() const {
 		if ( !isSet() || getType() != T_FLOAT )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsFloat" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a float", "Value::getValueAsString" );
 		return *mFloat;
 	}
 	//#####################################################################
@@ -191,7 +182,7 @@ namespace OpenGUI {
 	//#####################################################################
 	FVector2 Value::getValueAsFVector2() const {
 		if ( !isSet() || getType() != T_FVECTOR2 )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsFVector2" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a FVector2", "Value::getValueAsString" );
 		return *mFVector2;
 	}
 	//#####################################################################
@@ -205,7 +196,7 @@ namespace OpenGUI {
 	//#####################################################################
 	FRect Value::getValueAsFRect() const {
 		if ( !isSet() || getType() != T_FRECT )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsFRect" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a FRect", "Value::getValueAsString" );
 		return *mFRect;
 	}
 	//#####################################################################
@@ -219,7 +210,7 @@ namespace OpenGUI {
 	//#####################################################################
 	int Value::getValueAsInt() const {
 		if ( !isSet() || getType() != T_INTEGER )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsInt" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an integer", "Value::getValueAsString" );
 		return *mInt;
 	}
 	//#####################################################################
@@ -233,7 +224,7 @@ namespace OpenGUI {
 	//#####################################################################
 	IVector2 Value::getValueAsIVector2() const {
 		if ( !isSet() || getType() != T_IVECTOR2 )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsIVector2" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an IVector2", "Value::getValueAsString" );
 		return *mIVector2;
 	}
 	//#####################################################################
@@ -247,22 +238,8 @@ namespace OpenGUI {
 	//#####################################################################
 	IRect Value::getValueAsIRect() const {
 		if ( !isSet() || getType() != T_IRECT )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsIRect" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an IRect", "Value::getValueAsString" );
 		return *mIRect;
-	}
-	//#####################################################################
-	void Value::setValue( const Enum& string_enumeration ) {
-		clearValue();
-		mType = T_ENUM;
-		mEnum = new Enum();
-		*mEnum = string_enumeration;
-		mHasValue = true;
-	}
-	//#####################################################################
-	Enum Value::getValueAsEnum() const {
-		if ( !isSet() || getType() != T_ENUM )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsEnum" );
-		return *mEnum;
 	}
 	//#####################################################################
 	void Value::setValue( const Color& color ) {
@@ -275,7 +252,7 @@ namespace OpenGUI {
 	//#####################################################################
 	Color Value::getValueAsColor() const {
 		if ( !isSet() || getType() != T_COLOR )
-			OG_THROW( Exception::OP_FAILED, "Cannot convert stored value to requested type", "Value::getValueAsColor" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a Color", "Value::getValueAsString" );
 		return *mColor;
 	}
 	//#####################################################################
@@ -288,9 +265,6 @@ namespace OpenGUI {
 				break;
 			case T_COLOR:
 				if ( mColor ) delete mColor;
-				break;
-			case T_ENUM:
-				if ( mEnum ) delete mEnum;
 				break;
 			case T_FLOAT:
 				if ( mFloat ) delete mFloat;
@@ -347,9 +321,6 @@ namespace OpenGUI {
 			break;
 		case T_COLOR:
 			return right.getValueAsColor() == ( *mColor );
-			break;
-		case T_ENUM:
-			return right.getValueAsEnum() == ( *mEnum );
 			break;
 		case T_FLOAT:
 			return right.getValueAsFloat() == ( *mFloat );
@@ -436,7 +407,225 @@ namespace OpenGUI {
 		setValue( value );
 	}
 	//#####################################################################
+	bool _isNumber( char c ) {
+		return c == '1' || c == '2' || c == '3' || c == '4' || c == '5' ||
+			   c == '6' || c == '7' || c == '8' || c == '9' || c == '0';
+	}
+	/*! This function should be considered fairly dangerous, as it is very
+	easy to lose type information when building directly from a string.
+	For instance, floats and integers can appear identical when the float has
+	no decimal value. It is also pretty slow, considering that it has to perform
+	several tests to try to determine the type of the input.
+	\note Depending on the input, this function may cause some exceptions to be
+	thrown around as part of type detection. These exceptions are caught and
+	handled internally, but will show up in the logs nonetheless. */
+	void Value::setValueAuto( const std::string& std_string ) {
+		std::string tmp = std_string;
+		StrConv::trim( tmp );
+		StringList tmpList;
+		ValueType type = T_STRING;
+		bool looksLikeNumber = false;
+		bool hasVectorGroup = false;
+		bool hasRectGroup = false;
+		bool hasDecimal = false;
+		bool hasX = false;
+		bool hasx = false;
+		bool hasColon = false;
+		size_t colonSplits = 0;
+		size_t loc;
 
+		// gather information to help determine type
+		loc = tmp.find( '.' );
+		if ( loc != std::string::npos )
+			hasDecimal = true;
+
+		for ( size_t i = 0; i < 3 && i < tmp.length(); i++ ) {
+			if ( _isNumber( tmp[i] ) ) {
+				looksLikeNumber = true;
+				break;
+			} else {
+				if ( tmp[i] != '.' && tmp[i] != '-' ) {
+					looksLikeNumber = false;
+					break;
+				}
+			}
+		}
+
+		loc = tmp.find( ':' );
+		if ( loc != std::string::npos ) {
+			hasColon = true;
+			StrConv::tokenize( tmp, tmpList, ':' );
+			colonSplits = tmpList.size();
+		}
+
+		loc = tmp.find( '{' );
+		if ( loc == 0 ) {
+			loc = tmp.find( '}' );
+			if ( loc == ( tmp.length() - 1 ) )
+				hasRectGroup = true;
+		}
+
+		loc = tmp.find( '(' );
+		if ( loc == 0 ) {
+			loc = tmp.find( ')' );
+			if ( loc == ( tmp.length() - 1 ) )
+				hasVectorGroup = true;
+		}
+
+		if ( hasRectGroup ) {
+			loc = tmp.find( 'X' );
+			if ( loc != std::string::npos )
+				hasX = true;
+		}
+
+		if ( hasRectGroup || hasVectorGroup ) {
+			loc = tmp.find( 'x' );
+			if ( loc != std::string::npos )
+				hasx = true;
+		}
+
+		// try to determine type
+		if ( looksLikeNumber )
+			type = T_INTEGER;
+		if ( looksLikeNumber && hasDecimal )
+			type = T_FLOAT;
+
+		if ( tmp.length() < 6 ) {
+			std::string tmp2 = tmp;
+			StrConv::toLower( tmp2 );
+			if ( tmp2 == "false" || tmp2 == "true" )
+				type = T_BOOL;
+		}
+
+		if ( hasRectGroup && hasX )
+			if ( hasDecimal )
+				type = T_FRECT;
+			else
+				type = T_IRECT;
+
+		if ( hasVectorGroup && hasx )
+			if ( hasDecimal )
+				type = T_FVECTOR2;
+			else
+				type = T_IVECTOR2;
+
+		if ( hasColon && colonSplits == 4 )
+			type = T_COLOR;
+
+
+		// try to make assignments based on determined type, falling back to T_STRING on any failure
+		if ( type == T_BOOL ) {
+			try {
+				setValueAsBool( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_FRECT ) {
+			try {
+				setValueAsFRect( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_IRECT ) {
+			try {
+				setValueAsIRect( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_FVECTOR2 ) {
+			try {
+				setValueAsFVector2( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_IVECTOR2 ) {
+			try {
+				setValueAsIVector2( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_COLOR ) {
+			try {
+				setValueAsColor( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_INTEGER ) {
+			try {
+				setValueAsInt( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_FLOAT ) {
+			try {
+				setValueAsFloat( std_string );
+				return;
+			} catch ( Exception& ) {
+				type = T_STRING;
+			}
+		}
+		if ( type == T_STRING ) {
+			setValueAsString( std_string );
+		}
+	}
+	//#####################################################################
+	std::string Value::toStr() {
+		std::string ret;
+		switch ( mType ) {
+		case T_BOOL:
+			StrConv::fromBool( getValueAsBool(), ret );
+			return ret;
+			break;
+		case T_COLOR:
+			StrConv::fromColor( getValueAsColor(), ret );
+			return ret;
+			break;
+		case T_FLOAT:
+			StrConv::fromFloat( getValueAsFloat(), ret );
+			return ret;
+			break;
+		case T_FRECT:
+			StrConv::fromFRect( getValueAsFRect(), ret );
+			return ret;
+			break;
+		case T_FVECTOR2:
+			StrConv::fromFVector2( getValueAsFVector2(), ret );
+			return ret;
+			break;
+		case T_INTEGER:
+			StrConv::fromInt( getValueAsInt(), ret );
+			return ret;
+			break;
+		case T_IRECT:
+			StrConv::fromIRect( getValueAsIRect(), ret );
+			return ret;
+			break;
+		case T_IVECTOR2:
+			StrConv::fromIVector2( getValueAsIVector2(), ret );
+			return ret;
+			break;
+		case T_STRING:
+			return getValueAsString();
+			break;
+		default:
+			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
+		}
+	}
+	//#####################################################################
 
 //##########################################################################################################################################
 //################  Can you tell I like fencing?  ##########################################################################################

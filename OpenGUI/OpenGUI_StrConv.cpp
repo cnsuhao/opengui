@@ -12,6 +12,38 @@ namespace OpenGUI {
 		} else str.erase( str.begin(), str.end() );
 	}
 	//############################################################################
+	void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
+		std::string tmpStr;
+		const char* cstr = inputStr.c_str();
+		unsigned int epos, spos;
+		spos = epos = 0;
+		while ( cstr[epos] != 0 ) {
+			if ( cstr[epos] == token ) {
+				tmpStr = inputStr.substr( spos, epos - spos );
+				outputStrList.push_back( tmpStr );
+				spos = epos + 1;
+			}
+			epos++;
+		}
+		if ( spos != epos ) {
+			tmpStr = inputStr.substr( spos, epos - spos );
+			outputStrList.push_back( tmpStr );
+		}
+	}
+	//############################################################################
+	void StrConv::trim( std::string& str ) {
+		_strTrim( str );
+	}
+	//############################################################################
+	/*! The token is not included in the output strings. */
+	void StrConv::tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
+		_Tokenize( inputStr, outputStrList, token );
+	}
+	//############################################################################
+	void StrConv::toLower(std::string& in_out){
+		std::transform( in_out.begin(), in_out.end(), in_out.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
+	}
+	//############################################################################
 	void StrConv::toInt( const std::string& in, int& out ) {
 		std::string tmp = in;
 		_strTrim( tmp );
@@ -189,26 +221,6 @@ namespace OpenGUI {
 		out = ss.str();
 	}
 	//############################################################################
-	typedef std::list<std::string> StringList;
-	void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
-		std::string tmpStr;
-		const char* cstr = inputStr.c_str();
-		unsigned int epos, spos;
-		spos = epos = 0;
-		while ( cstr[epos] != 0 ) {
-			if ( cstr[epos] == token ) {
-				tmpStr = inputStr.substr( spos, epos - spos );
-				outputStrList.push_back( tmpStr );
-				spos = epos + 1;
-			}
-			epos++;
-		}
-		if ( spos != epos ) {
-			tmpStr = inputStr.substr( spos, epos - spos );
-			outputStrList.push_back( tmpStr );
-		}
-	}
-	//############################################################################
 	void StrConv::toColor( const std::string& in, Color& out ) {
 		//!\todo add support for #RRGGBBAA style color representation
 		StringList strList;
@@ -249,9 +261,9 @@ namespace OpenGUI {
 			out = true;
 			return;
 		}
-		std::transform( tmp.begin(), tmp.end(), tmp.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
-		// If the previous fails to work, use this instead
-		//std::transform(tmp.begin(),tmp.end(),tmp.begin(),chrLower);
+
+		toLower(tmp);
+
 		if ( tmp == "true" ) {
 			out = true;
 			return;
