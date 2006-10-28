@@ -1,5 +1,4 @@
 <?xml version="1.0" ?>
-<Include File="metal.xml" />
 <OpenGUI>
 	<Plugin File="TachometerWidget" />
 	
@@ -12,6 +11,9 @@
 
 
 	<CursorDef Name="Square" BaseName="Generic" BaseLibrary="OpenGUI">
+		<Property ValueName="Size" ValueType="FVECTOR2" ValueData="(100x100)" />
+		<Property ValueName="Imagery" ValueType="STRING" ValueData="TachBG" />
+		<Property ValueName="Offset" ValueType="IVECTOR2" ValueData="(160x160)" />
 	</CursorDef>
 	
 	<WidgetDef Name="Tachometer" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
