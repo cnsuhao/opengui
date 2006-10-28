@@ -16,8 +16,6 @@ namespace OpenGUI {
 	//! An encapsulation class used for passing values back and forth in the Accessor system
 	/*! Each Value has a stored value of \c ValueType as well as the option to carry
 	a string based \c Name.
-
-	\todo setValueAsEnum
 	*/
 	class OPENGUI_API Value {
 	public:

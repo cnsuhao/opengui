@@ -191,7 +191,7 @@ This Widget has obtained cursor focus.
 	- OpenGUI::Widget::eventCursor_Focused
 	\par EventArgs:
 	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::grabCursorFocus()
+	\see OpenGUI::Widget::grabCursorFocus(), \ref FocusCursor
 
 
 
@@ -203,7 +203,7 @@ This Widget has lost cursor focus. This can occur either by direct request by \c
 	- OpenGUI::Widget::eventCursor_FocusLost
 	\par EventArgs:
 	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::releaseCursorFocus()
+	\see OpenGUI::Widget::releaseCursorFocus(), \ref FocusCursor
 
 
 
@@ -248,7 +248,7 @@ This Widget has obtained key focus.
 	- OpenGUI::Widget::eventKey_Focused
 	\par EventArgs:
 	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::grabKeyFocus()
+	\see OpenGUI::Widget::grabKeyFocus(), \ref FocusKey
 
 
 
@@ -260,7 +260,7 @@ This Widget has lost key focus. This can occur either by direct request by \c re
 	- OpenGUI::Widget::eventKey_FocusLost
 	\par EventArgs:
 	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::releaseKeyFocus()
+	\see OpenGUI::Widget::releaseKeyFocus(), \ref FocusKey
 
 
 

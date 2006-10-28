@@ -45,7 +45,8 @@ namespace OpenGUI {
 	FontAtlas::FontAtlas( IVector2 dimensions ) {
 		mOpenRowStartPos = 0;
 
-		unsigned char initdata = 255; //! \todo DEBUG: Fix me
+		// -- I think this only used to create full white textures to aid in debugging, but will need to do some tests (10/28/06 EMS)
+		unsigned char initdata = 255; //! \todo DEBUG: Fix me.
 		mTextureData.createNewData( dimensions.x, dimensions.y, 1, &initdata );
 
 		mFreeRectList.push_back( IRect( 0, 0, dimensions.x, dimensions.y ) );

@@ -24,6 +24,7 @@ namespace OpenGUI {
 		m_LayoutSuspended = false; // layouts are instantaneous by default
 		m_LayoutValid = true; // layout begins valid (as there are no controls to update, it does not matter)
 		m_InUpdateLayout = false; // we are not in updateLayout() quite yet
+		m_ClipChildren = false;
 
 		// set up defaults for properties
 
@@ -54,7 +55,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onDrawBG( Object* sender, Draw_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void ContainerControl::onChildAttached( Object* sender, Attach_EventArgs& evtArgs ) {
@@ -88,18 +89,51 @@ namespace OpenGUI {
 
 		if ( reissue ) {
 			FVector2 newPos;
-			newPos = evtArgs.Position;
+			newPos = evtArgs.Position + getPosition();
 			newPos.x += m_ClientAreaOffset_UL.x;
 			newPos.y += m_ClientAreaOffset_UL.y;
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
 					iter != Children.rend(); iter++ ) {
-				iter->eventCursor_Move( newPos.x, newPos.y );
+				if ( iter->eventCursor_Move( newPos.x, newPos.y ) )
+					evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	void ContainerControl::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		Control::onCursor_Press( sender, evtArgs );
+		if ( _isInside( evtArgs.Position ) ) {
+			FVector2 newPos;
+			newPos = evtArgs.Position + getPosition();
+			newPos.x += m_ClientAreaOffset_UL.x;
+			newPos.y += m_ClientAreaOffset_UL.y;
+			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
+					iter != Children.rend(); iter++ ) {
+				if ( iter->eventCursor_Press( newPos.x, newPos.y ) )
+					evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	void ContainerControl::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+		Control::onCursor_Release( sender, evtArgs );
+		if ( _isInside( evtArgs.Position ) ) {
+			FVector2 newPos;
+			newPos = evtArgs.Position + getPosition();
+			newPos.x += m_ClientAreaOffset_UL.x;
+			newPos.y += m_ClientAreaOffset_UL.y;
+			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
+					iter != Children.rend(); iter++ ) {
+				if ( iter->eventCursor_Release( newPos.x, newPos.y ) )
+					evtArgs.eat();
 			}
 		}
 	}
 	//############################################################################
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
+			const bool needRectClip = !brush.isRTTContext() && !m_ClipChildren;
+
 			brush.pushAlpha( getAlpha() );
 
 			//draw background
@@ -107,13 +141,23 @@ namespace OpenGUI {
 			eventDrawBG( brush );
 			brush._popMarker( this );
 
+			if ( needRectClip ) // perform a scissor clip manually if needed
+				brush.pushClippingRect( getRect() );
+
 			//draw children
 			brush.pushPosition( getPosition() );
+			if ( m_ClipChildren ) // setup the client area clip if we have one
+				brush.pushClippingRect( getClientArea() );
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
 					iter != Children.rend(); iter++ ) {
 				iter->_draw( brush );
 			}
+			if ( m_ClipChildren ) // pop the client area clip if we had one
+				brush.pop();
 			brush.pop(); // pop client area position offset
+
+			if ( needRectClip ) // pop off the manual clipping rect if we had one
+				brush.pop();
 
 			//draw foreground
 			brush._pushMarker( this );
