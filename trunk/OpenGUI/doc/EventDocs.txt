@@ -28,6 +28,14 @@
 - \subpage Event_Cursor_Release "Cursor_Release"
 - \subpage Event_Cursor_Disabled "Cursor_Disabled"
 - \subpage Event_Cursor_Enabled "Cursor_Enabled"
+- \subpage Event_Cursor_Focused "Cursor_Focused"
+- \subpage Event_Cursor_FocusLost "Cursor_FocusLost"
+- \subpage Event_Key_Up "Key_Up"
+- \subpage Event_Key_Down "Key_Down"
+- \subpage Event_Key_Pressed "Key_Pressed"
+- \subpage Event_Key_Focused "Key_Focused"
+- \subpage Event_Key_FocusLost "Key_FocusLost"
+
 
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
@@ -173,6 +181,87 @@ The cursor was enabled.
 	OpenGUI::Cursor_EventArgs
 	\see OpenGUI::Screen::enableCursor()
 	
+
+
+\page Event_Cursor_Focused Cursor_Focused
+This Widget has obtained cursor focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Focused
+	- OpenGUI::Widget::eventCursor_Focused
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::grabCursorFocus()
+
+
+
+\page Event_Cursor_FocusLost Cursor_FocusLost
+This Widget has lost cursor focus. This can occur either by direct request by \c releaseCursorFocus(), or as the result of another widget grabbing the focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_FocusLost
+	- OpenGUI::Widget::eventCursor_FocusLost
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::releaseCursorFocus()
+
+
+
+\page Event_Key_Up Key_Up
+The key was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Up
+	- OpenGUI::Widget::eventKey_Up
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Down Key_Down
+The key was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Down
+	- OpenGUI::Widget::eventKey_Down
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Pressed Key_Pressed
+The key was pressed and released. This event always occurs between a Key_Up and a Key_Down event.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Pressed
+	- OpenGUI::Widget::eventKey_Pressed
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Focused Key_Focused
+This Widget has obtained key focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Focused
+	- OpenGUI::Widget::eventKey_Focused
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::grabKeyFocus()
+
+
+
+\page Event_Key_FocusLost Key_FocusLost
+This Widget has lost key focus. This can occur either by direct request by \c releaseKeyFocus(), or as the result of another widget grabbing the focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_FocusLost
+	- OpenGUI::Widget::eventKey_FocusLost
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::releaseKeyFocus()
+
 
 
 \page Event_Cursor_Click Cursor_Click

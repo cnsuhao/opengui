@@ -64,11 +64,65 @@ namespace OpenGUI {
 
 		m_CursorEnabled = false; // cursor starts disabled
 		m_CursorVisible = true;  // cursor starts shown
+
+		m_CursorFocus = 0; // start with no cursor focused widget
+		m_KeyFocus = 0; // start with no keyboard focused widget
 	}
 	//############################################################################
 	Screen::~Screen() {
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ") Destruction" << Log::endlog;
+		_setKeyFocus( 0 );
+		_setCursorFocus( 0 );
 		/**/
+	}
+	//############################################################################
+	Widget* Screen::getKeyFocusedWidget() {
+		return m_KeyFocus;
+	}
+	//############################################################################
+	Widget* Screen::getCursorFocusedWidget() {
+		return m_CursorFocus;
+	}
+	//############################################################################
+	void Screen::_setKeyFocus( Widget* widget ) {
+		Widget* prev = m_KeyFocus;
+		Widget* next = widget;
+		//notify previous of focus lost
+		if ( prev ) {
+			prev->eventCursor_FocusLost( next, prev );
+		}
+
+		//set the new focus target
+		m_KeyFocus = next;
+
+		//notify the new of focus acquired
+		if ( next ) {
+			next->eventCursor_Focused( next, prev );
+		}
+	}
+	//############################################################################
+	void Screen::_setCursorFocus( Widget* widget ) {
+		Widget* prev = m_KeyFocus;
+		Widget* next = widget;
+
+		if ( prev == next )
+			return; //skip pointless operations
+
+		//notify previous of focus lost
+		if ( prev ) {
+			prev->eventCursor_FocusLost( next, prev );
+		}
+
+		//set the new focus target
+		m_KeyFocus = next;
+
+		//notify the new of focus acquired
+		if ( next ) {
+			next->eventCursor_Focused( next, prev );
+		}
+
+		//inject a Cursor_Move to update the new receiver about the cursor's position
+		_injectCursorPosition( mCursorPos.x, mCursorPos.y );
 	}
 	//############################################################################
 	void Screen::_UpdatePPU() const {
@@ -191,6 +245,23 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*!
+	\note this is a temporary implementation that will be replaced with a more useful system
+	\todo finish me 
+	*/
+	bool Screen::injectCharacter( char character ) {
+		//!\todo fix this to support separate key-up / key-down, typematic repeat, and key->character maps
+
+		if ( !m_KeyFocus ) // we only send key events to those that ask for it
+			return false;
+
+		bool retval = false;
+		m_KeyFocus->eventKey_Down( character );
+		retval = m_KeyFocus->eventKey_Entered( character );
+		m_KeyFocus->eventKey_Up( character );
+		return retval;
+	}
+	//############################################################################
 	/*! Positive values causes right or downward movement depending on axis.
 	Values of 0.0f on both axis are ignored. If the cursor is disabled, this will always return false. */
 	bool Screen::injectCursorMovement( float x_rel, float y_rel ) {
@@ -200,12 +271,28 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! 0.0 x 0.0 is the upper left corner of the screen.
-	If the cursor is disabled, this will always return false.*/
+	If the cursor is disabled, this will always return false.
+	If the given position is the same as the previous position, this will return false with no event
+	generated. */
 	bool Screen::injectCursorPosition( float x_pos, float y_pos ) {
+		//skip if cursor disabled and if no movement really occurred
 		if ( !m_CursorEnabled ) return false;
+		if ( mCursorPos.x == x_pos && mCursorPos.y == y_pos ) return false;
+
+		return _injectCursorPosition( x_pos, y_pos );
+	}
+	//############################################################################
+	bool Screen::_injectCursorPosition( float x_pos, float y_pos ) {
 		//store the new cursor position for future use
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
+
+		//send to focus holder if present
+		if ( m_CursorFocus ) {
+			return m_CursorFocus->eventCursor_Move( x_pos, y_pos );
+		}
+
+		//send to everyone
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
@@ -227,6 +314,13 @@ namespace OpenGUI {
 	bool Screen::injectCursorPress() {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = true;
+
+		//send to focus holder if present
+		if ( m_CursorFocus ) {
+			return m_CursorFocus->eventCursor_Press( mCursorPos.x, mCursorPos.y );
+		}
+
+		//send to everyone else
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
@@ -240,6 +334,13 @@ namespace OpenGUI {
 	bool Screen::injectCursorRelease() {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = false;
+
+		//send to focus holder if present
+		if ( m_CursorFocus ) {
+			return m_CursorFocus->eventCursor_Release( mCursorPos.x, mCursorPos.y );
+		}
+
+		//send to everyone else
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {

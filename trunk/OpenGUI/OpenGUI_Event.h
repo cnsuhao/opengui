@@ -16,10 +16,29 @@ namespace OpenGUI {
 	//! Base class for event arguments
 	class OPENGUI_API EventArgs {
 	public:
+		//! default constructor does absolutely nothing
+		EventArgs() {}
 		//! virtual destructor to support polymorphism
 		virtual ~EventArgs() {
 			/**/
 		}
+	};
+
+	//! Base class for event arguments
+	class OPENGUI_API Focus_EventArgs: public EventArgs {
+	public:
+		//! Constructor requires the pointers to the Widgets that received and lost focus
+		Focus_EventArgs( const Widget* received, const Widget* lost ):
+				Received( received ), Lost( lost ) {
+			/**/
+		}
+		virtual ~Focus_EventArgs() {
+			/**/
+		}
+		//! Pointer to the Widget that is receiving focus, or 0 (NULL) if none
+		const Widget* Received;
+		//! Pointer to the Widget that has lost focus, or 0 (NULL) if none
+		const Widget* Lost;
 	};
 
 	//! Base class for input related events
@@ -28,6 +47,9 @@ namespace OpenGUI {
 	class OPENGUI_API Input_EventArgs: public EventArgs {
 	public:
 		Input_EventArgs(): Consumed( false ) {
+			/**/
+		}
+		virtual ~Input_EventArgs() {
 			/**/
 		}
 		//! consume this input event
@@ -75,6 +97,19 @@ namespace OpenGUI {
 		const float& X;
 		//! The cursor Y position
 		const float& Y;
+	};
+
+	//! Specialization of EventArgs for Key events
+	class OPENGUI_API Key_EventArgs: public Input_EventArgs {
+	public:
+		//! Constructor requires the \c character this event references
+		Key_EventArgs( char character ): Character( character ) {
+			/**/
+		}
+		virtual ~Key_EventArgs() {
+			/**/
+		}
+		const char Character;
 	};
 
 	//! Specialization of EventArgs for Control Moved events
