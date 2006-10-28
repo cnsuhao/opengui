@@ -1,0 +1,363 @@
+
+/*! \page Events
+	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
+	
+	To provide a consistent event system that offers the most flexibility for applications to customize, %OpenGUI uses a standardized method of event processing. Every standard event that a Widget receives in OpenGUI, either due to input injection or as the result of another event, is initiated by calling the appropriate event injector. Event injectors only have a single purpose: to build the necessary EventArgs and trigger the event via OpenGUI::Object::triggerEvent(). They have a standard naming convention:
+	\code event<Event Name>(params) \endcode
+	An example would be \c eventActivate, which would (as implied) triggers the "Activate" event. Event injectors are just helper functions, and it is perfectly legal to skip this step and use OpenGUI::Object::triggerEvent() directly if you're capable of building the appropriate OpenGUI::EventArgs yourself.
+	
+	The actual default event actions are handled in the event handlers. These have a standard naming convention as well:
+	\code on<Event Name>(Object* sender,Attach_EventArgs& evtArgs) \endcode
+	All default actions for events occur within these default event handlers. They are virtual functions so that they can be overridden when the current default action is not the necessary action for a new derived Widget type. It is also legal to override an event handler in a subclass of a Widget just to receive notification of the event without registering another handler, but you should take care to call the existing handler during your override to ensure the previous functionality remains. It is not good practice to call default event handlers directly from outside of a default event handler override, as this would not trigger the calling of any additionally bound handlers.
+	
+\section EventList Events List
+	The following is a list of all events that %OpenGUI supports internally. This does not mean that these are the only events that are possible, as any Widget can define new events that it is willing to accept. This is merely the complete list of events that %OpenGUI expects Widgets, Controls, ContainerControls, and Windows to have. Since more specialized Widgets tend to have more events, these events are broken up into smaller lists to illustrate the class hierarchy level where each becomes available.
+	
+	As the Widget classes become more specific, they also include the events of their base classes.
+<hr>
+
+\section EventList_Widget Widget Events
+- \subpage Event_Enabled "Enabled"
+- \subpage Event_Disabled "Disabled"
+- \subpage Event_Attached "Attached"
+- \subpage Event_Detached "Detached"
+- \subpage Event_Draw "Draw"
+- \subpage Event_Invalidated "Invalidated"
+- \subpage Event_Cursor_Move "Cursor_Move"
+- \subpage Event_Cursor_Press "Cursor_Press"
+- \subpage Event_Cursor_Release "Cursor_Release"
+- \subpage Event_Cursor_Disabled "Cursor_Disabled"
+- \subpage Event_Cursor_Enabled "Cursor_Enabled"
+- \subpage Event_Cursor_Focused "Cursor_Focused"
+- \subpage Event_Cursor_FocusLost "Cursor_FocusLost"
+- \subpage Event_Key_Up "Key_Up"
+- \subpage Event_Key_Down "Key_Down"
+- \subpage Event_Key_Pressed "Key_Pressed"
+- \subpage Event_Key_Focused "Key_Focused"
+- \subpage Event_Key_FocusLost "Key_FocusLost"
+
+
+\section EventList_Control Control Events
+- \subpage Event_Moved "Moved"
+- \subpage Event_Resized "Resized"
+- \subpage Event_Cursor_Click "Cursor_Click"
+- \subpage Event_Cursor_Enter "Cursor_Enter"
+- \subpage Event_Cursor_Leave "Cursor_Leave"
+- \subpage Event_Targeted "Targeted"
+- \subpage Event_UnTargeted "UnTargeted"
+
+\section EventList_ContainerControl ContainerControl Events
+- \subpage Event_ChildAttached "ChildAttached"
+- \subpage Event_ChildDetached "ChildDetached"
+
+\section EventList_Window Window Events
+
+
+
+
+\page Event_Enabled Enabled
+Occurs when the Widget has been enabled
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onEnabled
+	- OpenGUI::Widget::eventEnabled
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Disabled Disabled
+Occurs when the Widget has been disabled
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onDisabled
+	- OpenGUI::Widget::eventDisabled
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Attached Attached
+Occurs when the Widget was attached to a container.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onAttached
+	- OpenGUI::Widget::eventAttached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_Detached Detached
+Occurs when the Widget was removed from its container.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onDetached
+	- OpenGUI::Widget::eventDetached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_Draw Draw
+Draw this object using the given brush.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onDraw
+	- OpenGUI::Widget::eventDraw
+	\par EventArgs:
+	OpenGUI::Draw_EventArgs
+
+
+
+\page Event_Invalidated Invalidated
+The Widget was invalidated and will need to be redrawn next Screen::update()
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onInvalidated
+	- OpenGUI::Widget::eventInvalidated
+	
+	\par EventArgs:
+	OpenGUI::Draw_EventArgs
+	\see OpenGUI::Screen::update(), OpenGUI::Screen::invalidateAll(), OpenGUI::Widget::invalidate(), \link Event_Draw Draw Event \endlink
+
+
+
+
+\page Event_Cursor_Move Cursor_Move
+The cursor has moved.
+
+OpenGUI::ContainerControl culls these messages, only sending them to siblings when the cursor is currently inside of itself as well.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Move
+	- OpenGUI::Widget::eventCursor_Move
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Press Cursor_Press
+Called when the cursor button was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Press
+	- OpenGUI::Widget::eventCursor_Press
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Release Cursor_Release
+Called when the cursor button was released.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Release
+	- OpenGUI::Widget::eventCursor_Release
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Disabled Cursor_Disabled
+The cursor was disabled.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Disabled
+	- OpenGUI::Widget::eventCursor_Disabled
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+	\see OpenGUI::Screen::disableCursor()
+
+
+
+\page Event_Cursor_Enabled Cursor_Enabled
+The cursor was enabled.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Enabled
+	- OpenGUI::Widget::eventCursor_Enabled
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+	\see OpenGUI::Screen::enableCursor()
+	
+
+
+\page Event_Cursor_Focused Cursor_Focused
+This Widget has obtained cursor focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_Focused
+	- OpenGUI::Widget::eventCursor_Focused
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::grabCursorFocus()
+
+
+
+\page Event_Cursor_FocusLost Cursor_FocusLost
+This Widget has lost cursor focus. This can occur either by direct request by \c releaseCursorFocus(), or as the result of another widget grabbing the focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onCursor_FocusLost
+	- OpenGUI::Widget::eventCursor_FocusLost
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::releaseCursorFocus()
+
+
+
+\page Event_Key_Up Key_Up
+The key was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Up
+	- OpenGUI::Widget::eventKey_Up
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Down Key_Down
+The key was pressed.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Down
+	- OpenGUI::Widget::eventKey_Down
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Pressed Key_Pressed
+The key was pressed and released. This event always occurs between a Key_Up and a Key_Down event.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Pressed
+	- OpenGUI::Widget::eventKey_Pressed
+	\par EventArgs:
+	OpenGUI::Key_EventArgs
+
+
+
+\page Event_Key_Focused Key_Focused
+This Widget has obtained key focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_Focused
+	- OpenGUI::Widget::eventKey_Focused
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::grabKeyFocus()
+
+
+
+\page Event_Key_FocusLost Key_FocusLost
+This Widget has lost key focus. This can occur either by direct request by \c releaseKeyFocus(), or as the result of another widget grabbing the focus.
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Widget::onKey_FocusLost
+	- OpenGUI::Widget::eventKey_FocusLost
+	\par EventArgs:
+	OpenGUI::Focus_EventArgs
+	\see OpenGUI::Widget::releaseKeyFocus()
+
+
+
+\page Event_Cursor_Click Cursor_Click
+The cursor was pressed and released within this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Click
+	- OpenGUI::Control::eventCursor_Click
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Enter Cursor_Enter
+The cursor cursor entered this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Shown
+	- OpenGUI::Control::eventCursor_Shown
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_Leave Cursor_Leave
+The cursor left this Control.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onCursor_Leave
+	- OpenGUI::Control::eventCursor_Leave
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Targeted Targeted
+The Control was targeted, either by cursor or by menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onTargeted
+	- OpenGUI::Control::eventTargeted
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_UnTargeted UnTargeted
+The Control is no longer targeted, as a result of either cursor or menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onUnTargeted
+	- OpenGUI::Control::eventUnTargeted
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_ChildAttached ChildAttached
+A child Widget has been attached to this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildAttached
+	- OpenGUI::ContainerControl::eventChildAttached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_ChildDetached ChildDetached
+A child Widget has been detached from this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildDetached
+	- OpenGUI::ContainerControl::eventChildDetached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+\page Event_Moved Moved
+The Control has been moved
+
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onMoved
+	- OpenGUI::Control::eventMoved
+	\par EventArgs:
+	OpenGUI::Moved_EventArgs
+
+
+\page Event_Resized Resized
+The Control has been resized
+
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onResized
+	- OpenGUI::Control::eventResized
+	\par EventArgs:
+	OpenGUI::Resized_EventArgs
+*/
