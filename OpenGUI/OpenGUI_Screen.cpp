@@ -24,6 +24,9 @@ namespace OpenGUI {
 		virtual const FVector2& getUPI_Raw() const {
 			return mScreen->getUPI();
 		}
+		virtual bool isRTTContext() const {
+			return false;
+		}
 
 	protected:
 		virtual void appendRenderOperation( RenderOperation& renderOp ) {

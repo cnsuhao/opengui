@@ -182,11 +182,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void I_WidgetContainer::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void I_WidgetContainer::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 }

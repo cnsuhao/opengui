@@ -81,27 +81,27 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Cursor::onDraw( Object* sender, DrawCursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::onCursor_Hidden( Object* sender, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Cursor::eventDraw( float xPos, float yPos, Brush& brush ) {
