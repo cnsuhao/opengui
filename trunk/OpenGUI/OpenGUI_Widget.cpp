@@ -438,7 +438,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! You can only grab focus when you are attached to a Screen. Attempts to grab focus
-	when not attached to a screen will cause an exception. */
+	when not attached to a screen will cause an exception.
+	\see releaseKeyFocus() */
 	void Widget::grabKeyFocus() {
 		Screen* screen = getScreen();
 		if ( !screen )
@@ -449,7 +450,8 @@ namespace OpenGUI {
 	//############################################################################
 	/*! This is automatically performed when a widget is detached from a Screen,
 	which also means that it occurs during widget destruction. Requires attachment
-	to a Screen at time of calling or will have no effect. */
+	to a Screen at time of calling or will have no effect.
+	\see grabKeyFocus() */
 	void Widget::releaseKeyFocus() {
 		Screen* screen = getScreen();
 		if ( !screen )
@@ -461,7 +463,8 @@ namespace OpenGUI {
 	/*! You can only grab focus when you are attached to a Screen. Attempts to grab
 	focus when not attached to a screen will cause an exception.
 	\note This operation will generate an additional (fake, but accurate) \c Cursor_Move
-	event. */
+	event.
+	\see releaseCursorFocus() */
 	void Widget::grabCursorFocus() {
 		Screen* screen = getScreen();
 		if ( !screen )
@@ -474,7 +477,8 @@ namespace OpenGUI {
 	which also means that it occurs during widget destruction. Requires attachment
 	to a Screen at time of calling or will have no effect.
 	\note This operation will generate an additional (fake, but accurate) \c Cursor_Move
-	event. */
+	event. 
+	\see grabCursorFocus() */
 	void Widget::releaseCursorFocus() {
 		Screen* screen = getScreen();
 		if ( !screen )

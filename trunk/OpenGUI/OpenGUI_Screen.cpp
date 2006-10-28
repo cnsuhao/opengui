@@ -89,7 +89,7 @@ namespace OpenGUI {
 		Widget* next = widget;
 		//notify previous of focus lost
 		if ( prev ) {
-			prev->eventCursor_FocusLost( next, prev );
+			prev->eventKey_FocusLost( next, prev );
 		}
 
 		//set the new focus target
@@ -97,12 +97,12 @@ namespace OpenGUI {
 
 		//notify the new of focus acquired
 		if ( next ) {
-			next->eventCursor_Focused( next, prev );
+			next->eventKey_Focused( next, prev );
 		}
 	}
 	//############################################################################
 	void Screen::_setCursorFocus( Widget* widget ) {
-		Widget* prev = m_KeyFocus;
+		Widget* prev = m_CursorFocus;
 		Widget* next = widget;
 
 		if ( prev == next )
@@ -114,7 +114,7 @@ namespace OpenGUI {
 		}
 
 		//set the new focus target
-		m_KeyFocus = next;
+		m_CursorFocus = next;
 
 		//notify the new of focus acquired
 		if ( next ) {
