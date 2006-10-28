@@ -111,10 +111,24 @@ namespace OpenGUI {
 		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Widget::onCursor_Release ) );
 		getEvents()["Cursor_Disabled"].add( new EventDelegate( this, &Widget::onCursor_Disabled ) );
 		getEvents()["Cursor_Enabled"].add( new EventDelegate( this, &Widget::onCursor_Enabled ) );
+		getEvents().createEvent( "Cursor_Focused" );
+		getEvents().createEvent( "Cursor_FocusLost" );
+		getEvents()["Cursor_Focused"].add( new EventDelegate( this, &Widget::onCursor_Focused ) );
+		getEvents()["Cursor_FocusLost"].add( new EventDelegate( this, &Widget::onCursor_FocusLost ) );
 		getEvents().createEvent( "Enabled" );
 		getEvents().createEvent( "Disabled" );
 		getEvents()["Enabled"].add( new EventDelegate( this, &Widget::onEnabled ) );
 		getEvents()["Disabled"].add( new EventDelegate( this, &Widget::onDisabled ) );
+		getEvents().createEvent( "Key_Up" );
+		getEvents().createEvent( "Key_Down" );
+		getEvents().createEvent( "Key_Pressed" );
+		getEvents()["Key_Up"].add( new EventDelegate( this, &Widget::onKey_Up ) );
+		getEvents()["Key_Down"].add( new EventDelegate( this, &Widget::onKey_Down ) );
+		getEvents()["Key_Pressed"].add( new EventDelegate( this, &Widget::onKey_Pressed ) );
+		getEvents().createEvent( "Key_Focused" );
+		getEvents().createEvent( "Key_FocusLost" );
+		getEvents()["Key_Focused"].add( new EventDelegate( this, &Widget::onKey_Focused ) );
+		getEvents()["Key_FocusLost"].add( new EventDelegate( this, &Widget::onKey_FocusLost ) );
 	}
 	//############################################################################
 	Widget::~Widget() {
@@ -209,11 +223,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventAttached( I_WidgetContainer* newParent, Widget* widget ) {
@@ -227,7 +241,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDraw( Object* obj, Draw_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* obj, EventArgs& evtArgs ) {
@@ -246,23 +260,23 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
@@ -323,12 +337,78 @@ namespace OpenGUI {
 		triggerEvent( "Cursor_Enabled", event );
 	}
 	//############################################################################
+	void Widget::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventCursor_Focused( Widget* cur, Widget* prev ) {
+		Focus_EventArgs event( cur, prev );
+		triggerEvent( "Cursor_Focused", event );
+	}
+	//############################################################################
+	void Widget::eventCursor_FocusLost( Widget* cur, Widget* prev ) {
+		Focus_EventArgs event( cur, prev );
+		triggerEvent( "Cursor_FocusLost", event );
+	}
+	//############################################################################
+	void Widget::onKey_Up( Object* sender, Key_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::onKey_Down( Object* sender, Key_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	bool Widget::eventKey_Up( char character ) {
+		Key_EventArgs event( character );
+		triggerEvent( "Key_Up", event );
+		return event.Consumed;
+	}
+	//############################################################################
+	bool Widget::eventKey_Down( char character ) {
+		Key_EventArgs event( character );
+		triggerEvent( "Key_Down", event );
+		return event.Consumed;
+	}
+	//############################################################################
+	bool Widget::eventKey_Entered( char character ) {
+		Key_EventArgs event( character );
+		triggerEvent( "Key_Entered", event );
+		return event.Consumed;
+	}
+	//############################################################################
+	void Widget::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventKey_Focused( Widget* cur, Widget* prev ) {
+		Focus_EventArgs event( cur, prev );
+		triggerEvent( "Key_Focused", event );
+	}
+	//############################################################################
+	void Widget::eventKey_FocusLost( Widget* cur, Widget* prev ) {
+		Focus_EventArgs event( cur, prev );
+		triggerEvent( "Key_FocusLost", event );
+	}
+	//############################################################################
 	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventEnabled() {
@@ -355,6 +435,61 @@ namespace OpenGUI {
 	//############################################################################
 	Widget* Widget::getChildAt( const FVector2& position, bool recursive ) {
 		return _getChildAt( position, recursive );
+	}
+	//############################################################################
+	/*! You can only grab focus when you are attached to a Screen. Attempts to grab focus
+	when not attached to a screen will cause an exception. */
+	void Widget::grabKeyFocus() {
+		Screen* screen = getScreen();
+		if ( !screen )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "This operation requires attachment to a Screen", __FUNCTION__ );
+		if ( screen->getKeyFocusedWidget() != this )
+			screen->_setKeyFocus( this );
+	}
+	//############################################################################
+	/*! This is automatically performed when a widget is detached from a Screen,
+	which also means that it occurs during widget destruction. Requires attachment
+	to a Screen at time of calling or will have no effect. */
+	void Widget::releaseKeyFocus() {
+		Screen* screen = getScreen();
+		if ( !screen )
+			return;
+		if ( screen->getKeyFocusedWidget() == this )
+			screen->_setKeyFocus( 0 );
+	}
+	//############################################################################
+	/*! You can only grab focus when you are attached to a Screen. Attempts to grab
+	focus when not attached to a screen will cause an exception.
+	\note This operation will generate an additional (fake, but accurate) \c Cursor_Move
+	event. */
+	void Widget::grabCursorFocus() {
+		Screen* screen = getScreen();
+		if ( !screen )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "This operation requires attachment to a Screen", __FUNCTION__ );
+		if ( screen->getCursorFocusedWidget() != this )
+			screen->_setCursorFocus( this );
+	}
+	//############################################################################
+	/*! This is automatically performed when a widget is detached from a Screen,
+	which also means that it occurs during widget destruction. Requires attachment
+	to a Screen at time of calling or will have no effect.
+	\note This operation will generate an additional (fake, but accurate) \c Cursor_Move
+	event. */
+	void Widget::releaseCursorFocus() {
+		Screen* screen = getScreen();
+		if ( !screen )
+			return;
+		if ( screen->getCursorFocusedWidget() == this )
+			screen->_setCursorFocus( 0 );
+	}
+	//############################################################################
+	void Widget::_detaching() {
+		releaseCursorFocus();
+		releaseKeyFocus();
+	}
+	//############################################################################
+	void Widget::_attaching() {
+		/**/
 	}
 	//############################################################################
 }//namespace OpenGUI{

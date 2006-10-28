@@ -159,6 +159,7 @@ namespace OpenGUI {
 		if ( widgetPtr->mContainer != 0 )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  "Widget is already a child of another container!", __FUNCTION__ );
+		widgetPtr->_attaching();
 		widgetPtr->mContainer = this;
 	}
 	//############################################################################
@@ -166,6 +167,7 @@ namespace OpenGUI {
 		if ( widgetPtr->mContainer != this )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  "Widget is not a child of this container!", __FUNCTION__ );
+		widgetPtr->_detaching();
 		widgetPtr->mContainer = 0;
 	}
 	//############################################################################

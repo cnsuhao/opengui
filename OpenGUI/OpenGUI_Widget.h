@@ -121,6 +121,21 @@ namespace OpenGUI {
 		void eventCursor_Disabled();
 		//! Called when the cursor is enabled.
 		void eventCursor_Enabled( float xPos, float yPos );
+		//! Called then this widget receives cursor focus
+		void eventCursor_Focused( Widget* cur, Widget* prev );
+		//! Called then this widget loses cursor focus
+		void eventCursor_FocusLost( Widget* cur, Widget* prev );
+
+		//! Called when the given \c character is released
+		bool eventKey_Up( char character );
+		//! Called when the given \c character is pressed down
+		bool eventKey_Down( char character );
+		//! Called when the given \c character is entered
+		bool eventKey_Entered( char character );
+		//! Called then this widget receives key focus
+		void eventKey_Focused( Widget* cur, Widget* prev );
+		//! Called then this widget loses key focus
+		void eventKey_FocusLost( Widget* cur, Widget* prev );
 //@}
 
 		//! Returns true if the given point is inside this Widget
@@ -154,10 +169,36 @@ namespace OpenGUI {
 		virtual void onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Shown" event
 		virtual void onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Focused" event
+		virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
+		//! "Cursor_FocusLost" event
+		virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+
+		//! "Key_Up" event
+		virtual void onKey_Up( Object* sender, Key_EventArgs& evtArgs );
+		//! "Key_Down" event
+		virtual void onKey_Down( Object* sender, Key_EventArgs& evtArgs );
+		//! "Key_Pressed" event
+		virtual void onKey_Pressed( Object* sender, Key_EventArgs& evtArgs );
+		//! "Key_Focused" event
+		virtual void onKey_Focused( Object* sender, Focus_EventArgs& evtArgs );
+		//! "Key_FocusLost" event
+		virtual void onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
 //@}
 
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen();
+
+		//! grabs focus for this Widget for keyboard events
+		void grabKeyFocus();
+		//! releases focus for this Widget for keyboard events
+		void releaseKeyFocus();
+
+		//! releases focus for this Widget for cursor events
+		void grabCursorFocus();
+		//! releases focus for this Widget for cursor events
+		void releaseCursorFocus();
+
 		void _doflush();
 
 		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
@@ -171,6 +212,9 @@ namespace OpenGUI {
 
 		bool mEnabled;
 		std::string mWidgetName;
+
+		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)
+		void _attaching(); // called directly before the attach occurs
 	};
 
 } //namespace OpenGUI{

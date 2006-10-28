@@ -28,12 +28,11 @@ namespace OpenGUI {
 	class OPENGUI_API Screen : public I_WidgetContainer {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
-//!\name Input Injection & Cursor Functions
+//!\name Cursor Functions (Input Injection & Utility)
 //@{
 		//! Injects cursor movement by providing the relative movement from the last position
 		bool injectCursorMovement( float x_rel, float y_rel );
 		//! Injects cursor movement by providing the absolute cursor position on the screen
-
 		bool injectCursorPosition( float x_pos, float y_pos );
 		//! Injects cursor movement by providing the absolute cursor position as a percentage of the screen
 		bool injectCursorPosition_Percent( float x_perc, float y_perc );
@@ -60,7 +59,27 @@ namespace OpenGUI {
 		void hideCursor();
 		//! Returns \c true if the cursor is shown, \c false if it is hidden.
 		bool cursorVisible();
-//@}
+		//! Returns a pointer to the current Widget that has cursor focus, or 0 if none
+		Widget* getCursorFocusedWidget();
+
+		//! \internal Sets cursor focus to the given Widget. Called by the widget via Widget::grabCursorFocus() or Widget::releaseCursorFocus()
+		void _setCursorFocus( Widget* widget );
+//@} Cursor Functions
+
+//!\name Keyboard Input Injection
+//@{
+		//! Injects the given \c character as text input from the user
+		bool injectCharacter( char character );
+
+		//\todo bool injectKeyDown(); OG_NYI;
+		//\todo bool injectKeyUp(); OG_NYI;
+
+		//! Returns a pointer to the current Widget that has key focus, or 0 if none
+		Widget* getKeyFocusedWidget();
+
+		//! \internal Sets key focus to the given Widget. Called by the widget via Widget::grabKeyFocus() or Widget::releaseKeyFocus()
+		void _setKeyFocus( Widget* widget );
+//@} Text Input
 
 		//! Returns a pointer to the topmost Widget at the given location, or 0 (NULL) if no match found
 		Widget* getWidgetAt( const FVector2& position, bool recursive = false );
@@ -135,6 +154,9 @@ namespace OpenGUI {
 
 		//! \internal If this Screen renders to the main viewport, this matters. Otherwise it doesn't.
 		void _notifyViewportDimensionsChanged();
+
+		//! \internal private implementation of injectCursorPosition(), post sanity checks
+		bool _injectCursorPosition( float x_rel, float y_rel );
 	private:
 		//! returns the size of the render target of this Screen
 		const IVector2& getRenderTargetSize() const;
@@ -158,10 +180,15 @@ namespace OpenGUI {
 		FVector2 mCursorPos; // last known cursor position, used for relative cursor input injection
 		bool mCursorPressed; // last known cursor press state
 
+		//cursor variables
 		bool m_CursorEnabled; // cursor enabled/disabled
 		bool m_CursorVisible; // cursor show/hide
 		CursorPtr mDefaultCursor; // the default cursor for this Screen
 		CursorPtr mPrevCursor; // the cursor drawn in the previous render
+
+		//Focus variables
+		Widget* m_CursorFocus; // pointer to current widget with cursor focus, 0 if none
+		Widget* m_KeyFocus; // pointer to current widget with keyboard focus, 0 if none
 	};
 
 } //namespace OpenGUI{
