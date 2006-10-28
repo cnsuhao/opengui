@@ -635,7 +635,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
@@ -681,11 +681,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::onTargeted( Object* sender, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::onUnTargeted( Object* sender, EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::eventTargeted() {
@@ -699,11 +699,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::onMoved( Object* sender, Moved_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
-		/* Default is to do nothing */
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::eventMoved( const FVector2& oldPosition, const FVector2& newPosition ) {

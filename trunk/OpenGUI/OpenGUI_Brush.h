@@ -250,6 +250,8 @@ namespace OpenGUI {
 		//! Returns the UPI mapped against the Brush's current rotation.  \see Screen::getPPU()
 		const FVector2& getUPI();
 
+		//! returns true if the brush context is a render to texture surface
+		virtual bool isRTTContext() const = 0;
 	protected:
 		//! Final output RenderOperations are passed to this function.
 		/*! It is up to specialized Brush implementations to capture final

@@ -16,6 +16,13 @@ namespace OpenGUI {
 	also supplies an automatic layout system that will reposition and resize child controls
 	according to their exposed layout preferences.
 
+	\note
+	If a subclass wishes to restrict the client area (the rect within the container in which
+	contained widgets are drawn) to a smaller area, it will need to modify m_ClientAreaOffset_UL
+	and m_ClientAreaOffset_LR as appropriate to reflect the desired client area. The default
+	values for both of these is (0.0fx0.0f), which will result in the full area of the container
+	being used as client area.
+
 	\par Events
 	- ChildAttached
 	- ChildDetached
@@ -55,6 +62,7 @@ namespace OpenGUI {
 		//! A child has been detached from this container
 		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
 //@}
+
 	protected:
 //!\name Event Handlers
 //@{
@@ -64,11 +72,13 @@ namespace OpenGUI {
 		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "ChildDetached" event
 		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Move to children a proper offset
+		//! Re-issues the \c Cursor_Move to children with a proper offset
 		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+		//! Re-issues the \c Cursor_Press to children with a proper offset
+		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+		//! Re-issues the \c Cursor_Release to children with a proper offset
+		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
-
-
 
 		//! Returns the client area position and size as an FRect
 		const FRect& getClientArea();
@@ -77,6 +87,13 @@ namespace OpenGUI {
 		FVector2 m_ClientAreaOffset_UL;
 		//! The client area offset from the lower right of the ContainerControl
 		FVector2 m_ClientAreaOffset_LR;
+		//! Signifies if this container should clip the output of its children against the defined client area
+		/*! It is important to note that children will always be clipped against the rect bounds of the
+		container (either implicitly from a render to texture context, or forcibly by a ClippingRect).
+		This option is merely present to supply an enforced rect clipping of child output in the event that
+		you are not drawing a solid border in the area between the edge of the control and the edge of the
+		client area. The default is \c false. */
+		bool m_ClipChildren;
 
 		//! This performs the actual layout operation
 		virtual void _doUpdateLayout();
