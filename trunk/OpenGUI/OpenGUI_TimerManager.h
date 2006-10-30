@@ -42,40 +42,23 @@ namespace OpenGUI {
 		*/
 		unsigned long getMillisecondsSinceStart();
 
+		//! Adds the given amount of time, in milliseconds
+		void addTime( unsigned int amount_milliseconds );
+
+		//! Sets the total time passed since application start, in milliseconds
+		void setTime( unsigned long timefromstart_milliseconds );
+
 	protected:
-		void _addTime( unsigned int amount );
-		unsigned long m_timeSinceStart;
+		unsigned long m_timeSinceStart; // the central time variable
+		// Auto advances time. Should only be called from System once per frame, and only if the application is not providing its own timing
+		void _AutoAdvance();
 
-		//This performs an injection of ticks into the system. Only call this if the app is NOT supplying its own ticks
-		//void _DoAutoTickInject();
-
-		//Resets _timePassedSinceLastCall
-		void _init_timePassedSinceLastCall();
-		//Simply returns the time passed in ms since the last call
-		unsigned long _timePassedSinceLastCall();
-		unsigned long m_last_timePassedSinceLastCall;
-		unsigned long _timeCurrent();
-
-		/*
-		//Timing Related Members
-		//!\todo alter this to use a timer class, or at least fix it to provide better timer resolution on windows boxes
-		void _updateTimer();
-		unsigned long _getTimer();
-		clock_t mLastTimerTick;
-
-
-		//############################################################################
-		void System::_updateTimer()
-		{
-		mLastTimerTick = clock();
-		}
-		//############################################################################
-		unsigned long System::_getTimer()
-		{
-		return (unsigned long)((float)(clock()-mLastTimerTick) / ((float)CLOCKS_PER_SEC/1000.0));
-		}
-
-		*/
+	private:
+		// The following should NEVER be called outside of TimerManager
+		void _init_timePassedSinceLastCall();//Resets _timePassedSinceLastCall
+		unsigned long _timePassedSinceLastCall(); //Simply returns the time passed in ms since the last call
+		unsigned long m_last_timePassedSinceLastCall; // storage for _timePassedSinceLastCall()
+		unsigned long _timeCurrent(); // gets the current time from the OS
 	};
 
 }

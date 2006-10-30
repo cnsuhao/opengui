@@ -129,6 +129,8 @@ namespace OpenGUI {
 		getEvents().createEvent( "Key_FocusLost" );
 		getEvents()["Key_Focused"].add( new EventDelegate( this, &Widget::onKey_Focused ) );
 		getEvents()["Key_FocusLost"].add( new EventDelegate( this, &Widget::onKey_FocusLost ) );
+		getEvents().createEvent( "Tick" );
+		getEvents()["Tick"].add( new EventDelegate( this, &Widget::onTick ) );
 	}
 	//############################################################################
 	Widget::~Widget() {
@@ -494,6 +496,19 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::_attaching() {
 		/**/
+	}
+	//############################################################################
+	void Widget::_tick( float seconds ) {
+		eventTick( seconds );
+	}
+	//############################################################################
+	void Widget::eventTick( float seconds ) {
+		Tick_EventArgs event( seconds );
+		triggerEvent( "Tick", event );
+	}
+	//############################################################################
+	void Widget::onTick( Object* sender, Tick_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 }//namespace OpenGUI{

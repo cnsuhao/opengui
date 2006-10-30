@@ -41,13 +41,24 @@ namespace OpenGUI {
 		return m_timeSinceStart;
 	}
 	//############################################################################
-	void TimerManager::_addTime( unsigned int amount ) {
-		m_timeSinceStart += amount;
+	/*!\note This should not be called unless you are not allowing System to perform
+	its own time advancement. */
+	void TimerManager::addTime( unsigned int amount_milliseconds ) {
+		m_timeSinceStart += amount_milliseconds;
 	}
 	//############################################################################
-	//void TimerManager::_DoAutoTickInject() {
-	//System::getSingleton().injectTick( _timePassedSinceLastCall() );
-	//}
+	/*! Time can only be advanced, you cannot go backwards. Attempts to do so will
+	result in undefined behavior, but the most likely result will be a huge jump
+	forward in time passed. 
+	\note This should not be called unless you are not allowing System to perform
+	its own time advancement. */
+	void TimerManager::setTime( unsigned long timefromstart_milliseconds ) {
+		m_timeSinceStart = timefromstart_milliseconds;
+	}
+	//############################################################################
+	void TimerManager::_AutoAdvance() {
+		addTime( _timePassedSinceLastCall() );
+	}
 	//############################################################################
 	//############################################################################
 	void TimerManager::_init_timePassedSinceLastCall() {

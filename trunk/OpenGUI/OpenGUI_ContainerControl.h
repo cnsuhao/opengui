@@ -49,6 +49,9 @@ namespace OpenGUI {
 		//! \internal In addition to previous functionality, this adds a "DrawBG" operation and calls the children _draw between the foreground and background onDraws
 		virtual void _draw( Brush& brush );
 
+		//! \internal Calls base class _tick() function and passed the Tick on to all children
+		virtual void _tick( float seconds );
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();

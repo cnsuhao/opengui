@@ -72,7 +72,7 @@ void DemoApp::run() {
 
 		perframeRun();
 
-		mSystem->updateScreens();
+		mSystem->update();
 
 		// Swap front and back rendering buffers
 		glfwSwapBuffers();

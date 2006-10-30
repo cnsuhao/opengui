@@ -83,13 +83,15 @@ namespace OpenGUI {
 		//! unloads a plugin by filename
 		void unloadPlugin( std::string filename );
 
-		//! Updates all screens that need it via ScreenManager::updateScreens()
-		/*! This function also takes care of calling _preUpdate() and _postUpdate().
-			If you plan on updating Screens individually, or by calling
-			ScreenManager::updateScreens() yourself, you will need to call _preUpdate()
-			before you begin updating Screens, and _postUpdate() when you are done
-			updating Screens this pass. */
+
+		//! Updates all subsystems in the necessary order
+		void update();
+
+		//! Updates all auto updating properties of all Screens
 		void updateScreens();
+
+		//! Updates the TimerManager using the built in time advancement code
+		void updateTime();
 
 		//! Called before any rendering takes place
 		void _preUpdate();
@@ -109,16 +111,6 @@ namespace OpenGUI {
 		*/
 		void notifyViewportDimensionsChanged();
 
-		//! Returns the current FPS
-		/*! The FPS value returned is an average over the last 5 frames. If less than
-			5 frames have been rendered, then the average is based on as many frames
-			as available. If no frames have been rendered, the returned value will be 0.0f.
-			\note A "frame" is defined as a single call to System::renderGUI(). Since most
-			applications will call this function once per scene frame, this is an adequate
-			metric.
-		*/
-		float statRenderFPS();
-
 	protected:
 
 	private:
@@ -128,11 +120,6 @@ namespace OpenGUI {
 		// XML tag handlers for <OpenGUI> root tag
 		static bool _OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _OpenGUI_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
-
-
-		//Statistics
-		void _stat_UpdateFPS();
-
 
 		//Logging Facilities
 		LogManager* m_LogManager;
