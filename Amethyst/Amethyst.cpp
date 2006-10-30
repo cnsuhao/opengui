@@ -5,15 +5,15 @@
 namespace OpenGUI{
 	//! All Amethyst classes are placed within this namespace
 	namespace Amethyst{
-
+  
 	}
 }
 
-extern "C"{
+extern "C"{ 
 
 	void __declspec(dllexport) pluginStart(){
 		OpenGUI::LogManager::SlogMsg("Amethyst", OGLL_MSG)
-			<< "Initializing Amethyst" << OpenGUI::Log::endlog;
+			<< "Initializing Amethyst" << OpenGUI::Log::endlog; 
 	}
 
 	void __declspec(dllexport) pluginStop(){
