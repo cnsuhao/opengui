@@ -33,13 +33,44 @@ namespace OpenGUI{
 		}
 		gSimpleButton_BaseImage_ObjectProperty;
 		//############################################################################
-		//############################################################################
-		class Label_ObjectAccessorList : public ObjectAccessorList {
+		class SimpleButton_HoverImage_ObjectProperty : public ObjectProperty {
 		public:
-			Label_ObjectAccessorList() {
-				addAccessor( &gSimpleButton_BaseImage_ObjectProperty );
+			virtual const char* getAccessorName() {
+				return "MouseOverImagery";
 			}
-			~Label_ObjectAccessorList() {}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					valueOut.setValue( b.getImageryMouseOver() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					b.setImageryMouseOver( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gSimpleButton_HoverImage_ObjectProperty;
+		//############################################################################
+		//############################################################################
+		class SimpleButton_ObjectAccessorList : public ObjectAccessorList {
+		public:
+			SimpleButton_ObjectAccessorList() {
+				addAccessor( &gSimpleButton_BaseImage_ObjectProperty );
+				addAccessor( &gSimpleButton_HoverImage_ObjectProperty );
+			}
+			~SimpleButton_ObjectAccessorList() {}
 		}
 		gSimpleButton_ObjectAccessorList;
 
