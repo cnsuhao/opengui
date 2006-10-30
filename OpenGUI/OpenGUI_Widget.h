@@ -90,6 +90,9 @@ namespace OpenGUI {
 		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
 		virtual void _draw( Brush& brush );
 
+		//!\internal injects tick events to this widget
+		virtual void _tick( float seconds );
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -136,6 +139,9 @@ namespace OpenGUI {
 		void eventKey_Focused( Widget* cur, Widget* prev );
 		//! Called then this widget loses key focus
 		void eventKey_FocusLost( Widget* cur, Widget* prev );
+
+		//! Called when the passage of time has been measured
+		void eventTick( float seconds );
 //@}
 
 		//! Returns true if the given point is inside this Widget
@@ -184,6 +190,9 @@ namespace OpenGUI {
 		virtual void onKey_Focused( Object* sender, Focus_EventArgs& evtArgs );
 		//! "Key_FocusLost" event
 		virtual void onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+
+		//! "Tick" event
+		virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
 //@}
 
 		//! returns the screen that this Widget is attached to, or 0 if not attached

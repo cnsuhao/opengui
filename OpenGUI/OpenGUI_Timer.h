@@ -15,6 +15,9 @@ namespace OpenGUI {
 		//! Returns the number of milliseconds passed since object creation, or the last reset, whichever occurred last.
 		/*! (Milliseconds are 1/1000th of a second) */
 		unsigned int getMilliseconds();
+
+		//! Returns the time passed since object creation or last reset in seconds, as a float to support fractions of a second.
+		float getSeconds();
 	private:
 		unsigned int m_TimePoint;
 	};

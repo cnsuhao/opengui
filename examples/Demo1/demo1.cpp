@@ -17,6 +17,7 @@ private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
 	OpenGUI::Screen* mScreen;
+	OpenGUI::Widget* mStatText;
 	OpenGUI::Examples::Tachometer* mTach;
 };
 
@@ -91,32 +92,20 @@ void Demo1App::preRun() {
 	headerText->setHeight( 60 );
 	headerText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
 	mScreen->Children.add_back( headerText, true );
-	/*
-		OpenGUI::XMLParser::LoadFromFile("demo1.xml");
-		OpenGUI::System::getSingleton().setGUISheet(
-			OpenGUI::System::getSingleton().getGUISheetByName("root")
-			);
-		mLabel = static_cast<OpenGUI::Widgets::TextLabel*>
-			( OpenGUI::System::getSingleton().createWidget("TextLabel","OpenGUI") );
-		OpenGUI::System::getSingleton().getGUISheetByName("root")->addChildElement(mLabel,"Msg");
-		mLabel->setFont("pecot");
-		mLabel->setFontSize(16);
-		mLabel->setAlignment_Horiz(OpenGUI::TextAlignment::ALIGN_RIGHT);
-		mLabel->setPos(0.0f,0.0f);
-		mLabel->setSize(1.0f,1.0f);
-		mLabel->setText("Press ESC to Quit");
 
-		mLabel = static_cast<OpenGUI::Widgets::TextLabel*>
-			( OpenGUI::System::getSingleton().createWidget("TextLabel","OpenGUI") );
-		OpenGUI::System::getSingleton().getGUISheetByName("root")->addChildElement(mLabel,"FPS");
-		mLabel->setFont("pecot");
-		mLabel->setFontSize(16);
-		mLabel->setPos(0.0f,0.0f);
-		mLabel->setSize(1.0f,1.0f);
-		mLabel->setText("FPS On the way!");
+	SimpleText* statText = new SimpleText();
+	mStatText = statText;
+	statText->setName( "Stats" );
+	statText->setFont( Font( "pecot", 20 ) );
+	statText->setText( "Stats on the way" );
+	statText->setTop( 0 );
+	statText->setLeft( 500 );
+	statText->setWidth( 400 );
+	statText->setHeight( 60 );
+	statText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
+	mScreen->Children.add_back( statText, true );
 
-		mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		*/
+	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
 }
 void Demo1App::perframeRun() {
 	static int val = 0;
@@ -129,12 +118,14 @@ void Demo1App::perframeRun() {
 	if ( OpenGUI::System::getSingletonPtr() ) {
 		mTach->setNeedleValue(( float ) val );
 
-		//if(mTimer->getMilliseconds() > 200){
-		//	mTimer->reset();
-		//	std::stringstream ss;
-		//ss << "FPS: " << OpenGUI::System::getSingleton().statRenderFPS();
-		//mLabel->setText(ss.str());
-		//}
+		if(mTimer->getMilliseconds() > 200){
+			mTimer->reset();
+			std::stringstream ss;
+			ss << "Update Time: " << mScreen->statsGetUpdateTime();
+			ss << "\n";
+			ss << "FPS: " << ScreenManager::getSingleton().statGetFPS();
+			((SimpleText*)mStatText)->setText(ss.str());
+		}
 	}
 }
 void Demo1App::mousePositionCallback( int x, int y ) {

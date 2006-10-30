@@ -183,64 +183,36 @@ namespace OpenGUI {
 		mRenderer->postRenderCleanup();
 	}
 	//############################################################################
+	/*! The following functions are called in the given order:
+	- System::updateTime()
+	- System::updateScreens()
+	*/
+	void System::update() {
+		updateTime();
+		updateScreens();
+	}
+	//############################################################################
+	void System::updateTime() {
+		mTimerManager->_AutoAdvance();
+	}
+	//############################################################################
+	/*!
+	The following functions are called in the given order:
+	- ScreenManager::updateTime()
+	- _preUpdate()
+	- ScreenManager::updateScreens()
+	- _postUpdate()
+
+	If you plan on updating Screens individually, or by calling
+	ScreenManager::updateScreens() yourself, you will need to call _preUpdate()
+	before you begin updating Screens, and _postUpdate() when you are done
+	updating Screens this pass.
+	*/
 	void System::updateScreens() {
+		mScreenManager->updateTime();
 		_preUpdate();
 		mScreenManager->updateScreens();
 		_postUpdate();
-
-		//if ( m_PerformAutoTicks ) //only do this if we aren't getting time injections from the app
-		//	mTimerManager->_DoAutoTickInject();
-
-		/*
-		if ( mActiveGUISheet ) {
-
-			mRenderer->preRenderSetup();
-
-			mActiveGUISheet->renderGUISheet( mRenderer );
-
-
-			Render::RenderOperationList renderOpList_Cursor;
-			renderOpList_Cursor = mCursorManager->getCursorRenderOpList();
-
-			Render::RenderOperationList::iterator iterC = renderOpList_Cursor.begin();
-			while ( iterC != renderOpList_Cursor.end() ) {
-				mRenderer->doRenderOperation(( *iterC ) );
-				iterC++;
-			}
-
-			mRenderer->postRenderCleanup();
-		}
-		*/
-
-		//System::_stat_UpdateFPS();
-	}
-	//############################################################################
-	TimerPtr statFPSTimer;
-	typedef std::list<unsigned int> FPSList;
-	FPSList statFPSList;
-	float System::statRenderFPS() {
-		if ( statFPSList.size() > 0 ) {
-			float fpsSum = 0.0f;
-			for ( FPSList::iterator iter = statFPSList.begin(); iter != statFPSList.end(); iter++ ) {
-				unsigned int delta = ( *iter );
-				fpsSum += ( float )delta;
-			}
-
-			fpsSum = fpsSum / ( float )statFPSList.size();
-			return 1000.0f / fpsSum;
-		} else
-			return 0.0f;
-	}
-	//############################################################################
-	void System::_stat_UpdateFPS() {
-		if ( statFPSTimer.isNull() ) {
-			statFPSTimer = TimerManager::getSingletonPtr()->getTimer();
-		} else {
-			statFPSList.push_back( statFPSTimer->getMilliseconds() );
-			statFPSTimer->reset();
-			while ( statFPSList.size() > 100 )
-				statFPSList.pop_front();
-		}
 	}
 	//############################################################################
 	bool System::_OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {

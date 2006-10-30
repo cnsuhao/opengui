@@ -5,6 +5,7 @@
 #include "OpenGUI_Renderer.h"
 #include "OpenGUI_Brush.h"
 #include "OpenGUI_Control.h"
+#include "OpenGUI_TimerManager.h"
 
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
@@ -55,7 +56,10 @@ namespace OpenGUI {
 		mSize = initialSize;
 		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
-		mAutoUpdating = true;
+
+		mAutoUpdating = true; // we auto update by default
+		mAutoTiming = true; // we get time from System by default
+
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
 		<< " Creation"
 		<< " [" << mSize.toStr() << "]"
@@ -70,6 +74,8 @@ namespace OpenGUI {
 
 		m_CursorFocus = 0; // start with no cursor focused widget
 		m_KeyFocus = 0; // start with no keyboard focused widget
+
+		mStatUpdateTimer = TimerManager::getSingleton().getTimer();
 	}
 	//############################################################################
 	Screen::~Screen() {
@@ -245,6 +251,24 @@ namespace OpenGUI {
 			// Draw the cursor
 			if ( drawCursor )
 				drawCursor->eventDraw( mCursorPos.x, mCursorPos.y, b );
+		}
+
+		float time = (( float )mStatUpdateTimer->getMilliseconds() ) / 1000.0f;
+		_updateStats_UpdateTime( time );
+		mStatUpdateTimer->reset();
+	}
+	//############################################################################
+	void Screen::injectTime( unsigned int milliseconds ) {
+		float seconds;
+		seconds = (( float )milliseconds ) / 1000.0f;
+		injectTime( seconds );
+	}
+	//############################################################################
+	void Screen::injectTime( float seconds ) {
+		WidgetCollection::iterator iter = Children.begin();
+		while ( iter != Children.end() ) {
+			iter->_tick( seconds );
+			iter++;
 		}
 	}
 	//############################################################################
@@ -465,6 +489,19 @@ namespace OpenGUI {
 				outList.push_back( child );
 			}
 		}
+	}
+	//############################################################################
+	/*! */
+	float Screen::statsGetUpdateTime() {
+		return mStatUpdate.getAverage();
+	}
+	//############################################################################
+	void Screen::_updateStats_UpdateTime( float newTime ) {
+		mStatUpdate.addRecord( newTime );
+	}
+	//############################################################################
+	void Screen::statsResetUpdateTime() {
+		mStatUpdate.reset();
 	}
 	//############################################################################
 }//namespace OpenGUI{

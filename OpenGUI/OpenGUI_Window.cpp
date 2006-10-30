@@ -101,27 +101,27 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Window::onMove_Begin( Object* sender, EventArgs& evtArgs ) {
-		if(m_Moveable){
+		if ( m_Moveable ) {
 			mInitial = getPosition();
 			mMoving = true;
 		}
 	}
 	//############################################################################
 	void Window::onMove_End( Object* sender, EventArgs& evtArgs ) {
-		if(m_Moveable){
+		if ( m_Moveable ) {
 			mMoving = false;
 		}
 	}
 	//############################################################################
 	void Window::onResize_Begin( Object* sender, EventArgs& evtArgs ) {
-		if(m_Resizable){
+		if ( m_Resizable ) {
 			mInitial = getSize();
 			mResizing = true;
 		}
 	}
 	//############################################################################
 	void Window::onResize_End( Object* sender, EventArgs& evtArgs ) {
-		if(m_Resizable){
+		if ( m_Resizable ) {
 			mResizing = false;
 		}
 	}

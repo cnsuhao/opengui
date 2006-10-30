@@ -17,5 +17,8 @@ namespace OpenGUI {
 		return TimerManager::getSingleton().getMillisecondsSinceStart() - m_TimePoint;
 	}
 	//###############################################################
+	float Timer::getSeconds() {
+		return (( float )getMilliseconds() ) / 1000.0f;
+	}
 };
 
