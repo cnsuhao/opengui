@@ -97,6 +97,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy ..\Debug\Amethyst_d.dll ..\examples\bin"
 			/>
 		</Configuration>
 		<Configuration
@@ -182,6 +183,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy ..\Release\Amethyst.dll ..\examples\bin"
 			/>
 		</Configuration>
 	</Configurations>

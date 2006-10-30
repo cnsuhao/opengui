@@ -48,11 +48,11 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		char* Label::getClassName() {
-			return "Amethyst::Label";
+			return "Amethyst::Label";  
 		}
 		//############################################################################
 		Widget* Label::CreateLabelFactory() {
-			return new Label();
+			return new Label(); 
 		}
 		//############################################################################
 		Label::Label() {
