@@ -36,7 +36,7 @@ namespace OpenGUI{
 		class SimpleButton_HoverImage_ObjectProperty : public ObjectProperty {
 		public:
 			virtual const char* getAccessorName() {
-				return "MouseOverImagery";
+				return "ImageryMouseOver";
 			}
 			//############################################################################
 			virtual void get( Object& objectRef, Value& valueOut ) {
@@ -63,12 +63,73 @@ namespace OpenGUI{
 		}
 		gSimpleButton_HoverImage_ObjectProperty;
 		//############################################################################
+		class SimpleButton_PressedImage_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "ImageryPressed";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					valueOut.setValue( b.getImageryPressed() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					b.setImageryPressed( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gSimpleButton_PressedImage_ObjectProperty;
+		//############################################################################
+		class SimpleButton_DisabledImage_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "ImageryPressed";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					valueOut.setValue( b.getImageryDisabled() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					SimpleButton& b = dynamic_cast<SimpleButton&>( objectRef );
+					b.setImageryDisabled( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gSimpleButton_DisabledImage_ObjectProperty;
 		//############################################################################
 		class SimpleButton_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			SimpleButton_ObjectAccessorList() {
 				addAccessor( &gSimpleButton_BaseImage_ObjectProperty );
 				addAccessor( &gSimpleButton_HoverImage_ObjectProperty );
+				addAccessor( &gSimpleButton_PressedImage_ObjectProperty );
+				addAccessor( &gSimpleButton_DisabledImage_ObjectProperty );
 			}
 			~SimpleButton_ObjectAccessorList() {}
 		}
