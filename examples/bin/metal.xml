@@ -1,7 +1,5 @@
 <?xml version="1.0" ?>
 <OpenGUI>
-	<Font name="pecot" file="pecot.ttf" xres="800" yres="600" autoscale="true" />
-
 	<Imageset File="metal.png">
 		<Imagery Name="MetalButtonNormal" Left="5" Top="5" Width="74" Height="74" />
 		<Imagery Name="MetalButtonHover" Left="85" Top="5" Width="74" Height="74" />

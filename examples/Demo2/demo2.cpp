@@ -1,6 +1,11 @@
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 
+#include "../Amethyst/Amethyst_Label.h"
+#include "../Amethyst/Amethyst_Button.h"
+
+
+
 class Demo2App : public DemoApp {
 public:
 	Demo2App() : DemoApp( "OpenGUI - Demo 2" ) {}
@@ -21,12 +26,36 @@ using namespace OpenGUI;
 
 
 void Demo2App::preRun() {
-	//XMLParser::getSingleton().LoadFromFile("demo1.xml");
+	XMLParser::getSingleton().LoadFromFile("metal.xml");
+	XMLParser::getSingleton().LoadFromFile("demo2.xml");
+	XMLParser::getSingleton().LoadFromFile("Amethyst.xml");
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	//CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor("Square");
-	//mScreen->setCursor(cursorPtr);
-	//mScreen->enableCursor();
+	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor("MetalCursor");
+	mScreen->setCursor(cursorPtr);
+	mScreen->enableCursor();
+
+	Amethyst::Label* headerText = new Amethyst::Label();
+	headerText->setName( "Header" );
+	headerText->setFont( Font( "pecot", 40 ) );
+	headerText->setText( "OpenGUI Amethyst Demo" );
+	headerText->setTop( 0 );
+	headerText->setLeft( 0 );
+	headerText->setWidth( 400 );
+	headerText->setHeight( 60 );
+//	headerText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
+	mScreen->Children.add_back( headerText, true );
+
+	Amethyst::SimpleButton* testButton = new Amethyst::SimpleButton();
+	testButton->setImagery("MetalButtonNormal");
+	testButton->setImageryMouseOver("MetalButtonHover");
+	testButton->setImageryPressed("MetalButtonPress");
+	testButton->setImageryDisabled("MetalButtonDisabled");
+	testButton->setTop(70);
+	testButton->setLeft(40);
+	testButton->setWidth(100);
+	testButton->setHeight(100);
+	mScreen->Children.add_back( testButton, true );
 
 }
 void Demo2App::perframeRun() {

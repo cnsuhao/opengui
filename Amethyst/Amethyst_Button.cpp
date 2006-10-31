@@ -203,8 +203,19 @@ namespace OpenGUI {
 		}
 
 		void SimpleButton::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
-			/**/
+			/*For now, just draw a pretty picture*/
+			ImageryPtr pCurrentImage = mImageryPtr;
+
+			if(pCurrentImage)
+			{
+				Brush& b = evtArgs.brush;
+				const FVector2& PPU = b.getPPU();
+				const float scaleX = getRect().getWidth() / (( float )pCurrentImage->getImagesetRect().getWidth() ) ;
+				const float scaleY = getRect().getWidth()  / (( float )pCurrentImage->getImagesetRect().getHeight() );
+				b.Image.drawImage( pCurrentImage, getRect() );
+			}
 		}
+
 
 
 		void SimpleButton::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
