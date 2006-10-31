@@ -44,6 +44,8 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
+			// events we care about
+
 			//! "Cursor_Click" event
 			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Enter" event; invokes Targeted
@@ -51,14 +53,19 @@ namespace OpenGUI {
 			//! "Cursor_Leave" event; invokes UnTargeted
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
 
+			//! "Cursor_Press" event
+			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Release" event
+			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
+
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;
 			ImageryPtr mImageryPtrMouseOver;
 			ImageryPtr mImageryPtrDisabled;
-			bool m_MouseOver;
-			bool m_ButtonDown;
 
+			bool m_bMouseButtonState;
 			int mButtonState;
+
 		};
 
 
