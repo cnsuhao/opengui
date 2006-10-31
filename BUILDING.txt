@@ -10,13 +10,6 @@ Windows
     Same as the VC 7.1 instructions, only use
     "OpenGUI VC8.sln" instead.
 
- * Code::Blocks/MinGW
-    This requires STLPort, and is already set up to use
-    the version that comes embedded with the OgreSDK.
-    This build environment only partly works and isn't a
-    high priority for me since VC8 Express is free. Fix it
-    if you want, and send a patch.
-
 See also: OgreFusion\README.txt for details on building
 the OgreFusion project, which links OpenGUI into Ogre.
 

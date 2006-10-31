@@ -40,6 +40,7 @@ mkdir %P_out%\OpenGUI >> %LOG% 2>&1
 %copy% OpenGUI\*.h %P_out%\OpenGUI >> %LOG% 2>&1
 %copy% OpenGUI\*.cpp %P_out%\OpenGUI >> %LOG% 2>&1
 %copy% OpenGUI\*.vcproj %P_out%\OpenGUI >> %LOG% 2>&1
+%copy% OpenGUI\*.txt %P_out%\OpenGUI >> %LOG% 2>&1
 
 mkdir %P_out%\OpenGUI_OGLRenderer  >> %LOG% 2>&1
 %copy% OpenGUI_OGLRenderer\*.h %P_out%\OpenGUI_OGLRenderer >> %LOG% 2>&1
@@ -50,6 +51,12 @@ mkdir %P_out%\OgreFusion  >> %LOG% 2>&1
 %copy% OgreFusion\*.h %P_out%\OgreFusion >> %LOG% 2>&1
 %copy% OgreFusion\*.cpp %P_out%\OgreFusion >> %LOG% 2>&1
 %copy% OgreFusion\*.vcproj %P_out%\OgreFusion >> %LOG% 2>&1
+%copy% OgreFusion\*.txt %P_out%\OgreFusion >> %LOG% 2>&1
+
+mkdir %P_out%\Amethyst  >> %LOG% 2>&1
+%copy% Amethyst\*.h %P_out%\Amethyst >> %LOG% 2>&1
+%copy% Amethyst\*.cpp %P_out%\Amethyst >> %LOG% 2>&1
+%copy% Amethyst\*.vcproj %P_out%\Amethyst >> %LOG% 2>&1
 
 mkdir %P_out%\examples\bin >> %LOG% 2>&1
 %copy% examples\bin\*.ttf %P_out%\examples\bin >> %LOG% 2>&1
@@ -71,6 +78,11 @@ mkdir %P_out%\examples\Demo1 >> %LOG% 2>&1
 %copy% examples\Demo1\*.h %P_out%\examples\Demo1 >> %LOG% 2>&1
 %copy% examples\Demo1\*.cpp %P_out%\examples\Demo1 >> %LOG% 2>&1
 %copy% examples\Demo1\*.vcproj %P_out%\examples\Demo1 >> %LOG% 2>&1
+
+mkdir %P_out%\examples\Demo2 >> %LOG% 2>&1
+%copy% examples\Demo2\*.h %P_out%\examples\Demo2 >> %LOG% 2>&1
+%copy% examples\Demo2\*.cpp %P_out%\examples\Demo2 >> %LOG% 2>&1
+%copy% examples\Demo2\*.vcproj %P_out%\examples\Demo2 >> %LOG% 2>&1
 
 mkdir %P_out%\examples\DemoO >> %LOG% 2>&1
 %copy% examples\DemoO\*.h %P_out%\examples\DemoO >> %LOG% 2>&1

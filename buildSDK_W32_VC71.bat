@@ -15,6 +15,8 @@ set P_OGinc="winSDK_vc71\OpenGUI\include"
 set P_OGlib="winSDK_vc71\OpenGUI\lib"
 set P_OGLinc="winSDK_vc71\OGLRenderer\include"
 set P_OGLlib="winSDK_vc71\OGLRenderer\lib"
+set P_AMETHYSTinc="winSDK_vc71\Amethyst\include"
+set P_AMETHYSTlib="winSDK_vc71\Amethyst\lib"
 set P_TACHinc="winSDK_vc71\Tachometer\include"
 set P_TACHlib="winSDK_vc71\Tachometer\lib"
 set P_demo="winSDK_vc71\Demos"
@@ -88,8 +90,10 @@ copy OpenGUI\LICENSE.TXT %P_OG% >> %LOG% 2>&1
 copy OpenGUI\*.h %P_OGinc% >> %LOG% 2>&1
 copy Debug\OpenGUI_d.lib %P_OGlib% >> %LOG% 2>&1
 copy Debug\OpenGUI_d.dll %P_OGlib% >> %LOG% 2>&1
+copy Debug\OpenGUI_d.pdb %P_OGlib% >> %LOG% 2>&1
 copy Release\OpenGUI.lib %P_OGlib% >> %LOG% 2>&1
 copy Release\OpenGUI.dll %P_OGlib% >> %LOG% 2>&1
+copy Release\OpenGUI.pdb %P_OGlib% >> %LOG% 2>&1
 
 
 echo Copying OpenGL Renderer files...
@@ -97,18 +101,30 @@ copy OpenGUI_OGLRenderer\*.h %P_OGLinc% >> %LOG% 2>&1
 copy Release\OpenGUI_OGLRenderer.lib %P_OGLlib% >> %LOG% 2>&1
 copy Debug\OpenGUI_OGLRenderer_d.lib %P_OGLlib% >> %LOG% 2>&1
 
+echo Copying Amethyst files
+copy Amethyst\*.h %P_AMETHYSTinc% >> %LOG% 2>&1
+copy Release\Amethyst.dll %P_AMETHYSTlib% >> %LOG% 2>&1
+copy Release\Amethyst.lib %P_AMETHYSTlib% >> %LOG% 2>&1
+copy Release\Amethyst.pdb %P_AMETHYSTlib% >> %LOG% 2>&1
+copy Debug\Amethyst_d.dll %P_AMETHYSTlib% >> %LOG% 2>&1
+copy Debug\Amethyst_d.lib %P_AMETHYSTlib% >> %LOG% 2>&1
+copy Debug\Amethyst_d.pdb %P_AMETHYSTlib% >> %LOG% 2>&1
+
 echo Copying Tachometer files
 copy examples\TachometerWidget\*.h %P_TACHinc% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget.dll %P_TACHlib% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget.lib %P_TACHlib% >> %LOG% 2>&1
+copy examples\bin\TachometerWidget.pdb %P_TACHlib% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget_d.dll %P_TACHlib% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget_d.lib %P_TACHlib% >> %LOG% 2>&1
+copy examples\bin\TachometerWidget_d.pdb %P_TACHlib% >> %LOG% 2>&1
 
 echo Copying Demos...
 echo ...Demo1
 copy examples\bin\licenses.txt %P_demo% >> %LOG% 2>&1
 copy examples\bin\pecot.ttf %P_demo% >> %LOG% 2>&1
 copy examples\bin\kongtext.ttf %P_demo% >> %LOG% 2>&1
+copy examples\bin\Amethyst.dll %P_demo% >> %LOG% 2>&1
 copy examples\bin\TachometerWidget.dll %P_demo% >> %LOG% 2>&1
 copy examples\bin\tachometer.png %P_demo% >> %LOG% 2>&1
 copy examples\bin\tachometer.xml %P_demo% >> %LOG% 2>&1
@@ -128,8 +144,10 @@ copy OgreFusion\LICENSE.TXT %P_OF% >> %LOG% 2>&1
 copy OgreFusion\*.h %P_OFinc% >> %LOG% 2>&1
 copy OgreFusion\Debug\OgreFusion_d.lib %P_OFlib% >> %LOG% 2>&1
 copy OgreFusion\Debug\OgreFusion_d.dll %P_OFlib% >> %LOG% 2>&1
+copy OgreFusion\Debug\OgreFusion_d.pdb %P_OFlib% >> %LOG% 2>&1
 copy OgreFusion\Release\OgreFusion.lib %P_OFlib% >> %LOG% 2>&1
 copy OgreFusion\Release\OgreFusion.dll %P_OFlib% >> %LOG% 2>&1
+copy OgreFusion\Release\OgreFusion.pdb %P_OFlib% >> %LOG% 2>&1
 
 
 move %P_% %P_out%
