@@ -14,7 +14,8 @@ namespace OpenGUI {
 	//############################################################################
 	void Texture::finalize() {
 		TextureManager* tm = TextureManager::getSingletonPtr();
-		tm->destroyTexture( this );
+		if(tm) // only do this if we have something to call
+			tm->destroyTexture( this );
 	}
 	//############################################################################
 
