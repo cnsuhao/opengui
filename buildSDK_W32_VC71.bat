@@ -78,6 +78,8 @@ mkdir %P_OGinc%
 mkdir %P_OGlib%
 mkdir %P_OGLinc%
 mkdir %P_OGLlib%
+mkdir %P_AMETHYSTinc%
+mkdir %P_AMETHYSTlib%
 mkdir %P_TACHinc%
 mkdir %P_TACHlib%
 mkdir %P_demo%
