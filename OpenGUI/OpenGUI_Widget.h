@@ -24,19 +24,27 @@ namespace OpenGUI {
 	\par Properties
 		- Name (setName, getName)
 
-	\par Events
-		- Enabled
-		- Disabled
-		- Attached
-		- Detached
-		- Draw
-		- Invalidated
-		- Cursor_Move
-		- Cursor_Press
-		- Cursor_Release
-		- Cursor_Hidden
-		- Cursor_Shown
-		\see \ref EventList_Widget "Widget Events"
+	\par Events Introduced
+		- \ref Event_Enabled "Enabled"
+		- \ref Event_Disabled "Disabled"
+		- \ref Event_Attached "Attached"
+		- \ref Event_Detached "Detached"
+		- \ref Event_Draw "Draw"
+		- \ref Event_Invalidated "Invalidated"
+		- \ref Event_Cursor_Move "Cursor_Move"
+		- \ref Event_Cursor_Press "Cursor_Press"
+		- \ref Event_Cursor_Release "Cursor_Release"
+		- \ref Event_Cursor_Disabled "Cursor_Disabled"
+		- \ref Event_Cursor_Enabled "Cursor_Enabled"
+		- \ref Event_Cursor_Focused "Cursor_Focused"
+		- \ref Event_Cursor_FocusLost "Cursor_FocusLost"
+		- \ref Event_Key_Up "Key_Up"
+		- \ref Event_Key_Down "Key_Down"
+		- \ref Event_Key_Pressed "Key_Pressed"
+		- \ref Event_Key_Focused "Key_Focused"
+		- \ref Event_Key_FocusLost "Key_FocusLost"
+		- \ref Event_Tick "Tick"
+	\see \ref EventList_Widget "Widget Events"
 	*/
 	class OPENGUI_API Widget : public Object {
 		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
@@ -69,9 +77,10 @@ namespace OpenGUI {
 		/*! Every Widget is guaranteed to have a container, but not every container is
 			guaranteed to be a Widget. To test if the returned pointer is, in fact, another
 			Widget you should perform a dynamic_cast on the returned pointer.
-			\code
-			Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
-			\endcode */
+\code
+Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
+\endcode 
+		*/
 		I_WidgetContainer* getContainer();
 
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position

@@ -19,6 +19,13 @@ namespace OpenGUI {
 	eventResize_Begin(), eventResize_End() functions. You will also need to
 	ensure that m_Moveable and m_Resizable have the proper values, as they provide
 	an overall lock mechanism for the built in functions.
+
+	\par Events Introduced
+		- \ref Event_Move_Begin "Move_Begin"
+		- \ref Event_Move_End "Move_End"
+		- \ref Event_Resize_Begin "Resize_Begin"
+		- \ref Event_Resize_End "Resize_End"
+	\see \ref EventList_Window "Window Events"
 	*/
 	class OPENGUI_API Window : public ContainerControl {
 	public:
