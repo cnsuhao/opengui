@@ -40,19 +40,29 @@ echo DONE: Building SDK Release (VC 8)
 
 
 echo Generating documentation...
+
 rem OpenGUI Docs
 cd OpenGUI\doc
 rmdir /Q /S html
 call buildDocs.bat
 call buildUserDocs.bat
 cd ..\..
+
 rem OgreFusion docs
 cd OgreFusion\doc
 rmdir /Q /S html
 call buildDocs.bat
 cd ..\..
+
+rem Amethyst docs
+cd Amethyst\doc
+rmdir /Q /S html
+call buildDocs.bat
+cd ..\..
+
 copy /Y OpenGUI\doc\OpenGUI.chm win32rel
 copy /Y OgreFusion\doc\OgreFusion.chm win32rel
+copy /Y Amethyst\doc\Amethyst.chm win32rel
 copy /Y CHANGELOG.txt win32rel
 copy /Y CONTRIBUTERS.txt win32rel
 copy /Y OpenGUI\LICENSE.txt win32rel
