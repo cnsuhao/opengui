@@ -3,16 +3,16 @@
 	<Font name="pecot" file="pecot.ttf" xres="800" yres="600" autoscale="true" />
 
 	<Imageset File="metal.png">
-		<Imagery Name="ButtonNormal" Left="5" Top="5" Width="74" Height="74" />
-		<Imagery Name="ButtonHover" Left="85" Top="5" Width="74" Height="74" />
-		<Imagery Name="ButtonPress" Left="5" Top="85" Width="74" Height="74" />
-		<Imagery Name="ButtonDisabled" Left="85" Top="85" Width="74" Height="74" />
+		<Imagery Name="MetalButtonNormal" Left="5" Top="5" Width="74" Height="74" />
+		<Imagery Name="MetalButtonHover" Left="85" Top="5" Width="74" Height="74" />
+		<Imagery Name="MetalButtonPress" Left="5" Top="85" Width="74" Height="74" />
+		<Imagery Name="MetalButtonDisabled" Left="85" Top="85" Width="74" Height="74" />
 
-		<Imagery Name="CursorArrow" Left="477" Top="5" Width="30" Height="30" />
-		<Imagery Name="CursorDDiag" Left="477" Top="36" Width="30" Height="30" />
-		<Imagery Name="CursorUDiag" Left="477" Top="67" Width="30" Height="30" />
-		<Imagery Name="CursorUpDown" Left="477" Top="98" Width="30" Height="30" />
-		<Imagery Name="CursorLRArrow" Left="477" Top="129" Width="30" Height="30" />
+		<Imagery Name="MetalCursorArrow" Left="477" Top="5" Width="30" Height="30" />
+		<Imagery Name="MetalCursorDDiag" Left="477" Top="36" Width="30" Height="30" />
+		<Imagery Name="MetalCursorUDiag" Left="477" Top="67" Width="30" Height="30" />
+		<Imagery Name="MetalCursorUpDown" Left="477" Top="98" Width="30" Height="30" />
+		<Imagery Name="MetalCursorLRArrow" Left="477" Top="129" Width="30" Height="30" />
 
 	</Imageset>
 
