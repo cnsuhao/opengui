@@ -10,7 +10,7 @@
 namespace OpenGUI {
 
 	//! Imagesets directly represent entire image files. They contain Imagery, which provide a usable window of the image file.
-	class OPENGUI_API Imageset {
+	class OPENGUI_API Imageset: public RefObject {
 		friend class ImageryManager;
 		friend class Imagery;
 	public:
@@ -41,12 +41,8 @@ namespace OpenGUI {
 			object references are handed out only by RefPtrs, the object will never
 			truly destroy until all references to the Imagery object are deleted.
 			This function \b does however disconnect the Imagery object from this
-			Imageset. Before this Imageset releases its reference to the Imagery,
-			the Imagery is pointed to the built in Default Imageset. This will
-			prevent crashes if you "pull the Imagery rug out from under a Widget",
-			while still providing obvious visual feedback that something is wrong.
-
-			\todo fix this documentation. It's no longer complete accurate
+			Imageset. Since Imagery objects contain the RefPtr to the texture they
+			use, the Imagery will be valid until all handles are destroyed.
 		*/
 		void destroyImagery( ImageryPtr imageryPtr );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
@@ -75,15 +71,19 @@ namespace OpenGUI {
 		//! Returns the name of this Imageset
 		const std::string& getName();
 
+		//! returns the total number of Imagery defined under this Imageset
+		size_t getImageryCount() const;
+
 	private:
+		virtual void finalize(); //finalizer from RefObject
 		std::string mFilename;
 		TexturePtr mpTexture;
 		ImageryPtrList mChildImageryList;
 	};
-	//! Reference counted, auto deleting Imageset pointer
-	typedef RefPtr<Imageset> ImagesetPtr;
+	//! Handle to the reference counted, auto deleting Imageset object
+	typedef RefObjHandle<Imageset> ImagesetPtr; // we use RefObject because it holds the ref count inside the object referenced
+	//! List of ImagesetPtr
 	typedef std::list<ImagesetPtr> ImagesetPtrList;
-	typedef std::list<Imageset*> ImagesetCPtrList;
 }
 ;//namespace OpenGUI{
 #endif

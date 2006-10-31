@@ -6,6 +6,7 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_TextureDataRect.h"
+#include "OpenGUI_Imageset.h"
 
 namespace OpenGUI {
 
@@ -26,7 +27,7 @@ namespace OpenGUI {
 
 		bool GetAvailableChunk( IVector2 sizeNeeded, IRect& returnedChunk, bool reserveSpaceFound = false );
 		bool WriteChunk( TextureDataRect* chunkToWrite, IRect& returnedChunk );
-		Imageset* GetImageset() {
+		ImagesetPtr GetImageset() {
 			return mImageset;
 		}
 		const ImageryPtr& GetFullImagery() {
@@ -52,7 +53,7 @@ namespace OpenGUI {
 		unsigned int mOpenRowStartPos;
 
 		TextureData mTextureData;
-		Imageset* mImageset; //pointer to out imageset
+		ImagesetPtr mImageset; //pointer to out imageset
 		ImageryPtr mFullImagery; //handle to an imagery that covers the full area of the imageset
 
 
