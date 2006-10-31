@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="Demo1"
-	ProjectGUID="{65FBB56F-7293-4e6e-96B8-B004EAE3F4A8}"
+	Name="Demo2"
+	ProjectGUID="{65FBB56F-7293-4E6E-96B8-B004EAE3F4A8}"
 	RootNamespace="Demo2"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -89,7 +89,7 @@
 				OutputFile="$(OutDir)/Demo2.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32"
-				GenerateDebugInformation="FALSE"
+				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Demo2.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"

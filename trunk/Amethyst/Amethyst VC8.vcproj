@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Amethyst VC8"
+	Name="Amethyst"
 	ProjectGUID="{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}"
 	RootNamespace="Amethyst VC8"
 	Keyword="Win32Proj"
