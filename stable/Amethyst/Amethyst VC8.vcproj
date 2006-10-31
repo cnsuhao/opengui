@@ -46,6 +46,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -70,7 +71,7 @@
 				ProgramDatabaseFile="$(OutDir)/Amethyst_d.pdb"
 				SubSystem="2"
 				ProfileGuidedDatabase=""
-				ImportLibrary="$(OutDir)/Amethyst.lib"
+				ImportLibrary="$(OutDir)/Amethyst_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -96,6 +97,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy ..\Debug\Amethyst_d.dll ..\examples\bin"
 			/>
 		</Configuration>
 		<Configuration
@@ -124,9 +126,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../OpenGUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AMETHYST_EXPORTS"
 				RuntimeLibrary="2"
+				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -179,6 +183,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy ..\Release\Amethyst.dll ..\examples\bin"
 			/>
 		</Configuration>
 	</Configurations>
@@ -194,12 +199,84 @@
 				RelativePath=".\Amethyst.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Amethyst_Button.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Label.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Amethyst.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_CheckBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ComboBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Cursor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Exports.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Label.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ListBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Panel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ProgressBar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_RadioButton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_H.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_V.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_TextBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ToolTip.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Window.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -207,10 +284,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
