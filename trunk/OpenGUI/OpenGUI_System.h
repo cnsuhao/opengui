@@ -35,9 +35,16 @@ namespace OpenGUI {
 
 	/*!
 		\brief
-		The System object is the base of the OpenGUI project.
-		It is responsible for distributing events, accepting input, managing the
-		cursor, and managing the GUI sheets. \n \b [Singleton]
+		The System object is the base of the OpenGUI project. It is responsible for
+		initializing and destroying the various subsystems, and provides some functions
+		to perform global activities, such as loading plugins and performing mass updates
+		for all Screen objects.
+		\n \b [Singleton]
+
+		The construction and destruction of this class marks the initialization and
+		shutdown of %OpenGUI as a whole. You must have a valid System object before you
+		can use most other subsystems of %OpenGUI, and destruction of the System object will
+		cause the destruction of all subsystems as well.
 
 		This class is implemented using the Singleton system. There can only be one System
 		object instantiated at any point in time.
