@@ -142,8 +142,7 @@ namespace OpenGUI {
 
 		//! Constructor
 		SimpleButton::SimpleButton() {
-			m_MouseOver = false;
-			m_ButtonDown = false;
+			m_bMouseButtonState = false;
 			mButtonState = BS_NORMAL;
 		}
 
@@ -217,6 +216,9 @@ namespace OpenGUI {
 			case BS_HOVER:
 				if(mImageryPtrMouseOver)
 					pCurrentImage = mImageryPtrMouseOver;
+
+				if(m_bMouseButtonState)
+					pCurrentImage = mImageryPtrPressed;
 				break;
 			case BS_DISABLED:
 				if(mImageryPtrDisabled)
@@ -265,6 +267,24 @@ namespace OpenGUI {
 			mButtonState = BS_NORMAL;
 
 			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
+		}
+
+		//! "Cursor_Press" event
+		void SimpleButton::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs )
+		{
+			if(_isInside( evtArgs.Position))
+				m_bMouseButtonState = true;
+		}
+		//! "Cursor_Release" event
+		void SimpleButton::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs )
+		{
+	
+			if(_isInside( evtArgs.Position) && m_bMouseButtonState)
+			{
+				// send some notification event or somesuch
+			}
+
+			m_bMouseButtonState = false;
 		}
 
 	} // namespace Amethyst{
