@@ -96,7 +96,7 @@ namespace OpenGUI {
 		class SimpleButton_DisabledImage_ObjectProperty : public ObjectProperty {
 		public:
 			virtual const char* getAccessorName() {
-				return "ImageryPressed";
+				return "ImageryDisabled";
 			}
 			//############################################################################
 			virtual void get( Object& objectRef, Value& valueOut ) {
