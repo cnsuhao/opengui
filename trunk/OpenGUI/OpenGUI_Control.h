@@ -24,14 +24,14 @@ namespace OpenGUI {
 	- Visible (setVisible, getVisible)
 	- Alpha (setAlpha, getAlpha)
 
-	\par Events
-	- Moved
-	- Resized
-	- Cursor_Click
-	- Cursor_Enter
-	- Cursor_Leave
-	- Targeted
-	- UnTargeted
+	\par Events Introduced
+		- \ref Event_Moved "Moved"
+		- \ref Event_Resized "Resized"
+		- \ref Event_Cursor_Click "Cursor_Click"
+		- \ref Event_Cursor_Enter "Cursor_Enter"
+		- \ref Event_Cursor_Leave "Cursor_Leave"
+		- \ref Event_Targeted "Targeted"
+		- \ref Event_UnTargeted "UnTargeted"
 	\see \ref EventList_Control "Control Events"
 	*/
 	class OPENGUI_API Control : public Widget {

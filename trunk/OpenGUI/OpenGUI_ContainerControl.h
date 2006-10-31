@@ -23,9 +23,14 @@ namespace OpenGUI {
 	values for both of these is (0.0fx0.0f), which will result in the full area of the container
 	being used as client area.
 
-	\par Events
-	- ChildAttached
-	- ChildDetached
+	\par Events Introduced
+		- \ref Event_ChildAttached "ChildAttached"
+		- \ref Event_ChildDetached "ChildDetached"
+		- \ref Event_DrawBG "DrawBG"
+	\par Events Redefined
+		- \ref Event_Cursor_Move "Cursor_Move"
+		- \ref Event_Cursor_Press "Cursor_Press"
+		- \ref Event_Cursor_Release "Cursor_Release"
 	\see \ref EventList_ContainerControl "ContainerControl Events"
 	*/
 	class OPENGUI_API ContainerControl : public Control, public I_WidgetContainer {
