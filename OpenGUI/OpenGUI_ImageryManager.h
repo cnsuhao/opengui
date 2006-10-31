@@ -40,9 +40,9 @@ namespace OpenGUI {
 				can also be used to later retrieve the Imageset pointer via getImageset()
 			\return pointer to the newly created imageset, or 0 on failure.
 		*/
-		Imageset* createImageset( std::string imageFilename );
+		ImagesetPtr createImageset( std::string imageFilename );
 		//! Static pass through function to createImageset()
-		static Imageset* createImagesetEx( std::string imageFilename ) {
+		static ImagesetPtr createImagesetEx( std::string imageFilename ) {
 			return ImageryManager::getSingleton().createImageset( imageFilename );
 		}
 
@@ -80,16 +80,16 @@ namespace OpenGUI {
 				On failure the return value is 0, and the given \c texture does not become the
 				property of the Imageset.
 		*/
-		Imageset* createImagesetFromTexture( TexturePtr texture, std::string imageFilename = "" );
+		ImagesetPtr createImagesetFromTexture( TexturePtr texture, std::string imageFilename = "" );
 
 		//! Returns a pointer to the Imageset that was created using the given filename, or 0 on failure.
-		Imageset* getImageset( std::string imageFilename );
+		ImagesetPtr getImageset( std::string imageFilename );
 
 		//! Returns a pointer to the Imageset that is based on the given \c texture, or 0 on failure.
-		Imageset* getImagesetByTexture( TexturePtr texture );
+		ImagesetPtr getImagesetByTexture( TexturePtr texture );
 
 		//! Destroys an Imageset.
-		void destroyImageset( Imageset* pImageset );
+		void destroyImageset( ImagesetPtr pImageset );
 		//! Destroys an Imageset.
 		void destroyImageset( std::string imageFilename );
 		//! Destroys all Imagesets
@@ -106,7 +106,7 @@ namespace OpenGUI {
 		ImagesetList getImagesetList();
 
 	private:
-		ImagesetCPtrList mImagesetList;
+		ImagesetPtrList mImagesetList;
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
 		ResourceProvider* mResourceProvider;
 

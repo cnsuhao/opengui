@@ -20,6 +20,10 @@ namespace OpenGUI {
 		return mFilename;
 	}
 	//############################################################################
+	size_t Imageset::getImageryCount() const {
+		return mChildImageryList.size();
+	}
+	//############################################################################
 	ImageryPtr Imageset::createImagery( std::string imageryName ) {
 		return Imageset::createImagery( imageryName, FRect( 0.0f, 0.0f, 1.0f, 1.0f ) );
 	}
@@ -50,11 +54,7 @@ namespace OpenGUI {
 			}
 		}
 
-		ImageryPtr imgptr = new Imagery();
-		imgptr->mParentImageset = this;
-		imgptr->mAreaRect = areaRect;
-		imgptr->mNativeRect = imagesetRect;
-		imgptr->mName = imageryName;
+		ImageryPtr imgptr = new Imagery( imageryName, areaRect, imagesetRect, mpTexture );
 		mChildImageryList.push_back( imgptr );
 		return imgptr;
 	}
@@ -132,6 +132,10 @@ namespace OpenGUI {
 		}
 		retval.sort();
 		return retval;
+	}
+	//############################################################################
+	void Imageset::finalize() {
+		delete this;
 	}
 	//############################################################################
 }

@@ -77,9 +77,9 @@ namespace OpenGUI {
 		/*! Every Widget is guaranteed to have a container, but not every container is
 			guaranteed to be a Widget. To test if the returned pointer is, in fact, another
 			Widget you should perform a dynamic_cast on the returned pointer.
-\code
-Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
-\endcode 
+		\code
+		Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
+		\endcode
 		*/
 		I_WidgetContainer* getContainer();
 
