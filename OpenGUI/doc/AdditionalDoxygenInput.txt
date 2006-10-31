@@ -190,9 +190,10 @@ namespace OpenGUI {
 	- <a href="http://opengui.sourceforge.net/" target=_new>OpenGUI Website</a>
 	- <a href="http://opengui.rightbracket.com/trac/" target=_new>OpenGUI Wiki/Trac</a>
 	- <a href="http://opengui.rightbracket.com/phpBB2/" target=_new>OpenGUI Forums</a>
-	
+
+<HR>
 \section inc_link Includes and Linker Input
-	In order to begin usin %OpenGUI in your application, you will need to include \c OpenGUI.h in every source file that will use parts of the library. This can be performed by the following code:
+	In order to begin using %OpenGUI in your application, you will need to include \c OpenGUI.h in every source file that will use parts of the library. This can be performed by the following code:
 	\code #include "OpenGUI.h" \endcode
 	Due to the scale of %OpenGUI, it is not practical for all classes to be defined within a single header file. As such, \c OpenGUI.h is a super header that automatically includes all other necessary headers. You will need to add the location of \c OpenGUI.h as an include search path for your compiler. The steps required to perform this are compiler specific, so they are not covered here.
 	\note
@@ -208,9 +209,76 @@ namespace OpenGUI {
 	- OpenGUI_d.dll - Debug DLL
 	- OpenGUI.lib - Release Library
 	- OpenGUI.dll - Release DLL
+
+<HR>
+\section initalize Initializing OpenGUI
+	Initialization of %OpenGUI can be broken up into a few simple steps.
+	- Create a \ref OpenGUI::Renderer "Renderer"
+	- Create a \ref OpenGUI::ResourceProvider "ResourceProvider" <i>(optional)</i>
+	- Create a \ref OpenGUI::LogListener "LogListener" <i>(optional)</i>
+	- Create the \ref OpenGUI::System "System", passing in the previously created support objects
 	
-\section initalize Initializing %OpenGUI
-	finish me! \todo finish me
+	For the sake of this document, we'll use the built in ResourceProvider and LogListener, and the reference OpenGL Renderer.
+\code
+#include "OpenGUI.h"
+#include "OpenGUI_OGLRenderer.h"
+using namespace OpenGUI;
+
+[...]
+
+Renderer* renderer = new OGLRenderer( 800, 600 );
+System* system = new System( renderer );
+\endcode
+	That's basically all it takes to initialize %OpenGUI. You simply pass the System constructor pointers to the necessary user provided support classes and it will take care of the rest. The end result is a pointer to a fully initialized %OpenGUI instance, ready for use.
+
+<HR>
+\section createscreen Create a Screen
+	All GUIs are built upon \ref OpenGUI::Screen "Screen" objects. A Screen is basically a virtual monitor. A Screen can either render directly to the main frame buffer, or it can render to a texture. In this case, we're going to use the default render targetting of a Screen, which is to render directly to the frame buffer.
+\code
+screen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
+\endcode
+	This snippet of code creates a single Screen, named "MainScreen", that has a virtual resolution of 800 x 600. The resolution of a Screen is completely abstracted from the true resolution of the destination render surface. No matter what size of the render surface, a Screen will always map its virtual resolution evenly across the entire destination surface. This allows you to create a GUI once, and it will automatically scale correctly across all possible render target resolutions. Fonts are always automatically scaled appropriately to preserve true pixel alignment to the render target surface, while maintaining their visual size within the virtual resolution of the Screen. In other words, your text will always look crisp, regardless of the true resolution of the render target, and will always be proportional to the original GUI design.
+
+
+<HR>
+\section input_injection Input Injection
+	At some point you're going to need to allow the user to interact with your GUI. The process of injecting input is performed individually per Screen. This is to allow multiple Screens to run simultaneously. A good example of this would be a game scene full of computer monitors that the user can interact with. Each might have a completely different GUI layout applied to them with their own animations and event hooks. However, in this example we're going to stick with the single, frame buffer attached Screen that we created earlier.
+\code
+// assume that "yourInputSystem" is a pointer to some input system
+float x_abs, y_abs; // some floats to hold the mouse position
+// The next function call represents your own input system
+// retreiving the mouse position as a percentage (0.0f thru 1.0f)
+yourInputSystem->getMousePosition( &x_abs, &y_abs );
+screen->injectCursorPosition_Percent( x_abs, y_abs );
+screen->injectCursorPress_State( yourInputSystem->isButtonDown() );
+\endcode
+The previous code uses the ficticious \c yourInputSystem to retreive the mouse position, which it then injects into the Screen as an absolute position within the GUI using \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The next call retreives the button up/down state for the mouse, and feeds it into the state-aware button function \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The Screen class provides several different methods for input injections, so you can use the one that is most appropriate for your specific needs.
+
+<HR>
+\section show_cursor Showing the Cursor
+	Unlike many GUI systems, %OpenGUI does not assume that you want a visible cursor, or that you always want to process cursor input injections. By default the cursor is visible but disabled. A cursor will not draw unless it is both enabled and visible, so initially there is no displayed cursor until you enable it. However, you cannot have a visible cursor without first defining the default cursor for the Screen. The default cursor is the cursor that will be drawn when the cursor is over a widget that does not define its own prefered cursor.
+\code
+// for our purposes, we'll assume that "Arrow" is an already defined Cursor
+CursorPtr cursor = CursorManager::getSingleton().CreateDefinedCursor( "Arrow" ); // create an instance of the cursor
+screen->setCursor( cursor ); // set this cursor to be the default for the Screen
+cursor = 0; // free the handle any way you like, either explicitly or by letting it run out of scope
+screen->enableCursor(); // enable the cursor for this Screen
+\endcode
+	Once you've done this, the Arrow cursor will be displayed as the default cursor for the Screen. Alternatively, if we wanted to enable an invisible cursor (because we're using a hardware cursor, or some other pointing device), we could have simply enabled the cursor without setting a default Cursor for the Screen. Since you cannot have a visible cursor without the Screen having a default Cursor to show, the Screen will automatically mark the cursor hidden upon enabling.
+\code
+screen->enableCursor(); // enable the cursor for this Screen, it will automatically be marked hidden
+\endcode
+
+<HR>
+\section update_screen Updating the Screen
+	In order for anything to be drawn at all, we need to tell %OpenGUI when to perform updates for the Screens. This can be done at serveral different levels, with the application assuming varying amounts of additional work. For the purposes of this example, we'll use the most basic update method, which is to ask System to update all Screens for us.
+\code
+system->update(); // perform fully automated update
+\endcode
+	By using \ref OpenGUI::System::update "System::update", we're asking %OpenGUI to update all Screens, as well as perform time injections. Refer to the API documentation for more information on the various levels at which Screens can be updated, and the additional responsibilities the application assumes when doing so.
+
+<HR>
+	That pretty much covers the basics of integrating %OpenGUI into your application. The demos can be referenced for further example code, and the resources listed at the top can be utilized if you require further assistance.
 */
 
 /*!
