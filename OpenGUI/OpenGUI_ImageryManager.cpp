@@ -63,29 +63,8 @@ namespace OpenGUI {
 		if ( imageFilename != "" ) {
 			imgset = getImageset( imageFilename );
 			if ( imgset ) {
-				TexturePtr oldTexture = imgset->mpTexture;
-				if ( oldTexture != texture ) {
-					LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 )
-					<< "CreateImagesetFromTexture: (update) "
-					<< imageFilename << " - old 0x"
-					<< (( unsigned int ) oldTexture.get() )
-					<< " / new 0x"
-					<< (( unsigned int ) texture.get() )
-					<< Log::endlog;
-
-					imgset->mpTexture = texture;
-				}
-				return imgset;
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Already an Imageset named: " + imageFilename, "ImageryManager::createImagesetFromTexture" );
 			}
-		}
-
-		imgset = getImagesetByTexture( texture );
-		if ( imgset ) {
-			//this texture is already used under a different name
-			std::stringstream ss;
-			ss << "An imageset already exists based on the given texture: 0x";
-			ss << texture.get();
-			OG_THROW( Exception::ERR_DUPLICATE_ITEM, ss.str(), "ImageryManager::createImagesetFromTexture" );
 		}
 
 		if ( imageFilename == "" ) {
