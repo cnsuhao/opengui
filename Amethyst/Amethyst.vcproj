@@ -12,18 +12,19 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="../Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../OpenGUI"
+				AdditionalIncludeDirectories="../OpenGUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AMETHYST_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -33,18 +34,19 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/Amethyst.dll"
+				OutputFile="$(OutDir)/Amethyst_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug"
+				AdditionalLibraryDirectories="../Debug"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Amethyst.pdb"
+				ProgramDatabaseFile="$(OutDir)/Amethyst_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/Amethyst.lib"
+				ImportLibrary="$(OutDir)/Amethyst_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -64,15 +66,16 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="../Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../OpenGUI"
+				AdditionalIncludeDirectories="../OpenGUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AMETHYST_EXPORTS"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -84,8 +87,9 @@
 				AdditionalDependencies="OpenGUI.lib"
 				OutputFile="$(OutDir)/Amethyst.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release"
+				AdditionalLibraryDirectories="../Release"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/Amethyst.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -94,7 +98,8 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -123,11 +128,65 @@
 			<File
 				RelativePath=".\Amethyst.cpp">
 			</File>
+			<File
+				RelativePath=".\Amethyst_Button.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Label.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\Amethyst.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Button.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_CheckBox.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ComboBox.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Cursor.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Exports.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Label.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ListBox.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Panel.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ProgressBar.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_RadioButton.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_H.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_V.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_TextBox.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ToolTip.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Window.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

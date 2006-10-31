@@ -89,7 +89,7 @@
 				OutputFile="$(OutDir)/OpenGUI.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\dependancies\corona\release;..\dependancies\tinyxml\Release;..\dependancies\freetype2\objs"
-				GenerateDebugInformation="FALSE"
+				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -190,6 +190,9 @@
 				RelativePath=".\OpenGUI_FontManager.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_GenericCursor.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.cpp">
 			</File>
 			<File
@@ -238,6 +241,12 @@
 				RelativePath=".\OpenGUI_ScreenManager.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Statistic.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_StrConv.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_System.cpp">
 			</File>
 			<File
@@ -268,7 +277,13 @@
 				RelativePath=".\OpenGUI_Widget.cpp">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_WidgetManager.cpp">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Window.cpp">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_XML.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_XMLParser.cpp">
@@ -357,6 +372,9 @@
 				RelativePath=".\OpenGUI_FontManager.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_GenericCursor.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.h">
 			</File>
 			<File
@@ -373,6 +391,9 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Iterators.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_KeyMap.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_LayoutLoader.h">
@@ -429,6 +450,12 @@
 				RelativePath=".\OpenGUI_Singleton.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Statistic.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_StrConv.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_System.h">
 			</File>
 			<File
@@ -459,7 +486,13 @@
 				RelativePath=".\OpenGUI_Widget.h">
 			</File>
 			<File
+				RelativePath=".\OpenGUI_WidgetManager.h">
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Window.h">
+			</File>
+			<File
+				RelativePath=".\OpenGUI_XML.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_XMLParser.h">

@@ -25,6 +25,7 @@
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -38,7 +39,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\Debug ;..\..\OgreFusion\Debug; ..\..\dependancies\OgreSDK_vc71\lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
+				ProgramDatabaseFile="$(OutDir)/DemoO_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -78,10 +79,11 @@
 				AdditionalIncludeDirectories="..\..\OpenGUI; ..\..\OgreFusion; ..\..\dependancies\OgreSDK_vc71\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="0"/>
+				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -91,6 +93,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\Release; ..\..\OgreFusion\Release; ..\..\dependancies\OgreSDK_vc71\lib"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

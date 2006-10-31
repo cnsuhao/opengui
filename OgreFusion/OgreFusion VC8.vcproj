@@ -148,6 +148,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc8\lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/OgreFusion.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
