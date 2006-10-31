@@ -7,6 +7,12 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
+		enum {
+			BS_NORMAL,
+			BS_PRESSED,
+			BS_HOVER,
+			BS_DISABLED
+		};
 		class AMETHYST_API SimpleButton : public Control {
 		public:
 			//! Constructor
@@ -38,6 +44,12 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
+			//! "Cursor_Click" event
+			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Enter" event; invokes Targeted
+			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Leave" event; invokes UnTargeted
+			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
 
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;
@@ -45,6 +57,8 @@ namespace OpenGUI {
 			ImageryPtr mImageryPtrDisabled;
 			bool m_MouseOver;
 			bool m_ButtonDown;
+
+			int mButtonState;
 		};
 
 

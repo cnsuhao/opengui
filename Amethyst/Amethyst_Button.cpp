@@ -144,6 +144,7 @@ namespace OpenGUI {
 		SimpleButton::SimpleButton() {
 			m_MouseOver = false;
 			m_ButtonDown = false;
+			mButtonState = BS_NORMAL;
 		}
 
 		//! virtual Destructor
@@ -205,6 +206,27 @@ namespace OpenGUI {
 		void SimpleButton::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			/*For now, just draw a pretty picture*/
 			ImageryPtr pCurrentImage = mImageryPtr;
+			switch(mButtonState)
+			{
+			case BS_NORMAL:
+				break;
+			case BS_PRESSED:
+				if(mImageryPtrPressed)
+					pCurrentImage = mImageryPtrPressed;
+				break;
+			case BS_HOVER:
+				if(mImageryPtrMouseOver)
+					pCurrentImage = mImageryPtrMouseOver;
+				break;
+			case BS_DISABLED:
+				if(mImageryPtrDisabled)
+					pCurrentImage = mImageryPtrDisabled;
+				break;
+
+			default:
+				//todo:: throw exception
+				break;
+			}
 
 			if(pCurrentImage)
 			{
@@ -222,6 +244,28 @@ namespace OpenGUI {
 			/**/
 		}
 
+		//! Called when cursor was pressed and released within this Control
+		void SimpleButton::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs )
+		{
+			OpenGUI::Control::onCursor_Click( sender, evtArgs );
+		}
+		//! Called when the cursor enters this Control
+		void SimpleButton::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs )
+		{
+			mButtonState = BS_HOVER;
+			if(0)
+			{
+			}
+
+			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
+		}
+		//! Called when the cursor leaves this Control
+		void SimpleButton::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs )
+		{
+			mButtonState = BS_NORMAL;
+
+			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
+		}
 
 	} // namespace Amethyst{
 } // namespace OpenGUI{
