@@ -16,20 +16,20 @@ namespace OpenGUI {
 		friend class Imageset;
 	public:
 		//! Returns the FRect that defines the Texture UVs for this Imagery within the Imageset
-		FRect getTextureUVRect();
+		const FRect& getTextureUVRect() const;
 
 		//! Returns the IRect that was used to define the Imagery within the Imageset
 		/*!If the Imagery was created by defining UV coordinates, rather than a pixel based rect,
 		then a pixel rect will be calculated based on the UVs. (This is mostly accurate, but not
 		100% perfect, so some error may occur.)
 		*/
-		IRect getImagesetRect();
+		const IRect& getImagesetRect() const;
 
 		//! Returns a pointer to the Texture object for this Imagery's parent Imageset.
-		TexturePtr getTexture();
+		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imagery object
-		std::string getName();
+		const std::string& getName() const;
 
 	private:
 		Imagery( const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture );

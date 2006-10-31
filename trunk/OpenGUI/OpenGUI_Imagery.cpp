@@ -16,19 +16,19 @@ namespace OpenGUI {
 		<< "Destruction" << Log::endlog;
 	}
 	//############################################################################
-	FRect Imagery::getTextureUVRect() {
+	const FRect& Imagery::getTextureUVRect() const {
 		return mAreaRect;
 	}
 	//############################################################################
-	IRect Imagery::getImagesetRect() {
+	const IRect& Imagery::getImagesetRect() const {
 		return mNativeRect;
 	}
 	//############################################################################
-	TexturePtr Imagery::getTexture() {
+	TexturePtr Imagery::getTexture() const {
 		return mTexture;
 	}
 	//############################################################################
-	std::string Imagery::getName() {
+	const std::string& Imagery::getName() const {
 		return mName;
 	}
 	//############################################################################

@@ -58,27 +58,18 @@ namespace OpenGUI {
 			so future calls to this function with the same \c texture or \c imageFilename will
 			result in varying functionality.
 
-			If the given \c imageFilename ever matches an existing filename, the Imageset is updated
-			to use the new texture and the updated existing Imageset is returned. (If the new \c texture
-			and old \c texture are different, then the old texture is destroyed. Otherwise, if they are
-			the same, there is no logical change to make, so no action is taken.)
+			If the given \c imageFilename ever matches an existing filename, an exception is thrown.
+			Due to TexturePtr caching, the redefinition of an Imageset's texture would result in
+			staggered usage across the GUI, which is undesirable. If you want to have dynamically
+			changing textures for use within Imagery, you should create a texture specifically for that
+			purpose and directly update the Texture's contents as needed.		
 
 			If the given \c imageFilename does not match any existing Imageset filenames, but a duplicate
-			\c texture is found, an exception is thrown. If you really want to back two or more separate
-			Imagesets with the same texture, you will have to load the texture again for every time that
-			it is used in an Imageset.
+			\c texture is found, the Imageset will successfully create using the texture for yet another
+			Imageset. The usefulness of this is minimal, but it is the most logical action given the
+			design.
 
-			\warning The ImageryManager system assumes responsibility for all textures that it uses. This
-				means that once you give a texture to this system, it will be destroyed automatically when
-				the Imageset it belongs to is destroyed.
-
-			\note If you use this function to replace the texture of an existing Imageset, the new texture
-				should match the dimensions of the old texture. If the dimensions do not match, the
-				affect on the contained imagery is undefined.
-
-			\returns On success the return value is the pointer to the Imageset created or updated.
-				On failure the return value is 0, and the given \c texture does not become the
-				property of the Imageset.
+			\returns On success the return value is the pointer to the Imageset created.
 		*/
 		ImagesetPtr createImagesetFromTexture( TexturePtr texture, std::string imageFilename = "" );
 

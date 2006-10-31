@@ -13,11 +13,10 @@ namespace OpenGUI {
 	class OPENGUI_API Imageset: public RefObject {
 		friend class ImageryManager;
 		friend class Imagery;
-	public:
 		//! Applications should use the ImageryManager to creation Imagesets
 		Imageset( TexturePtr texturePtr, std::string sourceImageFilename );
 		~Imageset();
-
+	public:
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
 		ImageryPtr createImagery( std::string imageryName );
@@ -57,19 +56,19 @@ namespace OpenGUI {
 			Imageset that has the given name. If the Imagery cannot be found,
 			the returned Imagery pointer will be == 0.
 		*/
-		ImageryPtr getImagery( std::string imageryName );
+		ImageryPtr getImagery( std::string imageryName ) const;
 
 		//! A string list used by Imageset::getImageryList()
 		typedef std::list<std::string> ImageryList;
 
 		//! Returns a list of all imagery currently defined within this imageset. Entries can be fed back into getImagery()
-		ImageryList getImageryList();
+		ImageryList getImageryList() const;
 
 		//! Returns the texture backing this Imageset
-		TexturePtr getTexture();
+		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imageset
-		const std::string& getName();
+		const std::string& getName() const;
 
 		//! returns the total number of Imagery defined under this Imageset
 		size_t getImageryCount() const;
