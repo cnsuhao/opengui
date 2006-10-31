@@ -3,6 +3,7 @@
 #include "OpenGUI_XML.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -255,8 +256,12 @@ namespace OpenGUI {
 	XMLParser::IncludeList XMLParser::mIncludeList;
 	//############################################################################
 	bool XMLParser::_Included( const std::string& filename ) {
+		std::string file = filename;
+		StrConv::toLower( file );
 		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end();iter++ ) {
-			if (( *iter ) == filename )
+			std::string item = ( *iter );
+			StrConv::toLower( item );
+			if ( item == file )
 				return true;
 		}
 		return false;
