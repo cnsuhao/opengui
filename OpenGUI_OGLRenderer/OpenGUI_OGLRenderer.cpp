@@ -4,6 +4,7 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 
+#include "corona.h"
 
 #include "OpenGUI_OGLRenderer.h"
 #include "OpenGUI_OGLTexture.h"
@@ -103,7 +104,7 @@ namespace OpenGUI {
 		OGLTexture* retval = 0;
 
 		//Load the image from the disk
-		TextureData* td = TextureData::LoadTextureData( filename );
+		TextureData* td = LoadTextureData( filename );
 		if ( !td ) return 0;
 
 		retval = new OGLTexture();
@@ -267,6 +268,79 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
+	TextureData* OGLRenderer::LoadTextureData( std::string filename ) {
+		//we can't load anything until the system is up
+		//but we should try to play nice
+		if ( !System::getSingletonPtr() )
+			return 0;
+		ResourceProvider* rp = System::getSingletonPtr()->_getResourceProvider();
+		if ( rp == 0 ) return 0;
+
+		//load the resource into memory via the registered resource provider
+		Resource resource;
+		try {
+			rp->loadResource( filename, resource );
+		} catch ( Exception e ) {
+			return 0;
+		};
+
+		//pass the data to corona
+		corona::File* cf = corona::CreateMemoryFile( resource.getData(), ( int )resource.getSize() );
+		resource.release(); //at this point, we don't need the resource loaded any longer
+		if ( !cf ) {
+			return 0;
+		}
+		corona::Image* img = corona::OpenImage( cf, corona::PF_DONTCARE );
+		delete cf;
+		cf = 0; //at this point, we don't need the memory file any longer
+
+		TextureData* retval = new TextureData();
+		int imgHeight, imgWidth, imgBPP;
+		imgHeight = img->getHeight();
+		imgWidth = img->getWidth();
+
+		//perform data format enumeration and
+		switch ( img->getFormat() ) {
+		case corona::PF_I8:
+			imgBPP = 1;
+			break;
+
+		case corona::PF_B8G8R8A8:
+			img = corona::ConvertImage( img, corona::PF_R8G8B8A8 );
+			if ( img == 0 ) {//we failed to convert, bail out
+				delete retval;
+				return 0;
+			}
+		case corona::PF_R8G8B8A8:
+			imgBPP = 4;
+			break;
+
+		case corona::PF_B8G8R8:
+			img = corona::ConvertImage( img, corona::PF_R8G8B8 );
+			if ( img == 0 ) {//we failed to convert, bail out
+				delete retval;
+				return 0;
+			}
+		case corona::PF_R8G8B8:
+			imgBPP = 3;
+			break;
+
+		default:
+			delete retval;
+			delete img;
+			return 0;
+			break;//<- habit
+		}
+
+		/*	At this point, the data should now be completely loaded into a known format.
+		All we need to do is copy the img buffer contents and we're done
+		*/
+		retval->setData(imgWidth, imgHeight, imgBPP, img->getPixels());
+
+		delete img; //and delete this or we leak
+		return retval;
+	}
+	//#####################################################
 }
 ;//namespace OpenGUI{
 
