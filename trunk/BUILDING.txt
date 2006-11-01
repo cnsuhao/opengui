@@ -21,14 +21,11 @@ Linux isn't officially supported at this time, but here's
 the basic rundown. You can expect this process to break, so
 if you spend the time to fix it please submit a patch.
 
-To build the OpenGUI library:
-make debug -or- make release
-
-To build the examples:
-make examples-debug -or- make examples-release
-
-I did my best to ensure that all dependancies will build
-automatically. Your mileage may vary.
+There is a valid Sconstruct and Sconscript for the OpenGUI
+library and the OpenGL renderer. It has been tested on
+Windows only, and will require massaging to get it to run
+properly under Linux. It does NOT build any of the
+dependencies, so you are on your own for building those.
 
 
 

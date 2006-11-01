@@ -1,0 +1,38 @@
+# Build Script for OpenGUI_OGLRenderer
+Source = """
+	OpenGUI_OGLRenderer.cpp
+	OpenGUI_OGLTexture.cpp
+	"""
+
+CPPPATH = """
+	#/OpenGUI
+	"""
+	
+OUTFILE = 'OpenGUI_OGLRenderer'
+
+
+################################################################
+CPPPATH = Split(CPPPATH)
+
+Import('G_CPPFLAGS')
+cppflags = G_CPPFLAGS
+
+Import('G_CPPDEFINES')
+cppdefine = G_CPPDEFINES
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+
+env = Environment()
+env.Replace(CPPPATH = CPPPATH)
+env['PDB'] = OUTFILE + '.pdb'
+env.Append(CPPFLAGS = cppflags)
+env.Append(CPPDEFINES = cppdefine)
+
+lib = env.StaticLibrary( OUTFILE, Split(Source) )
+
+if debug:
+	env.Install('#/Debug', lib)
+else:
+	env.Install('#/Release', lib)
