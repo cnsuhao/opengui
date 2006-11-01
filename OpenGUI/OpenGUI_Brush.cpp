@@ -92,20 +92,25 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush::markActive() {
-		ActiveBrush = this;
+		if ( !isActive() ) {
+			ActiveBrush = this;
+			onActivate();
+		}
 	}
 	//############################################################################
 	bool Brush::isActive() {
 		return this == ActiveBrush;
 	}
 	//############################################################################
-	void Brush::addRenderOperation( RenderOperation& renderOp ) {
-		mModifierStack.applyStack( renderOp );
-		appendRenderOperation( renderOp );
+	void Brush::_clear() {
+		markActive();
+		onClear();
 	}
 	//############################################################################
-	void Brush::appendRenderOperation( RenderOperation& renderOp ) {
-		/* This is overridden by more specific brush classes */
+	void Brush::addRenderOperation( RenderOperation& renderOp ) {
+		mModifierStack.applyStack( renderOp );
+		markActive();
+		appendRenderOperation( renderOp );
 	}
 	//############################################################################
 	const Radian& Brush::getRotation() {

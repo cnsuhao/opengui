@@ -23,11 +23,19 @@ namespace OpenGUI {
 		virtual Texture* createTextureFromTextureData( const TextureData* textureData );
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData );
 		virtual void destroyTexture( Texture* texturePtr );
+
+		// Optional Render-To-Texture support functions
+		virtual bool supportsRenderToTexture();
+		virtual void selectRenderContext( RenderTexture* context );
+		virtual void clearContents();
+		virtual RenderTexture* createRenderTexture( const IVector2& size );
 	private:
 		IVector2 mDimensions;
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
 		static TextureData* LoadTextureData( std::string filename );
+		bool mSupportRTT;
+		RenderTexture* mCurrentContext;
 	};
 }
 ;//namespace OpenGUI{
