@@ -31,10 +31,6 @@ namespace OpenGUI {
 
 	protected:
 		virtual void appendRenderOperation( RenderOperation& renderOp ) {
-			if ( !isActive() ) {
-				Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
-				markActive();
-			}
 			for ( TriangleList::iterator iter = renderOp.triangleList->begin();
 					iter != renderOp.triangleList->end(); iter++ ) {
 				Triangle& t = ( *iter );
@@ -44,6 +40,12 @@ namespace OpenGUI {
 				}
 			}
 			Renderer::getSingleton().doRenderOperation( renderOp );
+		}
+		virtual void onActivate() {
+			Renderer::getSingleton().selectRenderContext( 0 );
+		}
+		virtual void onClear() {
+			Renderer::getSingleton().clearContents();
 		}
 	private:
 		Screen* mScreen;
@@ -221,6 +223,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::update() {
 		ScreenBrush b( this, 0 );
+		b._clear();
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
 			iter->_draw( b );

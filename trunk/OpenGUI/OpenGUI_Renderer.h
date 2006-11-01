@@ -18,16 +18,16 @@ namespace OpenGUI {
 		\par "Rendering call order"
 		Here's a quick ordered list of what calls you can usually expect to receive during
 		rendering loops.
-		\code
-		- preRenderSetup()
-			- selectRenderContext()
-				- clearContents()
-				- doRenderOperation() (repeats as necessary)
-			- selectRenderContext()
-				- clearContents()
-				- doRenderOperation() (repeats as necessary)
-		- postRenderCleanup()
-		\endcode
+	\code
+	- preRenderSetup()
+	- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+	- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+	- postRenderCleanup()
+	\endcode
 
 		\note Renderers are singletons, but do not require any special action on the part of
 		implementors. The singleton logic is automatically handled, so all you need to worry
@@ -160,7 +160,7 @@ namespace OpenGUI {
 //@}
 //!\name RenderToTexture Support (optional)
 //@{
-		//! Renderer implementations that do support Render to Texture contexts should \return \c true. The default is to return \c false;
+		//! Renderer implementations that do support Render to Texture contexts should return \c true. The default is to return \c false.
 		/*! \attention
 		This virtual function has a default implementation.
 		This allows renderer implementations that do not support render to texture

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\corona\src"
+				AdditionalIncludeDirectories="../examples\glfw\include; ..\OpenGUI; ..\dependancies\corona\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -157,6 +157,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\OpenGUI_FBO.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_OGLRenderer.cpp"
 				>
 			</File>
@@ -170,6 +174,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\OpenGUI_FBO.h"
+				>
+			</File>
 			<File
 				RelativePath=".\OpenGUI_OGLRenderer.h"
 				>

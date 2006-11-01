@@ -67,8 +67,11 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: "
 		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
 
-		//mWidgetFactoryManager = new WidgetFactoryManager();
-		//mWidgetTemplateManager = new WidgetTemplateManager();
+		bool RendererRTT = mRenderer->supportsRenderToTexture();
+		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Renderer RTT Support: ";
+		if ( RendererRTT ) LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Detected!";
+		else LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Not Found";
+		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << Log::endlog;
 
 		if ( resourceProvider ) {
 			mResourceProvider = resourceProvider;

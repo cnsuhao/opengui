@@ -4,6 +4,8 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 
+#include "OpenGUI_FBO.h"
+
 #include "corona.h"
 
 #include "OpenGUI_OGLRenderer.h"
@@ -14,6 +16,8 @@ namespace OpenGUI {
 	OGLRenderer::OGLRenderer( int initial_width, int initial_height ) {
 		mDimensions.x = initial_width;
 		mDimensions.y = initial_height;
+		mCurrentContext = 0;
+		mSupportRTT = InitializeFBO();
 	}
 	//###########################################################
 	OGLRenderer::~OGLRenderer() {}
@@ -24,24 +28,30 @@ namespace OpenGUI {
 	//###########################################################
 	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
 		if ( renderOp.texture ) {
-			glBindTexture( GL_TEXTURE_2D, static_cast<OGLTexture*>( renderOp.texture.get() )->textureId );
+			GLuint texid;
+			if ( renderOp.texture->isRenderTexture() ) {
+				texid = static_cast<OGLRTexture*>( renderOp.texture.get() )->textureId;
+			} else {
+				texid = static_cast<OGLTexture*>( renderOp.texture.get() )->textureId;
+			}
+			glBindTexture( GL_TEXTURE_2D, texid );
 		} else {
 			glBindTexture( GL_TEXTURE_2D, 0 );
 		}
 
-		if( renderOp.triangleList ){
-			
+		if ( renderOp.triangleList ) {
+
 			glBegin( GL_TRIANGLES );
 
-			TriangleList& tl = *(renderOp.triangleList);
-			for( TriangleList::iterator iter = tl.begin();
-				iter != tl.end(); iter++ ){
-				Triangle& t = (*iter);
-				for(int i = 0; i < 3; i++){
+			TriangleList& tl = *( renderOp.triangleList );
+			for ( TriangleList::iterator iter = tl.begin();
+					iter != tl.end(); iter++ ) {
+				Triangle& t = ( *iter );
+				for ( int i = 0; i < 3; i++ ) {
 					glColor4f(	t.vertex[i].color.Red,
-						t.vertex[i].color.Green,
-						t.vertex[i].color.Blue,
-						t.vertex[i].color.Alpha );
+							   t.vertex[i].color.Green,
+							   t.vertex[i].color.Blue,
+							   t.vertex[i].color.Alpha );
 					glTexCoord2f( t.vertex[i].textureUV.x, t.vertex[i].textureUV.y );
 					glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
 				}
@@ -50,30 +60,30 @@ namespace OpenGUI {
 			glEnd();
 
 		}
-/*
-		glBegin( GL_TRIANGLES );
-		//point 1
-		glColor4f(	renderOp.vertices[0].color.Red,
-				   renderOp.vertices[0].color.Green,
-				   renderOp.vertices[0].color.Blue,
-				   renderOp.vertices[0].color.Alpha );
-		glTexCoord2f( renderOp.vertices[0].textureUV.x, renderOp.vertices[0].textureUV.y );
-		glVertex3f( renderOp.vertices[0].position.x, renderOp.vertices[0].position.y, 0.0f );
-		//point 2
-		glColor4f(	renderOp.vertices[1].color.Red,
-				   renderOp.vertices[1].color.Green,
-				   renderOp.vertices[1].color.Blue,
-				   renderOp.vertices[1].color.Alpha );
-		glTexCoord2f( renderOp.vertices[1].textureUV.x, renderOp.vertices[1].textureUV.y );
-		glVertex3f( renderOp.vertices[1].position.x, renderOp.vertices[1].position.y, 0.0f );
-		//point 3
-		glColor4f(	renderOp.vertices[2].color.Red,
-				   renderOp.vertices[2].color.Green,
-				   renderOp.vertices[2].color.Blue,
-				   renderOp.vertices[2].color.Alpha );
-		glTexCoord2f( renderOp.vertices[2].textureUV.x, renderOp.vertices[2].textureUV.y );
-		glVertex3f( renderOp.vertices[2].position.x, renderOp.vertices[2].position.y, 0.0f );
-		glEnd();*/
+		/*
+				glBegin( GL_TRIANGLES );
+				//point 1
+				glColor4f(	renderOp.vertices[0].color.Red,
+						   renderOp.vertices[0].color.Green,
+						   renderOp.vertices[0].color.Blue,
+						   renderOp.vertices[0].color.Alpha );
+				glTexCoord2f( renderOp.vertices[0].textureUV.x, renderOp.vertices[0].textureUV.y );
+				glVertex3f( renderOp.vertices[0].position.x, renderOp.vertices[0].position.y, 0.0f );
+				//point 2
+				glColor4f(	renderOp.vertices[1].color.Red,
+						   renderOp.vertices[1].color.Green,
+						   renderOp.vertices[1].color.Blue,
+						   renderOp.vertices[1].color.Alpha );
+				glTexCoord2f( renderOp.vertices[1].textureUV.x, renderOp.vertices[1].textureUV.y );
+				glVertex3f( renderOp.vertices[1].position.x, renderOp.vertices[1].position.y, 0.0f );
+				//point 3
+				glColor4f(	renderOp.vertices[2].color.Red,
+						   renderOp.vertices[2].color.Green,
+						   renderOp.vertices[2].color.Blue,
+						   renderOp.vertices[2].color.Alpha );
+				glTexCoord2f( renderOp.vertices[2].textureUV.x, renderOp.vertices[2].textureUV.y );
+				glVertex3f( renderOp.vertices[2].position.x, renderOp.vertices[2].position.y, 0.0f );
+				glEnd();*/
 	}
 	//###########################################################
 	void OGLRenderer::preRenderSetup() {
@@ -98,7 +108,9 @@ namespace OpenGUI {
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 	}
 	//###########################################################
-	void OGLRenderer::postRenderCleanup() {}
+	void OGLRenderer::postRenderCleanup() {
+		selectRenderContext( 0 ); // be kind, rewind
+	}
 	//###########################################################
 	Texture* OGLRenderer::createTextureFromFile( const std::string& filename ) {
 		OGLTexture* retval = 0;
@@ -152,6 +164,8 @@ namespace OpenGUI {
 		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
 		delete td;
+
+		glBindTexture( GL_TEXTURE_2D, 0 );
 
 		return retval;
 	}
@@ -260,6 +274,10 @@ namespace OpenGUI {
 	void OGLRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( !texturePtr ) return;
 		OGLTexture* texptr = dynamic_cast<OGLTexture*>( texturePtr );
+
+		if (( void* )mCurrentContext == ( void* )texptr ) // never delete the current context
+			selectRenderContext( 0 ); // so we switch back to the default context if needed
+
 		if ( texptr ) {
 			if ( texptr->textureId ) {
 				glDeleteTextures( 1, &( texptr->textureId ) );
@@ -335,10 +353,85 @@ namespace OpenGUI {
 		/*	At this point, the data should now be completely loaded into a known format.
 		All we need to do is copy the img buffer contents and we're done
 		*/
-		retval->setData(imgWidth, imgHeight, imgBPP, img->getPixels());
+		retval->setData( imgWidth, imgHeight, imgBPP, img->getPixels() );
 
 		delete img; //and delete this or we leak
 		return retval;
+	}
+	//#####################################################
+
+	//#####################################################
+	//#####################################################
+	// RENDER TO TEXTURE SUPPORT FUNCTIONS
+	//#####################################################
+	//#####################################################
+	bool OGLRenderer::supportsRenderToTexture() {
+		return mSupportRTT;
+	}
+	//#####################################################
+	void OGLRenderer::selectRenderContext( RenderTexture* context ) {
+		if ( mCurrentContext != context ) {
+			OGLRTexture* rtex;
+			if ( mCurrentContext ) {
+				rtex = static_cast<OGLRTexture*>( mCurrentContext );
+				rtex->unbind();
+			}
+			mCurrentContext = context;
+			if ( mCurrentContext ) {
+				rtex = static_cast<OGLRTexture*>( mCurrentContext );
+				rtex->bind();
+				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
+			} else {
+				glViewport( 0, 0, mDimensions.x, mDimensions.y );
+			}
+		}
+	}
+	//#####################################################
+	void OGLRenderer::clearContents() {
+		if ( 0 == mCurrentContext ) return; // don't clear the main viewport
+		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+		glClear( GL_COLOR_BUFFER_BIT );
+	}
+	//#####################################################
+	RenderTexture* OGLRenderer::createRenderTexture( const IVector2& size ) {
+		OGLRTexture* ret = new OGLRTexture();
+		GLuint textid;
+		glGenTextures( 1, &textid );
+		ret->textureId = textid;
+
+		// switch rendering context so we can set things up
+		RenderTexture* prevContext = mCurrentContext;
+		selectRenderContext( ret );
+
+		glBindTexture( GL_TEXTURE_2D, textid );
+
+		// set up texture filtering
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+		// create the blank texture
+		glTexImage2D( GL_TEXTURE_2D, //2D texture
+					  0, //mipmap level 0
+					  GL_RGBA8, // texture format
+					  512, // texture width
+					  512, // texture height
+					  0, // no border
+					  GL_RGBA, // input data format
+					  GL_UNSIGNED_BYTE, // input data channel size
+					  NULL // this is a blank texture, no input data
+					);
+
+		// attach the texture to the frame buffer as the color destination
+		glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
+								   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
+								   GL_TEXTURE_2D, // destination attachment object type
+								   textid, // destination attachment object ID
+								   0 ); // level within attaching object
+
+		//restore the previous render context
+		selectRenderContext( prevContext );
+
+		return ret;
 	}
 	//#####################################################
 }
