@@ -88,7 +88,7 @@
 				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
 				OutputFile="$(OutDir)/Demo2.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32"
+				AdditionalLibraryDirectories="..\..\dependancies\corona\release; ../../Release;../glfw/lib/win32"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Demo2.pdb"
 				SubSystem="2"
