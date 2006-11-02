@@ -29,7 +29,7 @@ public:
 		mVAlign = TextAlignment::ALIGN_TOP;
 		mHAlign = TextAlignment::ALIGN_LEFT;
 	}
-	~SimpleText(){}
+	virtual ~SimpleText(){}
 	void setText( const std::string& text ) {
 		invalidate();
 		mText = text;
@@ -59,6 +59,17 @@ private:
 	Font mFont;
 	TextAlignment mVAlign;
 	TextAlignment mHAlign;
+};
+
+class MyWnd:public Window{
+public:
+	MyWnd(){}
+	virtual ~MyWnd(){}
+protected:
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Primitive.drawOutlineRect(getRect(),1);
+	}
 };
 
 void Demo1App::preRun() {
@@ -104,6 +115,38 @@ void Demo1App::preRun() {
 	statText->setHeight( 60 );
 	statText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
 	mScreen->Children.add_back( statText, true );
+
+	MyWnd* wnd = new MyWnd();
+	wnd->setName("MyWnd");
+	wnd->setTop( 200 );
+	wnd->setLeft( 100 );
+	wnd->setWidth( 200 );
+	wnd->setHeight( 200 );
+	mScreen->Children.add_back(wnd,true);
+
+	SimpleText* wndText = new SimpleText();
+	wndText->setName( "wndText" );
+	wndText->setFont( Font( "pecot", 10 ) );
+	wndText->setText( "Test Text\nLong Item Etc.\nThe whole point is to be too long" );
+	wndText->setTop( 50 );
+	wndText->setLeft( 50 );
+	wndText->setWidth( 100 );
+	wndText->setHeight( 100 );
+	wndText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
+	wnd->Children.add_back( wndText, true );
+
+	Examples::Tachometer* wndTach = new Examples::Tachometer;
+	wndTach->setName( "wndTach" );
+	wndTach->setBackgroundImagery( "TachBG" );
+	wndTach->setNeedleImagery( "TachNeedle" );
+	wndTach->setNeedleScale( 135.0f, 900.0f, 225.0f );
+	wndTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
+	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
+	wndTach->setNeedleValue( 0.0f );
+	wndTach->setLeft( 0.0f );
+	wndTach->setTop( 0.0f  );
+	wndTach->setWidth( 100.0f );
+	wnd->Children.add_back( wndTach, true );
 
 	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
 }

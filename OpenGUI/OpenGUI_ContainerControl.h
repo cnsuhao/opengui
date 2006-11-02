@@ -10,11 +10,15 @@
 
 namespace OpenGUI {
 
+	class Brush_Caching; // forward declaration
+
 	//! base class for all Controls that are also containers
 	/*!
 	In addition to simply being a Control that contains child Controls, this Widget
 	also supplies an automatic layout system that will reposition and resize child controls
-	according to their exposed layout preferences.
+	according to their exposed layout preferences. Additionally, the results of draw operations
+	from this object, as well as its children, are cached by this object to provide speed
+	increases.
 
 	\note
 	If a subclass wishes to restrict the client area (the rect within the container in which
@@ -86,6 +90,9 @@ namespace OpenGUI {
 		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
 		//! Re-issues the \c Cursor_Release to children with a proper offset
 		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
+
+		//! Flushes the local Brush output cache that contains operations from this and all child Widgets
+		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
 //@}
 
 		//! Returns the client area position and size as an FRect
@@ -116,6 +123,9 @@ namespace OpenGUI {
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
+		Brush_Caching* mCacheBrush;
+		bool mCacheInvalid;
+		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
 	};
 
 } // namespace OpenGUI{
