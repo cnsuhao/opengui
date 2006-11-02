@@ -37,6 +37,22 @@ namespace OpenGUI {
 			//! Gets the disabled button imagery.
 			std::string getImageryDisabled();
 
+			void setText( std::string &nText )		{
+				mText = nText;
+			}
+			void setText( const char *p )				{
+				mText = p;
+			}
+			const std::string getText( void ) const	{
+				return mText;
+			}
+			void setFont( const Font& fnt )			{
+				mFont = fnt;
+			}
+			const Font& getFont() const				{
+				return mFont;
+			}
+
 
 			static Widget* createSimpleButtonFactory();
 
@@ -58,10 +74,17 @@ namespace OpenGUI {
 			//! "Cursor_Release" event
 			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
+		private:
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;
 			ImageryPtr mImageryPtrMouseOver;
 			ImageryPtr mImageryPtrDisabled;
+
+			std::string mText;
+			Font mFont;
+			TextAlignment::Alignment m_alignh;
+			TextAlignment::Alignment m_alignv;
+
 
 			bool m_bMouseButtonState;
 			int mButtonState;

@@ -123,6 +123,37 @@ namespace OpenGUI {
 		}
 		gSimpleButton_DisabledImage_ObjectProperty;
 		//############################################################################
+
+		class SimpleButton_ButtonText_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "Text";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					SimpleButton & l = dynamic_cast<SimpleButton&>( objectRef );
+					valueOut.setValue( l.getText() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					SimpleButton& l = dynamic_cast<SimpleButton&>( objectRef );
+					l.setText( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gSimpleButton_ButtonText_ObjectProperty;
+
 		class SimpleButton_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			SimpleButton_ObjectAccessorList() {
@@ -130,6 +161,7 @@ namespace OpenGUI {
 				addAccessor( &gSimpleButton_HoverImage_ObjectProperty );
 				addAccessor( &gSimpleButton_PressedImage_ObjectProperty );
 				addAccessor( &gSimpleButton_DisabledImage_ObjectProperty );
+				addAccessor( &gSimpleButton_ButtonText_ObjectProperty );
 			}
 			~SimpleButton_ObjectAccessorList() {}
 		}
@@ -144,6 +176,10 @@ namespace OpenGUI {
 		SimpleButton::SimpleButton() {
 			m_bMouseButtonState = false;
 			mButtonState = BS_NORMAL;
+			mText = "";
+			m_alignh = TextAlignment::ALIGN_CENTER;
+			m_alignv = TextAlignment::ALIGN_CENTER;
+			mFont = Font( "pecot", 10 );
 		}
 
 		//! virtual Destructor
@@ -205,23 +241,22 @@ namespace OpenGUI {
 		void SimpleButton::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			/*For now, just draw a pretty picture*/
 			ImageryPtr pCurrentImage = mImageryPtr;
-			switch(mButtonState)
-			{
+			switch ( mButtonState ) {
 			case BS_NORMAL:
 				break;
 			case BS_PRESSED:
-				if(mImageryPtrPressed)
+				if ( mImageryPtrPressed )
 					pCurrentImage = mImageryPtrPressed;
 				break;
 			case BS_HOVER:
-				if(mImageryPtrMouseOver)
+				if ( mImageryPtrMouseOver )
 					pCurrentImage = mImageryPtrMouseOver;
 
-				if(m_bMouseButtonState)
+				if ( m_bMouseButtonState )
 					pCurrentImage = mImageryPtrPressed;
 				break;
 			case BS_DISABLED:
-				if(mImageryPtrDisabled)
+				if ( mImageryPtrDisabled )
 					pCurrentImage = mImageryPtrDisabled;
 				break;
 
@@ -230,13 +265,13 @@ namespace OpenGUI {
 				break;
 			}
 
-			if(pCurrentImage)
-			{
+			if ( pCurrentImage ) {
 				Brush& b = evtArgs.brush;
 				const FVector2& PPU = b.getPPU();
 				const float scaleX = getRect().getWidth() / (( float )pCurrentImage->getImagesetRect().getWidth() ) ;
 				const float scaleY = getRect().getWidth()  / (( float )pCurrentImage->getImagesetRect().getHeight() );
 				b.Image.drawImage( pCurrentImage, getRect() );
+				b.Text.drawTextArea( mText, getRect(), mFont, true, m_alignh, m_alignv );
 			}
 		}
 
@@ -247,41 +282,32 @@ namespace OpenGUI {
 		}
 
 		//! Called when cursor was pressed and released within this Control
-		void SimpleButton::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs )
-		{
+		void SimpleButton::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
 			OpenGUI::Control::onCursor_Click( sender, evtArgs );
 		}
 		//! Called when the cursor enters this Control
-		void SimpleButton::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs )
-		{
+		void SimpleButton::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
 			mButtonState = BS_HOVER;
-			if(0)
-			{
-			}
-
 			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
 		}
 		//! Called when the cursor leaves this Control
-		void SimpleButton::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs )
-		{
+		void SimpleButton::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
 			mButtonState = BS_NORMAL;
 
 			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
 		}
 
 		//! "Cursor_Press" event
-		void SimpleButton::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs )
-		{
-			if(_isInside( evtArgs.Position))
+		void SimpleButton::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+			if ( _isInside( evtArgs.Position ) )
 				m_bMouseButtonState = true;
 		}
 		//! "Cursor_Release" event
-		void SimpleButton::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs )
-		{
-	
-			if(_isInside( evtArgs.Position) && m_bMouseButtonState)
-			{
-				// send some notification event or somesuch
+		void SimpleButton::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+
+			if ( _isInside( evtArgs.Position ) && m_bMouseButtonState ) {
+				EventArgs args;
+				getEvents().sendEvent( "Activate", args );
 			}
 
 			m_bMouseButtonState = false;
