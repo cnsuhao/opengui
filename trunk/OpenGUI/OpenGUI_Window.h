@@ -12,13 +12,13 @@
 namespace OpenGUI {
 
 	//! base class for Windows
-	/*! Windows are ContainerControls that cache the output of their children.
-	They also provide some basic built in window-like functionality, such as
-	resizing and moving based on cursor input. It is up to the inheriting class
-	to initiate and end these behaviors via the eventMove_Begin(), eventMove_End(),
-	eventResize_Begin(), eventResize_End() functions. You will also need to
-	ensure that m_Moveable and m_Resizable have the proper values, as they provide
-	an overall lock mechanism for the built in functions.
+	/*! Windows are ContainerControls that provide some basic built in window-like
+	functionality, such as resizing and moving based on cursor input. It is up to
+	the inheriting class to initiate and end these behaviors via the
+	eventMove_Begin(), eventMove_End(), eventResize_Begin(), eventResize_End()
+	functions. You will also need to ensure that m_Moveable and m_Resizable have
+	the proper values, as they provide an overall lock mechanism for the built in
+	functions.
 
 	\par Events Introduced
 		- \ref Event_Move_Begin "Move_Begin"

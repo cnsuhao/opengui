@@ -256,6 +256,10 @@ namespace OpenGUI {
 		//! Clears the contents of this Brush's output target
 		/*! This is not something that most users would want to do. */
 		void _clear();
+
+		//! \internal Adds a raw render operation to the output
+		void _addRenderOperation( RenderOperation& renderOp );
+
 	protected:
 		//! Final output RenderOperations are passed to this function.
 		/*! It is up to specialized Brush implementations to capture final
