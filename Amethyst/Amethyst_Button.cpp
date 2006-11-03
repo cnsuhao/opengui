@@ -154,6 +154,40 @@ namespace OpenGUI {
 		}
 		gSimpleButton_ButtonText_ObjectProperty;
 
+		//############################################################################
+
+		class SimpleButton_ButtonAlign_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "Alignment";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					SimpleButton & l = dynamic_cast<SimpleButton&>( objectRef );
+					IVector2 v;
+					l.getAlignment(v);
+					valueOut.setValue( v );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					SimpleButton& l = dynamic_cast<SimpleButton&>( objectRef );
+					l.setAlignment( valueIn.getValueAsIVector2() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_IVECTOR2;
+			}
+		}
+		gSimpleButton_ButtonAlign_ObjectProperty;
+
 		class SimpleButton_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			SimpleButton_ObjectAccessorList() {
@@ -162,6 +196,7 @@ namespace OpenGUI {
 				addAccessor( &gSimpleButton_PressedImage_ObjectProperty );
 				addAccessor( &gSimpleButton_DisabledImage_ObjectProperty );
 				addAccessor( &gSimpleButton_ButtonText_ObjectProperty );
+				addAccessor( &gSimpleButton_ButtonAlign_ObjectProperty );
 			}
 			~SimpleButton_ObjectAccessorList() {}
 		}
@@ -237,6 +272,32 @@ namespace OpenGUI {
 				return mImageryPtrDisabled->getName();
 			return getImagery();
 		}
+
+		//############################################################################
+		void SimpleButton::setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v ) {
+			m_alignh = h;
+			m_alignv = v;
+		}
+		//############################################################################
+		void SimpleButton::getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v ) {
+			h = m_alignh;
+			v = m_alignv;
+		}
+		//############################################################################
+		void SimpleButton::setAlignment( IVector2 &align ) {
+			TextAlignment::Alignment h = ( TextAlignment::Alignment ) align.x;
+			TextAlignment::Alignment v = ( TextAlignment::Alignment ) align.y;
+			setAlignment( h, v );
+		}
+		//############################################################################
+		void SimpleButton::getAlignment( IVector2 &align ) {
+			TextAlignment::Alignment h;
+			TextAlignment::Alignment v;
+			getAlignment( h, v );
+			align.x = h;
+			align.y = v;
+		}
+		//############################################################################
 
 		void SimpleButton::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			/*For now, just draw a pretty picture*/

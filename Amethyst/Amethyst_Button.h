@@ -53,6 +53,10 @@ namespace OpenGUI {
 				return mFont;
 			}
 
+			void setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v );
+			void getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v );
+			void setAlignment( IVector2 &align );
+			void getAlignment( IVector2 &align );
 
 			static Widget* createSimpleButtonFactory();
 
