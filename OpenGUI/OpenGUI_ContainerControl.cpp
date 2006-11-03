@@ -1,5 +1,6 @@
 #include "OpenGUI_ContainerControl.h"
-#include "OpenGUI_Brush_Caching.h"
+//#include "OpenGUI_Brush_Caching.h"
+#include "OpenGUI_Brush_RTT.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -141,9 +142,9 @@ namespace OpenGUI {
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
 			if ( !mCacheBrush )
-				mCacheBrush = new Brush_Caching( getScreen() );
+				mCacheBrush = new Brush_RTT( getScreen(), getSize() );
 
-			Brush_Caching& cacheBrush = *mCacheBrush;
+			Brush_RTT& cacheBrush = *mCacheBrush;
 
 			// do we need to rebuild the cache brush?
 			if ( mCacheInvalid ) {
@@ -378,8 +379,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onInvalidated( Object* sender, EventArgs& evtArgs ) {
-		if ( mCacheBrush )
-			mCacheBrush->_clear();
+		if ( mCacheBrush ){
+			delete mCacheBrush;
+			mCacheBrush = 0;
+		}
+			//mCacheBrush->_clear();
 		mCacheInvalid = true;
 	}
 	//############################################################################

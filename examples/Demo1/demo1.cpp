@@ -73,6 +73,8 @@ protected:
 };
 
 void Demo1App::preRun() {
+	RenderTexturePtr rt = TextureManager::getSingleton().createRenderTexture(IVector2(0,0));
+
 	XMLParser::getSingleton().LoadFromFile("demo1.xml");
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
@@ -127,13 +129,14 @@ void Demo1App::preRun() {
 	SimpleText* wndText = new SimpleText();
 	wndText->setName( "wndText" );
 	wndText->setFont( Font( "pecot", 10 ) );
-	wndText->setText( "Test Text\nLong Item Etc.\nThe whole point is to be too long" );
+	wndText->setText( "Test Text\nLong Item Etc.\nThe whole point is toWetoolong\nblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbahnblah blah blah blah \n blah blah blah blah\nblahblahblbah" );
 	wndText->setTop( 50 );
 	wndText->setLeft( 50 );
 	wndText->setWidth( 100 );
 	wndText->setHeight( 100 );
 	wndText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
 	wnd->Children.add_back( wndText, true );
+	//wnd->setVisible(false);
 
 	Examples::Tachometer* wndTach = new Examples::Tachometer;
 	wndTach->setName( "wndTach" );
@@ -144,7 +147,7 @@ void Demo1App::preRun() {
 	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	wndTach->setNeedleValue( 0.0f );
 	wndTach->setLeft( 0.0f );
-	wndTach->setTop( 0.0f  );
+	wndTach->setTop( 100.0f  );
 	wndTach->setWidth( 100.0f );
 	wnd->Children.add_back( wndTach, true );
 
@@ -163,11 +166,19 @@ void Demo1App::perframeRun() {
 
 		if(mTimer->getMilliseconds() > 200){
 			mTimer->reset();
+			float FPS = ScreenManager::getSingleton().statGetFPS();
 			std::stringstream ss;
 			ss << "Update Time: " << mScreen->statsGetUpdateTime();
 			ss << "\n";
-			ss << "FPS: " << ScreenManager::getSingleton().statGetFPS();
+			ss << "FPS: " << FPS;
+			
 			((SimpleText*)mStatText)->setText(ss.str());
+			MyWnd* wnd = (MyWnd*)mScreen->Children.getWidget("MyWnd");
+			if(wnd){
+				Examples::Tachometer* wndTach = (Examples::Tachometer*) wnd->Children.getWidget("wndTach");
+				wndTach->setNeedleValue(FPS);
+				wnd->setWidth(FPS);
+			}
 		}
 	}
 }
