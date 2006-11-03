@@ -12,7 +12,7 @@ namespace OpenGUI {
 		TriangleList& inList = *inListPtr;
 		TriangleList& outList = *outListPtr;
 
-		while( inList.size() > 0 ){
+		while ( inList.size() > 0 ) {
 			Triangle& tri = inList.front();
 			TriangleList::iterator iter = inList.begin();
 			iter++;
@@ -22,7 +22,7 @@ namespace OpenGUI {
 				inList.pop_front();
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				inList.insert( iter, extra );
 			}
 
 			_SliceRenderOp_Vert_SaveRight( tri, extra, outCount, mRect.min.x );
@@ -30,7 +30,7 @@ namespace OpenGUI {
 				inList.pop_front();
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				inList.insert( iter, extra );
 			}
 
 			_SliceRenderOp_Horiz_SaveTop( tri, extra, outCount, mRect.max.y );
@@ -38,7 +38,7 @@ namespace OpenGUI {
 				inList.pop_front();
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				inList.insert( iter, extra );
 			}
 
 			_SliceRenderOp_Horiz_SaveBottom( tri, extra, outCount, mRect.min.y );
@@ -46,10 +46,10 @@ namespace OpenGUI {
 				inList.pop_front();
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				inList.insert( iter, extra );
 			}
 
-			outList.push_back(tri);
+			outList.push_back( tri );
 			inList.pop_front();
 		}
 

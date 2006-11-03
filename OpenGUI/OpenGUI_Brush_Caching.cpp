@@ -4,9 +4,9 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Brush_Caching::Brush_Caching(Screen* parentScreen):mScreen(parentScreen) {
-		if(!mScreen)
-			OG_THROW(Exception::ERR_INVALIDPARAMS,"Constructor requires a valid pointer to destination Screen",__FUNCTION__);
+	Brush_Caching::Brush_Caching( Screen* parentScreen ): mScreen( parentScreen ) {
+		if ( !mScreen )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
 	}
 	//############################################################################
 	Brush_Caching::~Brush_Caching() {
@@ -14,14 +14,14 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::emerge( Brush& targetBrush ) {
-		for(RenderOperationList::iterator iter = mRopList.begin(); mRopList.end() != iter; iter++){
+		for ( RenderOperationList::iterator iter = mRopList.begin(); mRopList.end() != iter; iter++ ) {
 			//!\todo Having a copy operation here makes this incredibly slow! This should be removed as part of Brush optimization
 
 			// we need to make a copy because addrenderOperation modifies the input directly
-			RenderOperation &thisRop = (*iter);
+			RenderOperation &thisRop = ( *iter );
 			RenderOperation tmp = thisRop;
 			tmp.triangleList = new TriangleList;
-			*(tmp.triangleList) = *(thisRop.triangleList);
+			*( tmp.triangleList ) = *( thisRop.triangleList );
 
 			targetBrush._addRenderOperation( tmp );
 		}
@@ -36,11 +36,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::appendRenderOperation( RenderOperation &renderOp ) {
-		mRopList.push_back(renderOp);
+		mRopList.push_back( renderOp );
 		RenderOperation& newRop = mRopList.back();
 		newRop.triangleList = new TriangleList;
-		TriangleList& inList = *(renderOp.triangleList);
-		TriangleList& outList = *(newRop.triangleList);
+		TriangleList& inList = *( renderOp.triangleList );
+		TriangleList& outList = *( newRop.triangleList );
 		outList = inList;
 	}
 	//############################################################################
