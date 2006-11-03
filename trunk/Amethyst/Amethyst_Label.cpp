@@ -41,7 +41,9 @@ namespace OpenGUI {
 			virtual void get( Object& objectRef, Value& valueOut ) {
 				try {
 					Label& l = dynamic_cast<Label&>( objectRef );
-					valueOut.setValue( l.getText() );
+					IVector2 v;
+					l.getAlignment(v);
+					valueOut.setValue( v );
 				} catch ( std::bad_cast e ) {
 					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
 				}
@@ -50,7 +52,7 @@ namespace OpenGUI {
 			virtual void set( Object& objectRef, Value& valueIn ) {
 				try {
 					Label& l = dynamic_cast<Label&>( objectRef );
-					l.setText( valueIn.getValueAsString() );
+					l.setAlignment( valueIn.getValueAsIVector2() );
 				} catch ( std::bad_cast e ) {
 					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
 				}
