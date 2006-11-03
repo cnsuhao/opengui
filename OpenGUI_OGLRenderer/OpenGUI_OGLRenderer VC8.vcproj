@@ -110,7 +110,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\corona\src"
+				AdditionalIncludeDirectories="../examples\glfw\include; ..\OpenGUI; ..\dependancies\corona\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
