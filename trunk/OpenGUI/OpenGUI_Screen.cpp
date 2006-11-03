@@ -7,6 +7,8 @@
 #include "OpenGUI_Control.h"
 #include "OpenGUI_TimerManager.h"
 
+#include "OpenGUI_TextureManager.h"
+
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
 	public:
@@ -42,6 +44,7 @@ namespace OpenGUI {
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
 		virtual void onActivate() {
+			//Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
 			Renderer::getSingleton().selectRenderContext( 0 );
 		}
 		virtual void onClear() {
@@ -58,6 +61,10 @@ namespace OpenGUI {
 		mSize = initialSize;
 		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
+
+		//debug
+		renderTarget = TextureManager::getSingleton().createRenderTexture(IVector2(mSize.x, mSize.y));
+		//renderTarget = TextureManager::getSingleton().createRenderTexture(IVector2(1600,1200));
 
 		mAutoUpdating = true; // we auto update by default
 		mAutoTiming = true; // we get time from System by default
@@ -171,6 +178,9 @@ namespace OpenGUI {
 		_DirtyPPUcache();
 
 		invalidateAll();
+
+		//debug
+		renderTarget = TextureManager::getSingleton().createRenderTexture(IVector2(mSize.x, mSize.y));
 	}
 	//############################################################################
 	/*! For screens rendering to the full window, this is equal to the render window resolution.
@@ -222,7 +232,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		ScreenBrush b( this, 0 );
+		ScreenBrush b( this, renderTarget );
 		b._clear();
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
@@ -259,6 +269,36 @@ namespace OpenGUI {
 		float time = (( float )mStatUpdateTimer->getMilliseconds() ) / 1000.0f;
 		_updateStats_UpdateTime( time );
 		mStatUpdateTimer->reset();
+
+		//debug
+		Renderer& renderer = Renderer::getSingleton();
+		RenderOperation rop;
+		rop.texture = renderTarget.get();
+		rop.triangleList = new TriangleList;
+		Triangle tri;
+		//ul
+		tri.vertex[0].textureUV = FVector2(0.0f,1.0f);
+		tri.vertex[0].position = FVector2(0.0f,0.0f);
+		//ll
+		tri.vertex[1].textureUV = FVector2(0.0f,0.0f);
+		tri.vertex[1].position = FVector2(0.0f,1.0f);
+		//ur
+		tri.vertex[2].textureUV = FVector2(1.0f,1.0f);
+		tri.vertex[2].position = FVector2(1.0f,0.0f);
+		rop.triangleList->push_back(tri);
+
+		//ur
+		tri.vertex[0] = tri.vertex[2];
+		//ll
+		// tri.vertex[1].textureUV = FVector2(0.0f,0.0f);
+		// tri.vertex[1].position = FVector2(0.0f,1.0f);
+		//lr
+		tri.vertex[2].textureUV = FVector2(1.0f,0.0f);
+		tri.vertex[2].position = FVector2(1.0f,1.0f);
+		rop.triangleList->push_back(tri);
+
+		renderer.selectRenderContext(0);
+		//renderer.doRenderOperation( rop );
 	}
 	//############################################################################
 	void Screen::injectTime( unsigned int milliseconds ) {
