@@ -9,6 +9,8 @@ namespace OpenGUI {
 	Imageset::Imageset( TexturePtr texturePtr, std::string sourceImageFilename )
 			: mFilename( sourceImageFilename ), mpTexture( texturePtr ) {
 		LogManager::SlogMsg( "Imageset", OGLL_INFO ) << "(" << mFilename << ") " << "Creation" << Log::endlog;
+		if ( !texturePtr )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid texture handle", __FUNCTION__ );
 	}
 	//############################################################################
 	Imageset::~Imageset() {
@@ -16,8 +18,12 @@ namespace OpenGUI {
 		Imageset::destroyAllImagery();
 	}
 	//############################################################################
-	const std::string& Imageset::getName() {
+	const std::string& Imageset::getName() const {
 		return mFilename;
+	}
+	//############################################################################
+	size_t Imageset::getImageryCount() const {
+		return mChildImageryList.size();
 	}
 	//############################################################################
 	ImageryPtr Imageset::createImagery( std::string imageryName ) {
@@ -41,28 +47,19 @@ namespace OpenGUI {
 
 		if ( imagesetRect.getWidth() == 0 || imagesetRect.getHeight() == 0 ) {
 			//the imagesetRect was not provided or is possibly invalid, so try to generate a new one
-			if ( mpTexture ) { //but only if we have a texture to use, otherwise forget it
-				IVector2 texSize = mpTexture->getSize();
-				imagesetRect.min.x = ( int )( areaRect.min.x * ( float )texSize.x );
-				imagesetRect.min.y = ( int )( areaRect.min.y * ( float )texSize.y );
-				imagesetRect.max.x = ( int )( areaRect.max.x * ( float )texSize.x );
-				imagesetRect.max.y = ( int )( areaRect.max.y * ( float )texSize.y );
-			}
+			IVector2 texSize = mpTexture->getSize();
+			imagesetRect.min.x = ( int )( areaRect.min.x * ( float )texSize.x );
+			imagesetRect.min.y = ( int )( areaRect.min.y * ( float )texSize.y );
+			imagesetRect.max.x = ( int )( areaRect.max.x * ( float )texSize.x );
+			imagesetRect.max.y = ( int )( areaRect.max.y * ( float )texSize.y );
 		}
 
-		ImageryPtr imgptr = new Imagery();
-		imgptr->mParentImageset = this;
-		imgptr->mAreaRect = areaRect;
-		imgptr->mNativeRect = imagesetRect;
-		imgptr->mName = imageryName;
+		ImageryPtr imgptr = new Imagery( imageryName, areaRect, imagesetRect, mpTexture );
 		mChildImageryList.push_back( imgptr );
 		return imgptr;
 	}
 	//############################################################################
 	ImageryPtr Imageset::createImagery( std::string imageryName, IRect areaRect ) {
-		if ( !mpTexture ) //if this imageset has no texture, then use the default createImage (which uses full image extents for UVs)
-			return Imageset::createImagery( imageryName );
-
 		//convert the IRect pixels into UV addresses and pass it along
 		IVector2 texSize = mpTexture->getSize();
 		FRect frect;
@@ -98,8 +95,8 @@ namespace OpenGUI {
 		Imageset::destroyImagery( Imageset::getImagery( name ).get() );
 	}
 	//############################################################################
-	ImageryPtr Imageset::getImagery( std::string imageryName ) {
-		ImageryPtrList::iterator iter = mChildImageryList.begin();
+	ImageryPtr Imageset::getImagery( std::string imageryName ) const {
+		ImageryPtrList::const_iterator iter = mChildImageryList.begin();
 		while ( mChildImageryList.end() != iter ) {
 			if (( *iter )->mName == imageryName ) {
 				return ImageryPtr(( *iter ) );
@@ -109,7 +106,7 @@ namespace OpenGUI {
 		return ImageryPtr( 0 );
 	}
 	//############################################################################
-	TexturePtr Imageset::getTexture() {
+	TexturePtr Imageset::getTexture() const {
 		return mpTexture;
 	}
 	//############################################################################
@@ -125,13 +122,17 @@ namespace OpenGUI {
 		mChildImageryList.clear();
 	}
 	//############################################################################
-	Imageset::ImageryList Imageset::getImageryList() {
+	Imageset::ImageryList Imageset::getImageryList() const {
 		ImageryList retval;
-		for ( ImageryPtrList::iterator iter = mChildImageryList.begin(); mChildImageryList.end() != iter; iter++ ) {
+		for ( ImageryPtrList::const_iterator iter = mChildImageryList.begin(); mChildImageryList.end() != iter; iter++ ) {
 			retval.push_back(( *iter )->mName );
 		}
 		retval.sort();
 		return retval;
+	}
+	//############################################################################
+	void Imageset::finalize() {
+		delete this;
 	}
 	//############################################################################
 }

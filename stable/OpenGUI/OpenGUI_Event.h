@@ -146,6 +146,18 @@ namespace OpenGUI {
 		const FVector2 prevSize;
 	};
 
+	class OPENGUI_API Tick_EventArgs: public EventArgs {
+	public:
+		//! Constructor requires the time passed, in seconds, represented as a float
+		Tick_EventArgs( float seconds ): Seconds( seconds ) {}
+		//! virtual destructor to support polymorphism
+		virtual ~Tick_EventArgs() {
+			/**/
+		}
+		//! Number of seconds passed in this time event
+		const float Seconds;
+	};
+
 
 	//! Provides a unified event definition, binding, and relaying service.
 	class OPENGUI_API EventReceiver {

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Amethyst"
-	ProjectGUID="{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}"
-	RootNamespace="Amethyst VC8"
+	Name="Demo2"
+	ProjectGUID="{C4FBC52D-96AE-4E2D-9BD7-03F75749CBDE}"
+	RootNamespace="Demo1"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -17,9 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../Debug"
+			OutputDirectory="../bin/"
 			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
@@ -41,12 +41,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../OpenGUI"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AMETHYST_EXPORTS"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -63,15 +62,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/Amethyst_d.dll"
+				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
+				OutputFile="$(OutDir)/Demo2_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../Debug"
+				AdditionalLibraryDirectories="../../Debug; ../glfw/lib/win32; ../../dependancies/corona/Debug"
+				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Amethyst_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo2_d.pdb"
 				SubSystem="2"
-				ProfileGuidedDatabase=""
-				ImportLibrary="$(OutDir)/Amethyst_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -79,6 +77,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -97,14 +96,13 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\Debug\Amethyst_d.dll ..\examples\bin"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../Release"
+			OutputDirectory="../bin/"
 			IntermediateDirectory="Release"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
 			>
@@ -126,9 +124,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../OpenGUI"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;AMETHYST_EXPORTS"
+				OmitFramePointers="true"
+				EnableFiberSafeOptimizations="true"
+				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
 				RuntimeLibrary="2"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
@@ -147,17 +150,17 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/Amethyst.dll"
+				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				OutputFile="$(OutDir)/Demo2.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../Release"
+				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32; ../../dependancies/corona/Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Amethyst.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo2.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ProfileGuidedDatabase=""
-				ImportLibrary="$(OutDir)/Amethyst.lib"
+				OptimizeForWindows98="1"
+				LinkTimeCodeGeneration="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -165,6 +168,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -183,7 +187,6 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\Release\Amethyst.dll ..\examples\bin"
 			/>
 		</Configuration>
 	</Configurations>
@@ -193,96 +196,26 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			UniqueIdentifier="{14B88BFF-9BF9-4688-A9FA-0268EA90DAFF}"
 			>
 			<File
-				RelativePath=".\Amethyst.cpp"
+				RelativePath=".\demo2.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Amethyst_Button.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Label.cpp"
+				RelativePath="..\DemoAppFramework\DemoAppFrameWork.cpp"
 				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			UniqueIdentifier="{A62DF8E3-8B05-4bd2-8B9D-B076FF868117}"
 			>
 			<File
-				RelativePath=".\Amethyst.h"
+				RelativePath="..\DemoAppFramework\DemoAppFrameWork.h"
 				>
 			</File>
-			<File
-				RelativePath=".\Amethyst_Button.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_CheckBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ComboBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Cursor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Exports.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Label.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ListBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Panel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ProgressBar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_RadioButton.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ScrollBar_H.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ScrollBar_V.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_TextBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ToolTip.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Window.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
 		</Filter>
 	</Files>
 	<Globals>

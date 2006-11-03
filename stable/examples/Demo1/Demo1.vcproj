@@ -34,10 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
+				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
 				OutputFile="$(OutDir)/Demo1_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32"
+				AdditionalLibraryDirectories="..\..\dependancies\corona\debug;../../Debug;../glfw/lib/win32"
 				IgnoreAllDefaultLibraries="FALSE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Demo1_d.pdb"
@@ -85,11 +85,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
 				OutputFile="$(OutDir)/Demo1.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32"
-				GenerateDebugInformation="FALSE"
+				AdditionalLibraryDirectories="..\..\dependancies\corona\release; ../../Release;../glfw/lib/win32"
+				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Demo1.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"

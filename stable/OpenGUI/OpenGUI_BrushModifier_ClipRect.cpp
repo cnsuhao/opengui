@@ -3,57 +3,49 @@
 namespace OpenGUI {
 	//############################################################################
 	void BrushModifier_ClipRect::apply( RenderOperation& in_out ) {
-		TriangleList* inListPtr = in_out.triangleList;
-		TriangleList* outListPtr = new TriangleList;
-		in_out.triangleList = outListPtr;
-
+		TriangleList& tlist = *in_out.triangleList;
 		Triangle extra;
 		unsigned int outCount;
-		TriangleList& inList = *inListPtr;
-		TriangleList& outList = *outListPtr;
 
-		while( inList.size() > 0 ){
-			Triangle& tri = inList.front();
-			TriangleList::iterator iter = inList.begin();
-			iter++;
-
+		for ( TriangleList::iterator iter = tlist.begin();
+				iter != tlist.end(); iter++ ) {
+			Triangle& tri = ( *iter );
 			_SliceRenderOp_Vert_SaveLeft( tri, extra, outCount, mRect.max.x );
 			if ( outCount == 0 ) {
-				inList.pop_front();
+				iter = tlist.erase( iter );
+				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				tlist.push_back( extra );
 			}
 
 			_SliceRenderOp_Vert_SaveRight( tri, extra, outCount, mRect.min.x );
 			if ( outCount == 0 ) {
-				inList.pop_front();
+				iter = tlist.erase( iter );
+				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				tlist.push_back( extra );
 			}
 
 			_SliceRenderOp_Horiz_SaveTop( tri, extra, outCount, mRect.max.y );
 			if ( outCount == 0 ) {
-				inList.pop_front();
+				iter = tlist.erase( iter );
+				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				tlist.push_back( extra );
 			}
 
 			_SliceRenderOp_Horiz_SaveBottom( tri, extra, outCount, mRect.min.y );
 			if ( outCount == 0 ) {
-				inList.pop_front();
+				iter = tlist.erase( iter );
+				iter--;
 				continue;
 			} else if ( outCount == 2 ) {
-				inList.insert(iter, extra);
+				tlist.push_back( extra );
 			}
-
-			outList.push_back(tri);
-			inList.pop_front();
 		}
-
-		delete inListPtr;
 	}
 	//############################################################################
 	void BrushModifier_ClipRect::_sliceLineSegment( const Vertex& vert1, const Vertex& vert2,

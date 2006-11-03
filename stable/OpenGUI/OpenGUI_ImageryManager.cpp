@@ -32,9 +32,9 @@ namespace OpenGUI {
 		ImageryManager::destroyAllImagesets();
 	}
 	//############################################################################
-	Imageset* ImageryManager::createImageset( std::string imageFilename ) {
-		Imageset* imgset;
-		if (( imgset = getImageset( imageFilename ) ) ) {
+	ImagesetPtr ImageryManager::createImageset( std::string imageFilename ) {
+		ImagesetPtr imgset = getImageset( imageFilename );
+		if ( imgset ) {
 			return imgset;
 		}
 
@@ -53,37 +53,18 @@ namespace OpenGUI {
 		return imgset;
 	}
 	//############################################################################
-	Imageset* ImageryManager::createImagesetFromTexture( TexturePtr texture, std::string imageFilename ) {
+	ImagesetPtr ImageryManager::createImagesetFromTexture( TexturePtr texture, std::string imageFilename ) {
 		if ( texture.isNull() ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "texture parameter must be a valid texture", "ImageryManager::createImagesetFromTexture" );
 		}
 
-		Imageset* imgset;
+		ImagesetPtr imgset;
 
 		if ( imageFilename != "" ) {
-			if (( imgset = getImageset( imageFilename ) ) ) {
-				TexturePtr oldTexture = imgset->mpTexture;
-				if ( oldTexture != texture ) {
-					LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 )
-					<< "CreateImagesetFromTexture: (update) "
-					<< imageFilename << " - old 0x"
-					<< (( unsigned int ) oldTexture.get() )
-					<< " / new 0x"
-					<< (( unsigned int ) texture.get() )
-					<< Log::endlog;
-
-					imgset->mpTexture = texture;
-				}
-				return imgset;
+			imgset = getImageset( imageFilename );
+			if ( imgset ) {
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Already an Imageset named: " + imageFilename, "ImageryManager::createImagesetFromTexture" );
 			}
-		}
-
-		if (( imgset = getImagesetByTexture( texture ) ) ) {
-			//this texture is already used under a different name
-			std::stringstream ss;
-			ss << "An imageset already exists based on the given texture: 0x";
-			ss << texture.get();
-			OG_THROW( Exception::ERR_DUPLICATE_ITEM, ss.str(), "ImageryManager::createImagesetFromTexture" );
 		}
 
 		if ( imageFilename == "" ) {
@@ -104,8 +85,8 @@ namespace OpenGUI {
 		return imgset;
 	}
 	//############################################################################
-	Imageset* ImageryManager::getImagesetByTexture( TexturePtr texture ) {
-		ImagesetCPtrList::iterator iter = mImagesetList.begin();
+	ImagesetPtr ImageryManager::getImagesetByTexture( TexturePtr texture ) {
+		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			if (( *iter )->getTexture() == texture ) {
 				return ( *iter );
@@ -116,8 +97,8 @@ namespace OpenGUI {
 	}
 
 	//############################################################################
-	Imageset* ImageryManager::getImageset( std::string imageFilename ) {
-		ImagesetCPtrList::iterator iter = mImagesetList.begin();
+	ImagesetPtr ImageryManager::getImageset( std::string imageFilename ) {
+		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			if (( *iter )->getName() == imageFilename ) {
 				return ( *iter );
@@ -127,12 +108,11 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	void ImageryManager::destroyImageset( Imageset* pImageset ) {
-		ImagesetCPtrList::iterator iter = mImagesetList.begin();
+	void ImageryManager::destroyImageset( ImagesetPtr pImageset ) {
+		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			if (( *iter ) == pImageset ) {
 				LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "DestroyImageset: " << pImageset->getName() << Log::endlog;
-				delete pImageset;
 				mImagesetList.erase( iter );
 				return;
 			}
@@ -141,7 +121,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ImageryManager::destroyImageset( std::string imageFilename ) {
-		Imageset* imgset;
+		ImagesetPtr imgset;
 		imgset = ImageryManager::getImageset( imageFilename );
 		if ( imgset ) {
 			ImageryManager::destroyImageset( imgset );
@@ -150,16 +130,12 @@ namespace OpenGUI {
 	//############################################################################
 	void ImageryManager::destroyAllImagesets() {
 		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "DestroyAllImagesets..." << Log::endlog;
-		ImagesetCPtrList::iterator iter = mImagesetList.begin();
-		while ( iter != mImagesetList.end() ) {
-			delete( *iter );
-			iter++;
-		}
+		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		mImagesetList.clear();
 	}
 	//############################################################################
 	ImageryPtr ImageryManager::getImagery( std::string imageryName ) {
-		ImagesetCPtrList::iterator iter = mImagesetList.begin();
+		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			ImageryPtr retptr = ( *iter )->getImagery( imageryName );
 			if ( retptr )
@@ -186,7 +162,7 @@ namespace OpenGUI {
 	//############################################################################
 	ImageryManager::ImagesetList ImageryManager::getImagesetList() {
 		ImagesetList retval;
-		for ( ImagesetCPtrList::iterator iter = mImagesetList.begin(); iter != mImagesetList.end(); iter++ ) {
+		for ( ImagesetPtrList::iterator iter = mImagesetList.begin(); iter != mImagesetList.end(); iter++ ) {
 			retval.push_back(( *iter )->getName() );
 		}
 		retval.sort();
@@ -201,7 +177,7 @@ namespace OpenGUI {
 			return false;
 
 		const std::string filename = node.getAttribute( "File" );
-		Imageset* imgset = manager.createImageset( filename );
+		ImagesetPtr imgset = manager.createImageset( filename );
 
 		XMLNodeList imageryNodes = node.getChildren( "Imagery" );
 		for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
@@ -218,12 +194,27 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool ImageryManager::_Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		ImageryManager& manager = ImageryManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
-		OG_NYI;
+
+		const std::string filename = node.getAttribute( "File" );
+		ImagesetPtr imgset = manager.getImageset( filename );
+
+		if ( imgset ) {
+			XMLNodeList imageryNodes = node.getChildren( "Imagery" );
+			for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
+				XMLNode* child = ( *iter );
+				const std::string name = child->getAttribute( "Name" );
+				imgset->destroyImagery( name );
+			}
+			if ( imgset->getImageryCount() == 0 )
+				manager.destroyImageset( imgset );
+		}
 		return true;
 	}
+	//############################################################################
 }
 ; //namespace OpenGUI{
 

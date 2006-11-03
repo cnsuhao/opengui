@@ -10,14 +10,13 @@
 namespace OpenGUI {
 
 	//! Imagesets directly represent entire image files. They contain Imagery, which provide a usable window of the image file.
-	class OPENGUI_API Imageset {
+	class OPENGUI_API Imageset: public RefObject {
 		friend class ImageryManager;
 		friend class Imagery;
-	public:
 		//! Applications should use the ImageryManager to creation Imagesets
 		Imageset( TexturePtr texturePtr, std::string sourceImageFilename );
 		~Imageset();
-
+	public:
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
 		ImageryPtr createImagery( std::string imageryName );
@@ -41,12 +40,8 @@ namespace OpenGUI {
 			object references are handed out only by RefPtrs, the object will never
 			truly destroy until all references to the Imagery object are deleted.
 			This function \b does however disconnect the Imagery object from this
-			Imageset. Before this Imageset releases its reference to the Imagery,
-			the Imagery is pointed to the built in Default Imageset. This will
-			prevent crashes if you "pull the Imagery rug out from under a Widget",
-			while still providing obvious visual feedback that something is wrong.
-
-			\todo fix this documentation. It's no longer complete accurate
+			Imageset. Since Imagery objects contain the RefPtr to the texture they
+			use, the Imagery will be valid until all handles are destroyed.
 		*/
 		void destroyImagery( ImageryPtr imageryPtr );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
@@ -61,29 +56,33 @@ namespace OpenGUI {
 			Imageset that has the given name. If the Imagery cannot be found,
 			the returned Imagery pointer will be == 0.
 		*/
-		ImageryPtr getImagery( std::string imageryName );
+		ImageryPtr getImagery( std::string imageryName ) const;
 
 		//! A string list used by Imageset::getImageryList()
 		typedef std::list<std::string> ImageryList;
 
 		//! Returns a list of all imagery currently defined within this imageset. Entries can be fed back into getImagery()
-		ImageryList getImageryList();
+		ImageryList getImageryList() const;
 
 		//! Returns the texture backing this Imageset
-		TexturePtr getTexture();
+		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imageset
-		const std::string& getName();
+		const std::string& getName() const;
+
+		//! returns the total number of Imagery defined under this Imageset
+		size_t getImageryCount() const;
 
 	private:
+		virtual void finalize(); //finalizer from RefObject
 		std::string mFilename;
 		TexturePtr mpTexture;
 		ImageryPtrList mChildImageryList;
 	};
-	//! Reference counted, auto deleting Imageset pointer
-	typedef RefPtr<Imageset> ImagesetPtr;
+	//! Handle to the reference counted, auto deleting Imageset object
+	typedef RefObjHandle<Imageset> ImagesetPtr; // we use RefObject because it holds the ref count inside the object referenced
+	//! List of ImagesetPtr
 	typedef std::list<ImagesetPtr> ImagesetPtrList;
-	typedef std::list<Imageset*> ImagesetCPtrList;
 }
 ;//namespace OpenGUI{
 #endif

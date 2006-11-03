@@ -1,0 +1,131 @@
+# Build Script for OpenGUI
+Source = """
+	OpenGUI.cpp
+	OpenGUI_Brush.cpp
+	OpenGUI_BrushModifierStack.cpp
+	OpenGUI_BrushModifier_Alpha.cpp
+	OpenGUI_BrushModifier_ClipRect.cpp
+	OpenGUI_BrushModifier_Color.cpp
+	OpenGUI_BrushModifier_Mask.cpp
+	OpenGUI_BrushModifier_Position.cpp
+	OpenGUI_BrushModifier_Rotation.cpp
+	OpenGUI_ContainerControl.cpp
+	OpenGUI_Control.cpp
+	OpenGUI_Cursor.cpp
+	OpenGUI_CursorManager.cpp
+	OpenGUI_DynamicLib.cpp
+	OpenGUI_Event.cpp
+	OpenGUI_EventHandler.cpp
+	OpenGUI_Exception.cpp
+	OpenGUI_Font.cpp
+	OpenGUI_FontAtlas.cpp
+	OpenGUI_FontCache.cpp
+	OpenGUI_FontManager.cpp
+	OpenGUI_GenericCursor.cpp
+	OpenGUI_GenericResourceProvider.cpp
+	OpenGUI_Imagery.cpp
+	OpenGUI_ImageryManager.cpp
+	OpenGUI_Imageset.cpp
+	OpenGUI_I_WidgetContainer.cpp
+	OpenGUI_LayoutLoader.cpp
+	OpenGUI_LogSystem.cpp
+	OpenGUI_Math.cpp
+	OpenGUI_Object.cpp
+	OpenGUI_ObjectAccessor.cpp
+	OpenGUI_PluginManager.cpp
+	OpenGUI_Renderer.cpp
+	OpenGUI_RenderOperation.cpp
+	OpenGUI_RenderTexture.cpp
+	OpenGUI_Screen.cpp
+	OpenGUI_ScreenManager.cpp
+	OpenGUI_Statistic.cpp
+	OpenGUI_StrConv.cpp
+	OpenGUI_System.cpp
+	OpenGUI_Texture.cpp
+	OpenGUI_TextureData.cpp
+	OpenGUI_TextureDataRect.cpp
+	OpenGUI_TextureManager.cpp
+	OpenGUI_Timer.cpp
+	OpenGUI_TimerManager.cpp
+	OpenGUI_Types.cpp
+	OpenGUI_Value.cpp
+	OpenGUI_Widget.cpp
+	OpenGUI_WidgetManager.cpp
+	OpenGUI_Window.cpp
+	OpenGUI_XML.cpp
+	OpenGUI_XMLParser.cpp
+	"""
+
+CPPPATH = """
+	#/dependancies/corona/src
+	#/dependancies/tinyxml
+	#/dependancies/freetype2/include
+	"""
+LIBPATH_D = """
+	#/dependancies/corona/debug
+	#/dependancies/tinyxml/Debug
+	#/dependancies/freetype2/objs
+	"""
+	
+LIBPATH_R = """
+	#/dependancies/corona/release
+	#/dependancies/tinyxml/Release
+	#/dependancies/freetype2/objs
+	"""
+
+LIBS_D = """
+	corona.lib
+	Winmm.lib
+	tinyxmld.lib
+	freetype2110_D.lib
+	"""
+
+LIBS_R = """
+	corona.lib
+	Winmm.lib
+	tinyxml.lib
+	freetype2110.lib
+	"""
+
+OUTFILE = 'OpenGUI'
+
+
+
+################################################################
+CPPPATH = Split(CPPPATH)
+
+Import('G_CPPFLAGS')
+cppflags = G_CPPFLAGS
+
+Import('G_CPPDEFINES')
+cppdefine = G_CPPDEFINES + ['_USRDLL', 'OPENGUI_EXPORTS']
+
+
+
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = LIBPATH_D
+	libs = Split(LIBS_D)
+else:
+	libpath = LIBPATH_R
+	libs = Split(LIBS_R)
+
+Import('G_LIBPATH')
+libpath = G_LIBPATH + Split(libpath)
+
+env = Environment()
+env.Replace(CPPPATH = CPPPATH)
+env['PDB'] = OUTFILE + '.pdb'
+env.Append(CPPFLAGS = cppflags)
+env.Append(CPPDEFINES = cppdefine)
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+lib = env.SharedLibrary( OUTFILE, Split(Source) )
+
+if debug:
+	env.Install('#/Debug', lib)
+else:
+	env.Install('#/Release', lib)

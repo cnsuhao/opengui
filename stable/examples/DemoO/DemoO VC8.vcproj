@@ -67,6 +67,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../Debug; ../../OgreFusion/Debug; ..\..\dependancies\OgreSDK_vc8\lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/DemoO_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -157,6 +158,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release; ../../OgreFusion/Release; ..\..\dependancies\OgreSDK_vc8\lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

@@ -7,6 +7,12 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
+		enum {
+			BS_NORMAL,
+			BS_PRESSED,
+			BS_HOVER,
+			BS_DISABLED
+		};
 		class AMETHYST_API SimpleButton : public Control {
 		public:
 			//! Constructor
@@ -38,25 +44,28 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
+			// events we care about
+
+			//! "Cursor_Click" event
+			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Enter" event; invokes Targeted
+			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Leave" event; invokes UnTargeted
+			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
+
+			//! "Cursor_Press" event
+			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Release" event
+			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
 			ImageryPtr mImageryPtr;
 			ImageryPtr mImageryPtrPressed;
 			ImageryPtr mImageryPtrMouseOver;
 			ImageryPtr mImageryPtrDisabled;
-			bool m_MouseOver;
-			bool m_ButtonDown;
 
-		private:
-#if 0
-			static bool _prop_SetImagery( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
-			static bool _prop_GetImagery( PropertySet* widget, const std::string& propertyName, std::string& curValue );
-			static bool _prop_SetImageryPressed( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
-			static bool _prop_GetImageryPressed( PropertySet* widget, const std::string& propertyName, std::string& curValue );
-			static bool _prop_SetImageryMouseOver( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
-			static bool _prop_GetImageryMouseOver( PropertySet* widget, const std::string& propertyName, std::string& curValue );
-			static bool _prop_SetImageryDisabled( PropertySet* widget, const std::string& propertyName, const std::string& newValueStr, const void* newValuePtr );
-			static bool _prop_GetImageryDisabled( PropertySet* widget, const std::string& propertyName, std::string& curValue );
-#endif
+			bool m_bMouseButtonState;
+			int mButtonState;
+
 		};
 
 

@@ -9,7 +9,6 @@
 
 namespace OpenGUI {
 	class Texture; //forward declaration
-	class Imageset; //forward declaration
 
 	//! Defines a sub area of an Imageset.
 	class OPENGUI_API Imagery {
@@ -17,38 +16,28 @@ namespace OpenGUI {
 		friend class Imageset;
 	public:
 		//! Returns the FRect that defines the Texture UVs for this Imagery within the Imageset
-		FRect getTextureUVRect();
-		//! Returns the IRect that was used to define the Imagery within the Imageset
-		/*! %OpenGUI will do its best to preserve this information, but due to the different ways
-			that Imagery can be defined, this value may not always be accurate. It is guaranteed to
-			be wrong for Imagery created in Imagesets that have no texture assigned. In which case,
-			the value will be a rect equal to IRect(0,0,0,0). If the Imagery was created by defining
-			UV coordinates, rather than a pixel based rect, then a pixel rect will be calculated based
-			on the UVs. (This is mostly accurate, but not 100% perfect, so some error may occur.)
+		const FRect& getTextureUVRect() const;
 
-			\note This value is always available (and accurate) for Imagery that was created from
-			an XML file, as the XML loader always creates Imagery using pixel based rects.
+		//! Returns the IRect that was used to define the Imagery within the Imageset
+		/*!If the Imagery was created by defining UV coordinates, rather than a pixel based rect,
+		then a pixel rect will be calculated based on the UVs. (This is mostly accurate, but not
+		100% perfect, so some error may occur.)
 		*/
-		IRect getImagesetRect();
+		const IRect& getImagesetRect() const;
 
 		//! Returns a pointer to the Texture object for this Imagery's parent Imageset.
-		/*! \warning Widget writers: Do <b>not</b>, under any circumstances, cache this value within
-			your Widget. It absolutely \b must be retrieved every time you build a RenderOperation,
-			as it's value can change. Though the system caches render operations, it also guarantees
-			that it will rebuild that cache in the event that a texture pointer becomes invalid.
-		*/
-		TexturePtr getTexture();
+		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imagery object
-		std::string getName();
+		const std::string& getName() const;
 
 	private:
-		Imagery() : mName( "" ), mParentImageset( 0 ) { }
-		~Imagery() { }
+		Imagery( const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture );
+		~Imagery();
 		std::string mName;
 		FRect mAreaRect;
 		IRect mNativeRect;
-		Imageset* mParentImageset;
+		TexturePtr mTexture;
 	};
 	//! Reference counted, auto deleting Imagery pointer
 	typedef RefPtr<Imagery> ImageryPtr;

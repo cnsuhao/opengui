@@ -1,5 +1,6 @@
 #include "OpenGUI_StrConv.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Font.h"
 
 namespace OpenGUI {
 	//######################################################################
@@ -273,6 +274,26 @@ namespace OpenGUI {
 			return;
 		}
 		OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+	}
+	//############################################################################
+	void StrConv::fromFont( Font& in, std::string& out ) {
+		std::stringstream ss;
+		ss << in.getName();
+		ss << " @ ";
+		ss << in.getSize();
+		out = ss.str();
+	}
+	//############################################################################
+	void StrConv::toFont( const std::string& in, Font& out ) {
+		StringList slist;
+		tokenize( in, slist, '@' );
+		if ( slist.size() != 2 )
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+		std::string name = slist.front();
+		trim( name );
+		float size;
+		toFloat( slist.back(), size );
+		out = Font( name, size );
 	}
 	//############################################################################
 }

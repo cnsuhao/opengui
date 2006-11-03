@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\dependancies\corona\src;..\dependancies\tinyxml;..\dependancies\freetype2\include"
+				AdditionalIncludeDirectories="..\dependancies\tinyxml;..\dependancies\freetype2\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OPENGUI_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,10 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib Winmm.lib tinyxmld.lib freetype2110_D.lib"
+				AdditionalDependencies="Winmm.lib tinyxmld.lib freetype2110_D.lib"
 				OutputFile="$(OutDir)/OpenGUI_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\dependancies\corona\debug;..\dependancies\tinyxml\Debug;..\dependancies\freetype2\objs"
+				AdditionalLibraryDirectories="..\dependancies\tinyxml\Debug;..\dependancies\freetype2\objs"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/OpenGUI_d.pdb"
 				SubSystem="2"
@@ -131,7 +131,7 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\dependancies\corona\src;..\dependancies\tinyxml;..\dependancies\freetype2\include"
+				AdditionalIncludeDirectories="..\dependancies\tinyxml;..\dependancies\freetype2\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OPENGUI_EXPORTS"
 				StringPooling="true"
 				MinimalRebuild="false"
@@ -155,10 +155,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib Winmm.lib tinyxml.lib freetype2110.lib"
+				AdditionalDependencies="Winmm.lib tinyxml.lib freetype2110.lib"
 				OutputFile="$(OutDir)/OpenGUI.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\dependancies\corona\release;..\dependancies\tinyxml\Release;..\dependancies\freetype2\objs"
+				AdditionalLibraryDirectories="..\dependancies\tinyxml\Release;..\dependancies\freetype2\objs"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
 				SubSystem="2"
@@ -355,6 +355,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_ScreenManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Statistic.cpp"
 				>
 			</File>
 			<File
@@ -625,6 +629,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Singleton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Statistic.h"
 				>
 			</File>
 			<File

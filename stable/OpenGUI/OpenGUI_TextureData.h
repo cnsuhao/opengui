@@ -56,11 +56,6 @@ namespace OpenGUI {
 		int mHeight; //image height
 		int mWidth; //image width
 		int mBPP; //bytes per pixel
-	public:
-		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
-		/*! \note This uses the Corona library to read the file format.	*/
-		static TextureData* LoadTextureData( std::string filename );
-
 	};
 }
 ;//namespace OpenGUI{

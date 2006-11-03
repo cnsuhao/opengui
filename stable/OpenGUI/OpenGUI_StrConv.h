@@ -6,6 +6,8 @@
 #include "OpenGUI_Types.h"
 
 namespace OpenGUI {
+	class Font; //forward declaration
+
 	//! A list of strings
 	typedef std::list<std::string> StringList;
 
@@ -50,6 +52,10 @@ namespace OpenGUI {
 		static void fromBool( bool in, std::string& out );
 		//! Turn a string into a bool
 		static void toBool( const std::string& in, bool& out );
+		//! Turn a Font into a string
+		static void fromFont( Font& in, std::string& out );
+		//! Turn a string into a Font
+		static void toFont( const std::string& in, Font& out );
 //@}
 
 //!\name Utility Functions

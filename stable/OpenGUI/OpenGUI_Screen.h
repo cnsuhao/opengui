@@ -8,6 +8,8 @@
 #include "OpenGUI_I_WidgetContainer.h"
 #include "OpenGUI_RenderTexture.h"
 #include "OpenGUI_Cursor.h"
+#include "OpenGUI_Statistic.h"
+#include "OpenGUI_Timer.h"
 
 namespace OpenGUI {
 	class ScreenManager;
@@ -80,6 +82,23 @@ namespace OpenGUI {
 		//! \internal Sets key focus to the given Widget. Called by the widget via Widget::grabKeyFocus() or Widget::releaseKeyFocus()
 		void _setKeyFocus( Widget* widget );
 //@} Text Input
+//!\name Time Functions
+//@{
+		//! Returns \c true if this Screen gets its timing from System
+		bool isAutoTiming()const {
+			return mAutoTiming;
+		}
+		//! Sets if this Screen should receive its timing from System
+		/*! All new Screens are auto timing by default, and must be individually set not to be if that is
+		not desired. All time injections from System occur directly before Screen::update() would be called. */
+		void setAutoTiming( bool doAutoTime = true ) {
+			mAutoTiming = doAutoTime;
+		}
+		//! Injects time into this Screen, in milliseconds ( 1/1000th of a second )
+		void injectTime( unsigned int milliseconds );
+		//! Injects time into this Screen as a float value of a whole second
+		void injectTime( float seconds );
+//@}
 
 		//! Returns a pointer to the topmost Widget at the given location, or 0 (NULL) if no match found
 		Widget* getWidgetAt( const FVector2& position, bool recursive = false );
@@ -146,6 +165,12 @@ namespace OpenGUI {
 
 		//! Invalidates all contained Widgets, causing a complete redraw on next update()
 		void invalidateAll();
+
+		//! Returns the time spent performing Screen::update(), averaged over the past 5 frames.
+		float statsGetUpdateTime();
+		//! Resets the UpdateTime statistic
+		void statsResetUpdateTime();
+
 	protected:
 		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize );
@@ -157,11 +182,13 @@ namespace OpenGUI {
 
 		//! \internal private implementation of injectCursorPosition(), post sanity checks
 		bool _injectCursorPosition( float x_rel, float y_rel );
+
 	private:
 		//! returns the size of the render target of this Screen
 		const IVector2& getRenderTargetSize() const;
 
-		bool mAutoUpdating;
+		bool mAutoUpdating; // updated by System::updateScreens or not
+		bool mAutoTiming; // times injected by System:: or not
 		std::string mName;
 		FVector2 mSize;
 		FVector2 mUPI;
@@ -189,6 +216,11 @@ namespace OpenGUI {
 		//Focus variables
 		Widget* m_CursorFocus; // pointer to current widget with cursor focus, 0 if none
 		Widget* m_KeyFocus; // pointer to current widget with keyboard focus, 0 if none
+
+		// Stats
+		TimerPtr mStatUpdateTimer;
+		AverageStat mStatUpdate;
+		void _updateStats_UpdateTime( float newTime ); // inserts a new update time data point
 	};
 
 } //namespace OpenGUI{

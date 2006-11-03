@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_LogSystem.h"
+#include "OpenGUI_TimerManager.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -21,6 +22,8 @@ namespace OpenGUI {
 	ScreenManager::ScreenManager() {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating ScreenManager" << Log::endlog;
 		/**/
+		mTimer = TimerManager::getSingleton().getTimer();
+		mFPSTimer = TimerManager::getSingleton().getTimer();
 	}
 	//############################################################################
 	ScreenManager::~ScreenManager() {
@@ -61,6 +64,19 @@ namespace OpenGUI {
 			if ( screen->isAutoUpdating() )
 				screen->update();
 		}
+		_stat_UpdateFPS();
+	}
+	//############################################################################
+	void ScreenManager::updateTime() {
+		unsigned int timepassed = mTimer->getMilliseconds();
+		mTimer->reset();
+		for ( ScreenMap::iterator iter = mScreenMap.begin();
+				iter != mScreenMap.end(); iter++ ) {
+			Screen* screen = iter->second;
+			if ( screen->isAutoTiming() )
+				screen->injectTime( timepassed );
+		}
+
 	}
 	//############################################################################
 	void ScreenManager::destroyAllScreens() {
@@ -80,6 +96,15 @@ namespace OpenGUI {
 			Screen* screen = iter->second;
 			screen->_notifyViewportDimensionsChanged();
 		}
+	}
+	//############################################################################
+	void ScreenManager::_stat_UpdateFPS() {
+		mStatFPS.addRecord( mFPSTimer->getSeconds() );
+		mFPSTimer->reset();
+	}
+	//############################################################################
+	float ScreenManager::statGetFPS() {
+		return 1.0f / mStatFPS.getAverage();
 	}
 	//############################################################################
 }//namespace OpenGUI{

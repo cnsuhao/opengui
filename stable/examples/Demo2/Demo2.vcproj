@@ -2,8 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="TachometerWidget"
-	ProjectGUID="{F216D5DB-B218-4696-84A6-485A18015CF6}"
+	Name="Demo2"
+	ProjectGUID="{65FBB56F-7293-4E6E-96B8-B004EAE3F4A8}"
+	RootNamespace="Demo2"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -12,15 +13,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="../bin/"
 			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../OpenGUI"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TACHOMETERWIDGET_EXPORTS"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -33,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/TachometerWidget_d.dll"
+				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
+				OutputFile="$(OutDir)/Demo2_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug"
+				AdditionalLibraryDirectories="..\..\dependancies\corona\debug;../../Debug;../glfw/lib/win32"
+				IgnoreAllDefaultLibraries="FALSE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo2_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/TachometerWidget_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -65,14 +66,15 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="../bin/"
 			IntermediateDirectory="Release"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../OpenGUI"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TACHOMETERWIDGET_EXPORTS"
+				Optimization="2"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -83,16 +85,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/TachometerWidget.dll"
+				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				OutputFile="$(OutDir)/Demo2.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release"
+				AdditionalLibraryDirectories="..\..\dependancies\corona\release; ../../Release;../glfw/lib/win32"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo2.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/TachometerWidget.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -122,20 +123,20 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{E6EFB2CB-1094-4fc3-A0DE-B178B3913B57}">
 			<File
-				RelativePath=".\Tachometer.cpp">
+				RelativePath=".\demo2.cpp">
 			</File>
 			<File
-				RelativePath=".\TachometerWidget.cpp">
+				RelativePath="..\DemoAppFramework\DemoAppFrameWork.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			UniqueIdentifier="{4A37062A-06DB-46f9-B409-419B40EE2616}">
 			<File
-				RelativePath=".\Tachometer.h">
+				RelativePath="..\DemoAppFramework\DemoAppFrameWork.h">
 			</File>
 		</Filter>
 	</Files>

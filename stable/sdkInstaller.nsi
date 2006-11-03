@@ -56,12 +56,14 @@ Section "-Documentation" SEC01
   SetOverwrite ifnewer
   File "win32rel\OpenGUI.chm"
   File "win32rel\OgreFusion.chm"
+  File "win32rel\Amethyst.chm"
   File "win32rel\CONTRIBUTERS.txt"
   File "win32rel\LICENSE.txt"
   File "win32rel\CHANGELOG.txt"
   CreateDirectory "$SMPROGRAMS\OpenGUI SDK"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OpenGUI API Documentation.lnk" "$INSTDIR\OpenGUI.chm"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OgreFusion Documentation.lnk" "$INSTDIR\OgreFusion.chm"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Amethyst Documentation.lnk" "$INSTDIR\Amethyst.chm"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\ChangeLog.lnk" "$INSTDIR\CHANGELOG.txt"
 SectionEnd
 
@@ -98,6 +100,7 @@ Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OpenGUI Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Uninstall.lnk" "$INSTDIR\uninst.exe"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Open SDK Directory.lnk" "$INSTDIR"
 SectionEnd
 
 Section -Post

@@ -1,24 +1,34 @@
 
 #include "OpenGUI_Imagery.h"
-#include "OpenGUI_Imageset.h"
+#include "OpenGUI_LogSystem.h"
+//#include "OpenGUI_Imageset.h"
 
 namespace OpenGUI {
-
 	//############################################################################
-	FRect Imagery::getTextureUVRect() {
+	Imagery::Imagery( const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture )
+			: mName( Name ), mAreaRect( areaRect ), mNativeRect( nativeRect ), mTexture( texture ) {
+		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mName << ") "
+		<< "Creation" << Log::endlog;
+	}
+	//############################################################################
+	Imagery::~Imagery() {
+		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mName << ") "
+		<< "Destruction" << Log::endlog;
+	}
+	//############################################################################
+	const FRect& Imagery::getTextureUVRect() const {
 		return mAreaRect;
 	}
 	//############################################################################
-	IRect Imagery::getImagesetRect() {
+	const IRect& Imagery::getImagesetRect() const {
 		return mNativeRect;
 	}
 	//############################################################################
-	TexturePtr Imagery::getTexture() {
-		if ( !mParentImageset ) return 0;
-		return mParentImageset->mpTexture;
+	TexturePtr Imagery::getTexture() const {
+		return mTexture;
 	}
 	//############################################################################
-	std::string Imagery::getName() {
+	const std::string& Imagery::getName() const {
 		return mName;
 	}
 	//############################################################################

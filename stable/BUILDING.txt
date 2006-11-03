@@ -10,13 +10,6 @@ Windows
     Same as the VC 7.1 instructions, only use
     "OpenGUI VC8.sln" instead.
 
- * Code::Blocks/MinGW
-    This requires STLPort, and is already set up to use
-    the version that comes embedded with the OgreSDK.
-    This build environment only partly works and isn't a
-    high priority for me since VC8 Express is free. Fix it
-    if you want, and send a patch.
-
 See also: OgreFusion\README.txt for details on building
 the OgreFusion project, which links OpenGUI into Ogre.
 
@@ -28,14 +21,11 @@ Linux isn't officially supported at this time, but here's
 the basic rundown. You can expect this process to break, so
 if you spend the time to fix it please submit a patch.
 
-To build the OpenGUI library:
-make debug -or- make release
-
-To build the examples:
-make examples-debug -or- make examples-release
-
-I did my best to ensure that all dependancies will build
-automatically. Your mileage may vary.
+There is a valid Sconstruct and Sconscript for the OpenGUI
+library and the OpenGL renderer. It has been tested on
+Windows only, and will require massaging to get it to run
+properly under Linux. It does NOT build any of the
+dependencies, so you are on your own for building those.
 
 
 

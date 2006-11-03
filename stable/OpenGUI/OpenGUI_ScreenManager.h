@@ -5,8 +5,9 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-
+#include "OpenGUI_Timer.h"
 #include "OpenGUI_Iterators.h"
+#include "OpenGUI_Statistic.h"
 
 namespace OpenGUI {
 	class System;
@@ -38,10 +39,27 @@ namespace OpenGUI {
 		//! performs an update on all screens that are auto updating
 		void updateScreens();
 
+		//! performs time injections on all screens that are auto timing using TimerManager as the time source
+		void updateTime();
+
 		//! returns an iterator to walk the current list of screens
 		iterator getIterator() {
 			return iterator( mScreenMap.begin(), mScreenMap.end() );
 		}
+
+		//! Returns the current FPS
+		/*! The FPS value returned is an average over the last 5 frames. If less than
+		5 frames have been rendered, then the average is based on as many frames
+		as available. If no frames have been rendered, the returned value will be 0.0f.
+		\note A "frame" is defined as a single call to ScreenManager::updateScreens().
+		Since most applications will call this function once per scene frame, this is
+		an adequate metric.
+
+		\note The results of all statistics are dependent on the accuracy of the TimerManager.
+		Feeding inaccurate information to TimerManager will result in inaccurate results
+		for all statistics.
+		*/
+		float statGetFPS();
 
 		/*! \internal Notifies each Screen that the main viewport just changed size,
 		so it can take the appropriate action */
@@ -53,6 +71,12 @@ namespace OpenGUI {
 		~ScreenManager();
 
 		ScreenMap mScreenMap;
+		TimerPtr mTimer;
+
+		//Statistics
+		TimerPtr mFPSTimer;
+		AverageStat mStatFPS;
+		void _stat_UpdateFPS();
 	};
 } //namespace OpenGUI {
 

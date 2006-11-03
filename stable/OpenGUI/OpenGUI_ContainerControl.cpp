@@ -346,4 +346,12 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
+	void ContainerControl::_tick( float seconds ) {
+		Control::_tick( seconds );
+		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
+			Widget* child = iter.get();
+			child->_tick( seconds );
+		}
+	}
+	//############################################################################
 } // namespace OpenGUI {

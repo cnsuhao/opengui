@@ -27,30 +27,26 @@ namespace OpenGUI {
 	*/
 	typedef bool XMLNodeHandler( const XMLNode& node, const std::string& nodePath );
 
-	//! Provides complete loading of xml files containing data for all different subsystems.
-	/*! This class provides complete parsing of XML files. It will delegate top level tags
-		to the necessary subsystem as it sees them, so you can load data into several
-		subsystems with a single function call.
-
-		It also supports use of the '\<include file="somefile.xml"\>' tag, which allows
-		you to split your XML files into smaller and more specific pieces, while allowing
-		them to automatically load their dependents.
-
-		All tags are immediately evaluated in the order they are read, so watch your
-		dependencies. This also means that include files are evaluated at the time they
-		are discovered. If you need your includes to happen first, put them at the top of the
-		XML file. For any single execution of this function, an include file will only be
-		evaluated the first time it is requested. Subsequent requests for an include file are
-		logged as warnings, but otherwise ignored. <i>(The multiple include testing is performed
-		using a simple case-insensitive string comparison. Minor path tricks will fool it, but
-		are generally discouraged.)</i>
-
-		\see \ref XMLDOC "The XML Documentation" for a complete reference to using XML with %OpenGUI.
-
-		XML is processed by %OpenGUI using a mixed DOM/SAX system. XML documents are fully loaded
+	//! Provides XML tag registration and processing callback services
+	/*! XML is processed by %OpenGUI using a mixed DOM/SAX system. XML documents are fully loaded
 		into a DOM tree comprised of XMLNode objects and is then walked in the appropriate direction
 		for the current operation. Callbacks register to handle a particular tag signature, for
-		a given operation (load/unload). When a matching signature is found, the registered 
+		a given operation (load/unload). For each XML tag processed, the registered callbacks
+		are called in the reverse order of registration (last registered goes first). The callbacks
+		signify their successful processing of a tag by returning \c true. The first callback to
+		signal successful processing of the tag will end the callback invokes for that particular tag
+		instance, and the next tag is read and the callback process starts over. Any tag that is
+		processed that does not result in a success signal from a registered callback will be logged
+		with an unprocessed tag warning, but is otherwise ignored.
+
+		During XML tree walking, the XMLParser will \b not automatically step deeper into the XML
+		DOM tree. However, if a particular tag (such as the \c \<%OpenGUI\> tag) is used to group
+		together XML tags that are specific to a particular system (in this case, %OpenGUI specific)
+		then the XMLParser can be told to process the subtags of that tag by calling ProcessXML_Load()
+		or ProcessXML_Unload() as the particular situation requires.
+
+		\see \ref XMLDOC "The XML Documentation" for a complete reference of the XML structure that
+		%OpenGUI processes by default
 
 	*/
 	class OPENGUI_API XMLParser: public Singleton<XMLParser> {
@@ -73,14 +69,14 @@ namespace OpenGUI {
 		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing unloads instead of loads
 		void UnloadFromFile( const std::string& xmlFilename );
 
-		//! Registers an XML Load handler for the given \c xmlPath
+		//! Registers an XML Load handler for the given \c tagName
 		void RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
-		//! Unregisters an XML Load handler for the given \c xmlPath
+		//! Unregisters an XML Load handler for the given \c tagName
 		void UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
-		//! Registers an XML Unload handler for the given \c xmlPath
+		//! Registers an XML Unload handler for the given \c tagName
 		void RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
-		//! Unregisters an XML Unload handler for the given \c xmlPath
+		//! Unregisters an XML Unload handler for the given \c tagName
 		void UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
 
 		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath (Calls ProcessXML_LoadNode() for all container children)
