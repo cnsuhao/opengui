@@ -213,6 +213,11 @@ namespace OpenGUI {
 		/*! If your renderer implementation supports render to texture, this is where those
 		render textures will be created.
 
+		The given \c size will be a desired size that is not necessarily a power of 2. If the
+		renderer does not support non power of 2 textures, it is up to the Renderer implementation
+		to increase the texture size to a power of 2, and perform any UV remapping necessary to
+		provide proper texel alignment when rendering to and from the texture.
+
 		\note
 		It is expected that all render textures are available for use by all other 
 		rendering contexts. In other words, it must be usable in render operations
