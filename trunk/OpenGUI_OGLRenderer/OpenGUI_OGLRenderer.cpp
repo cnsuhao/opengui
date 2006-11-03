@@ -4,12 +4,21 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 
+#include "GL/glfw.h"
 #include "OpenGUI_FBO.h"
 
 #include "corona.h"
 
 #include "OpenGUI_OGLRenderer.h"
 #include "OpenGUI_OGLTexture.h"
+
+// Rectangle Texture Tokens
+#define GL_TEXTURE_RECTANGLE_ARB            0x84F5
+#define GL_TEXTURE_BINDING_RECTANGLE_ARB    0x84F6
+#define GL_PROXY_TEXTURE_RECTANGLE_ARB      0x84F7
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB   0x84F8
+#define GL_SAMPLER_2D_RECT_ARB              0x8B63
+#define GL_SAMPLER_2D_RECT_SHADOW_ARB       0x8B64
 
 namespace OpenGUI {
 	//###########################################################
@@ -18,19 +27,34 @@ namespace OpenGUI {
 		mDimensions.y = initial_height;
 		mCurrentContext = 0;
 		mSupportRTT = InitializeFBO();
+		if ( glfwExtensionSupported( "GL_EXT_texture_rectangle" ) || glfwExtensionSupported( "GL_ARB_texture_rectangle" ) )
+			mSupportRectTex = true;
+		else
+			mSupportRectTex = false;
 	}
 	//###########################################################
-	OGLRenderer::~OGLRenderer() {}
+OGLRenderer::~OGLRenderer() {}
 	//###########################################################
 	const IVector2& OGLRenderer::getViewportDimensions() {
 		return mDimensions;
 	}
 	//###########################################################
 	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
+		bool isRectTex = false;
+		float xUVScale = 1.0f;
+		float yUVScale = 1.0f;
 		if ( renderOp.texture ) {
 			GLuint texid;
 			if ( renderOp.texture->isRenderTexture() ) {
 				texid = static_cast<OGLRTexture*>( renderOp.texture.get() )->textureId;
+				if(mSupportRectTex){
+					isRectTex = true;
+					glEnable(GL_TEXTURE_RECTANGLE_ARB);
+					const IVector2& t = static_cast<OGLRTexture*>( renderOp.texture.get() )->getSize();
+					xUVScale = (float)t.x;
+					yUVScale = (float)t.y;
+					glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+				}
 			} else {
 				texid = static_cast<OGLTexture*>( renderOp.texture.get() )->textureId;
 			}
@@ -38,6 +62,8 @@ namespace OpenGUI {
 		} else {
 			glBindTexture( GL_TEXTURE_2D, 0 );
 		}
+
+		
 
 		if ( renderOp.triangleList ) {
 
@@ -52,12 +78,19 @@ namespace OpenGUI {
 							   t.vertex[i].color.Green,
 							   t.vertex[i].color.Blue,
 							   t.vertex[i].color.Alpha );
-					glTexCoord2f( t.vertex[i].textureUV.x, t.vertex[i].textureUV.y );
+
+					glTexCoord2f( t.vertex[i].textureUV.x * xUVScale, t.vertex[i].textureUV.y * yUVScale );
+
 					glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
 				}
 			}
 
 			glEnd();
+
+			if(isRectTex){
+				glDisable(GL_TEXTURE_RECTANGLE_ARB);
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			}
 
 		}
 		/*
@@ -381,6 +414,7 @@ namespace OpenGUI {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
 				rtex->bind();
 				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
+				//glViewport( 0, 0, 512, 512 );
 			} else {
 				glViewport( 0, 0, mDimensions.x, mDimensions.y );
 			}
@@ -395,7 +429,10 @@ namespace OpenGUI {
 	//#####################################################
 	RenderTexture* OGLRenderer::createRenderTexture( const IVector2& size ) {
 		OGLRTexture* ret = new OGLRTexture();
+		ret->setSize( size );
+		ret->setName( "__RenderTexture__" );
 		GLuint textid;
+
 		glGenTextures( 1, &textid );
 		ret->textureId = textid;
 
@@ -403,30 +440,60 @@ namespace OpenGUI {
 		RenderTexture* prevContext = mCurrentContext;
 		selectRenderContext( ret );
 
-		glBindTexture( GL_TEXTURE_2D, textid );
+		if ( mSupportRectTex ) {
+			glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textid );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+			glTexImage2D( GL_TEXTURE_RECTANGLE_ARB, //2D rectangle texture
+						  0, //mipmap level 0
+						  GL_RGBA8, // texture format
+						  ret->getSize().x, // texture width
+						  ret->getSize().y, // texture height
+						  0, // no border
+						  GL_RGBA, // input data format
+						  GL_UNSIGNED_BYTE, // input data channel size
+						  NULL ); // this is a blank texture, no input data
 
-		// set up texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+			if ( glGetError() == GL_INVALID_VALUE )
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Something broke with rectangle textures", __FUNCTION__ );
 
-		// create the blank texture
-		glTexImage2D( GL_TEXTURE_2D, //2D texture
-					  0, //mipmap level 0
-					  GL_RGBA8, // texture format
-					  512, // texture width
-					  512, // texture height
-					  0, // no border
-					  GL_RGBA, // input data format
-					  GL_UNSIGNED_BYTE, // input data channel size
-					  NULL // this is a blank texture, no input data
-					);
+			// attach the texture to the frame buffer as the color destination
+			glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
+									   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
+									   GL_TEXTURE_RECTANGLE_ARB, // destination attachment object type
+									   textid, // destination attachment object ID
+									   0 ); // level within attaching object
+		}
+		if ( !mSupportRectTex ) {
+			glBindTexture( GL_TEXTURE_2D, textid );
 
-		// attach the texture to the frame buffer as the color destination
-		glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
-								   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
-								   GL_TEXTURE_2D, // destination attachment object type
-								   textid, // destination attachment object ID
-								   0 ); // level within attaching object
+			// set up texture filtering
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+			// create the blank texture
+			glTexImage2D( GL_TEXTURE_2D, //2D texture
+						  0, //mipmap level 0
+						  GL_RGBA8, // texture format
+						  ret->getSize().x, // texture width
+						  ret->getSize().y, // texture height
+						  0, // no border
+						  GL_RGBA, // input data format
+						  GL_UNSIGNED_BYTE, // input data channel size
+						  NULL ); // this is a blank texture, no input data
+
+			//!\todo Add proper handling when non power of 2 textures are not supported
+			if ( glGetError() == GL_INVALID_VALUE )
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "I don't support non power of 2 textures", __FUNCTION__ );
+
+			// attach the texture to the frame buffer as the color destination
+			glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
+									   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
+									   GL_TEXTURE_2D, // destination attachment object type
+									   textid, // destination attachment object ID
+									   0 ); // level within attaching object
+		}
+
 
 		//restore the previous render context
 		selectRenderContext( prevContext );
