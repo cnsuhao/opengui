@@ -36,6 +36,7 @@ namespace OpenGUI {
 		static TextureData* LoadTextureData( std::string filename );
 		bool mSupportRTT;
 		RenderTexture* mCurrentContext;
+		bool mSupportRectTex;
 	};
 }
 ;//namespace OpenGUI{
