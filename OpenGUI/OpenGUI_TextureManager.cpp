@@ -57,6 +57,14 @@ namespace OpenGUI {
 		mRenderer->updateTextureFromTextureData( tex, textureData );
 	}
 	//############################################################################
+	RenderTexturePtr TextureManager::createRenderTexture( const IVector2& size ) {
+		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "Create RenderTexture: " << size.toStr() << Log::endlog;
+		if ( !mRenderer->supportsRenderToTexture() )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot create RenderTexture when Renderer does not support this feature", __FUNCTION__ );
+		RenderTexture* tex = mRenderer->createRenderTexture( size );
+		return RenderTexturePtr( tex );
+	}
+	//############################################################################
 	void TextureManager::destroyTexture( Texture* texturePtr ) {
 		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "DestroyTexture: " << texturePtr->getName() << Log::endlog;
 		mTextureCPtrList.remove( texturePtr );
