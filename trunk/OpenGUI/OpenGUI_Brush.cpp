@@ -113,8 +113,8 @@ namespace OpenGUI {
 		appendRenderOperation( renderOp );
 	}
 	//############################################################################
-	void Brush::_addRenderOperation( RenderOperation& renderOp ){
-		addRenderOperation(renderOp);
+	void Brush::_addRenderOperation( RenderOperation& renderOp ) {
+		addRenderOperation( renderOp );
 	}
 	//############################################################################
 	const Radian& Brush::getRotation() {
