@@ -91,6 +91,8 @@
 
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_Brush.h"
+#include "OpenGUI_Brush_Memory.h"
+#include "OpenGUI_Brush_RTT.h"
 
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_I_WidgetContainer.h"

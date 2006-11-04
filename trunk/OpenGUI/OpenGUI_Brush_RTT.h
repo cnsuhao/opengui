@@ -4,10 +4,11 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_Brush_Caching.h"
+#include "OpenGUI_Brush.h"
 #include "OpenGUI_RenderTexture.h"
 
 namespace OpenGUI {
+	class Screen; // forward declaration
 
 	//! Brush that renders its output to a RenderTexture
 	class Brush_RTT: public Brush {

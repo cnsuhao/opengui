@@ -1,4 +1,4 @@
-#include "OpenGUI_Brush_Caching.h"
+#include "OpenGUI_Brush_Memory.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Screen.h"
 
