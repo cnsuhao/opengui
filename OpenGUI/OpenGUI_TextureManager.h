@@ -56,6 +56,11 @@ namespace OpenGUI {
 		iterator getIterator() {
 			return iterator( mTextureCPtrList.begin(), mTextureCPtrList.end() );
 		}
+
+		//! returns true if the underlying Renderer is providing Render to Texture support
+		bool supportsRenderToTexture() {
+			return mRTTavail;
+		}
 	protected:
 		//only allow creation and destruction by System
 		TextureManager( Renderer* renderer );
