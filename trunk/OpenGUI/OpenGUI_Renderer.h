@@ -75,6 +75,10 @@ namespace OpenGUI {
 		/*! This function is passed a RenderOperation object, by reference, for every
 			render operation that needs to take place to properly draw the gui.
 
+			For any given render context, the RenderOperations passed to this object
+			will always assume that 0,0 x 1,1 is the full range of the render target.
+			0,0 being the upper left, and 1,1 being the lower right.
+
 			The render operations provided to this function are guaranteed to be:\n
 			- Ordered back to front (painter's algorithm).
 			- Necessary: all 100% alpha'ed out operations will not make it this far. (Don't bother to validate the data, it has been done for you already)

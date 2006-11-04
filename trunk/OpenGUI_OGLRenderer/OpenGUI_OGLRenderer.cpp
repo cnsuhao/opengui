@@ -54,11 +54,13 @@ OGLRenderer::~OGLRenderer() {}
 					xUVScale = (float)t.x;
 					yUVScale = (float)t.y;
 					glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-				}
+					glBindTexture( GL_TEXTURE_RECTANGLE_ARB, texid );
+				}else
+					glBindTexture( GL_TEXTURE_2D, texid );
 			} else {
 				texid = static_cast<OGLTexture*>( renderOp.texture.get() )->textureId;
+				glBindTexture( GL_TEXTURE_2D, texid );
 			}
-			glBindTexture( GL_TEXTURE_2D, texid );
 		} else {
 			glBindTexture( GL_TEXTURE_2D, 0 );
 		}
@@ -306,16 +308,26 @@ OGLRenderer::~OGLRenderer() {}
 	//###########################################################
 	void OGLRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( !texturePtr ) return;
-		OGLTexture* texptr = dynamic_cast<OGLTexture*>( texturePtr );
-
-		if (( void* )mCurrentContext == ( void* )texptr ) // never delete the current context
+		
+		if (( void* )mCurrentContext == ( void* )texturePtr ) // never delete the current context
 			selectRenderContext( 0 ); // so we switch back to the default context if needed
 
+		OGLRTexture* rtexptr = dynamic_cast<OGLRTexture*>( texturePtr );
+		if ( rtexptr ) {
+			if ( rtexptr->textureId ) {
+				glDeleteTextures( 1, &( rtexptr->textureId ) );
+			}
+			delete rtexptr;
+			return;
+		}
+
+		OGLTexture* texptr = dynamic_cast<OGLTexture*>( texturePtr );
 		if ( texptr ) {
 			if ( texptr->textureId ) {
 				glDeleteTextures( 1, &( texptr->textureId ) );
 			}
 			delete texptr;
+			return;
 		}
 	}
 	//###########################################################
@@ -442,16 +454,16 @@ OGLRenderer::~OGLRenderer() {}
 
 		if ( mSupportRectTex ) {
 			glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textid );
-			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexImage2D( GL_TEXTURE_RECTANGLE_ARB, //2D rectangle texture
 						  0, //mipmap level 0
-						  GL_RGBA8, // texture format
+						  GL_RGBA, // texture format
 						  ret->getSize().x, // texture width
 						  ret->getSize().y, // texture height
 						  0, // no border
 						  GL_RGBA, // input data format
-						  GL_UNSIGNED_BYTE, // input data channel size
+						  GL_UNSIGNED_INT, // input data channel size
 						  NULL ); // this is a blank texture, no input data
 
 			if ( glGetError() == GL_INVALID_VALUE )
