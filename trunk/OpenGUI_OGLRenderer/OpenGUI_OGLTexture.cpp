@@ -21,25 +21,16 @@ namespace OpenGUI {
 
 
 	//###########################################################
-	OGLRTexture::OGLRTexture(){
+	OGLRTexture::OGLRTexture() {
 		textureId = 0;
 		fboId = 0;
-		glGenFramebuffersEXT(1, &fboId);
+		glGenFramebuffersEXT( 1, &fboId );
 	}
 	//###########################################################
-	OGLRTexture::~OGLRTexture(){
+	OGLRTexture::~OGLRTexture() {
 		/**/
-		glDeleteFramebuffersEXT(1, &fboId);
+		glDeleteFramebuffersEXT( 1, &fboId );
 	}
 	//###########################################################
-	void OGLRTexture::bind(){
-		glBindTexture( GL_TEXTURE_2D, 0);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fboId);
-	}
-	//###########################################################
-	void OGLRTexture::unbind(){
-		glBindTexture( GL_TEXTURE_2D, 0);
-		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
-	}
-	//###########################################################
-};//namespace OpenGUI{
+}
+;//namespace OpenGUI{

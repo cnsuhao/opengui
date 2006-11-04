@@ -64,89 +64,89 @@
 
 
 //boolean IsRenderbufferEXT(uint renderbuffer);
-typedef GLboolean (APIENTRY * IsRenderbufferEXT_OG) (GLuint renderbuffer);
+typedef GLboolean( APIENTRY * IsRenderbufferEXT_OG )( GLuint renderbuffer );
 extern IsRenderbufferEXT_OG _IsRenderbufferEXT_OG;
 #define glIsRenderbufferEXT _IsRenderbufferEXT_OG
 
 //void BindRenderbufferEXT(enum target, uint renderbuffer);
-typedef void (APIENTRY * BindRenderbufferEXT_OG) (GLenum target, GLuint renderbuffer);
+typedef void( APIENTRY * BindRenderbufferEXT_OG )( GLenum target, GLuint renderbuffer );
 extern BindRenderbufferEXT_OG _BindRenderbufferEXT_OG;
 #define glBindRenderbufferEXT _BindRenderbufferEXT_OG
 
 //////////////////////////////////////////
 
 //void DeleteRenderbuffersEXT(sizei n, const uint *renderbuffers);
-typedef void (APIENTRY * DeleteRenderbuffersEXT_OG) (GLsizei n, const GLuint *renderbuffers);
+typedef void( APIENTRY * DeleteRenderbuffersEXT_OG )( GLsizei n, const GLuint *renderbuffers );
 extern DeleteRenderbuffersEXT_OG _DeleteRenderbuffersEXT_OG;
 #define glDeleteRenderbuffersEXT _DeleteRenderbuffersEXT_OG
 
 //void GenRenderbuffersEXT(sizei n, uint *renderbuffers);
-typedef void (APIENTRY * GenRenderbuffersEXT_OG) (GLsizei n, GLuint *renderbuffers);
+typedef void( APIENTRY * GenRenderbuffersEXT_OG )( GLsizei n, GLuint *renderbuffers );
 extern GenRenderbuffersEXT_OG _GenRenderbuffersEXT_OG;
 #define glGenRenderbuffersEXT _GenRenderbuffersEXT_OG
 
 //void RenderbufferStorageEXT(enum target, enum internalformat, sizei width, sizei height);
-typedef void (APIENTRY * RenderbufferStorageEXT_OG) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+typedef void( APIENTRY * RenderbufferStorageEXT_OG )( GLenum target, GLenum internalformat, GLsizei width, GLsizei height );
 extern RenderbufferStorageEXT_OG _RenderbufferStorageEXT_OG;
 #define glRenderbufferStorageEXT _RenderbufferStorageEXT_OG
 
 //void GetRenderbufferParameterivEXT(enum target, enum pname, int* params);
-typedef void (APIENTRY * GetRenderbufferParameterivEXT_OG) (GLenum target, GLenum pname, GLint* params);
+typedef void( APIENTRY * GetRenderbufferParameterivEXT_OG )( GLenum target, GLenum pname, GLint* params );
 extern GetRenderbufferParameterivEXT_OG _GetRenderbufferParameterivEXT_OG;
 #define glGetRenderbufferParameterivEXT _GetRenderbufferParameterivEXT_OG
 
 //boolean IsFramebufferEXT(uint framebuffer);
-typedef GLboolean (APIENTRY * IsFramebufferEXT_OG) (GLuint framebuffer);
+typedef GLboolean( APIENTRY * IsFramebufferEXT_OG )( GLuint framebuffer );
 extern IsFramebufferEXT_OG _IsFramebufferEXT_OG;
 #define glIsFramebufferEXT _IsFramebufferEXT_OG
 
 //void BindFramebufferEXT(enum target, uint framebuffer);
-typedef void (APIENTRY * BindFramebufferEXT_OG) (GLenum target, GLuint framebuffer);
+typedef void( APIENTRY * BindFramebufferEXT_OG )( GLenum target, GLuint framebuffer );
 extern BindFramebufferEXT_OG _BindFramebufferEXT_OG;
 #define glBindFramebufferEXT _BindFramebufferEXT_OG
 
 //void DeleteFramebuffersEXT(sizei n, const uint *framebuffers);
-typedef void (APIENTRY * DeleteFramebuffersEXT_OG) (GLsizei n, const GLuint *framebuffers);
+typedef void( APIENTRY * DeleteFramebuffersEXT_OG )( GLsizei n, const GLuint *framebuffers );
 extern DeleteFramebuffersEXT_OG _DeleteFramebuffersEXT_OG;
 #define glDeleteFramebuffersEXT _DeleteFramebuffersEXT_OG
 
 //void GenFramebuffersEXT(sizei n, uint *framebuffers);
-typedef void (APIENTRY * GenFramebuffersEXT_OG) (GLsizei n, GLuint *framebuffers);
+typedef void( APIENTRY * GenFramebuffersEXT_OG )( GLsizei n, GLuint *framebuffers );
 extern GenFramebuffersEXT_OG _GenFramebuffersEXT_OG;
 #define glGenFramebuffersEXT _GenFramebuffersEXT_OG
 
 //enum CheckFramebufferStatusEXT(enum target);
-typedef void (APIENTRY * CheckFramebufferStatusEXT_OG) (GLenum target);
+typedef void( APIENTRY * CheckFramebufferStatusEXT_OG )( GLenum target );
 extern CheckFramebufferStatusEXT_OG _CheckFramebufferStatusEXT_OG;
 #define glCheckFramebufferStatusEXT _CheckFramebufferStatusEXT_OG
 
 //void FramebufferTexture1DEXT(enum target, enum attachment,enum textarget, uint texture,int level);
-typedef void (APIENTRY * FramebufferTexture1DEXT_OG) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void( APIENTRY * FramebufferTexture1DEXT_OG )( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
 extern FramebufferTexture1DEXT_OG _FramebufferTexture1DEXT_OG;
 #define glFramebufferTexture1DEXT _FramebufferTexture1DEXT_OG
 
 //void FramebufferTexture2DEXT(enum target, enum attachment,enum textarget, uint texture,int level);
-typedef void (APIENTRY * FramebufferTexture2DEXT_OG) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+typedef void( APIENTRY * FramebufferTexture2DEXT_OG )( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level );
 extern FramebufferTexture2DEXT_OG _FramebufferTexture2DEXT_OG;
 #define glFramebufferTexture2DEXT _FramebufferTexture2DEXT_OG
 
 //void FramebufferTexture3DEXT(enum target, enum attachment,enum textarget, uint texture,int level, int zoffset);
-typedef void (APIENTRY * FramebufferTexture3DEXT_OG) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
+typedef void( APIENTRY * FramebufferTexture3DEXT_OG )( GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset );
 extern FramebufferTexture3DEXT_OG _FramebufferTexture3DEXT_OG;
 #define glFramebufferTexture3DEXT _FramebufferTexture3DEXT_OG
 
 //void FramebufferRenderbufferEXT(enum target, enum attachment,enum renderbuffertarget, uint renderbuffer);
-typedef void (APIENTRY * FramebufferRenderbufferEXT_OG) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+typedef void( APIENTRY * FramebufferRenderbufferEXT_OG )( GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer );
 extern FramebufferRenderbufferEXT_OG _FramebufferRenderbufferEXT_OG;
 #define glFramebufferRenderbufferEXT _FramebufferRenderbufferEXT_OG
 
 //void GetFramebufferAttachmentParameterivEXT(enum target, enum attachment,enum pname, int *params);
-typedef void (APIENTRY * GetFramebufferAttachmentParameterivEXT_OG) (GLenum target, GLenum attachment, GLenum pname, GLint *params);
+typedef void( APIENTRY * GetFramebufferAttachmentParameterivEXT_OG )( GLenum target, GLenum attachment, GLenum pname, GLint *params );
 extern GetFramebufferAttachmentParameterivEXT_OG _GetFramebufferAttachmentParameterivEXT_OG;
 #define glGetFramebufferAttachmentParameterivEXT _GetFramebufferAttachmentParameterivEXT_OG
 
 //void GenerateMipmapEXT(enum target);
-typedef void (APIENTRY * GenerateMipmapEXT_OG) (GLenum target);
+typedef void( APIENTRY * GenerateMipmapEXT_OG )( GLenum target );
 extern GenerateMipmapEXT_OG _GenerateMipmapEXT_OG;
 #define glGenerateMipmapEXT _GenerateMipmapEXT_OG
 
