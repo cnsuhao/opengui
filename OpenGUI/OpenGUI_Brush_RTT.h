@@ -32,6 +32,7 @@ namespace OpenGUI {
 	private:
 		Screen* mScreen;
 		FVector2 mDrawSize;
+		FVector2 mMaxUV;
 		RenderTexturePtr mRenderTexture;
 	};
 } // namespace OpenGUI{
