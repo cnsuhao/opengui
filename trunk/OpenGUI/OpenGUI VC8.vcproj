@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Brush_Caching.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Brush_Memory.cpp"
 				>
 			</File>
@@ -441,6 +445,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Brush.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Brush_Caching.h"
 				>
 			</File>
 			<File

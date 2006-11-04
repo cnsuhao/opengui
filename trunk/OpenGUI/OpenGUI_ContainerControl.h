@@ -10,7 +10,7 @@
 
 namespace OpenGUI {
 
-	class Brush_RTT; // forward declaration
+	class Brush_Caching; // forward declaration
 
 	//! base class for all Controls that are also containers
 	/*!
@@ -123,7 +123,7 @@ namespace OpenGUI {
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
-		Brush_RTT* mCacheBrush;
+		Brush_Caching* mCacheBrush;
 		bool mCacheInvalid;
 		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
 	};

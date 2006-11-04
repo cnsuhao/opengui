@@ -81,7 +81,7 @@ namespace OpenGUI {
 		return RenderTexturePtr( tex );
 	}
 	//############################################################################
-	void TextureManager::destroyRenderTexture( RenderTexture* texturePtr ){
+	void TextureManager::destroyRenderTexture( RenderTexture* texturePtr ) {
 		if ( !mRTTavail )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot destroy RenderTexture when Renderer does not support this feature", __FUNCTION__ );
 		mRenderer->destroyRenderTexture( texturePtr );

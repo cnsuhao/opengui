@@ -1,6 +1,5 @@
 #include "OpenGUI_ContainerControl.h"
-//#include "OpenGUI_Brush_Caching.h"
-#include "OpenGUI_Brush_RTT.h"
+#include "OpenGUI_Brush_Caching.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -142,23 +141,18 @@ namespace OpenGUI {
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
 			if ( !mCacheBrush )
-				mCacheBrush = new Brush_RTT( getScreen(), getSize() );
+				mCacheBrush = new Brush_Caching( getScreen(), getSize() );
 
-			Brush_RTT& cacheBrush = *mCacheBrush;
+			Brush_Caching& cacheBrush = *mCacheBrush;
 
 			// do we need to rebuild the cache brush?
 			if ( mCacheInvalid ) {
-				const bool needRectClip = !cacheBrush.isRTTContext() && !m_ClipChildren;
-
 				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
 				//draw background
 				cacheBrush._pushMarker( this );
 				eventDrawBG( cacheBrush );
 				cacheBrush._popMarker( this );
 				cacheBrush.pop(); // pop the parent coords offset
-
-				if ( needRectClip ) // perform a scissor clip manually if needed
-					cacheBrush.pushClippingRect( FRect( FVector2(), getSize() ) );
 
 				//draw children
 				if ( m_ClipChildren ) // setup the client area clip if we have one
@@ -168,9 +162,6 @@ namespace OpenGUI {
 					iter->_draw( cacheBrush );
 				}
 				if ( m_ClipChildren ) // pop the client area clip if we had one
-					cacheBrush.pop();
-
-				if ( needRectClip ) // pop off the manual clipping rect if we had one
 					cacheBrush.pop();
 
 				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
@@ -379,11 +370,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onInvalidated( Object* sender, EventArgs& evtArgs ) {
-		if ( mCacheBrush ){
+		if ( mCacheBrush ) {
 			delete mCacheBrush;
 			mCacheBrush = 0;
 		}
-			//mCacheBrush->_clear();
+		//mCacheBrush->_clear();
 		mCacheInvalid = true;
 	}
 	//############################################################################
