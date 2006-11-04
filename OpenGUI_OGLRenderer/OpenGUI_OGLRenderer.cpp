@@ -34,8 +34,6 @@ namespace OpenGUI {
 			mSupportRectTex = true;
 		else
 			mSupportRectTex = false;
-
-
 	}
 	//###########################################################
 	OGLRenderer::~OGLRenderer() {
@@ -277,9 +275,6 @@ namespace OpenGUI {
 		//set up texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-
 		return retval;
 	}
 	//###########################################################
@@ -442,7 +437,8 @@ namespace OpenGUI {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
 				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
-				glBlendFunc( GL_SRC_ALPHA, GL_ONE);
+				//glBlendFunc( GL_SRC_ALPHA, GL_ONE);
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			} else {
 				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );

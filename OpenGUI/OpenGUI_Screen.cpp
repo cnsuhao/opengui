@@ -223,7 +223,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		ScreenBrush b( this  );
+		ScreenBrush b( this );
 
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {

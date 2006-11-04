@@ -68,7 +68,7 @@ public:
 protected:
 	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		Brush& b = evtArgs.brush;
-		b.Primitive.drawOutlineRect(getRect(),1);
+		b.Primitive.drawOutlineRect(getRect(),-1);
 	}
 };
 
