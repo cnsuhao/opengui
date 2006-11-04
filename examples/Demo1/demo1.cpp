@@ -73,8 +73,6 @@ protected:
 };
 
 void Demo1App::preRun() {
-	RenderTexturePtr rt = TextureManager::getSingleton().createRenderTexture(IVector2(0,0));
-
 	XMLParser::getSingleton().LoadFromFile("demo1.xml");
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
@@ -110,7 +108,7 @@ void Demo1App::preRun() {
 	mStatText = statText;
 	statText->setName( "Stats" );
 	statText->setFont( Font( "pecot", 20 ) );
-	statText->setText( "Stats on the way" );
+	statText->setText( "Stats on the way!\nPreload\n1234567890." );
 	statText->setTop( 0 );
 	statText->setLeft( 500 );
 	statText->setWidth( 400 );
