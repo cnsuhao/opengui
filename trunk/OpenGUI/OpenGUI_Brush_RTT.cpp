@@ -6,14 +6,22 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Brush_RTT::Brush_RTT( Screen* parentScreen, const FVector2& size ): mScreen( parentScreen ),mDrawSize(size) {
+	Brush_RTT::Brush_RTT( Screen* parentScreen, const FVector2& size ): mScreen( parentScreen ), mDrawSize( size ) {
 		if ( !mScreen )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
 		IVector2 texSize;
-		texSize.x = (int)(mDrawSize.x * getPPU_Raw().x);
-		texSize.y = (int)(mDrawSize.y * getPPU_Raw().y);
-		mRenderTexture = TextureManager::getSingleton().createRenderTexture(texSize);
-		if(!mRenderTexture)
+		float xTexSize, yTexSize, xPixelSize, yPixelSize;
+		xPixelSize = mDrawSize.x * getPPU_Raw().x;
+		yPixelSize = mDrawSize.y * getPPU_Raw().y;
+		xTexSize = Math::Ceil( xPixelSize );
+		yTexSize = Math::Ceil( yPixelSize );
+		mMaxUV.x = xPixelSize / xTexSize;
+		mMaxUV.y = yPixelSize / yTexSize;
+
+		texSize.x = ( int )( xTexSize );
+		texSize.y = ( int )( yTexSize );
+		mRenderTexture = TextureManager::getSingleton().createRenderTexture( texSize );
+		if ( !mRenderTexture )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create valid render texture", __FUNCTION__ );
 		_clear();
 	}
@@ -28,15 +36,15 @@ namespace OpenGUI {
 		rop.triangleList = new TriangleList;
 		Triangle tri;
 		//ul
-		tri.vertex[0].textureUV = FVector2(0.0f,1.0f);
-		tri.vertex[0].position = FVector2(0.0f,0.0f);
+		tri.vertex[0].textureUV = FVector2( 0.0f, mMaxUV.y );
+		tri.vertex[0].position = FVector2( 0.0f, 0.0f );
 		//ll
-		tri.vertex[1].textureUV = FVector2(0.0f,0.0f);
-		tri.vertex[1].position = FVector2(0.0f,mDrawSize.y);
+		tri.vertex[1].textureUV = FVector2( 0.0f, 0.0f );
+		tri.vertex[1].position = FVector2( 0.0f, mDrawSize.y );
 		//ur
-		tri.vertex[2].textureUV = FVector2(1.0f,1.0f);
-		tri.vertex[2].position = FVector2(mDrawSize.x,0.0f);
-		rop.triangleList->push_back(tri);
+		tri.vertex[2].textureUV = FVector2( mMaxUV.x, mMaxUV.y );
+		tri.vertex[2].position = FVector2( mDrawSize.x, 0.0f );
+		rop.triangleList->push_back( tri );
 
 		//ur
 		tri.vertex[0] = tri.vertex[2];
@@ -44,9 +52,9 @@ namespace OpenGUI {
 		// tri.vertex[1].textureUV = FVector2(0.0f,0.0f);
 		// tri.vertex[1].position = FVector2(0.0f,1.0f);
 		//lr
-		tri.vertex[2].textureUV = FVector2(1.0f,0.0f);
-		tri.vertex[2].position = FVector2(mDrawSize.x,mDrawSize.y);
-		rop.triangleList->push_back(tri);
+		tri.vertex[2].textureUV = FVector2( mMaxUV.x, 0.0f );
+		tri.vertex[2].position = FVector2( mDrawSize.x, mDrawSize.y );
+		rop.triangleList->push_back( tri );
 
 		targetBrush._addRenderOperation( rop );
 	}
@@ -61,12 +69,12 @@ namespace OpenGUI {
 	//############################################################################
 	void Brush_RTT::appendRenderOperation( RenderOperation &renderOp ) {
 		for ( TriangleList::iterator iter = renderOp.triangleList->begin();
-			iter != renderOp.triangleList->end(); iter++ ) {
-				Triangle& t = ( *iter );
-				for ( int i = 0; i < 3; i++ ) {
-					t.vertex[i].position.x /= mDrawSize.x;
-					t.vertex[i].position.y /= mDrawSize.y;
-				}
+				iter != renderOp.triangleList->end(); iter++ ) {
+			Triangle& t = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				t.vertex[i].position.x /= mDrawSize.x;
+				t.vertex[i].position.y /= mDrawSize.y;
+			}
 		}
 		Renderer::getSingleton().doRenderOperation( renderOp );
 	}

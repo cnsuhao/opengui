@@ -96,7 +96,7 @@ namespace OpenGUI {
 		safeEnd();
 
 		if ( !texture ) {
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 			if ( mSupportRectTex ) glDisable( GL_TEXTURE_RECTANGLE_ARB );
 			glBindTexture( GL_TEXTURE_2D, 0 );
 			return;
@@ -104,7 +104,7 @@ namespace OpenGUI {
 
 		if ( texture->isRenderTexture() ) {
 			OGLRTexture* tex = static_cast<OGLRTexture*>( texture );
-			glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+			//glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 
 			if ( mSupportRectTex ) {
 				glEnable( GL_TEXTURE_RECTANGLE_ARB );
@@ -114,7 +114,7 @@ namespace OpenGUI {
 			}
 		} else {
 			OGLTexture* tex = static_cast<OGLTexture*>( texture );
-			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 			if ( mSupportRectTex ) glDisable( GL_TEXTURE_RECTANGLE_ARB );
 			glBindTexture( GL_TEXTURE_2D, tex->textureId );
 		}
@@ -442,8 +442,9 @@ namespace OpenGUI {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
 				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
-
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE);
 			} else {
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 				glViewport( 0, 0, mDimensions.x, mDimensions.y );
 			}

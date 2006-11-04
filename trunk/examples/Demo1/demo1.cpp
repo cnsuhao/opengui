@@ -162,7 +162,7 @@ void Demo1App::perframeRun() {
 	if ( OpenGUI::System::getSingletonPtr() ) {
 		mTach->setNeedleValue(( float ) val );
 
-		if(mTimer->getMilliseconds() > 200){
+		if(mTimer->getMilliseconds() > 2000){
 			mTimer->reset();
 			float FPS = ScreenManager::getSingleton().statGetFPS();
 			std::stringstream ss;
@@ -175,7 +175,9 @@ void Demo1App::perframeRun() {
 			if(wnd){
 				Examples::Tachometer* wndTach = (Examples::Tachometer*) wnd->Children.getWidget("wndTach");
 				wndTach->setNeedleValue(FPS);
-				wnd->setWidth(FPS);
+				//wnd->setWidth(Math::Ceil(FPS));
+				//wndTach->setAlpha(FPS/300.0f);
+				//wnd->setAlpha(FPS/300.0f);
 			}
 		}
 	}
