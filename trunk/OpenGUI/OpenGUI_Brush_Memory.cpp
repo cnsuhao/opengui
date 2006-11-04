@@ -4,16 +4,16 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Brush_Caching::Brush_Caching( Screen* parentScreen ): mScreen( parentScreen ) {
+	Brush_Memory::Brush_Memory( Screen* parentScreen ): mScreen( parentScreen ) {
 		if ( !mScreen )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
 	}
 	//############################################################################
-	Brush_Caching::~Brush_Caching() {
+	Brush_Memory::~Brush_Memory() {
 		/**/
 	}
 	//############################################################################
-	void Brush_Caching::emerge( Brush& targetBrush ) {
+	void Brush_Memory::emerge( Brush& targetBrush ) {
 		for ( RenderOperationList::iterator iter = mRopList.begin(); mRopList.end() != iter; iter++ ) {
 			//!\todo Having a copy operation here makes this incredibly slow! This should be removed as part of Brush optimization
 
@@ -27,15 +27,15 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	const FVector2& Brush_Caching::getPPU_Raw() const {
+	const FVector2& Brush_Memory::getPPU_Raw() const {
 		return mScreen->getPPU();
 	}
 	//############################################################################
-	const FVector2& Brush_Caching::getUPI_Raw() const {
+	const FVector2& Brush_Memory::getUPI_Raw() const {
 		return mScreen->getUPI();
 	}
 	//############################################################################
-	void Brush_Caching::appendRenderOperation( RenderOperation &renderOp ) {
+	void Brush_Memory::appendRenderOperation( RenderOperation &renderOp ) {
 		mRopList.push_back( renderOp );
 		RenderOperation& newRop = mRopList.back();
 		newRop.triangleList = new TriangleList;
@@ -44,11 +44,11 @@ namespace OpenGUI {
 		outList = inList;
 	}
 	//############################################################################
-	void Brush_Caching::onActivate() {
+	void Brush_Memory::onActivate() {
 		/* No special action required */
 	}
 	//############################################################################
-	void Brush_Caching::onClear() {
+	void Brush_Memory::onClear() {
 		mRopList.clear();
 	}
 	//############################################################################

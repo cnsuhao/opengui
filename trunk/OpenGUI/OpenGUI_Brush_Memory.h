@@ -11,12 +11,12 @@ namespace OpenGUI {
 	class Screen; // forward declaration
 
 	//! Interface class for Brushes that cache their output in some manner
-	class OPENGUI_API Brush_Caching: public Brush {
+	class OPENGUI_API Brush_Memory: public Brush {
 	public:
 		//! Constructor requires a pointer to the Screen that this Brush will eventually be drawn to
-		Brush_Caching( Screen* parentScreen );
+		Brush_Memory( Screen* parentScreen );
 		//! Destructor
-		virtual ~Brush_Caching();
+		virtual ~Brush_Memory();
 
 		//! sends the contents of this caching Brush into the output stream of the given Brush
 		void emerge( Brush& targetBrush );
