@@ -22,6 +22,7 @@ namespace OpenGUI {
 	class OPENGUI_API TextureManager : public Singleton<TextureManager> {
 		friend class System;
 		friend class Texture;
+		friend class RenderTexture;
 	public:
 		typedef std::list<Texture*> TextureCPtrList;
 		typedef ListIterator<TextureCPtrList, TextureCPtrList::iterator> iterator;
@@ -63,10 +64,15 @@ namespace OpenGUI {
 		//! Free the given texture from the TextureManager and call Renderer->destroyTexture
 		/*! Called automatically by Texture objects when they have no further handles pointing to them */
 		void destroyTexture( Texture* texturePtr );
+
+		//! Destroys the given RenderTexture through Renderer->destroyRenderTexture
+		/*! Called automatically by RenderTexture objects when they have no further handles pointing to them */
+		void destroyRenderTexture( RenderTexture* texturePtr );
 	private:
 		// destroys all textures
 		void destroyAllTextures();
 		Renderer* mRenderer;
+		bool mRTTavail;
 
 		TextureCPtrList mTextureCPtrList;
 	};

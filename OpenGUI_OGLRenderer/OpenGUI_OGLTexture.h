@@ -24,12 +24,10 @@ namespace OpenGUI {
 		}
 	};
 
-	class OGLRTexture : public RenderTexture{
+	class OGLRTexture : public RenderTexture {
 	public:
 		OGLRTexture();
 		virtual ~OGLRTexture();
-		void bind();
-		void unbind();
 
 		GLuint textureId;
 		GLuint fboId;

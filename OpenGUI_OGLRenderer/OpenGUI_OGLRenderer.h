@@ -29,14 +29,23 @@ namespace OpenGUI {
 		virtual void selectRenderContext( RenderTexture* context );
 		virtual void clearContents();
 		virtual RenderTexture* createRenderTexture( const IVector2& size );
+		virtual void destroyRenderTexture( RenderTexture* texturePtr );
 	private:
+		void drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV );
+		void drawTriangles( const TriangleList& triangles );
+		void selectTextureState( Texture* texture );
+		void safeBegin();
+		void safeEnd();
+
 		IVector2 mDimensions;
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
 		static TextureData* LoadTextureData( std::string filename );
 		bool mSupportRTT;
 		RenderTexture* mCurrentContext;
+		Texture* mCurrentTextureState;
 		bool mSupportRectTex;
+		bool mInGLBegin;
 	};
 }
 ;//namespace OpenGUI{
