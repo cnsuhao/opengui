@@ -437,7 +437,7 @@ namespace OpenGUI {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
 				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
-				glBlendFunc( GL_SRC_ALPHA, GL_ONE);
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 			} else {
 				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
