@@ -1,10 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corona", "dependancies\corona\corona vc8.vcproj", "{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corona", "dependencies\corona\corona vc8.vcproj", "{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml", "dependancies\tinyxml\tinyxml_lib VC8.vcproj", "{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml", "dependencies\tinyxml\tinyxml_lib VC8.vcproj", "{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "dependancies\freetype2\builds\win32\visualc\freetype VC8.vcproj", "{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "dependencies\freetype2\builds\win32\visualc\freetype VC8.vcproj", "{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "examples\glfw\glfw VC8.vcproj", "{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
 EndProject
