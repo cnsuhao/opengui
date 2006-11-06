@@ -209,7 +209,7 @@ Example:
    - \em Description: Identifies the type of data stored in ValueData
  - \c ValueData \b (required)
    - \em Type: variable
-   - \em Description: A string formated %OpenGUI \ref Types "type"
+   - \em Description: A string formatted \ref Types "OpenGUI Type". See \ref StringFormats for details.
    
 <hr>
 
