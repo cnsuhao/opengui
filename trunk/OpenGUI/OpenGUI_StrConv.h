@@ -12,6 +12,7 @@ namespace OpenGUI {
 	typedef std::list<std::string> StringList;
 
 	//! String Converter providing conversions back and forth between strings and both common and %OpenGUI specific types, and a few minor utility functions
+	/*! For details on the formatting of strings that these functions expect and produce, see the \ref StringFormats document. */
 	class OPENGUI_API StrConv {
 	public:
 //!\name Conversion Functions

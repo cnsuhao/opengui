@@ -679,6 +679,23 @@ namespace OpenGUI {
 		node.setAttribute( "ValueData", toStr() );
 	}
 	//#####################################################################
+	/*! This expects the given \c node to contain all necessary data as
+	XMLNode attributes. Only the \c ValueName attribute may be missing
+	- \c ValueName - defines the string based name for the Value (given to setName())
+	- \c ValueData - string representation of the data to store
+	- \c ValueType - defines the type of data held in \c ValueData. Valid values include:
+	  - INTEGER
+	  - FLOAT
+	  - BOOL
+	  - FVECTOR2
+	  - FRECT
+	  - IVECTOR2
+	  - IRECT
+	  - COLOR
+	  - STRING
+
+	  \see \ref StringFormats for further information on the text formatting syntax of %OpenGUI objects.
+	*/
 	void Value::LoadFromXMLNode( const XMLNode& node ) {
 		std::string typestr = node.getAttribute( "ValueType" );
 		std::string valuestr = node.getAttribute( "ValueData" );
