@@ -8,6 +8,7 @@
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_Iterators.h"
 #include "OpenGUI_Statistic.h"
+#include "OpenGUI_XML.h"
 
 namespace OpenGUI {
 	class System;
@@ -77,6 +78,10 @@ namespace OpenGUI {
 		TimerPtr mFPSTimer;
 		AverageStat mStatFPS;
 		void _stat_UpdateFPS();
+
+		// XML tag handlers for <Screen> tags
+		static bool _Screen_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Screen_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 } //namespace OpenGUI {
 

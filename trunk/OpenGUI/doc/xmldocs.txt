@@ -27,6 +27,12 @@ Universal tags:
    - \ref XMLproperty
   - \ref XMLwidgetdef
    - \ref XMLproperty
+  - \ref XMLscreen
+   - \ref XMLwidget
+    - \ref XMLproperty
+    - \ref XMLwidget
+     - \ref XMLproperty
+     - ...
 
 Be sure to check out the \ref example as well.
 <HR>
@@ -174,6 +180,7 @@ Defines a Widget of the given \c Name using the given \c BaseName and \c BaseLib
 Example:
 \verbatim
 <WidgetDef Name="Tachometer" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
+	<!-- some optional <Property> tags -->
 </WidgetDef>
 \endverbatim
 
@@ -211,6 +218,133 @@ Example:
    - \em Type: variable
    - \em Description: A string formatted \ref Types "OpenGUI Type". See \ref StringFormats for details.
    
+
+<hr>
+\section XMLscreen <Screen>
+The \<Screen\> tag is used to create and destroy Screen objects through XML. During XMLLoad all attributes provided are read and used. During XMLUnload, only the \c Name attribute is used to identify the Screen to destroy. Only the \c Name and \c Size attributes are required, with all others being optional with implied defaults. See OpenGUI::Screen for more information on the default values.
+
+Example:
+\verbatim
+<Screen Name="MainScreen" Size="(800x600)" UPI="(96x96)" AutoUpdating="True" AutoTiming="True" DefaultCursor="Square" CursorEnabled="True" CursorVisible="True" >
+	<!-- optional <Widget> tags in here -->
+</Screen>
+\endverbatim
+
+\par Attributes
+ - \c Name \b (required)
+   - \em Type: string
+   - \em Description: The name identifying the Screen
+ - \c Size \b (required)
+   - \em Type: FVector2
+   - \em Description: The size/resolution of the Screen, used during creation
+ - \c UPI
+   - \em Type: FVector2
+   - \em Description: The Units Per Inch of the Screen, used during creation
+ - \c AutoUpdating
+   - \em Type: bool
+   - \em Description: If the Screen created should be auto updated (redrawn) during OpenGUI::ScreenManager::updateScreens()
+ - \c AutoTiming
+   - \em Type: bool
+   - \em Description: If the Screen created should be auto injecting time events via OpenGUI::ScreenManager::updateTime()
+ - \c DefaultCursor
+   - \em Type: string
+   - \em Description: The name of a previously defined Cursor to use as this Screens default cursor
+ - \c CursorEnabled
+   - \em Type: bool
+   - \em Description: If the Screen created should be initially set with the cursor enabled
+ - \c CursorVisible
+   - \em Type: bool
+   - \em Description: If the Screen created should be initially set with the cursor visible
+
+\note
+If the processing of the \<Screen\> tag fails at any stage, the entire Screen is invalid, and will not be created. If it has already been created, it will be destroyed before processing returns.
+
+
+
+<hr>
+\section XMLwidget <Widget>
+The \<Widget\> tag is used to create widgets underneath of the containing \<Widget\> or \<Screen\> or \<FormDef\> tag. When processing this tag, the parent is cast into a \ref OpenGUI::I_WidgetContainer "container". If this cast fails, the operation will fail. It is the XML writer's responsibility to ensure that they only place children \<Widget\> tags within proper containing objects.
+
+Example:
+\verbatim
+<!-- either <Screen>, <Widget>, or <FormDef> -->
+	<Widget Name="MyTach" DefName="Tachometer">
+		<!-- some optional <Property> tags -->
+		<!-- some optional <Widget> tags in here if this widget is a container -->
+	</Widget>
+<!-- end enclosing </Screen>, </Widget>, or </FormDef> -->
+\endverbatim
+
+\par Attributes
+ - \c Name \b (required)
+   - \em Type: string
+   - \em Description: The name identifying the Widget
+ - \c DefName \b (special requirement: mutually exclusive with BaseName/BaseLibrary)
+   - \em Type: string
+   - \em Description: Name of the previously registered widget definition describing this widget
+ - \c BaseName \b (special requirement: mutually exclusive with DefName; requires BaseLibrary)
+   - \em Type: string
+   - \em Description: Name of the base widget as it was originally registered.
+ - \c BaseLibrary \b (special requirement: mutually exclusive with DefName; requires BaseName)
+   - \em Type: string
+   - \em Description: Library of the base widget as it was originally registered.
+
+\note The \c BaseName and \c BaseLibrary attributes require eachother. You cannot have one without the other. Additionally, the \c DefName is mutually exclusive with the \c BaseName / \c BaseLibrary pair. You can use one method or the other, but you cannot use both.
+\see \ref XMLproperty, \ref XMLwidgetdef, \ref XMLscreen, \ref XMLformdef
+\remarks
+The \ref XMLproperty tags within are processed after the attachment to the parent has been made. All applicable \ref XMLwidgetdef properties are still processed during widget creation, which is prior to the attachment. All \ref XMLproperty tags are fully processed before any other child tags are processed. This is a minor deviation from the usual "in-order processing" that XML processing usually exibits. It should also be noted that for the sake of loading speed, the automatic layout code is temporarily disabled during the potential creation of children via the OpenGUI::ContainerControl::suspendLayout() and OpenGUI::ContainerControl::resumeLayout() functions.
+\attention
+When adding created Widgets to the container, they are added in the order they are processed using OpenGUI::WidgetCollection::add_back(widget,true). The important things to note here is that they are added to the back (visually below previous widgets), and that the parent container assumes ownership of the pointer (meaning that the widget will be deleted when the parent container is deleted).
+
+
+
+
+<hr>
+\section XMLformdef <FormDef>
+NOT YET IMPLEMENTED
+\todo  NOT YET IMPLEMENTED
+
+Example:
+\verbatim
+<FormDef>
+</FormDef>
+<FormDef Name="MyFormName" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
+	<Widget Name="MyFormTach" DefName="Tachometer">
+	</Widget>
+</FormDef>
+\endverbatim
+
+\par Attributes
+ - \c Name \b (required)
+   - \em Type: string
+   - \em Description: The name to assign this form definition
+
+
+
+<hr>
+\section XMLform <Form>
+NOT YET IMPLEMENTED
+\todo  NOT YET IMPLEMENTED
+The \<Form\> tag can be used to create an instance of a Form that was previously defined either progmatically or by use of the \ref XMLformdef tag.
+
+Example:
+\verbatim
+<Form>
+</Form>
+<FormDef Name="MyFormName" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
+	<Widget Name="MyFormTach" DefName="Tachometer">
+	</Widget>
+</FormDef>
+\endverbatim
+
+\par Attributes
+ - \c Name \b (required)
+   - \em Type: string
+   - \em Description: The name to assign this form definition
+
+
+
+
 <hr>
 
 

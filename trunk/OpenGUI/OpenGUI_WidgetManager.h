@@ -10,6 +10,8 @@
 namespace OpenGUI {
 	class System; // forward declaration
 	class Widget; // forward declaration
+	class ScreenManager; // forward declaration
+	class I_WidgetContainer; // forward declaration
 
 	//! Widget factory callback declaration/template
 	typedef Widget* WidgetFactoryCallback();
@@ -17,6 +19,7 @@ namespace OpenGUI {
 	//! Provides Widget registration and definition functionality
 	class OPENGUI_API WidgetManager : public Singleton<WidgetManager> {
 		friend class System; //so System can create and destroy us
+		friend class ScreenManager; // need access via ScreenManager::_Screen_XMLNode_Load()
 		WidgetManager(); // private constructor
 		~WidgetManager(); // private destructor
 	public:
@@ -75,6 +78,11 @@ namespace OpenGUI {
 		// XML tag handlers for <WidgetDef> tags
 		static bool _WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static void _Widget_XMLNode_IntoContainer(const XMLNode& widgetNode, I_WidgetContainer& widgetContainer);
+		//static void _Form_XMLNode_IntoContainer(const XMLNode& formNode, I_WidgetContainer& widgetContainer);
+
+		//static bool _FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		//static bool _FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 }//namespace OpenGUI{
 

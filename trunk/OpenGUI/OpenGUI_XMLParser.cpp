@@ -68,7 +68,7 @@ namespace OpenGUI {
 			}
 		}
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
-		<< "Register XMLLoad: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+		<< "Register XMLLoad: " << tagName << " @ " << ( handler_callback ) << Log::endlog;
 		handlers.push_front( handler_callback );
 	}
 	//############################################################################
@@ -79,7 +79,7 @@ namespace OpenGUI {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
-				<< "Unregister XMLLoad: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+				<< "Unregister XMLLoad: " << tagName << " @ " << ( handler_callback ) << Log::endlog;
 				handlers.erase( iter );
 				return;
 			}
@@ -108,7 +108,7 @@ namespace OpenGUI {
 			}
 		}
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
-		<< "Register XMLUnload: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+		<< "Register XMLUnload: " << tagName << " @ " << ( handler_callback ) << Log::endlog;
 		handlers.push_front( handler_callback );
 	}
 	//############################################################################
@@ -118,7 +118,7 @@ namespace OpenGUI {
 			XMLNodeHandler* handler = ( *iter );
 			if ( handler == handler_callback ) {
 				LogManager::SlogMsg( "XMLParser", OGLL_INFO2 )
-				<< "Unregister XMLUnload: " << tagName << " @ " << (( size_t ) handler_callback ) << Log::endlog;
+				<< "Unregister XMLUnload: " << tagName << " @ " << ( handler_callback ) << Log::endlog;
 				handlers.erase( iter );
 				return;
 			}
