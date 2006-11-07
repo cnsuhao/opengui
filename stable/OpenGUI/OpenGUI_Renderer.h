@@ -18,16 +18,16 @@ namespace OpenGUI {
 		\par "Rendering call order"
 		Here's a quick ordered list of what calls you can usually expect to receive during
 		rendering loops.
-		\code
-		- preRenderSetup()
-			- selectRenderContext()
-				- clearContents()
-				- doRenderOperation() (repeats as necessary)
-			- selectRenderContext()
-				- clearContents()
-				- doRenderOperation() (repeats as necessary)
-		- postRenderCleanup()
-		\endcode
+	\code
+	- preRenderSetup()
+	- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+	- selectRenderContext()
+		- clearContents()
+		- doRenderOperation() (repeats as necessary)
+	- postRenderCleanup()
+	\endcode
 
 		\note Renderers are singletons, but do not require any special action on the part of
 		implementors. The singleton logic is automatically handled, so all you need to worry
@@ -74,6 +74,10 @@ namespace OpenGUI {
 		//! This will be called for every render operation that needs to be performed.
 		/*! This function is passed a RenderOperation object, by reference, for every
 			render operation that needs to take place to properly draw the gui.
+
+			For any given render context, the RenderOperations passed to this object
+			will always assume that 0,0 x 1,1 is the full range of the render target.
+			0,0 being the upper left, and 1,1 being the lower right.
 
 			The render operations provided to this function are guaranteed to be:\n
 			- Ordered back to front (painter's algorithm).
@@ -140,7 +144,7 @@ namespace OpenGUI {
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData ) = 0;
 
 		//! Destroy a previously created Texture object.
-		/*! Whatever needs to happen to properly destroy a Texture or RenderTexture object,
+		/*! Whatever needs to happen to properly destroy a Texture object,
 			custom Renderers need to implement that functionality here.
 
 			\note This function is called automatically by the TextureManager to destroy
@@ -149,27 +153,20 @@ namespace OpenGUI {
 			function is called after %OpenGUI is assured that no remaining handles to
 			the texture remain, so if the Renderer does not delete the memory here, it
 			will leak.
-
-			\attention
-			This function is called for both Texture and RenderTexture objects, so if the
-			Renderer implementation cares, you will need to determine the difference via
-			Texture::isRenderTexture().
 		*/
 		virtual void destroyTexture( Texture* texturePtr ) = 0;
 
 //@}
 //!\name RenderToTexture Support (optional)
 //@{
-		//! Renderer implementations that do support Render to Texture contexts should \return \c true. The default is to return \c false;
+		//! Renderer implementations that do support Render to Texture contexts should return \c true. The default is to return \c false.
 		/*! \attention
 		This virtual function has a default implementation.
 		This allows renderer implementations that do not support render to texture
 		to simply ignore the existence of this function and the correct functionality
 		will take place.
 		*/
-		virtual bool supportsRenderToTexture() {
-			return false;
-		}
+		virtual bool supportsRenderToTexture();
 
 		//! This is called to set the current rendering context.
 		/*! Calls to doRenderOperation() that occur after this function is called
@@ -213,6 +210,11 @@ namespace OpenGUI {
 		/*! If your renderer implementation supports render to texture, this is where those
 		render textures will be created.
 
+		The given \c size will be a desired size that is not necessarily a power of 2. If the
+		renderer does not support non power of 2 textures, it is up to the Renderer implementation
+		to increase the texture size to a power of 2, and perform any UV remapping necessary to
+		provide proper texel alignment when rendering to and from the texture.
+
 		\note
 		It is expected that all render textures are available for use by all other 
 		rendering contexts. In other words, it must be usable in render operations
@@ -224,9 +226,26 @@ namespace OpenGUI {
 		to simply ignore the existence of this function and the correct functionality
 		will take place.
 		*/
-		virtual RenderTexture* createRenderTexture( const IVector2& size ) {
-			return 0;
-		}
+		virtual RenderTexture* createRenderTexture( const IVector2& size );
+
+		//! Destroy a previously created RenderTexture object.
+		/*! Whatever needs to happen to properly destroy a RenderTexture object,
+		custom Renderers need to implement that functionality here.
+
+		\note This function is called automatically by the TextureManager to destroy
+		RenderTexture objects. Since the Renderer created the Texture object (via \c new),
+		it is also responsible for performing the \c delete of that RenderTexture. This
+		function is called after %OpenGUI is assured that no remaining handles to
+		the texture remain, so if the Renderer does not delete the memory here, it
+		will leak.
+
+		\attention
+		This virtual function has a default implementation.
+		This allows renderer implementations that do not support render to texture
+		to simply ignore the existence of this function and the correct functionality
+		will take place.
+		*/
+		virtual void destroyRenderTexture( RenderTexture* texturePtr );
 //@}
 	};
 }

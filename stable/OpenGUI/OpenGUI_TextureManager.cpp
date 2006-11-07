@@ -21,6 +21,7 @@ namespace OpenGUI {
 	TextureManager::TextureManager( Renderer* renderer ) {
 		LogManager::SlogMsg( "INIT", OGLL_INFO2 ) << "Creating TextureManager" << Log::endlog;
 		mRenderer = renderer;
+		mRTTavail = mRenderer->supportsRenderToTexture();
 	}
 	//############################################################################
 	TextureManager::~TextureManager() {
@@ -58,7 +59,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void TextureManager::destroyTexture( Texture* texturePtr ) {
-		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "DestroyTexture: " << texturePtr->getName() << Log::endlog;
+		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "DestroyTexture: " << texturePtr->getName() << " " << texturePtr << Log::endlog;
 		mTextureCPtrList.remove( texturePtr );
 		mRenderer->destroyTexture( texturePtr );
 	}
@@ -71,6 +72,19 @@ namespace OpenGUI {
 			mTextureCPtrList.pop_front();
 			mRenderer->destroyTexture( tex );
 		}
+	}
+	//############################################################################
+	RenderTexturePtr TextureManager::createRenderTexture( const IVector2& size ) {
+		if ( !mRTTavail )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot create RenderTexture when Renderer does not support this feature", __FUNCTION__ );
+		RenderTexture* tex = mRenderer->createRenderTexture( size );
+		return RenderTexturePtr( tex );
+	}
+	//############################################################################
+	void TextureManager::destroyRenderTexture( RenderTexture* texturePtr ) {
+		if ( !mRTTavail )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot destroy RenderTexture when Renderer does not support this feature", __FUNCTION__ );
+		mRenderer->destroyRenderTexture( texturePtr );
 	}
 	//############################################################################
 }//namespace OpenGUI{

@@ -7,11 +7,13 @@
 #include "OpenGUI_Control.h"
 #include "OpenGUI_TimerManager.h"
 
+//#include "OpenGUI_Brush_RTT.h"
+#include "OpenGUI_TextureManager.h"
+
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
 	public:
-		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture ):
-				mScreen( screenPtr ), mRenderTexture( renderTexture ) {}
+		ScreenBrush( Screen* screenPtr ): mScreen( screenPtr ) {}
 		virtual ~ScreenBrush() {
 			/**/
 		}
@@ -31,10 +33,6 @@ namespace OpenGUI {
 
 	protected:
 		virtual void appendRenderOperation( RenderOperation& renderOp ) {
-			if ( !isActive() ) {
-				Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
-				markActive();
-			}
 			for ( TriangleList::iterator iter = renderOp.triangleList->begin();
 					iter != renderOp.triangleList->end(); iter++ ) {
 				Triangle& t = ( *iter );
@@ -45,9 +43,14 @@ namespace OpenGUI {
 			}
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
+		virtual void onActivate() {
+			Renderer::getSingleton().selectRenderContext( 0 );
+		}
+		virtual void onClear() {
+			Renderer::getSingleton().clearContents();
+		}
 	private:
 		Screen* mScreen;
-		RenderTexturePtr mRenderTexture;
 	};
 
 	//############################################################################
@@ -220,7 +223,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		ScreenBrush b( this, 0 );
+		ScreenBrush b( this );
+
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
 			iter->_draw( b );

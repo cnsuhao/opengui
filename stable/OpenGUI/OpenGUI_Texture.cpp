@@ -1,5 +1,4 @@
 #include "OpenGUI_Texture.h"
-#include "OpenGUI_Renderer.h"
 #include "OpenGUI_TextureManager.h"
 
 namespace OpenGUI {

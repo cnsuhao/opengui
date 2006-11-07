@@ -28,6 +28,11 @@ namespace OpenGUI {
 			const Font& getFont() const;
 
 			static Widget* CreateLabelFactory();
+
+			void setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v );
+			void getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v );
+			void setAlignment( IVector2 &align );
+			void getAlignment( IVector2 &align );
 		protected:
 //!\name Event Handlers
 //@{
@@ -37,6 +42,9 @@ namespace OpenGUI {
 		private:
 			std::string mText;
 			Font mFont;
+			TextAlignment::Alignment m_alignh;
+			TextAlignment::Alignment m_alignv;
+
 		};
 
 	} // namespace Amethyst{

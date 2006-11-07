@@ -1,4 +1,5 @@
 #include "OpenGUI_ContainerControl.h"
+#include "OpenGUI_Brush_Caching.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -21,6 +22,8 @@ namespace OpenGUI {
 			gContainerControl_ObjectAccessorList.setParent( Control::getAccessors() );
 
 		// initialize state variables
+		mCacheBrush = 0;
+		mCacheInvalid = true;
 		m_LayoutSuspended = false; // layouts are instantaneous by default
 		m_LayoutValid = true; // layout begins valid (as there are no controls to update, it does not matter)
 		m_InUpdateLayout = false; // we are not in updateLayout() quite yet
@@ -35,10 +38,15 @@ namespace OpenGUI {
 		getEvents().createEvent( "ChildDetached" );
 		getEvents()["ChildAttached"].add( new EventDelegate( this, &ContainerControl::onChildAttached ) );
 		getEvents()["ChildDetached"].add( new EventDelegate( this, &ContainerControl::onChildDetached ) );
+
+		//additional (unblockable) event bindings
+		getEvents()["Detached"].add( new EventDelegate( this, &ContainerControl::onDetached_BrushCache ) );
 	}
 	//############################################################################
 	ContainerControl::~ContainerControl() {
 		/**/
+		if ( mCacheBrush )
+			delete mCacheBrush;
 	}
 	//############################################################################
 	ObjectAccessorList* ContainerControl::getAccessors() {
@@ -132,38 +140,45 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
-			const bool needRectClip = !brush.isRTTContext() && !m_ClipChildren;
+			if ( !mCacheBrush )
+				mCacheBrush = new Brush_Caching( getScreen(), getSize() );
 
-			brush.pushAlpha( getAlpha() );
+			Brush_Caching& cacheBrush = *mCacheBrush;
 
-			//draw background
-			brush._pushMarker( this );
-			eventDrawBG( brush );
-			brush._popMarker( this );
+			// do we need to rebuild the cache brush?
+			if ( mCacheInvalid ) {
+				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
+				//draw background
+				cacheBrush._pushMarker( this );
+				eventDrawBG( cacheBrush );
+				cacheBrush._popMarker( this );
+				cacheBrush.pop(); // pop the parent coords offset
 
-			if ( needRectClip ) // perform a scissor clip manually if needed
-				brush.pushClippingRect( getRect() );
+				//draw children
+				if ( m_ClipChildren ) // setup the client area clip if we have one
+					cacheBrush.pushClippingRect( getClientArea() );
+				for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
+						iter != Children.rend(); iter++ ) {
+					iter->_draw( cacheBrush );
+				}
+				if ( m_ClipChildren ) // pop the client area clip if we had one
+					cacheBrush.pop();
 
-			//draw children
-			brush.pushPosition( getPosition() );
-			if ( m_ClipChildren ) // setup the client area clip if we have one
-				brush.pushClippingRect( getClientArea() );
-			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-					iter != Children.rend(); iter++ ) {
-				iter->_draw( brush );
+				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
+				//draw foreground
+				cacheBrush._pushMarker( this );
+				eventDraw( cacheBrush );
+				cacheBrush._popMarker( this );
+				cacheBrush.pop(); // pop the parent coords offset
+
+				mCacheInvalid = false;
 			}
-			if ( m_ClipChildren ) // pop the client area clip if we had one
-				brush.pop();
-			brush.pop(); // pop client area position offset
 
-			if ( needRectClip ) // pop off the manual clipping rect if we had one
-				brush.pop();
-
-			//draw foreground
-			brush._pushMarker( this );
-			eventDraw( brush );
-			brush._popMarker( this );
-
+			//push cache into output stream
+			brush.pushAlpha( getAlpha() );
+			brush.pushPosition( getPosition() );
+			cacheBrush.emerge( brush );
+			brush.pop(); // pop position offset
 			brush.pop(); // pop alpha
 		}
 	}
@@ -351,6 +366,23 @@ namespace OpenGUI {
 		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
 			child->_tick( seconds );
+		}
+	}
+	//############################################################################
+	void ContainerControl::onInvalidated( Object* sender, EventArgs& evtArgs ) {
+		if ( mCacheBrush ) {
+			delete mCacheBrush;
+			mCacheBrush = 0;
+		}
+		//mCacheBrush->_clear();
+		mCacheInvalid = true;
+	}
+	//############################################################################
+	void ContainerControl::onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs ) {
+		if ( mCacheBrush ) {
+			delete mCacheBrush;
+			mCacheBrush = 0;
+			mCacheInvalid = true;
 		}
 	}
 	//############################################################################

@@ -201,8 +201,8 @@ namespace OpenGUI {
 		friend class BrushPrimitive;
 		friend class BrushImagery;
 	public:
-		//! Constructor requires a target rendering context
-		Brush( /* Object* context */ );
+		//! Constructor
+		Brush();
 		//! Destructor
 		virtual ~Brush();
 		//! access to primitive drawing operations
@@ -252,13 +252,31 @@ namespace OpenGUI {
 
 		//! returns true if the brush context is a render to texture surface
 		virtual bool isRTTContext() const = 0;
+
+		//! Clears the contents of this Brush's output target
+		/*! This is not something that most users would want to do. */
+		void _clear();
+
+		//! \internal Adds a raw render operation to the output
+		void _addRenderOperation( RenderOperation& renderOp );
+
 	protected:
 		//! Final output RenderOperations are passed to this function.
 		/*! It is up to specialized Brush implementations to capture final
-		output with this function. */
-		virtual void appendRenderOperation( RenderOperation& renderOp );
+		output with this function. At this point, the Brush is guaranteed
+		to already to be active. */
+		virtual void appendRenderOperation( RenderOperation& renderOp ) {
+			/* This is overridden by more specific brush classes */
+		}
 
-		//! Marks this brush as the active brush
+		//! Called automatically when this Brush becomes the active Brush
+		virtual void onActivate() = 0;
+
+		//! Called when this Brush has been told to clear the contents of its render surface
+		/*! The Brush is guaranteed to be active at this point */
+		virtual void onClear() = 0;
+
+		//! Marks this brush as the active brush, if it is not already
 		void markActive();
 		//! returns \c true if this is marked as the active brush
 		bool isActive();

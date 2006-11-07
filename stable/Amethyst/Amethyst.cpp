@@ -4,8 +4,7 @@
 //! This is the OpenGUI namespace, which contains the Amethyst namespace
 namespace OpenGUI {
 	//! All Amethyst classes are placed within this namespace
-	namespace Amethyst {
-	}
+	namespace Amethyst {}
 }
 
 extern "C" {

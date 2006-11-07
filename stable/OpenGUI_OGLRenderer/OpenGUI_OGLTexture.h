@@ -10,12 +10,27 @@
 
 namespace OpenGUI {
 	class OGLTexture : public Texture {
-		friend class OGLRenderer;
 	public:
 		OGLTexture();
 		virtual ~OGLTexture();
 
 		GLuint textureId;
+
+		void setName( const std::string& name ) {
+			_setName( name );
+		}
+		void setSize( const IVector2& size ) {
+			_setSize( size );
+		}
+	};
+
+	class OGLRTexture : public RenderTexture {
+	public:
+		OGLRTexture();
+		virtual ~OGLRTexture();
+
+		GLuint textureId;
+		GLuint fboId;
 
 		void setName( const std::string& name ) {
 			_setName( name );

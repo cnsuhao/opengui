@@ -72,7 +72,7 @@ namespace OpenGUI {
 		typedef std::map<std::string, CursorDefinition> CursorDefinitionMap;
 		CursorDefinitionMap mCursorDefinitionMap;
 
-		// XML tag handlers for <WidgetDef> tags
+		// XML tag handlers for <CursorDef> tags
 		static bool _CursorDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _CursorDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};

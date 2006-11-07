@@ -15,6 +15,7 @@ namespace OpenGUI {
 		virtual bool isRenderTexture();
 	protected:
 	private:
+		virtual void finalize(); //finalizer from RefObject
 	};
 
 	typedef RefObjHandle<RenderTexture> RenderTexturePtr;

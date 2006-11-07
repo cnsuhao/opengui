@@ -4,76 +4,136 @@
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
 
+#include "GL/glfw.h"
+#include "OpenGUI_FBO.h"
+
 #include "corona.h"
 
 #include "OpenGUI_OGLRenderer.h"
 #include "OpenGUI_OGLTexture.h"
+
+// Rectangle Texture Tokens
+#define GL_TEXTURE_RECTANGLE_ARB            0x84F5
+#define GL_TEXTURE_BINDING_RECTANGLE_ARB    0x84F6
+#define GL_PROXY_TEXTURE_RECTANGLE_ARB      0x84F7
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB   0x84F8
+#define GL_SAMPLER_2D_RECT_ARB              0x8B63
+#define GL_SAMPLER_2D_RECT_SHADOW_ARB       0x8B64
 
 namespace OpenGUI {
 	//###########################################################
 	OGLRenderer::OGLRenderer( int initial_width, int initial_height ) {
 		mDimensions.x = initial_width;
 		mDimensions.y = initial_height;
+		mCurrentContext = 0;
+		mInGLBegin = false;
+		mCurrentTextureState = 0;
+
+		mSupportRTT = InitializeFBO();
+		if ( glfwExtensionSupported( "GL_EXT_texture_rectangle" ) || glfwExtensionSupported( "GL_ARB_texture_rectangle" ) )
+			mSupportRectTex = true;
+		else
+			mSupportRectTex = false;
 	}
 	//###########################################################
-	OGLRenderer::~OGLRenderer() {}
+	OGLRenderer::~OGLRenderer() {
+		/**/
+	}
 	//###########################################################
 	const IVector2& OGLRenderer::getViewportDimensions() {
 		return mDimensions;
 	}
 	//###########################################################
-	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
-		if ( renderOp.texture ) {
-			glBindTexture( GL_TEXTURE_2D, static_cast<OGLTexture*>( renderOp.texture.get() )->textureId );
-		} else {
-			glBindTexture( GL_TEXTURE_2D, 0 );
-		}
-
-		if( renderOp.triangleList ){
-			
-			glBegin( GL_TRIANGLES );
-
-			TriangleList& tl = *(renderOp.triangleList);
-			for( TriangleList::iterator iter = tl.begin();
-				iter != tl.end(); iter++ ){
-				Triangle& t = (*iter);
-				for(int i = 0; i < 3; i++){
-					glColor4f(	t.vertex[i].color.Red,
-						t.vertex[i].color.Green,
-						t.vertex[i].color.Blue,
-						t.vertex[i].color.Alpha );
-					glTexCoord2f( t.vertex[i].textureUV.x, t.vertex[i].textureUV.y );
-					glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
-				}
+	void OGLRenderer::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
+		safeBegin();
+		for ( TriangleList::const_iterator iter = triangles.begin();
+				iter != triangles.end(); iter++ ) {
+			const Triangle& t = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				glColor4f(	t.vertex[i].color.Red,
+						   t.vertex[i].color.Green,
+						   t.vertex[i].color.Blue,
+						   t.vertex[i].color.Alpha );
+				glTexCoord2f( t.vertex[i].textureUV.x * xScaleUV, t.vertex[i].textureUV.y * yScaleUV );
+				glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
 			}
-
-			glEnd();
-
 		}
-/*
+	}
+	//###########################################################
+	void OGLRenderer::drawTriangles( const TriangleList& triangles ) {
+		safeBegin();
+		for ( TriangleList::const_iterator iter = triangles.begin();
+				iter != triangles.end(); iter++ ) {
+			const Triangle& t = ( *iter );
+			for ( int i = 0; i < 3; i++ ) {
+				glColor4f(	t.vertex[i].color.Red,
+						   t.vertex[i].color.Green,
+						   t.vertex[i].color.Blue,
+						   t.vertex[i].color.Alpha );
+				glTexCoord2f( t.vertex[i].textureUV.x, t.vertex[i].textureUV.y );
+				glVertex3f( t.vertex[i].position.x, t.vertex[i].position.y, 0.0f );
+			}
+		}
+	}
+	//###########################################################
+	void OGLRenderer::safeBegin() {
+		if ( mInGLBegin ) return;
 		glBegin( GL_TRIANGLES );
-		//point 1
-		glColor4f(	renderOp.vertices[0].color.Red,
-				   renderOp.vertices[0].color.Green,
-				   renderOp.vertices[0].color.Blue,
-				   renderOp.vertices[0].color.Alpha );
-		glTexCoord2f( renderOp.vertices[0].textureUV.x, renderOp.vertices[0].textureUV.y );
-		glVertex3f( renderOp.vertices[0].position.x, renderOp.vertices[0].position.y, 0.0f );
-		//point 2
-		glColor4f(	renderOp.vertices[1].color.Red,
-				   renderOp.vertices[1].color.Green,
-				   renderOp.vertices[1].color.Blue,
-				   renderOp.vertices[1].color.Alpha );
-		glTexCoord2f( renderOp.vertices[1].textureUV.x, renderOp.vertices[1].textureUV.y );
-		glVertex3f( renderOp.vertices[1].position.x, renderOp.vertices[1].position.y, 0.0f );
-		//point 3
-		glColor4f(	renderOp.vertices[2].color.Red,
-				   renderOp.vertices[2].color.Green,
-				   renderOp.vertices[2].color.Blue,
-				   renderOp.vertices[2].color.Alpha );
-		glTexCoord2f( renderOp.vertices[2].textureUV.x, renderOp.vertices[2].textureUV.y );
-		glVertex3f( renderOp.vertices[2].position.x, renderOp.vertices[2].position.y, 0.0f );
-		glEnd();*/
+		mInGLBegin = true;
+	}
+	//###########################################################
+	void OGLRenderer::safeEnd() {
+		if ( !mInGLBegin ) return;
+		glEnd();
+		mInGLBegin = false;
+	}
+	//###########################################################
+	void OGLRenderer::selectTextureState( Texture* texture ) {
+		if ( texture == mCurrentTextureState ) return; //skip if we can
+		mCurrentTextureState = texture;
+		safeEnd();
+
+		if ( !texture ) {
+			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			if ( mSupportRectTex ) glDisable( GL_TEXTURE_RECTANGLE_ARB );
+			glBindTexture( GL_TEXTURE_2D, 0 );
+			return;
+		}
+
+		if ( texture->isRenderTexture() ) {
+			OGLRTexture* tex = static_cast<OGLRTexture*>( texture );
+			//glBlendFunc( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+
+			if ( mSupportRectTex ) {
+				glEnable( GL_TEXTURE_RECTANGLE_ARB );
+				glBindTexture( GL_TEXTURE_RECTANGLE_ARB, tex->textureId );
+			} else {
+				glBindTexture( GL_TEXTURE_2D, tex->textureId );
+			}
+		} else {
+			OGLTexture* tex = static_cast<OGLTexture*>( texture );
+			//glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			if ( mSupportRectTex ) glDisable( GL_TEXTURE_RECTANGLE_ARB );
+			glBindTexture( GL_TEXTURE_2D, tex->textureId );
+		}
+	}
+	//###########################################################
+	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
+		if ( !renderOp.triangleList ) return; //abort if no data to draw
+		Texture* texture = renderOp.texture.get();
+		//change texture state if needed
+		selectTextureState( texture );
+
+		if ( texture && texture->isRenderTexture() && mSupportRectTex ) {
+			float xUVScale;
+			float yUVScale;
+			const IVector2& t = static_cast<OGLRTexture*>( renderOp.texture.get() )->getSize();
+			xUVScale = ( float )t.x;
+			yUVScale = ( float )t.y;
+			drawTriangles( *( renderOp.triangleList ), xUVScale, yUVScale );
+		} else {
+			drawTriangles( *( renderOp.triangleList ) );
+		}
 	}
 	//###########################################################
 	void OGLRenderer::preRenderSetup() {
@@ -96,11 +156,22 @@ namespace OpenGUI {
 		glEnable( GL_CULL_FACE ); //test
 
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		mInGLBegin = false;
+		mCurrentTextureState = 0;
+
+		mCurrentContext = 0;
+		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+		glViewport( 0, 0, mDimensions.x, mDimensions.y );
 	}
 	//###########################################################
-	void OGLRenderer::postRenderCleanup() {}
+	void OGLRenderer::postRenderCleanup() {
+		safeEnd();
+		selectRenderContext( 0 ); // be kind, rewind
+	}
 	//###########################################################
 	Texture* OGLRenderer::createTextureFromFile( const std::string& filename ) {
+		safeEnd();
+		selectTextureState( 0 );
 		OGLTexture* retval = 0;
 
 		//Load the image from the disk
@@ -153,10 +224,14 @@ namespace OpenGUI {
 
 		delete td;
 
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
 		return retval;
 	}
 	//###########################################################
 	Texture* OGLRenderer::createTextureFromTextureData( const TextureData *textureData ) {
+		safeEnd();
+		selectTextureState( 0 );
 		const TextureData* td = textureData; // copy/paste quick fix
 		OGLTexture* retval = 0;
 		retval = new OGLTexture( );
@@ -200,13 +275,12 @@ namespace OpenGUI {
 		//set up texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-
 		return retval;
 	}
 	//###########################################################
 	void OGLRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
+		safeEnd();
+		selectTextureState( 0 );
 		const TextureData* td = textureData; // copy/paste quick fix
 		OGLTexture* retval = 0;
 		retval = ( OGLTexture* ) texture;
@@ -253,18 +327,19 @@ namespace OpenGUI {
 		//set up texture filtering
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 	}
 	//###########################################################
 	void OGLRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( !texturePtr ) return;
+		safeEnd();
+
 		OGLTexture* texptr = dynamic_cast<OGLTexture*>( texturePtr );
 		if ( texptr ) {
 			if ( texptr->textureId ) {
 				glDeleteTextures( 1, &( texptr->textureId ) );
 			}
 			delete texptr;
+			return;
 		}
 	}
 	//###########################################################
@@ -335,10 +410,140 @@ namespace OpenGUI {
 		/*	At this point, the data should now be completely loaded into a known format.
 		All we need to do is copy the img buffer contents and we're done
 		*/
-		retval->setData(imgWidth, imgHeight, imgBPP, img->getPixels());
+		retval->setData( imgWidth, imgHeight, imgBPP, img->getPixels() );
 
 		delete img; //and delete this or we leak
 		return retval;
+	}
+	//#####################################################
+
+	//#####################################################
+	//#####################################################
+	// RENDER TO TEXTURE SUPPORT FUNCTIONS
+	//#####################################################
+	//#####################################################
+	bool OGLRenderer::supportsRenderToTexture() {
+		return mSupportRTT;
+	}
+	//#####################################################
+	void OGLRenderer::selectRenderContext( RenderTexture* context ) {
+		if ( mCurrentContext != context ) {
+			safeEnd();
+
+			OGLRTexture* rtex;
+			mCurrentContext = context;
+
+			if ( mCurrentContext ) {
+				rtex = static_cast<OGLRTexture*>( mCurrentContext );
+				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
+				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+			} else {
+				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+				glViewport( 0, 0, mDimensions.x, mDimensions.y );
+			}
+		}
+	}
+	//#####################################################
+	void OGLRenderer::clearContents() {
+		if ( 0 == mCurrentContext ) return; // don't clear the main viewport
+		safeEnd();
+		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+		glClear( GL_COLOR_BUFFER_BIT );
+	}
+	//#####################################################
+	RenderTexture* OGLRenderer::createRenderTexture( const IVector2& size ) {
+		safeEnd();
+		selectTextureState( 0 );
+		OGLRTexture* ret = new OGLRTexture();
+		ret->setSize( size );
+		ret->setName( "__RenderTexture__" );
+		GLuint textid;
+
+		glGenTextures( 1, &textid );
+		ret->textureId = textid;
+
+		// switch rendering context so we can set things up
+		RenderTexture* prevContext = mCurrentContext;
+		selectRenderContext( ret );
+
+		if ( mSupportRectTex ) {
+			glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textid );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+			glTexImage2D( GL_TEXTURE_RECTANGLE_ARB, //2D rectangle texture
+						  0, //mipmap level 0
+						  GL_RGBA, // texture format
+						  ret->getSize().x, // texture width
+						  ret->getSize().y, // texture height
+						  0, // no border
+						  GL_RGBA, // input data format
+						  GL_UNSIGNED_INT, // input data channel size
+						  NULL ); // this is a blank texture, no input data
+
+			if ( glGetError() == GL_INVALID_VALUE )
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Something broke with rectangle textures", __FUNCTION__ );
+
+			// attach the texture to the frame buffer as the color destination
+			glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
+									   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
+									   GL_TEXTURE_RECTANGLE_ARB, // destination attachment object type
+									   textid, // destination attachment object ID
+									   0 ); // level within attaching object
+		}
+		if ( !mSupportRectTex ) {
+			glBindTexture( GL_TEXTURE_2D, textid );
+
+			// set up texture filtering
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
+			// create the blank texture
+			glTexImage2D( GL_TEXTURE_2D, //2D texture
+						  0, //mipmap level 0
+						  GL_RGBA8, // texture format
+						  ret->getSize().x, // texture width
+						  ret->getSize().y, // texture height
+						  0, // no border
+						  GL_RGBA, // input data format
+						  GL_UNSIGNED_BYTE, // input data channel size
+						  NULL ); // this is a blank texture, no input data
+
+			//!\todo Add proper handling when non power of 2 textures are not supported
+			if ( glGetError() == GL_INVALID_VALUE )
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "I don't support non power of 2 textures", __FUNCTION__ );
+
+			// attach the texture to the frame buffer as the color destination
+			glFramebufferTexture2DEXT( GL_FRAMEBUFFER_EXT, //target
+									   GL_COLOR_ATTACHMENT0_EXT, // attachment destination
+									   GL_TEXTURE_2D, // destination attachment object type
+									   textid, // destination attachment object ID
+									   0 ); // level within attaching object
+		}
+
+
+		//restore the previous render context
+		selectRenderContext( prevContext );
+
+		return ret;
+	}
+	//#####################################################
+	void OGLRenderer::destroyRenderTexture( RenderTexture* texturePtr ) {
+		if ( !texturePtr ) return;
+		safeEnd();
+
+		if ( mCurrentContext ==  texturePtr ) // never delete the current context
+			selectRenderContext( 0 ); // so we switch back to the default context if needed
+
+		OGLRTexture* rtexptr = dynamic_cast<OGLRTexture*>( texturePtr );
+		if ( rtexptr ) {
+			if ( rtexptr->textureId ) {
+				glDeleteTextures( 1, &( rtexptr->textureId ) );
+			}
+			delete rtexptr;
+			return;
+		}
 	}
 	//#####################################################
 }

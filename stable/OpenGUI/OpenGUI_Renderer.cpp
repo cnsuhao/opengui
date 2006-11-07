@@ -1,5 +1,5 @@
-
 #include "OpenGUI_Renderer.h"
+#include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -12,6 +12,18 @@ namespace OpenGUI {
 	//############################################################################
 	Renderer* Renderer::getSingletonPtr( void ) {
 		return mptr_Singleton;
+	}
+	//############################################################################
+	bool Renderer::supportsRenderToTexture() {
+		return false;
+	}
+	//############################################################################
+	RenderTexture* Renderer::createRenderTexture( const IVector2& size ) {
+		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Render Textures not supported", __FUNCTION__ );
+	}
+	//############################################################################
+	void Renderer::destroyRenderTexture( RenderTexture* texturePtr ) {
+		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Render Textures not supported", __FUNCTION__ );
 	}
 	//############################################################################
 };
