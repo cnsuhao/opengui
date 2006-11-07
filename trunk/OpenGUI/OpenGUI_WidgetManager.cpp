@@ -276,8 +276,11 @@ namespace OpenGUI {
 		for ( XMLNodeList::iterator iter = childNodes.begin(); iter != childNodes.end(); iter++ ) {
 			XMLNode* child = (*iter);
 			if(child->getTagName() == "Widget"){
-				I_WidgetContainer& container = dynamic_cast<I_WidgetContainer&>(*widget);
-				_Widget_XMLNode_IntoContainer(*child,container);
+				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>(widget);
+				if(!container)
+					OG_THROW(Exception::OP_FAILED,"Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(),__FUNCTION__);
+				else
+					_Widget_XMLNode_IntoContainer(*child,*container);
 			}
 			/*! \todo turn me back on with <Form> handling is done
 			else if(child->getTagName() == "Form"){
