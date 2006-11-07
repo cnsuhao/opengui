@@ -79,10 +79,6 @@ namespace OpenGUI {
 		static bool _WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 		static void _Widget_XMLNode_IntoContainer(const XMLNode& widgetNode, I_WidgetContainer& widgetContainer);
-		//static void _Form_XMLNode_IntoContainer(const XMLNode& formNode, I_WidgetContainer& widgetContainer);
-
-		//static bool _FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		//static bool _FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 }//namespace OpenGUI{
 
