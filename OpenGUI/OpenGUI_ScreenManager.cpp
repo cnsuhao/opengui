@@ -3,6 +3,10 @@
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_TimerManager.h"
+#include "OpenGUI_XMLParser.h"
+#include "OpenGUI_StrConv.h"
+#include "OpenGUI_CursorManager.h"
+#include "OpenGUI_WidgetManager.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -24,18 +28,24 @@ namespace OpenGUI {
 		/**/
 		mTimer = TimerManager::getSingleton().getTimer();
 		mFPSTimer = TimerManager::getSingleton().getTimer();
+
+		XMLParser::getSingleton().RegisterLoadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Load );
+		XMLParser::getSingleton().RegisterUnloadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Unload );
 	}
 	//############################################################################
 	ScreenManager::~ScreenManager() {
 		LogManager::SlogMsg( "SHUTDOWN", OGLL_INFO2 ) << "Destroying ScreenManager" << Log::endlog;
 		destroyAllScreens();
+
+		XMLParser::getSingleton().UnregisterLoadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Load );
+		XMLParser::getSingleton().UnregisterUnloadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Unload );
 	}
 	//############################################################################
 	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize ) {
 		Screen* tmp = getScreen( screenName );
 		if ( tmp != 0 )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM,
-					  "Screen by given name already exists:" + screenName, __FUNCTION__ );
+					  "Screen by given name already exists: " + screenName, __FUNCTION__ );
 
 		tmp = new Screen( screenName, initialSize );
 		mScreenMap[screenName] = tmp;
@@ -107,4 +117,109 @@ namespace OpenGUI {
 		return 1.0f / mStatFPS.getAverage();
 	}
 	//############################################################################
+	bool ScreenManager::_Screen_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+		ScreenManager& manager = ScreenManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+
+		const std::string name = node.getAttribute( "Name" );
+		const std::string sizeStr = node.getAttribute( "Size" );
+		FVector2 size;
+		StrConv::toFVector2( sizeStr, size );
+		Screen* screen = manager.createScreen( name, size );
+		if ( !screen )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create valid screen", __FUNCTION__ );
+
+		try {
+			if ( node.hasAttribute( "UPI" ) ) {
+				const std::string upiStr = node.getAttribute( "UPI" );
+				FVector2 upi;
+				StrConv::toFVector2( upiStr, upi );
+				screen->setUPI( upi );
+			}
+
+			if ( node.hasAttribute( "AutoUpdating" ) ) {
+				const std::string autoUpdateStr = node.getAttribute( "AutoUpdating" );
+				bool autoUpdate;
+				StrConv::toBool( autoUpdateStr, autoUpdate );
+				screen->setAutoUpdating( autoUpdate );
+			}
+
+			if ( node.hasAttribute( "AutoTiming" ) ) {
+				const std::string autoTimingStr = node.getAttribute( "AutoTiming" );
+				bool autoTiming;
+				StrConv::toBool( autoTimingStr, autoTiming );
+				screen->setAutoTiming( autoTiming );
+			}
+
+			if ( node.hasAttribute( "DefaultCursor" ) ) {
+				const std::string defCurStr = node.getAttribute( "DefaultCursor" );
+				CursorPtr cur = CursorManager::getSingleton().CreateDefinedCursor( defCurStr );
+				screen->setCursor( cur );
+			}
+
+			if ( node.hasAttribute( "CursorEnabled" ) ) {
+				const std::string enabledStr = node.getAttribute( "CursorEnabled" );
+				bool enabled;
+				StrConv::toBool( enabledStr, enabled );
+				if ( enabled )
+					screen->enableCursor();
+				else
+					screen->disableCursor();
+			}
+
+			if ( node.hasAttribute( "CursorVisible" ) ) {
+				const std::string visibleStr = node.getAttribute( "CursorVisible" );
+				bool visible;
+				StrConv::toBool( visibleStr, visible );
+				if ( visible )
+					screen->showCursor();
+				else
+					screen->hideCursor();
+			}
+
+			//at this point we can start loading <Widget> and <Form> tags as needed
+			I_WidgetContainer& container = ( *screen );
+			XMLNodeList children = node.getChildren();
+			for ( XMLNodeList::iterator iter = children.begin(); iter != children.end(); iter++ ) {
+				XMLNode* child = ( *iter );
+				if ( child->getTagName() == "Widget" ) {
+					WidgetManager::_Widget_XMLNode_IntoContainer( *child, container );
+				}
+				/*! \todo turn me back on with <Form> handling is done
+				else if ( child->getTagName() == "Form" ) {
+					WidgetManager::_Form_XMLNode_IntoContainer( *child, container );
+				}
+				*/
+			}
+
+		} catch ( Exception& ) {
+			//if we fail for any reason, we should destroy the screen and continue the throw
+			manager.destroyScreen( screen );
+			throw;
+		}
+
+		return true;
+	}
+	//############################################################################
+	bool ScreenManager::_Screen_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+		ScreenManager& manager = ScreenManager::getSingleton();
+
+		// we only handle these tags within <OpenGUI>
+		if ( nodePath != "/OpenGUI/" )
+			return false;
+
+		const std::string name = node.getAttribute( "Name" );
+		Screen* screen = manager.getScreen( name );
+		if ( !screen )
+			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Screen found with name: " + name, __FUNCTION__ );
+		manager.destroyScreen( screen );
+
+		return true;
+	}
+	//############################################################################
+
 }//namespace OpenGUI{

@@ -16,6 +16,32 @@
 		<Property ValueName="Offset" ValueType="IVECTOR2" ValueData="(160x160)" />
 	</CursorDef>
 	
+	
 	<WidgetDef Name="Tachometer" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
 	</WidgetDef>
+	
+	<FormDef Name="" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
+		<Widget Name="MyFormTach" DefName="Tachometer">
+		</Widget>
+	</FormDef>
+	
+	<Screen
+	 Name          = "MainScreen"
+	 Size          = "(800x600)"
+	 UPI           = "(96x96)"
+	 AutoUpdating  = "True"
+	 AutoTiming    = "True"
+	 DefaultCursor = "Square"
+	 CursorEnabled = "True"
+	 CursorVisible = "True" >
+		<Widget Name="Tachometer" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
+			<Property ValueName="Size" ValueType="FVECTOR2" ValueData="(100x100)" />
+		</Widget>
+	</Screen>
+	
+	
+	<FormDef Name="">
+		<>
+	</FormDef>
+	
 </OpenGUI>
