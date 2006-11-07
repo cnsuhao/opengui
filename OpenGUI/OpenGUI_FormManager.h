@@ -5,16 +5,45 @@
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Value.h"
 #include "OpenGUI_XML.h"
 
 namespace OpenGUI{
 
 	class System; // forward declaration
+	class I_WidgetContainer; // forward declaration
 
-	//! Defines a Form that can later be created at any location within a GUI
-	class OPENGUI_API FormDefinition{
-		/**/
+	class FormEntry; // forward declaration
+	
+
+	//! The base unit that comprises FormDefinition objects
+	class OPENGUI_API FormEntry{
+	public:
+		FormEntry(const std::string& WidgetName, const std::string& WidgetDef, const ValueList& propertyList);
+		FormEntry(const std::string& WidgetName, const std::string& BaseName, const std::string& LibraryName, const ValueList& propertyList);
+		~FormEntry();
+		//! adds a copy of the given \c child to this FormEntry
+		void addChild(FormEntry& child);
+		//! adds the child given directly to this FormEntry, assuming ownership of memory
+		void addChild(FormEntry* child);
+		//! creates a clone of this FormEntry
+		FormEntry* clone()const;
+		//! copy constructor
+		explicit FormEntry(const FormEntry& copy);
+
+		//! Overloaded assignment operator copies all members, but duplicates the pointer list of children
+		FormEntry& operator=(const FormEntry& right);
+
+	protected:
+		std::string mWidgetName;
+		std::string mBaseName;
+		std::string mLibrary;
+		bool mByWidgetDef;
+		ValueList mProperties;
+		typedef std::list<FormEntry*> FormEntryList;
+		FormEntryList mChildren;
 	};
+
 
 	//! Manages creating, destroying, and lookup of FormDefinition objects
 	class OPENGUI_API FormManager: public Singleton<FormManager> {
@@ -28,13 +57,25 @@ namespace OpenGUI{
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static FormManager* getSingletonPtr( void );
 
+		//! Defines a Form for later use according to the provided \c formDefinition, which can be recalled by the given \c formName
+		void DefineForm( const std::string& formName, FormEntry& formRoot );
+		//! Removes a previously defined Form by the given \c formName
+		void UndefineForm( const std::string& formName );
+
 	protected:
+		//! Same as other DefineForm, except that this does not duplicate the given \c formRoot, and instead stored the pointer and assumes ownership
+		void DefineForm( const std::string& formName, FormEntry* formRoot );
 		FormManager();
 		~FormManager();
 
 	private:
+		typedef std::map<std::string,FormEntry*> FormDefinitionMap;
+		FormDefinitionMap mFormDefinitions;
+		void UndefineAllForms();
+
 		static bool _FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static FormEntry* _FormDef_Load_FormEntry( const XMLNode& node );
 		//static void _Form_XMLNode_IntoContainer(const XMLNode& formNode, I_WidgetContainer& widgetContainer);
 	};
 
