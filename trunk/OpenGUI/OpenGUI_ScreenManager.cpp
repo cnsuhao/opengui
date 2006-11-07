@@ -42,22 +42,26 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize ) {
-		Screen* tmp = getScreen( screenName );
-		if ( tmp != 0 )
+		ScreenMap::iterator iter = mScreenMap.find( screenName );
+		if ( iter != mScreenMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM,
 					  "Screen by given name already exists: " + screenName, __FUNCTION__ );
 
-		tmp = new Screen( screenName, initialSize );
+		Screen* tmp = new Screen( screenName, initialSize );
 		mScreenMap[screenName] = tmp;
 		return tmp;
 	}
 	//############################################################################
 	void ScreenManager::destroyScreen( Screen* screenPtr ) {
-		Screen* tmp = getScreen( screenPtr->mName );
 		ScreenMap::iterator iter = mScreenMap.find( screenPtr->mName );
 		if ( iter == mScreenMap.end() )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  "Invalid Screen pointer", __FUNCTION__ );
+		Screen* tmp = iter->second;
+		if ( tmp != screenPtr )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR,
+					  "Invalid Screen pointer", __FUNCTION__ );
+		delete screenPtr;
 	}
 	//############################################################################
 	Screen* ScreenManager::getScreen( const std::string& screenName ) {
