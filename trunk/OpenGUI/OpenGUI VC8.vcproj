@@ -302,6 +302,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_FormManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_GenericCursor.cpp"
 				>
 			</File>
@@ -553,6 +557,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_FontManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FormManager.h"
 				>
 			</File>
 			<File

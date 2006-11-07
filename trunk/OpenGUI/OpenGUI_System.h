@@ -31,6 +31,7 @@ namespace OpenGUI {
 	class ScreenManager;
 	class CursorManager;
 	class WidgetManager;
+	class FormManager;
 	class XMLParser;
 
 	/*!
@@ -143,6 +144,9 @@ namespace OpenGUI {
 
 		//WidgetManager
 		WidgetManager* mWidgetManager;
+
+		//FormManager
+		FormManager* mFormManager;
 
 		//TimerManager
 		TimerManager* mTimerManager;
