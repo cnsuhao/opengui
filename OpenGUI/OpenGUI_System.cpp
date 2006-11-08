@@ -125,7 +125,7 @@ namespace OpenGUI {
 		if ( m_PluginManager )
 			delete m_PluginManager;
 
-		if(mFormManager)
+		if ( mFormManager )
 			delete mFormManager;
 
 		if ( mWidgetManager )

@@ -8,31 +8,31 @@
 #include "OpenGUI_Value.h"
 #include "OpenGUI_XML.h"
 
-namespace OpenGUI{
+namespace OpenGUI {
 
 	class System; // forward declaration
 	class I_WidgetContainer; // forward declaration
 	class Widget; // forward declaration
 	class FormEntry; // forward declaration
-	
+
 
 	//! The base unit that comprises FormDefinition objects
-	class OPENGUI_API FormEntry{
+	class OPENGUI_API FormEntry {
 	public:
-		FormEntry(const std::string& WidgetName, const std::string& WidgetDef, const ValueList& propertyList);
-		FormEntry(const std::string& WidgetName, const std::string& BaseName, const std::string& LibraryName, const ValueList& propertyList);
+		FormEntry( const std::string& WidgetName, const std::string& WidgetDef, const ValueList& propertyList );
+		FormEntry( const std::string& WidgetName, const std::string& BaseName, const std::string& LibraryName, const ValueList& propertyList );
 		~FormEntry();
 		//! adds a copy of the given \c child to this FormEntry
-		void addChild(FormEntry& child);
+		void addChild( FormEntry& child );
 		//! adds the child given directly to this FormEntry, assuming ownership of memory
-		void addChild(FormEntry* child);
+		void addChild( FormEntry* child );
 		//! creates a clone of this FormEntry
 		FormEntry* clone()const;
 		//! copy constructor
-		explicit FormEntry(const FormEntry& copy);
+		explicit FormEntry( const FormEntry& copy );
 
 		//! Overloaded assignment operator copies all members, but duplicates (clones) the pointer list of children
-		FormEntry& operator=(const FormEntry& right);
+		FormEntry& operator=( const FormEntry& right );
 
 		//! builds a widget hierarchy from this FormEntry tree
 		Widget* buildTree();
@@ -74,7 +74,7 @@ namespace OpenGUI{
 		~FormManager();
 
 	private:
-		typedef std::map<std::string,FormEntry*> FormDefinitionMap;
+		typedef std::map<std::string, FormEntry*> FormDefinitionMap;
 		FormDefinitionMap mFormDefinitions;
 		void UndefineAllForms();
 
