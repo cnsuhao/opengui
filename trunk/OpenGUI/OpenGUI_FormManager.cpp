@@ -95,7 +95,8 @@ namespace OpenGUI {
 		//change the name and attach it
 		if ( rootWidget ) {
 			try {
-				rootWidget->setName( widgetName );
+				if ( widgetName != "" )
+					rootWidget->setName( widgetName );
 				container.Children.add_back( rootWidget, true );
 			} catch ( Exception& ) {
 				delete rootWidget;
@@ -177,15 +178,13 @@ namespace OpenGUI {
 				thisEntry = new FormEntry( Name, baseName, baseLibrary, valueList );
 			}
 
-			// now process all tags and only handle the <Widget> tags
-			XMLNodeList childNodes = node.getChildren();
+			// now process any <Widget> tags
+			XMLNodeList childNodes = node.getChildren( "Widget" );
 			for ( XMLNodeList::iterator iter = childNodes.begin(); iter != childNodes.end(); iter++ ) {
 				XMLNode* child = ( *iter );
-				if ( child->getTagName() == "Widget" ) {
-					FormEntry* childEntry = 0;
-					childEntry = _FormDef_Load_FormEntry( *child );
-					thisEntry->addChild( childEntry );
-				}
+				FormEntry* childEntry = 0;
+				childEntry = _FormDef_Load_FormEntry( *child );
+				thisEntry->addChild( childEntry );
 			}
 		} catch ( Exception& ) {
 			// catch any reasonable exception, clean up, then rethrow

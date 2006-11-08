@@ -7,6 +7,7 @@
 #include "OpenGUI_StrConv.h"
 #include "OpenGUI_CursorManager.h"
 #include "OpenGUI_WidgetManager.h"
+#include "OpenGUI_FormManager.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -192,12 +193,15 @@ namespace OpenGUI {
 				XMLNode* child = ( *iter );
 				if ( child->getTagName() == "Widget" ) {
 					WidgetManager::_Widget_XMLNode_IntoContainer( *child, container );
+				} else if ( child->getTagName() == "Form" ) {
+					const std::string formDef = child->getAttribute( "FormDef" );
+					if ( child->hasAttribute( "Name" ) ) {
+						std::string rootName =  child->getAttribute( "Name" );
+						FormManager::getSingleton().CreateForm( formDef, container, rootName );
+					} else {
+						FormManager::getSingleton().CreateForm( formDef, container );
+					}
 				}
-				/*! \todo turn me back on with <Form> handling is done
-				else if ( child->getTagName() == "Form" ) {
-					WidgetManager::_Form_XMLNode_IntoContainer( *child, container );
-				}
-				*/
 			}
 
 		} catch ( Exception& ) {

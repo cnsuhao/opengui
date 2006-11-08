@@ -65,7 +65,7 @@ namespace OpenGUI {
 		void UndefineForm( const std::string& formName );
 
 		//! Creates a predefined form, signified by \c formName, within the given \c container, assigning the given \c widgetName to the form's root widget
-		void CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName );
+		void CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName = "" );
 
 	protected:
 		//! Same as other DefineForm, except that this does not duplicate the given \c formRoot, and instead stored the pointer and assumes ownership
