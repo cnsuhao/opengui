@@ -2,6 +2,10 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_XMLParser.h"
+#include "OpenGUI_Widget.h"
+#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetManager.h"
+#include "OpenGUI_Value.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -73,6 +77,29 @@ namespace OpenGUI {
 			iter->second = 0;
 		}
 		mFormDefinitions.clear();
+	}
+	//############################################################################
+	void FormManager::CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName ) {
+		FormDefinitionMap::iterator iter = mFormDefinitions.find( formName );
+		if ( iter == mFormDefinitions.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "FormDefinition with given name not found: " + formName, __FUNCTION__ );
+		FormEntry* root = iter->second;
+
+		//create widget tree
+		Widget* rootWidget = 0;
+		rootWidget = root->buildTree();
+		if ( !rootWidget )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create Form: " + formName, __FUNCTION__ );
+		//change the name and attach it
+		if ( rootWidget ) {
+			try {
+				rootWidget->setName( widgetName );
+				container.Children.add_back( rootWidget, true );
+			} catch ( Exception& ) {
+				delete rootWidget;
+				throw;
+			}
+		}
 	}
 	//############################################################################
 	bool FormManager::_FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
@@ -154,13 +181,13 @@ namespace OpenGUI {
 				XMLNode* child = ( *iter );
 				if ( child->getTagName() == "Widget" ) {
 					FormEntry* childEntry = 0;
-					childEntry = _FormDef_Load_FormEntry(*child);
-					thisEntry->addChild(childEntry);
+					childEntry = _FormDef_Load_FormEntry( *child );
+					thisEntry->addChild( childEntry );
 				}
 			}
 		} catch ( Exception& ) {
 			// catch any reasonable exception, clean up, then rethrow
-			if(thisEntry)
+			if ( thisEntry )
 				delete thisEntry;
 			throw;
 		}
@@ -224,6 +251,59 @@ namespace OpenGUI {
 	//############################################################################
 	void FormEntry::addChild( FormEntry* child ) {
 		mChildren.push_back( child );
+	}
+	//############################################################################
+	Widget* FormEntry::buildTree() {
+		Widget* widget = 0;
+		if ( mByWidgetDef )
+			widget = WidgetManager::getSingleton().CreateDefinedWidget( mBaseName );
+		else
+			widget = WidgetManager::getSingleton().CreateRawWidget( mBaseName, mLibrary );
+
+		try {
+			// process stored properties
+			ValueList propList = mProperties;
+			while ( propList.size() > 0 ) {
+				Value val = propList.pop_front();
+				std::string name = val.getName();
+				if ( name.length() > 0 ) {
+					widget->setProperty( name, val );
+				}
+			}
+
+			widget->setName( mWidgetName );
+
+			//if we're supposed to have children, this is where we create and attach them
+			if ( mChildren.size() > 0 ) {
+				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				if ( !container )
+					OG_THROW( Exception::OP_FAILED, "Failed to cast widget into a container, as required to bare children", __FUNCTION__ );
+				else {
+					for ( FormEntryList::iterator iter = mChildren.begin(); iter != mChildren.end();iter++ ) {
+						Widget* child = 0;
+						try {
+							FormEntry* childEntry = ( *iter );
+							child = childEntry->buildTree();
+							if ( child ) {
+								container->Children.add_back( child, true );
+							}
+						} catch ( Exception& ) {
+							if ( child )//if something broke, free child memory and rethrow
+								delete child;
+							child = 0;
+							throw;
+						}
+					}
+				}
+			}
+		} catch ( Exception& ) {
+			if ( widget ) // if something broke, we need to free the memory and rethrow
+				delete widget;
+			widget = 0;
+			throw;
+		}
+
+		return widget;
 	}
 	//############################################################################
 
