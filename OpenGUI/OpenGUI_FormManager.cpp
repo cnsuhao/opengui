@@ -56,6 +56,7 @@ namespace OpenGUI {
 		if ( iter != mFormDefinitions.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "FormDefinition already exists with given name: " + formName, __FUNCTION__ );
 		mFormDefinitions[formName] = formRoot;
+		LogManager::SlogMsg( "FormManager", OGLL_INFO ) << "Defined Form: " << formName << Log::endlog;
 	}
 	//############################################################################
 	void FormManager::UndefineForm( const std::string& formName ) {
@@ -67,6 +68,7 @@ namespace OpenGUI {
 			delete root;
 		iter->second = 0;
 		mFormDefinitions.erase( iter );
+		LogManager::SlogMsg( "FormManager", OGLL_INFO ) << "Undefined Form: " << formName << Log::endlog;
 	}
 	//############################################################################
 	void FormManager::UndefineAllForms() {
