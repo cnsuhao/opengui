@@ -12,7 +12,7 @@ namespace OpenGUI{
 
 	class System; // forward declaration
 	class I_WidgetContainer; // forward declaration
-
+	class Widget; // forward declaration
 	class FormEntry; // forward declaration
 	
 
@@ -31,12 +31,14 @@ namespace OpenGUI{
 		//! copy constructor
 		explicit FormEntry(const FormEntry& copy);
 
-		//! Overloaded assignment operator copies all members, but duplicates the pointer list of children
+		//! Overloaded assignment operator copies all members, but duplicates (clones) the pointer list of children
 		FormEntry& operator=(const FormEntry& right);
 
+		//! builds a widget hierarchy from this FormEntry tree
+		Widget* buildTree();
 	protected:
 		std::string mWidgetName;
-		std::string mBaseName;
+		std::string mBaseName; // holds DefName when mByWidgetDef == true
 		std::string mLibrary;
 		bool mByWidgetDef;
 		ValueList mProperties;
@@ -62,6 +64,9 @@ namespace OpenGUI{
 		//! Removes a previously defined Form by the given \c formName
 		void UndefineForm( const std::string& formName );
 
+		//! Creates a predefined form, signified by \c formName, within the given \c container, assigning the given \c widgetName to the form's root widget
+		void CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName );
+
 	protected:
 		//! Same as other DefineForm, except that this does not duplicate the given \c formRoot, and instead stored the pointer and assumes ownership
 		void DefineForm( const std::string& formName, FormEntry* formRoot );
@@ -76,7 +81,7 @@ namespace OpenGUI{
 		static bool _FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 		static FormEntry* _FormDef_Load_FormEntry( const XMLNode& node );
-		//static void _Form_XMLNode_IntoContainer(const XMLNode& formNode, I_WidgetContainer& widgetContainer);
+
 	};
 
 }
