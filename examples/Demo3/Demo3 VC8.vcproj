@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Demo2"
-	ProjectGUID="{C4FBC52D-96AE-4E2D-9BD7-03F75749CBDE}"
-	RootNamespace="Demo1"
+	Name="Demo3"
+	ProjectGUID="{D809C201-922D-418E-8158-87D94840D2A1}"
+	RootNamespace="Demo3"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -63,12 +63,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
-				OutputFile="$(OutDir)/Demo2_d.exe"
+				OutputFile="$(OutDir)/Demo3_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32;../../dependencies/corona/Debug"
+				AdditionalLibraryDirectories="../../Debug; ../glfw/lib/win32; ../../dependencies/corona/Debug"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Demo2_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo3_d.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -151,11 +151,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
-				OutputFile="$(OutDir)/Demo2.exe"
+				OutputFile="$(OutDir)/Demo3.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32; ../../dependencies/corona/Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Demo2.pdb"
+				ProgramDatabaseFile="$(OutDir)/Demo3.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -196,10 +196,10 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{14B88BFF-9BF9-4688-A9FA-0268EA90DAFF}"
+			UniqueIdentifier="{A4818F18-4968-4899-88C7-1F9157DA125A}"
 			>
 			<File
-				RelativePath=".\demo2.cpp"
+				RelativePath=".\demo3.cpp"
 				>
 			</File>
 			<File
@@ -210,7 +210,7 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{A62DF8E3-8B05-4bd2-8B9D-B076FF868117}"
+			UniqueIdentifier="{342E1CA7-B0BA-4cd0-AB4B-D631A7A98819}"
 			>
 			<File
 				RelativePath="..\DemoAppFramework\DemoAppFrameWork.h"

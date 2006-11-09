@@ -12,13 +12,7 @@
 #include "OpenGUI_OGLRenderer.h"
 #include "OpenGUI_OGLTexture.h"
 
-// Rectangle Texture Tokens
-#define GL_TEXTURE_RECTANGLE_ARB            0x84F5
-#define GL_TEXTURE_BINDING_RECTANGLE_ARB    0x84F6
-#define GL_PROXY_TEXTURE_RECTANGLE_ARB      0x84F7
-#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB   0x84F8
-#define GL_SAMPLER_2D_RECT_ARB              0x8B63
-#define GL_SAMPLER_2D_RECT_SHADOW_ARB       0x8B64
+
 
 namespace OpenGUI {
 	//###########################################################
@@ -166,6 +160,7 @@ namespace OpenGUI {
 	//###########################################################
 	void OGLRenderer::postRenderCleanup() {
 		safeEnd();
+		selectTextureState(0);
 		selectRenderContext( 0 ); // be kind, rewind
 	}
 	//###########################################################
@@ -469,6 +464,8 @@ namespace OpenGUI {
 		selectRenderContext( ret );
 
 		if ( mSupportRectTex ) {
+			ret->maxUVs = FVector2((float)ret->getSize().x, (float)ret->getSize().y);
+
 			glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textid );
 			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
@@ -481,7 +478,7 @@ namespace OpenGUI {
 						  GL_RGBA, // input data format
 						  GL_UNSIGNED_INT, // input data channel size
 						  NULL ); // this is a blank texture, no input data
-
+			
 			if ( glGetError() == GL_INVALID_VALUE )
 				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Something broke with rectangle textures", __FUNCTION__ );
 
@@ -493,6 +490,8 @@ namespace OpenGUI {
 									   0 ); // level within attaching object
 		}
 		if ( !mSupportRectTex ) {
+			ret->maxUVs = FVector2(1.0f, 1.0f);
+
 			glBindTexture( GL_TEXTURE_2D, textid );
 
 			// set up texture filtering

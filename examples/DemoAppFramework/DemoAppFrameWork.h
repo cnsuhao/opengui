@@ -22,6 +22,7 @@ protected:
 	//Application specific virtual functions
 	virtual void preRun() {}
 	virtual void perframeRun() {}
+	virtual void postframeRun() {}
 	virtual void postRun() {}
 	//Override this to alter normal window close querying, default always allows close
 	virtual bool queryCloseWindow() {

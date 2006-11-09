@@ -13,7 +13,7 @@
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
 	public:
-		ScreenBrush( Screen* screenPtr ): mScreen( screenPtr ) {}
+		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture = 0 ): mScreen( screenPtr ),mRenderTexture(renderTexture) {}
 		virtual ~ScreenBrush() {
 			/**/
 		}
@@ -28,6 +28,8 @@ namespace OpenGUI {
 			return mScreen->getUPI();
 		}
 		virtual bool isRTTContext() const {
+			if(mRenderTexture)
+				return true;
 			return false;
 		}
 
@@ -44,13 +46,17 @@ namespace OpenGUI {
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
 		virtual void onActivate() {
-			Renderer::getSingleton().selectRenderContext( 0 );
+			if(mRenderTexture)
+				Renderer::getSingleton().selectRenderContext(mRenderTexture.get());
+			else
+				Renderer::getSingleton().selectRenderContext( 0 );
 		}
 		virtual void onClear() {
 			Renderer::getSingleton().clearContents();
 		}
 	private:
 		Screen* mScreen;
+		RenderTexturePtr mRenderTexture;
 	};
 
 	//############################################################################
@@ -187,11 +193,6 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::bindRenderTexture( RenderTexturePtr renderTexture ) {
 		renderTarget = renderTexture;
-		Texture* tex = 0;
-		RenderTexture* rtex = 0;
-
-		TexturePtr tptr( tex );
-		RenderTexturePtr rtexPtr( rtex );
 
 		_DirtyPPUcache();
 
@@ -223,7 +224,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		ScreenBrush b( this );
+		ScreenBrush b( this, renderTarget );
+		if(renderTarget)
+			b._clear();
 
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
