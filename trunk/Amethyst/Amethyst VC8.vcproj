@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_ProgressBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_RadioButton.cpp"
 				>
 			</File>
