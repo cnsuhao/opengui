@@ -14,6 +14,9 @@ namespace OpenGUI {
 				System::getSingleton().notifyViewportDimensionsChanged();
 		}
 
+		// returns true when RTT is using rectangle textures
+		bool rectRTT();
+
 		// Required implementations for OpenGUI Renderer
 		virtual const IVector2& getViewportDimensions();
 		virtual void preRenderSetup();
@@ -47,6 +50,14 @@ namespace OpenGUI {
 		bool mSupportRectTex;
 		bool mInGLBegin;
 	};
-}
-;//namespace OpenGUI{
+} //namespace OpenGUI{
+
+// Rectangle Texture Tokens
+#define GL_TEXTURE_RECTANGLE_ARB            0x84F5
+#define GL_TEXTURE_BINDING_RECTANGLE_ARB    0x84F6
+#define GL_PROXY_TEXTURE_RECTANGLE_ARB      0x84F7
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB   0x84F8
+#define GL_SAMPLER_2D_RECT_ARB              0x8B63
+#define GL_SAMPLER_2D_RECT_SHADOW_ARB       0x8B64
+
 #endif

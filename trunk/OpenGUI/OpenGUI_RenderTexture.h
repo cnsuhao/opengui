@@ -13,9 +13,18 @@ namespace OpenGUI {
 		RenderTexture() {}
 		virtual ~RenderTexture() {}
 		virtual bool isRenderTexture();
+
+		//! Populates the given floats with the UV bounds of this RenderTexture
+		/*! The default return values are 1.0f,1.0f. This function exists so that if
+		the render texture implementation requires different UV ranges, it can be
+		provided by the subclass. An example of this is rectangle textures, which
+		map the UVs directly to the width and height of the texture. */
+		virtual void getUVs(float& max_u, float& max_v);
 	protected:
+
 	private:
 		virtual void finalize(); //finalizer from RefObject
+		FVector2 mMaxUVs;
 	};
 
 	typedef RefObjHandle<RenderTexture> RenderTexturePtr;
