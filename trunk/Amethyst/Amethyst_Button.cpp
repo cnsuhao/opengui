@@ -244,6 +244,9 @@ namespace OpenGUI {
 
 		//! Constructor
 		SimpleButton::SimpleButton() {
+			if(gSimpleButton_ObjectAccessorList.getParent() == NULL)
+				gSimpleButton_ObjectAccessorList.setParent(Widget::getAccessors());
+
 			mText = "";
 			m_alignh = TextAlignment::ALIGN_CENTER;
 			m_alignv = TextAlignment::ALIGN_CENTER;
