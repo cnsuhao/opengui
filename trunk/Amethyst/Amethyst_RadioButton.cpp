@@ -50,6 +50,8 @@ namespace OpenGUI {
 		{
 			mGroupName = "Default";
 			mRadioList.push_back(this);
+			if ( gRadioButton_ObjectAccessorList.getParent() == 0 ) 
+				gRadioButton_ObjectAccessorList.setParent( Widget::getAccessors() ); 
 		}
 
 		RadioButton::~RadioButton()
