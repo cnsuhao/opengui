@@ -122,15 +122,6 @@ namespace OpenGUI {
 		}
 		gCheckBox_SDisabledImage_ObjectProperty;
 		//############################################################################
-
-
-
-
-
-
-
-
-
 		class CheckBox_BaseImage_ObjectProperty : public ObjectProperty {
 		public:
 			virtual const char* getAccessorName() {
@@ -306,6 +297,9 @@ Widget* CheckBox::createCheckBoxFactory() {
 
 //! Constructor
 CheckBox::CheckBox() {
+	if(gCheckBox_ObjectAccessorList.getParent() == NULL)
+		gCheckBox_ObjectAccessorList.setParent(Widget::getAccessors());
+
 	mImageryPtr = NULL;
 	mImageryPtrPressed = NULL;
 	mImageryPtrMouseOver = NULL;
