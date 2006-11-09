@@ -6,6 +6,11 @@
 		<Imagery Name="MetalButtonPress" Left="5" Top="85" Width="74" Height="74" />
 		<Imagery Name="MetalButtonDisabled" Left="85" Top="85" Width="74" Height="74" />
 
+		<Imagery Name="MetalButtonNormalX" Left="170" Top="5" Width="74" Height="74" />
+		<Imagery Name="MetalButtonHoverX" Left="250" Top="5" Width="74" Height="74" />
+		<Imagery Name="MetalButtonPressX" Left="170" Top="85" Width="74" Height="74" />
+		<Imagery Name="MetalButtonDisabledX" Left="250" Top="85" Width="74" Height="74" />
+
 		<Imagery Name="MetalCursorArrow" Left="477" Top="5" Width="30" Height="30" />
 		<Imagery Name="MetalCursorDDiag" Left="477" Top="36" Width="30" Height="30" />
 		<Imagery Name="MetalCursorUDiag" Left="477" Top="67" Width="30" Height="30" />
