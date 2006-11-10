@@ -132,19 +132,19 @@ void Demo3App::preRun() {
 	wnd->setName( "MyWnd" );
 	wnd->setTop( 200 );
 	wnd->setLeft( 100 );
-	wnd->setWidth( 200 );
-	wnd->setHeight( 200 );
+	wnd->setWidth( 350 );
+	wnd->setHeight( 350 );
 	mScreen->Children.add_back( wnd, true );
 
 	SimpleText* wndText = new SimpleText();
 	wndText->setName( "wndText" );
-	wndText->setFont( Font( "pecot", 12 ) );
+	wndText->setFont( Font( "pecot", 24 ) );
 	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well.");
 	wndText->setWrap(true);
-	wndText->setTop( 0 );
+	wndText->setTop( 5 );
 	wndText->setLeft( 5 );
-	wndText->setWidth( 200 );
-	wndText->setHeight( 200 );
+	wndText->setWidth( 340 );
+	wndText->setHeight( 340 );
 	wndText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
 	wnd->Children.add_back( wndText, true );
 	//wnd->setVisible(false);
@@ -158,8 +158,8 @@ void Demo3App::preRun() {
 	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	wndTach->setNeedleValue( 0.0f );
 	wndTach->setLeft( 0.0f );
-	wndTach->setTop( 100.0f );
-	wndTach->setWidth( 100.0f );
+	wndTach->setTop( 200.0f );
+	wndTach->setWidth( 150.0f );
 	wnd->Children.add_back( wndTach, true );
 
 	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
