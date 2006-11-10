@@ -154,13 +154,13 @@ namespace OpenGUI {
 		mCurrentTextureState = 0;
 
 		mCurrentContext = 0;
-		if(mSupportRTT) glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+		if ( mSupportRTT ) glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 		glViewport( 0, 0, mDimensions.x, mDimensions.y );
 	}
 	//###########################################################
 	void OGLRenderer::postRenderCleanup() {
 		safeEnd();
-		selectTextureState(0);
+		selectTextureState( 0 );
 		selectRenderContext( 0 ); // be kind, rewind
 	}
 	//###########################################################
@@ -200,19 +200,17 @@ namespace OpenGUI {
 
 		glGenTextures( 1, &( retval->textureId ) );
 		glBindTexture( GL_TEXTURE_2D, retval->textureId );
-		glTexImage2D( GL_TEXTURE_2D, //2D texture
-					  0, //mipmap level 0
-					  internalFormat, // the texture format
-					  td->getWidth(), //image width
-					  td->getHeight(), //image height
-					  0, //no border (does anyone ever use this?)
-					  dataFormat, //the format of the pixel data
-					  GL_UNSIGNED_BYTE, //each channel consists of 1 unsigned byte
-					  td->getPixelData() //pointer to the image data
-					);
+		gluBuild2DMipmaps( GL_TEXTURE_2D, //2D texture
+						   internalFormat, //destination format
+						   td->getWidth(), //image width
+						   td->getHeight(), //image height
+						   dataFormat, //the format of the pixel data
+						   GL_UNSIGNED_BYTE, //each channel consists of 1 unsigned byte
+						   td->getPixelData() //pointer to the image data
+						 );
 
 		//set up texture filtering
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -464,7 +462,7 @@ namespace OpenGUI {
 		selectRenderContext( ret );
 
 		if ( mSupportRectTex ) {
-			ret->maxUVs = FVector2((float)ret->getSize().x, (float)ret->getSize().y);
+			ret->maxUVs = FVector2(( float )ret->getSize().x, ( float )ret->getSize().y );
 
 			glBindTexture( GL_TEXTURE_RECTANGLE_ARB, textid );
 			glTexParameteri( GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
@@ -478,7 +476,7 @@ namespace OpenGUI {
 						  GL_RGBA, // input data format
 						  GL_UNSIGNED_INT, // input data channel size
 						  NULL ); // this is a blank texture, no input data
-			
+
 			if ( glGetError() == GL_INVALID_VALUE )
 				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Something broke with rectangle textures", __FUNCTION__ );
 
@@ -490,7 +488,7 @@ namespace OpenGUI {
 									   0 ); // level within attaching object
 		}
 		if ( !mSupportRectTex ) {
-			ret->maxUVs = FVector2(1.0f, 1.0f);
+			ret->maxUVs = FVector2( 1.0f, 1.0f );
 
 			glBindTexture( GL_TEXTURE_2D, textid );
 
