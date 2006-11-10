@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
+				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib glu32.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
 				OutputFile="$(OutDir)/Demo3_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../Debug; ../glfw/lib/win32; ../../dependencies/corona/Debug"
@@ -150,7 +150,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib glu32.lib opengl32.lib OpenGUI_OGLRenderer.lib"
 				OutputFile="$(OutDir)/Demo3.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32; ../../dependencies/corona/Release"
