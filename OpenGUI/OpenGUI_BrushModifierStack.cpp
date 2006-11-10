@@ -117,6 +117,26 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	FVector2 BrushModifierStack::getOrigin() {
+		FVector2 origin( 0.0f, 0.0f );
+		for ( BrushModifierPtrStack::reverse_iterator iter = mStack.rbegin();iter != mStack.rend(); iter++ ) {
+			BrushModifier* mod = ( *iter );
+			if ( mod->getType() == BrushModifier::POSITION ) {
+				BrushModifier_Position* pos = static_cast<BrushModifier_Position*>( mod );
+				origin = origin - pos->mPosition;
+			} else if ( mod->getType() == BrushModifier::ROTATION ) {
+				BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>( mod );
+				const float preCos = Math::Cos( -( rot->mRotationAngle.valueRadians() ) );
+				const float preSin = Math::Sin( -( rot->mRotationAngle.valueRadians() ) );
+				float x = origin.x;
+				float y = origin.y;
+				origin.x = preCos * x - preSin * y;
+				origin.y = preSin * x + preCos * y;
+			}
+		}
+		return origin;
+	}
+	//############################################################################
 	const Radian& BrushModifierStack::getRotation() {
 		// if the cache is valid, just return it
 		if ( mRotCacheValid )
