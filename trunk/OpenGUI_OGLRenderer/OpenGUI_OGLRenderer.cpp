@@ -154,7 +154,7 @@ namespace OpenGUI {
 		mCurrentTextureState = 0;
 
 		mCurrentContext = 0;
-		glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+		if(mSupportRTT) glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 		glViewport( 0, 0, mDimensions.x, mDimensions.y );
 	}
 	//###########################################################

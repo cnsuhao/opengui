@@ -125,6 +125,7 @@ namespace OpenGUI {
 
 		texSize.x = ( int )( xTexSize );
 		texSize.y = ( int )( yTexSize );
+
 		mRenderTexture = TextureManager::getSingleton().createRenderTexture( texSize );
 		if ( !mRenderTexture )
 			return false;
@@ -182,7 +183,9 @@ namespace OpenGUI {
 		tri.vertex[2].position = FVector2( mDrawSize.x, mDrawSize.y );
 		rop.triangleList->push_back( tri );
 
+		targetBrush.pushPixelAlignment();
 		targetBrush._addRenderOperation( rop );
+		targetBrush.pop();
 	}
 	//############################################################################
 } // namespace OpenGUI{

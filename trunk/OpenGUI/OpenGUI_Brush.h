@@ -229,6 +229,12 @@ namespace OpenGUI {
 		void pushMask( ImageryPtr mask_imagery, const FRect& mask_rect );
 		//! Pushes an imagery based mask onto the stack
 		void pushMaskUnscaled( ImageryPtr mask_imagery, const FVector2& mask_position );
+
+		//! Pushes a position offset onto the stack that aligns the origin with the nearest pixel of this Brush's output target
+		/*! This is as close to pixel alignment as you can get. Things like rotation will cause inaccurate results,
+		but in those cases pixel alignment is neither achievable nor necessary. */
+		void pushPixelAlignment();
+
 		//! Pops the last modifier off the stack
 		void pop();
 

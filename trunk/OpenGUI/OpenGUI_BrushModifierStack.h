@@ -48,6 +48,9 @@ namespace OpenGUI {
 		//! Returns the total of all pushed rotations
 		const Radian& getRotation();
 
+		//! Runs 0,0 through the stack, calculating the true position of the origin within the current stack set
+		FVector2 getOrigin();
+
 		void applyStack( RenderOperation& in_out );
 	private:
 		typedef std::list<BrushModifier*> BrushModifierPtrStack;
