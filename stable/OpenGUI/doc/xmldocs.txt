@@ -17,7 +17,7 @@
 Universal tags:
  - \ref XMLinclude
  
-%OpenGUI specific tags:
+%OpenGUI specific tags (usage hierarchy preserved):
  - \<%OpenGUI\>
   - \ref XMLplugin
   - \ref XMLfont
@@ -27,12 +27,20 @@ Universal tags:
    - \ref XMLproperty
   - \ref XMLwidgetdef
    - \ref XMLproperty
+  - \ref XMLformdef
+   - \ref XMLproperty
+   - \ref XMLwidget
+    - \ref XMLproperty
+    - \ref XMLwidget
+     - \ref XMLproperty
+     - ...
   - \ref XMLscreen
    - \ref XMLwidget
     - \ref XMLproperty
     - \ref XMLwidget
      - \ref XMLproperty
      - ...
+   - \ref XMLform
 
 Be sure to check out the \ref example as well.
 <HR>
@@ -48,7 +56,7 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c File \b (required)
+ - \c File (required)
   - \em Type: string
   - \em Description: The path and filename of the XML file to include. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
 
@@ -64,7 +72,7 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c File \b (required)
+ - \c File (required)
    - \em Type: string
    - \em Description: The filename to be passed to OpenGUI::PluginManager::loadPlugin().
 
@@ -83,10 +91,10 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: Name by which the font will be referenced within %OpenGUI. This does not have to be the same as the filename.
- - \c File \b (required)
+ - \c File (required)
    - \em Type: string
    - \em Description: The path and filename where the actual font can be located. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
 
@@ -106,7 +114,7 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c File \b (required)
+ - \c File (required)
    - \em Type: string
    - \em Description: The path and filename where the actual image file to load can be located. This is passed verbatim to the ResourceManager, so anything that it can decipher can be used.
 
@@ -127,19 +135,19 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: The name to give this Imagery object.
- - \c Left \b (required)
+ - \c Left (required)
    - \em Type: int
    - \em Description: The X value of the upper left corner of this Imagery within the Imageset in pixels.
- - \c Top \b (required)
+ - \c Top (required)
    - \em Type: int
    - \em Description: The Y value of the upper left corner of this Imagery within the Imageset in pixels.
- - \c Width \b (required)
+ - \c Width (required)
    - \em Type: int
    - \em Description: The width of this Imagery within the Imageset in pixels.
- - \c Height \b (required)
+ - \c Height (required)
    - \em Type: int
    - \em Description: The height of this Imagery within the Imageset in pixels.
 
@@ -160,13 +168,13 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: The name to give this cursor definition
- - \c BaseName \b (required)
+ - \c BaseName (required)
    - \em Type: string
    - \em Description: Name of the base cursor as it was originally registered.
- - \c BaseLibrary \b (required)
+ - \c BaseLibrary (required)
    - \em Type: string
    - \em Description: Library of the base cursor as it was originally registered.
 
@@ -185,13 +193,13 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: The name to give this widget definition
- - \c BaseName \b (required)
+ - \c BaseName (required)
    - \em Type: string
    - \em Description: Name of the base widget as it was originally registered.
- - \c BaseLibrary \b (required)
+ - \c BaseLibrary (required)
    - \em Type: string
    - \em Description: Library of the base widget as it was originally registered.
    
@@ -208,13 +216,13 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c ValueName \b (required)
+ - \c ValueName (required)
    - \em Type: string
    - \em Description: The name to give the Value object, which when used is applied to an object property of the same name.
- - \c ValueType \b (required)
+ - \c ValueType (required)
    - \em Type: string
    - \em Description: Identifies the type of data stored in ValueData
- - \c ValueData \b (required)
+ - \c ValueData (required)
    - \em Type: variable
    - \em Description: A string formatted \ref Types "OpenGUI Type". See \ref StringFormats for details.
    
@@ -231,10 +239,10 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: The name identifying the Screen
- - \c Size \b (required)
+ - \c Size (required)
    - \em Type: FVector2
    - \em Description: The size/resolution of the Screen, used during creation
  - \c UPI
@@ -276,16 +284,16 @@ Example:
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
    - \em Description: The name identifying the Widget
- - \c DefName \b (special requirement: mutually exclusive with BaseName/BaseLibrary)
+ - \c DefName (special requirement: mutually exclusive with BaseName/BaseLibrary)
    - \em Type: string
    - \em Description: Name of the previously registered widget definition describing this widget
- - \c BaseName \b (special requirement: mutually exclusive with DefName; requires BaseLibrary)
+ - \c BaseName (special requirement: mutually exclusive with DefName; requires BaseLibrary)
    - \em Type: string
    - \em Description: Name of the base widget as it was originally registered.
- - \c BaseLibrary \b (special requirement: mutually exclusive with DefName; requires BaseName)
+ - \c BaseLibrary (special requirement: mutually exclusive with DefName; requires BaseName)
    - \em Type: string
    - \em Description: Library of the base widget as it was originally registered.
 
@@ -301,47 +309,50 @@ When adding created Widgets to the container, they are added in the order they a
 
 <hr>
 \section XMLformdef <FormDef>
-NOT YET IMPLEMENTED
-\todo  NOT YET IMPLEMENTED
+Form definitions provide a mechanism for defining fully built forms for reuse multiple time at any location within an existing GUI hierarchy. The \<FormDef\> tag itself describes both the name of the form as well as the widget type of the root container. The attribute names and uses are analogous to the \ref XMLwidget tag by design both for ease of use as well as to serve as a reminder that the \<FormDef\> tag itself represents the root widget. Within each level of the form you can embed \ref XMLwidget and \ref XMLproperty tags. These will provide the structure of the form, as well as initial property settings that are applied when the form is instantiated. The given widgets are not tested for existance or their ability to act as containers during form definition creation. Instead, the widgets are resolved at instantiation. Their ability to act as containers is only tested (and required) should they be asked to contain additional widgets according to the form definition at instantiation.
 
 Example:
 \verbatim
-<FormDef>
-</FormDef>
-<FormDef Name="MyFormName" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
-	<Widget Name="MyFormTach" DefName="Tachometer">
-	</Widget>
+<FormDef Name="MyFormName" BaseName="SomeContainer" BaseLibrary="SomeLibrary">
+	<!-- some optional <Property> tags -->
+	<!-- some optional <Widget> tags in here if this widget is a container, each able to contain further  <Widget> and <Property> tags -->
 </FormDef>
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name (required)
    - \em Type: string
-   - \em Description: The name to assign this form definition
+   - \em Description: The name to identify the Form created
+ - \c DefName (special requirement: mutually exclusive with BaseName/BaseLibrary)
+   - \em Type: string
+   - \em Description: Name of the previously registered widget definition to use as a root widget for the form
+ - \c BaseName (special requirement: mutually exclusive with DefName; requires BaseLibrary)
+   - \em Type: string
+   - \em Description: Name of the widget (as it was originally registered) to use as a root widget for the form
+ - \c BaseLibrary (special requirement: mutually exclusive with DefName; requires BaseName)
+   - \em Type: string
+   - \em Description: Library of the widget (as it was originally registered) to use as a root widget for the form
+
+
 
 
 
 <hr>
 \section XMLform <Form>
-NOT YET IMPLEMENTED
-\todo  NOT YET IMPLEMENTED
-The \<Form\> tag can be used to create an instance of a Form that was previously defined either progmatically or by use of the \ref XMLformdef tag.
+The \<Form\> tag can be used to create an instance of a Form that was previously defined either progmatically or by use of the \ref XMLformdef tag. The form definition is referenced by the \c FormDef attribute. The \c Name attribute (if present) is used as the name to assign the root widget before it is added to the parent container, otherwise the root element will assume the name of the form definition it was created from.
 
 Example:
 \verbatim
-<Form>
-</Form>
-<FormDef Name="MyFormName" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
-	<Widget Name="MyFormTach" DefName="Tachometer">
-	</Widget>
-</FormDef>
+<Form Name="ElementName" FormDef="MyFormName" />
 \endverbatim
 
 \par Attributes
- - \c Name \b (required)
+ - \c Name
    - \em Type: string
-   - \em Description: The name to assign this form definition
-
+   - \em Description: The name to assign the root widget in the form
+ - \c FormDef (required)
+   - \em Type: string
+   - \em Description: The name of the form definition to intantiate
 
 
 

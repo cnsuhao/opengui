@@ -74,6 +74,8 @@ void DemoApp::run() {
 
 		mSystem->update();
 
+		postframeRun();
+
 		// Swap front and back rendering buffers
 		glfwSwapBuffers();
 		// Check if ESC key was pressed or window was closed

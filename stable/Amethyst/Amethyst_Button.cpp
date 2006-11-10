@@ -3,6 +3,41 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
+		//! Called when cursor was pressed and released within this Control
+		void ButtonBase::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
+			OpenGUI::Control::onCursor_Click( sender, evtArgs );
+		}
+		//! Called when the cursor enters this Control
+		void ButtonBase::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
+			mButtonState = BS_HOVER;
+			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
+		}
+		//! Called when the cursor leaves this Control
+		void ButtonBase::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
+			mButtonState = BS_NORMAL;
+
+			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
+		}
+
+		//! "Cursor_Press" event
+		void ButtonBase::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+			if ( _isInside( evtArgs.Position ) )
+				m_bMouseButtonState = true;
+		}
+		//! "Cursor_Release" event
+		void ButtonBase::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+
+			if ( _isInside( evtArgs.Position ) && m_bMouseButtonState ) {
+				preActivate();
+				EventArgs args;
+				getEvents().sendEvent( "Activate", args );
+			}
+
+			m_bMouseButtonState = false;
+		}
+
+
+
 		class SimpleButton_BaseImage_ObjectProperty : public ObjectProperty {
 		public:
 			virtual const char* getAccessorName() {
@@ -209,8 +244,9 @@ namespace OpenGUI {
 
 		//! Constructor
 		SimpleButton::SimpleButton() {
-			m_bMouseButtonState = false;
-			mButtonState = BS_NORMAL;
+			if(gSimpleButton_ObjectAccessorList.getParent() == NULL)
+				gSimpleButton_ObjectAccessorList.setParent(Widget::getAccessors());
+
 			mText = "";
 			m_alignh = TextAlignment::ALIGN_CENTER;
 			m_alignv = TextAlignment::ALIGN_CENTER;
@@ -247,7 +283,7 @@ namespace OpenGUI {
 
 		//! Gets the normal button imagery.
 		std::string SimpleButton::getImagery() {
-			if ( mImageryPtrDisabled )
+			if ( mImageryPtr )
 				return mImageryPtr->getName();
 
 			return "";
@@ -313,7 +349,7 @@ namespace OpenGUI {
 				if ( mImageryPtrMouseOver )
 					pCurrentImage = mImageryPtrMouseOver;
 
-				if ( m_bMouseButtonState )
+				if ( m_bMouseButtonState && mImageryPtrPressed)
 					pCurrentImage = mImageryPtrPressed;
 				break;
 			case BS_DISABLED:
@@ -342,37 +378,6 @@ namespace OpenGUI {
 			/**/
 		}
 
-		//! Called when cursor was pressed and released within this Control
-		void SimpleButton::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Control::onCursor_Click( sender, evtArgs );
-		}
-		//! Called when the cursor enters this Control
-		void SimpleButton::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-			mButtonState = BS_HOVER;
-			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
-		}
-		//! Called when the cursor leaves this Control
-		void SimpleButton::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-			mButtonState = BS_NORMAL;
-
-			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
-		}
-
-		//! "Cursor_Press" event
-		void SimpleButton::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			if ( _isInside( evtArgs.Position ) )
-				m_bMouseButtonState = true;
-		}
-		//! "Cursor_Release" event
-		void SimpleButton::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-
-			if ( _isInside( evtArgs.Position ) && m_bMouseButtonState ) {
-				EventArgs args;
-				getEvents().sendEvent( "Activate", args );
-			}
-
-			m_bMouseButtonState = false;
-		}
 
 	} // namespace Amethyst{
 } // namespace OpenGUI{

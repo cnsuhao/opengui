@@ -15,7 +15,4 @@
 		<Property ValueName="Imagery" ValueType="STRING" ValueData="TachBG" />
 		<Property ValueName="Offset" ValueType="IVECTOR2" ValueData="(160x160)" />
 	</CursorDef>
-	
-	<WidgetDef Name="Tachometer" BaseName="Tachometer" BaseLibrary="OpenGUIEx">
-	</WidgetDef>
 </OpenGUI>

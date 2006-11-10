@@ -4,6 +4,7 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_FormManager.h"
 
 namespace OpenGUI {
 	template<> WidgetManager* Singleton<WidgetManager>::mptr_Singleton = 0;
@@ -274,34 +275,28 @@ namespace OpenGUI {
 		// now process all tags and only handle the <Widget> and <Form> tags
 		XMLNodeList childNodes = widgetNode.getChildren();
 		for ( XMLNodeList::iterator iter = childNodes.begin(); iter != childNodes.end(); iter++ ) {
-			XMLNode* child = (*iter);
-			if(child->getTagName() == "Widget"){
-				I_WidgetContainer& container = dynamic_cast<I_WidgetContainer&>(*widget);
-				_Widget_XMLNode_IntoContainer(*child,container);
+			XMLNode* child = ( *iter );
+			if ( child->getTagName() == "Widget" ) {
+				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				if ( !container )
+					OG_THROW( Exception::OP_FAILED, "Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(), __FUNCTION__ );
+				else
+					_Widget_XMLNode_IntoContainer( *child, *container );
+			} else if ( child->getTagName() == "Form" ) {
+				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				if ( !container )
+					OG_THROW( Exception::OP_FAILED, "Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(), __FUNCTION__ );
+				else {
+					const std::string formDef = child->getAttribute( "FormDef" );
+					if ( child->hasAttribute( "Name" ) ) {
+						std::string rootName =  child->getAttribute( "Name" );
+						FormManager::getSingleton().CreateForm( formDef, *container, rootName );
+					} else {
+						FormManager::getSingleton().CreateForm( formDef, *container );
+					}
+				}
 			}
-			/*! \todo turn me back on with <Form> handling is done
-			else if(child->getTagName() == "Form"){
-				I_WidgetContainer& container = dynamic_cast<I_WidgetContainer&>(*widget);
-				_Form_XMLNode_IntoContainer(*child,container);
-			}
-			*/
 		}
 		//we're done. yay.
 	}
-	//############################################################################
-	//!\todo finish me <Form> and <FormDef>
-	/*
-	void WidgetManager::_Form_XMLNode_IntoContainer(const XMLNode& formNode, I_WidgetContainer& widgetContainer){
-		OG_NYI;
-	}
-	//############################################################################
-	bool WidgetManager::_FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ){
-		OG_NYI;
-	}
-	//############################################################################
-	bool WidgetManager::_FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ){
-		OG_NYI;
-	}
-	//############################################################################
-	*/
 }//namespace OpenGUI{

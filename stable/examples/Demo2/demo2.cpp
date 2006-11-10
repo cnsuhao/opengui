@@ -3,6 +3,8 @@
 
 #include "../Amethyst/Amethyst_Label.h"
 #include "../Amethyst/Amethyst_Button.h"
+#include "../Amethyst/Amethyst_CheckBox.h"
+#include "../Amethyst/Amethyst_RadioButton.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -66,7 +68,91 @@ void Demo2App::preRun() {
 
 	testButton->getEvents().createEvent("Activate");
 	testButton->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
+
+	Amethyst::CheckBox* testCheck = new Amethyst::CheckBox();
+	testCheck->setName("SampleMetalCheck");
+	testCheck->setImagery("MetalButtonNormal");
+	testCheck->setImageryMouseOver("MetalButtonHover");
+	testCheck->setImageryPressed("MetalButtonPress"); 
+	testCheck->setImageryDisabled("MetalButtonDisabled");
+	testCheck->setSelImagery("MetalButtonNormalX");
+	testCheck->setSelImageryMouseOver("MetalButtonHoverX");
+	testCheck->setSelImageryPressed("MetalButtonPressX"); 
+	testCheck->setSelImageryDisabled("MetalButtonDisabledX");
+	testCheck->setTop(70);
+	testCheck->setLeft(400);
+	testCheck->setWidth(60);
+	testCheck->setHeight(60);
+	mScreen->Children.add_back( testCheck, true );
+
+	testCheck->getEvents().createEvent("Activate");
+	testCheck->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
+
+
+	Amethyst::RadioButton* testRadio1 = new Amethyst::RadioButton();
+	testRadio1->setName("SampleMetalCheck");
+	testRadio1->setImagery("MetalButtonNormal");
+	testRadio1->setImageryMouseOver("MetalButtonHover");
+	testRadio1->setImageryPressed("MetalButtonPress"); 
+	testRadio1->setImageryDisabled("MetalButtonDisabled");
+	testRadio1->setSelImagery("MetalButtonNormalX");
+	testRadio1->setSelImageryMouseOver("MetalButtonHoverX");
+	testRadio1->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio1->setSelImageryDisabled("MetalButtonDisabledX");
+	testRadio1->setTop(150);
+	testRadio1->setLeft(40);
+	testRadio1->setWidth(60);
+	testRadio1->setHeight(60);
+	testRadio1->setGroup("testGroup");
+	mScreen->Children.add_back( testRadio1, true );
+
+	testRadio1->getEvents().createEvent("Activate");
+	testRadio1->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
+
+	Amethyst::RadioButton* testRadio2 = new Amethyst::RadioButton();
+	testRadio2->setName("SampleMetalCheck");
+	testRadio2->setImagery("MetalButtonNormal");
+	testRadio2->setImageryMouseOver("MetalButtonHover");
+	testRadio2->setImageryPressed("MetalButtonPress"); 
+	testRadio2->setImageryDisabled("MetalButtonDisabled");
+	testRadio2->setSelImagery("MetalButtonNormalX");
+	testRadio2->setSelImageryMouseOver("MetalButtonHoverX");
+	testRadio2->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio2->setSelImageryDisabled("MetalButtonDisabledX");
+	testRadio2->setTop(220);
+	testRadio2->setLeft(40);
+	testRadio2->setWidth(60);
+	testRadio2->setHeight(60);
+	testRadio2->setGroup("testGroup");
+	mScreen->Children.add_back( testRadio2, true );
+
+	testRadio2->getEvents().createEvent("Activate");
+	testRadio2->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
+
+	Amethyst::RadioButton* testRadio3 = new Amethyst::RadioButton();
+	testRadio3->setName("SampleMetalCheck");
+	testRadio3->setImagery("MetalButtonNormal");
+	testRadio3->setImageryMouseOver("MetalButtonHover");
+	testRadio3->setImageryPressed("MetalButtonPress"); 
+	testRadio3->setImageryDisabled("MetalButtonDisabled");
+	testRadio3->setSelImagery("MetalButtonNormalX");
+	testRadio3->setSelImageryMouseOver("MetalButtonHoverX");
+	testRadio3->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio3->setSelImageryDisabled("MetalButtonDisabledX");
+	testRadio3->setTop(290);
+	testRadio3->setLeft(40);
+	testRadio3->setWidth(60);
+	testRadio3->setHeight(60);
+	testRadio3->setGroup("testGroup");
+	mScreen->Children.add_back( testRadio3, true );
+
+	testRadio3->getEvents().createEvent("Activate");
+	testRadio3->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
+
+
 }
+
+
 void Demo2App::perframeRun() {
 	
 }

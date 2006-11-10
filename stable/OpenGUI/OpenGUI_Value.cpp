@@ -867,5 +867,4 @@ namespace OpenGUI {
 			return mValueDeQue[index];
 		}
 	//#####################################################################
-
 }//namespace OpenGUI{

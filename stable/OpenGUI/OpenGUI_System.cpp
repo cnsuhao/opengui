@@ -92,6 +92,8 @@ namespace OpenGUI {
 
 		mWidgetManager = new WidgetManager();
 
+		mFormManager = new FormManager();
+
 		m_PluginManager = new PluginManager();
 
 		mScreenManager = new ScreenManager();
@@ -122,6 +124,9 @@ namespace OpenGUI {
 		*/
 		if ( m_PluginManager )
 			delete m_PluginManager;
+
+		if ( mFormManager )
+			delete mFormManager;
 
 		if ( mWidgetManager )
 			delete mWidgetManager;

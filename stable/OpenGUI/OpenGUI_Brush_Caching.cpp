@@ -28,7 +28,15 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	const FVector2& Brush_Caching::getPPU_Raw() const {
-		return mScreen->getPPU();
+		if(isRTT()){
+			static FVector2 retVal;	
+			const IVector2& texsize = mRenderTexture->getSize();
+			retVal.x = (float)texsize.x / mDrawSize.x;
+			retVal.y = (float)texsize.y / mDrawSize.y;
+			return retVal;
+		}else{
+			return mScreen->getPPU();
+		}
 	}
 	//############################################################################
 	const FVector2& Brush_Caching::getUPI_Raw() const {
@@ -117,6 +125,7 @@ namespace OpenGUI {
 
 		texSize.x = ( int )( xTexSize );
 		texSize.y = ( int )( yTexSize );
+
 		mRenderTexture = TextureManager::getSingleton().createRenderTexture( texSize );
 		if ( !mRenderTexture )
 			return false;
@@ -174,7 +183,9 @@ namespace OpenGUI {
 		tri.vertex[2].position = FVector2( mDrawSize.x, mDrawSize.y );
 		rop.triangleList->push_back( tri );
 
+		targetBrush.pushPixelAlignment();
 		targetBrush._addRenderOperation( rop );
+		targetBrush.pop();
 	}
 	//############################################################################
 } // namespace OpenGUI{

@@ -117,6 +117,18 @@ namespace OpenGUI {
 		addRenderOperation( renderOp );
 	}
 	//############################################################################
+	void Brush::pushPixelAlignment(){
+		FVector2 origin = mModifierStack.getOrigin();
+		const FVector2& PPU = getPPU();
+		
+		float tmp = fmodf( origin.x, (1.0f) );
+		origin.x = tmp;
+		tmp = fmodf( origin.y, (1.0f) );
+		origin.y = tmp;
+
+		pushPosition(origin);
+	}
+	//############################################################################
 	const Radian& Brush::getRotation() {
 		return mModifierStack.getRotation();
 	}
@@ -680,9 +692,9 @@ namespace OpenGUI {
 		// We need to do our best to provide pixel alignment, so here we fix the glyph position according to PPU.
 		// This will cause proper pixel alignment when it is available.
 		// (Drawing context is translated a pixel aligned amount
-		float tmp = fmodf( PenPosition.x, PPU.x );
+		float tmp = fmodf( PenPosition.x, (1.0f/PPU.x) );
 		glyphPosition.x -= tmp;
-		tmp = fmodf( PenPosition.y, PPU.y );
+		tmp = fmodf( PenPosition.y, (1.0f/PPU.y) );
 		glyphPosition.y -= tmp;
 
 		glyphPosition.y -= (( float )glyph.metrics.horiBearingY ) / PPU.y;
