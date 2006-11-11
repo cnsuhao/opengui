@@ -1,7 +1,7 @@
 #include "Renderer_OpenGL.h"
-#include "OpenGUI_OGLTexture.h"
+#include "OGL_Texture.h"
 
-#include "OpenGUI_FBO.h"
+#include "OGL_FBO.h"
 
 namespace OpenGUI {
 	//###########################################################

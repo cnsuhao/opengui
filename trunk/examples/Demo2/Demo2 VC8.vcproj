@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../Renderer_OpenGL"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib glu32.lib opengl32.lib OpenGUI_OGLRenderer_d.lib"
+				AdditionalDependencies="corona.lib OpenGUI_d.lib glfw_d.lib glu32.lib opengl32.lib Renderer_OpenGL_d.lib"
 				OutputFile="$(OutDir)/Demo2_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../Debug;../glfw/lib/win32;../../dependencies/corona/Debug"
@@ -130,7 +130,7 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../OpenGUI_OGLRenderer"
+				AdditionalIncludeDirectories="../../OpenGUI;../glfw/include;../../Renderer_OpenGL"
 				PreprocessorDefinitions="WIN32;_WINDOWS"
 				RuntimeLibrary="2"
 				FloatingPointModel="2"
@@ -150,7 +150,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib glu32.lib opengl32.lib OpenGUI_OGLRenderer.lib"
+				AdditionalDependencies="corona.lib OpenGUI.lib glfw.lib glu32.lib opengl32.lib Renderer_OpenGL.lib"
 				OutputFile="$(OutDir)/Demo2.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../Release;../glfw/lib/win32; ../../dependencies/corona/Release"

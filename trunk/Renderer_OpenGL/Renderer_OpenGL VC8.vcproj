@@ -157,7 +157,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OpenGUI_FBO.cpp"
+				RelativePath=".\OGL_FBO.cpp"
 				>
 			</File>
 			<File
@@ -165,7 +165,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_OGLTexture.cpp"
+				RelativePath=".\OGL_Texture.cpp"
 				>
 			</File>
 		</Filter>
@@ -175,7 +175,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OpenGUI_FBO.h"
+				RelativePath=".\OGL_FBO.h"
 				>
 			</File>
 			<File
@@ -183,7 +183,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_OGLTexture.h"
+				RelativePath=".\OGL_Texture.h"
 				>
 			</File>
 		</Filter>

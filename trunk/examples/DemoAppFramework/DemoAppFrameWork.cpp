@@ -1,6 +1,6 @@
 
 #include "DemoAppFrameWork.h"
-#include "OpenGUI_OGLRenderer.h"
+#include "Renderer_OpenGL.h"
 
 #ifdef WIN32
 int main( void );
@@ -47,7 +47,7 @@ DemoApp::DemoApp( std::string windowTitle ) {
 	glfwGetWindowSize( &w, &h );
 	m_WndWidth = w;
 	m_WndHeight = h;
-	mRenderer = new OpenGUI::OGLRenderer( w, h );
+	mRenderer = new OpenGUI::Renderer_OpenGL( w, h );
 	mSystem = new OpenGUI::System( mRenderer );
 
 
@@ -89,7 +89,7 @@ void DemoApp::run() {
 void DemoApp::windowSizeChanged( int width, int height ) {
 	glViewport( 0, 0, width, height );
 	if ( mRenderer ) {
-		static_cast<OpenGUI::OGLRenderer*>( mRenderer )->setDim( width, height );
+		static_cast<OpenGUI::Renderer_OpenGL*>( mRenderer )->setDim( width, height );
 	}
 }
 

@@ -1,14 +1,15 @@
 # Build Script for OpenGUI_OGLRenderer
 Source = """
-	OpenGUI_OGLRenderer.cpp
-	OpenGUI_OGLTexture.cpp
+	Renderer_OpenGL.cpp
+	OGL_Texture.cpp
+	OGL_FBO.cpp
 	"""
 
 CPPPATH = """
 	#/OpenGUI
 	"""
 	
-OUTFILE = 'OpenGUI_OGLRenderer'
+OUTFILE = 'Renderer_OpenGL'
 
 
 ################################################################

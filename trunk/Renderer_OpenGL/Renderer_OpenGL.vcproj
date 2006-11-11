@@ -105,7 +105,7 @@
 				RelativePath=".\Renderer_OpenGL.cpp">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_OGLTexture.cpp">
+				RelativePath=".\OGL_Texture.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -116,7 +116,7 @@
 				RelativePath=".\Renderer_OpenGL.h">
 			</File>
 			<File
-				RelativePath=".\OpenGUI_OGLTexture.h">
+				RelativePath=".\OGL_Texture.h">
 			</File>
 		</Filter>
 		<Filter
