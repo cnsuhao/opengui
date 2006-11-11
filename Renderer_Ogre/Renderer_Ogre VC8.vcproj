@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="OgreFusion"
+	Name="Renderer_Ogre"
 	ProjectGUID="{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
-	RootNamespace="OgreFusion"
+	RootNamespace="Renderer_Ogre"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -63,13 +63,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib OgreMain_d.lib"
-				OutputFile="$(OutDir)/OgreFusion_d.dll"
+				OutputFile="$(OutDir)/Renderer_Ogre_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\dependencies\OgreSDK_vc8\lib;..\debug\"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/OgreFusion_d.pdb"
+				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/OgreFusion_d.lib"
+				ImportLibrary="$(OutDir)/Renderer_Ogre_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -144,15 +144,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OgreMain.lib"
-				OutputFile="$(OutDir)/OgreFusion.dll"
+				OutputFile="$(OutDir)/Renderer_Ogre.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\dependencies\OgreSDK_vc8\lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/OgreFusion.pdb"
+				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/OgreFusion.lib"
+				ImportLibrary="$(OutDir)/Renderer_Ogre.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -192,19 +192,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OgreFusion.cpp"
+				RelativePath=".\Renderer_Ogre.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Renderer.cpp"
+				RelativePath=".\Renderer_Ogre_Renderer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_ResourceProvider.cpp"
+				RelativePath=".\Renderer_Ogre_ResourceProvider.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Texture.cpp"
+				RelativePath=".\Renderer_Ogre_Texture.cpp"
 				>
 			</File>
 		</Filter>
@@ -214,31 +214,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OgreFusion.h"
+				RelativePath=".\Renderer_Ogre.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Exports.h"
+				RelativePath=".\Renderer_Ogre_Exports.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Platform.h"
+				RelativePath=".\Renderer_Ogre_Platform.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_PreRequisites.h"
+				RelativePath=".\Renderer_Ogre_PreRequisites.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Renderer.h"
+				RelativePath=".\Renderer_Ogre_Renderer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_ResourceProvider.h"
+				RelativePath=".\Renderer_Ogre_ResourceProvider.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Texture.h"
+				RelativePath=".\Renderer_Ogre_Texture.h"
 				>
 			</File>
 		</Filter>
