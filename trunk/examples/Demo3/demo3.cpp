@@ -96,7 +96,9 @@ void Demo3App::preRun() {
 	mTach->setName( "Tachometer" );
 	mTach->setBackgroundImagery( "TachBG" );
 	mTach->setNeedleImagery( "TachNeedle" );
-	mTach->setNeedleScale( 135.0f, 900.0f, 225.0f );
+	mTach->setNeedleStartAngle(135.0f);
+	mTach->setNeedleMaxValue(900.0f);
+	mTach->setNeedleSweepAngle(225.0f);
 	mTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	mTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	mTach->setNeedleValue( 0.0f );
@@ -153,7 +155,9 @@ void Demo3App::preRun() {
 	wndTach->setName( "wndTach" );
 	wndTach->setBackgroundImagery( "TachBG" );
 	wndTach->setNeedleImagery( "TachNeedle" );
-	wndTach->setNeedleScale( 135.0f, 900.0f, 225.0f );
+	wndTach->setNeedleStartAngle(135.0f);
+	wndTach->setNeedleMaxValue(900.0f);
+	wndTach->setNeedleSweepAngle(225.0f);
 	wndTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	wndTach->setNeedleValue( 0.0f );

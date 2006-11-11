@@ -5,7 +5,274 @@
 namespace OpenGUI {
 	namespace Examples {
 		//############################################################################
+		class Tachometer_StartAngle_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleStartAngle";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleStartAngle() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleStartAngle( valueIn.getValueAsFloat() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FLOAT;
+			}
+		}
+		gTachometer_StartAngle_ObjectProperty;
+		//############################################################################
+		class Tachometer_MaxValue_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleMaxValue";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleMaxValue() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleMaxValue( valueIn.getValueAsFloat() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FLOAT;
+			}
+		}
+		gTachometer_MaxValue_ObjectProperty;
+		//############################################################################
+		class Tachometer_SweepAngle_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleSweepAngle";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleSweepAngle() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleSweepAngle( valueIn.getValueAsFloat() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FLOAT;
+			}
+		}
+		gTachometer_SweepAngle_ObjectProperty;
+		//############################################################################
+		class Tachometer_BackgroundImagery_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "BackgroundImagery";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getBackgroundImagery() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setBackgroundImagery( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gTachometer_BackgroundImagery_ObjectProperty;
+		//############################################################################
+		class Tachometer_NeedleImagery_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleImagery";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleImagery() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleImagery( valueIn.getValueAsString() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_STRING;
+			}
+		}
+		gTachometer_NeedleImagery_ObjectProperty;
+		//############################################################################
+		class Tachometer_NeedleValue_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleValue";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleValue() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleValue( valueIn.getValueAsFloat() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FLOAT;
+			}
+		}
+		gTachometer_NeedleValue_ObjectProperty;
+		//############################################################################
+		class Tachometer_NeedleAnchor_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedleAnchor";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedleAnchor() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedleAnchor( valueIn.getValueAsFVector2() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FVECTOR2;
+			}
+		}
+		gTachometer_NeedleAnchor_ObjectProperty;
+		//############################################################################
+		class Tachometer_NeedlePivot_ObjectProperty : public ObjectProperty {
+		public:
+			virtual const char* getAccessorName() {
+				return "NeedlePivot";
+			}
+			//############################################################################
+			virtual void get( Object& objectRef, Value& valueOut ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					valueOut.setValue( t.getNeedlePivot() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual void set( Object& objectRef, Value& valueIn ) {
+				try {
+					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
+					t.setNeedlePivot( valueIn.getValueAsFVector2() );
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+			//############################################################################
+			virtual Value::ValueType getPropertyType() {
+				return Value::T_FVECTOR2;
+			}
+		}
+		gTachometer_NeedlePivot_ObjectProperty;
+		//############################################################################
+		//############################################################################
+		class Tachometer_ObjectAccessorList : public ObjectAccessorList {
+		public:
+			Tachometer_ObjectAccessorList() {
+				addAccessor( &gTachometer_NeedlePivot_ObjectProperty );
+				addAccessor( &gTachometer_NeedleAnchor_ObjectProperty );
+				addAccessor( &gTachometer_NeedleValue_ObjectProperty );
+				addAccessor( &gTachometer_NeedleImagery_ObjectProperty );
+				addAccessor( &gTachometer_BackgroundImagery_ObjectProperty );
+				addAccessor( &gTachometer_SweepAngle_ObjectProperty );
+				addAccessor( &gTachometer_MaxValue_ObjectProperty );
+				addAccessor( &gTachometer_StartAngle_ObjectProperty );
+			}
+			~Tachometer_ObjectAccessorList() {}
+		}
+		gTachometer_ObjectAccessorList;
+		//############################################################################
+		//############################################################################
+
+		//############################################################################
+		ObjectAccessorList* Tachometer::getAccessors() {
+			return &gTachometer_ObjectAccessorList;
+		}
+		//############################################################################
 		Tachometer::Tachometer() {
+			if ( gTachometer_ObjectAccessorList.getParent() == 0 )
+				gTachometer_ObjectAccessorList.setParent( Control::getAccessors() );
+
 			mCurrentValue = 0.0f;
 			mStartAngle = 0.0f;
 			mMaxValue = 0.0f;
@@ -88,6 +355,16 @@ namespace OpenGUI {
 			mBGImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
 		//############################################################################
+		const std::string& Tachometer::getBackgroundImagery() {
+			static std::string retval;
+			if ( mBGImageryPtr ) {
+				retval = mBGImageryPtr->getName();
+			} else {
+				retval = "";
+			}
+			return retval;
+		}
+		//############################################################################
 		void Tachometer::setNeedlePivot( const FVector2& pivotLocation ) {
 			invalidate();
 			mNeedlePivot = pivotLocation;
@@ -98,16 +375,46 @@ namespace OpenGUI {
 			mNeedleImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
 		//############################################################################
+		const std::string& Tachometer::getNeedleImagery() {
+			static std::string retval;
+			if ( mNeedleImageryPtr ) {
+				retval = mNeedleImageryPtr->getName();
+			} else {
+				retval = "";
+			}
+			return retval;
+		}
+		//############################################################################
 		void Tachometer::setNeedleAnchor( const FVector2& anchorLocation ) {
 			invalidate();
 			mNeedleAnchor = anchorLocation;
 		}
 		//############################################################################
-		void Tachometer::setNeedleScale( float startAngle, float maxValue, float sweepAngle ) {
+		void Tachometer::setNeedleStartAngle( float startAngle ) {
 			invalidate();
 			mStartAngle = startAngle;
-			mMaxValue = maxValue;
+		}
+		//############################################################################
+		float Tachometer::getNeedleStartAngle() {
+			return mStartAngle;
+		}
+		//############################################################################
+		void Tachometer::setNeedleSweepAngle( float sweepAngle ) {
+			invalidate();
 			mEndAngle = sweepAngle;
+		}
+		//############################################################################
+		float Tachometer::getNeedleSweepAngle() {
+			return mEndAngle;
+		}
+		//############################################################################
+		void Tachometer::setNeedleMaxValue( float maxValue ) {
+			invalidate();
+			mMaxValue = maxValue;
+		}
+		//############################################################################
+		float Tachometer::getNeedleMaxValue() {
+			return mMaxValue;
 		}
 		//############################################################################
 		void Tachometer::setNeedleValue( float currentValue ) {
