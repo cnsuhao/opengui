@@ -11,7 +11,7 @@ namespace OpenGUI {
 	void OgreTexture::loadFile( const std::string& filename, const std::string& resourceGroup ) {
 		using namespace Ogre;
 		freeOgreTexture(); //dump any existing texture
-		TextureManager* textureManager = TextureManager::getSingletonPtr();
+		Ogre::TextureManager* textureManager = Ogre::TextureManager::getSingletonPtr();
 
 		Ogre::TexturePtr tmpTexture = ( Ogre::TexturePtr )textureManager->getByName( filename.c_str() );
 		try {
@@ -34,8 +34,8 @@ namespace OpenGUI {
 		}
 
 		if ( !tmpTexture.isNull() ) {
-			mTextureSize = IVector2( tmpTexture->getWidth(), tmpTexture->getHeight() );
-			mTextureName = filename;
+			_setSize(IVector2( tmpTexture->getWidth(), tmpTexture->getHeight() ));
+			_setName(filename);
 			mOgreTexturePtr = tmpTexture;
 		} else {
 			//looks like it didn't load after all
@@ -52,8 +52,8 @@ namespace OpenGUI {
 				Ogre::TextureManager::getSingleton().remove( mOgreTexturePtr->getHandle() );
 			mOgreTexturePtr.setNull();
 			mNotOwner = false;
-			mTextureName = "";
-			mTextureSize = IVector2( 0, 0 );
+			_setName("");
+			_setSize(IVector2( 0, 0 ));
 		}
 	}
 	//#####################################################################
@@ -61,8 +61,8 @@ namespace OpenGUI {
 		using namespace Ogre;
 		freeOgreTexture(); //dump any existing texture
 		if ( !ogreTexture.isNull() ) {
-			mTextureName = ogreTexture->getName(); //best we can do
-			mTextureSize = IVector2( ogreTexture->getWidth(), ogreTexture->getWidth() );
+			_setName(ogreTexture->getName()); //best we can do
+			_setSize(IVector2( ogreTexture->getWidth(), ogreTexture->getWidth()) );
 			mOgreTexturePtr = ogreTexture;
 			mNotOwner = true; //we obviously don't own this
 		}
@@ -132,11 +132,14 @@ namespace OpenGUI {
 					  "OgreTexture::loadFromTextureData" );
 		}
 
-		std::string tmpName = System::getSingleton().generateRandomElementName();
+		std::stringstream ss;
+		ss << "_Memory:";
+		ss << (void*)this;
+		std::string tmpName = ss.str();
 
-		TexturePtr tmpTexture;
+		Ogre::TexturePtr tmpTexture;
 		try {
-			tmpTexture = TextureManager::getSingleton().loadImage(	tmpName, //I dub thee...
+			tmpTexture = Ogre::TextureManager::getSingleton().loadImage(tmpName, //I dub thee...
 						 groupName, //whatever resource group we were told
 						 tmpImg, //have an image
 						 TEX_TYPE_2D, //yep, 2D texture
@@ -154,9 +157,8 @@ namespace OpenGUI {
 		if ( !tmpTexture.isNull() ) {
 			mOgreTexturePtr = tmpTexture;
 			mOgreTexturePtr->setFormat( pFmt );
-			mTextureSize = IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() );
-			mTextureName = mOgreTexturePtr->getName();
-			;
+			_setSize(IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() ));
+			_setName(mOgreTexturePtr->getName());
 			mNotOwner = false; //you build it, you own it
 		}
 	}
