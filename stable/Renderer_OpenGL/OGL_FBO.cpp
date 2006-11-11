@@ -1,4 +1,4 @@
-#include "OpenGUI_FBO.h"
+#include "OGL_FBO.h"
 #include "GL/glfw.h"
 
 IsRenderbufferEXT_OG _IsRenderbufferEXT_OG;

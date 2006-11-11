@@ -224,6 +224,8 @@ namespace OpenGUI {
 		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
+		//! \internal called by a child when they have been invalidated
+		virtual void _invalidatedChild();
 	private:
 		I_WidgetContainer* mContainer;
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events

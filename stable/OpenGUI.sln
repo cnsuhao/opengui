@@ -5,7 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGUI", "OpenGUI\OpenGUI.
 		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92} = {D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGUI_OGLRenderer", "OpenGUI_OGLRenderer\OpenGUI_OGLRenderer.vcproj", "{ADF033EA-32D7-4251-8E2B-01DB819054DD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer_OpenGL", "Renderer_OpenGL\Renderer_OpenGL.vcproj", "{ADF033EA-32D7-4251-8E2B-01DB819054DD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
 	EndProjectSection
@@ -40,11 +40,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "examples\glfw\glfw.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreFusion", "OgreFusion\OgreFusion.vcproj", "{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoO", "examples\DemoO\DemoO.vcproj", "{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
@@ -63,6 +58,18 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Amethyst", "Amethyst\Amethyst.vcproj", "{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer_Ogre", "Renderer_Ogre\Renderer_Ogre.vcproj", "{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo3", "examples\Demo3\Demo3.vcproj", "{D809C201-922D-418E-8158-87D94840D2A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+		{F216D5DB-B218-4696-84A6-485A18015CF6} = {F216D5DB-B218-4696-84A6-485A18015CF6}
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD} = {ADF033EA-32D7-4251-8E2B-01DB819054DD}
 	EndProjectSection
 EndProject
 Global
@@ -98,14 +105,12 @@ Global
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All.ActiveCfg = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All.Build.0 = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
-		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - Just OpenGUI.Build.0 = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - OgreFusion.ActiveCfg = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release.ActiveCfg = Release|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release.Build.0 = Release|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release - All.ActiveCfg = Release|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release - All.Build.0 = Release|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release - Just OpenGUI.ActiveCfg = Release|Win32
-		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release - Just OpenGUI.Build.0 = Release|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Release - OgreFusion.ActiveCfg = Release|Win32
 		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Debug.ActiveCfg = Debug|Win32
 		{9B3D67B6-8B37-4837-8A7E-7E7D6EB8BE8D}.Debug.Build.0 = Debug|Win32
@@ -189,18 +194,6 @@ Global
 		{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}.Release - All.Build.0 = Release|Win32
 		{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}.Release - Just OpenGUI.ActiveCfg = Release|Win32
 		{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}.Release - OgreFusion.ActiveCfg = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug.ActiveCfg = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.ActiveCfg = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.Build.0 = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.ActiveCfg = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.Build.0 = Debug|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release.ActiveCfg = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.ActiveCfg = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.Build.0 = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - Just OpenGUI.ActiveCfg = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.ActiveCfg = Release|Win32
-		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.Build.0 = Release|Win32
 		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug.ActiveCfg = Debug|Win32
 		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - All.ActiveCfg = Debug|Win32
 		{A7EDFA4C-B583-44D5-B3DB-5960A0DC0359}.Debug - All.Build.0 = Debug|Win32
@@ -239,6 +232,30 @@ Global
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release - Just OpenGUI.ActiveCfg = Release|Win32
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release - OgreFusion.ActiveCfg = Release|Win32
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release - OgreFusion.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - Just OpenGUI.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.Build.0 = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug.ActiveCfg = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug.Build.0 = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug - All.ActiveCfg = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug - All.Build.0 = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Debug - OgreFusion.ActiveCfg = Debug|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release.ActiveCfg = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release.Build.0 = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release - All.ActiveCfg = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release - All.Build.0 = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release - Just OpenGUI.ActiveCfg = Release|Win32
+		{D809C201-922D-418E-8158-87D94840D2A1}.Release - OgreFusion.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

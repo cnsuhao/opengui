@@ -1,4 +1,4 @@
-Copyright (c) 2006, Eric Shorkey
+Copyright (c) 2006, OpenGUI Project
 All rights reserved. (opengui.sourceforge.net)
 
 Redistribution and use in source and binary forms, with or without

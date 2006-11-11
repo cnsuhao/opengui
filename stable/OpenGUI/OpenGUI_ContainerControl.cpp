@@ -23,7 +23,6 @@ namespace OpenGUI {
 
 		// initialize state variables
 		mCacheBrush = 0;
-		mCacheInvalid = true;
 		m_LayoutSuspended = false; // layouts are instantaneous by default
 		m_LayoutValid = true; // layout begins valid (as there are no controls to update, it does not matter)
 		m_InUpdateLayout = false; // we are not in updateLayout() quite yet
@@ -38,6 +37,8 @@ namespace OpenGUI {
 		getEvents().createEvent( "ChildDetached" );
 		getEvents()["ChildAttached"].add( new EventDelegate( this, &ContainerControl::onChildAttached ) );
 		getEvents()["ChildDetached"].add( new EventDelegate( this, &ContainerControl::onChildDetached ) );
+		getEvents().createEvent( "InvalidatedChild" );
+		getEvents()["InvalidatedChild"].add( new EventDelegate( this, &ContainerControl::onInvalidatedChild ) );
 
 		//additional (unblockable) event bindings
 		getEvents()["Detached"].add( new EventDelegate( this, &ContainerControl::onDetached_BrushCache ) );
@@ -47,6 +48,7 @@ namespace OpenGUI {
 		/**/
 		if ( mCacheBrush )
 			delete mCacheBrush;
+		mCacheBrush = 0;
 	}
 	//############################################################################
 	ObjectAccessorList* ContainerControl::getAccessors() {
@@ -67,11 +69,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onChildAttached( Object* sender, Attach_EventArgs& evtArgs ) {
-		invalidate(); // need to invalidate caches for hierarchy change
+		dirtyCache(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
 	void ContainerControl::onChildDetached( Object* sender, Attach_EventArgs& evtArgs ) {
-		invalidate(); // need to invalidate caches for hierarchy change
+		dirtyCache(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
 	void ContainerControl::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
@@ -140,13 +142,13 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
-			if ( !mCacheBrush )
-				mCacheBrush = new Brush_Caching( getScreen(), getSize() );
-
-			Brush_Caching& cacheBrush = *mCacheBrush;
 
 			// do we need to rebuild the cache brush?
-			if ( mCacheInvalid ) {
+			if ( isCacheDirty() ) {
+				mCacheBrush = new Brush_Caching( getScreen(), getSize() );
+
+				Brush_Caching& cacheBrush = *mCacheBrush;
+
 				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
 				//draw background
 				cacheBrush._pushMarker( this );
@@ -170,14 +172,13 @@ namespace OpenGUI {
 				eventDraw( cacheBrush );
 				cacheBrush._popMarker( this );
 				cacheBrush.pop(); // pop the parent coords offset
-
-				mCacheInvalid = false;
 			}
 
 			//push cache into output stream
+			Brush_Caching& cache = *mCacheBrush;
 			brush.pushAlpha( getAlpha() );
 			brush.pushPosition( getPosition() );
-			cacheBrush.emerge( brush );
+			cache.emerge( brush );
 			brush.pop(); // pop position offset
 			brush.pop(); // pop alpha
 		}
@@ -361,6 +362,24 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
+	void ContainerControl::_invalidatedChild(){
+		eventInvalidatedChild();
+	}
+	//############################################################################
+	void ContainerControl::dirtyCache(){
+		if(mCacheBrush){
+			delete mCacheBrush;
+			mCacheBrush = 0;
+		}
+		invalidate();
+	}
+	//############################################################################
+	bool ContainerControl::isCacheDirty(){
+		if(!mCacheBrush)
+			return true;
+		return false;
+	}
+	//############################################################################
 	void ContainerControl::_tick( float seconds ) {
 		Control::_tick( seconds );
 		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
@@ -369,21 +388,22 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void ContainerControl::onInvalidated( Object* sender, EventArgs& evtArgs ) {
-		if ( mCacheBrush ) {
-			delete mCacheBrush;
-			mCacheBrush = 0;
-		}
-		//mCacheBrush->_clear();
-		mCacheInvalid = true;
+	void ContainerControl::eventInvalidatedChild(){
+		EventArgs event;
+		triggerEvent( "InvalidatedChild", event );
+	}
+	//############################################################################
+	void ContainerControl::onInvalidatedChild( Object* sender, EventArgs& evtArgs ) {
+		dirtyCache();
 	}
 	//############################################################################
 	void ContainerControl::onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs ) {
-		if ( mCacheBrush ) {
-			delete mCacheBrush;
-			mCacheBrush = 0;
-			mCacheInvalid = true;
-		}
+		dirtyCache();
+	}
+	//############################################################################
+	void ContainerControl::onResized( Object* sender, Resized_EventArgs& evtArgs ){
+		dirtyCache();
+		Control::onResized(sender,evtArgs);
 	}
 	//############################################################################
 } // namespace OpenGUI {

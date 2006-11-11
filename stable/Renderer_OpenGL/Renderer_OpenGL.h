@@ -2,10 +2,10 @@
 #define D10A6A7B_DE80_49a2_A962_92696C85AFB8
 #include <OpenGUI.h>
 namespace OpenGUI {
-	class OGLRenderer : public Renderer {
+	class Renderer_OpenGL : public Renderer {
 	public:
-		OGLRenderer( int initial_width, int initial_height );
-		virtual ~OGLRenderer();
+		Renderer_OpenGL( int initial_width, int initial_height );
+		virtual ~Renderer_OpenGL();
 		// Application should call this whenever viewport resolution changes
 		void setDim( int w, int h ) {
 			mDimensions.y = h;

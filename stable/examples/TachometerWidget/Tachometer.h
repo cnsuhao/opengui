@@ -16,18 +16,53 @@ namespace OpenGUI {
 			virtual ~Tachometer();
 			//! Sets the background imagery for the tachometer
 			void setBackgroundImagery( std::string imageryName );
-			//! Sets the location within the BG imagery where the needle pivot should be
-			void setNeedlePivot( const FVector2& pivotLocation );
+			//! gets the background imagery
+			const std::string& getBackgroundImagery();
+
 			//! Sets the Imagery used for the needle
 			void setNeedleImagery( std::string imageryName );
+			//! gets the needle imagery
+			const std::string& getNeedleImagery();
+
+			//! Sets the location within the BG imagery where the needle pivot should be
+			void setNeedlePivot( const FVector2& pivotLocation );
+			//! returns current needle pivot
+			const FVector2& getNeedlePivot() {
+				return mNeedlePivot;
+			}
+
 			//! Sets the point in the needle imagery where it attaches to the needle pivot
 			void setNeedleAnchor( const FVector2& anchorLocation );
-			//! Specifies the startAngle (when value==0), the maxValue, and the total sweep range toward maxValue. All measurements in degrees
-			void setNeedleScale( float startAngle, float maxValue, float sweepAngle );
+			//! returns current needle anchor
+			const FVector2& getNeedleAnchor() {
+				return mNeedleAnchor;
+			}
+
+			//! Specifies the startAngle (when value==0) in degrees
+			void setNeedleStartAngle( float startAngle );
+			//! gets the start angle
+			float getNeedleStartAngle();
+
+			//! Sets the total sweep range toward maxValue in degrees
+			void setNeedleSweepAngle( float sweepAngle );
+			//! gets the total sweep range
+			float getNeedleSweepAngle();
+
+			//! Sets the maximum value
+			void setNeedleMaxValue( float maxValue );
+			//! gets the maximum value
+			float getNeedleMaxValue();
+
 			//! Sets the current tachometer value
 			void setNeedleValue( float currentValue );
+			//! returns current tachometer value
+			float getNeedleValue() {
+				return mCurrentValue;
+			}
 
 			static Widget* createTachometerFactory();
+
+			virtual ObjectAccessorList* getAccessors();
 
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );

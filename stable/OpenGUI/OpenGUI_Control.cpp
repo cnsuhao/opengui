@@ -3,7 +3,6 @@
 #include "OpenGUI_ContainerControl.h"
 
 namespace OpenGUI {
-#pragma region Accessors
 	//############################################################################
 	class Control_Left_ObjectProperty : public ObjectProperty {
 	public:
@@ -358,7 +357,6 @@ namespace OpenGUI {
 	gControl_ObjectAccessorList;
 	//############################################################################
 	//############################################################################
-#pragma endregion
 
 	//############################################################################
 	Control::Control() {

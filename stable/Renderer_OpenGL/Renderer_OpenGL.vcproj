@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="OgreFusion"
-	ProjectGUID="{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
+	Name="Renderer_OpenGL"
+	ProjectGUID="{ADF033EA-32D7-4251-8E2B-01DB819054DD}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -12,15 +12,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="..\Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
+				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -32,16 +32,8 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib"
-				OutputFile="$(OutDir)/OgreFusion_d.dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/OgreFusion_d.pdb"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/OgreFusion_d.lib"
-				TargetMachine="1"/>
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/Renderer_OpenGL_d.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -57,22 +49,20 @@
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="..\Release"
 			IntermediateDirectory="Release"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
+				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -82,18 +72,8 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib"
-				OutputFile="$(OutDir)/OgreFusion.dll"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/OgreFusion.pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/OgreFusion.lib"
-				TargetMachine="1"/>
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/Renderer_OpenGL.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -108,8 +88,6 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
 			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
@@ -124,16 +102,13 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\OgreFusion.cpp">
+				RelativePath=".\OGL_FBO.cpp">
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Renderer.cpp">
+				RelativePath=".\OGL_Texture.cpp">
 			</File>
 			<File
-				RelativePath=".\OgreFusion_ResourceProvider.cpp">
-			</File>
-			<File
-				RelativePath=".\OgreFusion_Texture.cpp">
+				RelativePath=".\Renderer_OpenGL.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -141,25 +116,13 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\OgreFusion.h">
+				RelativePath=".\OGL_FBO.h">
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Exports.h">
+				RelativePath=".\OGL_Texture.h">
 			</File>
 			<File
-				RelativePath=".\OgreFusion_Platform.h">
-			</File>
-			<File
-				RelativePath=".\OgreFusion_PreRequisites.h">
-			</File>
-			<File
-				RelativePath=".\OgreFusion_Renderer.h">
-			</File>
-			<File
-				RelativePath=".\OgreFusion_ResourceProvider.h">
-			</File>
-			<File
-				RelativePath=".\OgreFusion_Texture.h">
+				RelativePath=".\Renderer_OpenGL.h">
 			</File>
 		</Filter>
 		<Filter
@@ -167,9 +130,6 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

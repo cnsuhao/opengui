@@ -73,6 +73,8 @@ namespace OpenGUI {
 		void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
 		//! A child has been detached from this container
 		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
+		//! A child of this container has been invalidated
+		void eventInvalidatedChild();
 //@}
 
 	protected:
@@ -91,8 +93,11 @@ namespace OpenGUI {
 		//! Re-issues the \c Cursor_Release to children with a proper offset
 		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
-		//! Flushes the local Brush output cache that contains operations from this and all child Widgets
-		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
+		//! Flushes the local Brush output cache that contains operations from this and all child Widgets, which also invalidates this widget
+		virtual void onInvalidatedChild( Object* sender, EventArgs& evtArgs );
+
+		//! flushes local Brush cache in addition to normal functionality
+		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 //@}
 
 		//! Returns the client area position and size as an FRect
@@ -118,13 +123,20 @@ namespace OpenGUI {
 		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
+		//! \internal redefinition from Widget::_invalidatedChild()
+		virtual void _invalidatedChild();
+
+		//! flushes the local draw cache. Causes a call to invalidate() automatically
+		void dirtyCache();
+		//! returns \c true if the local cache is dirty
+		bool isCacheDirty();
+
 	private:
 		void _setChildControlLayoutState( bool state );
 		bool m_LayoutSuspended; // state variable: marks if layouts are suspended
 		bool m_LayoutValid; // state variable: holds layout validity
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
 		Brush_Caching* mCacheBrush;
-		bool mCacheInvalid;
 		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
 	};
 
