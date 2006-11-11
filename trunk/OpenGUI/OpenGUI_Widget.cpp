@@ -177,10 +177,17 @@ namespace OpenGUI {
 		if ( mValid ) { // only trigger "Invalidated" once per invalidation period
 			mValid = false;
 			eventInvalidated();
+
+			Widget* parent = dynamic_cast<Widget*>( getContainer() );
+			if ( parent )
+				parent->_invalidatedChild();
 		}
+	}
+	//############################################################################
+	void Widget::_invalidatedChild() {
 		Widget* parent = dynamic_cast<Widget*>( getContainer() );
 		if ( parent )
-			parent->invalidate();
+			parent->_invalidatedChild();
 	}
 	//############################################################################
 	void Widget::flush() {
