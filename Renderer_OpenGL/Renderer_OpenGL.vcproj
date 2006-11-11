@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="OpenGUI_OGLRenderer"
+	Name="Renderer_OpenGL"
 	ProjectGUID="{ADF033EA-32D7-4251-8E2B-01DB819054DD}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/OpenGUI_OGLRenderer_d.lib"/>
+				OutputFile="$(OutDir)/Renderer_OpenGL_d.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -73,7 +73,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/OpenGUI_OGLRenderer.lib"/>
+				OutputFile="$(OutDir)/Renderer_OpenGL.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -102,7 +102,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\OpenGUI_OGLRenderer.cpp">
+				RelativePath=".\Renderer_OpenGL.cpp">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_OGLTexture.cpp">
@@ -113,7 +113,7 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\OpenGUI_OGLRenderer.h">
+				RelativePath=".\Renderer_OpenGL.h">
 			</File>
 			<File
 				RelativePath=".\OpenGUI_OGLTexture.h">

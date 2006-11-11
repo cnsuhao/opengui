@@ -9,14 +9,14 @@
 
 #include "corona.h"
 
-#include "OpenGUI_OGLRenderer.h"
+#include "Renderer_OpenGL.h"
 #include "OpenGUI_OGLTexture.h"
 
 
 
 namespace OpenGUI {
 	//###########################################################
-	OGLRenderer::OGLRenderer( int initial_width, int initial_height ) {
+	Renderer_OpenGL::Renderer_OpenGL( int initial_width, int initial_height ) {
 		mDimensions.x = initial_width;
 		mDimensions.y = initial_height;
 		mCurrentContext = 0;
@@ -30,15 +30,15 @@ namespace OpenGUI {
 			mSupportRectTex = false;
 	}
 	//###########################################################
-	OGLRenderer::~OGLRenderer() {
+	Renderer_OpenGL::~Renderer_OpenGL() {
 		/**/
 	}
 	//###########################################################
-	const IVector2& OGLRenderer::getViewportDimensions() {
+	const IVector2& Renderer_OpenGL::getViewportDimensions() {
 		return mDimensions;
 	}
 	//###########################################################
-	void OGLRenderer::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
+	void Renderer_OpenGL::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
 		safeBegin();
 		for ( TriangleList::const_iterator iter = triangles.begin();
 				iter != triangles.end(); iter++ ) {
@@ -54,7 +54,7 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	void OGLRenderer::drawTriangles( const TriangleList& triangles ) {
+	void Renderer_OpenGL::drawTriangles( const TriangleList& triangles ) {
 		safeBegin();
 		for ( TriangleList::const_iterator iter = triangles.begin();
 				iter != triangles.end(); iter++ ) {
@@ -70,19 +70,19 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	void OGLRenderer::safeBegin() {
+	void Renderer_OpenGL::safeBegin() {
 		if ( mInGLBegin ) return;
 		glBegin( GL_TRIANGLES );
 		mInGLBegin = true;
 	}
 	//###########################################################
-	void OGLRenderer::safeEnd() {
+	void Renderer_OpenGL::safeEnd() {
 		if ( !mInGLBegin ) return;
 		glEnd();
 		mInGLBegin = false;
 	}
 	//###########################################################
-	void OGLRenderer::selectTextureState( Texture* texture ) {
+	void Renderer_OpenGL::selectTextureState( Texture* texture ) {
 		if ( texture == mCurrentTextureState ) return; //skip if we can
 		mCurrentTextureState = texture;
 		safeEnd();
@@ -112,7 +112,7 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	void OGLRenderer::doRenderOperation( RenderOperation& renderOp ) {
+	void Renderer_OpenGL::doRenderOperation( RenderOperation& renderOp ) {
 		if ( !renderOp.triangleList ) return; //abort if no data to draw
 		Texture* texture = renderOp.texture.get();
 		//change texture state if needed
@@ -130,7 +130,7 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	void OGLRenderer::preRenderSetup() {
+	void Renderer_OpenGL::preRenderSetup() {
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
 		glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 2.0f );
@@ -158,13 +158,13 @@ namespace OpenGUI {
 		glViewport( 0, 0, mDimensions.x, mDimensions.y );
 	}
 	//###########################################################
-	void OGLRenderer::postRenderCleanup() {
+	void Renderer_OpenGL::postRenderCleanup() {
 		safeEnd();
 		selectTextureState( 0 );
 		selectRenderContext( 0 ); // be kind, rewind
 	}
 	//###########################################################
-	Texture* OGLRenderer::createTextureFromFile( const std::string& filename ) {
+	Texture* Renderer_OpenGL::createTextureFromFile( const std::string& filename ) {
 		safeEnd();
 		selectTextureState( 0 );
 		OGLTexture* retval = 0;
@@ -222,7 +222,7 @@ namespace OpenGUI {
 		return retval;
 	}
 	//###########################################################
-	Texture* OGLRenderer::createTextureFromTextureData( const TextureData *textureData ) {
+	Texture* Renderer_OpenGL::createTextureFromTextureData( const TextureData *textureData ) {
 		safeEnd();
 		selectTextureState( 0 );
 		const TextureData* td = textureData; // copy/paste quick fix
@@ -271,7 +271,7 @@ namespace OpenGUI {
 		return retval;
 	}
 	//###########################################################
-	void OGLRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
+	void Renderer_OpenGL::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
 		safeEnd();
 		selectTextureState( 0 );
 		const TextureData* td = textureData; // copy/paste quick fix
@@ -322,7 +322,7 @@ namespace OpenGUI {
 		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	}
 	//###########################################################
-	void OGLRenderer::destroyTexture( Texture* texturePtr ) {
+	void Renderer_OpenGL::destroyTexture( Texture* texturePtr ) {
 		if ( !texturePtr ) return;
 		safeEnd();
 
@@ -336,7 +336,7 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	TextureData* OGLRenderer::LoadTextureData( std::string filename ) {
+	TextureData* Renderer_OpenGL::LoadTextureData( std::string filename ) {
 		//we can't load anything until the system is up
 		//but we should try to play nice
 		if ( !System::getSingletonPtr() )
@@ -415,11 +415,11 @@ namespace OpenGUI {
 	// RENDER TO TEXTURE SUPPORT FUNCTIONS
 	//#####################################################
 	//#####################################################
-	bool OGLRenderer::supportsRenderToTexture() {
+	bool Renderer_OpenGL::supportsRenderToTexture() {
 		return mSupportRTT;
 	}
 	//#####################################################
-	void OGLRenderer::selectRenderContext( RenderTexture* context ) {
+	void Renderer_OpenGL::selectRenderContext( RenderTexture* context ) {
 		if ( mCurrentContext != context ) {
 			safeEnd();
 
@@ -439,14 +439,14 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################
-	void OGLRenderer::clearContents() {
+	void Renderer_OpenGL::clearContents() {
 		if ( 0 == mCurrentContext ) return; // don't clear the main viewport
 		safeEnd();
 		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 		glClear( GL_COLOR_BUFFER_BIT );
 	}
 	//#####################################################
-	RenderTexture* OGLRenderer::createRenderTexture( const IVector2& size ) {
+	RenderTexture* Renderer_OpenGL::createRenderTexture( const IVector2& size ) {
 		safeEnd();
 		selectTextureState( 0 );
 		OGLRTexture* ret = new OGLRTexture();
@@ -526,7 +526,7 @@ namespace OpenGUI {
 		return ret;
 	}
 	//#####################################################
-	void OGLRenderer::destroyRenderTexture( RenderTexture* texturePtr ) {
+	void Renderer_OpenGL::destroyRenderTexture( RenderTexture* texturePtr ) {
 		if ( !texturePtr ) return;
 		safeEnd();
 

@@ -1,4 +1,4 @@
-#include "OpenGUI_OGLRenderer.h"
+#include "Renderer_OpenGL.h"
 #include "OpenGUI_OGLTexture.h"
 
 #include "OpenGUI_FBO.h"
