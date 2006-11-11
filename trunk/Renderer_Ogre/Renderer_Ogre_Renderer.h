@@ -79,7 +79,7 @@ namespace OpenGUI {
 		virtual void getViewportDimensions( IVector2& dims ); //!< See Renderer documentation from %OpenGUI
 		virtual void getScreenDimensions( IVector2& dims ); //!< See Renderer documentation from %OpenGUI
 		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
-		virtual void doRenderOperation( Render::RenderOperation& renderOp ); //!< See Renderer documentation from %OpenGUI
+		virtual void doRenderOperation( RenderOperation& renderOp ); //!< See Renderer documentation from %OpenGUI
 		virtual void postRenderCleanup(); //!< See Renderer documentation from %OpenGUI
 		virtual Texture* createTextureFromFile( std::string filename ); //!< See Renderer documentation from %OpenGUI
 		virtual Texture* createTextureFromTextureData( TextureData *textureData ); //!< See Renderer documentation from %OpenGUI

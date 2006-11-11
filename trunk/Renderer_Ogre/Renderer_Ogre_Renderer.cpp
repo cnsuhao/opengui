@@ -17,13 +17,13 @@ namespace OpenGUI {
 	void OgreRenderQueueListener::renderQueueStarted( Ogre::uint8 id,
 			const Ogre::String& invocation, bool& skipThisQueue ) {
 		if (( !mPostQueue ) && ( mQueueId == id ) )
-			System::getSingleton().renderGUI();
+			System::getSingleton().update();
 	}
 	//#####################################################################
 	void OgreRenderQueueListener::renderQueueEnded( Ogre::uint8 id,
 			const Ogre::String& invocation, bool& repeatThisQueue ) {
 		if (( mPostQueue ) && ( mQueueId == id ) )
-			System::getSingleton().renderGUI();
+			System::getSingleton().update();
 	}
 	//#####################################################################
 
@@ -152,7 +152,7 @@ namespace OpenGUI {
 		mRenderSystem->_setViewMatrix( Matrix4::IDENTITY );
 		mRenderSystem->_setProjectionMatrix( Matrix4::IDENTITY );
 
-		// initialise render settings
+		// initialize render settings
 		mRenderSystem->setLightingEnabled( false );
 		mRenderSystem->_setDepthBufferParams( false, false );
 		mRenderSystem->_setCullingMode( CULL_NONE );
@@ -163,7 +163,7 @@ namespace OpenGUI {
 		mRenderSystem->setShadingType( SO_GOURAUD );
 		mRenderSystem->_setPolygonMode( PM_SOLID );
 
-		// initialise texture settings
+		// initialize texture settings
 		mRenderSystem->_setTextureCoordCalculation( 0, TEXCALC_NONE );
 		mRenderSystem->_setTextureCoordSet( 0, 0 );
 		mRenderSystem->_setTextureUnitFiltering( 0, FO_LINEAR, FO_LINEAR, FO_POINT );
@@ -179,33 +179,14 @@ namespace OpenGUI {
 		mRenderSystem->_setSceneBlending( SBF_SOURCE_ALPHA, SBF_ONE_MINUS_SOURCE_ALPHA );
 	}
 	//#####################################################################
-	void OgreRenderer::doRenderOperation( Render::RenderOperation& renderOp ) {
+	void OgreRenderer::doRenderOperation( RenderOperation& renderOp ) {
 		if ( !mOverlayRenderEnabled ) return; //skip this until the overlays are turned on
+		if(!renderOp.triangleList || renderOp.triangleList->size()==0) return; //skip if no triangles to render
 
-		PolyVertex*	hwbuffer = ( PolyVertex* )mVertexBuffer->lock ( Ogre::HardwareVertexBuffer::HBL_DISCARD );
-
-		//Would this be faster if this loop was expanded?
-		for ( unsigned int i = 0; i < 3; i++ ) {
-			//the simple math here corrects for the projection matrix and the texel offset
-			hwbuffer[i].x = ( renderOp.vertices[i].position.x * 2 ) - 1 + mTexelOffset.x;
-			hwbuffer[i].y = ( renderOp.vertices[i].position.y * -2 ) + 1 + mTexelOffset.y;
-
-			hwbuffer[i].z = 0;
-			mRenderSystem->convertColourValue(
-				Ogre::ColourValue(	renderOp.vertices[i].color.Red,
-								   renderOp.vertices[i].color.Green,
-								   renderOp.vertices[i].color.Blue,
-								   renderOp.vertices[i].color.Alpha ),
-				&( hwbuffer[i].color )
-			);
-			hwbuffer[i].u = renderOp.vertices[i].textureUV.x;
-			hwbuffer[i].v = renderOp.vertices[i].textureUV.y;
-		}
+		TriangleList& triList = *(renderOp.triangleList);
 
 
-		mVertexBuffer->unlock();
-
-		if ( renderOp.texture && static_cast<OgreTexture*>( renderOp.texture )->validOgreTexture() ) {
+		if ( renderOp.texture && static_cast<OgreTexture*>( renderOp.texture.get() )->validOgreTexture() ) {
 
 			if ( mTexUnitDisabledLastPass[0] ) {
 				mRenderSystem->_setTextureBlendMode( 0, mColorBlendMode );
@@ -214,17 +195,47 @@ namespace OpenGUI {
 			}
 
 			mRenderSystem->_setTexture( 0, // texture unit id
-										true, //enable texture
-										static_cast<OgreTexture*>( renderOp.texture )->getOgreTextureName() ); //ogre texture name
+				true, //enable texture
+				static_cast<OgreTexture*>( renderOp.texture.get() )->getOgreTextureName() ); //ogre texture name
 		} else {
 			mTexUnitDisabledLastPass[0] = true;
 			mTexUnitDisabledLastPass[1] = true;
 			mRenderSystem->_setTexture( 0, // texture unit id
-										false, //disable texture (temporary)
-										"" ); //ogre texture name
+				false, //disable texture (temporary)
+				"" ); //ogre texture name
 		}
-		mRenderOperation.vertexData->vertexCount = 3; //move this into buffer setup?
-		mRenderSystem->_render( mRenderOperation ); //render it
+
+		
+		//*** for each triangle, update the buffers and render ***
+		for(TriangleList::iterator iter = triList.begin(); iter!=triList.end();iter++){
+			Triangle& tri = (*iter);
+
+			PolyVertex*	hwbuffer = ( PolyVertex* )mVertexBuffer->lock ( Ogre::HardwareVertexBuffer::HBL_DISCARD );
+
+			//Would this be faster if this loop was expanded?
+			for ( unsigned int i = 0; i < 3; i++ ) {
+				//the simple math here corrects for the projection matrix and the texel offset
+				hwbuffer[i].x = ( tri.vertex[i].position.x * 2 ) - 1 + mTexelOffset.x;
+				hwbuffer[i].y = ( tri.vertex[i].position.y * -2 ) + 1 + mTexelOffset.y;
+
+				hwbuffer[i].z = 0;
+				mRenderSystem->convertColourValue(
+					Ogre::ColourValue(	tri.vertex[i].color.Red,
+					tri.vertex[i].color.Green,
+					tri.vertex[i].color.Blue,
+					tri.vertex[i].color.Alpha ),
+					&( hwbuffer[i].color )
+					);
+				hwbuffer[i].u = tri.vertex[i].textureUV.x;
+				hwbuffer[i].v = tri.vertex[i].textureUV.y;
+			}
+
+			mVertexBuffer->unlock();
+
+			mRenderOperation.vertexData->vertexCount = 3; //move this into buffer setup?
+			mRenderSystem->_render( mRenderOperation ); //render it
+		}
+		
 	}
 	//#####################################################################
 	void OgreRenderer::setupHardwareBuffer() {
@@ -249,7 +260,7 @@ namespace OpenGUI {
 
 		mRenderOperation.vertexData->vertexBufferBinding->setBinding( 0, mVertexBuffer ); // one ring to bind them...
 
-		mRenderOperation.operationType = RenderOperation::OT_TRIANGLE_LIST;
+		mRenderOperation.operationType = Ogre::RenderOperation::OT_TRIANGLE_LIST;
 		mRenderOperation.useIndexes = false; // I like to do it the hard way
 	}
 	//#####################################################################
