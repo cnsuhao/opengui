@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\dependencies\corona\src; ..\OpenGUI"
+				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\dependencies\corona\src; ..\OpenGUI"
+				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -102,10 +102,13 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\Renderer_OpenGL.cpp">
+				RelativePath=".\OGL_FBO.cpp">
 			</File>
 			<File
 				RelativePath=".\OGL_Texture.cpp">
+			</File>
+			<File
+				RelativePath=".\Renderer_OpenGL.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -113,10 +116,13 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\Renderer_OpenGL.h">
+				RelativePath=".\OGL_FBO.h">
 			</File>
 			<File
 				RelativePath=".\OGL_Texture.h">
+			</File>
+			<File
+				RelativePath=".\Renderer_OpenGL.h">
 			</File>
 		</Filter>
 		<Filter
