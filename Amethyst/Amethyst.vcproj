@@ -132,7 +132,16 @@
 				RelativePath=".\Amethyst_Button.cpp">
 			</File>
 			<File
+				RelativePath=".\Amethyst_Checkbox.cpp">
+			</File>
+			<File
 				RelativePath=".\Amethyst_Label.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ProgressBar.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_RadioButton.cpp">
 			</File>
 		</Filter>
 		<Filter
