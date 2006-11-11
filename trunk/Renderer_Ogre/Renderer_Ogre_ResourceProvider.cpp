@@ -1,9 +1,9 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_ResourceProvider.cpp
+// Renderer_Ogre_ResourceProvider.cpp
 // -----------------------------------------------------------------------------
 
 #include <OgreArchiveManager.h>
-#include "OgreFusion_ResourceProvider.h"
+#include "Renderer_Ogre_ResourceProvider.h"
 
 //#include "Ogre.h"
 

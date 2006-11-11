@@ -1,25 +1,25 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_Exports.h
+// Renderer_Ogre_Exports.h
 // -----------------------------------------------------------------------------
 
-#ifndef	_H_OGREFUSION_EXPORTS
-#define _H_OGREFUSION_EXPORTS
+#ifndef	_H_OGR_OGRE_EXPORTS
+#define _H_OGR_OGRE_EXPORTS
 
-#include "OgreFusion_PreRequisites.h"
+#include "Renderer_Ogre_PreRequisites.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 
-#   ifdef OGREFUSION_EXPORTS
-#       define OGREFUSION_API __declspec(dllexport)
+#   ifdef OGR_OGRE_EXPORTS
+#       define OGR_OGRE_API __declspec(dllexport)
 #   else
-#       define OGREFUSION_API __declspec(dllimport)
+#       define OGR_OGRE_API __declspec(dllimport)
 #   endif
 
 #else
 
-#   define OGREFUSION_API
+#   define OGR_OGRE_API
 
 #endif
 
 
-#endif // _H_OGREFUSION_EXPORTS
+#endif // _H_OGR_OGRE_EXPORTS
