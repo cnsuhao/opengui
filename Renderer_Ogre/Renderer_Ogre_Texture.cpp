@@ -1,8 +1,8 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_Texture.cpp
+// Renderer_Ogre_Texture.cpp
 // -----------------------------------------------------------------------------
 
-#include "OgreFusion_Texture.h"
+#include "Renderer_Ogre_Texture.h"
 
 #include <OgreException.h>
 

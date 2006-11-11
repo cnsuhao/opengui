@@ -1,9 +1,9 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_Renderer.cpp
+// Renderer_Ogre_Renderer.cpp
 // -----------------------------------------------------------------------------
 
-#include "OgreFusion_Renderer.h"
-#include "OgreFusion_Texture.h"
+#include "Renderer_Ogre_Renderer.h"
+#include "Renderer_Ogre_Texture.h"
 
 //#include "Ogre.h"
 #include <OgreRenderSystem.h>

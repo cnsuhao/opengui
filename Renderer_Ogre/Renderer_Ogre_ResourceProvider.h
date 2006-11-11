@@ -1,17 +1,17 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_ResourceProvider.h
+// Renderer_Ogre_ResourceProvider.h
 // -----------------------------------------------------------------------------
 
-#ifndef	_H_OGREFUSION_RESOURCEPROVIDER
-#define _H_OGREFUSION_RESOURCEPROVIDER
+#ifndef	_H_OGR_OGRE_RESOURCEPROVIDER
+#define _H_OGR_OGRE_RESOURCEPROVIDER
 
-#include "OgreFusion_Exports.h"
+#include "Renderer_Ogre_Exports.h"
 
 #include "OpenGUI.h"
 
 namespace OpenGUI {
 	//! An implementation of OpenGUI::ResourceProvider that pulls resources from Ogre's built in resource system.
-	class OGREFUSION_API OgreResourceProvider: public ResourceProvider {
+	class OGR_OGRE_API OgreResourceProvider: public ResourceProvider {
 	public:
 		OgreResourceProvider();
 		virtual ~OgreResourceProvider();
@@ -32,4 +32,4 @@ namespace OpenGUI {
 
 
 
-#endif // _H_OGREFUSION_RESOURCEPROVIDER
+#endif // _H_OGR_OGRE_RESOURCEPROVIDER

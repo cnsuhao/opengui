@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_Texture.h
+// Renderer_Ogre_Texture.h
 // -----------------------------------------------------------------------------
 
-#ifndef	_H_OGREFUSION_TEXTURE
-#define _H_OGREFUSION_TEXTURE
+#ifndef	_H_OGR_OGRE_TEXTURE
+#define _H_OGR_OGRE_TEXTURE
 
-#include "OgreFusion_Exports.h"
+#include "Renderer_Ogre_Exports.h"
 
 #include "OpenGUI.h"
 
@@ -13,7 +13,7 @@
 
 namespace OpenGUI {
 	//! An OpenGUI::Texture implementation used by OgreRenderer to load and represent Ogre textures.
-	class OGREFUSION_API OgreTexture : public Texture {
+	class OGR_OGRE_API OgreTexture : public Texture {
 		friend class OgreRenderer;
 	public:
 		OgreTexture(): mNotOwner( false ) {}
@@ -43,4 +43,4 @@ namespace OpenGUI {
 ;//namespace OpenGUI{
 
 
-#endif // _H_OGREFUSION_TEXTURE
+#endif // _H_OGR_OGRE_TEXTURE

@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------------
-// OgreFusion_Renderer.h
+// Renderer_Ogre_Renderer.h
 // -----------------------------------------------------------------------------
 
-#ifndef	_H_OGREFUSION_RENDERER
-#define _H_OGREFUSION_RENDERER
+#ifndef	_H_OGR_OGRE_RENDERER
+#define _H_OGR_OGRE_RENDERER
 
-#include "OgreFusion_Exports.h"
+#include "Renderer_Ogre_Exports.h"
 
 #include <OpenGUI.h>
 
@@ -16,7 +16,7 @@
 namespace OpenGUI {
 	class OgreRenderer; //forward declaration
 
-	//! Used internally by OgreFusion to hook into Ogre for automatic GUI rendering.
+	//! Used internally by Renderer_Ogre to hook into Ogre for automatic GUI rendering.
 	/*! \note Not for application use, symbols not exported */
 	class OgreRenderQueueListener : public Ogre::RenderQueueListener {
 	public:
@@ -43,7 +43,7 @@ namespace OpenGUI {
 
 
 	//! %OpenGUI Renderer implementation that works with Ogre
-	class OGREFUSION_API OgreRenderer: public Renderer {
+	class OGR_OGRE_API OgreRenderer: public Renderer {
 	public:
 
 		//! Constructor. If you use this constructor, be sure you call OgreRenderer::setSceneManager() before rendering
@@ -125,4 +125,4 @@ namespace OpenGUI {
 	};
 }//namespace OpenGUI{
 
-#endif // _H_OGREFUSION_RENDERER
+#endif // _H_OGR_OGRE_RENDERER
