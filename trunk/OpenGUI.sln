@@ -59,6 +59,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Amethyst", "Amethyst\Amethy
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer_Ogre", "Renderer_Ogre\Renderer_Ogre.vcproj", "{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -269,6 +274,30 @@ Global
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release - OgreFusion.Build.0 = Release|Win32
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release Multithreaded.ActiveCfg = Release|Win32
 		{FB5BBF2F-072F-49D9-94CF-EF94A3F03396}.Release Singlethreaded.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - All.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - Just OpenGUI.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - Just OpenGUI.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug - OgreFusion.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug Multithreaded.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug Multithreaded.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug Singlethreaded.ActiveCfg = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Debug Singlethreaded.Build.0 = Debug|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - All.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - Just OpenGUI.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - Just OpenGUI.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release - OgreFusion.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release Multithreaded.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release Multithreaded.Build.0 = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release Singlethreaded.ActiveCfg = Release|Win32
+		{15971078-5E41-4B58-A5FA-7654B1B7BF7D}.Release Singlethreaded.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

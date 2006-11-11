@@ -12,15 +12,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="../Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
+				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME)\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -33,10 +33,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib"
+				AdditionalDependencies="OgreMain_d.lib OpenGUI_d.lib"
 				OutputFile="$(OutDir)/Renderer_Ogre_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)\lib&quot;; ../Debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre_d.pdb"
 				SubSystem="2"
@@ -65,14 +65,14 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="../Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\OpenGUI; ..\dependancies\OgreSDK_vc71\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGREFUSION_EXPORTS"
+				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME)\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -83,10 +83,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib"
+				AdditionalDependencies="OgreMain.lib OpenGUI.lib"
 				OutputFile="$(OutDir)/Renderer_Ogre.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\dependancies\OgreSDK_vc71\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)\lib&quot;; ../Release"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre.pdb"
 				SubSystem="2"
