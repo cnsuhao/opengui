@@ -53,7 +53,7 @@ namespace OpenGUI {
 		void moveToBack( Widget* widget );
 
 		//! returns a pointer to the requested widget or 0 if not found
-		Widget* getWidget( const std::string& widgetName );
+		Widget* getWidget( const std::string& widgetName ) const;
 		//! returns a reference to the requested widget or throws an exception if not found
 		Widget& operator[]( const std::string& widgetName );
 

@@ -123,6 +123,9 @@ namespace OpenGUI {
 		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
+		//! \internal reimplementation from Widget. This will return the requested child if it exists, otherwise returns 0
+		Widget* _getChildByName( const std::string& childName ) const;
+
 		//! \internal redefinition from Widget::_invalidatedChild()
 		virtual void _invalidatedChild();
 

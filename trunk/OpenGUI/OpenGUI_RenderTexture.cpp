@@ -14,7 +14,7 @@ namespace OpenGUI {
 			tm->destroyRenderTexture( this );
 	}
 	//############################################################################
-	void RenderTexture::getUVs(float& max_u, float& max_v){
+	void RenderTexture::getUVs( float& max_u, float& max_v ) {
 		max_u = 1.0f;
 		max_v = 1.0f;
 	}

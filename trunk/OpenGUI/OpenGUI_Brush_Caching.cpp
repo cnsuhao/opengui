@@ -28,13 +28,13 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	const FVector2& Brush_Caching::getPPU_Raw() const {
-		if(isRTT()){
-			static FVector2 retVal;	
+		if ( isRTT() ) {
+			static FVector2 retVal;
 			const IVector2& texsize = mRenderTexture->getSize();
-			retVal.x = (float)texsize.x / mDrawSize.x;
-			retVal.y = (float)texsize.y / mDrawSize.y;
+			retVal.x = ( float )texsize.x / mDrawSize.x;
+			retVal.y = ( float )texsize.y / mDrawSize.y;
 			return retVal;
-		}else{
+		} else {
 			return mScreen->getPPU();
 		}
 	}

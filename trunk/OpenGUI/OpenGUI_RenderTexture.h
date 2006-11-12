@@ -19,7 +19,7 @@ namespace OpenGUI {
 		the render texture implementation requires different UV ranges, it can be
 		provided by the subclass. An example of this is rectangle textures, which
 		map the UVs directly to the width and height of the texture. */
-		virtual void getUVs(float& max_u, float& max_v);
+		virtual void getUVs( float& max_u, float& max_v );
 	protected:
 
 	private:

@@ -105,6 +105,12 @@ namespace OpenGUI {
 		//! Returns a list of all widgets at the given location, sorted by depth from top to bottom
 		void getWidgetsAt( const FVector2& position, WidgetPtrList& outList, bool recursive = false );
 
+		//! Returns a pointer to the widget at the given path, 0 if no widget is found
+		Widget* getPath( const std::string& path ) const;
+		//! \internal follows the given \c pathList, returning the ending location. The \c pathList is modified along the way
+		Widget* _getPath( StringList& pathList ) const;
+
+
 		//! returns the name of this Screen
 		const std::string& getName() const;
 		//! returns the size/resolution of this Screen
