@@ -28,10 +28,10 @@ Description: Base class for all the OGRE ReferenceApplication examples
 #ifndef __OgreRefApp_H__
 #define __OgreRefApp_H__
 
-#include <Ogre.h>
+#include "Ogre.h"
 #include "OgreNoMemoryMacros.h"
-#include <OpenGUI.h>
-#include <OgreFusion.h>
+#include "OpenGUI.h"
+#include "Renderer_Ogre.h"
 #include "OgreMemoryMacros.h"
 
 
@@ -133,7 +133,7 @@ public:
 
 	}
 
-protected:
+
     Root *mRoot;
 	Camera* mCamera;
     SceneManager* mSceneMgr;
@@ -143,7 +143,7 @@ protected:
 	OpenGUI::OgreRenderer* ogRenderer;
 	OpenGUI::OgreResourceProvider* ogResourceProvider;
 	OpenGUI::System* ogSystem;
-
+protected:
     
     /** Configures the application - returns false if the user chooses to abandon configuration. */
     virtual bool configure(void)
