@@ -3,6 +3,7 @@
 #include "OpenGUI_Renderer.h"
 #include "OpenGUI_I_WidgetContainer.h"
 #include "OpenGUI_Screen.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -151,6 +152,22 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::setName( const std::string& name ) {
+		if ( name == "" ) { // empty names (anonymous) are always ok
+			mWidgetName = name;
+			return;
+		}
+		if ( name == ".." || name == "." || name.find( '/' ) != std::string::npos ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Widget names cannot contain '/' and cannot be '.' or '..'", __FUNCTION__ );
+			return;
+		}
+		I_WidgetContainer* container = getContainer();
+		if ( container ) {
+			Widget* w = container->Children.getWidget( name );
+			if ( w && w != this ) {
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot assign name '" + name + "'. Container holds another widget with the same name.", __FUNCTION__ );
+				return;
+			}
+		}
 		mWidgetName = name;
 	}
 	//############################################################################
@@ -169,7 +186,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	I_WidgetContainer* Widget::getContainer() {
+	I_WidgetContainer* Widget::getContainer() const {
 		return mContainer;
 	}
 	//############################################################################
@@ -220,7 +237,7 @@ namespace OpenGUI {
 		return false;
 	}
 	//############################################################################
-	Screen* Widget::getScreen() {
+	Screen* Widget::getScreen() const {
 		if ( !mContainer ) return 0;
 		Widget* parentW = dynamic_cast<Widget*>( mContainer );
 		if ( parentW )
@@ -516,6 +533,76 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::onTick( Object* sender, Tick_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
+	}
+	//############################################################################
+	Widget* Widget::_getChildByName( const std::string& childName ) const {
+		return 0;
+	}
+	//############################################################################
+	/*! Widget paths are much like file system paths. They are comprised of Widget
+	names separated by forward slashes ('/'). They provide some common concepts,
+	that are familiar to file system navigation.
+	- <i>previous level</i> - signified by the double period ('..')
+	- <i>current level</i> - signified by the single period ('.')
+	- <i>absolute paths</i> - signified by starting the path with a forward slash ('/')
+	- <i>relative paths</i> - signified by starting the path with anything other than a forward slash
+	\note Wildcards are currently not supported. This may be changed in a later version.
+	\attention All widget names are case-sensitive. Trailing slashes are not allowed.
+	Blank entries (double slashes) are not allowed ('somechild/somechild//willNeverReach').
+	\warning Because absolute paths would behave differently depending on if the widget's
+	hierarchy is attached or detached from a Screen (root location moves), attempting to use
+	an absolute path when not attached to a Screen will result in an exception. Additionally,
+	you cannot obtain a pointer to a screen by using paths. Querying for "/" alone will
+	result in an exception. If you want the screen, use getScreen().
+	*/
+	Widget* Widget::getPath( const std::string& path ) const {
+		std::string tmpPath = path;
+		StrConv::trim( tmpPath );
+
+		//handle absolute paths by deferring to Screen
+		if ( tmpPath.at( 0 ) == '/' ) {
+			Screen* screen = getScreen();
+			if ( !screen ) {
+				OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot resolve absolute path when not attached to a Screen", __FUNCTION__ );
+				return 0;
+			}
+			return screen->getPath( tmpPath );
+		}
+
+		StringList pathList;
+		StrConv::tokenize( tmpPath, pathList, '/' );
+		return _getPath( pathList );
+	}
+	//############################################################################
+	Widget* Widget::_getPath( StringList& pathList ) const {
+		if ( pathList.size() == 0 ) return const_cast<Widget*>( this );
+
+		const std::string top = pathList.front();
+		pathList.pop_front();
+		if ( !( top.length() > 0 ) ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Empty path locations are not allowed", __FUNCTION__ );
+			return 0;
+		}
+		if ( top == "." ) {
+			return _getPath( pathList );
+		}
+		if ( top == ".." ) {
+			Widget* parent = dynamic_cast<Widget*>( getContainer() );
+			if ( parent ) {
+				return parent->_getPath( pathList );
+			}
+			Screen* screen = dynamic_cast<Screen*>( getContainer() );
+			if ( screen ) {
+				return screen->_getPath( pathList );
+			}
+			OG_THROW( Exception::OP_FAILED, "Unknown container type. Cannot proceed to parent path", __FUNCTION__ );
+		}
+
+		Widget* child = _getChildByName( top );
+		if ( child ) {
+			return child->_getPath( pathList );
+		}
+		return 0;
 	}
 	//############################################################################
 }//namespace OpenGUI{

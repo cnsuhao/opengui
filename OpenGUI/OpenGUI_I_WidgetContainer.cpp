@@ -15,11 +15,27 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::add_front( Widget* widget, bool takeOwnership ) {
+		if ( !widget )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		const std::string wName = widget->getName();
+		if ( wName != "" ) {
+			Widget* w = getWidget( wName );
+			if ( w )
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
+		}
 		_add_front( widget, takeOwnership );
 		mIContainer->notifyChildAdded( widget );
 	}
 	//############################################################################
 	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
+		if ( !widget )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		const std::string wName = widget->getName();
+		if ( wName != "" ) {
+			Widget* w = getWidget( wName );
+			if ( w )
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
+		}
 		_add_back( widget, takeOwnership );
 		mIContainer->notifyChildAdded( widget );
 	}
@@ -86,8 +102,8 @@ namespace OpenGUI {
 		_add_back( widget, owner );
 	}
 	//############################################################################
-	Widget* WidgetCollection::getWidget( const std::string& widgetName ) {
-		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
+	Widget* WidgetCollection::getWidget( const std::string& widgetName ) const {
+		for ( WidgetCollectionItemPtrList::const_iterator iter = mCollectionObjects.begin();
 				iter != mCollectionObjects.end(); iter++ ) {
 			WidgetCollectionItem* ptr = ( *iter );
 			if ( ptr && ptr->widgetPtr && widgetName == ptr->widgetPtr->getName() ) {
