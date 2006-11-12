@@ -76,14 +76,13 @@ namespace OpenGUI {
 
 
 		//Standard OpenGUI Renderer functions
-		virtual void getViewportDimensions( IVector2& dims ); //!< See Renderer documentation from %OpenGUI
-		virtual void getScreenDimensions( IVector2& dims ); //!< See Renderer documentation from %OpenGUI
+		virtual const IVector2& getViewportDimensions();  //!< See Renderer documentation from %OpenGUI
 		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
 		virtual void doRenderOperation( RenderOperation& renderOp ); //!< See Renderer documentation from %OpenGUI
 		virtual void postRenderCleanup(); //!< See Renderer documentation from %OpenGUI
-		virtual Texture* createTextureFromFile( std::string filename ); //!< See Renderer documentation from %OpenGUI
-		virtual Texture* createTextureFromTextureData( TextureData *textureData ); //!< See Renderer documentation from %OpenGUI
-		virtual void updateTextureFromTextureData( Texture* texture, TextureData *textureData ); //!< See Renderer documentation from %OpenGUI
+		virtual Texture* createTextureFromFile( const std::string& filename ); //!< See Renderer documentation from %OpenGUI
+		virtual Texture* createTextureFromTextureData( const TextureData* textureData ); //!< See Renderer documentation from %OpenGUI
+		virtual void updateTextureFromTextureData( Texture* texture, const TextureData *textureData ); //!< See Renderer documentation from %OpenGUI
 		virtual void destroyTexture( Texture* texturePtr ); //!< See Renderer documentation from %OpenGUI
 
 	private:
@@ -93,6 +92,8 @@ namespace OpenGUI {
 						 bool postQueue );
 		void setupHardwareBuffer();
 		void teardownHardwareBuffer();
+
+		IVector2 mViewportSize;
 
 		Ogre::Root* mOgreRoot;
 		Ogre::RenderSystem* mRenderSystem;

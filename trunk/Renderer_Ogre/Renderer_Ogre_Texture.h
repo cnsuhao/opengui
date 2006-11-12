@@ -26,7 +26,7 @@ namespace OpenGUI {
 		//! assigns an existing Ogre texture to this object
 		void loadOgreTexture( Ogre::TexturePtr ogreTexture );
 		//! load a texture with the contents of an OpenGUI TextureData object (aka: from memory)
-		void loadFromTextureData( TextureData* textureData, const std::string& groupName );
+		void loadFromTextureData( const TextureData* textureData, const std::string& groupName );
 		//! frees the attached Ogre texture. Infinitely recallable
 		void freeOgreTexture();
 		//! Returns the name of this texture as held by Ogre
