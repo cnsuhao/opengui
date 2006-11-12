@@ -5,6 +5,7 @@
 
 namespace OpenGUI {
 	namespace Amethyst {
+		//! checkbox
 		class AMETHYST_API CheckBox : public ButtonBase {
 		public:
 			CheckBox();

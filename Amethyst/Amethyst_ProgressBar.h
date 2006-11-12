@@ -6,6 +6,7 @@
 
 namespace OpenGUI {
 	namespace Amethyst {
+		//! progress bar
 		class AMETHYST_API ProgressBar : public Control {
 		public:
 			ProgressBar();
