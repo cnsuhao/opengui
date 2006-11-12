@@ -14,8 +14,7 @@ namespace OpenGUI {
 			BS_DISABLED
 		};
 
-		// encapsulates the basic mouse/button interaction for all button variants
-
+		//! encapsulates the basic mouse/button interaction for all button variants
 		class AMETHYST_API ButtonBase : public Control {
 		public:
 			ButtonBase() : m_bMouseButtonState(false), mButtonState(BS_NORMAL) {}
@@ -42,6 +41,7 @@ namespace OpenGUI {
 			virtual void preActivate()=0;
 		};
 
+		//! Simple button
 		class AMETHYST_API SimpleButton : public ButtonBase {
 		public:
 			//! Constructor

@@ -5,6 +5,7 @@
 
 namespace OpenGUI {
 	namespace Amethyst {
+		//! radio button
 		class AMETHYST_API RadioButton : public CheckBox {
 		public:
 			RadioButton();
