@@ -1,0 +1,139 @@
+/*!
+\mainpage OgreFusion Documentation
+
+\image html logo.jpg
+\image html Ogre-logo.gif
+
+OgreFusion is an %OpenGUI Renderer implementation that allows %OpenGUI to
+draw to the screen under the Ogre rendering engine.
+
+- \subpage IntegratingOgreFusion "Using OgreFusion in an Ogre application"
+
+<hr>	
+\note
+OgreFusion is distributed using the  BSD license so that both amateur and
+professional developers can benefit from its use. The exact copy of
+this license can be found in the file LICENSE.TXT that is distributed with the
+source code, or by clicking \link License here.\endlink
+*/
+
+
+
+
+/*!
+\page License
+OgreFusion is distributed as part of the %OpenGUI project, and is freely
+usable/distributable under the BSD license, the contents of which follow:
+<HR>
+\verbinclude LICENSE.TXT
+<BR><HR><BR>
+
+OgreFusion utilizes the Ogre rendering engine, which was release under the
+<a href="http://opensource.org/licenses/lgpl-license.php">LGPL</a> at the time
+of this writing.
+
+Ogre Website: http://www.ogre3d.org/
+
+Proper licensing of the Ogre library is your own responsiblity. All Ogre related
+media, such as the Ogre logo, are the sole property of the Ogre project, and are
+subject to licensing as designated by that project.
+*/
+
+
+
+/*! \page IntegratingOgreFusion Integrating OgreFusion
+
+OgreFusion can be easily added to an existing Ogre application. The process for
+doing so is defined below.
+
+<hr>
+
+\section IncludeFiles Include files
+You will need to set up include search paths for OgreFusion, %OpenGUI, and Ogre
+before using OgreFusion. After you have done that, you should be able to include
+"OgreFusion.h", and "OpenGUI.h" without much trouble. (Order doesn't matter)
+
+It may be important to note that %OgreFusion.h includes both %OpenGUI.h, as well
+as some specific include files from Ogre. You will want to keep this in mind
+as it may cause issues with Ogre's built in memory manager.
+
+\note OgreFusion was originally built with Ogre's memory manager disabled, so if you
+run into problems, try turning it off. There are other methods of leak checking
+available, so don't feel tied down to it.
+	
+	Example include layout:
+\verbatim
+#include <Ogre.h>
+#include <OpenGUI.h>
+#include <OgreFusion.h>
+\endverbatim
+
+<hr>
+
+\section Linking Linking
+Using OgreFusion requires libraries from Ogre, %OpenGUI, and OgreFusion. Be sure to set
+up the correct library paths for your linker.
+
+Linking with OgreFusion will require:\n
+\b Debug: OgreMain_d.lib, OpenGUI_d.lib and OgreFusion_d.lib\n
+\b Release: OgreMain.lib, OpenGUI.lib and OgreFusion.lib
+
+<hr>
+
+\section Runtime Runtime Requirements
+After you've compiled and linked you application, you will need to ensure that the following
+DLLs are available to the application:\n
+\b Debug: OgreMain_d.dll, OpenGUI_d.dll and OgreFusion_d.dll\n
+\b Release: OgreMain.dll, OpenGUI.dll and OgreFusion.dll\n
+
+<hr>
+	
+\section Init Initialization
+Creating the linkage between %OpenGUI and Ogre can be done in just a few lines of code.
+This should be done after Ogre has been initialized and an Ogre RenderWindow has been
+established.
+\verbatim
+// This must be a pointer to a valid Ogre RenderWindow object
+// Ogre::RenderWindow* ogreRenderWindow; 
+
+// This must be a pointer to the current Ogre SceneManager
+// Ogre::SceneManager* ogreSceneManager;
+
+OpenGUI::OgreRenderer* myRenderer = new OpenGUI::OgreRenderer(ogreRenderWindow, ogreSceneManager);
+OpenGUI::OgreResourceProvider* myResourceProvider = new OpenGUI::OgreResourceProvider();
+OpenGUI::System* mySystem = new OpenGUI::System(myRenderer, myResourceProvider);
+\endverbatim
+
+And that's it! After you've done that, %OpenGUI will automatically be called every frame
+to render the contents of the active OpenGUI::GUISheet. On top of that, your GUI assets
+(such as xml layout files, and textures) will be loaded directly out of Ogre's resource
+system.
+
+\note
+The SceneManager is an optional parameter, but the OgreRenderer will need a valid
+SceneManager before it can output to the display. See OpenGUI::OgreRenderer::setSceneManager()
+for information on changing the active SceneManager.
+
+\see
+OpenGUI::OgreRenderer::setTextureResourceGroup() and OpenGUI::OgreResourceProvider::setResourceGroup()
+for information on changing the Ogre resource groups used when loading textures and other %OpenGUI assets.
+
+<hr>
+
+\section DeInit Destruction
+When shutting down your application, failure to destroy objects in the correct order can lead
+to crashes and other errors. The proper destruction order when using OgreFusion is:
+
+ - %OpenGUI
+ - OgreFusion
+ - Ogre
+
+<hr>
+
+That should cover everything you need to know about using OpenGUI with Ogre in your application
+via OgreFusion. If you run into trouble, try the following online resources for help:
+
+ - OpenGUI website (forums and wiki): http://opengui.sourceforge.net/
+ - Ogre website (forums and wiki): http://www.ogre3d.org/
+
+*/
