@@ -1,541 +1,218 @@
 
-#include <Windows.h>
-#include "OgreRefApp.h"
-#include <OgreEventListeners.h> 
+#include "DemoAppFrameWork.h"
+#include "../TachometerWidget/Tachometer.h"
 
 
-#include "OpenGUI_BaseWidgets.h"
-
-
-// Kids, don't ever make an entire program in a single file like this.
-//   It's bad karma.
-
-
-
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-class GUIState{
-	friend class GUIStateMngr;
+class Demo1App : public DemoApp {
 public:
-	enum Mode {
-		Waiting, //waiting to start
-		Starting, //spinning up
-		Running, //waiting to stop
-		Ending, //spinning down
-		Done //stopped
-	};
-	GUIState(){
-		mCurMode = Waiting;
-		OpenGUI::LogManager::SlogMsg("GUIState", 0)
-			<< "+++ New State Created" << OpenGUI::Log::endlog;
+	Demo1App() : DemoApp( "OpenGUI - Demo 1" ) {}
+	virtual void preRun();
+	virtual void perframeRun();
+	virtual void postRun() {
+		int i = 0;
 	}
-	virtual ~GUIState(){
-		OpenGUI::LogManager::SlogMsg("GUIState", 0)
-			<< "--- New State Created" << OpenGUI::Log::endlog;
+	virtual void mousePositionCallback( int x, int y );
+	virtual void mouseButtonCallback( int button, int action );
+private:
+	//OpenGUI::Widgets::TextLabel* mLabel;
+	OpenGUI::TimerPtr mTimer;
+	OpenGUI::Screen* mScreen;
+	OpenGUI::Widget* mStatText;
+	OpenGUI::Examples::Tachometer* mTach;
+};
+
+using namespace OpenGUI;
+
+class SimpleText: public Control {
+public:
+	SimpleText() {
+		mVAlign = TextAlignment::ALIGN_TOP;
+		mHAlign = TextAlignment::ALIGN_LEFT;
+		mAutoWrap = false;
+	}
+	virtual ~SimpleText() {}
+	void setText( const std::string& text ) {
+		invalidate();
+		mText = text;
+	}
+	const std::string& getText() const {
+		return mText;
+	}
+	void setFont( const Font& font ) {
+		invalidate();
+		mFont = font;
+	}
+	const Font& getFont() const {
+		return mFont;
+	}
+	void setAlignment( TextAlignment h_align, TextAlignment v_align ) {
+		invalidate();
+		mVAlign = v_align;
+		mHAlign = h_align;
+	}
+	void setWrap(bool wrap){
+		invalidate();
+		mAutoWrap = wrap;
 	}
 protected:
-	//return false from any of these to quit the application
-	virtual bool run_Running(){ return true; }
-	virtual bool run_Starting(){ advanceMyMode(); return true; }
-	virtual bool run_Ending(){ advanceMyMode(); return true; }
-
-	void advanceMyMode()
-	{
-		switch(mCurMode){
-			case Starting:
-				setMode(Running);
-				break;
-			case Ending:
-				setMode(Done);
-				break;
-			case Waiting:
-			case Done:
-			case Running:
-			default:
-				break;
-		};
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Text.drawTextArea( mText, getRect(), mFont, mAutoWrap, mHAlign, mVAlign );
 	}
-	bool justSwitched(){return mJustSwitched;}
 private:
-	//returns false to quit
-	bool run()
-	{
-		bool retval;
-		switch(mCurMode){
-			case Waiting:
-			case Done: retval = true; break;
-			case Starting: retval = run_Starting(); break;
-			case Running: retval = run_Running(); break;
-			case Ending: retval = run_Ending(); break;
-			default:
-				retval = false;
-		};
-		if(mJustSwitched) mJustSwitched = false;
-		return retval;
-	}
-	void setMode(Mode newMode){
-		mCurMode = newMode;
-		unsigned int stateInt = newMode;
-		OpenGUI::LogManager::SlogMsg("GUIState", 0)
-			<< "<<<< Entered New State: " << stateInt << OpenGUI::Log::endlog;
-		mJustSwitched = true;
-	}
-	
-	bool mJustSwitched; //read only
-	Mode mCurMode; //this is controlled directly by GUIStateMngr
-	
+	std::string mText;
+	Font mFont;
+	TextAlignment mVAlign;
+	TextAlignment mHAlign;
+	bool mAutoWrap;
 };
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-class GUIStateMngr{
+
+class MyWnd: public Window {
 public:
-	GUIStateMngr()
-	{
-		mCurState = 0;
-		mNextState = 0;
-		mStop = false;
-	}
-	~GUIStateMngr()
-	{
-		if(mCurState) delete mCurState;
-		if(mNextState) delete mNextState;
-	}
-	bool needShutdown() { return mStop; }
-	void setNextState(GUIState* nextState){
-		if(mNextState) delete mNextState;
-		mNextState = nextState;
-	}
-	void runStates(){
-		if(mCurState){
-			if(mCurState->mCurMode == GUIState::Waiting)
-				mCurState->setMode(GUIState::Starting);
-
-			mStop = mStop || !mCurState->run();
-		}
-		tryStateChange();
-	}
-
-private:
-	bool mStop;
-	GUIState* mCurState;
-	GUIState* mNextState;
-	void tryStateChange(){
-		if( mNextState ){
-			if( mCurState ){
-				if( mCurState->mCurMode == GUIState::Running){
-					mCurState->setMode(GUIState::Ending);
-				}
-				if( mCurState->mCurMode == GUIState::Done ){
-					delete mCurState;
-					mCurState = mNextState;
-					mNextState = 0;
-				}
-			}else{
-				mCurState = mNextState;
-				mNextState = 0;
-			}
-		}
-	}
-};
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-GUIStateMngr* gState = 0;
-OpenGUI::GenericCursor* mCursor = 0;
-class LogoState;
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-class AppEndState : public GUIState{
-public:
-	virtual bool run_Running(){ return false; }
-};
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-class LogoState : public GUIState{
-
+	MyWnd() {}
+	virtual ~MyWnd() {}
 protected:
-	/*
-	virtual bool run_Starting(){ advanceMyMode(); return true; }
-	virtual bool run_Running(){ advanceMyMode(); return true; }
-	virtual bool run_Ending(){ advanceMyMode(); return true; }
-	*/
-	virtual bool run_Starting()
-	{
-		if(justSwitched()){
-			mLogoWidget = (OpenGUI::Widgets::StaticImage* ) 
-				OpenGUI::System::getSingletonPtr()->getElementByName("Logo");
-			if(!mLogoWidget)
-				return false;
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Primitive.drawOutlineRect( getRect(), -1 );
+	}
+};
 
-			float x;
-			x = 0.0f - mLogoWidget->getRect().getWidth();
-			mLogoWidget->setPos(x,0.0f);
-			mLogoWidget->setAlpha(1.0f);
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-			mFirstMove = 0;
-			return true;
-		}
+void Demo1App::preRun() {
+	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
-		if(mFirstMove < 10){
-			mFirstMove++;
+	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
+	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
+	mScreen->setCursor( cursorPtr );
+	mScreen->enableCursor();
+
+	mTach = new Examples::Tachometer;
+	mTach->setName( "Tachometer" );
+	mTach->setBackgroundImagery( "TachBG" );
+	mTach->setNeedleImagery( "TachNeedle" );
+	mTach->setNeedleStartAngle(135.0f);
+	mTach->setNeedleMaxValue(900.0f);
+	mTach->setNeedleSweepAngle(225.0f);
+	mTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
+	mTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
+	mTach->setNeedleValue( 0.0f );
+	mTach->setLeft( 800.0f - 322.0f );
+	mTach->setTop( 600.0f - 322.0f );
+	mTach->setWidth( 321.0f );
+	mScreen->Children.add_back( mTach, true );
+
+	SimpleText* headerText = new SimpleText();
+	headerText->setName( "Header" );
+	headerText->setFont( Font( "pecot", 40 ) );
+	headerText->setText( "OpenGUI Demo 1" );
+	headerText->setTop( 0 );
+	headerText->setLeft( 0 );
+	headerText->setWidth( 400 );
+	headerText->setHeight( 60 );
+	headerText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	mScreen->Children.add_back( headerText, true );
+
+	SimpleText* statText = new SimpleText();
+	mStatText = statText;
+	statText->setName( "Stats" );
+	statText->setFont( Font( "pecot", 20 ) );
+	statText->setText( "Stats on the way!\nPreload\n1234567890." );
+	statText->setTop( 0 );
+	statText->setLeft( 500 );
+	statText->setWidth( 400 );
+	statText->setHeight( 60 );
+	statText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	mScreen->Children.add_back( statText, true );
+
+	MyWnd* wnd = new MyWnd();
+	wnd->setName( "MyWnd" );
+	wnd->setTop( 200 );
+	wnd->setLeft( 100 );
+	wnd->setWidth( 200 );
+	wnd->setHeight( 200 );
+	mScreen->Children.add_back( wnd, true );
+
+	SimpleText* wndText = new SimpleText();
+	wndText->setName( "wndText" );
+	wndText->setFont( Font( "pecot", 12 ) );
+	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well.");
+	wndText->setWrap(true);
+	wndText->setTop( 0 );
+	wndText->setLeft( 5 );
+	wndText->setWidth( 200 );
+	wndText->setHeight( 200 );
+	wndText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	wnd->Children.add_back( wndText, true );
+	//wnd->setVisible(false);
+
+	Examples::Tachometer* wndTach = new Examples::Tachometer;
+	wndTach->setName( "wndTach" );
+	wndTach->setBackgroundImagery( "TachBG" );
+	wndTach->setNeedleImagery( "TachNeedle" );
+	wndTach->setNeedleStartAngle(135.0f);
+	wndTach->setNeedleMaxValue(900.0f);
+	wndTach->setNeedleSweepAngle(225.0f);
+	wndTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
+	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
+	wndTach->setNeedleValue( 0.0f );
+	wndTach->setLeft( 0.0f );
+	wndTach->setTop( 100.0f );
+	wndTach->setWidth( 100.0f );
+	wnd->Children.add_back( wndTach, true );
+
+	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
+}
+void Demo1App::perframeRun() {
+	static int val = 0;
+	static bool dirUp = true;
+	if ( dirUp ) val++;
+	else val--;
+	if ( val <= 0 ) dirUp = true;
+	if ( val >= 900 ) dirUp = false;
+
+	if ( OpenGUI::System::getSingletonPtr() ) {
+		mTach->setNeedleValue(( float ) val );
+
+		if ( mTimer->getMilliseconds() > 500 ) {
 			mTimer->reset();
-			return true;
-		}
+			float FPS = ScreenManager::getSingleton().statGetFPS();
+			std::stringstream ss;
+			ss << "Update Time: " << mScreen->statsGetUpdateTime();
+			ss << "\n";
+			ss << "FPS: " << FPS;
 
-		const float dist_per_sec = 0.6f;
-		float movDist = mTimer->getMilliseconds() * dist_per_sec / 1000.0f;
-		mTimer->reset();
-
-		float curX = mLogoWidget->getRect().getPosition().x;
-		mLogoWidget->setPos(curX + movDist, 0.0f);
-		curX = mLogoWidget->getRect().getPosition().x;
-
-		if( curX > 0.0f ){
-			mLogoWidget->setPos(0.0f ,0.0f);
-			advanceMyMode();
-		}
-		return true;
-	}
-	virtual bool run_Running(){
-		advanceMyMode();
-		return true;
-	}
-	virtual bool run_Ending()
-	{
-		if(justSwitched()){
-			mTimer->reset();
-			return true;
-		}
-
-		const float dist_per_sec = -0.6f;
-		float movDist = mTimer->getMilliseconds() * dist_per_sec / 1000.0f;
-		mTimer->reset();
-
-		float curX = mLogoWidget->getRect().getPosition().x;
-		mLogoWidget->setPos(curX + movDist, 0.0f);
-		float curX2 = mLogoWidget->getRect().getPosition().x +
-			mLogoWidget->getRect().getWidth();
-
-		if( curX2 < 0.0f ){
-			mLogoWidget->setPos(-0.6f ,0.0f);
-			mLogoWidget->setAlpha(0.0f);
-			advanceMyMode();
-		}
-		return true;
-	}
-
-private:
-	int mFirstMove;
-	OpenGUI::TimerPtr mTimer; 
-	OpenGUI::Widgets::StaticImage* mLogoWidget;
-};
-//////////////////////////////////////////////////////////////////////////////
-class InitState: public GUIState{
-
-protected:
-	virtual bool run_Starting(){
-		if(justSwitched()){
-			mLogoWidget = (OpenGUI::Widgets::StaticImage* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("Logo");
-			if(!mLogoWidget)
-				return false;
-			mLogoWidget->setAlpha(0.0f);
-
-			mOgreGroup = (OpenGUI::Widgets::Container* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("ogreGroup");
-			if(!mOgreGroup)
-				return false;
-			mOgreGroup->setAlpha(0.0f);
-
-			mOpenGUIGroup = (OpenGUI::Widgets::Container* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("openguiGroup");
-			if(!mOpenGUIGroup)
-				return false;
-			mOpenGUIGroup->setAlpha(0.0f);
-
-			mButtonGroup = (OpenGUI::Widgets::Container* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("buttonGroup");
-			if(!mButtonGroup)
-				return false;
-			mButtonGroup->setAlpha(0.0f);
-
-			mFirstMove = 0;
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		}
-
-		if(mFirstMove < 10){
-			mFirstMove++;
-			return true;
-		}
-		advanceMyMode();
-		mTimer->reset();
-		return true;
-	}
-	virtual bool run_Running(){
-		const float seconds_to_wait = 2.0f;
-		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
-
-		if(newAlpha >= 1.0f )
-			gState->setNextState( new LogoState );
-
-		mButtonGroup->setAlpha(newAlpha);
-
-		return true;
-	}
-	virtual bool run_Ending(){
-		mButtonGroup->setAlpha(1.0f);
-		advanceMyMode();
-		return true;
-	}
-private:
-	OpenGUI::TimerPtr mTimer; 
-	OpenGUI::Widgets::StaticImage* mLogoWidget;
-	OpenGUI::Widgets::Container* mOgreGroup;
-	OpenGUI::Widgets::Container* mOpenGUIGroup;
-	OpenGUI::Widgets::Container* mButtonGroup;
-	int mFirstMove;
-};
-//////////////////////////////////////////////////////////////////////////////
-class OpenGUIState : public GUIState{
-
-protected:
-	
-	virtual bool run_Starting(){
-		if(justSwitched()){
-			mGroup = (OpenGUI::Widgets::Container* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("openguiGroup");
-			if(!mGroup)
-				return false;
-			mGroup->setAlpha(0.0f);
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		}
-
-		const float seconds_to_wait = 2.0f;
-		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
-
-		if(newAlpha >= 1.0f )
-			advanceMyMode();
-
-		mGroup->setAlpha(newAlpha);
-
-		return true;
-	}
-	virtual bool run_Running(){ return true; }
-	virtual bool run_Ending(){
-		if(justSwitched()){
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		}
-
-		const float seconds_to_wait = 2.0f;
-		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
-		newAlpha = 1.0f - newAlpha;
-		if(newAlpha <= 0.0f )
-			advanceMyMode();
-
-		mGroup->setAlpha(newAlpha);
-
-		return true;
-	}
-private:
-	OpenGUI::TimerPtr mTimer; 
-	OpenGUI::Widgets::Container* mGroup;
-};
-class OgreState : public GUIState{
-
-protected:
-	virtual bool run_Starting(){
-		if(justSwitched()){
-			mGroup = (OpenGUI::Widgets::Container* )
-				OpenGUI::System::getSingletonPtr()->getElementByName("ogreGroup");
-			if(!mGroup)
-				return false;
-			mGroup->setAlpha(0.0f);
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		}
-
-		const float seconds_to_wait = 2.0f;
-		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
-
-		if(newAlpha >= 1.0f )
-			advanceMyMode();
-
-		mGroup->setAlpha(newAlpha);
-
-		return true;
-	}
-	virtual bool run_Running(){ return true; }
-	virtual bool run_Ending(){
-		if(justSwitched()){
-			mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
-		}
-
-		const float seconds_to_wait = 2.0f;
-		float newAlpha = mTimer->getMilliseconds() / ( 1000.0f * seconds_to_wait);
-		newAlpha = 1.0f - newAlpha;
-		if(newAlpha <= 0.0f )
-			advanceMyMode();
-
-		mGroup->setAlpha(newAlpha);
-
-		return true;
-	}
-private:
-	OpenGUI::TimerPtr mTimer; 
-	OpenGUI::Widgets::Container* mGroup;
-};
-
-
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-class OpenGUIInputReader : Ogre::FrameListener, public OpenGUI::EventListener
-{
-public:
-	OpenGUIInputReader(OpenGUI::System* system, Ogre::RenderWindow* window)
-	{
-		mSystem = system;
-		Ogre::Root::getSingleton().addFrameListener(this);
-		mInputDevice = Ogre::PlatformManager::getSingleton().createInputReader();
-		mInputDevice->initialise(window,true, true);
-		//whatever the default scale is, it need to be double that!
-		mInputDevice->setMouseScale( mInputDevice->getMouseScale() * 2.0f );
-		mButtonWasDown = false;
-		mSystem->getGUISheetByName("root")->attachEventListener(this);
-	}
-	virtual ~OpenGUIInputReader()
-	{
-		Ogre::Root::getSingleton().removeFrameListener(this);
-		Ogre::PlatformManager::getSingleton().destroyInputReader( mInputDevice );
-	}
-
-	virtual bool onEvent(const OpenGUI::Msg::Message &msg)
-	{
-		//
-		if(msg.messageType == msg.MT_ALERT && msg.alert.type == msg.alert.MA_Clicked){
-			if(msg.alert.source->getName() == "IntroButton"){
-				gState->setNextState( new LogoState );
-			}
-			else if(msg.alert.source->getName() == "OpenGUIButton"){
-				gState->setNextState( new OpenGUIState );
-			}
-			else if(msg.alert.source->getName() == "OgreButton"){
-				gState->setNextState( new OgreState );
-			}
-			else if(msg.alert.source->getName() == "QuitButton"){
-				gState->setNextState( new AppEndState );
+			(( SimpleText* )mStatText )->setText( ss.str() );
+			MyWnd* wnd = ( MyWnd* )mScreen->Children.getWidget( "MyWnd" );
+			if ( wnd ) {
+				Examples::Tachometer* wndTach = ( Examples::Tachometer* ) wnd->Children.getWidget( "wndTach" );
+				wndTach->setNeedleValue( FPS );
+				//wnd->setWidth(Math::Ceil(FPS));
+				//wndTach->setAlpha(FPS/300.0f);
+				//wnd->setAlpha(FPS/300.0f);
 			}
 		}
-		return true;
 	}
-
-	virtual bool frameStarted (const FrameEvent &evt)
-	{
-		mInputDevice->capture();
-
-		gState->runStates();
-
-		if( mInputDevice->isKeyDown( KC_GRAVE ) )
-			return false; //forced bail out
-
-		if( mInputDevice->isKeyDown( KC_ESCAPE ) ){
-			gState->setNextState( new AppEndState );
-		}
-
-		if( mInputDevice->isKeyDown( KC_L ) )
-			gState->setNextState( new LogoState );
-		
-		if( mInputDevice->isKeyDown( KC_J ) )
-			gState->setNextState( new OgreState );
-
-		if( mInputDevice->isKeyDown( KC_K ) )
-			gState->setNextState( new OpenGUIState );
-
-		if( gState ){
-			if( gState->needShutdown() )
-				return false;
-		}
-
-
-		long mx = mInputDevice->getMouseRelX();
-		long my = mInputDevice->getMouseRelY();
-		mSystem->injectMouseMovement(mx * mInputDevice->getMouseScale(),
-			my * mInputDevice->getMouseScale());
-
-		bool curBtnState;
-		curBtnState = mInputDevice->getMouseButton( 0 );
-		if( curBtnState != mButtonWasDown ){
-			mButtonWasDown = curBtnState;
-			if(curBtnState)
-				mSystem->injectMouseButtonDown( OpenGUI::MouseButtonLeft );
-			else
-				mSystem->injectMouseButtonUp( OpenGUI::MouseButtonLeft );
-		}
-		
-		return true;
+}
+void Demo1App::mousePositionCallback( int x, int y ) {
+	int sx, sy;
+	getWindowSize( sx, sy );
+	mScreen->injectCursorPosition_Percent((( float )x ) / (( float )sx ), (( float )y ) / (( float )sy ) );
+}
+void Demo1App::mouseButtonCallback( int button, int action ) {
+	if ( button == 0 ) {
+		if ( action == 1 )
+			mScreen->injectCursorPress();
+		else
+			mScreen->injectCursorRelease();
 	}
-	
-	//virtual bool frameEnded(const FrameEvent &evt){return true;}
-protected:
-	OpenGUI::System* mSystem;
-	Ogre::InputReader* mInputDevice;
-	bool mButtonWasDown;
-};
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-class OgreDemoApp : public OgreRefApp
-{
-public:
-	OgreDemoApp()
-	{
-		m_ogInputReader = 0;
-		gState = new GUIStateMngr;
-		mCursor = new OpenGUI::GenericCursor;
-	}
-	virtual ~OgreDemoApp()
-	{
-		if(m_ogInputReader)
-			delete m_ogInputReader;
-		if(gState) delete gState;
-		if(mCursor){
-			if(OpenGUI::CursorManager::getSingletonPtr())
-				OpenGUI::CursorManager::getSingleton().removeCursor(mCursor);
-			delete mCursor;
-		}
-	}
-protected:
-	OpenGUIInputReader* m_ogInputReader;
-	virtual void createFrameListener(void)
-	{
-		m_ogInputReader = new OpenGUIInputReader(ogSystem, mWindow);
-	}
+}
 
-	virtual void createScene(void)
-	{
-		OpenGUI::XMLParser::LoadFromFile("DemoO.xml");
-		ogSystem->setGUISheet( ogSystem->getGUISheetByName("root") );
-		
-		gState->setNextState( new InitState );
+int main( void ) {
+	Demo1App app;
 
-		gState->runStates();
-		OpenGUI::CursorManager::getSingleton().addCursor(mCursor, "DefaultCursor");
-		mCursor->setImagery("Cursor", OpenGUI::FVector2(0,0));
-	}
-};
-
-int main( void )
-{
-	OgreDemoApp demoApp;
-	demoApp.go();
+	app.run();
 
 	return 0;
 }
 
-#ifdef WIN32
-int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow){return main();}
-#endif
+

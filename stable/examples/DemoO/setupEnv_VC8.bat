@@ -2,7 +2,7 @@
 mkdir Debug
 mkdir Release
 
-set OgreSDKdir=..\..\dependancies\OgreSDK_vc8
+set OgreSDKdir=%OGRE_HOME_vc8%
 
 copy DemoO.zip Debug\
 copy DemoO.zip Release\
@@ -13,8 +13,10 @@ copy Plugins.cfg Release\
 
 copy ..\..\Debug\OpenGUI_d.dll Debug\
 copy ..\..\Release\OpenGUI.dll Release\
-copy ..\..\OgreFusion\Debug\OgreFusion_d.dll Debug\
-copy ..\..\OgreFusion\Release\OgreFusion.dll Release\
+copy ..\..\Debug\Renderer_Ogre_d.dll Debug\
+copy ..\..\Release\Renderer_Ogre.dll Release\
+copy ..\bin\TachometerWidget_d.dll Debug\
+copy ..\bin\TachometerWidget.dll Release\
 
 rem Copy Ogre Debug
 copy %OgreSDKdir%\bin\debug\cg.dll Debug\
