@@ -8,6 +8,7 @@
 #include "OpenGUI_ObjectAccessor.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Brush.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 
@@ -81,7 +82,7 @@ namespace OpenGUI {
 		Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
 		\endcode
 		*/
-		I_WidgetContainer* getContainer();
+		I_WidgetContainer* getContainer() const;
 
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
 		/*! The list is depth sorted, with top-most widgets at the top and bottom-most widgets at the bottom.
@@ -95,6 +96,11 @@ namespace OpenGUI {
 		\param recursive \c TRUE to recurse into the matching child, asking the same question. \c FALSE to only test the direct children of this widget.
 		*/
 		Widget* getChildAt( const FVector2& position, bool recursive = false );
+
+		//! Returns a pointer to the widget at the given path, 0 if no widget is found
+		Widget* getPath( const std::string& path ) const;
+		//! \internal follows the given \c pathList, returning the ending location. The \c pathList is modified along the way
+		Widget* _getPath( StringList& pathList ) const;
 
 		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
 		virtual void _draw( Brush& brush );
@@ -205,7 +211,7 @@ namespace OpenGUI {
 //@}
 
 		//! returns the screen that this Widget is attached to, or 0 if not attached
-		Screen* getScreen();
+		Screen* getScreen() const;
 
 		//! grabs focus for this Widget for keyboard events
 		void grabKeyFocus();
@@ -223,6 +229,9 @@ namespace OpenGUI {
 		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );
 		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
+
+		//! \internal returns the child with the given name. Virtual so that container widgets can redefine it to fit their storage type. Default returns 0 always
+		virtual Widget* _getChildByName( const std::string& childName ) const;
 
 		//! \internal called by a child when they have been invalidated
 		virtual void _invalidatedChild();

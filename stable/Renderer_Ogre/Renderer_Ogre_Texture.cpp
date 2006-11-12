@@ -68,7 +68,7 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	void OgreTexture::loadFromTextureData( TextureData* textureData, const std::string& groupName ) {
+	void OgreTexture::loadFromTextureData( const TextureData* textureData, const std::string& groupName ) {
 		using namespace Ogre;
 
 		freeOgreTexture(); //dump any existing texture

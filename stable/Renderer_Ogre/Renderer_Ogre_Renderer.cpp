@@ -103,9 +103,9 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	void OgreRenderer::getViewportDimensions( IVector2& dims ) {
-		dims.x = mRenderWindow->getWidth();
-		dims.y = mRenderWindow->getHeight();
+	const IVector2& OgreRenderer::getViewportDimensions(){
+		mViewportSize.x = mRenderWindow->getWidth();
+		mViewportSize.y = mRenderWindow->getHeight();
 
 		/*
 			since the pixel level texel offset only changes when the viewport size changes,
@@ -115,26 +115,13 @@ namespace OpenGUI {
 								 mRenderSystem->getVerticalTexelOffset() );
 		const float sceneWidth = 2;
 		const float sceneHeight = 2;
-		mTexelOffset.x = ( sceneWidth / dims.x ) * mTexelOffset.x;
-		mTexelOffset.y = ( sceneHeight / dims.y ) * -mTexelOffset.y;
+		mTexelOffset.x = ( sceneWidth / mViewportSize.x ) * mTexelOffset.x;
+		mTexelOffset.y = ( sceneHeight / mViewportSize.y ) * -mTexelOffset.y;
+
+		return mViewportSize;
 	}
 	//#####################################################################
-	void OgreRenderer::getScreenDimensions( IVector2& dims ) {
-#if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
-		DEVMODE devMode;
-		devMode.dmSize = sizeof( DEVMODE );
-		devMode.dmDriverExtra = 0;
-		BOOL ret = EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &devMode );
-		if ( ret ) {
-			mScreenDim.x = devMode.dmPelsWidth;
-			mScreenDim.y = devMode.dmPelsHeight;
-		}
-		dims = mScreenDim;
-#else
-		//!\todo FIX ME! This is not the required action. Not sure what to do here for Linux. =/
-		getViewportDimensions( dims ); //this is a cheap hack, but it works for now
-#endif
-	}
+	
 	//#####################################################################
 	void OgreRenderer::preRenderSetup() {
 		using namespace Ogre;
@@ -274,13 +261,13 @@ namespace OpenGUI {
 		//we'll let everyone else fend for themselves after we've finished making a mess of things
 	}
 	//#####################################################################
-	Texture* OgreRenderer::createTextureFromFile( std::string filename ) {
+	Texture* OgreRenderer::createTextureFromFile( const std::string &filename ) {
 		OgreTexture* tex = new OgreTexture();
 		tex->loadFile( filename, mTextureResourceGroup );
 		return tex;
 	}
 	//#####################################################################
-	Texture* OgreRenderer::createTextureFromTextureData( TextureData *textureData ) {
+	Texture* OgreRenderer::createTextureFromTextureData( const TextureData *textureData ) {
 		OgreTexture* tex = new OgreTexture();
 		tex->loadFromTextureData( textureData, mTextureResourceGroup );
 		return tex;
@@ -292,7 +279,7 @@ namespace OpenGUI {
 		return tex;
 	}
 	//#####################################################################
-	void OgreRenderer::updateTextureFromTextureData( Texture* texture, TextureData *textureData ) {
+	void OgreRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
 		if ( texture )
 			static_cast<OgreTexture*>( texture )->loadFromTextureData( textureData, mTextureResourceGroup );
 	}

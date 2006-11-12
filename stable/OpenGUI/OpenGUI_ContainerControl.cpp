@@ -362,20 +362,20 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	void ContainerControl::_invalidatedChild(){
+	void ContainerControl::_invalidatedChild() {
 		eventInvalidatedChild();
 	}
 	//############################################################################
-	void ContainerControl::dirtyCache(){
-		if(mCacheBrush){
+	void ContainerControl::dirtyCache() {
+		if ( mCacheBrush ) {
 			delete mCacheBrush;
 			mCacheBrush = 0;
 		}
 		invalidate();
 	}
 	//############################################################################
-	bool ContainerControl::isCacheDirty(){
-		if(!mCacheBrush)
+	bool ContainerControl::isCacheDirty() {
+		if ( !mCacheBrush )
 			return true;
 		return false;
 	}
@@ -388,7 +388,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void ContainerControl::eventInvalidatedChild(){
+	void ContainerControl::eventInvalidatedChild() {
 		EventArgs event;
 		triggerEvent( "InvalidatedChild", event );
 	}
@@ -401,9 +401,13 @@ namespace OpenGUI {
 		dirtyCache();
 	}
 	//############################################################################
-	void ContainerControl::onResized( Object* sender, Resized_EventArgs& evtArgs ){
+	void ContainerControl::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
 		dirtyCache();
-		Control::onResized(sender,evtArgs);
+		Control::onResized( sender, evtArgs );
+	}
+	//############################################################################
+	Widget* ContainerControl::_getChildByName( const std::string& childName ) const {
+		return Children.getWidget( childName );
 	}
 	//############################################################################
 } // namespace OpenGUI {

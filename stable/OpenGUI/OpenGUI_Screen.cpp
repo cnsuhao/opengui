@@ -13,7 +13,7 @@
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
 	public:
-		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture = 0 ): mScreen( screenPtr ),mRenderTexture(renderTexture) {}
+		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture = 0 ): mScreen( screenPtr ), mRenderTexture( renderTexture ) {}
 		virtual ~ScreenBrush() {
 			/**/
 		}
@@ -28,7 +28,7 @@ namespace OpenGUI {
 			return mScreen->getUPI();
 		}
 		virtual bool isRTTContext() const {
-			if(mRenderTexture)
+			if ( mRenderTexture )
 				return true;
 			return false;
 		}
@@ -46,8 +46,8 @@ namespace OpenGUI {
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
 		virtual void onActivate() {
-			if(mRenderTexture)
-				Renderer::getSingleton().selectRenderContext(mRenderTexture.get());
+			if ( mRenderTexture )
+				Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
 			else
 				Renderer::getSingleton().selectRenderContext( 0 );
 		}
@@ -225,7 +225,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::update() {
 		ScreenBrush b( this, renderTarget );
-		if(renderTarget)
+		if ( renderTarget )
 			b._clear();
 
 		WidgetCollection::iterator iter = Children.begin();
@@ -509,6 +509,50 @@ namespace OpenGUI {
 	//############################################################################
 	void Screen::statsResetUpdateTime() {
 		mStatUpdate.reset();
+	}
+	//############################################################################
+	/*! \see Widget::getPath() for a more in-depth explanation of paths */
+	Widget* Screen::getPath( const std::string& path ) const {
+		std::string tmpPath = path;
+		StrConv::trim( tmpPath );
+
+		StringList pathList;
+		StrConv::tokenize( tmpPath, pathList, '/' );
+		if ( pathList.front() == "" ) {
+			//this was a request for an absolute path
+			//so just pop off the first entry and continue
+			pathList.pop_front();
+		}
+		return _getPath( pathList );
+	}
+	//############################################################################
+	Widget* Screen::_getPath( StringList& pathList ) const {
+		if ( pathList.size() == 0 ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Paths cannot resolve to Screen objects", __FUNCTION__ );
+			return 0;
+		}
+
+		const std::string top = pathList.front();
+		pathList.pop_front();
+		if ( !( top.length() > 0 ) ) {
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Empty path locations are not allowed", __FUNCTION__ );
+			return 0;
+		}
+
+		if ( top == "." ) {
+			return _getPath( pathList );
+		}
+
+		if ( top == ".." ) {
+			OG_THROW( Exception::OP_FAILED, "Cannot proceed above Screen. There is no higher container.", __FUNCTION__ );
+			return 0;
+		}
+
+		Widget* child = Children.getWidget( top );
+		if ( child ) {
+			return child->_getPath( pathList );
+		}
+		return 0;
 	}
 	//############################################################################
 }//namespace OpenGUI{
