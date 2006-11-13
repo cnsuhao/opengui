@@ -50,37 +50,29 @@ OUTFILE = 'freetype'
 
 
 ################################################################
-CPPPATH = Split(CPPPATH)
+Import('base_env')
+env = base_env.Copy()
 
-Import('G_CPPFLAGS')
-cppflags = G_CPPFLAGS
-
-Import('G_CPPDEFINES')
-cppdefine = G_CPPDEFINES + ['_CRT_SECURE_NO_DEPRECATE','_LIB']
-
-
+cppdefine = ['_CRT_SECURE_NO_DEPRECATE','_LIB']
 
 Import('debug')
 if debug:
 	OUTFILE = OUTFILE + '_d'
-	libpath = LIBPATH_D
+	libpath = Split(LIBPATH_D)
 	libs = Split(LIBS_D)
 	cppdefine += ['FT_DEBUG_LEVEL_ERROR','FT_DEBUG_LEVEL_TRACE']
 else:
-	libpath = LIBPATH_R
+	libpath = Split(LIBPATH_R)
 	libs = Split(LIBS_R)
 
 
-Import('G_LIBPATH')
-libpath = G_LIBPATH + Split(libpath)
-
-env = Environment()
-env.Replace(CPPPATH = CPPPATH)
-env['PDB'] = OUTFILE + '.pdb'
-env.Append(CPPFLAGS = cppflags)
 env.Append(CPPDEFINES = cppdefine)
+env.Replace(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
+
+env['PDB'] = OUTFILE + '.pdb'
+
 
 lib = env.StaticLibrary( OUTFILE, Split(Source) )
 
