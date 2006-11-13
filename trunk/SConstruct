@@ -76,5 +76,7 @@ Build Modes:
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
 
+SConscript(['dependencies/tinyxml/SConscript'])
+SConscript(['dependencies/freetype2/SConscript'])
 
 

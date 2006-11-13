@@ -1,0 +1,70 @@
+### TinyXML SConscript ###
+
+Source = """
+	tinystr.cpp
+	tinyxml.cpp
+	tinyxmlerror.cpp
+	tinyxmlparser.cpp
+	"""
+
+CPPPATH = """
+	"""
+LIBPATH_D = """
+	"""
+	
+LIBPATH_R = """
+	"""
+
+LIBS_D = """
+	"""
+
+LIBS_R = """
+	"""
+
+OUTFILE = 'tinyxml'
+
+
+
+################################################################
+CPPPATH = Split(CPPPATH)
+
+Import('G_CPPFLAGS')
+cppflags = G_CPPFLAGS
+
+Import('G_CPPDEFINES')
+cppdefine = G_CPPDEFINES + ['_CRT_SECURE_NO_DEPRECATE']
+
+
+
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = LIBPATH_D
+	libs = Split(LIBS_D)
+else:
+	libpath = LIBPATH_R
+	libs = Split(LIBS_R)
+
+
+Import('G_LIBPATH')
+libpath = G_LIBPATH + Split(libpath)
+
+env = Environment()
+env.Replace(CPPPATH = CPPPATH)
+env['PDB'] = OUTFILE + '.pdb'
+env.Append(CPPFLAGS = cppflags)
+env.Append(CPPDEFINES = cppdefine)
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+lib = env.StaticLibrary( OUTFILE, Split(Source) )
+
+if debug:
+	env.Install('Debug', lib)
+	Alias('tinyxml', 'Debug')
+else:
+	env.Install('Release', lib)
+	Alias('tinyxml', 'Release')
+
+Alias('deps',['tinyxml'])

@@ -1,0 +1,94 @@
+### Freetype SConscript ###
+
+Source = """
+	src/autofit/autofit.c
+	src/bdf/bdf.c
+	src/cff/cff.c
+	src/base/ftbase.c
+	src/base/ftbitmap.c
+	src/cache/ftcache.c
+	src/base/ftglyph.c
+	src/gzip/ftgzip.c
+	src/base/ftinit.c
+	src/lzw/ftlzw.c
+	src/base/ftstroke.c
+	src/base/ftsystem.c
+	src/smooth/smooth.c
+	src/base/ftmm.c
+	src/pcf/pcf.c
+	src/pfr/pfr.c
+	src/psaux/psaux.c
+	src/pshinter/pshinter.c
+	src/psnames/psmodule.c
+	src/raster/raster.c
+	src/sfnt/sfnt.c
+	src/truetype/truetype.c
+	src/type1/type1.c
+	src/cid/type1cid.c
+	src/type42/type42.c
+	src/winfonts/winfnt.c
+	builds/win32/ftdebug.c
+	"""
+
+CPPPATH = """
+	include
+	"""
+LIBPATH_D = """
+	"""
+	
+LIBPATH_R = """
+	"""
+
+LIBS_D = """
+	"""
+
+LIBS_R = """
+	"""
+
+OUTFILE = 'freetype'
+
+
+
+################################################################
+CPPPATH = Split(CPPPATH)
+
+Import('G_CPPFLAGS')
+cppflags = G_CPPFLAGS
+
+Import('G_CPPDEFINES')
+cppdefine = G_CPPDEFINES + ['_CRT_SECURE_NO_DEPRECATE','_LIB']
+
+
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = LIBPATH_D
+	libs = Split(LIBS_D)
+	cppdefine += ['FT_DEBUG_LEVEL_ERROR','FT_DEBUG_LEVEL_TRACE']
+else:
+	libpath = LIBPATH_R
+	libs = Split(LIBS_R)
+
+
+Import('G_LIBPATH')
+libpath = G_LIBPATH + Split(libpath)
+
+env = Environment()
+env.Replace(CPPPATH = CPPPATH)
+env['PDB'] = OUTFILE + '.pdb'
+env.Append(CPPFLAGS = cppflags)
+env.Append(CPPDEFINES = cppdefine)
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+lib = env.StaticLibrary( OUTFILE, Split(Source) )
+
+if debug:
+	env.Install('objs', lib)
+	Alias('freetype', 'objs')
+else:
+	env.Install('objs', lib)
+	Alias('freetype', 'objs')
+
+Alias('deps',['freetype'])
