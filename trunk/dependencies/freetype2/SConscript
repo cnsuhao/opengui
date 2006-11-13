@@ -1,4 +1,5 @@
 ### Freetype SConscript ###
+Import('platform') # needed early for source file selection
 
 Source = """
 	src/autofit/autofit.c
@@ -27,8 +28,10 @@ Source = """
 	src/cid/type1cid.c
 	src/type42/type42.c
 	src/winfonts/winfnt.c
-	builds/win32/ftdebug.c
 	"""
+
+if platform == 'win32': # special win32 file
+	Source += " builds/win32/ftdebug.c"
 
 CPPPATH = """
 	include
@@ -71,15 +74,16 @@ env.Replace(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
 
-env['PDB'] = OUTFILE + '.pdb'
+if platform == "win32":
+	env['PDB'] = OUTFILE + '.pdb'
 
 
 lib = env.StaticLibrary( OUTFILE, Split(Source) )
 
 if debug:
-	env.Install('objs', lib)
-	Alias('freetype', 'objs')
+	inst = env.Install('objs', lib)
+	Alias('freetype', inst)
 else:
-	env.Install('objs', lib)
-	Alias('freetype', 'objs')
+	inst = env.Install('objs', lib)
+	Alias('freetype', inst)
 
