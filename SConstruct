@@ -4,9 +4,10 @@
 EnsureSConsVersion(0, 96)
 
 
-
+# We fully expect EVERY SConscript to inherit this default build_env
 base_env = Environment()
 Export('base_env')
+
 
 ############# DEFAULT FLAGS AND PATHS #############
 
@@ -83,8 +84,13 @@ SConscript(['OpenGUI/SConscript'])
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
 
+# we need this for the following dependencies
+base_env.Append(CPPDEFINES = ['_CRT_SECURE_NO_DEPRECATE'])
 
 SConscript(['dependencies/tinyxml/SConscript'])
 SConscript(['dependencies/freetype2/SConscript'])
+SConscript(['dependencies/corona/SConscript'])
 
-
+Alias('deps',['freetype'])
+Alias('deps',['corona'])
+Alias('deps',['tinyxml'])
