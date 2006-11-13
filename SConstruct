@@ -72,11 +72,11 @@ Build Modes:
 	Specify debug=1 to build a debug version. Otherwise release is assumed.
 """)
 
-#SConscript(['OpenGUI/SConscript'])
+SConscript(['OpenGUI/SConscript'])
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
 
 SConscript(['dependencies/tinyxml/SConscript'])
 SConscript(['dependencies/freetype2/SConscript'])
-#
+
 
