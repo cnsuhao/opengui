@@ -53,7 +53,7 @@ OUTFILE = 'freetype'
 Import('base_env')
 env = base_env.Copy()
 
-cppdefine = ['_CRT_SECURE_NO_DEPRECATE','_LIB']
+cppdefine = ['_LIB']
 
 Import('debug')
 if debug:
@@ -83,4 +83,3 @@ else:
 	env.Install('objs', lib)
 	Alias('freetype', 'objs')
 
-Alias('deps',['freetype'])

@@ -61,7 +61,6 @@ else:
 	env.Install('Release', lib)
 	Alias('tinyxml', 'Release')
 
-Alias('deps',['tinyxml'])
 
 
 
