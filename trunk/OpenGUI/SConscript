@@ -39,7 +39,7 @@ OUTFILE = 'OpenGUI'
 
 ################################################################
 CPPPATH = Split(CPPPATH)
-
+Import('platform')
 Import('G_CPPFLAGS')
 cppflags = G_CPPFLAGS
 
@@ -74,9 +74,9 @@ env.Append(LIBS = libs)
 
 lib = env.SharedLibrary( OUTFILE, Split(Source) )
 
+
 if debug:
 	env.Install('#/Debug', lib)
 else:
 	env.Install('#/Release', lib)
-
 
