@@ -90,7 +90,7 @@ void Demo2App::preRun() {
 
 
 	Amethyst::RadioButton* testRadio1 = new Amethyst::RadioButton();
-	testRadio1->setName("SampleMetalCheck");
+	testRadio1->setName("SampleMetalCheckRadio1");
 	testRadio1->setImagery("MetalButtonNormal");
 	testRadio1->setImageryMouseOver("MetalButtonHover");
 	testRadio1->setImageryPressed("MetalButtonPress"); 
@@ -110,7 +110,7 @@ void Demo2App::preRun() {
 	testRadio1->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
 	Amethyst::RadioButton* testRadio2 = new Amethyst::RadioButton();
-	testRadio2->setName("SampleMetalCheck");
+	testRadio2->setName("SampleMetalCheckRadio2");
 	testRadio2->setImagery("MetalButtonNormal");
 	testRadio2->setImageryMouseOver("MetalButtonHover");
 	testRadio2->setImageryPressed("MetalButtonPress"); 
@@ -130,7 +130,7 @@ void Demo2App::preRun() {
 	testRadio2->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
 	Amethyst::RadioButton* testRadio3 = new Amethyst::RadioButton();
-	testRadio3->setName("SampleMetalCheck");
+	testRadio3->setName("SampleMetalCheckRadio3");
 	testRadio3->setImagery("MetalButtonNormal");
 	testRadio3->setImageryMouseOver("MetalButtonHover");
 	testRadio3->setImageryPressed("MetalButtonPress"); 
