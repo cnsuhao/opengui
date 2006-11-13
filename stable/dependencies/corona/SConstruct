@@ -6,21 +6,36 @@ EnsureSConsVersion(0, 12)
 
 base_env = Environment(ENV = os.environ)
 
+###################################################
+# detect debug/release and export the flag
+debug = bool( ARGUMENTS.get('debug', 0) )
+Export('debug')
+if debug:
+	print "Build Mode: DEBUG"
+else:
+	print "Build Mode: RELEASE"
+
+
 if os.name is 'nt':
     # MSVC options
     base_env.Append(CXXFLAGS = ['/GX', '/DWIN32', '/D_WIN32',
-                                '/DCORONA_EXPORTS', '/Dfor=if(0); else for'])
+                                '/DCORONA_EXPORTS', '/Dfor=if(0); else for',
+                                '/D_CRT_SECURE_NO_DEPRECATE'])
+    if debug:
+        base_env.Append(CXXFLAGS = ['/MDd'])
+    else:
+        base_env.Append(CXXFLAGS = ['/MD'])
 elif string.find(sys.platform, 'irix') == -1:
     # on IRIX, don't add these options to the build
     base_env.Append(CXXFLAGS = ['-Wall', '-Wno-non-virtual-dtor'])
     # are we building debug?
-    if ARGUMENTS.get('debug'):
+    if debug:
         base_env.Append(CXXFLAGS = ['-g', '-DCORONA_DEBUG'])
 else:
     # but do make sure we look in /usr/freeware for libraries
     base_env.Prepend(CPPPATH = ['/usr/freeware/include'],
                      LIBPATH = ['/usr/freeware/lib32'])
-    if ARGUMENTS.get('debug'):
+    if debug:
         base_env.Append(CXXFLAGS = ['-g', '-DCORONA_DEBUG'])
     
 
@@ -28,4 +43,4 @@ CORONA_LIBS = ['corona', 'png', 'z', 'jpeg']
 
 Export('base_env CORONA_LIBS')
 
-SConscript(dirs = ['examples', 'src', 'test', 'tools'])
+SConscript(dirs = ['src'])

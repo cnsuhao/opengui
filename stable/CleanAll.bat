@@ -33,3 +33,4 @@ endlocal
 GOTO END
 :END
 IF "%1" == "SKIP" exit
+pause
