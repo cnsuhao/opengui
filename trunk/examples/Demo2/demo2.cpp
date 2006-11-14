@@ -5,6 +5,7 @@
 #include "../Amethyst/Amethyst_Button.h"
 #include "../Amethyst/Amethyst_CheckBox.h"
 #include "../Amethyst/Amethyst_RadioButton.h"
+#include "../Amethyst/Amethyst_ProgressBar.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -27,10 +28,13 @@ private:
 
 using namespace OpenGUI;
 
+Amethyst::ProgressBar *g_pProgressBar = NULL;
+
 void buttonCallback( Object *pObj , EventArgs *pEvent )
 {
-
+	g_pProgressBar->doStep();
 }
+
 
 void Demo2App::preRun() {
 	XMLParser::getSingleton().LoadFromFile("metal.xml");
@@ -149,12 +153,25 @@ void Demo2App::preRun() {
 	testRadio3->getEvents().createEvent("Activate");
 	testRadio3->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
+	Amethyst::ProgressBar *bar = new Amethyst::ProgressBar;
+	bar->setTop(290);
+	bar->setLeft(110);
+	bar->setHeight(60);
+	bar->setWidth(400);
+	bar->setFont(Font( "pecot", 20 ));
+	mScreen->Children.add_back(bar, true);
 
+	g_pProgressBar = bar;
 }
 
 
+int count = 0;
 void Demo2App::perframeRun() {
-	
+	if(++count >= 100)
+	{
+		count = 0;
+		g_pProgressBar->doStep();
+	}
 }
 void Demo2App::mousePositionCallback( int x, int y ) {
 	int sx,sy;
