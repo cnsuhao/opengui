@@ -17,7 +17,11 @@ namespace OpenGUI {
 			tm->destroyTexture( this );
 	}
 	//############################################################################
-
+	void Texture::getUVs( float& max_u, float& max_v ) {
+		max_u = 1.0f;
+		max_v = 1.0f;
+	}
+	//############################################################################
 }
 ;//namespace OpenGUI{
 
