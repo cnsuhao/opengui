@@ -43,10 +43,14 @@ namespace OpenGUI {
 		return &mDefaultViewport;
 	}
 	//###########################################################
-	OGL_RTT_Viewport* Renderer_OpenGL::createRTTViewport( const IVector2& size ) {
+	Viewport* Renderer_OpenGL::createRTTViewport( const IVector2& size ) {
 		if ( !supportsRenderToTexture() )
 			return 0;
-		OG_NYI;
+		return new OGL_RTT_Viewport(size);
+	}
+	//###########################################################
+	void Renderer_OpenGL::destroyRTTViewport(Viewport* viewport){
+		delete static_cast<OGL_RTT_Viewport*>(viewport);
 	}
 	//###########################################################
 	void Renderer_OpenGL::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
@@ -176,7 +180,16 @@ namespace OpenGUI {
 		mCurrentTextureState = 0;
 
 		mCurrentContext = 0;
-		if ( mSupportRTT ) glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+		if ( mSupportRTT ){
+			OGLRTexture* start = mCurrentViewport->getRenderTexture();
+			if(start){
+				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, start->fboId );
+				glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+				glClear( GL_COLOR_BUFFER_BIT );
+			}
+			else
+				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
+		}
 		glViewport( 0, 0, mCurrentViewport->getSize().x, mCurrentViewport->getSize().y );
 	}
 	//###########################################################
@@ -185,6 +198,8 @@ namespace OpenGUI {
 		selectTextureState( 0 );
 		selectRenderContext( 0 ); // be kind, rewind
 		mInRender = false;
+		if(mSupportRTT)
+			glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 	}
 	//###########################################################
 	Texture* Renderer_OpenGL::createTextureFromFile( const std::string& filename ) {
@@ -452,7 +467,8 @@ namespace OpenGUI {
 			if ( mCurrentContext ) {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
 			}else{
-				rtex = mCurrentViewport->getRenderTexture();
+				if(mCurrentViewport)
+					rtex = mCurrentViewport->getRenderTexture();
 			}
 
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );

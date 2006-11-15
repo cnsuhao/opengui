@@ -1,6 +1,6 @@
 #ifndef BA1CEEE2_F04D_4c9e_9CAA_4DEE68E17D77
 #define BA1CEEE2_F04D_4c9e_9CAA_4DEE68E17D77
-
+#include <OpenGUI.h>
 #include "OpenGUI_Viewport.h"
 
 namespace OpenGUI {
@@ -10,12 +10,11 @@ namespace OpenGUI {
 	//###########################################################
 	class OGL_Viewport: public Viewport {
 		friend class Renderer_OpenGL;
+	public:
+		virtual OGLRTexture* getRenderTexture()const=0;
 	protected:
 		OGL_Viewport() {}
 		virtual ~OGL_Viewport() {}
-		
-		virtual OGLRTexture* getRenderTexture()const=0;
-	
 		virtual void preUpdate( Screen *updatingScreen ) {}
 		virtual void  postUpdate( Screen *updatingScreen ) {}
 	};
@@ -28,27 +27,29 @@ namespace OpenGUI {
 		virtual const IVector2& getSize() {
 			return mSize;
 		}
-		
+		virtual OGLRTexture* getRenderTexture()const{
+			return 0;
+		}
 	protected:
 		void setSize( const IVector2& size ) {
 			mSize = size;
 		}
-		virtual OGLRTexture* getRenderTexture()const{
-			return 0;
-		}
+		
 	private:
 		IVector2 mSize;
 	};
 	//###########################################################
 	class OGL_RTT_Viewport: public OGL_Viewport {
 		friend class Renderer_OpenGL;
+	public:
+		virtual OGLRTexture* getRenderTexture()const{
+			return mRenderTexture;
+		}
 	protected:
 		OGL_RTT_Viewport( const IVector2& size );
 		virtual ~OGL_RTT_Viewport() {}
 		virtual const IVector2& getSize();
-		virtual OGLRTexture* getRenderTexture()const{
-			return mRenderTexture;
-		}
+		
 		virtual void preUpdate( Screen *updatingScreen ) {}
 		virtual void  postUpdate( Screen *updatingScreen ) {}
 	private:

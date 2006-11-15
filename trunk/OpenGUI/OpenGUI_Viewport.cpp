@@ -4,14 +4,14 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Viewport::Viewport(){
+	Viewport::Viewport() {
 		/**/
 	}
 	//############################################################################
-	Viewport::~Viewport(){
-		while(mScreens.size()>0){
-			Screen* screen = *(mScreens.begin());
-			screen->setViewport(0);
+	Viewport::~Viewport() {
+		while ( mScreens.size() > 0 ) {
+			Screen* screen = *( mScreens.begin() );
+			screen->setViewport( 0 );
 		}
 	}
 	//############################################################################
@@ -31,7 +31,7 @@ namespace OpenGUI {
 		screenDetached( screen );
 	}
 	//############################################################################
-	const Viewport::ScreenSet& Viewport::getScreenSet(){
+	const Viewport::ScreenSet& Viewport::getScreenSet() {
 		return mScreens;
 	}
 	//############################################################################

@@ -23,7 +23,9 @@ namespace OpenGUI {
 		//! returns a pointer to the default Viewport
 		Viewport* getDefaultViewport();
 		//! Creates a RTT Viewport of the given size (requires detected RTT support)
-		OGL_RTT_Viewport* createRTTViewport(const IVector2& size);
+		Viewport* createRTTViewport(const IVector2& size);
+		//! Destroys a previously created RTT Viewport
+		void destroyRTTViewport(Viewport* viewport);
 
 		// Required implementations for OpenGUI Renderer
 		virtual void selectViewport( Viewport* activeViewport );
