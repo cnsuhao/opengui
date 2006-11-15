@@ -87,21 +87,29 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! The \c Cursor_Move event is only re-issued to children if the cursor is
-	currently inside the container, or if the cursor just left the container. */
+	currently inside the container, or if the cursor just left the container.
+	This function is cursor focus aware, and will provide the correct information
+	to children as necessary
+	*/
 	void ContainerControl::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
 		Control::onCursor_Move( sender, evtArgs );
+
+		FVector2 pos = evtArgs.Position;
+		if ( hasCursorFocus() ) // translate point if necessary
+			pos = pointFromScreen( pos );
+
 		static bool lastInside = false;
 		bool reissue = lastInside;
-		if ( _isInside( evtArgs.Position ) )
+		if ( _isInside( pos ) )
 			lastInside = reissue = true;
 		else
 			lastInside = false;
 
 		if ( reissue ) {
 			FVector2 newPos;
-			newPos = evtArgs.Position + getPosition();
-			newPos.x += m_ClientAreaOffset_UL.x;
-			newPos.y += m_ClientAreaOffset_UL.y;
+			newPos = pos - getPosition();
+			newPos.x -= m_ClientAreaOffset_UL.x;
+			newPos.y -= m_ClientAreaOffset_UL.y;
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
 					iter != Children.rend(); iter++ ) {
 				if ( iter->eventCursor_Move( newPos.x, newPos.y ) )
@@ -110,13 +118,20 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! This function is cursor focus aware, and will provide the correct cursor information
+	to children as necessary. */
 	void ContainerControl::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
 		Control::onCursor_Press( sender, evtArgs );
+
+		FVector2 pos = evtArgs.Position;
+		if ( hasCursorFocus() ) // translate point if necessary
+			pos = pointFromScreen( pos );
+
 		if ( _isInside( evtArgs.Position ) ) {
 			FVector2 newPos;
-			newPos = evtArgs.Position + getPosition();
-			newPos.x += m_ClientAreaOffset_UL.x;
-			newPos.y += m_ClientAreaOffset_UL.y;
+			newPos = pos - getPosition();
+			newPos.x -= m_ClientAreaOffset_UL.x;
+			newPos.y -= m_ClientAreaOffset_UL.y;
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
 					iter != Children.rend(); iter++ ) {
 				if ( iter->eventCursor_Press( newPos.x, newPos.y ) )
@@ -125,13 +140,20 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! This function is cursor focus aware, and will provide the correct cursor information
+	to children as necessary. */
 	void ContainerControl::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
 		Control::onCursor_Release( sender, evtArgs );
-		if ( _isInside( evtArgs.Position ) ) {
+
+		FVector2 pos = evtArgs.Position;
+		if ( hasCursorFocus() ) // translate point if necessary
+			pos = pointFromScreen( pos );
+
+		if ( _isInside( pos ) ) {
 			FVector2 newPos;
-			newPos = evtArgs.Position + getPosition();
-			newPos.x += m_ClientAreaOffset_UL.x;
-			newPos.y += m_ClientAreaOffset_UL.y;
+			newPos = pos - getPosition();
+			newPos.x -= m_ClientAreaOffset_UL.x;
+			newPos.y -= m_ClientAreaOffset_UL.y;
 			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
 					iter != Children.rend(); iter++ ) {
 				if ( iter->eventCursor_Release( newPos.x, newPos.y ) )
