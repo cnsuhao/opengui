@@ -17,10 +17,11 @@
 namespace OpenGUI {
 	//###########################################################
 	Renderer_OpenGL::Renderer_OpenGL( int initial_width, int initial_height ) {
-		mDimensions.x = initial_width;
-		mDimensions.y = initial_height;
+		mDefaultViewport.setSize(IVector2(initial_width,initial_height));
 		mCurrentContext = 0;
+		mCurrentViewport = 0;
 		mInGLBegin = false;
+		mInRender = false;
 		mCurrentTextureState = 0;
 
 		mSupportRTT = InitializeFBO();
@@ -34,8 +35,18 @@ namespace OpenGUI {
 		/**/
 	}
 	//###########################################################
-	const IVector2& Renderer_OpenGL::getViewportDimensions() {
-		return mDimensions;
+	void Renderer_OpenGL::setDim( int w, int h ) {
+		mDefaultViewport.setSize( IVector2( w, h ) );
+	}
+	//###########################################################
+	Viewport* Renderer_OpenGL::getDefaultViewport() {
+		return &mDefaultViewport;
+	}
+	//###########################################################
+	OGL_RTT_Viewport* Renderer_OpenGL::createRTTViewport( const IVector2& size ) {
+		if ( !supportsRenderToTexture() )
+			return 0;
+		OG_NYI;
 	}
 	//###########################################################
 	void Renderer_OpenGL::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
@@ -80,6 +91,14 @@ namespace OpenGUI {
 		if ( !mInGLBegin ) return;
 		glEnd();
 		mInGLBegin = false;
+	}
+	//###########################################################
+	void Renderer_OpenGL::selectViewport( Viewport* activeViewport ){
+		if(mInRender)
+			OG_THROW(Exception::ERR_INTERNAL_ERROR,"Requested Viewport switch inside render markers",__FUNCTION__);
+		if(activeViewport==0)
+			OG_THROW(Exception::ERR_INVALIDPARAMS,"Bad Viewport: 0",__FUNCTION__);
+		mCurrentViewport = static_cast<OGL_Viewport*>(activeViewport);
 	}
 	//###########################################################
 	void Renderer_OpenGL::selectTextureState( Texture* texture ) {
@@ -131,6 +150,9 @@ namespace OpenGUI {
 	}
 	//###########################################################
 	void Renderer_OpenGL::preRenderSetup() {
+		if(!mCurrentViewport)
+			OG_THROW(Exception::ERR_INTERNAL_ERROR,"No valid Viewport selected",__FUNCTION__);
+		mInRender = true;
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
 		glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 2.0f );
@@ -155,13 +177,14 @@ namespace OpenGUI {
 
 		mCurrentContext = 0;
 		if ( mSupportRTT ) glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
-		glViewport( 0, 0, mDimensions.x, mDimensions.y );
+		glViewport( 0, 0, mCurrentViewport->getSize().x, mCurrentViewport->getSize().y );
 	}
 	//###########################################################
 	void Renderer_OpenGL::postRenderCleanup() {
 		safeEnd();
 		selectTextureState( 0 );
 		selectRenderContext( 0 ); // be kind, rewind
+		mInRender = false;
 	}
 	//###########################################################
 	Texture* Renderer_OpenGL::createTextureFromFile( const std::string& filename ) {
@@ -423,18 +446,23 @@ namespace OpenGUI {
 		if ( mCurrentContext != context ) {
 			safeEnd();
 
-			OGLRTexture* rtex;
+			OGLRTexture* rtex = 0;
 			mCurrentContext = context;
 
 			if ( mCurrentContext ) {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
+			}else{
+				rtex = mCurrentViewport->getRenderTexture();
+			}
+
+			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+			if(rtex){
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
-				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
-				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );	
 			} else {
-				glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
-				glViewport( 0, 0, mDimensions.x, mDimensions.y );
+				glViewport( 0, 0, mDefaultViewport.getSize().x, mDefaultViewport.getSize().y );
 			}
 		}
 	}

@@ -161,11 +161,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Renderer_OpenGL.cpp"
+				RelativePath=".\OGL_Texture.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OGL_Texture.cpp"
+				RelativePath=".\OGL_Viewport.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Renderer_OpenGL.cpp"
 				>
 			</File>
 		</Filter>
@@ -179,11 +183,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Renderer_OpenGL.h"
+				RelativePath=".\OGL_Texture.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OGL_Texture.h"
+				RelativePath=".\OGL_Viewport.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Renderer_OpenGL.h"
 				>
 			</File>
 		</Filter>

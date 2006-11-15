@@ -1,7 +1,7 @@
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "../TachometerWidget/Tachometer.h"
-
+#include "Renderer_OpenGL.h"
 
 class Demo1App : public DemoApp {
 public:
@@ -82,6 +82,8 @@ void Demo1App::preRun() {
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
+	Viewport* v = (static_cast<Renderer_OpenGL*>(Renderer::getSingletonPtr()))->getDefaultViewport();
+	mScreen->setViewport(v);
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();

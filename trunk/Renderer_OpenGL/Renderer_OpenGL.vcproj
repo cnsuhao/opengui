@@ -108,6 +108,9 @@
 				RelativePath=".\OGL_Texture.cpp">
 			</File>
 			<File
+				RelativePath=".\OGL_Viewport.cpp">
+			</File>
+			<File
 				RelativePath=".\Renderer_OpenGL.cpp">
 			</File>
 		</Filter>
@@ -120,6 +123,9 @@
 			</File>
 			<File
 				RelativePath=".\OGL_Texture.h">
+			</File>
+			<File
+				RelativePath=".\OGL_Viewport.h">
 			</File>
 			<File
 				RelativePath=".\Renderer_OpenGL.h">
