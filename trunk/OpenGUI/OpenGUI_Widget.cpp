@@ -232,7 +232,16 @@ namespace OpenGUI {
 		brush._popMarker( this );
 	}
 	//############################################################################
-	/*! Widget implementation always returns false */
+	/*! This function is intended to be overridden by subclasses to reflect their
+	own personal interpretation of the given point (in local coordinates) and if
+	that point is considered to be inside the widget. This allows new widgets to
+	break free from the existing "axis aligned rect" paradigm that is currently
+	in place.
+
+	\note
+	Widget implementation always returns false since they have no position or size.
+	Control, however, will test the point against its known size and position.
+	*/
 	bool Widget::_isInside( const FVector2& position ) {
 		return false;
 	}
@@ -603,6 +612,78 @@ namespace OpenGUI {
 			return child->_getPath( pathList );
 		}
 		return 0;
+	}
+	//############################################################################
+	/*! This function is intended for overriding should the existing method not
+	produce accurate results. Overriding should only be necessary if the widget has
+	children and displays them in a non-standard fashion (rotated, for example).
+	
+	This function takes the given \c point and translates its value from local
+	coordinates to inner coordinates. As an example, the ContainerControl
+	takes the given \c point and subtracts its position and upper left client area
+	offset to it to produce a resulting point that is local to its children.
+	(The children's position and size are defined within the resulting coordinate
+	space)
+
+	The result of the transform is written back to the given \c point
+	*/
+	void Widget::_translatePointIn(FVector2& point){
+		/* we are not a container, so do nothing */
+	}
+	//############################################################################
+	/*! This function is intended for overriding should the existing method not
+	produce accurate results.
+	
+	It should produce the inverse result of _translatePointIn()
+	
+	This function takes the given \c point and translates its value from inner
+	coordinates to local coordinates. As an example, the ContainerControl
+	takes the given \c point and adds its position and upper left client area
+	offset to it to produce a resulting point that is local to itself.
+	(Its own position and size are defined within the resulting coordinate space)
+
+	The result of the transform is written back to the given \c point
+	*/
+	void Widget::_translatePointOut(FVector2& point){
+		/* we are not a container, so do nothing */
+	}
+	//############################################################################
+	FVector2 Widget::pointToScreen(const FVector2& local_point){
+		FVector2 point = local_point;
+		I_WidgetContainer* container = getContainer();
+		Widget* parent = dynamic_cast<Widget*>(container);
+		if(parent){
+			parent->_doPointToScreen(point);
+		}
+		return point;
+	}
+	//############################################################################
+	FVector2 Widget::pointFromScreen(const FVector2& screen_point){
+		FVector2 point = screen_point;
+		I_WidgetContainer* container = getContainer();
+		Widget* parent = dynamic_cast<Widget*>(container);
+		if(parent){
+			parent->_doPointFromScreen(point);
+		}
+		return point;
+	}
+	//############################################################################
+	void Widget::_doPointToScreen(FVector2& local_point){
+		_translatePointOut(local_point);
+		I_WidgetContainer* container = getContainer();
+		Widget* parent = dynamic_cast<Widget*>(container);
+		if(parent){
+			parent->_doPointToScreen(local_point);
+		}
+	}
+	//############################################################################
+	void Widget::_doPointFromScreen(FVector2& screen_point){
+		I_WidgetContainer* container = getContainer();
+		Widget* parent = dynamic_cast<Widget*>(container);
+		if(parent){
+			parent->_doPointFromScreen(screen_point);
+		}
+		_translatePointIn(screen_point);
 	}
 	//############################################################################
 }//namespace OpenGUI{
