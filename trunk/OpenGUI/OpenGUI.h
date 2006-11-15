@@ -33,26 +33,14 @@
 #include "OpenGUI_RenderTexture.h"
 #include "OpenGUI_TextureManager.h"
 #include "OpenGUI_RenderOperation.h"
-//#include "OpenGUI_Primitives.h" //REMOVED replacing with new Brush based system
 #include "OpenGUI_Renderer.h"
+#include "OpenGUI_Viewport.h"
 
 //Includes necessary for core functionality
-
-//#include "OpenGUI_MouseButton.h"  //REMOVED replacing with more generic Input namespace to handle specifics of special input values
-
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
-
-//#include "OpenGUI_Message.h"  //REMOVED replacing with new Object based system
-//#include "OpenGUI_EventListener.h" //REMOVED replacing with new Object based system
-//#include "OpenGUI_PropertySet.h"  //REMOVED replacing with new Object based system
-
-//#include "OpenGUI_RenderCache.h" //The RenderCache system is included where needed, and is not for use by client applications.
-
-//#include "OpenGUI_Element.h" //REMOVED replacing with new Object based system
-//#include "OpenGUI_GUISheet.h" //REMOVED replacing with new Object based system
 
 #include "OpenGUI_TextureManager.h"
 #include "OpenGUI_TextureData.h"
@@ -64,11 +52,6 @@
 
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
-
-
-//#include "OpenGUI_LayoutLoader.h" //temporarily removed. Will re-add after Object system in place
-//#include "OpenGUI_WidgetTemplateManager.h" //temporarily removed. Will re-add after Object system in place
-//#include "OpenGUI_WidgetFactoryManager.h" //temporarily removed. Will re-add after Object system in place
 
 //#include "OpenGUI_DynamicLib.h" // This shouldn't be needed by applications, or any other part of OpenGUI except the plugin manager
 #include "OpenGUI_PluginManager.h"
@@ -84,11 +67,8 @@
 //Generic Implementation of ResourceProvider
 #include "OpenGUI_GenericResourceProvider.h"
 
-//Base Widget
-//#include "OpenGUI_Widget.h" //REMOVED replacing with new Object based system
-
 //Generic Cursor Implementation
-//#include "OpenGUI_GenericCursor.h" //removed, maybe temporary. Yet to be determined.
+#include "OpenGUI_GenericCursor.h"
 
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_Brush.h"

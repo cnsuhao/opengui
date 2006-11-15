@@ -13,6 +13,7 @@
 namespace OpenGUI {
 	class System;
 	class Screen;
+	class Viewport;
 
 	//! Manages creating, destroying, and lookup of Screen objects
 	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
@@ -30,8 +31,10 @@ namespace OpenGUI {
 		//! Retrieve a pointer to the current singleton, if one exists. If none exists, this will return 0.
 		static ScreenManager* getSingletonPtr( void );
 
-		//! Creates a new screen with the given name at the given initial size
-		Screen* createScreen( const std::string& screenName, const FVector2& initialSize );
+		//! Creates a new screen with the given \c screenName at the given \c initialSize, rendering to the given \c viewport
+		/*! The \c viewport is optional, but you cannot render a Screen without a Viewport to render to, so
+		Screens with no Viewport are created disabled, and cannot be enabled until a Viewport is assigned. */
+		Screen* createScreen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport = 0 );
 		//! destroys the given screen
 		void destroyScreen( Screen* screenPtr );
 		//! returns the requested screen by name, or 0 on failure
@@ -62,9 +65,6 @@ namespace OpenGUI {
 		*/
 		float statGetFPS();
 
-		/*! \internal Notifies each Screen that the main viewport just changed size,
-		so it can take the appropriate action */
-		void _notifyViewportDimensionsChanged();
 	protected:
 		void destroyAllScreens();
 	private:

@@ -418,6 +418,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Viewport.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Widget.cpp"
 				>
 			</File>
@@ -705,6 +709,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Value.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Viewport.h"
 				>
 			</File>
 			<File

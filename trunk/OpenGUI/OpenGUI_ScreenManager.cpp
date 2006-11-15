@@ -42,13 +42,13 @@ namespace OpenGUI {
 		XMLParser::getSingleton().UnregisterUnloadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Unload );
 	}
 	//############################################################################
-	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize ) {
+	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport ) {
 		ScreenMap::iterator iter = mScreenMap.find( screenName );
 		if ( iter != mScreenMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM,
 					  "Screen by given name already exists: " + screenName, __FUNCTION__ );
 
-		Screen* tmp = new Screen( screenName, initialSize );
+		Screen* tmp = new Screen( screenName, initialSize, viewport );
 		mScreenMap[screenName] = tmp;
 		return tmp;
 	}
@@ -103,14 +103,6 @@ namespace OpenGUI {
 			delete tmp;
 		}
 		mScreenMap.clear();
-	}
-	//############################################################################
-	void ScreenManager::_notifyViewportDimensionsChanged() {
-		for ( ScreenMap::iterator iter = mScreenMap.begin();
-				iter != mScreenMap.end(); iter++ ) {
-			Screen* screen = iter->second;
-			screen->_notifyViewportDimensionsChanged();
-		}
 	}
 	//############################################################################
 	void ScreenManager::_stat_UpdateFPS() {
