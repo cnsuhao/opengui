@@ -31,4 +31,8 @@ namespace OpenGUI {
 		screenDetached( screen );
 	}
 	//############################################################################
+	const Viewport::ScreenSet& Viewport::getScreenSet(){
+		return mScreens;
+	}
+	//############################################################################
 }
