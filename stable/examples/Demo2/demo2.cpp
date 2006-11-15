@@ -5,6 +5,7 @@
 #include "../Amethyst/Amethyst_Button.h"
 #include "../Amethyst/Amethyst_CheckBox.h"
 #include "../Amethyst/Amethyst_RadioButton.h"
+#include "../Amethyst/Amethyst_ProgressBar.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -27,10 +28,13 @@ private:
 
 using namespace OpenGUI;
 
+Amethyst::ProgressBar *g_pProgressBar = NULL;
+
 void buttonCallback( Object *pObj , EventArgs *pEvent )
 {
-
+	g_pProgressBar->doStep();
 }
+
 
 void Demo2App::preRun() {
 	XMLParser::getSingleton().LoadFromFile("metal.xml");
@@ -90,7 +94,7 @@ void Demo2App::preRun() {
 
 
 	Amethyst::RadioButton* testRadio1 = new Amethyst::RadioButton();
-	testRadio1->setName("SampleMetalCheck");
+	testRadio1->setName("SampleMetalCheckRadio1");
 	testRadio1->setImagery("MetalButtonNormal");
 	testRadio1->setImageryMouseOver("MetalButtonHover");
 	testRadio1->setImageryPressed("MetalButtonPress"); 
@@ -110,7 +114,7 @@ void Demo2App::preRun() {
 	testRadio1->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
 	Amethyst::RadioButton* testRadio2 = new Amethyst::RadioButton();
-	testRadio2->setName("SampleMetalCheck");
+	testRadio2->setName("SampleMetalCheckRadio2");
 	testRadio2->setImagery("MetalButtonNormal");
 	testRadio2->setImageryMouseOver("MetalButtonHover");
 	testRadio2->setImageryPressed("MetalButtonPress"); 
@@ -130,7 +134,7 @@ void Demo2App::preRun() {
 	testRadio2->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
 	Amethyst::RadioButton* testRadio3 = new Amethyst::RadioButton();
-	testRadio3->setName("SampleMetalCheck");
+	testRadio3->setName("SampleMetalCheckRadio3");
 	testRadio3->setImagery("MetalButtonNormal");
 	testRadio3->setImageryMouseOver("MetalButtonHover");
 	testRadio3->setImageryPressed("MetalButtonPress"); 
@@ -149,12 +153,25 @@ void Demo2App::preRun() {
 	testRadio3->getEvents().createEvent("Activate");
 	testRadio3->getEvents()["Activate"].add( new EventCallback((EventCallback::EventCallbackFunc *)&buttonCallback) );
 
+	Amethyst::ProgressBar *bar = new Amethyst::ProgressBar;
+	bar->setTop(290);
+	bar->setLeft(110);
+	bar->setHeight(60);
+	bar->setWidth(400);
+	bar->setFont(Font( "pecot", 20 ));
+	mScreen->Children.add_back(bar, true);
 
+	g_pProgressBar = bar;
 }
 
 
+int count = 0;
 void Demo2App::perframeRun() {
-	
+	if(++count >= 100)
+	{
+		count = 0;
+		g_pProgressBar->doStep();
+	}
 }
 void Demo2App::mousePositionCallback( int x, int y ) {
 	int sx,sy;

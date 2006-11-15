@@ -46,7 +46,13 @@ if platform == "win32":
 	G_DEBUG_CPPDEFINES += ['_DEBUG']
 	G_RELEASE_CPPDEFINES += ['NDEBUG']
 
-
+if platform == 'posix':
+	G_CPPFLAGS += ['-Wall']
+	G_DEBUG_CPPFLAGS += Split("-g")
+	G_RELEASE_CPPFLAGS += Split("-O3")
+	G_CPPDEFINES += []
+	G_DEBUG_CPPDEFINES += ['_DEBUG']
+	G_RELEASE_CPPDEFINES += ['NDEBUG']
 
 ###################################################
 # Process debug/release, combining the specifics with the generals
@@ -84,8 +90,9 @@ SConscript(['OpenGUI/SConscript'])
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
 
-# we need this for the following dependencies
-base_env.Append(CPPDEFINES = ['_CRT_SECURE_NO_DEPRECATE'])
+if platform == "win32":
+	# we need this for the following dependencies on win32
+	base_env.Append(CPPDEFINES = ['_CRT_SECURE_NO_DEPRECATE'])
 
 SConscript(['dependencies/tinyxml/SConscript'])
 SConscript(['dependencies/freetype2/SConscript'])

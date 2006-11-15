@@ -77,6 +77,10 @@ namespace OpenGUI {
 		void eventInvalidatedChild();
 //@}
 
+		// reimplementations from Widget
+		virtual void _translatePointIn( FVector2& point );
+		virtual void _translatePointOut( FVector2& point );
+
 	protected:
 //!\name Event Handlers
 //@{
