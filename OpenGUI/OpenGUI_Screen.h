@@ -13,6 +13,7 @@
 
 namespace OpenGUI {
 	class ScreenManager;
+	class Viewport;
 
 	//! Every GUI is built into a screen.
 	/*! Screens are the base of every GUI display, and it's often best to think
@@ -162,12 +163,10 @@ namespace OpenGUI {
 			mAutoUpdating = autoUpdate;
 		}
 
-		//! binds the given RenderTexture as the new render target for this Screen
-		void bindRenderTexture( RenderTexturePtr renderTexture );
-		//! unbinds the current RenderTexture from this Screen, resetting the render target to the main window
-		void unbindRenderTexture();
-		//! returns true if this screen is bound to a RenderTexture
-		bool isBound() const;
+		//! bind this Screen to draw to the given \c viewport
+		void setViewport( Viewport* viewport );
+		//! returns the Viewport this Screen renders into
+		Viewport* getViewport() const;
 
 		//! Invalidates all contained Widgets, causing a complete redraw on next update()
 		void invalidateAll();
@@ -177,22 +176,27 @@ namespace OpenGUI {
 		//! Resets the UpdateTime statistic
 		void statsResetUpdateTime();
 
+		//! Sets this screen active or disabled according to the given \c active flag
+		void setActive( bool active );
+		//! returns the active status for this Screen
+		bool isActive();
+
+		//! \internal returns \c true if this Screen is both active and has a valid Viewport set
+		bool _isRenderable();
+
 	protected:
 		// We aren't for creation outside of ScreenManager
-		Screen( const std::string& screenName, const FVector2& initialSize );
+		Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport );
 		// Not for deletion either
 		virtual ~Screen();
-
-		//! \internal If this Screen renders to the main viewport, this matters. Otherwise it doesn't.
-		void _notifyViewportDimensionsChanged();
 
 		//! \internal private implementation of injectCursorPosition(), post sanity checks
 		bool _injectCursorPosition( float x_rel, float y_rel );
 
 	private:
-		//! returns the size of the render target of this Screen
-		const IVector2& getRenderTargetSize() const;
-
+		Viewport* mViewport; // current viewport
+		IVector2 mPrevViewportSize; // viewport size from last render (auto initialized to 0,0)
+		bool mActive; // active/disabled
 		bool mAutoUpdating; // updated by System::updateScreens or not
 		bool mAutoTiming; // times injected by System:: or not
 		std::string mName;
@@ -207,7 +211,6 @@ namespace OpenGUI {
 			mPPUcache_valid = false;
 		}
 		void _UpdatePPU() const; //updates the PPU cache
-		RenderTexturePtr renderTarget;
 
 		//input state variables
 		FVector2 mCursorPos; // last known cursor position, used for relative cursor input injection

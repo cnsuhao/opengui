@@ -101,23 +101,11 @@ namespace OpenGUI {
 		//! Updates the TimerManager using the built in time advancement code
 		void updateTime();
 
-		//! Called before any rendering takes place
-		void _preUpdate();
-		//! Called after all rendering has taken place
-		void _postUpdate();
-
 		//! Returns a pointer to the registered ResourceProvider. Apps really shouldn't need, or use, this.
 		/*! \deprecated Ideally, no part of %OpenGUI should need this. */
 		ResourceProvider* _getResourceProvider() {
 			return mResourceProvider;
 		}
-
-		//! Notify the System that the dimensions of the viewport it is drawing to have changed.
-		/*! This \b should be automatically called by the Renderer implementation, however if
-		for some unknown reason the renderer cannot be relied upon to make the call, the
-		application can call this function to inform the System of the dimension change instead.
-		*/
-		void notifyViewportDimensionsChanged();
 
 	protected:
 

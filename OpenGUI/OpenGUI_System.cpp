@@ -64,9 +64,6 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No valid Renderer provided", "System" );
 		}
 
-		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Initial Viewport Resolution: "
-		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
-
 		bool RendererRTT = mRenderer->supportsRenderToTexture();
 		LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Renderer RTT Support: ";
 		if ( RendererRTT ) LogManager::SlogMsg( "INIT", OGLL_INFO3 ) << "Detected!";
@@ -176,21 +173,6 @@ namespace OpenGUI {
 		PluginManager::getSingleton().unloadPlugin( filename );
 	}
 	//############################################################################
-	void System::notifyViewportDimensionsChanged() {
-		LogManager::SlogMsg( "System", OGLL_INFO3 ) << "Changed Viewport Resolution: "
-		<< mRenderer->getViewportDimensions().toStr() << Log::endlog;
-
-		mScreenManager->_notifyViewportDimensionsChanged();
-	}
-	//############################################################################
-	void System::_preUpdate() {
-		mRenderer->preRenderSetup();
-	}
-	//############################################################################
-	void System::_postUpdate() {
-		mRenderer->postRenderCleanup();
-	}
-	//############################################################################
 	/*! The following functions are called in the given order:
 	- System::updateTime()
 	- System::updateScreens()
@@ -207,20 +189,11 @@ namespace OpenGUI {
 	/*!
 	The following functions are called in the given order:
 	- ScreenManager::updateTime()
-	- _preUpdate()
 	- ScreenManager::updateScreens()
-	- _postUpdate()
-
-	If you plan on updating Screens individually, or by calling
-	ScreenManager::updateScreens() yourself, you will need to call _preUpdate()
-	before you begin updating Screens, and _postUpdate() when you are done
-	updating Screens this pass.
 	*/
 	void System::updateScreens() {
 		mScreenManager->updateTime();
-		_preUpdate();
 		mScreenManager->updateScreens();
-		_postUpdate();
 	}
 	//############################################################################
 	bool System::_OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
