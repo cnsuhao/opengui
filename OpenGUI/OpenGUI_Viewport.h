@@ -58,8 +58,8 @@ namespace OpenGUI {
 
 	private:
 		ScreenSet mScreens;
-		void _screenAttach(Screen* screen);
-		void _screenDetach(Screen* screen);
+		void _screenAttach( Screen* screen );
+		void _screenDetach( Screen* screen );
 	};
 }
 
