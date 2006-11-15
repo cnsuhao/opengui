@@ -410,7 +410,7 @@ namespace OpenGUI {
 		return Children.getWidget( childName );
 	}
 	//############################################################################
-	void ContainerControl::_translatePointIn(FVector2& point){
+	void ContainerControl::_translatePointIn( FVector2& point ) {
 		const FVector2& pos = getPosition();
 		point.x -= pos.x;
 		point.y -= pos.y;
@@ -418,7 +418,7 @@ namespace OpenGUI {
 		point.y -= m_ClientAreaOffset_UL.y;
 	}
 	//############################################################################
-	void ContainerControl::_translatePointOut(FVector2& point){
+	void ContainerControl::_translatePointOut( FVector2& point ) {
 		const FVector2& pos = getPosition();
 		point.x += pos.x;
 		point.y += pos.y;
