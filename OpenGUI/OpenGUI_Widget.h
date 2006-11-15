@@ -102,6 +102,15 @@ namespace OpenGUI {
 		//! \internal follows the given \c pathList, returning the ending location. The \c pathList is modified along the way
 		Widget* _getPath( StringList& pathList ) const;
 
+		//! Translates the given point from coordinates local to this Widget into Screen level coordinates
+		FVector2 pointToScreen(const FVector2& local_point);
+		//! Translates the given point from Screen level coordinates into coordinates local to this Widget 
+		FVector2 pointFromScreen(const FVector2& screen_point);
+		//! Translate the given point from local coordinates to inside coordinates
+		virtual void _translatePointIn(FVector2& point);
+		//! Translate the given point from inside coordinates to local coordinates
+		virtual void _translatePointOut(FVector2& point);
+
 		//! \internal prepares the Brush for use, calls eventDraw, and then ensures restored Brush to initial state
 		virtual void _draw( Brush& brush );
 
@@ -244,6 +253,8 @@ namespace OpenGUI {
 
 		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)
 		void _attaching(); // called directly before the attach occurs
+		void _doPointToScreen(FVector2& local_point);
+		void _doPointFromScreen(FVector2& screen_point);
 	};
 
 } //namespace OpenGUI{
