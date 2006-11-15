@@ -117,6 +117,11 @@ namespace OpenGUI {
 		//!\internal injects tick events to this widget
 		virtual void _tick( float seconds );
 
+		//! Returns \c true if this Widget has cursor focus within its Screen
+		bool hasCursorFocus();
+		//! Returns \c true if this Widget has key focus within its Screen
+		bool hasKeyFocus();
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();

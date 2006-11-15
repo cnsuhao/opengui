@@ -686,4 +686,18 @@ namespace OpenGUI {
 		_translatePointIn( screen_point );
 	}
 	//############################################################################
+	/*! If this Widget is not attached to a Screen, the return value is always \c false. */
+	bool Widget::hasCursorFocus() {
+		Screen* screen = getScreen();
+		if ( !screen ) return false;
+		return screen->getCursorFocusedWidget() == this;
+	}
+	//############################################################################
+	/*! If this Widget is not attached to a Screen, the return value is always \c false. */
+	bool Widget::hasKeyFocus() {
+		Screen* screen = getScreen();
+		if ( !screen ) return false;
+		return screen->getKeyFocusedWidget() == this;
+	}
+	//############################################################################
 }//namespace OpenGUI{
