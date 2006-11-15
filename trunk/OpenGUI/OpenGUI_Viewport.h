@@ -45,13 +45,16 @@ namespace OpenGUI {
 
 		//! Called when a Screen attaches to this Viewport
 		virtual void screenAttached( Screen* attachingScreen ) {
-			/**/
+			/* no default action */
 		}
 		//! Called when a Screen detaches from this Viewport
 		/*! It is possible for this to be called during destruction if there are remaining attached Screens. */
 		virtual void screenDetached( Screen* detachingScreen ) {
-			/**/
+			/* no default action */
 		}
+
+		//! Returns a const reference to the stored set of attached Screens
+		const ScreenSet& getScreenSet();
 
 	private:
 		ScreenSet mScreens;
