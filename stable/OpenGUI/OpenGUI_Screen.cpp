@@ -6,6 +6,7 @@
 #include "OpenGUI_Brush.h"
 #include "OpenGUI_Control.h"
 #include "OpenGUI_TimerManager.h"
+#include "OpenGUI_Viewport.h"
 
 //#include "OpenGUI_Brush_RTT.h"
 #include "OpenGUI_TextureManager.h"
@@ -13,7 +14,10 @@
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
 	public:
-		ScreenBrush( Screen* screenPtr, RenderTexturePtr renderTexture = 0 ): mScreen( screenPtr ), mRenderTexture( renderTexture ) {}
+		ScreenBrush( Screen* screenPtr, Viewport* viewport ): mScreen( screenPtr ), mViewport( viewport ) {
+			if ( !mViewport )
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Viewport", __FUNCTION__ );
+		}
 		virtual ~ScreenBrush() {
 			/**/
 		}
@@ -28,8 +32,7 @@ namespace OpenGUI {
 			return mScreen->getUPI();
 		}
 		virtual bool isRTTContext() const {
-			if ( mRenderTexture )
-				return true;
+			/* regardless of whether we are or not, we say that we aren't */
 			return false;
 		}
 
@@ -46,33 +49,22 @@ namespace OpenGUI {
 			Renderer::getSingleton().doRenderOperation( renderOp );
 		}
 		virtual void onActivate() {
-			if ( mRenderTexture )
-				Renderer::getSingleton().selectRenderContext( mRenderTexture.get() );
-			else
-				Renderer::getSingleton().selectRenderContext( 0 );
+			Renderer::getSingleton().selectRenderContext( 0 );
 		}
 		virtual void onClear() {
-			Renderer::getSingleton().clearContents();
+			/* we don't try to clear viewports */
 		}
 	private:
 		Screen* mScreen;
-		RenderTexturePtr mRenderTexture;
+		Viewport* mViewport;
 	};
 
 	//############################################################################
-	Screen::Screen( const std::string& screenName, const FVector2& initialSize ) {
+	Screen::Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport ) {
 		mName = screenName;
 		mSize = initialSize;
 		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
-
-		mAutoUpdating = true; // we auto update by default
-		mAutoTiming = true; // we get time from System by default
-
-		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
-		<< " Creation"
-		<< " [" << mSize.toStr() << "]"
-		<< Log::endlog;
 
 		mCursorPressed = false; // cursor starts not pressed
 		mCursorPos.x = mSize.x / 2.0f; // cursor starts in the middle of the Screen
@@ -85,12 +77,27 @@ namespace OpenGUI {
 		m_KeyFocus = 0; // start with no keyboard focused widget
 
 		mStatUpdateTimer = TimerManager::getSingleton().getTimer();
+
+		mAutoUpdating = true; // we auto update by default
+		mAutoTiming = true; // we get time from System by default
+		mActive = true; // active by default
+		mViewport = 0; // current viewport
+		setViewport( viewport ); // we do it this way to ensure proper Screen->Viewport linkage
+
+		std::stringstream ss;
+		ss << "[" << mName << "] Creation  --  Size: " << mSize.toStr();
+		if ( mViewport )
+			ss << "  Viewport: " << mViewport->getSize().toStr();
+		else
+			ss << "  No Viewport";
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << ss.str() << Log::endlog;
 	}
 	//############################################################################
 	Screen::~Screen() {
-		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ") Destruction" << Log::endlog;
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "[" << mName << "] Destruction" << Log::endlog;
 		_setKeyFocus( 0 );
 		_setCursorFocus( 0 );
+		setViewport( 0 ); // release from the current viewport, if there is one
 		/**/
 	}
 	//############################################################################
@@ -144,14 +151,17 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::_UpdatePPU() const {
-		const IVector2& targetSize = getRenderTargetSize();
+		Viewport* v = getViewport();
+		if ( !v )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot calculate UPI without a target Viewport", __FUNCTION__ );
+		const IVector2& targetSize = v->getSize();
 		mPPUcache.x = (( float )targetSize.x ) / mSize.x;
 		mPPUcache.y = (( float )targetSize.y ) / mSize.y;
 		mPPUcache_valid = true;
 	}
 	//############################################################################
 	void Screen::setUPI( const FVector2& newUPI ) {
-		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "[" << mName << "]"
 		<< " Changed UnitsPerInch"
 		<< " From:" << mUPI.toStr() << " To:" << newUPI.toStr()
 		<< Log::endlog;
@@ -169,50 +179,33 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::setSize( const FVector2& newSize ) {
-		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "(" << mName << ")"
+		LogManager::SlogMsg( "Screen", OGLL_INFO ) << "[" << mName << "]"
 		<< " Changed Size"
 		<< " From:" << mSize.toStr() << " To:" << newSize.toStr()
 		<< Log::endlog;
 
 		mSize = newSize;
 		_DirtyPPUcache();
-
 		invalidateAll();
 	}
 	//############################################################################
-	/*! For screens rendering to the full window, this is equal to the render window resolution.
-		For screens rendering to a render texture, it is the texture size.
-	*/
-	const IVector2& Screen::getRenderTargetSize()const {
-		if ( isBound() ) {
-			return renderTarget->getSize();
-		} else {
-			return Renderer::getSingleton().getViewportDimensions();
-		}
-	}
-	//############################################################################
-	void Screen::bindRenderTexture( RenderTexturePtr renderTexture ) {
-		renderTarget = renderTexture;
+	void Screen::setViewport( Viewport* viewport ) {
+		if ( viewport != mViewport ) {
+			if ( mViewport )
+				mViewport->_screenDetach( this );
+			mViewport = viewport;
+			if ( mViewport )
+				mViewport->_screenAttach( this );
 
-		_DirtyPPUcache();
-
-		invalidateAll();
-	}
-	//############################################################################
-	void Screen::unbindRenderTexture() {
-		bindRenderTexture( 0 );
-		_DirtyPPUcache();
-	}
-	//############################################################################
-	bool Screen::isBound()const {
-		return !renderTarget.isNull();
-	}
-	//############################################################################
-	void Screen::_notifyViewportDimensionsChanged() {
-		if ( !isBound() ) {
+			// any previous cache data is no longer useful
+			// we can't render without a viewport, so why keep it
+			_DirtyPPUcache();
 			invalidateAll();
 		}
-		_DirtyPPUcache();
+	}
+	//############################################################################
+	Viewport* Screen::getViewport() const {
+		return mViewport;
 	}
 	//############################################################################
 	void Screen::invalidateAll() {
@@ -224,9 +217,22 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Screen::update() {
-		ScreenBrush b( this, renderTarget );
-		if ( renderTarget )
-			b._clear();
+		if ( !_isRenderable() )
+			return; //abort if we are unsuitable for drawing for any reason
+
+		Renderer& renderer = Renderer::getSingleton();
+		renderer.selectViewport( mViewport ); // inform renderer of new viewport selection
+		renderer.preRenderSetup(); // begin render sequence
+		mViewport->preUpdate( this ); // inform the viewport that it is about to be updated
+
+		// if pixel alignment changed since last render...
+		if ( mPrevViewportSize != mViewport->getSize() ) {
+			_DirtyPPUcache(); // this will need to be recalculated on next use
+			invalidateAll(); // blow out any widget caches, since they are certainly inaccurate
+			mPrevViewportSize = mViewport->getSize(); //keep this for next render
+		}
+
+		ScreenBrush b( this, mViewport );
 
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
@@ -260,6 +266,11 @@ namespace OpenGUI {
 				drawCursor->eventDraw( mCursorPos.x, mCursorPos.y, b );
 		}
 
+
+		mViewport->postUpdate( this ); // inform the viewport that it is done being updated
+		renderer.postRenderCleanup(); // end render sequence
+
+		//! \todo timing here is broken. #100
 		float time = (( float )mStatUpdateTimer->getMilliseconds() ) / 1000.0f;
 		_updateStats_UpdateTime( time );
 		mStatUpdateTimer->reset();
@@ -553,6 +564,25 @@ namespace OpenGUI {
 			return child->_getPath( pathList );
 		}
 		return 0;
+	}
+	//############################################################################
+	/*! A Screen cannot be truly active unless it is both set active, and has a valid Viewport assigned.
+	All Screens are created with the "active" flag set initially to true regardless of if they are
+	created already attached to a Viewport or not. This flag can be freely toggled regardless of
+	the presence or lack of a Viewport, but the Screen will never evaluate as "renderable" unless
+	it is both marked active and has an assigned Viewport.
+	*/
+	void Screen::setActive( bool active ) {
+		mActive = active;
+	}
+	//############################################################################
+	/*! \see setActive() */
+	bool Screen::isActive() {
+		return mActive;
+	}
+	//############################################################################
+	bool Screen::_isRenderable() {
+		return mActive && mViewport;
 	}
 	//############################################################################
 }//namespace OpenGUI{

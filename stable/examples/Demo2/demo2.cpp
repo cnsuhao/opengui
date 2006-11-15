@@ -9,6 +9,7 @@
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
+#include "Renderer_OpenGL.h"
 
 class Demo2App : public DemoApp {
 public:
@@ -42,6 +43,9 @@ void Demo2App::preRun() {
 	XMLParser::getSingleton().LoadFromFile("Amethyst.xml");
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
+	Viewport* v = (static_cast<Renderer_OpenGL*>(Renderer::getSingletonPtr()))->getDefaultViewport();
+	mScreen->setViewport(v);
+
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor("MetalCursor");
 	mScreen->setCursor(cursorPtr);
 	mScreen->enableCursor();

@@ -3,6 +3,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_Types.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Singleton.h"
 
@@ -12,6 +13,7 @@
 
 namespace OpenGUI {
 	class TextureData;//forward declaration
+	class Viewport;//forward declaration
 
 	//! Base class for all renderers. Any custom Renderer should inherit this base class.
 	/*!
@@ -50,24 +52,17 @@ namespace OpenGUI {
 
 //!\name Required
 //@{
-		//! The renderer implementation must be able to properly supply %OpenGUI with viewport dimensions via this function.
-		/*! %OpenGUI requires the viewport dimensions for certain functionality
-			to work correctly.
-
-			Additionally, renderer implementations should call
-			System::notifyViewportDimensionsChanged() to inform %OpenGUI of
-			viewport size changes when they occur.
+		//! This is called to tell the Renderer to change the active Viewport to the one provided
+		/*! This function will \b never occur between a preRenderSetup()/postRenderCleanup() combination.
 		*/
-		virtual const IVector2& getViewportDimensions() = 0;
+		virtual void selectViewport( Viewport* activeViewport ) = 0;
 
-		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin.
+		//! This is always called by the System exactly once every frame before the calls to doRenderOperation() begin for a Viewport.
 		/*! The primary purpose of this is to provide the renderer an opportunity to
 			configure the projection matrix as it feels necessary, as well as set any
 			graphics API options that will be used on all (or most) render operations.
 
-			Whether the renderer provides multiple rendering contexts (render to texture)
-			or not, the active context after this call should always be the "default context"
-			(ie. the whole viewport).
+			It is guaranteed that this function will be called before the usage of any Viewport.
 		*/
 		virtual void preRenderSetup() = 0;
 
@@ -79,6 +74,9 @@ namespace OpenGUI {
 			will always assume that 0,0 x 1,1 is the full range of the render target.
 			0,0 being the upper left, and 1,1 being the lower right.
 
+			Texture UVs are always expressed as values between 0.0 and 1.0.
+			Texture::getUVs() is not currently used within OpenGUI.
+
 			The render operations provided to this function are guaranteed to be:\n
 			- Ordered back to front (painter's algorithm).
 			- Necessary: all 100% alpha'ed out operations will not make it this far. (Don't bother to validate the data, it has been done for you already)
@@ -88,7 +86,7 @@ namespace OpenGUI {
 		*/
 		virtual void doRenderOperation( RenderOperation& renderOp ) = 0;
 
-		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed.
+		//! This is always called by the System exactly once every frame after all of the calls to doRenderOperation() have been completed for a Viewport.
 		/*! Much like preRenderSetup(), this gives the renderer an opportunity to perform
 			whatever tasks it feels are necessary to return the render system back to a
 			usable state for the application.
@@ -180,7 +178,8 @@ namespace OpenGUI {
 
 		\param
 		context A pointer to the render texture that is to become the new context,
-		or 0 (NULL) to set the context to the default (viewport) context.
+		or 0 (NULL) to set the context to the default context (current Viewport) as was
+		previously selected by selectViewport()
 
 		\note This is not guaranteed to be called every frame. It is only called
 		when a context change is absolutely necessary.
@@ -190,13 +189,6 @@ namespace OpenGUI {
 		//! Should clear the contents of the current rendering context as appropriate.
 		/*! When called, this function should clear the contents of the current
 		rendering context.
-
-		\note
-		This function is called at the beginning of rendering for each context,
-		\b including the default (viewport) context. You probably don't want
-		to clear the default context here, as it will erase your previously
-		rendered scene. So make sure you check your current context to ensure
-		that you really do want to clear it before you actually do!
 
 		\attention
 		This virtual function has a default implementation.

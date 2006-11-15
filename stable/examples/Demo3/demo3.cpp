@@ -6,7 +6,9 @@
 
 class Demo3App : public DemoApp {
 public:
-	Demo3App() : DemoApp( "OpenGUI - Demo 3" ) {}
+	Demo3App() : DemoApp( "OpenGUI - Demo 3" ) {
+		mRTTViewport = 0;
+	}
 	virtual void preRun();
 	virtual void postRun();
 	virtual void perframeRun();
@@ -19,7 +21,7 @@ private:
 	OpenGUI::Screen* mScreen;
 	OpenGUI::Widget* mStatText;
 	OpenGUI::Examples::Tachometer* mTach;
-	OpenGUI::RenderTexturePtr mRenderTexture;
+	OpenGUI::Viewport* mRTTViewport;
 };
 
 using namespace OpenGUI;
@@ -80,12 +82,17 @@ protected:
 };
 
 void Demo3App::preRun() {
-	mRenderTexture = TextureManager::getSingleton().createRenderTexture(IVector2(400,300));
+	Renderer_OpenGL& renderer = static_cast<Renderer_OpenGL&>(Renderer::getSingleton());
+
+	mRTTViewport = renderer.createRTTViewport(IVector2(400,300));
 
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	mScreen->bindRenderTexture( mRenderTexture );
+	
+	mScreen->setViewport(mRTTViewport);
+
+
 	
 
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
@@ -169,7 +176,9 @@ void Demo3App::preRun() {
 	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
 }
 void Demo3App::postRun(){
-	mRenderTexture = 0;
+	Renderer_OpenGL& renderer = static_cast<Renderer_OpenGL&>(Renderer::getSingleton());
+	if(mRTTViewport)
+		renderer.destroyRTTViewport(mRTTViewport);
 }
 
 
@@ -202,7 +211,8 @@ void Demo3App::perframeRun() {
 	}
 }
 void Demo3App::postframeRun() {
-	OGLRTexture* rTex = dynamic_cast<OGLRTexture*>(mRenderTexture.get());
+	OGL_Viewport* viewport = static_cast<OGL_Viewport*>(mRTTViewport);
+	OGLRTexture* rTex = viewport->getRenderTexture();
 	float U,V;
 	rTex->getUVs(U,V);
 	glMatrixMode( GL_PROJECTION );

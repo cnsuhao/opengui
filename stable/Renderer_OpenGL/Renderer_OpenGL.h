@@ -1,24 +1,34 @@
 #ifndef D10A6A7B_DE80_49a2_A962_92696C85AFB8
 #define D10A6A7B_DE80_49a2_A962_92696C85AFB8
 #include <OpenGUI.h>
+
+#include "OGL_Viewport.h"
+
+/*
+	This is a reference renderer used for OpenGUI development and demonstration purposes.
+	It is not designed for production use in its current state. There are many
+	additional optimization and feature paths available that were not taken,
+	and it is highly recommended that you modify this renderer or create a new
+	one if you plan on using OpenGUI for production use with native OpenGL.
+*/
+
 namespace OpenGUI {
 	class Renderer_OpenGL : public Renderer {
 	public:
 		Renderer_OpenGL( int initial_width, int initial_height );
 		virtual ~Renderer_OpenGL();
 		// Application should call this whenever viewport resolution changes
-		void setDim( int w, int h ) {
-			mDimensions.y = h;
-			mDimensions.x = w;
-			if ( System::getSingletonPtr() )
-				System::getSingleton().notifyViewportDimensionsChanged();
-		}
+		void setDim( int w, int h );
 
-		// returns true when RTT is using rectangle textures
-		bool rectRTT();
+		//! returns a pointer to the default Viewport
+		Viewport* getDefaultViewport();
+		//! Creates a RTT Viewport of the given size (requires detected RTT support)
+		Viewport* createRTTViewport(const IVector2& size);
+		//! Destroys a previously created RTT Viewport
+		void destroyRTTViewport(Viewport* viewport);
 
 		// Required implementations for OpenGUI Renderer
-		virtual const IVector2& getViewportDimensions();
+		virtual void selectViewport( Viewport* activeViewport );
 		virtual void preRenderSetup();
 		virtual void doRenderOperation( RenderOperation& renderOp );
 		virtual void postRenderCleanup();
@@ -40,15 +50,19 @@ namespace OpenGUI {
 		void safeBegin();
 		void safeEnd();
 
-		IVector2 mDimensions;
+		OGL_Default_Viewport mDefaultViewport;
+
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
-		static TextureData* LoadTextureData( std::string filename );
+		static TextureData* LoadTextureData( std::string filename );		
 		bool mSupportRTT;
+
+		OGL_Viewport* mCurrentViewport;
 		RenderTexture* mCurrentContext;
 		Texture* mCurrentTextureState;
 		bool mSupportRectTex;
 		bool mInGLBegin;
+		bool mInRender;
 	};
 } //namespace OpenGUI{
 

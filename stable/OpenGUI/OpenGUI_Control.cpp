@@ -415,7 +415,9 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! Control implementation returns true if the point is within its rect,
-	otherwise false */
+	otherwise false.
+	\note This function is \b not focus aware. The given \c position should already
+	be in the correct coordinate space. */
 	bool Control::_isInside( const FVector2& position ) {
 		return mRect.isInside( position );
 	}
@@ -660,18 +662,26 @@ namespace OpenGUI {
 	version of this method will need to be called.
 
 	Control implementation tracks cursor position and generates \c Cursor_Enter and
-	\c Cursor_Leave as appropriate according to the result of _isInside(). */
+	\c Cursor_Leave as appropriate according to the result of _isInside().
+
+	\note This function \b is cursor focus aware, and will do the "right thing"
+	in order to ensure proper generation of Cursor_Enter/Cursor_Leave events.
+	*/
 	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		FVector2 pos = evtArgs.Position;
+		if ( hasCursorFocus() ) // translate point if necessary
+			pos = pointFromScreen( pos );
+
 		//mCursorEnterLeave_Sent
 		if ( mCursorInside ) {
 			// test if cursor is outside
-			if ( !_isInside( evtArgs.Position ) ) {
+			if ( !_isInside( pos ) ) {
 				mCursorInside = false; // store the new state
 				eventCursor_Leave( evtArgs ); // let everyone know
 			}
 		} else {
 			// test if cursor is inside
-			if ( _isInside( evtArgs.Position ) ) {
+			if ( _isInside( pos ) ) {
 				mCursorInside = true; // store the new state
 				eventCursor_Enter( evtArgs ); // let everyone know
 			}
