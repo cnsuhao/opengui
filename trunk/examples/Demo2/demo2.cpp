@@ -2,10 +2,13 @@
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 
 #include "../Amethyst/Amethyst_Label.h"
+#include "../Amethyst/Amethyst_StaticImage.h"
 #include "../Amethyst/Amethyst_Button.h"
 #include "../Amethyst/Amethyst_CheckBox.h"
 #include "../Amethyst/Amethyst_RadioButton.h"
 #include "../Amethyst/Amethyst_ProgressBar.h"
+#include "../Amethyst/Amethyst_Panel.h"
+#include "../Amethyst/Amethyst_ListBox.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -166,6 +169,23 @@ void Demo2App::preRun() {
 	mScreen->Children.add_back(bar, true);
 
 	g_pProgressBar = bar;
+
+	Amethyst::Panel *pPanel = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
+	pPanel->setTop(360);
+	pPanel->setLeft(110);
+	pPanel->setHeight(53);
+	pPanel->setWidth(51);
+	mScreen->Children.add_back(pPanel, true);
+
+
+	Amethyst::StaticImage *pStaticImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
+	pStaticImage->setTop(0);
+	pStaticImage->setLeft(0);
+	pStaticImage->setHeight(106);
+	pStaticImage->setWidth(103);
+	pStaticImage->setImagery("PieFace");
+	pPanel->Children.add_back(pStaticImage, true);
+
 }
 
 

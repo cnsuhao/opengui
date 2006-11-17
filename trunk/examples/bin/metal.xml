@@ -17,6 +17,8 @@
 		<Imagery Name="MetalCursorUpDown" Left="477" Top="98" Width="30" Height="30" />
 		<Imagery Name="MetalCursorLRArrow" Left="477" Top="129" Width="30" Height="30" />
 
+		<Imagery Name="PieFace" Left="345" Top="5" Width="106" Height="103" />
+
 	</Imageset>
 
 </OpenGUI>
