@@ -35,7 +35,7 @@ namespace OpenGUI {
 		class Label_Alignment_ObjectProperty : public ObjectProperty {
 		public:
 			virtual const char* getAccessorName() {
-				return "Text";
+				return "Text Alignment";
 			}
 			//############################################################################
 			virtual void get( Object& objectRef, Value& valueOut ) {
