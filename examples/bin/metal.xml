@@ -22,12 +22,12 @@
 		<Imagery Name="FrameUL" Left="49" Top="165" Width="5" Height="5" />
 		<Imagery Name="FrameUM" Left="55" Top="165" Width="2" Height="5" />
 		<Imagery Name="FrameUR" Left="58" Top="165" Width="5" Height="5" />
-		<Imagery Name="FrameML" Left="49" Top="5" Width="5" Height="2" />
-		<Imagery Name="FrameMM" Left="55" Top="5" Width="2" Height="2" />
-		<Imagery Name="FrameMR" Left="58" Top="5" Width="5" Height="2" />
-		<Imagery Name="FrameLL" Left="49" Top="5" Width="5" Height="5" />
-		<Imagery Name="FrameLM" Left="55" Top="5" Width="2" Height="5" />
-		<Imagery Name="FrameLR" Left="58" Top="5" Width="5" Height="5" />
+		<Imagery Name="FrameML" Left="49" Top="171" Width="5" Height="2" />
+		<Imagery Name="FrameMM" Left="55" Top="171" Width="2" Height="2" />
+		<Imagery Name="FrameMR" Left="58" Top="171" Width="5" Height="2" />
+		<Imagery Name="FrameLL" Left="49" Top="174" Width="5" Height="5" />
+		<Imagery Name="FrameLM" Left="55" Top="174" Width="2" Height="5" />
+		<Imagery Name="FrameLR" Left="58" Top="174" Width="5" Height="5" />
 
 	</Imageset>
 
