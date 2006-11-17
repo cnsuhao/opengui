@@ -33,10 +33,13 @@ private:
 using namespace OpenGUI;
 
 Amethyst::ProgressBar *g_pProgressBar = NULL;
+Amethyst::Panel *g_pPanel = NULL;
 
 void buttonCallback( Object *pObj , EventArgs *pEvent )
 {
-	g_pProgressBar->doStep();
+//	g_pProgressBar->doStep();
+
+	g_pPanel->Scroll(FVector2(-3,-3));
 }
 
 
@@ -176,7 +179,7 @@ void Demo2App::preRun() {
 	pPanel->setHeight(53);
 	pPanel->setWidth(51);
 	mScreen->Children.add_back(pPanel, true);
-
+	g_pPanel = pPanel;
 
 	Amethyst::StaticImage *pStaticImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
 	pStaticImage->setTop(0);
