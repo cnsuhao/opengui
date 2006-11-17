@@ -36,6 +36,15 @@ namespace OpenGUI {
 		bool isMemory() const {
 			return !isRTT();
 		}
+		//! public access to Brush::_clear()
+		void clear(){
+			_clear();
+		}
+		//! returns \c true if there is content stored that can be emerged
+		bool hasContent() const{
+			return mHasContent;
+		}
+
 	protected:
 		virtual void appendRenderOperation( RenderOperation &renderOp );
 		virtual void onActivate();
@@ -54,12 +63,14 @@ namespace OpenGUI {
 		void activateMemory();
 		void appendMemory( RenderOperation &renderOp );
 		void emergeMemory( Brush& targetBrush );
+
 	private:
 		Screen* mScreen;
 		FVector2 mDrawSize;
 		FVector2 mMaxUV;
 		RenderOperationList mRenderOpList;
 		RenderTexturePtr mRenderTexture;
+		bool mHasContent;
 	};
 } // namespace OpenGUI{
 

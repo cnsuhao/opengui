@@ -259,10 +259,6 @@ namespace OpenGUI {
 		//! returns true if the brush context is a render to texture surface
 		virtual bool isRTTContext() const = 0;
 
-		//! Clears the contents of this Brush's output target
-		/*! This is not something that most users would want to do. */
-		void _clear();
-
 		//! \internal Adds a raw render operation to the output
 		void _addRenderOperation( RenderOperation& renderOp );
 
@@ -286,6 +282,10 @@ namespace OpenGUI {
 		void markActive();
 		//! returns \c true if this is marked as the active brush
 		bool isActive();
+
+		//! Clears the contents of this Brush's output target
+		/*! This is not something that most users would want to do. */
+		void _clear();
 
 	private:
 		//! \internal Adds the given render operation to the brush's output.

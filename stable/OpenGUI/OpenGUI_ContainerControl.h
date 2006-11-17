@@ -136,7 +136,9 @@ namespace OpenGUI {
 		//! flushes the local draw cache. Causes a call to invalidate() automatically
 		void dirtyCache();
 		//! returns \c true if the local cache is dirty
-		bool isCacheDirty();
+		bool isCacheDirty() const;
+		//! retrieves a Brush reference to the underlying cache. Should only be used within _draw() overloads
+		Brush_Caching& _getCacheBrush();
 
 	private:
 		void _setChildControlLayoutState( bool state );

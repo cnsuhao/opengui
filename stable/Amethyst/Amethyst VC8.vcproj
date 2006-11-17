@@ -212,11 +212,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_ListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Panel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_ProgressBar.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Amethyst_RadioButton.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_StaticImage.cpp"
 				>
 			</File>
 		</Filter>
@@ -275,6 +287,10 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_ScrollBar_V.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_StaticImage.h"
 				>
 			</File>
 			<File
