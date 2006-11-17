@@ -9,6 +9,7 @@ namespace OpenGUI {
 	Brush_RTT::Brush_RTT( Screen* parentScreen, const FVector2& size ): mScreen( parentScreen ), mDrawSize( size ) {
 		if ( !mScreen )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
+		mHasContent = false;
 		IVector2 texSize;
 		float xTexSize, yTexSize, xPixelSize, yPixelSize;
 		xPixelSize = mDrawSize.x * getPPU_Raw().x;
@@ -77,6 +78,7 @@ namespace OpenGUI {
 			}
 		}
 		Renderer::getSingleton().doRenderOperation( renderOp );
+		mHasContent = true;
 	}
 	//############################################################################
 	void Brush_RTT::onActivate() {
@@ -84,6 +86,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_RTT::onClear() {
+		mHasContent = false;
 		Renderer::getSingleton().clearContents();
 	}
 	//############################################################################

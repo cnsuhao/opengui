@@ -26,13 +26,24 @@ namespace OpenGUI {
 		virtual bool isRTTContext() const {
 			return false;
 		}
+		//! public access to Brush::_clear()
+		void clear(){
+			_clear();
+		}
+		//! returns \c true if there is content stored that can be emerged
+		bool hasContent() const{
+			return mHasContent;
+		}
+
 	protected:
 		virtual void appendRenderOperation( RenderOperation &renderOp );
 		virtual void onActivate();
 		virtual void onClear();
+
 	private:
 		Screen* mScreen;
 		RenderOperationList mRopList;
+		bool mHasContent;
 	};
 } // namespace OpenGUI{
 

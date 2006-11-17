@@ -11,6 +11,7 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
 		if ( !initRTT() )
 			initMemory();
+		mHasContent = false;
 	}
 	//############################################################################
 	Brush_Caching::~Brush_Caching() {
@@ -44,6 +45,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::appendRenderOperation( RenderOperation &renderOp ) {
+		mHasContent = true;
 		if ( isRTT() )
 			appendRTT( renderOp );
 		else
@@ -58,6 +60,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::onClear() {
+		mHasContent = false;
 		if ( isRTT() )
 			clearRTT();
 		else
