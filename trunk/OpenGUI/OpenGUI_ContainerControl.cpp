@@ -165,12 +165,10 @@ namespace OpenGUI {
 	void ContainerControl::_draw( Brush& brush ) {
 		if ( getVisible() ) {
 
+			Brush_Caching& cacheBrush = _getCacheBrush();
+
 			// do we need to rebuild the cache brush?
 			if ( isCacheDirty() ) {
-				mCacheBrush = new Brush_Caching( getScreen(), getSize() );
-
-				Brush_Caching& cacheBrush = *mCacheBrush;
-
 				cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
 				//draw background
 				cacheBrush._pushMarker( this );
@@ -197,10 +195,9 @@ namespace OpenGUI {
 			}
 
 			//push cache into output stream
-			Brush_Caching& cache = *mCacheBrush;
 			brush.pushAlpha( getAlpha() );
 			brush.pushPosition( getPosition() );
-			cache.emerge( brush );
+			cacheBrush.emerge( brush );
 			brush.pop(); // pop position offset
 			brush.pop(); // pop alpha
 		}
@@ -396,10 +393,17 @@ namespace OpenGUI {
 		invalidate();
 	}
 	//############################################################################
-	bool ContainerControl::isCacheDirty() {
+	bool ContainerControl::isCacheDirty() const {
 		if ( !mCacheBrush )
 			return true;
-		return false;
+		return !mCacheBrush->hasContent();
+	}
+	//############################################################################
+	Brush_Caching& ContainerControl::_getCacheBrush(){
+		if ( !mCacheBrush ){
+			mCacheBrush = new Brush_Caching( getScreen(), getSize() );
+		}
+		return *mCacheBrush;
 	}
 	//############################################################################
 	void ContainerControl::_tick( float seconds ) {
