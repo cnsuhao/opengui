@@ -8,6 +8,7 @@
 #include "../Amethyst/Amethyst_RadioButton.h"
 #include "../Amethyst/Amethyst_ProgressBar.h"
 #include "../Amethyst/Amethyst_Panel.h"
+#include "../Amethyst/Amethyst_Frame.h"
 #include "../Amethyst/Amethyst_ListBox.h"
 
 #include "OpenGUI.h"
@@ -189,6 +190,21 @@ void Demo2App::preRun() {
 	pStaticImage->setImagery("PieFace");
 	pPanel->Children.add_back(pStaticImage, true);
 
+	Amethyst::Frame *pFrame = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
+	pFrame->setTop(430);
+	pFrame->setLeft(110);
+	pFrame->setHeight(100);
+	pFrame->setWidth(100);
+	pFrame->setImagery("FrameUL", Amethyst::Frame::UL);
+	pFrame->setImagery("FrameUM", Amethyst::Frame::UM);
+	pFrame->setImagery("FrameUR", Amethyst::Frame::UR);
+	pFrame->setImagery("FrameML", Amethyst::Frame::ML);
+	pFrame->setImagery("FrameMM", Amethyst::Frame::MM);
+	pFrame->setImagery("FrameMR", Amethyst::Frame::MR);
+	pFrame->setImagery("FrameLL", Amethyst::Frame::LL);
+	pFrame->setImagery("FrameLM", Amethyst::Frame::LM);
+	pFrame->setImagery("FrameLR", Amethyst::Frame::LR);
+	mScreen->Children.add_back(pFrame, true);
 }
 
 
