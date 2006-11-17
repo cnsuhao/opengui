@@ -7,6 +7,7 @@ namespace OpenGUI {
 	Brush_Memory::Brush_Memory( Screen* parentScreen ): mScreen( parentScreen ) {
 		if ( !mScreen )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Constructor requires a valid pointer to destination Screen", __FUNCTION__ );
+		mHasContent = false;
 	}
 	//############################################################################
 	Brush_Memory::~Brush_Memory() {
@@ -42,6 +43,7 @@ namespace OpenGUI {
 		TriangleList& inList = *( renderOp.triangleList );
 		TriangleList& outList = *( newRop.triangleList );
 		outList = inList;
+		mHasContent = true;
 	}
 	//############################################################################
 	void Brush_Memory::onActivate() {
@@ -50,6 +52,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Brush_Memory::onClear() {
 		mRopList.clear();
+		mHasContent = false;
 	}
 	//############################################################################
 } // namespace OpenGUI{
