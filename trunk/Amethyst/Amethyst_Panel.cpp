@@ -26,21 +26,21 @@ namespace OpenGUI {
 
 		//############################################################################
 		void Panel::_draw( Brush& brush ) {
-#if 0  // will restore when zero gets the private member reset to protected
 			if ( getVisible() ) {
+
+				Brush_Caching& cacheBrush = _getCacheBrush();
 
 				// do we need to rebuild the cache brush?
 				if ( isCacheDirty() ) {
-					mCacheBrush = new Brush_Caching( getScreen(), getSize() );
-
-					Brush_Caching& cacheBrush = *mCacheBrush;
-
 					cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
 					//draw background
 					cacheBrush._pushMarker( this );
 					eventDrawBG( cacheBrush );
 					cacheBrush._popMarker( this );
 					cacheBrush.pop(); // pop the parent coords offset
+
+					// now scroll the panel contents
+					cacheBrush.pushPosition(FVector2(-30,-30));
 
 					//draw children
 					if ( m_ClipChildren ) // setup the client area clip if we have one
@@ -52,6 +52,9 @@ namespace OpenGUI {
 					if ( m_ClipChildren ) // pop the client area clip if we had one
 						cacheBrush.pop();
 
+					// remove the scroll coords
+					cacheBrush.pop();
+
 					cacheBrush.pushPosition( -getPosition() ); //offset to parent coords for Container drawing
 					//draw foreground
 					cacheBrush._pushMarker( this );
@@ -61,16 +64,12 @@ namespace OpenGUI {
 				}
 
 				//push cache into output stream
-				Brush_Caching& cache = *mCacheBrush;
 				brush.pushAlpha( getAlpha() );
 				brush.pushPosition( getPosition() );
-				cache.emerge( brush );
+				cacheBrush.emerge( brush );
 				brush.pop(); // pop position offset
 				brush.pop(); // pop alpha
 			}
-#else
-			ContainerControl::_draw( brush );
-#endif
 		}
 
 	}
