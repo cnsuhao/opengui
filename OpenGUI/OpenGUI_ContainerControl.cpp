@@ -349,8 +349,8 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
 		FVector2 pos = position;
-		pos.x += m_ClientAreaOffset_UL.x;
-		pos.y += m_ClientAreaOffset_UL.y;
+		_translatePointIn(pos);
+
 		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
 			if ( child->_isInside( pos ) ) {
@@ -364,8 +364,8 @@ namespace OpenGUI {
 	//############################################################################
 	Widget* ContainerControl::_getChildAt( const FVector2& position, bool recursive ) {
 		FVector2 pos = position;
-		pos.x += m_ClientAreaOffset_UL.x;
-		pos.y += m_ClientAreaOffset_UL.y;
+		_translatePointIn(pos);
+
 		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
 			if ( child->_isInside( pos ) ) {
@@ -438,18 +438,14 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_translatePointIn( FVector2& point ) {
 		const FVector2& pos = getPosition();
-		point.x -= pos.x;
-		point.y -= pos.y;
-		point.x -= m_ClientAreaOffset_UL.x;
-		point.y -= m_ClientAreaOffset_UL.y;
+		point -= pos;
+		point -= m_ClientAreaOffset_UL;
 	}
 	//############################################################################
 	void ContainerControl::_translatePointOut( FVector2& point ) {
 		const FVector2& pos = getPosition();
-		point.x += pos.x;
-		point.y += pos.y;
-		point.x += m_ClientAreaOffset_UL.x;
-		point.y += m_ClientAreaOffset_UL.y;
+		point += m_ClientAreaOffset_UL;
+		point += pos;
 	}
 	//############################################################################
 } // namespace OpenGUI {
