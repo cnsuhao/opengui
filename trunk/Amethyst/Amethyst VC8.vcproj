@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_Frame.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_Label.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_Exports.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Frame.h"
 				>
 			</File>
 			<File
