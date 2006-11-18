@@ -1,7 +1,9 @@
 
 #include "DemoAppFrameWork.h"
 #include "../TachometerWidget/Tachometer.h"
+#include "Renderer_Ogre.h"
 
+#include "Ogre.h"
 
 class Demo1App : public DemoApp {
 public:
@@ -17,6 +19,7 @@ private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
 	OpenGUI::Screen* mScreen;
+	OpenGUI::Viewport* mViewport;
 	OpenGUI::Widget* mStatText;
 	OpenGUI::Examples::Tachometer* mTach;
 };
@@ -50,7 +53,7 @@ public:
 		mVAlign = v_align;
 		mHAlign = h_align;
 	}
-	void setWrap(bool wrap){
+	void setWrap( bool wrap ) {
 		invalidate();
 		mAutoWrap = wrap;
 	}
@@ -79,9 +82,12 @@ protected:
 };
 
 void Demo1App::preRun() {
+	mViewport = new OgreViewport( getCamera()->getViewport() );
+
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
+	mScreen->setViewport(mViewport);
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();
@@ -90,9 +96,9 @@ void Demo1App::preRun() {
 	mTach->setName( "Tachometer" );
 	mTach->setBackgroundImagery( "TachBG" );
 	mTach->setNeedleImagery( "TachNeedle" );
-	mTach->setNeedleStartAngle(135.0f);
-	mTach->setNeedleMaxValue(900.0f);
-	mTach->setNeedleSweepAngle(225.0f);
+	mTach->setNeedleStartAngle( 135.0f );
+	mTach->setNeedleMaxValue( 900.0f );
+	mTach->setNeedleSweepAngle( 225.0f );
 	mTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	mTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	mTach->setNeedleValue( 0.0f );
@@ -135,8 +141,8 @@ void Demo1App::preRun() {
 	SimpleText* wndText = new SimpleText();
 	wndText->setName( "wndText" );
 	wndText->setFont( Font( "pecot", 12 ) );
-	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well.");
-	wndText->setWrap(true);
+	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well." );
+	wndText->setWrap( true );
 	wndText->setTop( 0 );
 	wndText->setLeft( 5 );
 	wndText->setWidth( 200 );
@@ -149,9 +155,9 @@ void Demo1App::preRun() {
 	wndTach->setName( "wndTach" );
 	wndTach->setBackgroundImagery( "TachBG" );
 	wndTach->setNeedleImagery( "TachNeedle" );
-	wndTach->setNeedleStartAngle(135.0f);
-	wndTach->setNeedleMaxValue(900.0f);
-	wndTach->setNeedleSweepAngle(225.0f);
+	wndTach->setNeedleStartAngle( 135.0f );
+	wndTach->setNeedleMaxValue( 900.0f );
+	wndTach->setNeedleSweepAngle( 225.0f );
 	wndTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	wndTach->setNeedleValue( 0.0f );
@@ -194,8 +200,8 @@ void Demo1App::perframeRun() {
 	}
 }
 void Demo1App::mousePositionCallback( int x, int y ) {
-	int sx, sy;
-	getWindowSize( sx, sy );
+	int sx = 800, sy = 600;
+	//getWindowSize( sx, sy );
 	mScreen->injectCursorPosition_Percent((( float )x ) / (( float )sx ), (( float )y ) / (( float )sy ) );
 }
 void Demo1App::mouseButtonCallback( int button, int action ) {
@@ -209,9 +215,8 @@ void Demo1App::mouseButtonCallback( int button, int action ) {
 
 int main( void ) {
 	Demo1App app;
-
-	app.run();
-
+	if ( app.isReady() )
+		app.run();
 	return 0;
 }
 

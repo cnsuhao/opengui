@@ -212,7 +212,7 @@ protected:
 	}
 	virtual void createOpenGUI(void)
 	{
-		ogRenderer = new OpenGUI::OgreRenderer(mWindow, mSceneMgr);
+		ogRenderer = new OpenGUI::OgreRenderer();
 		ogResourceProvider = new OpenGUI::OgreResourceProvider();
 		ogSystem = new OpenGUI::System(ogRenderer, ogResourceProvider);
 	}

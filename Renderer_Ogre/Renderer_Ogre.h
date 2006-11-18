@@ -13,5 +13,6 @@
 #include "Renderer_Ogre_ResourceProvider.h"
 #include "Renderer_Ogre_Texture.h"
 #include "Renderer_Ogre_Renderer.h"
+#include "Renderer_Ogre_Viewport.h"
 
 #endif // _H_OGREFUSION
