@@ -135,6 +135,9 @@
 			<File
 				RelativePath=".\Renderer_Ogre_Texture.cpp">
 			</File>
+			<File
+				RelativePath=".\Renderer_Ogre_Viewport.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -160,6 +163,9 @@
 			</File>
 			<File
 				RelativePath=".\Renderer_Ogre_Texture.h">
+			</File>
+			<File
+				RelativePath=".\Renderer_Ogre_Viewport.h">
 			</File>
 		</Filter>
 		<Filter

@@ -16,57 +16,15 @@
 namespace OpenGUI {
 	class OgreRenderer; //forward declaration
 
-	//! Used internally by Renderer_Ogre to hook into Ogre for automatic GUI rendering.
-	/*! \note Not for application use, symbols not exported */
-	class OgreRenderQueueListener : public Ogre::RenderQueueListener {
-	public:
-		OgreRenderQueueListener( OgreRenderer* renderer, Ogre::uint8 queueId, bool postQueue )
-				: mRenderer( renderer ), mQueueId( queueId ), mPostQueue( postQueue ) {}
-
-		virtual ~OgreRenderQueueListener() {}
-
-		virtual void renderQueueStarted( Ogre::uint8 id, const Ogre::String& invocation, bool& skipThisQueue );
-		virtual void renderQueueEnded( Ogre::uint8 id, const Ogre::String& invocation, bool& repeatThisQueue );
-
-		void setTargetRenderQueue( Ogre::uint8 queueId ) {
-			mQueueId = queueId;
-		}
-		void setPostRenderQueue( bool postQueue ) {
-			mPostQueue = postQueue;
-		}
-
-	private:
-		OgreRenderer* mRenderer;
-		Ogre::uint8 mQueueId;
-		bool mPostQueue;
-	};
-
 
 	//! %OpenGUI Renderer implementation that works with Ogre
 	class OGR_OGRE_API OgreRenderer: public Renderer {
 	public:
 
-		//! Constructor. If you use this constructor, be sure you call OgreRenderer::setSceneManager() before rendering
-		OgreRenderer( Ogre::RenderWindow* ogreRenderWindow,
-					  Ogre::uint8 queueId = Ogre::RENDER_QUEUE_OVERLAY,
-					  bool postQueue = false );
-
-		//! Constructor
-		OgreRenderer( Ogre::RenderWindow* ogreRenderWindow,
-					  Ogre::SceneManager* ogreSceneManager,
-					  Ogre::uint8 queueId = Ogre::RENDER_QUEUE_OVERLAY,
-					  bool postQueue = false );
+		//! Constructor.
+		OgreRenderer( Ogre::Root* ogreRoot = 0, Ogre::RenderSystem* ogreRenderSystem = 0 );
 
 		virtual ~OgreRenderer();
-
-		//! Attaches the GUI renderer to the given Ogre::SceneManager
-		/* \note Passing NULL to this function is legal.
-			\warning Only one SceneManager can be used at a time. Calling this
-			will remove the previous SceneManager association. */
-		void setSceneManager( Ogre::SceneManager* sceneManager );
-
-		//! Sets the Ogre RenderQueue that the GUI will be renderer from
-		void setRenderQueue( Ogre::uint8 queueId = Ogre::RENDER_QUEUE_OVERLAY, bool postQueue = false );
 
 		//! Sets the resource group from which future textures will be loaded. Default is Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
 		void setTextureResourceGroup( const std::string& ogreResourceGroup );
@@ -76,7 +34,7 @@ namespace OpenGUI {
 
 
 		//Standard OpenGUI Renderer functions
-		virtual const IVector2& getViewportDimensions();  //!< See Renderer documentation from %OpenGUI
+		virtual void selectViewport( Viewport* activeViewport ); //!< See Renderer documentation from %OpenGUI
 		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
 		virtual void doRenderOperation( RenderOperation& renderOp ); //!< See Renderer documentation from %OpenGUI
 		virtual void postRenderCleanup(); //!< See Renderer documentation from %OpenGUI
@@ -85,26 +43,31 @@ namespace OpenGUI {
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData *textureData ); //!< See Renderer documentation from %OpenGUI
 		virtual void destroyTexture( Texture* texturePtr ); //!< See Renderer documentation from %OpenGUI
 
+		//RTT support functions
+		virtual bool supportsRenderToTexture();
+		virtual void selectRenderContext( RenderTexture *context );
+		virtual void clearContents();
+		virtual RenderTexture* createRenderTexture( const IVector2 &size );
+		virtual void destroyRenderTexture( RenderTexture *texturePtr );
+
 	private:
-		//constructor implementation
-		void initialize( Ogre::RenderWindow* ogreRenderWindow,
-						 Ogre::SceneManager* ogreSceneManager, Ogre::uint8 queueId,
-						 bool postQueue );
 		void setupHardwareBuffer();
 		void teardownHardwareBuffer();
 
-		IVector2 mViewportSize;
-
+		//Ogre Specific
 		Ogre::Root* mOgreRoot;
 		Ogre::RenderSystem* mRenderSystem;
-		Ogre::uint8 mQueueId;
-		OgreRenderQueueListener* mQueueListener;
-		Ogre::SceneManager* mSceneManager;
-		Ogre::RenderWindow* mRenderWindow;
+		std::string mTextureResourceGroup;
+		FVector2 mTexelOffset; //holds the pixel level texel offset that needs to be applied to each vertex to maintain pixel alignment
+
+		//Capabilities
+		bool mSupportRTT; // render system supports render to texture
+		bool mSupportNPOT; // render system supports non-power of 2 textures
+
 		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing
 		Ogre::RenderOperation mRenderOperation; //reused for all draw operations
-		bool mOverlayRenderEnabled;
-		std::string mTextureResourceGroup;
+
+
 
 		Ogre::TextureUnitState::UVWAddressingMode mTextureAddressMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mColorBlendMode; //we cache this to save cpu time
@@ -114,8 +77,7 @@ namespace OpenGUI {
 		// We need to know this so we can reset that unit's blending settings before we use it
 		bool mTexUnitDisabledLastPass[2];
 
-		IVector2 mScreenDim; //last stored screen dimensions
-		FVector2 mTexelOffset; //holds the pixel level texel offset that needs to be applied to each vertex to maintain pixel alignment
+		
 
 		//! Struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex {

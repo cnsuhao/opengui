@@ -48,8 +48,8 @@ public:
 		mMousePos.y += my;
 		if(mMousePos.x < 0) mMousePos.x = 0;
 		if(mMousePos.y < 0) mMousePos.y = 0;
-		if(mMousePos.x > mWindow->getWidth()) mMousePos.x = mWindow->getWidth();
-		if(mMousePos.y > mWindow->getHeight()) mMousePos.y = mWindow->getHeight();
+		if(mMousePos.x > (int)mWindow->getWidth()) mMousePos.x = mWindow->getWidth();
+		if(mMousePos.y > (int)mWindow->getHeight()) mMousePos.y = mWindow->getHeight();
 
 		DemoApp::getSingleton()._mousePositionCallback(mMousePos.x, mMousePos.y);
 
@@ -89,6 +89,12 @@ DemoApp& DemoApp::getSingleton() {
 	assert( mptr_Singleton );
 	return ( *mptr_Singleton );
 }
+Ogre::RenderWindow* DemoApp::getWindow(){
+	return mptr_OgreRefApp->mWindow;
+}
+Ogre::Camera* DemoApp::getCamera(){
+	return mptr_OgreRefApp->mCamera;
+}
 void DemoApp::_perframeRun(){
 	perframeRun();
 }
@@ -103,17 +109,17 @@ DemoApp::DemoApp( std::string windowTitle ) {
 	assert( !mptr_Singleton );
 	mptr_Singleton = ( this );
 
+	mConfigured = false;
 	mSystem = 0;
 	mRenderer = 0;
-
+	mptr_InputReader = 0;
 	mptr_OgreRefApp = new OgreRefApp();
-	mptr_OgreRefApp->setup();
-	
-
-	mSystem = OpenGUI::System::getSingletonPtr();
-	mRenderer = OpenGUI::Renderer::getSingletonPtr();
-
-	mptr_InputReader = new OpenGUIInputReader(mptr_OgreRefApp->mWindow);
+	if(mptr_OgreRefApp->setup()){
+		mConfigured = true;
+		mSystem = OpenGUI::System::getSingletonPtr();
+		mRenderer = OpenGUI::Renderer::getSingletonPtr();
+		mptr_InputReader = new OpenGUIInputReader(mptr_OgreRefApp->mWindow);
+	}
 }
 DemoApp::~DemoApp() {
 	assert( mptr_Singleton );
@@ -164,12 +170,16 @@ void DemoApp::run() {
 }
 
 void DemoApp::windowSizeChanged( int width, int height ) {
-	/*
-	glViewport( 0, 0, width, height );
-	if ( mRenderer ) {
-		static_cast<OpenGUI::Renderer_OpenGL*>( mRenderer )->setDim( width, height );
+	OG_NYI;
+}
+void DemoApp::getWindowSize( int& width, int& height ){
+	if(mptr_OgreRefApp){
+		width = mptr_OgreRefApp->mWindow->getWidth();
+		height = mptr_OgreRefApp->mWindow->getHeight();
+	}else{
+		width = 0;
+		height = 0;
 	}
-	*/
 }
 
 

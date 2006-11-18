@@ -13,46 +13,33 @@
 
 namespace OpenGUI {
 //OgreRenderQueueListener implementation
-	//#####################################################################
-	void OgreRenderQueueListener::renderQueueStarted( Ogre::uint8 id,
-			const Ogre::String& invocation, bool& skipThisQueue ) {
-		if (( !mPostQueue ) && ( mQueueId == id ) )
-			System::getSingleton().update();
-	}
-	//#####################################################################
-	void OgreRenderQueueListener::renderQueueEnded( Ogre::uint8 id,
-			const Ogre::String& invocation, bool& repeatThisQueue ) {
-		if (( mPostQueue ) && ( mQueueId == id ) )
-			System::getSingleton().update();
-	}
-	//#####################################################################
 
 
 
 //OgreRenderer implementation
 	//#####################################################################
-	OgreRenderer::OgreRenderer( Ogre::RenderWindow* ogreRenderWindow,
-								Ogre::uint8 queueId, bool postQueue ) {
-		//call the initializer using NULL as the scene manager pointer
-		initialize( ogreRenderWindow, 0, queueId, postQueue );
-	}
-	//#####################################################################
-	OgreRenderer::OgreRenderer( Ogre::RenderWindow* ogreRenderWindow,
-								Ogre::SceneManager* ogreSceneManager, Ogre::uint8 queueId, bool postQueue ) {
-		initialize( ogreRenderWindow, ogreSceneManager, queueId, postQueue );
-	}
-	//#####################################################################
-	void OgreRenderer::initialize( Ogre::RenderWindow* ogreRenderWindow,
-								   Ogre::SceneManager* ogreSceneManager, Ogre::uint8 queueId, bool postQueue ) {
+	OgreRenderer::OgreRenderer( Ogre::Root* ogreRoot, Ogre::RenderSystem* ogreRenderSystem ) {
 		using namespace Ogre;
 		mTextureResourceGroup = Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME;
-		mSceneManager = 0; //this must be 0 right now, we'll attach later
-		mQueueId = queueId;
-		mOgreRoot = Root::getSingletonPtr();
-		mRenderSystem = mOgreRoot->getRenderSystem();
-		mRenderWindow = ogreRenderWindow;
+		mOgreRoot = ogreRoot;
+		mRenderSystem = ogreRenderSystem;
+		if ( !mOgreRoot )
+			mOgreRoot = Root::getSingletonPtr();
+		if ( !mOgreRoot )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Could not obtain Ogre::Root", __FUNCTION__ );
+		if ( !mRenderSystem )
+			mRenderSystem = mOgreRoot->getRenderSystem();
+		if ( !mRenderSystem )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Could not obtain Ogre::RenderSystem", __FUNCTION__ );
 
-		mQueueListener = new OgreRenderQueueListener( this, mQueueId, postQueue );
+		// get capabilities
+		const RenderSystemCapabilities* caps = mRenderSystem->getCapabilities();
+		mSupportRTT = caps->hasCapability( RSC_HWRENDER_TO_TEXTURE );
+		mSupportNPOT = caps->hasCapability( RSC_NON_POWER_OF_2_TEXTURES );
+
+		// get pixel alignment offset
+		mTexelOffset.x = mRenderSystem->getHorizontalTexelOffset();
+		mTexelOffset.y = mRenderSystem->getVerticalTexelOffset();
 
 		//we use these every frame, so we'll set them up now to save time later
 		mTextureAddressMode.u = TextureUnitState::TAM_WRAP;
@@ -68,15 +55,9 @@ namespace OpenGUI {
 		mAlphaBlendMode.operation = Ogre::LBX_MODULATE;
 
 		setupHardwareBuffer();
-
-		//attach to the scene manager if we have a useful pointer
-		if ( ogreSceneManager )
-			setSceneManager( ogreSceneManager );
 	}
 	//#####################################################################
 	OgreRenderer::~OgreRenderer() {
-		setSceneManager( 0 );
-		delete mQueueListener;
 		teardownHardwareBuffer();
 	}
 	//#####################################################################
@@ -84,55 +65,15 @@ namespace OpenGUI {
 		mTextureResourceGroup = ogreResourceGroup;
 	}
 	//#####################################################################
-	void OgreRenderer::setSceneManager( Ogre::SceneManager* sceneManager ) {
-		if ( mSceneManager ) {
-			mSceneManager->removeRenderQueueListener( mQueueListener );
-			mSceneManager = 0;
-		}
-		if ( sceneManager ) {
-			mSceneManager = sceneManager;
-			mSceneManager->addRenderQueueListener( mQueueListener );
-		}
-	}
-	//#####################################################################
-	void OgreRenderer::setRenderQueue( Ogre::uint8 queueId, bool postQueue ) {
-		mQueueId = queueId;
-		if ( mQueueListener ) {
-			mQueueListener->setTargetRenderQueue( queueId );
-			mQueueListener->setPostRenderQueue( postQueue );
-		}
-	}
-	//#####################################################################
-	const IVector2& OgreRenderer::getViewportDimensions(){
-		mViewportSize.x = mRenderWindow->getWidth();
-		mViewportSize.y = mRenderWindow->getHeight();
 
-		/*
-			since the pixel level texel offset only changes when the viewport size changes,
-			this is the best place to perform updates to mTexelOffset
-		*/
-		mTexelOffset = FVector2(	mRenderSystem->getHorizontalTexelOffset(),
-								 mRenderSystem->getVerticalTexelOffset() );
-		const float sceneWidth = 2;
-		const float sceneHeight = 2;
-		mTexelOffset.x = ( sceneWidth / mViewportSize.x ) * mTexelOffset.x;
-		mTexelOffset.y = ( sceneHeight / mViewportSize.y ) * -mTexelOffset.y;
-
-		return mViewportSize;
-	}
 	//#####################################################################
-	
+	void OgreRenderer::selectViewport( Viewport* activeViewport ) {
+		/**/
+		OG_NYI;
+	}
 	//#####################################################################
 	void OgreRenderer::preRenderSetup() {
 		using namespace Ogre;
-
-		//if overlay rendering is turned off in the viewport, don't render
-		if ( !mRenderSystem->_getViewport()->getOverlaysEnabled() ) {
-			mOverlayRenderEnabled = false;
-			return;
-		}
-
-		mOverlayRenderEnabled = true;
 
 		// set-up matrices
 		mRenderSystem->_setWorldMatrix( Matrix4::IDENTITY );
@@ -167,10 +108,9 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	void OgreRenderer::doRenderOperation( RenderOperation& renderOp ) {
-		if ( !mOverlayRenderEnabled ) return; //skip this until the overlays are turned on
-		if(!renderOp.triangleList || renderOp.triangleList->size()==0) return; //skip if no triangles to render
+		if ( !renderOp.triangleList || renderOp.triangleList->size() == 0 ) return; //skip if no triangles to render
 
-		TriangleList& triList = *(renderOp.triangleList);
+		TriangleList& triList = *( renderOp.triangleList );
 
 
 		if ( renderOp.texture && static_cast<OgreTexture*>( renderOp.texture.get() )->validOgreTexture() ) {
@@ -182,20 +122,20 @@ namespace OpenGUI {
 			}
 
 			mRenderSystem->_setTexture( 0, // texture unit id
-				true, //enable texture
-				static_cast<OgreTexture*>( renderOp.texture.get() )->getOgreTextureName() ); //ogre texture name
+										true, //enable texture
+										static_cast<OgreTexture*>( renderOp.texture.get() )->getOgreTextureName() ); //ogre texture name
 		} else {
 			mTexUnitDisabledLastPass[0] = true;
 			mTexUnitDisabledLastPass[1] = true;
 			mRenderSystem->_setTexture( 0, // texture unit id
-				false, //disable texture (temporary)
-				"" ); //ogre texture name
+										false, //disable texture (temporary)
+										"" ); //ogre texture name
 		}
 
-		
+
 		//*** for each triangle, update the buffers and render ***
-		for(TriangleList::iterator iter = triList.begin(); iter!=triList.end();iter++){
-			Triangle& tri = (*iter);
+		for ( TriangleList::iterator iter = triList.begin(); iter != triList.end();iter++ ) {
+			Triangle& tri = ( *iter );
 
 			PolyVertex*	hwbuffer = ( PolyVertex* )mVertexBuffer->lock ( Ogre::HardwareVertexBuffer::HBL_DISCARD );
 
@@ -208,11 +148,11 @@ namespace OpenGUI {
 				hwbuffer[i].z = 0;
 				mRenderSystem->convertColourValue(
 					Ogre::ColourValue(	tri.vertex[i].color.Red,
-					tri.vertex[i].color.Green,
-					tri.vertex[i].color.Blue,
-					tri.vertex[i].color.Alpha ),
+									   tri.vertex[i].color.Green,
+									   tri.vertex[i].color.Blue,
+									   tri.vertex[i].color.Alpha ),
 					&( hwbuffer[i].color )
-					);
+				);
 				hwbuffer[i].u = tri.vertex[i].textureUV.x;
 				hwbuffer[i].v = tri.vertex[i].textureUV.y;
 			}
@@ -222,7 +162,7 @@ namespace OpenGUI {
 			mRenderOperation.vertexData->vertexCount = 3; //move this into buffer setup?
 			mRenderSystem->_render( mRenderOperation ); //render it
 		}
-		
+
 	}
 	//#####################################################################
 	void OgreRenderer::setupHardwareBuffer() {
@@ -287,6 +227,30 @@ namespace OpenGUI {
 	void OgreRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( texturePtr )
 			delete texturePtr;
+	}
+	//#####################################################################
+
+
+	//#####################################################################
+	//#####################################################################
+	bool OgreRenderer::supportsRenderToTexture() {
+		return mSupportRTT;
+	}
+	//#####################################################################
+	void OgreRenderer::selectRenderContext( RenderTexture *context ) {
+		OG_NYI;
+	}
+	//#####################################################################
+	void OgreRenderer::clearContents() {
+		OG_NYI;
+	}
+	//#####################################################################
+	RenderTexture* OgreRenderer::createRenderTexture( const IVector2 &size ) {
+		OG_NYI;
+	}
+	//#####################################################################
+	void OgreRenderer::destroyRenderTexture( RenderTexture *texturePtr ) {
+		OG_NYI;
 	}
 	//#####################################################################
 }

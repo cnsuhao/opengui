@@ -3,27 +3,32 @@
 
 #include "OpenGUI.h"
 
+namespace Ogre{
+class RenderWindow; //forward declaration
+class Camera; //forward declaration
+}
 
 class DemoApp {
 public:
 	DemoApp( std::string windowTitle );
 	virtual ~DemoApp();
 	void run();
-	void getWindowSize( int& width, int& height ) {
-		OpenGUI::IVector2 i = mRenderer->getViewportDimensions();
-		m_WndWidth = i.x;
-		m_WndHeight = i.y;
-		width = m_WndWidth;
-		height = m_WndHeight;
-	}
+	void getWindowSize( int& width, int& height );
 
 	void _perframeRun();
 	void _mousePositionCallback( int x, int y );
 	void _mouseButtonCallback( int button, int action );
 
+	bool isReady(){
+		return mConfigured;
+	}
 protected:
 	OpenGUI::System* mSystem;
 	OpenGUI::Renderer* mRenderer;
+	bool mConfigured;
+
+	Ogre::RenderWindow* getWindow();
+	Ogre::Camera* getCamera();
 
 	//Application specific virtual functions
 	virtual void preRun() {}
