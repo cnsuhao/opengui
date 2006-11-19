@@ -94,6 +94,7 @@ namespace OpenGUI {
 		bool mInRender; // signifies within pre/post Render
 		OgreViewport* mCurrentViewport; // current selected viewport
 		RenderTexture* mCurrentContext; // current render target context
+		FVector2 mTextureUVScale; // UV scales for current texture state
 		
 
 		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing

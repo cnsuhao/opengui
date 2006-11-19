@@ -17,7 +17,8 @@ namespace OpenGUI {
 	public:
 		OgreTexture() {}
 		virtual ~OgreTexture() {}
-
+		//! Pass through to OpenGUI::Texture::getUVs
+		virtual void getOgreUVScale( float& u, float& v ) = 0;
 		//! Returns the name of this texture as held by Ogre
 		virtual const Ogre::String& getOgreTextureName() const = 0;
 	};
@@ -37,6 +38,10 @@ namespace OpenGUI {
 		void loadOgreTexture( Ogre::TexturePtr ogreTexture );
 		//! load a texture with the contents of an OpenGUI TextureData object (aka: from memory)
 		void loadFromTextureData( const TextureData* textureData, const std::string& groupName );
+
+		virtual void getOgreUVScale( float& u, float& v ) {
+			getUVs( u, v );
+		}
 
 	protected:
 		//! frees the attached Ogre texture. Infinitely recallable
@@ -60,9 +65,19 @@ namespace OpenGUI {
 		//! Returns the Ogre::Viewport for this render texture
 		Ogre::Viewport* getOgreViewport() const;
 
+		virtual void getUVs( float& max_u, float& max_v ) {
+			max_u = mMaxUVs.x;
+			max_v = mMaxUVs.y;
+		}
+
+		virtual void getOgreUVScale( float& u, float& v ) {
+			getUVs( u, v );
+		}
+
 	private:
 		Ogre::TexturePtr mOgreTexturePtr; //TexturePtr from Ogre
 		Ogre::Viewport* mOgreViewport;
+		FVector2 mMaxUVs;
 	};
 } // namespace OpenGUI{
 

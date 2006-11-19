@@ -165,10 +165,10 @@ namespace OpenGUI {
 			mRenderSystem->_setTexture( 0, // texture unit id
 										true, //enable texture
 										texture->getOgreTextureName() );
+			texture->getOgreUVScale( mTextureUVScale.x, mTextureUVScale.y );
 		} else {
-// 			mRenderSystem->_setTexture( 0, // texture unit id
-// 				false, //disable texture (temporary)
-// 				"" ); //ogre texture name
+			mTextureUVScale.x = 1.0f;
+			mTextureUVScale.y = 1.0f;
 			mRenderSystem->_disableTextureUnit( 0 );
 		}
 	}
@@ -180,24 +180,25 @@ namespace OpenGUI {
 		OgreTexture* texture = 0;
 		OgreTexture* mask = 0;
 		Texture* tmpTex;
+
 		tmpTex = renderOp.texture.get();
 		if ( tmpTex )
 			if ( tmpTex->isRenderTexture() )
 				texture = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( tmpTex ) );
 			else
 				texture = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( tmpTex ) );
+
 		tmpTex = renderOp.mask.get();
 		if ( tmpTex )
 			if ( tmpTex->isRenderTexture() )
 				mask = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( tmpTex ) );
 			else
 				mask = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( tmpTex ) );
+
 		setTextureState( texture, mask );
 
 
 		TriangleList& triList = *( renderOp.triangleList );
-
-
 		//*** for each triangle, update the buffers and render ***
 		for ( TriangleList::iterator iter = triList.begin(); iter != triList.end();iter++ ) {
 			Triangle& tri = ( *iter );
@@ -218,8 +219,8 @@ namespace OpenGUI {
 									   tri.vertex[i].color.Alpha ),
 					&( hwbuffer[i].color )
 				);
-				hwbuffer[i].u = tri.vertex[i].textureUV.x;
-				hwbuffer[i].v = tri.vertex[i].textureUV.y;
+				hwbuffer[i].u = tri.vertex[i].textureUV.x * mTextureUVScale.x;
+				hwbuffer[i].v = tri.vertex[i].textureUV.y * mTextureUVScale.y;
 			}
 
 			mVertexBuffer->unlock();

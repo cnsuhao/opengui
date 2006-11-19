@@ -11,7 +11,8 @@ public:
 	virtual void preRun();
 	virtual void perframeRun();
 	virtual void postRun() {
-		int i = 0;
+		if(mViewport)
+			delete mViewport;
 	}
 	virtual void mousePositionCallback( int x, int y );
 	virtual void mouseButtonCallback( int button, int action );
@@ -19,7 +20,7 @@ private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
 	OpenGUI::Screen* mScreen;
-	OpenGUI::Viewport* mViewport;
+	OpenGUI::OgreViewport* mViewport;
 	OpenGUI::Widget* mStatText;
 	OpenGUI::Examples::Tachometer* mTach;
 };
