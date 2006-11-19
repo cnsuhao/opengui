@@ -215,13 +215,16 @@ namespace OpenGUI {
 
 		if ( !tmpTexture.isNull() ) {
 			mOgreTexturePtr = tmpTexture;
-
+			unsigned int trueWidth = tmpTexture->getWidth();
+			unsigned int trueHeight = tmpTexture->getHeight();
+			mMaxUVs.x = ( float )width / ( float )trueWidth;
+			mMaxUVs.y = ( float )height / ( float )trueHeight;
 			//create a viewport to the rendering area. We'll need it later
 			Ogre::RenderTexture* rt = mOgreTexturePtr->getBuffer()->getRenderTarget();
 			mOgreViewport = rt->addViewport( 0, // no cameras, please
 											 0, // z-order 0 sounds good
 											 0.0f, 0.0f, // upper left works
-											 1.0f, 1.0f ); // lower right works
+											 mMaxUVs.x, mMaxUVs.y ); // lower right works
 
 			// store the size and name for OpenGUI to use later
 			_setSize( size );
