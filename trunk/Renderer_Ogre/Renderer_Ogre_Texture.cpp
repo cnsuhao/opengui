@@ -5,10 +5,23 @@
 #include "Renderer_Ogre_Texture.h"
 
 #include <OgreException.h>
+#include <OgreHardwarePixelBuffer.h>
+#include <OgreRenderTexture.h>
+
+//! The private Ogre resource group for OpenGUI
+/*! OpenGUI uses this resource group to store its internal render textures
+(when RTT functionality is available). Users should never, under any circumstances
+need to manually modify the contents of this resource group.
+
+You can, however, feel free to change the value of this #define in the (unlikely)
+event that it conflicts with an existing resource group of your own. Doing so will
+(obviously) require a recompile of this library.
+*/
+#define OPENGUI_PRIVATE_RESOURCEGROUP "OPENGUI_PRIVATE_RESOURCEGROUP"
 
 namespace OpenGUI {
 	//#####################################################################
-	void OgreTexture::loadFile( const std::string& filename, const std::string& resourceGroup ) {
+	void OgreStaticTexture::loadFile( const std::string& filename, const std::string& resourceGroup ) {
 		using namespace Ogre;
 		freeOgreTexture(); //dump any existing texture
 		Ogre::TextureManager* textureManager = Ogre::TextureManager::getSingletonPtr();
@@ -22,7 +35,7 @@ namespace OpenGUI {
 				tmpTexture = textureManager->load( filename.c_str(),
 												   resourceGroup.c_str(), //only look in the resource group we were given
 												   TEX_TYPE_2D, //we only deal with 2D textures in this neck of the woods
-												   0, //mipmaps are for Ninnies
+												   -1, //mipmaps are for Ninnies
 												   1.0f ); //default gamma
 				mNotOwner = false; //we own it
 			}
@@ -34,8 +47,8 @@ namespace OpenGUI {
 		}
 
 		if ( !tmpTexture.isNull() ) {
-			_setSize(IVector2( tmpTexture->getWidth(), tmpTexture->getHeight() ));
-			_setName(filename);
+			_setSize( IVector2( tmpTexture->getWidth(), tmpTexture->getHeight() ) );
+			_setName( filename );
 			mOgreTexturePtr = tmpTexture;
 		} else {
 			//looks like it didn't load after all
@@ -46,29 +59,29 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	void OgreTexture::freeOgreTexture() {
+	void OgreStaticTexture::freeOgreTexture() {
 		if ( !mOgreTexturePtr.isNull() ) {
 			if ( !mNotOwner )
 				Ogre::TextureManager::getSingleton().remove( mOgreTexturePtr->getHandle() );
 			mOgreTexturePtr.setNull();
 			mNotOwner = false;
-			_setName("");
-			_setSize(IVector2( 0, 0 ));
+			_setName( "" );
+			_setSize( IVector2( 0, 0 ) );
 		}
 	}
 	//#####################################################################
-	void OgreTexture::loadOgreTexture( Ogre::TexturePtr ogreTexture ) {
+	void OgreStaticTexture::loadOgreTexture( Ogre::TexturePtr ogreTexture ) {
 		using namespace Ogre;
 		freeOgreTexture(); //dump any existing texture
 		if ( !ogreTexture.isNull() ) {
-			_setName(ogreTexture->getName()); //best we can do
-			_setSize(IVector2( ogreTexture->getWidth(), ogreTexture->getWidth()) );
+			_setName( ogreTexture->getName() ); //best we can do
+			_setSize( IVector2( ogreTexture->getWidth(), ogreTexture->getWidth() ) );
 			mOgreTexturePtr = ogreTexture;
 			mNotOwner = true; //we obviously don't own this
 		}
 	}
 	//#####################################################################
-	void OgreTexture::loadFromTextureData( const TextureData* textureData, const std::string& groupName ) {
+	void OgreStaticTexture::loadFromTextureData( const TextureData* textureData, const std::string& groupName ) {
 		using namespace Ogre;
 
 		freeOgreTexture(); //dump any existing texture
@@ -134,19 +147,18 @@ namespace OpenGUI {
 
 		std::stringstream ss;
 		ss << "_Memory:";
-		ss << (void*)this;
+		ss << ( void* )this;
 		std::string tmpName = ss.str();
 
 		Ogre::TexturePtr tmpTexture;
 		try {
-			tmpTexture = Ogre::TextureManager::getSingleton().loadImage(tmpName, //I dub thee...
+			tmpTexture = Ogre::TextureManager::getSingleton().loadImage( tmpName, //I dub thee...
 						 groupName, //whatever resource group we were told
 						 tmpImg, //have an image
 						 TEX_TYPE_2D, //yep, 2D texture
 						 0, //mipmap hasn't changed (they are still for Ninnies)
 						 1.0f, //i'm allergic to gamma
 						 false );
-			//pFmt==PF_A8?true:false); //i knew i should have put that info somewhere more accessible ;)
 		} catch ( Ogre::Exception e ) {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  std::string( "Error loading texture from TextureData" ) +
@@ -157,14 +169,75 @@ namespace OpenGUI {
 		if ( !tmpTexture.isNull() ) {
 			mOgreTexturePtr = tmpTexture;
 			mOgreTexturePtr->setFormat( pFmt );
-			_setSize(IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() ));
-			_setName(mOgreTexturePtr->getName());
+			_setSize( IVector2( mOgreTexturePtr->getWidth(), mOgreTexturePtr->getHeight() ) );
+			_setName( mOgreTexturePtr->getName() );
 			mNotOwner = false; //you build it, you own it
 		}
 	}
 	//#####################################################################
-	const Ogre::String& OgreTexture::getOgreTextureName() const {
+	const Ogre::String& OgreStaticTexture::getOgreTextureName() const {
 		return mOgreTexturePtr->getName();
+	}
+	//#####################################################################
+
+
+//////////////////////////////////////////////////////////////////////////
+//## OgreRenderTexture
+//////////////////////////////////////////////////////////////////////////
+	const Ogre::String& OgreRenderTexture::getOgreTextureName() const {
+		return mOgreTexturePtr->getName();
+	}
+	//#####################################################################
+	OgreRenderTexture::OgreRenderTexture( const IVector2& size ) {
+		mOgreViewport = 0;
+
+		std::stringstream ss;
+		ss << "_OGRTT:" << this;
+		unsigned int width = size.x;
+		unsigned int height = size.y;
+
+		Ogre::TexturePtr tmpTexture;
+		try {
+			tmpTexture = Ogre::TextureManager::getSingleton().createManual(
+							 ss.str().c_str(), // texture name
+							 OPENGUI_PRIVATE_RESOURCEGROUP, // resource group
+							 Ogre::TEX_TYPE_2D, // 2d texture
+							 width, // texture width
+							 height, // texture height
+							 0, // no mipmaps for RenderTextures please
+							 Ogre::PF_BYTE_RGBA, // we need full RGBA for render textures
+							 Ogre::TU_RENDERTARGET | Ogre::TU_STATIC_WRITE_ONLY, // it's a render target, and we promise never to try to read it back
+							 0 // no resource loader to fall back on
+						 );
+		} catch ( Ogre::Exception e ) {
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create RenderTexture", __FUNCTION__ );
+		}
+
+		if ( !tmpTexture.isNull() ) {
+			mOgreTexturePtr = tmpTexture;
+
+			//create a viewport to the rendering area. We'll need it later
+			Ogre::RenderTexture* rt = mOgreTexturePtr->getBuffer()->getRenderTarget();
+			mOgreViewport = rt->addViewport( 0, // no cameras, please
+											 0, // z-order 0 sounds good
+											 0.0f, 0.0f, // upper left works
+											 1.0f, 1.0f ); // lower right works
+
+			// store the size and name for OpenGUI to use later
+			_setSize( size );
+			_setName( mOgreTexturePtr->getName() );
+		}
+	}
+	//#####################################################################
+	OgreRenderTexture::~OgreRenderTexture() {
+		if ( !mOgreTexturePtr.isNull() ) {
+			Ogre::TextureManager::getSingleton().remove( mOgreTexturePtr->getHandle() );
+			mOgreTexturePtr.setNull();
+		}
+	}
+	//#####################################################################
+	Ogre::Viewport* OgreRenderTexture::getOgreViewport() const {
+		return mOgreViewport;
 	}
 	//#####################################################################
 }//namespace OpenGUI{

@@ -86,8 +86,8 @@ void Demo1App::preRun() {
 
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
-	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	mScreen->setViewport(mViewport);
+	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ), mViewport );
+
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();
@@ -181,7 +181,9 @@ void Demo1App::perframeRun() {
 
 		if ( mTimer->getMilliseconds() > 500 ) {
 			mTimer->reset();
-			float FPS = ScreenManager::getSingleton().statGetFPS();
+			float fpsLast, fpsAvg, fpsBest, fpsWorst;
+			getWindow()->getStatistics( fpsLast, fpsAvg, fpsBest, fpsWorst );
+			float FPS = fpsLast;
 			std::stringstream ss;
 			ss << "Update Time: " << mScreen->statsGetUpdateTime();
 			ss << "\n";
