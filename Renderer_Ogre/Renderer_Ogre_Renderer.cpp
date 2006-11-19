@@ -4,16 +4,41 @@
 
 #include "Renderer_Ogre_Renderer.h"
 #include "Renderer_Ogre_Texture.h"
+#include "Renderer_Ogre_Viewport.h"
 
 //#include "Ogre.h"
-#include <OgreRenderSystem.h>
-#include <OgreRoot.h>
-#include <OgreHardwareBufferManager.h>
-#include <OgreRenderWindow.h>
+#include "OgreRenderSystem.h"
+#include "OgreRoot.h"
+#include "OgreHardwareBufferManager.h"
+#include "OgreRenderWindow.h"
 
 namespace OpenGUI {
-//OgreRenderQueueListener implementation
-
+//OgreFrameListener implementation
+	//#####################################################################
+	OgreFrameListener::OgreFrameListener() {
+		/* no action required */
+	}
+	//#####################################################################
+	OgreFrameListener::~OgreFrameListener() {
+		/* no action required */
+	}
+	//#####################################################################
+	/*! \note Because it is possible to have an OgreRenderer instance (containing
+	an OgreFrameListener instance) without a complimenting OpenGUI::System,
+	this automatic update process performs safety checks to ensure that each
+	used Singleton exists before making the updates. */
+	bool OgreFrameListener::frameStarted( const Ogre::FrameEvent& evt ) {
+		System* system = System::getSingletonPtr();
+		if ( system ) {
+			system->updateTime();
+			ScreenManager* sm = ScreenManager::getSingletonPtr();
+			if ( sm ) {
+				sm->updateTime();
+			}
+		}
+		return true;
+	}
+	//#####################################################################
 
 
 //OgreRenderer implementation
@@ -32,6 +57,15 @@ namespace OpenGUI {
 		if ( !mRenderSystem )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Could not obtain Ogre::RenderSystem", __FUNCTION__ );
 
+		// set up initial values
+		mInRender = false;
+		mCurrentViewport = 0;
+		mCurrentContext = 0;
+
+		// attach frame listener for timing updates
+		mOgreFrameListener = new OgreFrameListener();
+		mOgreRoot->addFrameListener( mOgreFrameListener );
+
 		// get capabilities
 		const RenderSystemCapabilities* caps = mRenderSystem->getCapabilities();
 		mSupportRTT = caps->hasCapability( RSC_HWRENDER_TO_TEXTURE );
@@ -42,9 +76,9 @@ namespace OpenGUI {
 		mTexelOffset.y = mRenderSystem->getVerticalTexelOffset();
 
 		//we use these every frame, so we'll set them up now to save time later
-		mTextureAddressMode.u = TextureUnitState::TAM_WRAP;
-		mTextureAddressMode.v = TextureUnitState::TAM_WRAP;
-		mTextureAddressMode.w = TextureUnitState::TAM_WRAP;
+		mTextureAddressMode.u = TextureUnitState::TAM_CLAMP;
+		mTextureAddressMode.v = TextureUnitState::TAM_CLAMP;
+		mTextureAddressMode.w = TextureUnitState::TAM_CLAMP;
 		mColorBlendMode.blendType = Ogre::LBT_COLOUR;
 		mColorBlendMode.source1 = Ogre::LBS_TEXTURE;
 		mColorBlendMode.source2 = Ogre::LBS_DIFFUSE;
@@ -59,21 +93,33 @@ namespace OpenGUI {
 	//#####################################################################
 	OgreRenderer::~OgreRenderer() {
 		teardownHardwareBuffer();
+		if ( mOgreFrameListener ) {
+			mOgreRoot->removeFrameListener( mOgreFrameListener );
+			delete mOgreFrameListener;
+		}
 	}
 	//#####################################################################
 	void OgreRenderer::setTextureResourceGroup( const std::string& ogreResourceGroup ) {
 		mTextureResourceGroup = ogreResourceGroup;
 	}
 	//#####################################################################
+	const std::string& OgreRenderer::getTextureResourceGroup() {
+		return mTextureResourceGroup;
+	}
+	//#####################################################################
 
 	//#####################################################################
 	void OgreRenderer::selectViewport( Viewport* activeViewport ) {
-		/**/
-		OG_NYI;
+		if ( mInRender )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot change selected Viewport within render block", __FUNCTION__ );
+		if ( !activeViewport )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Viewport selected: 0", __FUNCTION__ );
+		mCurrentViewport = static_cast<OgreViewport*>( activeViewport );
 	}
 	//#####################################################################
 	void OgreRenderer::preRenderSetup() {
 		using namespace Ogre;
+		mInRender = true;
 
 		// set-up matrices
 		mRenderSystem->_setWorldMatrix( Matrix4::IDENTITY );
@@ -99,38 +145,57 @@ namespace OpenGUI {
 		mRenderSystem->_setTextureMatrix( 0, Matrix4::IDENTITY );
 		mRenderSystem->_setAlphaRejectSettings( CMPF_ALWAYS_PASS, 0 );
 
-		mRenderSystem->_disableTextureUnitsFrom( 1 );
-		mTexUnitDisabledLastPass[0] = true;
-		mTexUnitDisabledLastPass[1] = true;
+		mRenderSystem->_disableTextureUnitsFrom( 0 ); // disable ALL current texture units
 
 		// enable alpha blending
 		mRenderSystem->_setSceneBlending( SBF_SOURCE_ALPHA, SBF_ONE_MINUS_SOURCE_ALPHA );
+
+		mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
+	}
+	//#####################################################################
+	void OgreRenderer::postRenderCleanup() {
+		mInRender = false;
+		//we'll let everyone else fend for themselves after we've finished making a mess of things
+	}
+	//#####################################################################
+	void OgreRenderer::setTextureState( OgreTexture* texture, OgreTexture* mask ) {
+		if ( texture ) {
+			mRenderSystem->_setTextureBlendMode( 0, mColorBlendMode );
+			mRenderSystem->_setTextureBlendMode( 0, mAlphaBlendMode );
+			mRenderSystem->_setTexture( 0, // texture unit id
+										true, //enable texture
+										texture->getOgreTextureName() );
+		} else {
+// 			mRenderSystem->_setTexture( 0, // texture unit id
+// 				false, //disable texture (temporary)
+// 				"" ); //ogre texture name
+			mRenderSystem->_disableTextureUnit( 0 );
+		}
 	}
 	//#####################################################################
 	void OgreRenderer::doRenderOperation( RenderOperation& renderOp ) {
 		if ( !renderOp.triangleList || renderOp.triangleList->size() == 0 ) return; //skip if no triangles to render
 
+		//set texture state (this polymorphism madness is brought to you by the letter F)
+		OgreTexture* texture = 0;
+		OgreTexture* mask = 0;
+		Texture* tmpTex;
+		tmpTex = renderOp.texture.get();
+		if ( tmpTex )
+			if ( tmpTex->isRenderTexture() )
+				texture = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( tmpTex ) );
+			else
+				texture = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( tmpTex ) );
+		tmpTex = renderOp.mask.get();
+		if ( tmpTex )
+			if ( tmpTex->isRenderTexture() )
+				mask = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( tmpTex ) );
+			else
+				mask = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( tmpTex ) );
+		setTextureState( texture, mask );
+
+
 		TriangleList& triList = *( renderOp.triangleList );
-
-
-		if ( renderOp.texture && static_cast<OgreTexture*>( renderOp.texture.get() )->validOgreTexture() ) {
-
-			if ( mTexUnitDisabledLastPass[0] ) {
-				mRenderSystem->_setTextureBlendMode( 0, mColorBlendMode );
-				mRenderSystem->_setTextureBlendMode( 0, mAlphaBlendMode );
-				mTexUnitDisabledLastPass[0] = false;
-			}
-
-			mRenderSystem->_setTexture( 0, // texture unit id
-										true, //enable texture
-										static_cast<OgreTexture*>( renderOp.texture.get() )->getOgreTextureName() ); //ogre texture name
-		} else {
-			mTexUnitDisabledLastPass[0] = true;
-			mTexUnitDisabledLastPass[1] = true;
-			mRenderSystem->_setTexture( 0, // texture unit id
-										false, //disable texture (temporary)
-										"" ); //ogre texture name
-		}
 
 
 		//*** for each triangle, update the buffers and render ***
@@ -162,7 +227,6 @@ namespace OpenGUI {
 			mRenderOperation.vertexData->vertexCount = 3; //move this into buffer setup?
 			mRenderSystem->_render( mRenderOperation ); //render it
 		}
-
 	}
 	//#####################################################################
 	void OgreRenderer::setupHardwareBuffer() {
@@ -197,31 +261,27 @@ namespace OpenGUI {
 		mVertexBuffer.setNull();
 	}
 	//#####################################################################
-	void OgreRenderer::postRenderCleanup() {
-		//we'll let everyone else fend for themselves after we've finished making a mess of things
-	}
-	//#####################################################################
 	Texture* OgreRenderer::createTextureFromFile( const std::string &filename ) {
-		OgreTexture* tex = new OgreTexture();
+		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFile( filename, mTextureResourceGroup );
 		return tex;
 	}
 	//#####################################################################
 	Texture* OgreRenderer::createTextureFromTextureData( const TextureData *textureData ) {
-		OgreTexture* tex = new OgreTexture();
+		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFromTextureData( textureData, mTextureResourceGroup );
 		return tex;
 	}
 	//#####################################################################
 	Texture* OgreRenderer::createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture ) {
-		OgreTexture* tex = new OgreTexture();
+		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadOgreTexture( texture );
 		return tex;
 	}
 	//#####################################################################
 	void OgreRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
 		if ( texture )
-			static_cast<OgreTexture*>( texture )->loadFromTextureData( textureData, mTextureResourceGroup );
+			static_cast<OgreStaticTexture*>( texture )->loadFromTextureData( textureData, mTextureResourceGroup );
 	}
 	//#####################################################################
 	void OgreRenderer::destroyTexture( Texture* texturePtr ) {
@@ -238,19 +298,37 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	void OgreRenderer::selectRenderContext( RenderTexture *context ) {
-		OG_NYI;
+		if ( mCurrentContext == context ) return;
+		if ( !context ) {
+			mCurrentContext = 0;
+			mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
+		} else {
+			OgreRenderTexture* rtex = static_cast<OgreRenderTexture*>( context );
+			mCurrentContext = context;
+			mRenderSystem->_setViewport( rtex->getOgreViewport() );
+		}
 	}
 	//#####################################################################
 	void OgreRenderer::clearContents() {
-		OG_NYI;
+		if ( mCurrentContext != 0 ) {
+			Ogre::ColourValue color = Ogre::ColourValue::ZERO;
+			mRenderSystem->clearFrameBuffer(
+				Ogre::FBT_COLOUR,
+				color, // color
+				0.0f, // depth
+				0 // stencil
+			);
+		}
 	}
 	//#####################################################################
 	RenderTexture* OgreRenderer::createRenderTexture( const IVector2 &size ) {
-		OG_NYI;
+		OgreRenderTexture* tex = new OgreRenderTexture( size );
+		return tex;
 	}
 	//#####################################################################
 	void OgreRenderer::destroyRenderTexture( RenderTexture *texturePtr ) {
-		OG_NYI;
+		if ( texturePtr )
+			delete texturePtr;
 	}
 	//#####################################################################
 }

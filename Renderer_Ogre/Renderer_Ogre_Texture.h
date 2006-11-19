@@ -12,25 +12,35 @@
 #include <OgreTextureManager.h>
 
 namespace OpenGUI {
-	//! An OpenGUI::Texture implementation used by OgreRenderer to load and represent Ogre textures.
-	class OGR_OGRE_API OgreTexture : public Texture {
-		friend class OgreRenderer;
+	//! Base class for Ogre textures used by OpenGUI
+	class OGR_OGRE_API OgreTexture {
 	public:
-		OgreTexture(): mNotOwner( false ) {}
-		virtual ~OgreTexture() {
+		OgreTexture() {}
+		virtual ~OgreTexture() {}
+
+		//! Returns the name of this texture as held by Ogre
+		virtual const Ogre::String& getOgreTextureName() const = 0;
+	};
+
+	//! An OpenGUI::Texture implementation used by OgreRenderer to load and represent Ogre textures.
+	class OGR_OGRE_API OgreStaticTexture: public OgreTexture, public Texture {
+	public:
+		OgreStaticTexture(): mNotOwner( false ) {}
+		virtual ~OgreStaticTexture() {
 			freeOgreTexture();
 		}
-	protected:
+		//! Returns the name of this texture as held by Ogre
+		virtual const Ogre::String& getOgreTextureName() const;
 		//! loads a new texture from a file
 		void loadFile( const std::string& filename, const std::string& resourceGroup );
 		//! assigns an existing Ogre texture to this object
 		void loadOgreTexture( Ogre::TexturePtr ogreTexture );
 		//! load a texture with the contents of an OpenGUI TextureData object (aka: from memory)
 		void loadFromTextureData( const TextureData* textureData, const std::string& groupName );
+
+	protected:
 		//! frees the attached Ogre texture. Infinitely recallable
 		void freeOgreTexture();
-		//! Returns the name of this texture as held by Ogre
-		const Ogre::String& getOgreTextureName() const;
 		//! Returns true if this texture object is currently representing an Ogre texture.
 		bool validOgreTexture() {
 			return !mOgreTexturePtr.isNull();
@@ -39,8 +49,22 @@ namespace OpenGUI {
 		bool mNotOwner; // true if we do not own the ogre texture we're reference, so we won't destroy it
 		Ogre::TexturePtr mOgreTexturePtr; //TexturePtr from Ogre
 	};
-}
-;//namespace OpenGUI{
+
+	//! An OpenGUI::RenderTexture implementation used by OgreRenderer to load and represent Ogre render textures.
+	class OGR_OGRE_API OgreRenderTexture: public OgreTexture, public RenderTexture {
+	public:
+		OgreRenderTexture( const IVector2& size );
+		virtual ~OgreRenderTexture();
+		//! Returns the name of this texture as held by Ogre
+		virtual const Ogre::String& getOgreTextureName() const;
+		//! Returns the Ogre::Viewport for this render texture
+		Ogre::Viewport* getOgreViewport() const;
+
+	private:
+		Ogre::TexturePtr mOgreTexturePtr; //TexturePtr from Ogre
+		Ogre::Viewport* mOgreViewport;
+	};
+} // namespace OpenGUI{
 
 
 #endif // _H_OGR_OGRE_TEXTURE

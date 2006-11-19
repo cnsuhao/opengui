@@ -7,15 +7,31 @@
 
 #include "Renderer_Ogre_Exports.h"
 
-#include <OpenGUI.h>
+#include "OpenGUI.h"
 
-#include <OgreRenderQueueListener.h>
-#include <OgreSceneManagerEnumerator.h>
-#include <OgreTextureUnitState.h>
+#include "OgreRenderQueueListener.h"
+#include "OgreSceneManagerEnumerator.h"
+#include "OgreTextureUnitState.h"
+#include "OgreFrameListener.h"
 
 namespace OpenGUI {
-	class OgreRenderer; //forward declaration
+	class OgreViewport; // forward declaration
+	class OgreTexture; // forward declaration
 
+	//! FrameListener that updates OpenGUI timing every frame
+	/*! An instance of this class is always created and managed by OgreRenderer.
+	During the "frameStarted" event this class will update OpenGUI's internal
+	timer via System::updateTime(), then inject time delta events into each
+	Screen that is auto timing via ScreenManager::updateTime(). 
+	
+	*/
+	class OGR_OGRE_API OgreFrameListener: public Ogre::FrameListener {
+	public:
+		OgreFrameListener();
+		virtual ~OgreFrameListener();
+		//! performs the timing updates as specified in the class documentation
+		virtual bool frameStarted( const Ogre::FrameEvent& evt );
+	};
 
 	//! %OpenGUI Renderer implementation that works with Ogre
 	class OGR_OGRE_API OgreRenderer: public Renderer {
@@ -28,6 +44,8 @@ namespace OpenGUI {
 
 		//! Sets the resource group from which future textures will be loaded. Default is Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
 		void setTextureResourceGroup( const std::string& ogreResourceGroup );
+		//! Returns the current resource group that textures are loaded from
+		const std::string& getTextureResourceGroup();
 
 		//! Create a texture from an existing Ogre::TexturePtr object.
 		Texture* createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture );
@@ -54,6 +72,14 @@ namespace OpenGUI {
 		void setupHardwareBuffer();
 		void teardownHardwareBuffer();
 
+
+		// set up the given texture states
+		void setTextureState(OgreTexture* texture, OgreTexture* mask);
+
+
+		// frame listener for timing injections
+		OgreFrameListener* mOgreFrameListener;
+
 		//Ogre Specific
 		Ogre::Root* mOgreRoot;
 		Ogre::RenderSystem* mRenderSystem;
@@ -64,20 +90,22 @@ namespace OpenGUI {
 		bool mSupportRTT; // render system supports render to texture
 		bool mSupportNPOT; // render system supports non-power of 2 textures
 
+		//Render State
+		bool mInRender; // signifies within pre/post Render
+		OgreViewport* mCurrentViewport; // current selected viewport
+		RenderTexture* mCurrentContext; // current render target context
+		
+
 		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing
 		Ogre::RenderOperation mRenderOperation; //reused for all draw operations
-
-
 
 		Ogre::TextureUnitState::UVWAddressingMode mTextureAddressMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mColorBlendMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mAlphaBlendMode; //we cache this to save cpu time
 
-		// This is used to store and test if a particular texture unit was disabled in the last pass.
-		// We need to know this so we can reset that unit's blending settings before we use it
-		bool mTexUnitDisabledLastPass[2];
-
 		
+
+
 
 		//! Struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex {
