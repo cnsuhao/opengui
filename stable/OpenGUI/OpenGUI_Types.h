@@ -287,6 +287,18 @@ namespace OpenGUI {
 		IVector2 operator/( const IVector2& right ) const  {
 			return IVector2( x / right.x, y / right.y );
 		}
+		//! operator +=
+		IVector2& operator += ( const IVector2& right ) {
+			x += right.x;
+			y += right.y;
+			return *this;
+		}
+		//! operator -=
+		IVector2& operator -= ( const IVector2& right ) {
+			x -= right.x;
+			y -= right.y;
+			return *this;
+		}
 
 		//! comparison operator
 		bool operator==( const IVector2& right ) const  {
@@ -415,6 +427,18 @@ namespace OpenGUI {
 		//! operator /
 		FVector2 operator/( const FVector2& right ) const  {
 			return FVector2( x / right.x, y / right.y );
+		}
+		//! operator +=
+		FVector2& operator += ( const FVector2& right ) {
+			x += right.x;
+			y += right.y;
+			return *this;
+		}
+		//! operator -=
+		FVector2& operator -= ( const FVector2& right ) {
+			x -= right.x;
+			y -= right.y;
+			return *this;
 		}
 
 		//! comparison operator

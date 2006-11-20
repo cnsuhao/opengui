@@ -151,7 +151,7 @@ namespace OpenGUI {
 		pixel alignment where requested. */
 		void setUPI( const FVector2& newUPI );
 
-		//! renders this Screen to it's current render target
+		//! renders this Screen to it's Viewport, if possible
 		void update();
 		//! returns true if this screen is automatically updated
 		bool isAutoUpdating() const {

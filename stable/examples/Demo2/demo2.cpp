@@ -2,10 +2,14 @@
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 
 #include "../Amethyst/Amethyst_Label.h"
+#include "../Amethyst/Amethyst_StaticImage.h"
 #include "../Amethyst/Amethyst_Button.h"
 #include "../Amethyst/Amethyst_CheckBox.h"
 #include "../Amethyst/Amethyst_RadioButton.h"
 #include "../Amethyst/Amethyst_ProgressBar.h"
+#include "../Amethyst/Amethyst_Panel.h"
+#include "../Amethyst/Amethyst_Frame.h"
+#include "../Amethyst/Amethyst_ListBox.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -30,10 +34,13 @@ private:
 using namespace OpenGUI;
 
 Amethyst::ProgressBar *g_pProgressBar = NULL;
+Amethyst::Panel *g_pPanel = NULL;
 
 void buttonCallback( Object *pObj , EventArgs *pEvent )
 {
-	g_pProgressBar->doStep();
+//	g_pProgressBar->doStep();
+
+	g_pPanel->Scroll(FVector2(-3,-3));
 }
 
 
@@ -166,6 +173,38 @@ void Demo2App::preRun() {
 	mScreen->Children.add_back(bar, true);
 
 	g_pProgressBar = bar;
+
+	Amethyst::Panel *pPanel = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
+	pPanel->setTop(360);
+	pPanel->setLeft(110);
+	pPanel->setHeight(53);
+	pPanel->setWidth(51);
+	mScreen->Children.add_back(pPanel, true);
+	g_pPanel = pPanel;
+
+	Amethyst::StaticImage *pStaticImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
+	pStaticImage->setTop(0);
+	pStaticImage->setLeft(0);
+	pStaticImage->setHeight(106);
+	pStaticImage->setWidth(103);
+	pStaticImage->setImagery("PieFace");
+	pPanel->Children.add_back(pStaticImage, true);
+
+	Amethyst::Frame *pFrame = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
+	pFrame->setTop(430);
+	pFrame->setLeft(110);
+	pFrame->setHeight(100);
+	pFrame->setWidth(100);
+	pFrame->setImagery("FrameUL", Amethyst::Frame::UL);
+	pFrame->setImagery("FrameUM", Amethyst::Frame::UM);
+	pFrame->setImagery("FrameUR", Amethyst::Frame::UR);
+	pFrame->setImagery("FrameML", Amethyst::Frame::ML);
+	pFrame->setImagery("FrameMM", Amethyst::Frame::MM);
+	pFrame->setImagery("FrameMR", Amethyst::Frame::MR);
+	pFrame->setImagery("FrameLL", Amethyst::Frame::LL);
+	pFrame->setImagery("FrameLM", Amethyst::Frame::LM);
+	pFrame->setImagery("FrameLR", Amethyst::Frame::LR);
+	mScreen->Children.add_back(pFrame, true);
 }
 
 

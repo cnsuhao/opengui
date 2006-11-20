@@ -216,6 +216,8 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! If the Screen is not marked active, or does not have a valid Viewport assigned,
+	this function will return immediately with no error. */
 	void Screen::update() {
 		if ( !_isRenderable() )
 			return; //abort if we are unsuitable for drawing for any reason

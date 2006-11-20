@@ -17,6 +17,18 @@
 		<Imagery Name="MetalCursorUpDown" Left="477" Top="98" Width="30" Height="30" />
 		<Imagery Name="MetalCursorLRArrow" Left="477" Top="129" Width="30" Height="30" />
 
+		<Imagery Name="PieFace" Left="345" Top="5" Width="106" Height="103" />
+
+		<Imagery Name="FrameUL" Left="49" Top="165" Width="5" Height="5" />
+		<Imagery Name="FrameUM" Left="55" Top="165" Width="2" Height="5" />
+		<Imagery Name="FrameUR" Left="58" Top="165" Width="5" Height="5" />
+		<Imagery Name="FrameML" Left="49" Top="171" Width="5" Height="2" />
+		<Imagery Name="FrameMM" Left="55" Top="171" Width="2" Height="2" />
+		<Imagery Name="FrameMR" Left="58" Top="171" Width="5" Height="2" />
+		<Imagery Name="FrameLL" Left="49" Top="174" Width="5" Height="5" />
+		<Imagery Name="FrameLM" Left="55" Top="174" Width="2" Height="5" />
+		<Imagery Name="FrameLR" Left="58" Top="174" Width="5" Height="5" />
+
 	</Imageset>
 
 </OpenGUI>

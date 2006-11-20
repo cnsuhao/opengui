@@ -17,8 +17,31 @@ namespace OpenGUI {
 
 			static Widget* CreatePanelFactory();
 
+			void SetScrollingOffset(const FVector2 &o) {mScrollingOffset = o;}
+			void GetScrollingOffset(FVector2 &o) {o = mScrollingOffset;}
+
+			void Scroll(const FVector2 &s);
+
+			// Returns normalized values for positions of the left (x) and right (y)
+			// of the visible area of the canvas
+			FVector2	GetHPct(void);
+			// Returns normalized values for positions of the top (x) and bottom (y)
+			// of the visible area of the canvas
+			FVector2	GetVPct(void);
+
+			void		SetViewPosition(const FVector2 &hv);
+
 		protected:
+			// Event Overrides
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
+			virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
+			virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
+
+			void	_genCanvasSize();
+
+			// scrolling values
+			FVector2	mScrollingOffset;
+			FVector2	mCanvasSize;
 		};
 
 	} // namespace Amethyst{

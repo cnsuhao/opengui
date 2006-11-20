@@ -2,7 +2,7 @@
 // Renderer_Ogre_ResourceProvider.cpp
 // -----------------------------------------------------------------------------
 
-#include <OgreArchiveManager.h>
+#include "OgreArchiveManager.h"
 #include "Renderer_Ogre_ResourceProvider.h"
 
 //#include "Ogre.h"

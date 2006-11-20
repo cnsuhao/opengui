@@ -37,10 +37,17 @@ namespace OpenGUI {
 		/*! If you need to clear this viewport's contents , this is where you should
 		do it. A Viewport for a render texture would be a prime example of where this
 		would be appropriate.
-		\param updatingScreen The Screen that is calling this notification. */
+		\param updatingScreen The Screen that is calling this notification.
+		
+		Renderer::selectViewport() and Renderer::preRenderSetup() have already been called
+		when this notification is issued.
+		*/
 		virtual void preUpdate( Screen* updatingScreen ) = 0;
 		//! This is called by Screen immediately after the end of an update
-		/*! \param updatingScreen The Screen that is calling this notification. */
+		/*! \param updatingScreen The Screen that is calling this notification.
+		
+		Renderer::postRenderCleanup() has not yet been called at the time of this notification.
+		*/
 		virtual void postUpdate( Screen* updatingScreen ) = 0;
 
 		//! Called when a Screen attaches to this Viewport
