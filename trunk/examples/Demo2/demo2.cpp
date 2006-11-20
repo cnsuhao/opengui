@@ -175,7 +175,7 @@ void Demo2App::preRun() {
 	g_pProgressBar = bar;
 
 	Amethyst::Panel *pPanel = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
-	pPanel->setTop(360);
+	pPanel->setTop(220);
 	pPanel->setLeft(110);
 	pPanel->setHeight(53);
 	pPanel->setWidth(51);
@@ -193,13 +193,14 @@ void Demo2App::preRun() {
 	Amethyst::Frame *pFrame = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
 	pFrame->setTop(430);
 	pFrame->setLeft(110);
-	pFrame->setHeight(100);
-	pFrame->setWidth(100);
+	pFrame->setHeight(150);
+	pFrame->setWidth(400);
 	pFrame->setImagery("FrameUL", Amethyst::Frame::UL);
 	pFrame->setImagery("FrameUM", Amethyst::Frame::UM);
 	pFrame->setImagery("FrameUR", Amethyst::Frame::UR);
 	pFrame->setImagery("FrameML", Amethyst::Frame::ML);
 	pFrame->setImagery("FrameMM", Amethyst::Frame::MM);
+//	pFrame->setImagery("PieFace", Amethyst::Frame::MM);
 	pFrame->setImagery("FrameMR", Amethyst::Frame::MR);
 	pFrame->setImagery("FrameLL", Amethyst::Frame::LL);
 	pFrame->setImagery("FrameLM", Amethyst::Frame::LM);
