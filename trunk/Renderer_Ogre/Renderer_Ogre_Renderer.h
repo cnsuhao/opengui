@@ -17,20 +17,32 @@
 namespace OpenGUI {
 	class OgreViewport; // forward declaration
 	class OgreTexture; // forward declaration
+	class OgreRenderer; // forward declaration
 
 	//! FrameListener that updates OpenGUI timing every frame
 	/*! An instance of this class is always created and managed by OgreRenderer.
+	
 	During the "frameStarted" event this class will update OpenGUI's internal
 	timer via System::updateTime(), then inject time delta events into each
-	Screen that is auto timing via ScreenManager::updateTime(). 
-	
+	Screen that is auto timing via ScreenManager::updateTime().
+
+	Additionally, this object initiates automatic buffer reclamation processing
+	at the end of frames via OgreRenderer::reclaimBufferMemory().
+
+	This FrameListener will always return true, and should never cause unintended
+	exiting from Ogre::Root::startRendering()
 	*/
 	class OGR_OGRE_API OgreFrameListener: public Ogre::FrameListener {
-	public:
-		OgreFrameListener();
+		friend class OgreRenderer;
+	private:
+		OgreFrameListener(OgreRenderer* renderer);
 		virtual ~OgreFrameListener();
+		OgreRenderer* mRenderer;
+	public:
 		//! performs the timing updates as specified in the class documentation
 		virtual bool frameStarted( const Ogre::FrameEvent& evt );
+		//! calls OgreRenderer::reclaimBufferMemory() once per frame
+		virtual bool frameEnded( const Ogre::FrameEvent& evt );
 	};
 
 	//! %OpenGUI Renderer implementation that works with Ogre
@@ -46,6 +58,10 @@ namespace OpenGUI {
 		void setTextureResourceGroup( const std::string& ogreResourceGroup );
 		//! Returns the current resource group that textures are loaded from
 		const std::string& getTextureResourceGroup();
+
+		//! This tests the batch buffer usage since the previous call to this function, and shortens it there is significant under utilization
+		/*! Automatically called by the OgreFrameListener. You only need to call this if frame listeners are not being fired for some reason. */
+		void reclaimBufferMemory();
 
 		//! Create a texture from an existing Ogre::TexturePtr object.
 		Texture* createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture );
@@ -69,12 +85,12 @@ namespace OpenGUI {
 		virtual void destroyRenderTexture( RenderTexture *texturePtr );
 
 	private:
-		void setupHardwareBuffer();
-		void teardownHardwareBuffer();
+		//NB: any function starting with in underscore in here does NOT perform sanity checks, simply doing what it is told
 
 
 		// set up the given texture states
-		void setTextureState(OgreTexture* texture, OgreTexture* mask);
+		void safeSetTextureState(Texture* texture, Texture* mask); // changes the texture state if necessary, executing current buffer first if needed
+		void _setTextureState( OgreTexture* texture, OgreTexture* mask );
 
 
 		// frame listener for timing injections
@@ -95,7 +111,9 @@ namespace OpenGUI {
 		OgreViewport* mCurrentViewport; // current selected viewport
 		RenderTexture* mCurrentContext; // current render target context
 		FVector2 mTextureUVScale; // UV scales for current texture state
-		
+		Texture* mCurrentTextureState_Texture; // holds texture state for textures
+		Texture* mCurrentTextureState_Mask; // holds texture state for masks
+
 
 		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing
 		Ogre::RenderOperation mRenderOperation; //reused for all draw operations
@@ -104,16 +122,26 @@ namespace OpenGUI {
 		Ogre::LayerBlendModeEx mColorBlendMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mAlphaBlendMode; //we cache this to save cpu time
 
-		
 
-
-
-		//! Struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
+		// struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex {
 			float x, y, z;
 			Ogre::RGBA color;
 			float u, v;
 		};
+
+		// Hardware Buffer Management
+		void _setupHardwareBuffer( size_t numVerts ); // create the buffer
+		void _teardownHardwareBuffer(); // fully tear down the buffer
+		void _resizeHardwareBuffer( size_t numVerts ); // resize the buffer to the given size
+		size_t m_HWBufferSize; // the current size of the buffer in vertices
+		size_t m_HWBufferUsage; // the current usage of the buffer in vertices
+		size_t m_HWBuffer_MaxUsageThisFrame; // the maximum attempted usage of the buffer in vertices over the entire frame
+		PolyVertex* m_HWBufferPtr; // holds a pointer to the current HW buffer when locked. 0 when there is no lock
+		void _appendBuffer( TriangleList& triList ); //append the given contents to the buffer
+		void _executeBuffer(); // execute the current buffer
+		void safeExecuteBuffer(); // executes the current buffer only if it has data
+		void safeAppendBuffer( TriangleList& triList ); //append the given contents to the buffer, executing the current buffer and resizing if necessary
 	};
 }//namespace OpenGUI{
 
