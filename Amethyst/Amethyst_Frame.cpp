@@ -52,7 +52,7 @@ namespace OpenGUI {
 				myRect.setPosition(myRect.getPosition() + FVector2(mFrameWidth, 0));
 				myRect.setWidth(getRect().getWidth() - (mFrameWidth*2));
 				myRect.setHeight(mFrameHeight);
-				b.Image.drawImage( mFramePieces[UM], myRect );
+				b.Image.drawImageUnscaledAndTiled( mFramePieces[UM], myRect );
 			}
 			if ( !mFramePieces[UR].isNull() ) {
 				FRect myRect = getRect();
@@ -67,25 +67,24 @@ namespace OpenGUI {
 				myRect.setPosition(myRect.getPosition() + FVector2(0, mFrameHeight));
 				myRect.setWidth(mFrameWidth);
 				myRect.setHeight(getRect().getHeight() - (2*mFrameHeight));
-				b.Image.drawImage( mFramePieces[ML], myRect );
+				b.Image.drawImageUnscaledAndTiled( mFramePieces[ML], myRect );
 			}
 			if ( !mFramePieces[MM].isNull() ) {
 				FRect myRect = getRect();
 				myRect.setPosition(myRect.getPosition() + FVector2(mFrameWidth, mFrameHeight));
 				myRect.setWidth(getRect().getWidth() - (mFrameWidth*2));
 				myRect.setHeight(getRect().getHeight() - (2*mFrameHeight));
-				b.Image.drawImage( mFramePieces[MM], myRect );
+
+				// might have to force pixel alignment here.
+				b.Image.drawImageUnscaledAndTiled( mFramePieces[MM], myRect);
 			}
 			if ( !mFramePieces[MR].isNull() ) {
 				FRect myRect = getRect();
 				myRect.setPosition(myRect.getPosition() + FVector2(getRect().getWidth() - mFrameWidth, mFrameHeight));
 				myRect.setWidth(mFrameWidth);
 				myRect.setHeight(getRect().getHeight() - (2*mFrameHeight));
-				b.Image.drawImage( mFramePieces[MR], myRect );
+				b.Image.drawImageUnscaledAndTiled( mFramePieces[MR], myRect );
 			}
-
-
-
 
 			if ( !mFramePieces[LL].isNull() ) {
 				FRect myRect = getRect();
@@ -99,7 +98,7 @@ namespace OpenGUI {
 				myRect.setPosition(myRect.getPosition() + FVector2(mFrameWidth, getRect().getHeight() - mFrameHeight));
 				myRect.setWidth(getRect().getWidth() - (mFrameWidth*2));
 				myRect.setHeight(mFrameHeight);
-				b.Image.drawImage( mFramePieces[LM], myRect );
+				b.Image.drawImageUnscaledAndTiled( mFramePieces[LM], myRect );
 			}
 			if ( !mFramePieces[LR].isNull() ) {
 				FRect myRect = getRect();
