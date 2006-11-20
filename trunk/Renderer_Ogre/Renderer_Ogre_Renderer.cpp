@@ -271,7 +271,14 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	void OgreRenderer::reclaimBufferMemory() {
-		/**/
+		if(mInRender || m_HWBufferPtr)
+			OG_THROW(Exception::ERR_INTERNAL_ERROR,"Cannot reclaim buffer memory during draw operations",__FUNCTION__);
+		if(m_HWBufferSize > BUFFER_SIZE_INITIAL && m_HWBufferSize / 2 > m_HWBuffer_MaxUsageThisFrame){
+			size_t newSize = m_HWBufferSize / 2;
+			if(newSize < BUFFER_SIZE_INITIAL)
+				newSize = BUFFER_SIZE_INITIAL;
+			_resizeHardwareBuffer(newSize);
+		}
 		m_HWBuffer_MaxUsageThisFrame = 0;
 	}
 	//#####################################################################
