@@ -66,7 +66,6 @@ namespace OpenGUI {
 		//! Create a texture from an existing Ogre::TexturePtr object.
 		Texture* createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture );
 
-
 		//Standard OpenGUI Renderer functions
 		virtual void selectViewport( Viewport* activeViewport ); //!< See Renderer documentation from %OpenGUI
 		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
@@ -92,7 +91,6 @@ namespace OpenGUI {
 		void safeSetTextureState(Texture* texture, Texture* mask); // changes the texture state if necessary, executing current buffer first if needed
 		void _setTextureState( OgreTexture* texture, OgreTexture* mask );
 
-
 		// frame listener for timing injections
 		OgreFrameListener* mOgreFrameListener;
 
@@ -114,14 +112,11 @@ namespace OpenGUI {
 		Texture* mCurrentTextureState_Texture; // holds texture state for textures
 		Texture* mCurrentTextureState_Mask; // holds texture state for masks
 
-
-		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing
-		Ogre::RenderOperation mRenderOperation; //reused for all draw operations
-
+		//Cache Data
 		Ogre::TextureUnitState::UVWAddressingMode mTextureAddressMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mColorBlendMode; //we cache this to save cpu time
 		Ogre::LayerBlendModeEx mAlphaBlendMode; //we cache this to save cpu time
-
+		FVector2 mViewportPixelShift; // holds the pixel shift necessary for correcting pixel alignment in the current render context (value assumes 0.0 to 1.0 viewport size)
 
 		// struct used to make accessing the Ogre VertexBuffer easier to follow/more efficient
 		struct PolyVertex {
@@ -134,6 +129,8 @@ namespace OpenGUI {
 		void _setupHardwareBuffer( size_t numVerts ); // create the buffer
 		void _teardownHardwareBuffer(); // fully tear down the buffer
 		void _resizeHardwareBuffer( size_t numVerts ); // resize the buffer to the given size
+		Ogre::HardwareVertexBufferSharedPtr mVertexBuffer; //hardware buffer used for drawing
+		Ogre::RenderOperation mRenderOperation; //reused for all draw operations
 		size_t m_HWBufferSize; // the current size of the buffer in vertices
 		size_t m_HWBufferUsage; // the current usage of the buffer in vertices
 		size_t m_HWBuffer_MaxUsageThisFrame; // the maximum attempted usage of the buffer in vertices over the entire frame
