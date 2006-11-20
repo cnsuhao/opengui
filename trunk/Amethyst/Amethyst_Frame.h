@@ -28,13 +28,15 @@ namespace OpenGUI {
 			void setImagery( std::string imageryName, eFrameImageIndex indx);
 			//! Gets the various frame imagery.
 			std::string getImagery(eFrameImageIndex indx);
+			//! Gets the FRect of the background
+			const FRect& getBGRect() const;
 
 			static Widget* CreateFrameFactory();
 
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			ImageryPtr mFramePieces[9];
-			float mFrameWidth, mFrameHeight;
+			FRect mBGRect;
 		};
 
 	} // namespace Amethyst{
