@@ -82,6 +82,22 @@ protected:
 	}
 };
 
+class MyBox: public Control {
+public:
+	MyBox() {}
+	virtual ~MyBox() {}
+protected:
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.pushColor(Color::PresetGreen());
+		b.Primitive.drawRect(getRect());
+		b.pop();
+		b.pushColor(Color::PresetRed());
+		b.Primitive.drawOutlineRect( getRect(), -1 );
+		b.pop();
+	}
+};
+
 void Demo1App::preRun() {
 	mViewport = new OgreViewport( getCamera()->getViewport() );
 
@@ -166,7 +182,14 @@ void Demo1App::preRun() {
 	wndTach->setTop( 100.0f );
 	wndTach->setWidth( 100.0f );
 	wnd->Children.add_back( wndTach, true );
-
+/*
+	MyBox* box = new MyBox();
+	box->setTop(0);
+	box->setLeft(0);
+	box->setWidth(800);
+	box->setHeight(600);
+	mScreen->Children.add_front( box, true );
+*/
 	mTimer = OpenGUI::TimerManager::getSingleton().getTimer();
 }
 void Demo1App::perframeRun() {
