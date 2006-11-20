@@ -5,6 +5,7 @@ namespace OpenGUI {
 
 		Frame::Frame()
 		{
+			mBGRect = getRect();
 		}
 
 		Frame::~Frame()
@@ -22,6 +23,16 @@ namespace OpenGUI {
 		{
 			invalidate();
 			mFramePieces[indx] = ImageryManager::getSingleton().getImagery( imageryName );
+
+			if ( indx == UL && !mFramePieces[UL].isNull() ) {
+				mBGRect.min.x = getRect().min.x + mFramePieces[UL]->getImagesetRect().getWidth();
+				mBGRect.min.y = getRect().min.y + mFramePieces[UL]->getImagesetRect().getHeight();
+			}
+
+			if ( indx == LR && !mFramePieces[LR].isNull() ) {
+				mBGRect.max.x = getRect().max.x - mFramePieces[LR]->getImagesetRect().getWidth();
+				mBGRect.max.y = getRect().max.y - mFramePieces[LR]->getImagesetRect().getHeight();
+			}
 		}
 
 		//! Gets the various frame imagery.

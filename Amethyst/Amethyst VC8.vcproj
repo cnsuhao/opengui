@@ -232,6 +232,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_ScrollBar_H.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_V.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_StaticImage.cpp"
 				>
 			</File>
