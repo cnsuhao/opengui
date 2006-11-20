@@ -12,6 +12,7 @@
 #include "OgreHardwareBufferManager.h"
 #include "OgreRenderWindow.h"
 
+
 namespace OpenGUI {
 	// Constants for buffer management control
 	// Sizes are in vertices. Values should ideally be divisible by 3 (since we work in triangle lists)
@@ -30,7 +31,7 @@ namespace OpenGUI {
 
 //OgreFrameListener implementation
 	//#####################################################################
-	OgreFrameListener::OgreFrameListener(OgreRenderer* renderer) {
+	OgreFrameListener::OgreFrameListener( OgreRenderer* renderer ) {
 		mRenderer = renderer;
 	}
 	//#####################################################################
@@ -54,7 +55,7 @@ namespace OpenGUI {
 		return true;
 	}
 	//#####################################################################
-	bool OgreFrameListener::frameEnded( const Ogre::FrameEvent& evt ){
+	bool OgreFrameListener::frameEnded( const Ogre::FrameEvent& evt ) {
 		mRenderer->reclaimBufferMemory();
 		return true;
 	}
@@ -83,7 +84,7 @@ namespace OpenGUI {
 		mCurrentContext = 0;
 
 		// attach frame listener for timing updates
-		mOgreFrameListener = new OgreFrameListener(this);
+		mOgreFrameListener = new OgreFrameListener( this );
 		mOgreRoot->addFrameListener( mOgreFrameListener );
 
 		// get capabilities
@@ -146,6 +147,22 @@ namespace OpenGUI {
 		using namespace Ogre;
 		mInRender = true;
 
+		// set initial viewport and rendering context
+		mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
+		mCurrentContext = 0;
+		mViewportPixelShift.x = mTexelOffset.x / (float)(mCurrentViewport->getOgreViewport()->getActualWidth()/2);
+		mViewportPixelShift.y = mTexelOffset.y / (float)(mCurrentViewport->getOgreViewport()->getActualHeight()/2);
+
+		// begin ogre frame, temporarily canceling any existing viewport clearing
+		Ogre::Viewport* vp = mCurrentViewport->getOgreViewport();
+		unsigned int clearedBuffers = vp->getClearBuffers();
+		if ( clearedBuffers ) {
+			vp->setClearEveryFrame( false );
+			mRenderSystem->_beginFrame();
+			vp->setClearEveryFrame( true, clearedBuffers );
+		} else
+			mRenderSystem->_beginFrame();
+
 		// set-up matrices
 		mRenderSystem->_setWorldMatrix( Matrix4::IDENTITY );
 		mRenderSystem->_setViewMatrix( Matrix4::IDENTITY );
@@ -170,21 +187,21 @@ namespace OpenGUI {
 		mRenderSystem->_setTextureMatrix( 0, Matrix4::IDENTITY );
 		mRenderSystem->_setAlphaRejectSettings( CMPF_ALWAYS_PASS, 0 );
 		mRenderSystem->_disableTextureUnitsFrom( 0 ); // disable ALL current texture units
+		mRenderSystem->_setTexture(0, false, "");
 		mCurrentTextureState_Texture = 0;
 		mCurrentTextureState_Mask = 0;
+		mTextureUVScale.x = 1.0f;
+		mTextureUVScale.y = 1.0f;
 
 		// enable alpha blending
 		mRenderSystem->_setSceneBlending( SBF_SOURCE_ALPHA, SBF_ONE_MINUS_SOURCE_ALPHA );
-
-		// set initial rendering context
-		mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
-		mCurrentContext = 0;
 	}
 	//#####################################################################
 	void OgreRenderer::postRenderCleanup() {
 		// finish up any remaining render operations
 		safeExecuteBuffer();
 
+		mRenderSystem->_endFrame();
 		mInRender = false;
 		//we'll let everyone else fend for themselves after we've finished making a mess of things
 	}
@@ -208,18 +225,18 @@ namespace OpenGUI {
 		if ( !renderOp.triangleList || renderOp.triangleList->size() == 0 ) return; //skip if no triangles to render
 
 		// update texture state
-		safeSetTextureState(renderOp.texture.get(), renderOp.mask.get());
+		safeSetTextureState( renderOp.texture.get(), renderOp.mask.get() );
 
 		// add render operations to buffer
 		TriangleList& triList = *( renderOp.triangleList );
-		safeAppendBuffer(triList);
+		safeAppendBuffer( triList );
 	}
 	//#####################################################################
 	void OgreRenderer::safeExecuteBuffer() {
 		if ( !m_HWBufferUsage ) return; // abort if nothing to do
 
 		// otherwise update usage stats and execute the buffer
-		if(m_HWBufferUsage > m_HWBuffer_MaxUsageThisFrame)
+		if ( m_HWBufferUsage > m_HWBuffer_MaxUsageThisFrame )
 			m_HWBuffer_MaxUsageThisFrame = m_HWBufferUsage;
 		_executeBuffer();
 	}
@@ -240,6 +257,7 @@ namespace OpenGUI {
 				ogreTexture = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( texture ) );
 			else
 				ogreTexture = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( texture ) );
+			
 
 		if ( mask )
 			if ( mask->isRenderTexture() )
@@ -252,7 +270,7 @@ namespace OpenGUI {
 		_setTextureState( ogreTexture, ogreMask );
 	}
 	//#####################################################################
-	void OgreRenderer::reclaimBufferMemory(){
+	void OgreRenderer::reclaimBufferMemory() {
 		/**/
 		m_HWBuffer_MaxUsageThisFrame = 0;
 	}
@@ -263,55 +281,55 @@ namespace OpenGUI {
 		size_t remainingSpace = m_HWBufferSize - m_HWBufferUsage;
 
 		// if it fits in the available buffer: stick it in there and return
-		if(remainingSpace >= neededSpace){
-			_appendBuffer(triList);
+		if ( remainingSpace >= neededSpace ) {
+			_appendBuffer( triList );
 			return;
 		}
 		//otherwise we need to do some leg work... as follows below
 
 		// do we need to break soft limit to perform this batch at all?
-		if(BUFFER_SIZE_MAX < neededSpace ){
+		if ( BUFFER_SIZE_MAX < neededSpace ) {
 			// do we need to force a resize of the buffer to fit?
-			if(m_HWBufferSize < neededSpace){
+			if ( m_HWBufferSize < neededSpace ) {
 				safeExecuteBuffer(); // flush what we have, we're going to be resizing
-				_resizeHardwareBuffer(neededSpace);
-				_appendBuffer(triList);
+				_resizeHardwareBuffer( neededSpace );
+				_appendBuffer( triList );
 				m_HWBuffer_MaxUsageThisFrame = neededSpace;
 				safeExecuteBuffer(); // run the new batch immediately to make room for the next batch
-			}else{
+			} else {
 				safeExecuteBuffer(); // flush what we have, we need the space
-				_appendBuffer(triList); // send batch contents into the buffer
+				_appendBuffer( triList ); // send batch contents into the buffer
 			}
 			return; // we're done, return
 		}
 
 		//would a resize break the max buffer limit?
-		if(BUFFER_SIZE_MAX <= m_HWBufferSize){
+		if ( BUFFER_SIZE_MAX <= m_HWBufferSize ) {
 			// if so, all we can do is flush the buffer for the room, append, and continue
 			safeExecuteBuffer(); // flush what we have, we need the space
-			_appendBuffer(triList); // send batch contents into the buffer
+			_appendBuffer( triList ); // send batch contents into the buffer
 			return;
 		}
 
 		// if we reach this point, a buffer resize is in order
 		size_t newBufferSize;
-		if(BUFFER_SIZE_MAX/2 <= m_HWBufferSize) // test for final growth size
+		if ( BUFFER_SIZE_MAX / 2 <= m_HWBufferSize ) // test for final growth size
 			newBufferSize = BUFFER_SIZE_MAX;// final resize means we just jump right to max buffer size
-		else{
+		else {
 			// otherwise double the buffer until we can fit what we need
 			newBufferSize = m_HWBufferSize;
-			while(newBufferSize - m_HWBufferUsage < neededSpace) //(this usually only takes 1 iteration)
+			while ( newBufferSize - m_HWBufferUsage < neededSpace ) //(this usually only takes 1 iteration)
 				newBufferSize *= 2;
-			if(newBufferSize > BUFFER_SIZE_MAX) //paranoia test
+			if ( newBufferSize > BUFFER_SIZE_MAX ) //paranoia test
 				newBufferSize = BUFFER_SIZE_MAX;
 		}
 
 		safeExecuteBuffer(); // flush the current contents
-		_resizeHardwareBuffer(newBufferSize); // resize the buffer
-		_appendBuffer(triList); // send batch contents into the buffer
+		_resizeHardwareBuffer( newBufferSize ); // resize the buffer
+		_appendBuffer( triList ); // send batch contents into the buffer
 
 		// we prevent downsizing for at least 1 frame
-		if(m_HWBuffer_MaxUsageThisFrame < newBufferSize)
+		if ( m_HWBuffer_MaxUsageThisFrame < newBufferSize )
 			m_HWBuffer_MaxUsageThisFrame = newBufferSize;
 	}
 	//#####################################################################
@@ -331,8 +349,10 @@ namespace OpenGUI {
 				vertexCount++; // increment vertex counter for later
 
 				// store vertex position data
-				hwbuffer[i].x = ( tri.vertex[i].position.x * 2 ) - 1 + mTexelOffset.x; //correct for the projection matrix and the texel offset
-				hwbuffer[i].y = ( tri.vertex[i].position.y * -2 ) + 1 + mTexelOffset.y; //correct for the projection matrix and the texel offset
+				hwbuffer[i].x = (( tri.vertex[i].position.x * 2 ) - 1.0f ) + mViewportPixelShift.x;
+				hwbuffer[i].y = (( tri.vertex[i].position.y * 2 ) - 1.0f ) - mViewportPixelShift.y;
+				if(!mCurrentContext)
+					hwbuffer[i].y *= -1;
 				hwbuffer[i].z = 0.0f; // we don't deal in Z, so it's always 0
 
 				// store the color value
@@ -421,7 +441,7 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	Texture* OgreRenderer::createTextureFromFile( const std::string &filename ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFile( filename, mTextureResourceGroup );
@@ -429,7 +449,7 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	Texture* OgreRenderer::createTextureFromTextureData( const TextureData *textureData ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFromTextureData( textureData, mTextureResourceGroup );
@@ -437,7 +457,7 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	Texture* OgreRenderer::createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadOgreTexture( texture );
@@ -445,14 +465,14 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	void OgreRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		if ( texture )
 			static_cast<OgreStaticTexture*>( texture )->loadFromTextureData( textureData, mTextureResourceGroup );
 	}
 	//#####################################################################
 	void OgreRenderer::destroyTexture( Texture* texturePtr ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		if ( texturePtr )
 			delete texturePtr;
@@ -470,16 +490,24 @@ namespace OpenGUI {
 		if ( mCurrentContext == context ) return; // don't do anything if we don't need to
 
 		safeExecuteBuffer(); // flush current buffer before we change targets
-		safeSetTextureState(0,0);
+		safeSetTextureState( 0, 0 );
 
 		if ( !context ) {
 			mCurrentContext = 0;
 			mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
+			mViewportPixelShift.x = mTexelOffset.x / (float)(mCurrentViewport->getOgreViewport()->getActualWidth()/2);
+			mViewportPixelShift.y = mTexelOffset.y / (float)(mCurrentViewport->getOgreViewport()->getActualHeight()/2);
 		} else {
 			OgreRenderTexture* rtex = static_cast<OgreRenderTexture*>( context );
 			mCurrentContext = context;
 			mRenderSystem->_setViewport( rtex->getOgreViewport() );
+			mViewportPixelShift.x = mTexelOffset.x / (float)(rtex->getOgreViewport()->getActualWidth()/2);
+			mViewportPixelShift.y = mTexelOffset.y / (float)(rtex->getOgreViewport()->getActualHeight()/2);
 		}
+
+		// fix what Ogre just broke ;)
+		mRenderSystem->_setCullingMode( Ogre::CULL_NONE ); // _setViewport has a habit of turning culling back on
+		mRenderSystem->_setProjectionMatrix( Ogre::Matrix4::IDENTITY ); // and it also likes to break the projection matrix :(
 	}
 	//#####################################################################
 	void OgreRenderer::clearContents() {
@@ -495,14 +523,14 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	RenderTexture* OgreRenderer::createRenderTexture( const IVector2 &size ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		OgreRenderTexture* tex = new OgreRenderTexture( size );
 		return tex;
 	}
 	//#####################################################################
 	void OgreRenderer::destroyRenderTexture( RenderTexture *texturePtr ) {
-		if(mInRender) // need to flush the buffer because texture operations tend to mess with texture states
+		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		if ( texturePtr )
 			delete texturePtr;
