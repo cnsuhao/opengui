@@ -23,9 +23,9 @@ namespace OpenGUI {
 		//! returns a pointer to the default Viewport
 		Viewport* getDefaultViewport();
 		//! Creates a RTT Viewport of the given size (requires detected RTT support)
-		Viewport* createRTTViewport(const IVector2& size);
+		Viewport* createRTTViewport( const IVector2& size );
 		//! Destroys a previously created RTT Viewport
-		void destroyRTTViewport(Viewport* viewport);
+		void destroyRTTViewport( Viewport* viewport );
 
 		// Required implementations for OpenGUI Renderer
 		virtual void selectViewport( Viewport* activeViewport );
@@ -54,7 +54,7 @@ namespace OpenGUI {
 
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
-		static TextureData* LoadTextureData( std::string filename );		
+		static TextureData* LoadTextureData( std::string filename );
 		bool mSupportRTT;
 
 		OGL_Viewport* mCurrentViewport;

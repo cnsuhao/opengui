@@ -38,7 +38,7 @@ namespace OpenGUI {
 		Ogre::Viewport* mOgreViewport;
 		Ogre::RenderTarget* mOgreRenderTarget;
 
-	// OpenGUI::Viewport methods //
+		// OpenGUI::Viewport methods //
 	public:
 		virtual const IVector2& getSize();
 	protected:
@@ -47,14 +47,14 @@ namespace OpenGUI {
 		virtual void screenAttached( Screen* attachingScreen );
 		virtual void screenDetached( Screen* detachingScreen );
 
-	// Ogre::RenderTargetListener methods //
+		// Ogre::RenderTargetListener methods //
 	public:
-		virtual void preRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);
-		virtual void postRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);
-		virtual void preViewportUpdate(const Ogre::RenderTargetViewportEvent& evt);
-		virtual void postViewportUpdate(const Ogre::RenderTargetViewportEvent& evt);
-		virtual void viewportAdded(const Ogre::RenderTargetViewportEvent& evt);
-		virtual void viewportRemoved(const Ogre::RenderTargetViewportEvent &evt);
+		virtual void preRenderTargetUpdate( const Ogre::RenderTargetEvent& evt );
+		virtual void postRenderTargetUpdate( const Ogre::RenderTargetEvent& evt );
+		virtual void preViewportUpdate( const Ogre::RenderTargetViewportEvent& evt );
+		virtual void postViewportUpdate( const Ogre::RenderTargetViewportEvent& evt );
+		virtual void viewportAdded( const Ogre::RenderTargetViewportEvent& evt );
+		virtual void viewportRemoved( const Ogre::RenderTargetViewportEvent &evt );
 	};
 
 } // namespace OpenGUI {

@@ -39,7 +39,7 @@ namespace OpenGUI {
 		void setSize( const IVector2& size ) {
 			_setSize( size );
 		}
-		virtual void getUVs(float& max_u, float& max_v){
+		virtual void getUVs( float& max_u, float& max_v ) {
 			max_u = maxUVs.x;
 			max_v = maxUVs.y;
 		}
