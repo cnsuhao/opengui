@@ -110,8 +110,8 @@ namespace OpenGUI {
 			newPos = pos - getPosition();
 			newPos.x -= m_ClientAreaOffset_UL.x;
 			newPos.y -= m_ClientAreaOffset_UL.y;
-			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-					iter != Children.rend(); iter++ ) {
+			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
+			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Move( newPos.x, newPos.y ) )
 					evtArgs.eat();
 			}
@@ -132,8 +132,8 @@ namespace OpenGUI {
 			newPos = pos - getPosition();
 			newPos.x -= m_ClientAreaOffset_UL.x;
 			newPos.y -= m_ClientAreaOffset_UL.y;
-			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-					iter != Children.rend(); iter++ ) {
+			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
+			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Press( newPos.x, newPos.y ) )
 					evtArgs.eat();
 			}
@@ -154,8 +154,8 @@ namespace OpenGUI {
 			newPos = pos - getPosition();
 			newPos.x -= m_ClientAreaOffset_UL.x;
 			newPos.y -= m_ClientAreaOffset_UL.y;
-			for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-					iter != Children.rend(); iter++ ) {
+			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
+			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Release( newPos.x, newPos.y ) )
 					evtArgs.eat();
 			}
@@ -256,8 +256,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::_setChildControlLayoutState( bool state ) {
-		for ( WidgetCollection::iterator iter = Children.begin();
-				iter != Children.end(); iter++ ) {
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Control* c = dynamic_cast<Control*>( iter.get() );
 			if ( c )
 				c->m_InLayout = state;
@@ -271,8 +271,8 @@ namespace OpenGUI {
 		FRect clntArea = getClientArea();
 
 		//update all docked controls
-		for ( WidgetCollection::iterator iter = Children.begin();
-				iter != Children.end(); iter++ ) {
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Control* ctrl = dynamic_cast<Control*>( iter.get() );
 			if ( ctrl ) {
 				int dock = ctrl->getDocking();
@@ -317,8 +317,8 @@ namespace OpenGUI {
 		float deltaRight = ( clntArea.getPosition().x + clntArea.getWidth() ) - ( oldClntArea.getPosition().x + oldClntArea.getWidth() ) ;
 		float deltaBottom = ( clntArea.getPosition().y + clntArea.getHeight() ) - ( oldClntArea.getPosition().y + oldClntArea.getHeight() ) ;
 
-		for ( WidgetCollection::iterator iter = Children.begin();
-				iter != Children.end(); iter++ ) {
+		//WidgetCollection::iterator iter, iterend = Children.end(); // done earlier
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Control* ctrl = dynamic_cast<Control*>( iter.get() );
 			if ( ctrl ) {
 				int dock = ctrl->getDocking();
@@ -351,7 +351,8 @@ namespace OpenGUI {
 		FVector2 pos = position;
 		_translatePointIn( pos );
 
-		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Widget* child = iter.get();
 			if ( child->_isInside( pos ) ) {
 				if ( recursive ) {
@@ -366,7 +367,8 @@ namespace OpenGUI {
 		FVector2 pos = position;
 		_translatePointIn( pos );
 
-		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Widget* child = iter.get();
 			if ( child->_isInside( pos ) ) {
 				Widget* ret = child;
@@ -408,7 +410,8 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_tick( float seconds ) {
 		Control::_tick( seconds );
-		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Widget* child = iter.get();
 			child->_tick( seconds );
 		}
