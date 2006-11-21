@@ -179,8 +179,8 @@ namespace OpenGUI {
 				//draw children
 				if ( m_ClipChildren ) // setup the client area clip if we have one
 					cacheBrush.pushClippingRect( getClientArea() );
-				for ( WidgetCollection::reverse_iterator iter = Children.rbegin();
-						iter != Children.rend(); iter++ ) {
+				WidgetCollection::reverse_iterator iter, iterend = Children.rend();
+				for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 					iter->_draw( cacheBrush );
 				}
 				if ( m_ClipChildren ) // pop the client area clip if we had one
