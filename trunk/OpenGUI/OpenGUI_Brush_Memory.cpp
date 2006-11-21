@@ -15,7 +15,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Memory::emerge( Brush& targetBrush ) {
-		for ( RenderOperationList::iterator iter = mRopList.begin(); mRopList.end() != iter; iter++ ) {
+		RenderOperationList::iterator iter, iterend = mRopList.end();
+		for ( iter = mRopList.begin(); iter != iterend; iter++ ) {
 			//!\todo Having a copy operation here makes this incredibly slow! This should be removed as part of Brush optimization
 
 			// we need to make a copy because addrenderOperation modifies the input directly

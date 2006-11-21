@@ -23,9 +23,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void EventHandlerList::invoke( Object* sender, EventArgs& args ) {
-		for ( EventHandlerSet::iterator iter = mEventHandlerSet.begin();
-				iter != mEventHandlerSet.end();
-				iter++ ) {
+		EventHandlerSet::iterator iter, iterend = mEventHandlerSet.end();
+		for ( iter = mEventHandlerSet.begin(); iter != iterend; iter++ ) {
 			EventHandler* handler = ( *iter );
 			handler->onEvent( sender, args );
 		}

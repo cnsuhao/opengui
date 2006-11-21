@@ -98,7 +98,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::emergeMemory( Brush& targetBrush ) {
-		for ( RenderOperationList::iterator iter = mRenderOpList.begin(); mRenderOpList.end() != iter; iter++ ) {
+		RenderOperationList::iterator iter, iterend = mRenderOpList.end();
+		for ( iter = mRenderOpList.begin(); iter != iterend; iter++ ) {
 			//!\todo Having a copy operation here makes this incredibly slow! This should be removed as part of Brush optimization
 
 			// we need to make a copy because addrenderOperation modifies the input directly
@@ -149,8 +150,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_Caching::appendRTT( RenderOperation &renderOp ) {
-		for ( TriangleList::iterator iter = renderOp.triangleList->begin();
-				iter != renderOp.triangleList->end(); iter++ ) {
+		TriangleList::iterator iter, iterend = renderOp.triangleList->end();
+		for ( iter = renderOp.triangleList->begin(); iter != iterend; iter++ ) {
 			Triangle& t = ( *iter );
 			for ( int i = 0; i < 3; i++ ) {
 				t.vertex[i].position.x /= mDrawSize.x;

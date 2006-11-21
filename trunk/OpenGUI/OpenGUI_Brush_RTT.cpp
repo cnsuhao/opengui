@@ -69,8 +69,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Brush_RTT::appendRenderOperation( RenderOperation &renderOp ) {
-		for ( TriangleList::iterator iter = renderOp.triangleList->begin();
-				iter != renderOp.triangleList->end(); iter++ ) {
+		TriangleList::iterator iter, iterend = renderOp.triangleList->end();
+		for ( iter = renderOp.triangleList->begin(); iter != iterend; iter++ ) {
 			Triangle& t = ( *iter );
 			for ( int i = 0; i < 3; i++ ) {
 				t.vertex[i].position.x /= mDrawSize.x;

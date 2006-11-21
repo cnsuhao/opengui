@@ -124,7 +124,8 @@ namespace OpenGUI {
 	FontCacheGlyphSet* FontCache::_GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize ) {
 		//search for the glyph set in the existing cache
 		FontCacheGlyphSetList::iterator iter = mFontCacheGlyphSetList.begin();
-		while ( iter != mFontCacheGlyphSetList.end() ) {
+		FontCacheGlyphSetList::iterator iterend = mFontCacheGlyphSetList.end();
+		while ( iter != iterend ) {
 			if (( *iter )->font == font &&
 					( *iter )->glyphSize == glyph_pixelSize ) {
 				return ( *iter );
@@ -175,7 +176,8 @@ namespace OpenGUI {
 		//find a font atlas to accept the data
 		FontAtlas* atlas = 0;
 		FontAtlasList::iterator iter = mFontAtlasList.begin();
-		while ( iter != mFontAtlasList.end() ) {
+		FontAtlasList::iterator iterend = mFontAtlasList.end();
+		while ( iter != iterend ) {
 			atlas = ( *iter );
 			IRect tmpIRect; //GCC apparently does not support in-place object contruction in pass by reference
 			if ( atlas->GetAvailableChunk( glyphSet->glyphSize, tmpIRect, false ) ) {

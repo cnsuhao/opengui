@@ -9,8 +9,8 @@ namespace OpenGUI {
 		const FVector2& pos = mRect.getPosition();
 
 		TriangleList& tlist = *in_out.triangleList;
-		for ( TriangleList::iterator iter = tlist.begin();
-				iter != tlist.end(); iter++ ) {
+		TriangleList::iterator iter, iterend = tlist.end();
+		for ( iter = tlist.begin(); iter != iterend; iter++ ) {
 			Triangle& tri = ( *iter );
 			float& x1 = tri.vertex[0].position.x;
 			float& y1 = tri.vertex[0].position.y;
