@@ -21,7 +21,7 @@ namespace OpenGUI {
 
 	//! FrameListener that updates OpenGUI timing every frame
 	/*! An instance of this class is always created and managed by OgreRenderer.
-	
+
 	During the "frameStarted" event this class will update OpenGUI's internal
 	timer via System::updateTime(), then inject time delta events into each
 	Screen that is auto timing via ScreenManager::updateTime().
@@ -35,7 +35,7 @@ namespace OpenGUI {
 	class OGR_OGRE_API OgreFrameListener: public Ogre::FrameListener {
 		friend class OgreRenderer;
 	private:
-		OgreFrameListener(OgreRenderer* renderer);
+		OgreFrameListener( OgreRenderer* renderer );
 		virtual ~OgreFrameListener();
 		OgreRenderer* mRenderer;
 	public:
@@ -88,7 +88,7 @@ namespace OpenGUI {
 
 
 		// set up the given texture states
-		void safeSetTextureState(Texture* texture, Texture* mask); // changes the texture state if necessary, executing current buffer first if needed
+		void safeSetTextureState( Texture* texture, Texture* mask ); // changes the texture state if necessary, executing current buffer first if needed
 		void _setTextureState( OgreTexture* texture, OgreTexture* mask );
 
 		// frame listener for timing injections

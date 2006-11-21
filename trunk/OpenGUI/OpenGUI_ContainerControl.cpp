@@ -349,7 +349,7 @@ namespace OpenGUI {
 	//############################################################################
 	void ContainerControl::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
 		FVector2 pos = position;
-		_translatePointIn(pos);
+		_translatePointIn( pos );
 
 		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
@@ -364,7 +364,7 @@ namespace OpenGUI {
 	//############################################################################
 	Widget* ContainerControl::_getChildAt( const FVector2& position, bool recursive ) {
 		FVector2 pos = position;
-		_translatePointIn(pos);
+		_translatePointIn( pos );
 
 		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
@@ -399,8 +399,8 @@ namespace OpenGUI {
 		return !mCacheBrush->hasContent();
 	}
 	//############################################################################
-	Brush_Caching& ContainerControl::_getCacheBrush(){
-		if ( !mCacheBrush ){
+	Brush_Caching& ContainerControl::_getCacheBrush() {
+		if ( !mCacheBrush ) {
 			mCacheBrush = new Brush_Caching( getScreen(), getSize() );
 		}
 		return *mCacheBrush;
