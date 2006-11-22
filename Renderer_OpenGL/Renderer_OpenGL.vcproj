@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
+				AdditionalIncludeDirectories="..\dependencies\corona\src; ..\OpenGUI; ..\dependencies\glfw\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/Renderer_OpenGL_d.lib"/>
+				OutputFile="../lib/Renderer_OpenGL_d.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -61,7 +61,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\dependencies\corona\src;..\OpenGUI;..\examples\glfw\include"
+				AdditionalIncludeDirectories="..\dependencies\corona\src; ..\OpenGUI; ..\dependencies\glfw\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -73,7 +73,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/Renderer_OpenGL.lib"/>
+				OutputFile="../lib/Renderer_OpenGL.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
