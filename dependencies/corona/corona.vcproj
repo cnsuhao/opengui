@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/corona.lib"/>
+				OutputFile="corona_d.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -71,7 +71,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/corona.lib"/>
+				OutputFile="corona.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
