@@ -9,6 +9,7 @@ draw to the screen under the Ogre rendering engine, and provides a certain level
 of automation to ensure your GUIs are always updated when necessary.
 
 - \subpage Integrating "Using Renderer_Ogre in an Ogre application"
+- \subpage Viewports "Managing Viewports"
 
 <hr>	
 \note
@@ -77,7 +78,7 @@ your application may induce previously unknown issues.
 Using Renderer_Ogre requires libraries from Ogre, %OpenGUI, and Renderer_Ogre. Be sure to set
 up the correct library paths for your linker.
 
-Linking with OgreFusion will require:\n
+Linking with Renderer_Ogre will require:\n
 \b Debug: OgreMain_d.lib, OpenGUI_d.lib and Renderer_Ogre_d.lib\n
 \b Release: OgreMain.lib, OpenGUI.lib and Renderer_Ogre.lib
 
@@ -95,7 +96,7 @@ DLLs are available to the application:\n
 Creating the linkage between %OpenGUI and Ogre can be done in just a few lines of code.
 This should be done after Ogre has been initialized and an Ogre::RenderSystem has been
 selected.
-\verbatim
+\code
 
 // This must be a pointer to the Ogre Root object
 // Ogre::Root* ogreRoot;
@@ -106,9 +107,9 @@ selected.
 OpenGUI::OgreRenderer* myRenderer = new OpenGUI::OgreRenderer(ogreRoot, ogreRenderSystem);
 OpenGUI::OgreResourceProvider* myResourceProvider = new OpenGUI::OgreResourceProvider();
 OpenGUI::System* mySystem = new OpenGUI::System(myRenderer, myResourceProvider);
-\endverbatim
+\endcode
 
-And that's it! After you've done %OpenGUI will be called every frame to update its
+And that's it! %OpenGUI will now be called automatically every frame to update its
 internal timing, and will automatically refresh the GUI for a viewport after the Viewport's
 frame has ended. On top of that, your GUI assets (such as xml layout files, and textures)
 will be loaded directly out of Ogre's resource system.
@@ -127,7 +128,7 @@ for information on changing the Ogre resource groups used when loading textures 
 
 \section DeInit Destruction
 When shutting down your application, failure to destroy objects in the correct order can lead
-to crashes and other errors. The proper destruction order when using OgreFusion is:
+to crashes and other errors. The proper destruction order when using Renderer_Ogre is:
 
  - %OpenGUI
  - Renderer_Ogre
@@ -135,10 +136,35 @@ to crashes and other errors. The proper destruction order when using OgreFusion 
 
 <hr>
 
+\section Viewports Using Viewports
+In order to actually display a Screen, you need to provide %OpenGUI with a Viewport that can be selected prior to the draw operations. Renderer_Ogre comes with the OpenGUI::OgreViewport class, which can be used to bind an OpenGUI::Screen to any standard Ogre::Viewport. To create one of these viewports, you perform the following:
+\code
+// ogreViewportPtr is a pointer to a valid Ogre::Viewport
+OpenGUI::OgreViewport* myGuiViewport = new OpenGUI::OgreViewport(ogreViewportPtr);
+\endcode
+This will create the Ogre specialized OpenGUI::Viewport, which can then be used to attach Screens as so:
+\code
+// myScreenPtr is a pointer to a valid OpenGUI::Screen
+myScreenPtr->setViewport(myGuiViewport);
+\endcode
+You can attach several Screens to a single viewport, but a Screen can only be attached to 1 viewport. To unattach a Screen from its viewport you can either assign a new viewport or simply call Screen::setViewport() again, passing 0 as the viewport pointer.
+
+Once you have an OpenGUI::OgreViewport attached to an Ogre::Viewport, and a Screen is bound to it, the Screen is finally renderable, and will automatically be redrawn after Ogre updates the Viewport contents. Only Screens that are Active and AutoUpdating will be redrawn, so you can select which Screens are drawn to a viewport by controlling those settings. If you want to prevent the drawing of all Screens, you can turn off overlays for the Ogre::Viewport, and Renderer_Ogre will honor that setting and skip drawing the GUIs on that Ogre::Viewport.
+
+To destroy a Viewport, you simply delete it.
+\code
+delete myGuiViewport;
+\endcode
+It is not necessary to detach all Screens from a viewport before destroying it. The viewport will automatically detach all attached Screens during destruction.
+
+
+<hr>
+
 That should cover everything you need to know about using OpenGUI with Ogre in your application
-via the Renderer_Ogre. If you run into trouble, try the following online resources for help:
+via Renderer_Ogre. If you run into trouble, try the following online resources for help:
 
  - OpenGUI website (forums and wiki): http://opengui.sourceforge.net/
  - Ogre website (forums and wiki): http://www.ogre3d.org/
 
 */
+
