@@ -72,7 +72,7 @@ namespace OpenGUI {
 	//#####################################################################
 	void OgreViewport::postViewportUpdate( const Ogre::RenderTargetViewportEvent& evt ) {
 		// we only care about our particular viewport
-		if ( mOgreViewport == evt.source ) {
+		if ( mOgreViewport == evt.source && mOgreViewport->getOverlaysEnabled() ) {
 			// iterate screens in order and update them
 			const ScreenSet& screenSet = getScreenSet();
 			ScreenSet::const_iterator iter = screenSet.begin();
