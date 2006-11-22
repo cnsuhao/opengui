@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\freetype2110.lib"
+				OutputFile="..\..\..\objs\freetype.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -291,7 +291,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\..\..\objs\freetype2110_D.lib"
+				OutputFile="..\..\..\objs\freetype_d.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

@@ -36,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TachometerWidget", "example
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528} = {F0265828-618F-4BAD-B4C4-8D3BF266B528}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "examples\glfw\glfw.vcproj", "{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "dependencies\glfw\glfw.vcproj", "{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

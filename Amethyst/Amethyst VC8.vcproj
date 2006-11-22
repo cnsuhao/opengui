@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../Debug"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -64,14 +64,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/Amethyst_d.dll"
+				OutputFile="../bin/Amethyst_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../Debug"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Amethyst_d.pdb"
+				ProgramDatabaseFile="../bin/Amethyst_d.pdb"
 				SubSystem="2"
 				ProfileGuidedDatabase=""
-				ImportLibrary="$(OutDir)/Amethyst_d.lib"
+				ImportLibrary="../lib/Amethyst_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -97,12 +97,12 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\Debug\Amethyst_d.dll ..\examples\bin"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../Release"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -148,16 +148,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/Amethyst.dll"
+				OutputFile="../bin/Amethyst.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../Release"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Amethyst.pdb"
+				ProgramDatabaseFile="../bin/Amethyst.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ProfileGuidedDatabase=""
-				ImportLibrary="$(OutDir)/Amethyst.lib"
+				ImportLibrary="../lib/Amethyst.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -183,7 +183,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\Release\Amethyst.dll ..\examples\bin"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>

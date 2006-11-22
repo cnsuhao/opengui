@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/corona.lib"
+				OutputFile="corona_d.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/corona.lib"
+				OutputFile="corona.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
