@@ -13,7 +13,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../Debug"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -34,20 +34,19 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Winmm.lib tinyxmld.lib freetype2110_D.lib"
-				OutputFile="$(OutDir)/OpenGUI_d.dll"
+				AdditionalDependencies="Winmm.lib tinyxml_d.lib freetype_d.lib"
+				OutputFile="../bin/OpenGUI_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\dependencies\tinyxml\Debug;..\dependencies\freetype2\objs"
+				AdditionalLibraryDirectories="..\dependencies\tinyxml; ..\dependencies\freetype2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/OpenGUI_d.pdb"
+				ProgramDatabaseFile="../bin/OpenGUI_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/OpenGUI_d.lib"
+				ImportLibrary="../lib/OpenGUI_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -67,7 +66,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../Release"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -86,21 +85,20 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Winmm.lib tinyxml.lib freetype2110.lib"
-				OutputFile="$(OutDir)/OpenGUI.dll"
+				OutputFile="../bin/OpenGUI.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\dependencies\corona\release;..\dependencies\tinyxml\Release;..\dependencies\freetype2\objs"
+				AdditionalLibraryDirectories="..\dependencies\tinyxml; ..\dependencies\freetype2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/OpenGUI.pdb"
+				ProgramDatabaseFile="../bin/OpenGUI.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/OpenGUI.lib"
+				ImportLibrary="../lib/OpenGUI.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

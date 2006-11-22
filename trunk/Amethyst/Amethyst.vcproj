@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../Debug"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -34,19 +34,18 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/Amethyst_d.dll"
+				OutputFile="../bin/Amethyst_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../Debug"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Amethyst_d.pdb"
+				ProgramDatabaseFile="../bin/Amethyst_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/Amethyst_d.lib"
+				ImportLibrary="../lib/Amethyst_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -66,7 +65,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../Release"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -85,21 +84,20 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/Amethyst.dll"
+				OutputFile="../bin/Amethyst.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../Release"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Amethyst.pdb"
+				ProgramDatabaseFile="../bin/Amethyst.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/Amethyst.lib"
+				ImportLibrary="../lib/Amethyst.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\examples\bin\"/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -135,13 +133,31 @@
 				RelativePath=".\Amethyst_Checkbox.cpp">
 			</File>
 			<File
+				RelativePath=".\Amethyst_Frame.cpp">
+			</File>
+			<File
 				RelativePath=".\Amethyst_Label.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ListBox.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_Panel.cpp">
 			</File>
 			<File
 				RelativePath=".\Amethyst_ProgressBar.cpp">
 			</File>
 			<File
 				RelativePath=".\Amethyst_RadioButton.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_H.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_ScrollBar_V.cpp">
+			</File>
+			<File
+				RelativePath=".\Amethyst_StaticImage.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -167,6 +183,9 @@
 				RelativePath=".\Amethyst_Exports.h">
 			</File>
 			<File
+				RelativePath=".\Amethyst_Frame.h">
+			</File>
+			<File
 				RelativePath=".\Amethyst_Label.h">
 			</File>
 			<File
@@ -186,6 +205,9 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_ScrollBar_V.h">
+			</File>
+			<File
+				RelativePath=".\Amethyst_StaticImage.h">
 			</File>
 			<File
 				RelativePath=".\Amethyst_TextBox.h">

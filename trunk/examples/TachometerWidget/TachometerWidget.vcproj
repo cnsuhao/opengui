@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -34,13 +34,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/TachometerWidget_d.dll"
+				OutputFile="../../bin/TachometerWidget_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug"
+				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget_d.pdb"
+				ProgramDatabaseFile="../../bin/TachometerWidget_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/TachometerWidget_d.lib"
+				ImportLibrary="../../lib/TachometerWidget_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -65,7 +65,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../bin"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
@@ -84,15 +84,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/TachometerWidget.dll"
+				OutputFile="../../bin/TachometerWidget.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release"
+				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
+				ProgramDatabaseFile="../../bin/TachometerWidget.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/TachometerWidget.lib"
+				ImportLibrary="../../lib/TachometerWidget.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
