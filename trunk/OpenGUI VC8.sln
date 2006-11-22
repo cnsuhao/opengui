@@ -6,7 +6,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml", "dependencies\tin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "dependencies\freetype2\builds\win32\visualc\freetype VC8.vcproj", "{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "examples\glfw\glfw VC8.vcproj", "{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "dependencies\glfw\glfw VC8.vcproj", "{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGUI", "OpenGUI\OpenGUI VC8.vcproj", "{F0265828-618F-4BAD-B4C4-8D3BF266B528}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -107,8 +107,8 @@ Global
 		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Release - Ogre|Win32.Build.0 = Release|Win32
 		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Release|Win32.ActiveCfg = Release|Win32
 		{627FE1C5-8CA3-4D05-8F10-19E6CEA17E1B}.Release|Win32.Build.0 = Release|Win32
-		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - All|Win32.ActiveCfg = Debug|Win32
-		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - All|Win32.Build.0 = Debug|Win32
+		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - All|Win32.ActiveCfg = Debug Multithreaded|Win32
+		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - All|Win32.Build.0 = Debug Multithreaded|Win32
 		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - Just OpenGUI|Win32.ActiveCfg = Debug|Win32
 		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - Just OpenGUI|Win32.Build.0 = Debug|Win32
 		{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}.Debug - Ogre|Win32.ActiveCfg = Debug|Win32
@@ -151,8 +151,8 @@ Global
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Release - Ogre|Win32.Build.0 = Release|Win32
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Release|Win32.ActiveCfg = Release|Win32
 		{F0265828-618F-4BAD-B4C4-8D3BF266B528}.Release|Win32.Build.0 = Release|Win32
-		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All|Win32.ActiveCfg = Debug|Win32
-		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All|Win32.Build.0 = Debug|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All|Win32.ActiveCfg = Debug DLL|Win32
+		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - All|Win32.Build.0 = Debug DLL|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - Just OpenGUI|Win32.ActiveCfg = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug - Ogre|Win32.ActiveCfg = Debug|Win32
 		{ADF033EA-32D7-4251-8E2B-01DB819054DD}.Debug|Win32.ActiveCfg = Debug|Win32
