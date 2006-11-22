@@ -13,7 +13,7 @@
 (when RTT functionality is available). Users should never, under any circumstances
 need to manually modify the contents of this resource group.
 
-You can, however, feel free to change the value of this #define in the (unlikely)
+You can, however, feel free to change the value of this \#define in the (unlikely)
 event that it conflicts with an existing resource group of your own. Doing so will
 (obviously) require a recompile of this library.
 */
