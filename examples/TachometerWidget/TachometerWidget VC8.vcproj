@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../bin/"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -63,13 +63,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="$(OutDir)/TachometerWidget_d.dll"
+				OutputFile="../../bin/TachometerWidget_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget_d.pdb"
+				ProgramDatabaseFile="../../bin/TachometerWidget_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/TachometerWidget_d.lib"
+				ImportLibrary="../../lib/TachometerWidget_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -151,17 +151,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="$(OutDir)/TachometerWidget.dll"
+				OutputFile="../../bin/TachometerWidget.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/TachometerWidget.pdb"
+				ProgramDatabaseFile="../../bin/TachometerWidget.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="1"
 				LinkTimeCodeGeneration="1"
-				ImportLibrary="$(OutDir)/TachometerWidget.lib"
+				ImportLibrary="../../lib/TachometerWidget.lib"
 				TargetMachine="1"
 			/>
 			<Tool

@@ -66,11 +66,11 @@
 				AdditionalDependencies="OpenGUI_d.lib OgreMain_d.lib"
 				OutputFile="../bin/Renderer_Ogre_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;;..\debug"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;; ..\lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre_d.pdb"
+				ProgramDatabaseFile="../bin/Renderer_Ogre_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/Renderer_Ogre_d.lib"
+				ImportLibrary="../lib/Renderer_Ogre_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -147,13 +147,13 @@
 				AdditionalDependencies="OgreMain.lib"
 				OutputFile="../bin/Renderer_Ogre.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;;..\release"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;; ..\lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre.pdb"
+				ProgramDatabaseFile="../bin/Renderer_Ogre.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/Renderer_Ogre.lib"
+				ImportLibrary="../lib/Renderer_Ogre.lib"
 				TargetMachine="1"
 			/>
 			<Tool
