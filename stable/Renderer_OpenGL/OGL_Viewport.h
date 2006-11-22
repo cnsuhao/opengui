@@ -11,7 +11,7 @@ namespace OpenGUI {
 	class OGL_Viewport: public Viewport {
 		friend class Renderer_OpenGL;
 	public:
-		virtual OGLRTexture* getRenderTexture()const=0;
+		virtual OGLRTexture* getRenderTexture()const = 0;
 	protected:
 		OGL_Viewport() {}
 		virtual ~OGL_Viewport() {}
@@ -27,14 +27,14 @@ namespace OpenGUI {
 		virtual const IVector2& getSize() {
 			return mSize;
 		}
-		virtual OGLRTexture* getRenderTexture()const{
+		virtual OGLRTexture* getRenderTexture()const {
 			return 0;
 		}
 	protected:
 		void setSize( const IVector2& size ) {
 			mSize = size;
 		}
-		
+
 	private:
 		IVector2 mSize;
 	};
@@ -42,14 +42,14 @@ namespace OpenGUI {
 	class OGL_RTT_Viewport: public OGL_Viewport {
 		friend class Renderer_OpenGL;
 	public:
-		virtual OGLRTexture* getRenderTexture()const{
+		virtual OGLRTexture* getRenderTexture()const {
 			return mRenderTexture;
 		}
 	protected:
 		OGL_RTT_Viewport( const IVector2& size );
 		virtual ~OGL_RTT_Viewport() {}
 		virtual const IVector2& getSize();
-		
+
 		virtual void preUpdate( Screen *updatingScreen ) {}
 		virtual void  postUpdate( Screen *updatingScreen ) {}
 	private:

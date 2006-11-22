@@ -74,8 +74,8 @@ namespace OpenGUI {
 		mStickColor = false;
 		mStickMask = false;
 
-		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
-				iter != mStack.end(); iter++ ) {
+		BrushModifierPtrStack::iterator iter, iterend = mStack.end();
+		for ( iter = mStack.begin(); iter != iterend; iter++ ) {
 			BrushModifier* mod = ( *iter );
 			if ( mod->getType() == BrushModifier::COLOR ) {
 				if ( ! mStickColor ) {
@@ -119,7 +119,8 @@ namespace OpenGUI {
 	//############################################################################
 	FVector2 BrushModifierStack::getOrigin() {
 		FVector2 origin( 0.0f, 0.0f );
-		for ( BrushModifierPtrStack::reverse_iterator iter = mStack.rbegin();iter != mStack.rend(); iter++ ) {
+		BrushModifierPtrStack::reverse_iterator iter, iterend = mStack.rend();
+		for ( iter = mStack.rbegin(); iter != iterend; iter++ ) {
 			BrushModifier* mod = ( *iter );
 			if ( mod->getType() == BrushModifier::POSITION ) {
 				BrushModifier_Position* pos = static_cast<BrushModifier_Position*>( mod );
@@ -143,8 +144,8 @@ namespace OpenGUI {
 			return mRotCache;
 		//otherwise we'll need to rebuild the cache before we return
 		mRotCache = 0;
-		for ( BrushModifierPtrStack::iterator iter = mStack.begin();
-				iter != mStack.end(); iter++ ) {
+		BrushModifierPtrStack::iterator iter, iterend = mStack.end();
+		for ( iter = mStack.begin(); iter != iterend; iter++ ) {
 			BrushModifier* mod = ( *iter );
 			if ( mod->getType() == BrushModifier::ROTATION ) {
 				BrushModifier_Rotation* rot = static_cast<BrushModifier_Rotation*>( mod );

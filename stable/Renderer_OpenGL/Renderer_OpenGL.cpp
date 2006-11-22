@@ -17,7 +17,7 @@
 namespace OpenGUI {
 	//###########################################################
 	Renderer_OpenGL::Renderer_OpenGL( int initial_width, int initial_height ) {
-		mDefaultViewport.setSize(IVector2(initial_width,initial_height));
+		mDefaultViewport.setSize( IVector2( initial_width, initial_height ) );
 		mCurrentContext = 0;
 		mCurrentViewport = 0;
 		mInGLBegin = false;
@@ -46,11 +46,11 @@ namespace OpenGUI {
 	Viewport* Renderer_OpenGL::createRTTViewport( const IVector2& size ) {
 		if ( !supportsRenderToTexture() )
 			return 0;
-		return new OGL_RTT_Viewport(size);
+		return new OGL_RTT_Viewport( size );
 	}
 	//###########################################################
-	void Renderer_OpenGL::destroyRTTViewport(Viewport* viewport){
-		delete static_cast<OGL_RTT_Viewport*>(viewport);
+	void Renderer_OpenGL::destroyRTTViewport( Viewport* viewport ) {
+		delete static_cast<OGL_RTT_Viewport*>( viewport );
 	}
 	//###########################################################
 	void Renderer_OpenGL::drawTriangles( const TriangleList& triangles, float xScaleUV, float yScaleUV ) {
@@ -97,12 +97,12 @@ namespace OpenGUI {
 		mInGLBegin = false;
 	}
 	//###########################################################
-	void Renderer_OpenGL::selectViewport( Viewport* activeViewport ){
-		if(mInRender)
-			OG_THROW(Exception::ERR_INTERNAL_ERROR,"Requested Viewport switch inside render markers",__FUNCTION__);
-		if(activeViewport==0)
-			OG_THROW(Exception::ERR_INVALIDPARAMS,"Bad Viewport: 0",__FUNCTION__);
-		mCurrentViewport = static_cast<OGL_Viewport*>(activeViewport);
+	void Renderer_OpenGL::selectViewport( Viewport* activeViewport ) {
+		if ( mInRender )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Requested Viewport switch inside render markers", __FUNCTION__ );
+		if ( activeViewport == 0 )
+			OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Viewport: 0", __FUNCTION__ );
+		mCurrentViewport = static_cast<OGL_Viewport*>( activeViewport );
 	}
 	//###########################################################
 	void Renderer_OpenGL::selectTextureState( Texture* texture ) {
@@ -154,8 +154,8 @@ namespace OpenGUI {
 	}
 	//###########################################################
 	void Renderer_OpenGL::preRenderSetup() {
-		if(!mCurrentViewport)
-			OG_THROW(Exception::ERR_INTERNAL_ERROR,"No valid Viewport selected",__FUNCTION__);
+		if ( !mCurrentViewport )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "No valid Viewport selected", __FUNCTION__ );
 		mInRender = true;
 		glMatrixMode( GL_PROJECTION );
 		glLoadIdentity();
@@ -180,14 +180,13 @@ namespace OpenGUI {
 		mCurrentTextureState = 0;
 
 		mCurrentContext = 0;
-		if ( mSupportRTT ){
+		if ( mSupportRTT ) {
 			OGLRTexture* start = mCurrentViewport->getRenderTexture();
-			if(start){
+			if ( start ) {
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, start->fboId );
 				glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 				glClear( GL_COLOR_BUFFER_BIT );
-			}
-			else
+			} else
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 		}
 		glViewport( 0, 0, mCurrentViewport->getSize().x, mCurrentViewport->getSize().y );
@@ -198,7 +197,7 @@ namespace OpenGUI {
 		selectTextureState( 0 );
 		selectRenderContext( 0 ); // be kind, rewind
 		mInRender = false;
-		if(mSupportRTT)
+		if ( mSupportRTT )
 			glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 	}
 	//###########################################################
@@ -466,16 +465,16 @@ namespace OpenGUI {
 
 			if ( mCurrentContext ) {
 				rtex = static_cast<OGLRTexture*>( mCurrentContext );
-			}else{
-				if(mCurrentViewport)
+			} else {
+				if ( mCurrentViewport )
 					rtex = mCurrentViewport->getRenderTexture();
 			}
 
 			glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
-			if(rtex){
+			if ( rtex ) {
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, rtex->fboId );
-				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );	
+				glViewport( 0, 0, rtex->getSize().x, rtex->getSize().y );
 			} else {
 				glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 				glViewport( 0, 0, mDefaultViewport.getSize().x, mDefaultViewport.getSize().y );

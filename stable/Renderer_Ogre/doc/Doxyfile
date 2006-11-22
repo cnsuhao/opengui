@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = "OgreFusion"
+PROJECT_NAME           = "Renderer_Ogre"
 PROJECT_NUMBER         = "%OpenGUI / Ogre3D Integration"
 OUTPUT_DIRECTORY       = 
 CREATE_SUBDIRS         = NO
@@ -150,7 +150,7 @@ HTML_FOOTER            = DoxygenFooter.txt
 HTML_STYLESHEET        = 
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = YES
-CHM_FILE               = ../OgreFusion.chm
+CHM_FILE               = ../Renderer_Ogre.chm
 HHC_LOCATION           = 
 GENERATE_CHI           = NO
 BINARY_TOC             = NO

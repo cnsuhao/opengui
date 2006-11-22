@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<OpenGUI>
+	<Imageset File="BlueGui.png">
+		<Imagery Name="BlueGuiButtonNormal" Left="0" Top="0" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonHover" Left="27" Top="0" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonPress" Left="54" Top="0" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonDisabled" Left="81" Top="0" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiButtonAltNormal" Left="0" Top="28" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonAltHover" Left="27" Top="28" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonAltPress" Left="54" Top="28" Width="24" Height="24" />
+		<Imagery Name="BlueGuiButtonAltDisabled" Left="81" Top="28" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiRoundButton" Left="0" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonHover" Left="27" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonPress" Left="54" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonDisabled" Left="81" Top="55" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiRoundButtonX" Left="113" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonHoverX" Left="140" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonPressX" Left="167" Top="55" Width="24" Height="24" />
+		<Imagery Name="BlueGuiRoundButtonDisabledX" Left="195" Top="55" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiBoxButton" Left="0" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonHover" Left="27" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonPress" Left="54" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonDisabled" Left="81" Top="83" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiBoxButtonX" Left="113" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonHoverX" Left="140" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonPressX" Left="167" Top="83" Width="24" Height="24" />
+		<Imagery Name="BlueGuiBoxButtonDisabledX" Left="195" Top="83" Width="24" Height="24" />
+
+		<Imagery Name="BlueGuiCursorArrow" Left="109" Top="0" Width="16" Height="16" />
+
+		<Imagery Name="BlueGuiFrameUL" Left="0" Top="154" Width="4" Height="4" />
+		<Imagery Name="BlueGuiFrameUM" Left="5" Top="154" Width="2" Height="2" />
+		<Imagery Name="BlueGuiFrameUR" Left="70" Top="154" Width="4" Height="4" />
+		<Imagery Name="BlueGuiFrameML" Left="0" Top="158" Width="2" Height="2" />
+		<Imagery Name="BlueGuiFrameMM" Left="2" Top="156" Width="2" Height="2" />
+		<Imagery Name="BlueGuiFrameMR" Left="72" Top="171" Width="2" Height="2" />
+		<Imagery Name="BlueGuiFrameLL" Left="0" Top="168" Width="4" Height="4" />
+		<Imagery Name="BlueGuiFrameLM" Left="5" Top="168" Width="2" Height="2" />
+		<Imagery Name="BlueGuiFrameLR" Left="70" Top="168" Width="4" Height="4" />
+
+		<Imagery Name="BlueGuiUpButtonNormal" Left="0" Top="110" Width="17" Height="17" />
+		<Imagery Name="BlueGuiUpButtonHover" Left="21" Top="110" Width="17" Height="17" />
+		<Imagery Name="BlueGuiUpButtonPress" Left="54" Top="110" Width="17" Height="17" />
+
+		<Imagery Name="BlueGuiDownButtonNormal" Left="0" Top="131" Width="17" Height="17" />
+		<Imagery Name="BlueGuiDownButtonHover" Left="21" Top="131" Width="17" Height="17" />
+		<Imagery Name="BlueGuiDownButtonPress" Left="54" Top="131" Width="17" Height="17" />
+
+		<Imagery Name="BlueGuiScrollH" Left="0" Top="154" Width="73" Height="17" />
+		<Imagery Name="BlueGuiScrollV" Left="0" Top="175" Width="17" Height="73" />
+		<Imagery Name="BlueGuiScrollThumb" Left="20" Top="175" Width="13" Height="13" />
+
+	</Imageset>
+
+</OpenGUI>
+

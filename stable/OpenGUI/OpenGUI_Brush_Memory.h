@@ -27,11 +27,11 @@ namespace OpenGUI {
 			return false;
 		}
 		//! public access to Brush::_clear()
-		void clear(){
+		void clear() {
 			_clear();
 		}
 		//! returns \c true if there is content stored that can be emerged
-		bool hasContent() const{
+		bool hasContent() const {
 			return mHasContent;
 		}
 

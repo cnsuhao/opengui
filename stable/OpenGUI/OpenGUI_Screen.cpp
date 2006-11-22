@@ -236,10 +236,9 @@ namespace OpenGUI {
 
 		ScreenBrush b( this, mViewport );
 
-		WidgetCollection::iterator iter = Children.begin();
-		while ( iter != Children.end() ) {
+		WidgetCollection::reverse_iterator iter, iterend = Children.rend();
+		for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 			iter->_draw( b );
-			iter++;
 		}
 		if ( m_CursorEnabled && m_CursorVisible ) {
 			// determine the cursor we're drawing

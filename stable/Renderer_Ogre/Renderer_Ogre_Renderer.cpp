@@ -150,8 +150,8 @@ namespace OpenGUI {
 		// set initial viewport and rendering context
 		mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
 		mCurrentContext = 0;
-		mViewportPixelShift.x = mTexelOffset.x / (float)(mCurrentViewport->getOgreViewport()->getActualWidth()/2);
-		mViewportPixelShift.y = mTexelOffset.y / (float)(mCurrentViewport->getOgreViewport()->getActualHeight()/2);
+		mViewportPixelShift.x = mTexelOffset.x / ( float )( mCurrentViewport->getOgreViewport()->getActualWidth() / 2 );
+		mViewportPixelShift.y = mTexelOffset.y / ( float )( mCurrentViewport->getOgreViewport()->getActualHeight() / 2 );
 
 		// begin ogre frame, temporarily canceling any existing viewport clearing
 		Ogre::Viewport* vp = mCurrentViewport->getOgreViewport();
@@ -187,7 +187,7 @@ namespace OpenGUI {
 		mRenderSystem->_setTextureMatrix( 0, Matrix4::IDENTITY );
 		mRenderSystem->_setAlphaRejectSettings( CMPF_ALWAYS_PASS, 0 );
 		mRenderSystem->_disableTextureUnitsFrom( 0 ); // disable ALL current texture units
-		mRenderSystem->_setTexture(0, false, "");
+		mRenderSystem->_setTexture( 0, false, "" );
 		mCurrentTextureState_Texture = 0;
 		mCurrentTextureState_Mask = 0;
 		mTextureUVScale.x = 1.0f;
@@ -257,7 +257,7 @@ namespace OpenGUI {
 				ogreTexture = static_cast<OgreTexture*>( static_cast<OgreRenderTexture*>( texture ) );
 			else
 				ogreTexture = static_cast<OgreTexture*>( static_cast<OgreStaticTexture*>( texture ) );
-			
+
 
 		if ( mask )
 			if ( mask->isRenderTexture() )
@@ -271,13 +271,13 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	void OgreRenderer::reclaimBufferMemory() {
-		if(mInRender || m_HWBufferPtr)
-			OG_THROW(Exception::ERR_INTERNAL_ERROR,"Cannot reclaim buffer memory during draw operations",__FUNCTION__);
-		if(m_HWBufferSize > BUFFER_SIZE_INITIAL && m_HWBufferSize / 2 > m_HWBuffer_MaxUsageThisFrame){
+		if ( mInRender || m_HWBufferPtr )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot reclaim buffer memory during draw operations", __FUNCTION__ );
+		if ( m_HWBufferSize > BUFFER_SIZE_INITIAL && m_HWBufferSize / 2 > m_HWBuffer_MaxUsageThisFrame ) {
 			size_t newSize = m_HWBufferSize / 2;
-			if(newSize < BUFFER_SIZE_INITIAL)
+			if ( newSize < BUFFER_SIZE_INITIAL )
 				newSize = BUFFER_SIZE_INITIAL;
-			_resizeHardwareBuffer(newSize);
+			_resizeHardwareBuffer( newSize );
 		}
 		m_HWBuffer_MaxUsageThisFrame = 0;
 	}
@@ -358,7 +358,7 @@ namespace OpenGUI {
 				// store vertex position data
 				hwbuffer[i].x = (( tri.vertex[i].position.x * 2 ) - 1.0f ) + mViewportPixelShift.x;
 				hwbuffer[i].y = (( tri.vertex[i].position.y * 2 ) - 1.0f ) - mViewportPixelShift.y;
-				if(!mCurrentContext)
+				if ( !mCurrentContext )
 					hwbuffer[i].y *= -1;
 				hwbuffer[i].z = 0.0f; // we don't deal in Z, so it's always 0
 
@@ -502,14 +502,14 @@ namespace OpenGUI {
 		if ( !context ) {
 			mCurrentContext = 0;
 			mRenderSystem->_setViewport( mCurrentViewport->getOgreViewport() );
-			mViewportPixelShift.x = mTexelOffset.x / (float)(mCurrentViewport->getOgreViewport()->getActualWidth()/2);
-			mViewportPixelShift.y = mTexelOffset.y / (float)(mCurrentViewport->getOgreViewport()->getActualHeight()/2);
+			mViewportPixelShift.x = mTexelOffset.x / ( float )( mCurrentViewport->getOgreViewport()->getActualWidth() / 2 );
+			mViewportPixelShift.y = mTexelOffset.y / ( float )( mCurrentViewport->getOgreViewport()->getActualHeight() / 2 );
 		} else {
 			OgreRenderTexture* rtex = static_cast<OgreRenderTexture*>( context );
 			mCurrentContext = context;
 			mRenderSystem->_setViewport( rtex->getOgreViewport() );
-			mViewportPixelShift.x = mTexelOffset.x / (float)(rtex->getOgreViewport()->getActualWidth()/2);
-			mViewportPixelShift.y = mTexelOffset.y / (float)(rtex->getOgreViewport()->getActualHeight()/2);
+			mViewportPixelShift.x = mTexelOffset.x / ( float )( rtex->getOgreViewport()->getActualWidth() / 2 );
+			mViewportPixelShift.y = mTexelOffset.y / ( float )( rtex->getOgreViewport()->getActualHeight() / 2 );
 		}
 
 		// fix what Ogre just broke ;)
