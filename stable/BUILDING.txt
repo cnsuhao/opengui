@@ -1,0 +1,46 @@
+-----------------------------------------------------------
+Windows
+-----------------------------------------------------------
+ * VC 7.1 (aka Visual Studio .NET 2003)
+    Just open OpenGUI.sln in the root directory, select a
+    build configuration and build the solution. All
+    necessary dependencies will be automatically built.
+
+ * VC 8 (aka Visual Studio 2005)
+    Same as the VC 7.1 instructions, only use
+    "OpenGUI VC8.sln" instead.
+
+See also: OgreFusion\README.txt for details on building
+the OgreFusion project, which links OpenGUI into Ogre.
+
+
+-----------------------------------------------------------
+Linux
+-----------------------------------------------------------
+Linux isn't officially supported at this time, but here's
+the basic rundown. You can expect this process to break, so
+if you spend the time to fix it please submit a patch.
+
+There is a valid Sconstruct and Sconscript for the OpenGUI
+library and the OpenGL renderer. It has been tested on
+Windows only, and will require massaging to get it to run
+properly under Linux. It does NOT build any of the
+dependencies, so you are on your own for building those.
+
+
+
+-----------------------------------------------------------
+Other
+-----------------------------------------------------------
+You're pretty much on your own here. OpenGUI is written in
+standard C++, and aims to avoid all compiler warnings. It
+also comes with all necessary dependancies, so if you can
+manage to get the dependancies to build, you shouldn't have
+too much trouble getting OpenGUI to build. Any platform
+specific #define statments can be found in
+"OpenGUI_Platform.h". Patches that increase the number of
+build targets are welcome, but stand a much better chance
+of permanent inclusion if you also offer to provide
+continued maintenance to ensure that the given build target
+is always working in future releases of OpenGUI.
+
