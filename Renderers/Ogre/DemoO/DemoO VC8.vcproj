@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="../bin/Debug"
+			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\OpenGUI;..\..\Renderer_Ogre;&quot;$(OGRE_HOME_vc8)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; ../Renderer_Ogre; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				AdditionalDependencies="OpenGUI_d.lib TachometerWidget_d.lib Renderer_Ogre_d.lib OgreMain_d.lib "
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../Debug;&quot;$(OGRE_HOME_vc8)\lib&quot;;../bin"
+				AdditionalLibraryDirectories="../../../lib; &quot;$(OGRE_HOME)/lib&quot;; ../bin"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/DemoO_d.pdb"
 				SubSystem="2"
@@ -100,8 +100,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="../bin/Release"
+			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="0"
@@ -131,7 +131,7 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="..\..\OpenGUI;..\..\Renderer_Ogre;&quot;$(OGRE_HOME_vc8)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; ../Renderer_Ogre; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -156,7 +156,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib TachometerWidget.lib Renderer_Ogre.lib OgreMain.lib "
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../Release;&quot;$(OGRE_HOME_vc8)\lib&quot;;../bin"
+				AdditionalLibraryDirectories="../../../lib; &quot;$(OGRE_HOME)/lib&quot;; ../bin"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
 				SubSystem="2"
