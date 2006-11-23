@@ -73,14 +73,17 @@ base_env.Append(LIBPATH = G_LIBPATH)
 
 Help("""
 Build Targets:
-	opengui   - the OpenGUI library
-	amethyst  - the Amethyst widget library
-	examples  - the examples
-	deps      - all dependencies
-	(default) - If no targets are specified, the defaults are:
+	opengui    - the OpenGUI library
+	amethyst   - the Amethyst widget library
+	tachometer - the TachometerWidget
+	opengl     - the OpenGL renderer with examples
+	ogre       - the Ogre renderer with examples
+	deps       - all dependencies
+	(default)  - If no targets are specified, the defaults are:
 		opengui
 		amethyst
-		examples
+		tachometer
+		opengl
 
 Build Modes:
 	Specify debug=1 to build a debug version. Otherwise release is assumed.
@@ -90,6 +93,7 @@ Build Modes:
 
 SConscript(['OpenGUI/SConscript'])
 SConscript(['TachometerWidget/SConscript'])
+SConscript(['Amethyst/SConscript'])
 
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
