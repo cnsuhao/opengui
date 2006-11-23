@@ -2,7 +2,7 @@
 mkdir Debug
 mkdir Release
 
-set OgreSDKdir=%OGRE_HOME_vc8%
+set OgreSDKdir=%OGRE_HOME%
 
 copy DemoO.zip ..\bin\Debug\
 copy DemoO.zip ..\bin\Release\

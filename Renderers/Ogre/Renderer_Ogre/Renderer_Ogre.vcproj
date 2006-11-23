@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="Renderer_Ogre"
 	ProjectGUID="{15971078-5E41-4B58-A5FA-7654B1B7BF7D}"
+	RootNamespace="Renderer_Ogre"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -12,14 +13,14 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../Debug"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -34,13 +35,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OgreMain_d.lib OpenGUI_d.lib"
-				OutputFile="$(OutDir)/Renderer_Ogre_d.dll"
+				OutputFile="../bin/Debug/Renderer_Ogre_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)\lib&quot;; ../Debug"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)/lib&quot;; ../../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre_d.pdb"
+				ProgramDatabaseFile="../bin/Debug/Renderer_Ogre_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/Renderer_Ogre_d.lib"
+				ImportLibrary="../lib/Renderer_Ogre_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -65,13 +66,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../Release"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -84,15 +85,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OgreMain.lib OpenGUI.lib"
-				OutputFile="$(OutDir)/Renderer_Ogre.dll"
+				OutputFile="../bin/Release/Renderer_Ogre.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)\lib&quot;; ../Release"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)/lib&quot;; ../../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Renderer_Ogre.pdb"
+				ProgramDatabaseFile="../bin/Release/Renderer_Ogre.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/Renderer_Ogre.lib"
+				ImportLibrary="../lib/Renderer_Ogre.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
