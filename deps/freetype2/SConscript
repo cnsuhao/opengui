@@ -80,10 +80,6 @@ if platform == "win32":
 
 lib = env.StaticLibrary( OUTFILE, Split(Source) )
 
-if debug:
-	inst = env.Install('objs', lib)
-	Alias('freetype', inst)
-else:
-	inst = env.Install('objs', lib)
-	Alias('freetype', inst)
+inst = env.Install('objs', lib)
+Alias('freetype', inst)
 
