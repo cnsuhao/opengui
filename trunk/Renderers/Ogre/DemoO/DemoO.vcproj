@@ -13,14 +13,14 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="../bin/Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\OpenGUI; ..\..\OgreFusion; ..\..\dependancies\OgreSDK_vc71\include"
+				AdditionalIncludeDirectories="../../../OpenGUI; ../Renderer_Ogre; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -34,10 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib OgreFusion_d.lib OgreMain_d.lib"
+				AdditionalDependencies="TachometerWidget_d.lib OpenGUI_d.lib Renderer_Ogre_d.lib OgreMain_d.lib"
 				OutputFile="$(OutDir)/DemoO_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\Debug ;..\..\OgreFusion\Debug; ..\..\dependancies\OgreSDK_vc71\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)/lib&quot;; ../../../lib; ../lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/DemoO_d.pdb"
 				SubSystem="2"
@@ -46,7 +46,7 @@
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="setupEnv_VC71.bat"/>
+				CommandLine="setupEnv.bat"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -66,7 +66,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="../bin/Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			CharacterSet="2">
@@ -76,7 +76,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\..\OpenGUI; ..\..\OgreFusion; ..\..\dependancies\OgreSDK_vc71\include"
+				AdditionalIncludeDirectories="../../../OpenGUI; ../Renderer_Ogre; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -88,10 +88,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI.lib OgreFusion.lib OgreMain.lib"
+				AdditionalDependencies="TachometerWidget.lib OpenGUI.lib Renderer_Ogre.lib OgreMain.lib"
 				OutputFile="$(OutDir)/DemoO.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\Release; ..\..\OgreFusion\Release; ..\..\dependancies\OgreSDK_vc71\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME)/lib&quot;; ../../../lib; ../lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
 				SubSystem="2"
@@ -102,7 +102,7 @@
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="setupEnv_VC71.bat"/>
+				CommandLine="setupEnv.bat"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -129,6 +129,9 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\DemoAppFrameWork.cpp">
+			</File>
+			<File
 				RelativePath=".\DemoO.cpp">
 			</File>
 		</Filter>
@@ -136,6 +139,9 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\DemoAppFrameWork.h">
+			</File>
 			<File
 				RelativePath=".\OgreRefApp.h">
 			</File>
