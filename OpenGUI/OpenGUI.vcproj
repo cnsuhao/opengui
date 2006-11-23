@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\dependencies\tinyxml;..\dependencies\freetype2\include"
+				AdditionalIncludeDirectories="..\deps\tinyxml;..\deps\freetype2\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OPENGUI_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -37,7 +37,7 @@
 				AdditionalDependencies="Winmm.lib tinyxml_d.lib freetype_d.lib"
 				OutputFile="../bin/OpenGUI_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\dependencies\tinyxml; ..\dependencies\freetype2"
+				AdditionalLibraryDirectories="..\deps\tinyxml; ..\deps\freetype2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="../bin/OpenGUI_d.pdb"
 				SubSystem="2"
@@ -72,7 +72,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\dependencies\tinyxml;..\dependencies\freetype2\include"
+				AdditionalIncludeDirectories="..\deps\tinyxml;..\deps\freetype2\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OPENGUI_EXPORTS"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -87,7 +87,7 @@
 				AdditionalDependencies="Winmm.lib tinyxml.lib freetype2110.lib"
 				OutputFile="../bin/OpenGUI.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\dependencies\tinyxml; ..\dependencies\freetype2"
+				AdditionalLibraryDirectories="..\deps\tinyxml; ..\deps\freetype2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="../bin/OpenGUI.pdb"
 				SubSystem="2"
