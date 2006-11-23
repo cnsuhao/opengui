@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../OpenGUI"
+				AdditionalIncludeDirectories="../OpenGUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TACHOMETERWIDGET_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,13 +63,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib"
-				OutputFile="../../bin/TachometerWidget_d.dll"
+				OutputFile="../bin/TachometerWidget_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="../../bin/TachometerWidget_d.pdb"
+				ProgramDatabaseFile="../bin/TachometerWidget_d.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/TachometerWidget_d.lib"
+				ImportLibrary="../lib/TachometerWidget_d.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -96,6 +96,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="distribute.bat"
 			/>
 		</Configuration>
 		<Configuration
@@ -130,7 +131,7 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../../OpenGUI"
+				AdditionalIncludeDirectories="../OpenGUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;TACHOMETERWIDGET_EXPORTS"
 				RuntimeLibrary="2"
 				FloatingPointModel="2"
@@ -151,17 +152,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib"
-				OutputFile="../../bin/TachometerWidget.dll"
+				OutputFile="../bin/TachometerWidget.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories="../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="../../bin/TachometerWidget.pdb"
+				ProgramDatabaseFile="../bin/TachometerWidget.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="1"
 				LinkTimeCodeGeneration="1"
-				ImportLibrary="../../lib/TachometerWidget.lib"
+				ImportLibrary="../lib/TachometerWidget.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -188,6 +189,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="distribute.bat"
 			/>
 		</Configuration>
 	</Configurations>

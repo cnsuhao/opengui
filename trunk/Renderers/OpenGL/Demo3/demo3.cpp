@@ -1,8 +1,8 @@
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "../TachometerWidget/Tachometer.h"
-#include "../../Renderer_OpenGL/Renderer_OpenGL.h"
-#include "../../Renderer_OpenGL/OGL_Texture.h"
+#include "Renderer_OpenGL.h"
+#include "OGL_Texture.h"
 
 class Demo3App : public DemoApp {
 public:

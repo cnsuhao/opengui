@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../dependencies/glfw/include; ../OpenGUI; ../dependencies/corona/src"
+				AdditionalIncludeDirectories="../deps/glfw/include; ../deps/corona/src; ../../../OpenGUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -110,7 +110,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../dependencies/glfw/include; ../OpenGUI; ../dependencies/corona/src"
+				AdditionalIncludeDirectories="../deps/glfw/include; ../deps/corona/src; ../../../OpenGUI"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -173,7 +173,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../dependencies/glfw/include; ../OpenGUI; ../dependencies/corona/src"
+				AdditionalIncludeDirectories="../deps/glfw/include; ../deps/corona/src; ../../../OpenGUI"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
