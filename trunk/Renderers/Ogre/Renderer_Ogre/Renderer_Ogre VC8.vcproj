@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME_vc8)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,11 +64,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI_d.lib OgreMain_d.lib"
-				OutputFile="../bin/Renderer_Ogre_d.dll"
+				OutputFile="../bin/Debug/Renderer_Ogre_d.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;; ..\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)/lib&quot;;  ../../../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="../bin/Renderer_Ogre_d.pdb"
+				ProgramDatabaseFile="../bin/Debug/Renderer_Ogre_d.pdb"
 				SubSystem="2"
 				ImportLibrary="../lib/Renderer_Ogre_d.lib"
 				TargetMachine="1"
@@ -125,7 +125,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\OpenGUI;&quot;$(OGRE_HOME_vc8)\include&quot;"
+				AdditionalIncludeDirectories="../../../OpenGUI; &quot;$(OGRE_HOME)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGR_OGRE_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -145,11 +145,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="OgreMain.lib"
-				OutputFile="../bin/Renderer_Ogre.dll"
+				OutputFile="../bin/Release/Renderer_Ogre.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)\lib&quot;; ..\lib"
+				AdditionalLibraryDirectories="&quot;$(OGRE_HOME_vc8)/lib&quot;;  ../../../lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="../bin/Renderer_Ogre.pdb"
+				ProgramDatabaseFile="../bin/Release/Renderer_Ogre.pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
