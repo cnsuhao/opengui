@@ -86,7 +86,11 @@ Build Modes:
 	Specify debug=1 to build a debug version. Otherwise release is assumed.
 """)
 
+
+
 SConscript(['OpenGUI/SConscript'])
+SConscript(['TachometerWidget/SConscript'])
+
 #SConscript(['OpenGUI_OGLRenderer/SConscript'])
 
 
@@ -94,10 +98,11 @@ if platform == "win32":
 	# we need this for the following dependencies on win32
 	base_env.Append(CPPDEFINES = ['_CRT_SECURE_NO_DEPRECATE'])
 
-SConscript(['dependencies/tinyxml/SConscript'])
-SConscript(['dependencies/freetype2/SConscript'])
-SConscript(['dependencies/corona/SConscript'])
-
+SConscript(['deps/tinyxml/SConscript'])
+SConscript(['deps/freetype2/SConscript'])
 Alias('deps',['freetype'])
-Alias('deps',['corona'])
 Alias('deps',['tinyxml'])
+
+
+#SConscript(['dependencies/corona/SConscript'])
+#Alias('deps',['corona'])

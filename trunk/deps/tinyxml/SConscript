@@ -53,13 +53,7 @@ env['PDB'] = OUTFILE + '.pdb'
 
 
 lib = env.StaticLibrary( OUTFILE, Split(Source) )
-
-if debug:
-	env.Install('Debug', lib)
-	Alias('tinyxml', 'Debug')
-else:
-	env.Install('Release', lib)
-	Alias('tinyxml', 'Release')
+Alias('tinyxml', lib)
 
 
 
