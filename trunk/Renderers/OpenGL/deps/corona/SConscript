@@ -9,8 +9,11 @@ import sys
 EnsureSConsVersion(0, 12)
 
 Import('base_env')
+Import('platform')
 base_env = base_env.Copy()
-base_env.Append(CXXFLAGS = ['-Wno-non-virtual-dtor'])
+if platform == 'posix':
+	base_env.Append(CXXFLAGS = ['-Wno-non-virtual-dtor'])
+
 Export('base_env') # exports are only importable by child SConscripts, so this is safe
 
 SConscript('src/SConscript')

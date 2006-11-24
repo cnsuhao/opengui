@@ -50,7 +50,7 @@ else:
 
 cppdefine = ['_USRDLL', 'AMETHYST_EXPORTS']
 env.Append(CPPDEFINES = cppdefine)
-env.Replace(CPPPATH = Split(CPPPATH))
+env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
 
@@ -63,6 +63,7 @@ lib = env.SharedLibrary( OUTFILE, Source )
 
 if debug and platform == "win32":
 	env.SideEffect(OUTFILE + '.ilk', lib)
+	Clean(lib, OUTFILE + '.ilk')
 
 final = []
 final += env.Install('#/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
