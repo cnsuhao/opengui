@@ -68,4 +68,5 @@ if debug and platform == "win32":
 final = []
 final += env.Install('#/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
 final += env.Install('#/lib', OUTFILE + '.lib')
+final += env.Install('#/Renderers/OpenGL/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
 Alias('amethyst',final)

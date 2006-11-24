@@ -63,12 +63,18 @@ if base_env.has_key('MSVS'):
 			print '...NOT FOUND! Aborting!'
 			Exit(-1)
 	print 'Using MSVS ' + base_env['MSVS']['VERSION']
+	if base_env['MSVS']['VERSION'] == "8.0":
+		# These will embed the manifests when we're using Visual Studio 2005
+		base_env['LINKCOM']=[base_env['LINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
+		base_env['SHLINKCOM']=[base_env['SHLINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
+		base_env['WINDOWS_INSERT_MANIFEST'] = True # and this ensures they are properly dependent
 
 if not (bool(base_env['CC']) and bool(base_env['CXX']) and bool(base_env['LINK'])):
 	print 'No compiler detected! Abort!'
 	Exit(-1)
 
-
+clean_env = base_env.Copy()
+Export('clean_env')
 
 ########## SELECT DEBUG / RELEASE MODE ############
 # detect debug/release and export the flag
@@ -98,6 +104,7 @@ if platform == "win32":
 	# VC8 has a few extra options that need tuning
 	if base_env['MSVS']['VERSION'] == "8.0":
 		G_RELEASE_CCFLAGS += Split('/GS- /fp:fast')
+	
 
 if platform == 'posix':
 	G_CXXFLAGS           += ['-Wall']
@@ -126,6 +133,11 @@ else:
 	G_LIBPATH    += G_RELEASE_LIBPATH
 	G_LINKFLAGS  += G_RELEASE_LINKFLAGS
 	G_LIBS       += G_RELEASE_LIBS
+
+
+# Add system libs for win32
+if platform == 'win32':
+	G_LIBS += Split('kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32')
 
 
 # Finally we update the global 'base_env' with this new and improved information
@@ -194,9 +206,9 @@ Alias('deps',['tinyxml'])
 
 
 SConscript('Renderers/SConscript')
-#SConscript(['Renderers/OpenGL/deps/corona/SConscript'])
 
-Default(['opengui','amethyst','tachometer'])
+
+Default(['opengui','amethyst','tachometer','opengl'])
 
 
 print 'Selected Build Targets: ',
