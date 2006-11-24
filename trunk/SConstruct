@@ -84,31 +84,31 @@ else:
 # At this point, we determine platform and perform special operations based on that
 
 if platform == "win32":
-	G_CXXFLAGS           += Split('/EHsc /W3 /GR /nologo /Z7 /Gy')
-	G_DEBUG_CXXFLAGS     += Split("/Od /RTC1 /MDd")
-	G_RELEASE_CXXFLAGS   += Split("/Ox /Ob2 /Oi /Ot /MD /GL /GF /GT /GS- /fp:fast")
-	G_CPPDEFINES         += ['WIN32','_WINDOWS']
-	G_DEBUG_CPPDEFINES   += ['_DEBUG']
-	G_RELEASE_CPPDEFINES += ['NDEBUG']
+	G_CCFLAGS            += Split('/EHsc /W3 /GR /nologo /Z7 /Gy')
+	G_DEBUG_CCFLAGS      += Split('/Od /RTC1 /MDd')
+	G_RELEASE_CCFLAGS    += Split('/Ox /Ob2 /Oi /Ot /MD /GL /GF /GT')
+	G_CPPDEFINES         += Split('WIN32 _WINDOWS')
+	G_DEBUG_CPPDEFINES   += Split('_DEBUG')
+	G_RELEASE_CPPDEFINES += Split('NDEBUG')
 	G_LINKFLAGS          += Split('/NOLOGO /DEBUG /OPT:NOWIN98')
 	G_DEBUG_LINKFLAGS    += Split('/INCREMENTAL')
 	G_DEBUG_LINKFLAGS    += Split('/INCREMENTAL')
 	G_RELEASE_LINKFLAGS  += Split('/INCREMENTAL:NO /LTCG:STATUS /OPT:REF /OPT:ICF')
-	# Because of our run-time selection, we need to ensure exclusion of certain libraries
-	# G_DEBUG_LINKFLAGS    += Split('/NODEFAULTLIB:libc.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:msvcrt.lib /NODEFAULTLIB:libcd.lib /NODEFAULTLIB:libcmtd.lib')
-	# G_RELEASE_LINKFLAGS  += Split('/NODEFAULTLIB:libc.lib /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:libcd.lib /NODEFAULTLIB:libcmtd.lib /NODEFAULTLIB:msvcrtd.lib')
+	
+	# VC8 has a few extra options that need tuning
+	if base_env['MSVS']['VERSION'] == "8.0":
+		G_RELEASE_CCFLAGS += Split('/GS- /fp:fast')
 
 if platform == 'posix':
-	G_CPPFLAGS           += ['-Wall']
-	G_DEBUG_CPPFLAGS     += Split("-g")
-	G_RELEASE_CPPFLAGS   += Split("-O3")
+	G_CXXFLAGS           += ['-Wall']
+	G_DEBUG_CXXFLAGS     += Split('-g')
+	G_RELEASE_CXXFLAGS   += Split('-O3')
 	G_CPPDEFINES         += []
-	G_DEBUG_CPPDEFINES   += ['_DEBUG']
-	G_RELEASE_CPPDEFINES += ['NDEBUG']
+	G_DEBUG_CPPDEFINES   += Split('_DEBUG')
+	G_RELEASE_CPPDEFINES += Split('NDEBUG')
 
 ###################################################
 # Process debug/release, combining the specifics with the generals
-
 
 if debug:
 	G_CCFLAGS    += G_DEBUG_CCFLAGS
