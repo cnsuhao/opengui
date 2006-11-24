@@ -41,7 +41,7 @@ SConscript('SConscript')
 Default('static')
 Default('shared')
 
-print 'Selected Build Targets: ',
+print 'Selected Targets: ',
 for i in BUILD_TARGETS:
 	print i,
 print

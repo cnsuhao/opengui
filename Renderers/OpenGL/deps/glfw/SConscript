@@ -1,5 +1,10 @@
 # SConscript for inclusion into existing builds
 
+# Note: If you want to specify your own build environment then you
+#       need to provide it as a SCons Export() called 'base_env'.
+
+
+
 OUTFILE = 'glfw'
 VERMAJOR = 2
 VERMINOR = 5
@@ -12,22 +17,27 @@ Export('platform')
 
 
 ############ COMPILER SUITE DETECTION #############
-base_env = Environment() # initial creation for compiler detection
+try:
+	Import('base_env')
+except:
+	base_env = False
 
-if base_env.has_key('MSVS'):
-	print 'Visual Studio Detected...',
-	ver = ARGUMENTS.get('VS', 0)
-	if bool(ver):
-		print 'Requesting VS version: ' + ver,
-		tmpenv = Environment(MSVS_VERSION=ver)
-		msvs = tmpenv['MSVS']
-		if msvs.has_key('VCINSTALLDIR') and msvs.has_key('VSINSTALLDIR'):
-			print '...FOUND!',
-			base_env = tmpenv
-		else:
-			print '...NOT FOUND! Aborting!'
-			Exit(-1)
-	print 'Using MSVS ' + base_env['MSVS']['VERSION']
+if not bool(base_env):
+	base_env = Environment() # initial creation for compiler detection
+	if base_env.has_key('MSVS'):
+		print 'Visual Studio Detected...',
+		ver = ARGUMENTS.get('VS', 0)
+		if bool(ver):
+			print 'Requesting VS version: ' + ver,
+			tmpenv = Environment(MSVS_VERSION=ver)
+			msvs = tmpenv['MSVS']
+			if msvs.has_key('VCINSTALLDIR') and msvs.has_key('VSINSTALLDIR'):
+				print '...FOUND!',
+				base_env = tmpenv
+			else:
+				print '...NOT FOUND! Aborting!'
+				Exit(-1)
+		print 'Using MSVS ' + base_env['MSVS']['VERSION']
 
 if not (bool(base_env['CC']) and bool(base_env['CXX']) and bool(base_env['LINK'])):
 	print 'Compiler or linker was not detected! Abort!'
@@ -49,10 +59,10 @@ else:
 # At this point, we determine platform and perform special operations based on that
 
 if platform == "win32":
-	G_CCFLAGS_DBG       = Split('/nologo /c /Gs /W3 /MDd /O1sgiy')
-	G_CCFLAGS_REL       = Split('/nologo /c /Gs /W3 /MD  /O1sgiy')
-	G_CCFLAGS_DBG_FAST  = Split('/nologo /c /Gs /W3 /MDd /O2tgiy')
-	G_CCFLAGS_REL_FAST  = Split('/nologo /c /Gs /W3 /MD  /O2tgiy')
+	G_CCFLAGS_DBG       = Split('/nologo /c /Gs /W3 /MDd /Ods')
+	G_CCFLAGS_REL       = Split('/nologo /c /Gs /W3 /MD  /Oxs')
+	G_CCFLAGS_DBG_FAST  = Split('/nologo /c /Gs /W3 /MDd /Odt')
+	G_CCFLAGS_REL_FAST  = Split('/nologo /c /Gs /W3 /MD  /Oxt')
 	G_CPPDEFINES        = Split('WIN32 _WINDOWS _CRT_SECURE_NO_DEPRECATE')
 	G_CPPDEFINES_SHARED = Split('GLFW_BUILD_DLL')
 	G_SHARED_LINKLIBS   = Split('opengl32.lib user32.lib')
