@@ -1,4 +1,4 @@
-# Build Script for Amethyst
+
 import os
 import fnmatch
 
