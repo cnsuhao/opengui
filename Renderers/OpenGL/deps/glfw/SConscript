@@ -10,6 +10,11 @@ VERMAJOR = 2
 VERMINOR = 5
 Export('OUTFILE')
 
+try:
+	Import('GLFW_NATIVE_BUILD')
+except:
+	GLFW_NATIVE_BUILD = False
+
 ############### PLATFORM DETECTION ################
 platform = str(ARGUMENTS.get('OS', Platform()))
 print "Detected Platform: " + platform 
@@ -50,9 +55,9 @@ if not (bool(base_env['CC']) and bool(base_env['CXX']) and bool(base_env['LINK']
 debug = bool( ARGUMENTS.get('debug', 0) )
 Export('debug')
 if debug:
-	print "Build Mode: DEBUG"
+	if GLFW_NATIVE_BUILD: print "Build Mode: DEBUG"
 else:
-	print "Build Mode: RELEASE"
+	if GLFW_NATIVE_BUILD: print "Build Mode: RELEASE"
 
 
 ############ PLATFORM SPECIFIC FLAGS ##############
