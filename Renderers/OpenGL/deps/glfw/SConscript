@@ -110,4 +110,5 @@ fast_env_s.Append(LINKFLAGS=G_SHARED_LINKFLAGS)
 Export('base_env_s')
 Export('fast_env_s')
 
-SConscript('lib/SConscript')
+out = SConscript('lib/SConscript')
+Return('out')

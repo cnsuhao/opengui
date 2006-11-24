@@ -81,3 +81,6 @@ inst_s = Install('../',sharedlib)
 if bool(GLFW_NATIVE_BUILD):
 	Alias('shared',inst_s)
 	Alias('dll',inst_s)
+
+out = inst_s + inst
+Return('out')
