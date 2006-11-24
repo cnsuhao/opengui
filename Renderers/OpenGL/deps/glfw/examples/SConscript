@@ -17,10 +17,6 @@ env = base_env.Copy()
 env.Append(CPPPATH=['../include'])
 env.Append(LIBS='glfw_static')
 
-env['WINDOWS_INSERT_MANIFEST'] = True
-#print env['WINDOWS_INSERT_MANIFEST']
-#Exit()
-
 if platform == 'win32':
 	env.Append(LIBS=Split('opengl32 glu32 user32'))
 
