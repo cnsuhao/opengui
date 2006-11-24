@@ -17,6 +17,8 @@ Build Targets:
 	static - GLFW as a static library
 	shared - GLFW as a shared library
 	dll    - alias for 'shared'
+	test   - examples for testing
+	all    - 'static', 'shared', and 'test' (everything)
 Default Targets: static shared
 
 Build Modes:
@@ -40,6 +42,9 @@ SConscript('SConscript')
 
 Default('static')
 Default('shared')
+Alias('all', 'static')
+Alias('all', 'shared')
+Alias('all', 'test')
 
 print 'Selected Targets: ',
 for i in BUILD_TARGETS:

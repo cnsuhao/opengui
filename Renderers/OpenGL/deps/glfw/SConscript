@@ -43,7 +43,10 @@ if not bool(base_env):
 				print '...NOT FOUND! Aborting!'
 				Exit(-1)
 		print 'Using MSVS ' + base_env['MSVS']['VERSION']
-
+		if base_env['MSVS']['VERSION'] == "8.0":
+			# These will embed the manifests when we're using Visual Studio 2005
+			base_env['LINKCOM']=[base_env['LINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
+			base_env['SHLINKCOM']=[base_env['SHLINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
 if not (bool(base_env['CC']) and bool(base_env['CXX']) and bool(base_env['LINK'])):
 	print 'Compiler or linker was not detected! Abort!'
 	Exit(-1)
@@ -116,4 +119,5 @@ Export('base_env_s')
 Export('fast_env_s')
 
 out = SConscript('lib/SConscript')
+SConscript('examples/SConscript')
 Return('out')

@@ -1,0 +1,48 @@
+
+import os
+import fnmatch
+
+try:
+	Import('GLFW_NATIVE_BUILD')
+except:
+	GLFW_NATIVE_BUILD = False
+
+Import('base_env')
+Import('base_env_s')
+Import('platform')
+Import('debug')
+
+env = base_env.Copy()
+
+env.Append(CPPPATH=['../include'])
+env.Append(LIBS='glfw_static')
+
+env['WINDOWS_INSERT_MANIFEST'] = True
+#print env['WINDOWS_INSERT_MANIFEST']
+#Exit()
+
+if platform == 'win32':
+	env.Append(LIBS=Split('opengl32 glu32 user32'))
+
+console = env.Copy()
+window = env.Copy()
+
+if platform == 'win32':
+	console.Append(LINKFLAGS=Split('/subsystem:console'))
+	window.Append(LINKFLAGS=Split('/subsystem:windows /entry:mainCRTStartup'))
+
+prog = []
+prog += window.Program(target='triangle', source='triangle.c')
+prog += console.Program(target='listmodes', source='listmodes.c')
+prog += console.Program(target='mthello', source='mthello.c')
+prog += window.Program(target='pong3d', source='pong3d.c')
+prog += console.Program(target='mtbench', source='mtbench.c')
+prog += console.Program(target='particles', source='particles.c')
+prog += window.Program(target='splitview', source='splitview.c')
+prog += window.Program(target='mipmaps', source='mipmaps.c')
+prog += console.Program(target='keytest', source='keytest.c')
+prog += console.Program(target='gears', source='gears.c')
+prog += window.Program(target='boing', source='boing.c')
+prog += window.Program(target='wave', source='wave.c')
+inst = Install('../', prog)
+Alias('test', inst)
