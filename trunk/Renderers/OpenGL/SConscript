@@ -3,4 +3,6 @@ SConscript('deps/SConscript')
 SConscript('Renderer_OpenGL/SConscript')
 
 SConscript('Demo1/SConscript')
+SConscript('Demo2/SConscript')
+SConscript('Demo3/SConscript')
 
