@@ -1,53 +1,64 @@
-# Build Script for Renderer_OpenGL
+# Build Script for Demo1
 import os
 import fnmatch
 
+Import('platform')
+Import('debug')
+Import('base_env')
+env = base_env.Copy()
 
 # Source files (and yes, this is indeed much like cheating)
 files = os.listdir(".")
 Source = fnmatch.filter(files,"*.cpp")
+Source += ['../DemoAppFramework/DemoAppFrameWork.cpp']
 
 CPPPATH = """
 	#/OpenGUI
+	#/TachometerWidget
+	../Renderer_OpenGL
 	../deps/glfw/include
 	../deps/corona/src
 	"""
 LIBPATH_D = """
 	#/lib
+	../lib
 	../deps/glfw
 	../deps/corona
 	"""
 	
 LIBPATH_R = """
 	#/lib
+	../lib
 	../deps/glfw
 	../deps/corona
 	"""
 
 LIBS_D = """
 	OpenGUI_d
+	Renderer_OpenGL_d
+	TachometerWidget_d
 	corona_d
 	glfw_static_d
 	"""
 
 LIBS_R = """
 	OpenGUI
+	Renderer_OpenGL
+	TachometerWidget
 	corona
 	glfw_static
 	"""
 
-OUTFILE = 'Renderer_OpenGL'
+OUTFILE = 'Demo1'
 
 
 
 ################################################################
-Import('platform')
-Import('base_env')
-env = base_env.Copy()
+
 
 OUTFILE_orig = OUTFILE
 
-Import('debug')
+
 if debug:
 	OUTFILE = OUTFILE + '_d'
 	libpath = Split(LIBPATH_D)
@@ -57,25 +68,28 @@ else:
 	libs = Split(LIBS_R)
 
 
-
-cppdefine = [] #['_USRDLL', 'AMETHYST_EXPORTS']
-env.Append(CPPDEFINES = cppdefine)
 env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
+
+if platform == 'win32':
+	env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
+	env.Append(LIBS = Split('glu32 opengl32'))
+
 
 
 env['PDB'] = OUTFILE + '.pdb'
 
 
-lib = env.StaticLibrary( OUTFILE, Source )
+prog = env.Program( OUTFILE, Source )
 
 
 if debug and platform == "win32":
-	env.SideEffect(OUTFILE + '.ilk', lib)
-	Clean(lib, OUTFILE + '.ilk')
+	env.SideEffect(OUTFILE + '.ilk', prog)
+	Clean(prog, OUTFILE + '.ilk')
 
 final = []
-final += env.Install('../lib', OUTFILE + '.lib')
-Alias('renderer_opengl',final)
+final += env.Install('../bin', prog )
+Alias('opengl_demo1',final)
 Alias('opengl',final)
+
