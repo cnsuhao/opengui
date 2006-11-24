@@ -193,7 +193,8 @@ Alias('deps',['freetype'])
 Alias('deps',['tinyxml'])
 
 
-SConscript(['Renderers/OpenGL/deps/corona/SConscript'])
+SConscript('Renderers/SConscript')
+#SConscript(['Renderers/OpenGL/deps/corona/SConscript'])
 
 Default(['opengui','amethyst','tachometer'])
 
