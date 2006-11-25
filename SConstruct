@@ -1,7 +1,6 @@
-
 ### THIS IS THE VERSION OF SCONS I WROTE THESE ON
 ### LOWERING IT WILL PROBABLY WORK, BUT YOUR MILAGE MAY VARY
-EnsureSConsVersion(0, 96)
+EnsureSConsVersion(0, 96, 93)
 ###################################################
 ############# DEFAULT FLAGS AND PATHS #############
 ###################################################
@@ -167,6 +166,7 @@ Build Targets:
 	ogre       - the Ogre renderer with examples
 	deps       - all dependencies
 	(default)  - If no targets are specified, the defaults are:
+	all        - build everything, leave no stone unturned (NYI)
 		opengui
 		amethyst
 		tachometer
