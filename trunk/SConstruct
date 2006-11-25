@@ -29,6 +29,10 @@ G_RELEASE_LINKFLAGS    = []
 G_LIBS                 = [] # libs linked to all projects
 G_DEBUG_LIBS           = []
 G_RELEASE_LIBS         = []
+#### StaticLib Linker Options ##########
+G_ARFLAGS              = []
+G_DEBUG_ARFLAGS        = []
+G_RELEASE_ARFLAGS      = []
 
 ###################################################
 #  USERS SHOULDN'T NEED TO EDIT BELOW THIS LINE   #
@@ -97,8 +101,10 @@ if platform == "win32":
 	G_RELEASE_CPPDEFINES += Split('NDEBUG')
 	G_LINKFLAGS          += Split('/NOLOGO /DEBUG /OPT:NOWIN98')
 	G_DEBUG_LINKFLAGS    += Split('/INCREMENTAL')
-	G_DEBUG_LINKFLAGS    += Split('/INCREMENTAL')
 	G_RELEASE_LINKFLAGS  += Split('/INCREMENTAL:NO /LTCG:STATUS /OPT:REF /OPT:ICF')
+	G_ARFLAGS            += []
+	G_DEBUG_ARFLAGS      += []
+	G_RELEASE_ARFLAGS    += Split('/LTCG:STATUS')
 	
 	# VC8 has a few extra options that need tuning
 	if base_env['MSVS']['VERSION'] == "8.0":
@@ -124,6 +130,7 @@ if debug:
 	G_LIBPATH    += G_DEBUG_LIBPATH
 	G_LINKFLAGS  += G_DEBUG_LINKFLAGS
 	G_LIBS       += G_DEBUG_LIBS
+	G_ARFLAGS    += G_DEBUG_ARFLAGS
 else:
 	G_CCFLAGS    += G_RELEASE_CCFLAGS
 	G_CXXFLAGS   += G_RELEASE_CXXFLAGS
@@ -132,6 +139,7 @@ else:
 	G_LIBPATH    += G_RELEASE_LIBPATH
 	G_LINKFLAGS  += G_RELEASE_LINKFLAGS
 	G_LIBS       += G_RELEASE_LIBS
+	G_ARFLAGS    += G_RELEASE_ARFLAGS
 
 
 # Add system libs for win32
@@ -151,6 +159,8 @@ base_env.Append(CPPPATH = G_CPPPATH)
 base_env.Append(LIBPATH = G_LIBPATH)
 base_env.Append(LINKFLAGS = G_LINKFLAGS)
 base_env.Append(LIBS = G_LIBS)
+# StaticLib Linker
+base_env.Append(ARFLAGS = G_ARFLAGS)
 
 Export('base_env') # Need to re-export to update changes
 
@@ -166,11 +176,11 @@ Build Targets:
 	ogre       - the Ogre renderer with examples
 	deps       - all dependencies
 	(default)  - If no targets are specified, the defaults are:
+			opengui
+			amethyst
+			tachometer
+			opengl
 	all        - build everything, leave no stone unturned (NYI)
-		opengui
-		amethyst
-		tachometer
-		opengl
 
 Build Modes:
 	Specify debug=1 to build a debug version. Otherwise release is assumed.
