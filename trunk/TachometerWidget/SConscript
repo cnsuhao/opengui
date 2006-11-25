@@ -68,4 +68,12 @@ final = []
 final += env.Install('#/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
 final += env.Install('#/lib', OUTFILE + '.lib')
 final += env.Install('#/Renderers/OpenGL/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+
+if env.get('OGRE_HOME',0):
+	if debug:
+		final += env.Install('#/Renderers/Ogre/bin/debug', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+	else:
+		final += env.Install('#/Renderers/Ogre/bin/release', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+
 Alias('tachometer',final)
+Alias('all',final)

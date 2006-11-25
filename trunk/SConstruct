@@ -37,7 +37,7 @@ G_RELEASE_ARFLAGS      = []
 ###################################################
 #  USERS SHOULDN'T NEED TO EDIT BELOW THIS LINE   #
 ###################################################
-
+import os
 
 
 ############### PLATFORM DETECTION ################
@@ -69,15 +69,17 @@ if base_env.has_key('MSVS'):
 	if base_env['MSVS']['VERSION'] == "8.0":
 		# These will embed the manifests when we're using Visual Studio 2005
 		base_env['LINKCOM']=[base_env['LINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
-		base_env['SHLINKCOM']=[base_env['SHLINKCOM'], 'mt.exe -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
+		base_env['SHLINKCOM']=[base_env['SHLINKCOM'], 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:${TARGET};2']
 		base_env['WINDOWS_INSERT_MANIFEST'] = True # and this ensures they are properly dependent
 
 if not (bool(base_env['CC']) and bool(base_env['CXX']) and bool(base_env['LINK'])):
 	print 'No compiler detected! Abort!'
 	Exit(-1)
-
+# Keep an unmodified environment in case we need it
 clean_env = base_env.Copy()
 Export('clean_env')
+
+
 
 ########## SELECT DEBUG / RELEASE MODE ############
 # detect debug/release and export the flag
@@ -87,6 +89,15 @@ if debug:
 	print "Build Mode: DEBUG"
 else:
 	print "Build Mode: RELEASE"
+
+
+
+###### OGRE SDK AUTO DETECTION AND SELECTION ######
+if ARGUMENTS.get('OGRE', 0):
+	base_env['OGRE_HOME'] = ARGUMENTS.get('OGRE').strip()
+else:
+	base_env['OGRE_HOME'] = os.environ.get('OGRE_HOME', 0)
+
 
 
 ############ PLATFORM SPECIFIC FLAGS ##############
@@ -190,10 +201,18 @@ if platform == "win32":
 Visual Studio compiler selection:
 	VS=<version> -  Replace <version> with the version number.
 			Ex: VS=8.0  -or-  VS=7.1
-	
 """
 	
 Help(HelpText)
+Help("""
+Ogre SDK selection:
+	OGRE=<path2sdk> - The <path2sdk> is the full path to the Ogre SDK.
+	                  Specifically, it needs OgreMain files accessible as:
+	                     Includes: <path2sdk>/include
+	                      Library: <path2sdk>/lib
+	                     Binaries: <path2sdk>/bin/debug
+	                               <path2sdk>/bin/release
+""")
 
 
 ############ SUB PROJECTS PROCESSING ##############
