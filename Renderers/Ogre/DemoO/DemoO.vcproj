@@ -65,7 +65,7 @@
 				AdditionalDependencies="OpenGUI_d.lib TachometerWidget_d.lib Renderer_Ogre_d.lib OgreMain_d.lib "
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../lib; &quot;$(OGRE_HOME)/lib&quot;; ../bin"
+				AdditionalLibraryDirectories="../../../lib; ../lib; &quot;$(OGRE_HOME)/lib&quot;;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/DemoO_d.pdb"
 				SubSystem="2"
@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="setupEnv_VC8.bat"
+				CommandLine="setupEnv.bat"
 			/>
 		</Configuration>
 		<Configuration
@@ -156,7 +156,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenGUI.lib TachometerWidget.lib Renderer_Ogre.lib OgreMain.lib "
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../lib; &quot;$(OGRE_HOME)/lib&quot;; ../bin"
+				AdditionalLibraryDirectories="../../../lib; ../lib; &quot;$(OGRE_HOME)/lib&quot;;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/DemoO.pdb"
 				SubSystem="2"
@@ -190,7 +190,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="setupEnv_VC8.bat"
+				CommandLine="setupEnv.bat"
 			/>
 		</Configuration>
 	</Configurations>
