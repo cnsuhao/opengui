@@ -36,8 +36,8 @@ this limitation.
 Use SCons! There are a smattering of VC8 projects and
 solutions that are intended for use by the project
 developers. Building everything STILL REQUIRES SCONS, as
-not all dependencies come with valid Visual Studio project
-files.
+all dependencies are still built using SCons to ensure
+consistent binaries.
 
  * VC 8 (aka Visual Studio 2005 Standard/Pro/Express)
     Just open OpenGUI.sln in the root directory, select a
@@ -58,8 +58,8 @@ files.
 -----------------------------------------------------------
 Linux isn't officially supported at this time, but you are
 more than welcome to try. You can expect the SCons scripts
-to break, so if you spend the time to fix it please submit
-a patch.
+to break, so please submit a patch if you spend the time to
+fix it .
 
 
 
