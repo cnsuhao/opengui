@@ -202,10 +202,6 @@
 				RelativePath=".\demo1.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\DemoAppFramework\DemoAppFrameWork.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
