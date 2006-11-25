@@ -79,3 +79,4 @@ final = []
 final += env.Install('../lib', OUTFILE + '.lib')
 Alias('renderer_opengl',final)
 Alias('opengl',final)
+Alias('all',final)

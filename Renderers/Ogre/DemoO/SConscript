@@ -1,4 +1,4 @@
-# Build Script for Demo1
+# Build Script for DemoO
 import os
 import fnmatch
 
@@ -13,47 +13,41 @@ Source = fnmatch.filter(files,"*.cpp")
 
 CPPPATH = """
 	#/OpenGUI
+	${OGRE_HOME}/include
 	#/TachometerWidget
-	../Renderer_OpenGL
-	../deps/glfw/include
-	../deps/corona/src
+	../Renderer_Ogre
 	"""
 LIBPATH_D = """
 	#/lib
 	../lib
-	../deps/glfw
-	../deps/corona
+	${OGRE_HOME}/lib
 	"""
 	
 LIBPATH_R = """
 	#/lib
 	../lib
-	../deps/glfw
-	../deps/corona
+	${OGRE_HOME}/lib
 	"""
 
 LIBS_D = """
 	OpenGUI_d
-	Renderer_OpenGL_d
+	OgreMain_d
 	TachometerWidget_d
-	corona_d
-	glfw_static_d
+	Renderer_Ogre_d
 	"""
 
 LIBS_R = """
 	OpenGUI
-	Renderer_OpenGL
+	OgreMain
 	TachometerWidget
-	corona
-	glfw_static
+	Renderer_Ogre
 	"""
 
-OUTFILE = 'Demo1'
+OUTFILE = 'DemoO'
 
 
 
 ################################################################
-
 
 OUTFILE_orig = OUTFILE
 
@@ -67,9 +61,11 @@ else:
 	libs = Split(LIBS_R)
 
 
+
 env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
+
 
 if platform == 'win32':
 	env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
@@ -83,12 +79,18 @@ env['PDB'] = OUTFILE + '.pdb'
 prog = env.Program( OUTFILE, Source )
 
 
+
 if debug and platform == "win32":
 	env.SideEffect(OUTFILE + '.ilk', prog)
-	Clean(prog, OUTFILE + '.ilk')
+	env.Clean(prog, OUTFILE + '.ilk')
 
 final = []
-final += env.Install('../bin', prog )
-Alias('opengl_demo1',final)
-Alias('opengl',final)
+if debug:
+	final += env.Install('../bin/debug', prog )
+	final += env.Command('../bin/debug/DemoO.zip', 'DemoO.zip', Copy('$TARGET', '$SOURCE'))
+else:
+	final += env.Install('../bin/release', prog )
+	final += env.Command('../bin/release/DemoO.zip', 'DemoO.zip', Copy('$TARGET', '$SOURCE'))
+Alias('ogre_demoo',final)
+Alias('ogre',final)
 Alias('all',final)

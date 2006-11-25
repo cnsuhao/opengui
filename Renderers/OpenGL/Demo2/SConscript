@@ -91,4 +91,4 @@ final = []
 final += env.Install('../bin', prog )
 Alias('opengl_demo2',final)
 Alias('opengl',final)
-
+Alias('all',final)

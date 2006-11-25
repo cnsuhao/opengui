@@ -1,4 +1,4 @@
-# Build Script for Demo1
+# Build Script for Renderer_Ogre
 import os
 import fnmatch
 
@@ -13,47 +13,33 @@ Source = fnmatch.filter(files,"*.cpp")
 
 CPPPATH = """
 	#/OpenGUI
-	#/TachometerWidget
-	../Renderer_OpenGL
-	../deps/glfw/include
-	../deps/corona/src
+	${OGRE_HOME}/include
 	"""
 LIBPATH_D = """
 	#/lib
-	../lib
-	../deps/glfw
-	../deps/corona
+	${OGRE_HOME}/lib
 	"""
 	
 LIBPATH_R = """
 	#/lib
-	../lib
-	../deps/glfw
-	../deps/corona
+	${OGRE_HOME}/lib
 	"""
 
 LIBS_D = """
 	OpenGUI_d
-	Renderer_OpenGL_d
-	TachometerWidget_d
-	corona_d
-	glfw_static_d
+	OgreMain_d
 	"""
 
 LIBS_R = """
 	OpenGUI
-	Renderer_OpenGL
-	TachometerWidget
-	corona
-	glfw_static
+	OgreMain
 	"""
 
-OUTFILE = 'Demo1'
+OUTFILE = 'Renderer_Ogre'
 
 
 
 ################################################################
-
 
 OUTFILE_orig = OUTFILE
 
@@ -67,28 +53,30 @@ else:
 	libs = Split(LIBS_R)
 
 
+
+cppdefine = ['_USRDLL', 'OGR_OGRE_EXPORTS']
+env.Append(CPPDEFINES = cppdefine)
 env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
 env.Append(LIBS = libs)
-
-if platform == 'win32':
-	env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
-	env.Append(LIBS = Split('glu32 opengl32'))
-
 
 
 env['PDB'] = OUTFILE + '.pdb'
 
 
-prog = env.Program( OUTFILE, Source )
+lib = env.SharedLibrary( OUTFILE, Source )
 
 
 if debug and platform == "win32":
-	env.SideEffect(OUTFILE + '.ilk', prog)
-	Clean(prog, OUTFILE + '.ilk')
+	env.SideEffect(OUTFILE + '.ilk', lib)
+	Clean(lib, OUTFILE + '.ilk')
 
 final = []
-final += env.Install('../bin', prog )
-Alias('opengl_demo1',final)
-Alias('opengl',final)
+if debug:
+	final += env.Install('../bin/debug', lib )
+else:
+	final += env.Install('../bin/release', lib )
+final += env.Install('../lib', OUTFILE + '.lib')
+Alias('renderer_ogre',final)
+Alias('ogre',final)
 Alias('all',final)
