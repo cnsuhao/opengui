@@ -17,17 +17,18 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="lib\win32"
-			IntermediateDirectory="lib\win32"
+			OutputDirectory="./"
+			IntermediateDirectory="./lib"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			BuildLogFile="BuildLog.htm"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="compile.bat nmake msvc"
+				BuildCommandLine="scons static debug=1 -s"
 				ReBuildCommandLine=""
-				CleanCommandLine="compile.bat CLEAN"
-				Output="$(OutDir)\glfw_d.lib"
+				CleanCommandLine="scons static debug=1 -c"
+				Output="glfw_static_d.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -38,17 +39,18 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="lib\win32"
-			IntermediateDirectory="lib\win32"
+			OutputDirectory="./"
+			IntermediateDirectory="./lib"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			BuildLogFile="BuildLog.htm"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="compile.bat nmake msvc"
+				BuildCommandLine="scons static -s"
 				ReBuildCommandLine=""
-				CleanCommandLine="compile.bat CLEAN"
-				Output="$(OutDir)\glfw.lib"
+				CleanCommandLine="scons static -c"
+				Output="glfw_static.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
