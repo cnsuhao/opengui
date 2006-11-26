@@ -95,6 +95,7 @@ else:
 ###### OGRE SDK AUTO DETECTION AND SELECTION ######
 if ARGUMENTS.get('OGRE', 0):
 	base_env['OGRE_HOME'] = ARGUMENTS.get('OGRE').strip()
+	print 'User provided OGRE_HOME:',base_env['OGRE_HOME']
 else:
 	base_env['OGRE_HOME'] = os.environ.get('OGRE_HOME', 0)
 
