@@ -87,10 +87,34 @@ if debug and platform == "win32":
 final = []
 if debug:
 	final += env.Install('../bin/debug', prog )
-	final += env.Command('../bin/debug/DemoO.zip', 'DemoO.zip', Copy('$TARGET', '$SOURCE'))
 else:
 	final += env.Install('../bin/release', prog )
-	final += env.Command('../bin/release/DemoO.zip', 'DemoO.zip', Copy('$TARGET', '$SOURCE'))
+
+if platform == 'win32':
+	srcdir = env['OGRE_HOME'] + '/bin/'
+	dstdir = '../bin/'
+	if debug:
+		srcdir += 'debug/'
+		dstdir += 'debug/'
+	else:
+		srcdir += 'release/'
+		dstdir += 'release/'
+	
+	localFiles = ['resources.cfg','Plugins.cfg','DemoO.zip']
+	for file in localFiles:
+		final += env.Command(dstdir + file, file, Copy('$TARGET', '$SOURCE'))
+	
+	commonFiles = Split('cg.dll DevIL.dll ILU.dll ILUT.dll zlib1.dll Plugin_CgProgramManager.dll Plugin_ParticleFX.dll Plugin_OctreeSceneManager.dll Plugin_BSPSceneManager.dll RenderSystem_Direct3D9.dll RenderSystem_GL.dll')
+	if debug:
+		commonFiles += ['OgreMain_d.dll','OgrePlatform_d.dll']
+	else:
+		commonFiles += ['OgreMain.dll','OgrePlatform.dll']
+	for file in commonFiles:
+		final += env.Command(dstdir + file, srcdir + file, Copy('$TARGET', '$SOURCE'))
+	srcdir = env['OGRE_HOME'] + '/media/packs/'
+	file = 'OgreCore.zip'
+	final += env.Command(dstdir + file, srcdir + file, Copy('$TARGET', '$SOURCE'))
+
 Alias('ogre_demoo',final)
 Alias('ogre',final)
 Alias('all',final)
