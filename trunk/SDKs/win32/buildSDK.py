@@ -75,6 +75,12 @@ def MAIN():
 	RunCommand('Exporting source tree...','svn export ../../ ' + WORKDIR + '/src')
 
 
+
+##### REMOVE SOURCE TOOLS ######
+	rmtree(WORKDIR + '/src/tools/')
+
+
+
 ##### CLEANING ALL BUILDS #######
 	if BUILD_VS71:
 		CMD = SCONSCMD + ' -c VS=7.1 ' + OGRE_STR_VS71
