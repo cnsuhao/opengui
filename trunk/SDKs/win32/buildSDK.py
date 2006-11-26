@@ -95,6 +95,11 @@ def MAIN():
 
 
 
+##### BUILD/COPY DOCS ###########
+	BuildDocs()
+
+
+
 ##### COPY INCLUDE FILES ########
 	CopyIncludes()
 
@@ -206,6 +211,24 @@ def CopyDemos():
 	files = tmp
 	CopyFiles(srcdir,dstdir,files)
 
+
+
+def BuildDocs():
+	global WORKDIR
+	global SCONSROOT
+	mainDocDir = SCONSROOT + '/OpenGUI/doc/'
+	ogreDocDir = SCONSROOT + '/Renderers/Ogre/Renderer_Ogre/doc/'
+	# OpenGUI
+	RunCommand('Building OpenGUI Documentation...', 'buildUserDocs.bat', mainDocDir)
+	file = ['OpenGUI.chm']
+	CopyFiles(mainDocDir, WORKDIR + '/OpenGUI/', file)
+	# Ogre
+	RunCommand('Building Renderer_Ogre Documentation...', 'buildDocs.bat', ogreDocDir)
+	file = ['Renderer_Ogre.chm']
+	CopyFiles(ogreDocDir, WORKDIR + '/Renderer_Ogre/', file)
+
+
+
 def CopyIncludes():
 	global WORKDIR
 	global SCONSROOT
@@ -289,8 +312,8 @@ def CopyDebugBins(SDKtype):
 def CopyFiles(srcdir,dstdir,fileList):
 	print "  COPY: " + srcdir + ' -> ' + dstdir
 	for f in fileList:
-		src = srcdir + f
-		dst = dstdir + f
+		src = srcdir + '/' + f
+		dst = dstdir + '/' + f
 		print "        ->",f
 		copyfile(src,dst)
 #### Begin execution

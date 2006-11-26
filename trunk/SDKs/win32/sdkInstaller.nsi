@@ -67,9 +67,10 @@ Section "VS SDK" SEC01
   SetOutPath "$INSTDIR"
   File /r "${BUILD_DIR}\Demos"
   File /r "${BUILD_DIR}\OpenGUI"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\API Documentation.lnk" "$INSTDIR\OpenGUI\OpenGUI.chm"  
   File /r "${BUILD_DIR}\Renderer_Ogre"
+  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Ogre Documentation.lnk" "$INSTDIR\Renderer_Ogre\Renderer_Ogre.chm"
   File /r "${BUILD_DIR}\Renderer_OpenGL"
-;  CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos (VC8)\Demo 1.lnk" "$INSTDIR\sdk_vc8\Demos\Demo1.exe"
 SectionEnd
 
 
