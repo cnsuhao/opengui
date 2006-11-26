@@ -2,7 +2,14 @@
 mkdir Debug
 mkdir Release
 
+if "%1" == "" GOTO NOARG
+set OgreSDKdir=%1
+GOTO GOTOGRE
+:NOARG
 set OgreSDKdir=%OGRE_HOME%
+GOTO GOTOGRE
+:GOTOGRE
+echo Ogre SDK: %OgreSDKdir%
 
 copy DemoO.zip ..\bin\Debug\
 copy DemoO.zip ..\bin\Release\
