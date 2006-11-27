@@ -376,6 +376,7 @@ namespace OpenGUI {
 		mMaxSize = FVector2( 0, 0 );
 		mAnchors = Left | Top;
 		mDock = None;
+		mMargin = 0.0f;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Cursor_Click" );
@@ -818,6 +819,22 @@ namespace OpenGUI {
 	void Control::_breakDocking() {
 		if ( !m_InLayout )
 			setDocking( None );
+	}
+	//############################################################################
+	/*! The "margin" is the distance to stay away from sibling Controls' margins
+	during automatic layouts. It is up to the control performing the layout
+	operations to honor this value. 
+	\param margin The margin size in Screen units. Negative values are clamped to 0.0f */
+	void Control::setMargin( float margin ) {
+		if ( margin < 0.0f ) margin = 0.0f;
+		if ( margin == mMargin ) return;
+		mMargin = margin;
+		_invalidateLayout();
+	}
+	//############################################################################
+	/*! \see See setMargin() for information on margins */
+	float Control::getMargin() {
+		return mMargin;
 	}
 	//############################################################################
 } // namespace OpenGUI {

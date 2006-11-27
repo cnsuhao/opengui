@@ -110,6 +110,11 @@ namespace OpenGUI {
 		//! Gets the current anchored sides for this control
 		int getAnchor();
 
+		//! sets the margin of this Control
+		void setMargin( float margin );
+		//! gets the margin of this Control
+		float getMargin();
+
 		//! \internal In addition to previous functionality, this enforces Alpha and Visibility before the Draw event is issued
 		virtual void _draw( Brush& brush );
 
@@ -185,6 +190,7 @@ namespace OpenGUI {
 
 		int mAnchors; // anchored sides
 		int mDock; // docking preference
+		float mMargin; // layout margin
 
 		bool mCursorInside; // cursor position state variable
 		bool m_InDockAnchor; // prevents re-entry into setDocking/setAnchor
