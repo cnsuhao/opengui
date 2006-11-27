@@ -3,6 +3,8 @@
 	<Plugin File="Amethyst" />
 	<include File="Amethyst.xml"/>
 	<include File="metal.xml"/>
+	<include File="BlueGui.xml"/>
+	<include File="Generic.xml"/>
 
 	<Font Name="pecot" File="pecot.ttf" />
 

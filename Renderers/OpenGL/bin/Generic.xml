@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<OpenGUI>
+	<Imageset File="Generic.png">
+		<Imagery Name="GenericButton1Normal" Left="32" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton1Hover" Left="64" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton1Press" Left="96" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton1Disabled" Left="0" Top="0" Width="32" Height="32" />
+
+		<Imagery Name="GenericButton2Normal" Left="160" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton2Hover" Left="192" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton2Press" Left="224" Top="0" Width="32" Height="32" />
+		<Imagery Name="GenericButton2Disabled" Left="128" Top="0" Width="32" Height="32" />
+
+		<Imagery Name="GenericButton3Normal" Left="64" Top="32" Width="32" Height="32" />
+		<Imagery Name="GenericButton3Hover" Left="128" Top="32" Width="32" Height="32" />
+		<Imagery Name="GenericButton3Press" Left="96" Top="32" Width="32" Height="32" />
+		<Imagery Name="GenericButton3Disabled" Left="224" Top="32" Width="32" Height="32" />
+
+		<Imagery Name="GenericCursorArrow" Left="0" Top="96" Width="16" Height="28" />
+
+		<Imagery Name="GenericCheckNormal" Left="226" Top="113" Width="12" Height="12" />
+		<Imagery Name="GenericCheckHover" Left="210" Top="113" Width="12" Height="12" />
+		<Imagery Name="GenericCheckPress" Left="242" Top="113" Width="12" Height="12" />
+		<Imagery Name="GenericCheckDisabled" Left="194" Top="113" Width="12" Height="12" />
+
+		<Imagery Name="GenericCheckNormalX" Left="162" Top="97" Width="12" Height="12" />
+		<Imagery Name="GenericCheckHoverX" Left="178" Top="113" Width="12" Height="12" />
+		<Imagery Name="GenericCheckPressX" Left="178" Top="97" Width="12" Height="12" />
+		<Imagery Name="GenericCheckDisabledX" Left="162" Top="113" Width="12" Height="12" />
+
+		<Imagery Name="GenericCheckNormalDot" Left="226" Top="97" Width="12" Height="12" />
+		<Imagery Name="GenericCheckHoverDot" Left="210" Top="97" Width="12" Height="12" />
+		<Imagery Name="GenericCheckPressDot" Left="242" Top="97" Width="12" Height="12" />
+		<Imagery Name="GenericCheckDisabledDot" Left="194" Top="97" Width="12" Height="12" />
+
+
+		<Imagery Name="GenericFrameUL" Left="1" Top="31" Width="20" Height="20" />
+		<Imagery Name="GenericFrameUM" Left="24" Top="31" Width="2" Height="20" />
+		<Imagery Name="GenericFrameUR" Left="43" Top="31" Width="20" Height="20" />
+		<Imagery Name="GenericFrameML" Left="1" Top="64" Width="20" Height="2" />
+		<Imagery Name="GenericFrameMM" Left="48" Top="64" Width="2" Height="2" />
+		<Imagery Name="GenericFrameMR" Left="43" Top="64" Width="20" Height="2" />
+		<Imagery Name="GenericFrameLL" Left="1" Top="74" Width="20" Height="20" />
+		<Imagery Name="GenericFrameLM" Left="24" Top="74" Width="2" Height="20" />
+		<Imagery Name="GenericFrameLR" Left="43" Top="74" Width="20" Height="20" />
+
+	</Imageset>
+
+</OpenGUI>
+
