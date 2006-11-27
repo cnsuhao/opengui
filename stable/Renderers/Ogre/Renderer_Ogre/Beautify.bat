@@ -3,7 +3,7 @@ setlocal
 
 del *.orig > nul
 echo Beautifying...
-call ..\tools\style.bat *.h *.cpp > nul
+call ..\..\..\tools\style.bat *.h *.cpp > nul
 
 echo Cleaning Up
 del *.orig > nul

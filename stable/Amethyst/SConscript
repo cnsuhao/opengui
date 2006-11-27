@@ -1,4 +1,4 @@
-# Build Script for OpenGUI
+# Build Script for Amethyst
 import os
 import fnmatch
 
@@ -8,32 +8,25 @@ files = os.listdir(".")
 Source = fnmatch.filter(files,"*.cpp")
 
 CPPPATH = """
-	#/deps/tinyxml
-	#/deps/freetype2/include
+	#/OpenGUI
 	"""
 LIBPATH_D = """
-	#/deps/tinyxml
-	#/deps/freetype2/objs
+	#/lib
 	"""
 	
 LIBPATH_R = """
-	#/deps/tinyxml
-	#/deps/freetype2/objs
+	#/lib
 	"""
 
 LIBS_D = """
-	Winmm.lib
-	tinyxml_d.lib
-	freetype_d.lib
+	OpenGUI_d.lib
 	"""
 
 LIBS_R = """
-	Winmm.lib
-	tinyxml.lib
-	freetype.lib
+	OpenGUI.lib
 	"""
 
-OUTFILE = 'OpenGUI'
+OUTFILE = 'Amethyst'
 
 
 
@@ -42,6 +35,7 @@ Import('platform')
 Import('base_env')
 env = base_env.Copy()
 
+OUTFILE_orig = OUTFILE
 
 Import('debug')
 if debug:
@@ -54,7 +48,7 @@ else:
 
 
 
-cppdefine = ['_USRDLL', 'OPENGUI_EXPORTS']
+cppdefine = ['_USRDLL', 'AMETHYST_EXPORTS']
 env.Append(CPPDEFINES = cppdefine)
 env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
@@ -65,7 +59,6 @@ env['PDB'] = OUTFILE + '.pdb'
 
 
 lib = env.SharedLibrary( OUTFILE, Source )
-
 
 
 if debug and platform == "win32":
@@ -83,5 +76,5 @@ if env.get('OGRE_HOME',0):
 	else:
 		final += env.Install('#/Renderers/Ogre/bin/release', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
 
-Alias('opengui',final)
+Alias('amethyst',final)
 Alias('all',final)

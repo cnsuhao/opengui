@@ -1,49 +1,49 @@
-# Build Script for OpenGUI
+# Build Script for Renderer_Ogre
 import os
 import fnmatch
 
+Import('platform')
+Import('debug')
+Import('base_env')
+env = base_env.Copy()
 
 # Source files (and yes, this is indeed much like cheating)
 files = os.listdir(".")
 Source = fnmatch.filter(files,"*.cpp")
 
 CPPPATH = """
-	#/deps/tinyxml
-	#/deps/freetype2/include
+	#/OpenGUI
+	${OGRE_HOME}/include
 	"""
 LIBPATH_D = """
-	#/deps/tinyxml
-	#/deps/freetype2/objs
+	#/lib
+	${OGRE_HOME}/lib
 	"""
 	
 LIBPATH_R = """
-	#/deps/tinyxml
-	#/deps/freetype2/objs
+	#/lib
+	${OGRE_HOME}/lib
 	"""
 
 LIBS_D = """
-	Winmm.lib
-	tinyxml_d.lib
-	freetype_d.lib
+	OpenGUI_d
+	OgreMain_d
 	"""
 
 LIBS_R = """
-	Winmm.lib
-	tinyxml.lib
-	freetype.lib
+	OpenGUI
+	OgreMain
 	"""
 
-OUTFILE = 'OpenGUI'
+OUTFILE = 'Renderer_Ogre'
 
 
 
 ################################################################
-Import('platform')
-Import('base_env')
-env = base_env.Copy()
+
+OUTFILE_orig = OUTFILE
 
 
-Import('debug')
 if debug:
 	OUTFILE = OUTFILE + '_d'
 	libpath = Split(LIBPATH_D)
@@ -54,7 +54,7 @@ else:
 
 
 
-cppdefine = ['_USRDLL', 'OPENGUI_EXPORTS']
+cppdefine = ['_USRDLL', 'OGR_OGRE_EXPORTS']
 env.Append(CPPDEFINES = cppdefine)
 env.Append(CPPPATH = Split(CPPPATH))
 env.Append(LIBPATH = libpath)
@@ -67,21 +67,16 @@ env['PDB'] = OUTFILE + '.pdb'
 lib = env.SharedLibrary( OUTFILE, Source )
 
 
-
 if debug and platform == "win32":
 	env.SideEffect(OUTFILE + '.ilk', lib)
 	Clean(lib, OUTFILE + '.ilk')
 
 final = []
-final += env.Install('#/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
-final += env.Install('#/lib', OUTFILE + '.lib')
-final += env.Install('#/Renderers/OpenGL/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
-
-if env.get('OGRE_HOME',0):
-	if debug:
-		final += env.Install('#/Renderers/Ogre/bin/debug', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
-	else:
-		final += env.Install('#/Renderers/Ogre/bin/release', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
-
-Alias('opengui',final)
+if debug:
+	final += env.Install('../bin/debug', lib )
+else:
+	final += env.Install('../bin/release', lib )
+final += env.Install('../lib', OUTFILE + '.lib')
+Alias('renderer_ogre',final)
+Alias('ogre',final)
 Alias('all',final)

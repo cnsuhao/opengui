@@ -1,0 +1,120 @@
+# Build Script for DemoO
+import os
+import fnmatch
+
+Import('platform')
+Import('debug')
+Import('base_env')
+env = base_env.Copy()
+
+# Source files (and yes, this is indeed much like cheating)
+files = os.listdir(".")
+Source = fnmatch.filter(files,"*.cpp")
+
+CPPPATH = """
+	#/OpenGUI
+	${OGRE_HOME}/include
+	#/TachometerWidget
+	../Renderer_Ogre
+	"""
+LIBPATH_D = """
+	#/lib
+	../lib
+	${OGRE_HOME}/lib
+	"""
+	
+LIBPATH_R = """
+	#/lib
+	../lib
+	${OGRE_HOME}/lib
+	"""
+
+LIBS_D = """
+	OpenGUI_d
+	OgreMain_d
+	TachometerWidget_d
+	Renderer_Ogre_d
+	"""
+
+LIBS_R = """
+	OpenGUI
+	OgreMain
+	TachometerWidget
+	Renderer_Ogre
+	"""
+
+OUTFILE = 'DemoO'
+
+
+
+################################################################
+
+OUTFILE_orig = OUTFILE
+
+
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = Split(LIBPATH_D)
+	libs = Split(LIBS_D)
+else:
+	libpath = Split(LIBPATH_R)
+	libs = Split(LIBS_R)
+
+
+
+env.Append(CPPPATH = Split(CPPPATH))
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+
+if platform == 'win32':
+	env.Append(LINKFLAGS=['/SUBSYSTEM:WINDOWS'])
+	env.Append(LIBS = Split('glu32 opengl32'))
+
+
+
+env['PDB'] = OUTFILE + '.pdb'
+
+
+prog = env.Program( OUTFILE, Source )
+
+
+
+if debug and platform == "win32":
+	env.SideEffect(OUTFILE + '.ilk', prog)
+	env.Clean(prog, OUTFILE + '.ilk')
+
+final = []
+if debug:
+	final += env.Install('../bin/debug', prog )
+else:
+	final += env.Install('../bin/release', prog )
+
+if platform == 'win32':
+	srcdir = env['OGRE_HOME'] + '/bin/'
+	dstdir = '../bin/'
+	if debug:
+		srcdir += 'debug/'
+		dstdir += 'debug/'
+	else:
+		srcdir += 'release/'
+		dstdir += 'release/'
+	
+	localFiles = ['resources.cfg','Plugins.cfg','DemoO.zip']
+	for file in localFiles:
+		final += env.Command(dstdir + file, file, Copy('$TARGET', '$SOURCE'))
+	
+	commonFiles = Split('cg.dll DevIL.dll ILU.dll ILUT.dll zlib1.dll Plugin_CgProgramManager.dll Plugin_ParticleFX.dll Plugin_OctreeSceneManager.dll Plugin_BSPSceneManager.dll RenderSystem_Direct3D9.dll RenderSystem_GL.dll')
+	if debug:
+		commonFiles += ['OgreMain_d.dll','OgrePlatform_d.dll']
+	else:
+		commonFiles += ['OgreMain.dll','OgrePlatform.dll']
+	for file in commonFiles:
+		final += env.Command(dstdir + file, srcdir + file, Copy('$TARGET', '$SOURCE'))
+	srcdir = env['OGRE_HOME'] + '/media/packs/'
+	file = 'OgreCore.zip'
+	final += env.Command(dstdir + file, srcdir + file, Copy('$TARGET', '$SOURCE'))
+
+Alias('ogre_demoo',final)
+Alias('ogre',final)
+Alias('all',final)

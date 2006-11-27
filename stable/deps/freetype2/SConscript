@@ -36,17 +36,6 @@ if platform == 'win32': # special win32 file
 CPPPATH = """
 	include
 	"""
-LIBPATH_D = """
-	"""
-	
-LIBPATH_R = """
-	"""
-
-LIBS_D = """
-	"""
-
-LIBS_R = """
-	"""
 
 OUTFILE = 'freetype'
 
@@ -61,18 +50,13 @@ cppdefine = ['_LIB']
 Import('debug')
 if debug:
 	OUTFILE = OUTFILE + '_d'
-	libpath = Split(LIBPATH_D)
-	libs = Split(LIBS_D)
 	cppdefine += ['FT_DEBUG_LEVEL_ERROR','FT_DEBUG_LEVEL_TRACE']
-else:
-	libpath = Split(LIBPATH_R)
-	libs = Split(LIBS_R)
+
 
 
 env.Append(CPPDEFINES = cppdefine)
-env.Replace(CPPPATH = Split(CPPPATH))
-env.Append(LIBPATH = libpath)
-env.Append(LIBS = libs)
+env.Append(CPPPATH = Split(CPPPATH))
+
 
 if platform == "win32":
 	env['PDB'] = OUTFILE + '.pdb'
@@ -80,10 +64,6 @@ if platform == "win32":
 
 lib = env.StaticLibrary( OUTFILE, Split(Source) )
 
-if debug:
-	inst = env.Install('objs', lib)
-	Alias('freetype', inst)
-else:
-	inst = env.Install('objs', lib)
-	Alias('freetype', inst)
+inst = env.Install('objs', lib)
+Alias('freetype', inst)
 

@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="glfw"
-	ProjectGUID="{2F636F21-7CD7-4837-BBAB-48A7B293CC5B}"
-	RootNamespace="glfw"
-	Keyword="MakeFileProj"
+	Name="freetype"
+	ProjectGUID="{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
 	>
 	<Platforms>
 		<Platform
@@ -16,18 +14,22 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="lib\win32"
-			IntermediateDirectory="lib\win32"
+			Name="Release|Win32"
+			OutputDirectory="./"
+			IntermediateDirectory="./"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			BuildLogFile="BuildLog.htm"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="compile.bat nmake msvc"
+				BuildCommandLine="scons -s"
 				ReBuildCommandLine=""
-				CleanCommandLine="compile.bat CLEAN"
-				Output="$(OutDir)\glfw_d.lib"
+				CleanCommandLine="scons -c"
+				Output="freetype.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -37,18 +39,22 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="lib\win32"
-			IntermediateDirectory="lib\win32"
+			Name="Debug|Win32"
+			OutputDirectory="./"
+			IntermediateDirectory="./"
 			ConfigurationType="0"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			BuildLogFile="BuildLog.htm"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="compile.bat nmake msvc"
+				BuildCommandLine="scons -s debug=1"
 				ReBuildCommandLine=""
-				CleanCommandLine="compile.bat CLEAN"
-				Output="$(OutDir)\glfw.lib"
+				CleanCommandLine="scons -c debug=1"
+				Output="freetype_d.lib"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
 				ForcedIncludes=""
