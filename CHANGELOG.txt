@@ -1,7 +1,9 @@
-* Complete widget system redesign.
+Version 0.8 Release Candidate 1 - 11/27/2006)
+* Complete library redesign. A LOT has changed, so read the documentation over again even if you've used previous releases.
 * New Brush based widget drawing system.
 * New Renderer implementation requirements. (Sorry guys, had to be done.)
 * Removed Corona dependency from OpenGUI. No longer supports built in loading of textures. Renderers must now provide their own texture loading.
+
 
 Version 0.7.7 - 08/11/2006)
 * Added alpha support for widgets
