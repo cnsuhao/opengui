@@ -331,7 +331,36 @@ namespace OpenGUI {
 		}
 	}
 	gControl_MinSize_ObjectProperty;
-
+	//############################################################################
+	class Control_Margin_ObjectProperty : public ObjectProperty {
+	public:
+		virtual const char* getAccessorName() {
+			return "Margin";
+		}
+		//############################################################################
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Control& c = dynamic_cast<Control&>( objectRef );
+				valueOut.setValue( c.getMargin() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			try {
+				Control& c = dynamic_cast<Control&>( objectRef );
+				c.setMargin( valueIn.getValueAsFloat() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		//############################################################################
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_FLOAT;
+		}
+	}
+	gControl_Margin_ObjectProperty;
 	//############################################################################
 	//############################################################################
 	class Control_ObjectAccessorList : public ObjectAccessorList {
@@ -351,6 +380,8 @@ namespace OpenGUI {
 
 			addAccessor( &gControl_MaxSize_ObjectProperty );
 			addAccessor( &gControl_MinSize_ObjectProperty );
+
+			addAccessor( &gControl_Margin_ObjectProperty );
 		}
 		~Control_ObjectAccessorList() {}
 	}
