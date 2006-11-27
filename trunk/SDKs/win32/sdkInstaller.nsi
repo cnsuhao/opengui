@@ -32,10 +32,9 @@ SetCompressor zlib
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "header.bmp"
 !define MUI_HEADERIMAGE_RIGHT
-; Don't check View ChangeLog by default, and certainly don't call it a "Readme"
-!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
+; Don't call it a "Readme"
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "View Relesae Notes?"
-
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\RELEASE_NOTES.txt"
 
 
 ; Welcome page
@@ -49,8 +48,6 @@ SetCompressor zlib
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-;!define MUI_FINISHPAGE_RUN "$INSTDIR\Demos\OpenGL\Demo1.exe"
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\RELEASE_NOTES.txt"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
