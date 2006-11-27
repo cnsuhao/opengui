@@ -14,8 +14,8 @@
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
-SetCompressor zlib
-;SetCompressor /FINAL /SOLID lzma
+;SetCompressor zlib ;only used for build testing because it's much faster
+SetCompressor /FINAL /SOLID lzma ;used for finals because it's much better
 
 #########  INCLUDES  #########
 ; Include Environment Management Functions
