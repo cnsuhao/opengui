@@ -34,9 +34,9 @@
 		<Imagery Name="GenericCheckDisabledDot" Left="194" Top="97" Width="12" Height="12" />
 
 
-		<Imagery Name="GenericFrameUL" Left="1" Top="31" Width="20" Height="20" />
-		<Imagery Name="GenericFrameUM" Left="24" Top="31" Width="2" Height="20" />
-		<Imagery Name="GenericFrameUR" Left="43" Top="31" Width="20" Height="20" />
+		<Imagery Name="GenericFrameUL" Left="1" Top="33" Width="20" Height="20" />
+		<Imagery Name="GenericFrameUM" Left="24" Top="33" Width="2" Height="20" />
+		<Imagery Name="GenericFrameUR" Left="43" Top="33" Width="20" Height="20" />
 		<Imagery Name="GenericFrameML" Left="1" Top="64" Width="20" Height="2" />
 		<Imagery Name="GenericFrameMM" Left="48" Top="64" Width="2" Height="2" />
 		<Imagery Name="GenericFrameMR" Left="43" Top="64" Width="20" Height="2" />
