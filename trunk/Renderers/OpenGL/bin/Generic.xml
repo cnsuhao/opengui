@@ -44,6 +44,48 @@
 		<Imagery Name="GenericFrameLM" Left="24" Top="74" Width="2" Height="20" />
 		<Imagery Name="GenericFrameLR" Left="43" Top="74" Width="20" Height="20" />
 
+		<Imagery Name="GenericHScroll1" Left="66" Top="66" Width="30" Height="12" />
+		<Imagery Name="GenericHScroll2" Left="98" Top="66" Width="30" Height="12" />
+		<Imagery Name="GenericHScroll3" Left="130" Top="66" Width="30" Height="12" />
+		<Imagery Name="GenericHScroll4" Left="162" Top="66" Width="30" Height="12" />
+
+		<Imagery Name="GenericHScrollThumb1" Left="66" Top="83" Width="13" Height="10" />
+		<Imagery Name="GenericHScrollThumb2" Left="82" Top="83" Width="13" Height="10" />
+		<Imagery Name="GenericHScrollThumb3" Left="98" Top="83" Width="13" Height="10" />
+		<Imagery Name="GenericHScrollThumb4" Left="115" Top="83" Width="13" Height="10" />
+
+		<Imagery Name="GenericVScroll1" Left="195" Top="65" Width="12" Height="30" />
+		<Imagery Name="GenericVScroll2" Left="211" Top="65" Width="12" Height="30" />
+		<Imagery Name="GenericVScroll3" Left="227" Top="65" Width="12" Height="30" />
+		<Imagery Name="GenericVScroll4" Left="243" Top="65" Width="12" Height="30" />
+
+		<Imagery Name="GenericVScrollThumb1" Left="131" Top="80" Width="8" Height="13" />
+		<Imagery Name="GenericVScrollThumb2" Left="147" Top="80" Width="8" Height="13" />
+		<Imagery Name="GenericVScrollThumb3" Left="163" Top="80" Width="8" Height="13" />
+		<Imagery Name="GenericVScrollThumb4" Left="179" Top="80" Width="8" Height="13" />
+
+		<Imagery Name="GenericHScrollUL" Left="98" Top="66" Width="5" Height="5" />
+		<Imagery Name="GenericHScrollUM" Left="106" Top="66" Width="2" Height="5" />
+		<Imagery Name="GenericHScrollUR" Left="120" Top="66" Width="5" Height="5" />
+		<Imagery Name="GenericHScrollML" Left="98" Top="70" Width="5" Height="1" />
+		<Imagery Name="GenericHScrollMM" Left="106" Top="71" Width="1" Height="1" />
+		<Imagery Name="GenericHScrollMR" Left="120" Top="70" Width="5" Height="1" />
+		<Imagery Name="GenericHScrollLL" Left="98" Top="72" Width="5" Height="5" />
+		<Imagery Name="GenericHScrollLM" Left="106" Top="72" Width="2" Height="5" />
+		<Imagery Name="GenericHScrollLR" Left="120" Top="72" Width="5" Height="5" />
+
+		<Imagery Name="GenericHThumbUL" Left="81" Top="83" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbUM" Left="87" Top="83" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbUR" Left="92" Top="83" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbML" Left="81" Top="85" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbMM" Left="83" Top="84" Width="5" Height="5" />
+		<Imagery Name="GenericHThumbMR" Left="92" Top="85" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbLL" Left="81" Top="89" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbLM" Left="87" Top="89" Width="2" Height="2" />
+		<Imagery Name="GenericHThumbLR" Left="92" Top="89" Width="2" Height="2" />
+
+
+
 	</Imageset>
 
 </OpenGUI>
