@@ -47,6 +47,7 @@ void buttonCallback( Object *pObj , EventArgs *pEvent )
 void Demo2App::preRun() {
 	XMLParser::getSingleton().LoadFromFile("metal.xml");
 	XMLParser::getSingleton().LoadFromFile("BlueGui.xml");
+	XMLParser::getSingleton().LoadFromFile("Generic.xml");
 	XMLParser::getSingleton().LoadFromFile("demo2.xml");
 	XMLParser::getSingleton().LoadFromFile("Amethyst.xml");
 
@@ -206,11 +207,20 @@ void Demo2App::preRun() {
 	pStaticImage->setImagery("PieFace");
 	pPanel->Children.add_back(pStaticImage, true);
 
+	Amethyst::Panel *pPanelFrame = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
+	pPanelFrame->setTop(430);
+	pPanelFrame->setLeft(5);
+	pPanelFrame->setHeight(100);
+	pPanelFrame->setWidth(200);
+	mScreen->Children.add_back(pPanelFrame, true);
+
+
 	Amethyst::Frame *pFrame = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
-	pFrame->setTop(430);
-	pFrame->setLeft(110);
-	pFrame->setHeight(150);
-	pFrame->setWidth(400);
+	pFrame->setTop(25);
+	pFrame->setLeft(25);
+	pFrame->setHeight(50);
+	pFrame->setWidth(150);
+#if 0
 	pFrame->setImagery("FrameUL", Amethyst::Frame::UL);
 	pFrame->setImagery("FrameUM", Amethyst::Frame::UM);
 	pFrame->setImagery("FrameUR", Amethyst::Frame::UR);
@@ -221,7 +231,61 @@ void Demo2App::preRun() {
 	pFrame->setImagery("FrameLL", Amethyst::Frame::LL);
 	pFrame->setImagery("FrameLM", Amethyst::Frame::LM);
 	pFrame->setImagery("FrameLR", Amethyst::Frame::LR);
-	mScreen->Children.add_back(pFrame, true);
+#else
+	pFrame->setImagery("GenericFrameUL", Amethyst::Frame::UL);
+	pFrame->setImagery("GenericFrameUM", Amethyst::Frame::UM);
+	pFrame->setImagery("GenericFrameUR", Amethyst::Frame::UR);
+	pFrame->setImagery("GenericFrameML", Amethyst::Frame::ML);
+	pFrame->setImagery("GenericFrameMM", Amethyst::Frame::MM);
+	pFrame->setImagery("GenericFrameMR", Amethyst::Frame::MR);
+	pFrame->setImagery("GenericFrameLL", Amethyst::Frame::LL);
+	pFrame->setImagery("GenericFrameLM", Amethyst::Frame::LM);
+	pFrame->setImagery("GenericFrameLR", Amethyst::Frame::LR);
+#endif
+	pPanelFrame->Children.add_back(pFrame, true);
+
+	Amethyst::StaticImage *pBGImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
+	pBGImage->setTop(0);
+	pBGImage->setLeft(0);
+	pBGImage->setHeight(100);
+	pBGImage->setWidth(200);
+	pBGImage->setImagery("PieFace");
+	pPanelFrame->Children.add_back(pBGImage, true);
+
+
+	Amethyst::Panel *pPanel2 = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
+	pPanel2->setTop(430);
+	pPanel2->setLeft(370);
+	pPanel2->setHeight(35);
+	pPanel2->setWidth(150);
+	mScreen->Children.add_back(pPanel2, true);
+
+	Amethyst::StaticImage *pThumbImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
+	pThumbImage->setTop(5);
+	pThumbImage->setLeft(30);
+	pThumbImage->setHeight(31);
+	pThumbImage->setWidth(50);
+	pThumbImage->setImagery("GenericHScrollThumb2");
+	pPanel2->Children.add_back(pThumbImage, true);
+
+	Amethyst::Frame *pFrame2 = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
+	pFrame2->setTop(0);
+	pFrame2->setLeft(0);
+	pFrame2->setHeight(35);
+	pFrame2->setWidth(150);
+	pFrame2->setImagery("GenericHScrollUL", Amethyst::Frame::UL);
+	pFrame2->setImagery("GenericHScrollUM", Amethyst::Frame::UM);
+	pFrame2->setImagery("GenericHScrollUR", Amethyst::Frame::UR);
+	pFrame2->setImagery("GenericHScrollML", Amethyst::Frame::ML);
+	pFrame2->setImagery("GenericHScrollMM", Amethyst::Frame::MM);
+	pFrame2->setImagery("GenericHScrollMR", Amethyst::Frame::MR);
+	pFrame2->setImagery("GenericHScrollLL", Amethyst::Frame::LL);
+	pFrame2->setImagery("GenericHScrollLM", Amethyst::Frame::LM);
+	pFrame2->setImagery("GenericHScrollLR", Amethyst::Frame::LR);
+	pPanel2->Children.add_back(pFrame2, true);
+
+
+
 }
 
 
