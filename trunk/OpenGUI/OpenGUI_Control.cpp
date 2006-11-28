@@ -3,126 +3,19 @@
 #include "OpenGUI_ContainerControl.h"
 
 namespace OpenGUI {
-	//############################################################################
-	class Control_Left_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Left";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getLeft() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setLeft( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Left_ObjectProperty;
-	//############################################################################
-	class Control_Top_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Top";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getTop() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setTop( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Top_ObjectProperty;
-	//############################################################################
-	class Control_Width_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Width";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getWidth() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setWidth( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Width_ObjectProperty;
-	//############################################################################
-	class Control_Height_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Height";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getHeight() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setHeight( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Height_ObjectProperty;
+#include "OpenGUI_Macros.h"
+	SimpleProperty_Float(property_Left, "Left", Control, getLeft, setLeft);
+	SimpleProperty_Float(property_Top, "Top", Control, getTop, setTop);
+	SimpleProperty_Float(property_Width, "Width", Control, getWidth, setWidth);
+	SimpleProperty_Float(property_Height, "Height", Control, getHeight, setHeight);
+	SimpleProperty_Bool(property_Visible, "Visible", Control, getVisible, setVisible);
+	SimpleProperty_Float(property_Alpha, "Alpha", Control, getAlpha, setAlpha);
+	SimpleProperty_FVector2(property_MaxSize, "MaximumSize", Control, getMaximumSize, setMaximumSize);
+	SimpleProperty_FVector2(property_MinSize, "MinimumSize", Control, getMinimumSize, setMinimumSize);
+	SimpleProperty_Float(property_Margin, "Margin", Control, getMargin, setMargin);
+#include "OpenGUI_NoMacros.h"
+		
+	
 	//############################################################################
 	//############################################################################
 	class Control_Position_ObjectProperty : public ObjectProperty {
@@ -212,176 +105,24 @@ namespace OpenGUI {
 	}
 	gControl_Rect_ObjectProperty;
 	//############################################################################
-	class Control_Visible_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Visible";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getVisible() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setVisible( valueIn.getValueAsBool() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_BOOL;
-		}
-	}
-	gControl_Visible_ObjectProperty;
-	//############################################################################
-	class Control_Alpha_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Alpha";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( w.getAlpha() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				w.setAlpha( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Alpha_ObjectProperty;
-	//############################################################################
-	class Control_MaxSize_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "MaximumSize";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( w.getMaximumSize() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				w.setMaximumSize( valueIn.getValueAsFVector2() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FVECTOR2;
-		}
-	}
-	gControl_MaxSize_ObjectProperty;
-	//############################################################################
-	class Control_MinSize_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "MinimumSize";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( w.getMinimumSize() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& w = dynamic_cast<Control&>( objectRef );
-				w.setMinimumSize( valueIn.getValueAsFVector2() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FVECTOR2;
-		}
-	}
-	gControl_MinSize_ObjectProperty;
-	//############################################################################
-	class Control_Margin_ObjectProperty : public ObjectProperty {
-	public:
-		virtual const char* getAccessorName() {
-			return "Margin";
-		}
-		//############################################################################
-		virtual void get( Object& objectRef, Value& valueOut ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				valueOut.setValue( c.getMargin() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
-			try {
-				Control& c = dynamic_cast<Control&>( objectRef );
-				c.setMargin( valueIn.getValueAsFloat() );
-			} catch ( std::bad_cast e ) {
-				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-			}
-		}
-		//############################################################################
-		virtual Value::ValueType getPropertyType() {
-			return Value::T_FLOAT;
-		}
-	}
-	gControl_Margin_ObjectProperty;
-	//############################################################################
 	//############################################################################
 	class Control_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		Control_ObjectAccessorList() {
-			addAccessor( &gControl_Left_ObjectProperty );
-			addAccessor( &gControl_Top_ObjectProperty );
-			addAccessor( &gControl_Width_ObjectProperty );
-			addAccessor( &gControl_Height_ObjectProperty );
+			addAccessor( &property_Left );
+			addAccessor( &property_Top );
+			addAccessor( &property_Width);
+			addAccessor( &property_Height);
 
 			addAccessor( &gControl_Position_ObjectProperty );
 			addAccessor( &gControl_Size_ObjectProperty );
 			addAccessor( &gControl_Rect_ObjectProperty );
 
-			addAccessor( &gControl_Visible_ObjectProperty );
-			addAccessor( &gControl_Alpha_ObjectProperty );
-
-			addAccessor( &gControl_MaxSize_ObjectProperty );
-			addAccessor( &gControl_MinSize_ObjectProperty );
-
-			addAccessor( &gControl_Margin_ObjectProperty );
+			addAccessor( &property_Visible );
+			addAccessor( &property_Alpha );
+			addAccessor( &property_MaxSize );
+			addAccessor( &property_MinSize );
+			addAccessor( &property_Margin );
 		}
 		~Control_ObjectAccessorList() {}
 	}
