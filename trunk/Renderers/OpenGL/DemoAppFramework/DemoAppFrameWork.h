@@ -1,6 +1,11 @@
 #ifndef E6185E16_E45B_4f38_AAAA_1FBB6E914D78
 #define E6185E16_E45B_4f38_AAAA_1FBB6E914D78
 
+// This is just to allow us to turn the darn system cursor off when we want to do so
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 #include "OpenGUI.h"
 #include "GL/glfw.h"
 #include "Renderer_OpenGL.h"
@@ -12,6 +17,7 @@ public:
 		assert( !mptr_Singleton );
 		mptr_Singleton = ( this );
 
+		mMouseHidden = false;
 		mSystem = 0;
 		mRenderer = 0;
 
@@ -86,6 +92,21 @@ protected:
 	virtual void perframeRun() {}
 	virtual void postframeRun() {}
 	virtual void postRun() {}
+
+	void showSystemCursor(){
+		if(!mMouseHidden) return;
+		mMouseHidden = false;
+#ifdef WIN32
+		::ShowCursor(true);
+#endif
+	}
+	void hideSystemCursor(){
+		if(mMouseHidden) return;
+		mMouseHidden = true;
+#ifdef WIN32
+		::ShowCursor(false);
+#endif
+	}
 	//Override this to alter normal window close querying, default always allows close
 	virtual bool queryCloseWindow() {
 		return true;
@@ -135,7 +156,7 @@ private:
 
 	int m_WndWidth;
 	int m_WndHeight;
-
+	bool mMouseHidden;
 	//Singleton specific code
 protected:
 	static DemoApp* mptr_Singleton;
