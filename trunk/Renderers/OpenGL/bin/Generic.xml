@@ -45,14 +45,14 @@
 		<Imagery Name="GenericFrameLR" Left="43" Top="74" Width="20" Height="20" />
 
 		<Imagery Name="GenericHScroll1" Left="66" Top="66" Width="30" Height="12" />
-		<Imagery Name="GenericHScroll2" Left="98" Top="66" Width="30" Height="12" />
+		<Imagery Name="GenericHScroll2" Left="98" Top="66" Width="30" Height="10" />
 		<Imagery Name="GenericHScroll3" Left="130" Top="66" Width="30" Height="12" />
 		<Imagery Name="GenericHScroll4" Left="162" Top="66" Width="30" Height="12" />
 
-		<Imagery Name="GenericHScrollThumb1" Left="66" Top="83" Width="13" Height="10" />
-		<Imagery Name="GenericHScrollThumb2" Left="82" Top="83" Width="13" Height="10" />
-		<Imagery Name="GenericHScrollThumb3" Left="98" Top="83" Width="13" Height="10" />
-		<Imagery Name="GenericHScrollThumb4" Left="115" Top="83" Width="13" Height="10" />
+		<Imagery Name="GenericHScrollThumb1" Left="66" Top="83" Width="12" Height="8" />
+		<Imagery Name="GenericHScrollThumb2" Left="82" Top="83" Width="12" Height="8" />
+		<Imagery Name="GenericHScrollThumb3" Left="98" Top="83" Width="12" Height="8" />
+		<Imagery Name="GenericHScrollThumb4" Left="115" Top="83" Width="12" Height="8" />
 
 		<Imagery Name="GenericVScroll1" Left="195" Top="65" Width="12" Height="30" />
 		<Imagery Name="GenericVScroll2" Left="211" Top="65" Width="12" Height="30" />
