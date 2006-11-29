@@ -4,18 +4,18 @@
 
 namespace OpenGUI {
 #include "OpenGUI_Macros.h"
-	SimpleProperty_Float(property_Left, "Left", Control, getLeft, setLeft);
-	SimpleProperty_Float(property_Top, "Top", Control, getTop, setTop);
-	SimpleProperty_Float(property_Width, "Width", Control, getWidth, setWidth);
-	SimpleProperty_Float(property_Height, "Height", Control, getHeight, setHeight);
-	SimpleProperty_Bool(property_Visible, "Visible", Control, getVisible, setVisible);
-	SimpleProperty_Float(property_Alpha, "Alpha", Control, getAlpha, setAlpha);
-	SimpleProperty_FVector2(property_MaxSize, "MaximumSize", Control, getMaximumSize, setMaximumSize);
-	SimpleProperty_FVector2(property_MinSize, "MinimumSize", Control, getMinimumSize, setMinimumSize);
-	SimpleProperty_Float(property_Margin, "Margin", Control, getMargin, setMargin);
+	SimpleProperty_Float( property_Left, "Left", Control, getLeft, setLeft );
+	SimpleProperty_Float( property_Top, "Top", Control, getTop, setTop );
+	SimpleProperty_Float( property_Width, "Width", Control, getWidth, setWidth );
+	SimpleProperty_Float( property_Height, "Height", Control, getHeight, setHeight );
+	SimpleProperty_Bool( property_Visible, "Visible", Control, getVisible, setVisible );
+	SimpleProperty_Float( property_Alpha, "Alpha", Control, getAlpha, setAlpha );
+	SimpleProperty_FVector2( property_MaxSize, "MaximumSize", Control, getMaximumSize, setMaximumSize );
+	SimpleProperty_FVector2( property_MinSize, "MinimumSize", Control, getMinimumSize, setMinimumSize );
+	SimpleProperty_Float( property_Margin, "Margin", Control, getMargin, setMargin );
 #include "OpenGUI_NoMacros.h"
-		
-	
+
+
 	//############################################################################
 	//############################################################################
 	class Control_Position_ObjectProperty : public ObjectProperty {
@@ -111,8 +111,8 @@ namespace OpenGUI {
 		Control_ObjectAccessorList() {
 			addAccessor( &property_Left );
 			addAccessor( &property_Top );
-			addAccessor( &property_Width);
-			addAccessor( &property_Height);
+			addAccessor( &property_Width );
+			addAccessor( &property_Height );
 
 			addAccessor( &gControl_Position_ObjectProperty );
 			addAccessor( &gControl_Size_ObjectProperty );
