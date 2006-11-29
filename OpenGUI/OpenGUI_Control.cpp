@@ -1,9 +1,10 @@
 #include "OpenGUI_Control.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_ContainerControl.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
-#include "OpenGUI_Macros.h"
+
 	SimpleProperty_Float( property_Left, "Left", Control, getLeft, setLeft );
 	SimpleProperty_Float( property_Top, "Top", Control, getTop, setTop );
 	SimpleProperty_Float( property_Width, "Width", Control, getWidth, setWidth );
@@ -13,7 +14,6 @@ namespace OpenGUI {
 	SimpleProperty_FVector2( property_MaxSize, "MaximumSize", Control, getMaximumSize, setMaximumSize );
 	SimpleProperty_FVector2( property_MinSize, "MinimumSize", Control, getMinimumSize, setMinimumSize );
 	SimpleProperty_Float( property_Margin, "Margin", Control, getMargin, setMargin );
-#include "OpenGUI_NoMacros.h"
 
 
 	//############################################################################

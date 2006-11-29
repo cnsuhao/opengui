@@ -1,11 +1,11 @@
 #include "OpenGUI_ContainerControl.h"
 #include "OpenGUI_Brush_Caching.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
 
-#include "OpenGUI_Macros.h"
 	SimpleProperty_Float( property_Padding, "Padding", ContainerControl, getPadding, setPadding );
-#include "OpenGUI_NoMacros.h"
+
 	//############################################################################
 	class ContainerControl_ObjectAccessorList : public ObjectAccessorList {
 	public:

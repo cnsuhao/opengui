@@ -2,7 +2,7 @@
 @{
 */
 
-/*! \file
+/*! \file OpenGUI_NoMacros.h
 This file undefines the helper macros. It can be included multiple times with
 no ill effect. It will only undefine the %OpenGUI helper macros if they have
 been previously included.
