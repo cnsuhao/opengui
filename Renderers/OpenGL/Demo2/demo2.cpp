@@ -10,6 +10,8 @@
 #include "../Amethyst/Amethyst_Panel.h"
 #include "../Amethyst/Amethyst_Frame.h"
 #include "../Amethyst/Amethyst_ListBox.h"
+#include "../Amethyst/Amethyst_ScrollBar_H.h"
+#include "../Amethyst/Amethyst_ScrollBar_V.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -253,38 +255,22 @@ void Demo2App::preRun() {
 	pPanelFrame->Children.add_back(pBGImage, true);
 
 
-	Amethyst::Panel *pPanel2 = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
-	pPanel2->setTop(430);
-	pPanel2->setLeft(370);
-	pPanel2->setHeight(35);
-	pPanel2->setWidth(150);
-	mScreen->Children.add_back(pPanel2, true);
-
-	Amethyst::StaticImage *pThumbImage = (Amethyst::StaticImage *) Amethyst::StaticImage::CreateStaticImageFactory();
-	pThumbImage->setTop(5);
-	pThumbImage->setLeft(30);
-	pThumbImage->setHeight(31);
-	pThumbImage->setWidth(50);
-	pThumbImage->setImagery("GenericHScrollThumb2");
-	pPanel2->Children.add_back(pThumbImage, true);
-
-	Amethyst::Frame *pFrame2 = (Amethyst::Frame *) Amethyst::Frame::CreateFrameFactory();
-	pFrame2->setTop(0);
-	pFrame2->setLeft(0);
-	pFrame2->setHeight(35);
-	pFrame2->setWidth(150);
-	pFrame2->setImagery("GenericHScrollUL", Amethyst::Frame::UL);
-	pFrame2->setImagery("GenericHScrollUM", Amethyst::Frame::UM);
-	pFrame2->setImagery("GenericHScrollUR", Amethyst::Frame::UR);
-	pFrame2->setImagery("GenericHScrollML", Amethyst::Frame::ML);
-	pFrame2->setImagery("GenericHScrollMM", Amethyst::Frame::MM);
-	pFrame2->setImagery("GenericHScrollMR", Amethyst::Frame::MR);
-	pFrame2->setImagery("GenericHScrollLL", Amethyst::Frame::LL);
-	pFrame2->setImagery("GenericHScrollLM", Amethyst::Frame::LM);
-	pFrame2->setImagery("GenericHScrollLR", Amethyst::Frame::LR);
-	pPanel2->Children.add_back(pFrame2, true);
-
-
+	Amethyst::ScrollBar_H *pSH = (Amethyst::ScrollBar_H *) Amethyst::ScrollBar_H::CreateScrollBar_HFactory();
+	pSH->setTop(430);
+	pSH->setLeft(370);
+	pSH->setHeight(35);
+	pSH->setWidth(150);
+	pSH->setImagery("GenericHScrollUL", Amethyst::Frame::UL);
+	pSH->setImagery("GenericHScrollUM", Amethyst::Frame::UM);
+	pSH->setImagery("GenericHScrollUR", Amethyst::Frame::UR);
+	pSH->setImagery("GenericHScrollML", Amethyst::Frame::ML);
+	pSH->setImagery("GenericHScrollMM", Amethyst::Frame::MM);
+	pSH->setImagery("GenericHScrollMR", Amethyst::Frame::MR);
+	pSH->setImagery("GenericHScrollLL", Amethyst::Frame::LL);
+	pSH->setImagery("GenericHScrollLM", Amethyst::Frame::LM);
+	pSH->setImagery("GenericHScrollLR", Amethyst::Frame::LR);
+	pSH->setThumbImagery("GenericHScrollThumb1");
+	mScreen->Children.add_back(pSH, true);
 
 }
 
