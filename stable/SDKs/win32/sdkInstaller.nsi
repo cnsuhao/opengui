@@ -7,7 +7,7 @@
 
 !define BUILD_DIR "tmp"
 !define PRODUCT_NAME "OpenGUI SDK"
-!define PRODUCT_VERSION "0.8"
+!define PRODUCT_VERSION "0.8-RC1"
 !define PRODUCT_CODENAME "Kunzite"
 !define PRODUCT_WEB_SITE "http://opengui.sourceforge.net/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\OpenGUI_SDK"
