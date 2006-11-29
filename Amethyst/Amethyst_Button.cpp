@@ -10,24 +10,28 @@ namespace OpenGUI {
 		//! Called when the cursor enters this Control
 		void ButtonBase::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
 			mButtonState = BS_HOVER;
+			invalidate();
 			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
 		}
 		//! Called when the cursor leaves this Control
 		void ButtonBase::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
 			mButtonState = BS_NORMAL;
-
+			invalidate();
 			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
 		}
 
 		//! "Cursor_Press" event
 		void ButtonBase::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			if ( _isInside( evtArgs.Position ) )
+			if ( _isInside( evtArgs.Position ) ){
+				invalidate();
 				m_bMouseButtonState = true;
+			}
 		}
 		//! "Cursor_Release" event
 		void ButtonBase::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
 
 			if ( _isInside( evtArgs.Position ) && m_bMouseButtonState ) {
+				invalidate();
 				preActivate();
 				EventArgs args;
 				getEvents().sendEvent( "Activate", args );
