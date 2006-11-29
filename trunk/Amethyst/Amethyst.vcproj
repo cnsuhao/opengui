@@ -243,6 +243,14 @@
 				RelativePath=".\Amethyst_StaticImage.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Amethyst_ThemeManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Window.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -311,6 +319,10 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_TextBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ThemeManager.h"
 				>
 			</File>
 			<File

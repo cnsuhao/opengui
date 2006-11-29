@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 
-
-
-<Template name="SimpleButton" group="Amethyst" type="Button">
-</Template>
-
-<Template name="TextLabel" group="Amethyst" type="Label">
-</Template>
+<Amethyst>
+	<Theme Name="BlueGui">
+		
+	</Theme>
+</Amethyst>
