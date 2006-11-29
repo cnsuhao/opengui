@@ -24,6 +24,8 @@ support is intended at the time version 1.0 is released.
 
 For instructions on building from source, see BUILDING.txt
 
+Static linking is not yet supported, but it will be when
+version 1.0 is released.
 
 ___________________________________________________________
 -- Known Issues
