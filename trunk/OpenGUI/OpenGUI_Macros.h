@@ -9,7 +9,7 @@
 */
 
 
-/*! \file
+/*! \file OpenGUI_Macros.h
 	This file defines the helper macros. You can include this file wherever it is needed.
 	The macros that it defines can be undefined by including OpenGUI_NoMacros.h when you
 	no longer need/want them.
