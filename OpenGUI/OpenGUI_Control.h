@@ -23,6 +23,7 @@ namespace OpenGUI {
 	- Rect (getRect)
 	- Visible (setVisible, getVisible)
 	- Alpha (setAlpha, getAlpha)
+	- Margin (setMargin, getMargin)
 
 	\par Events Introduced
 		- \ref Event_Moved "Moved"

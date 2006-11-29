@@ -2,11 +2,15 @@
 #include "OpenGUI_Brush_Caching.h"
 
 namespace OpenGUI {
+
+#include "OpenGUI_Macros.h"
+	SimpleProperty_Float( property_Padding, "Padding", ContainerControl, getPadding, setPadding );
+#include "OpenGUI_NoMacros.h"
 	//############################################################################
 	class ContainerControl_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		ContainerControl_ObjectAccessorList() {
-			/* Currently has no accessors to bind */
+			addAccessor( &property_Padding );
 		}
 		~ContainerControl_ObjectAccessorList() {}
 	}
@@ -270,6 +274,13 @@ namespace OpenGUI {
 		static FRect oldClntArea = getClientArea();
 		FRect clntArea = getClientArea();
 
+		//update clntArea to respect Padding
+		clntArea.setWidth( clntArea.getWidth() - ( mPadding * 2.0f ) );
+		clntArea.setHeight( clntArea.getHeight() - ( mPadding * 2.0f ) );
+		if ( clntArea.getHeight() < 0.0f ) clntArea.setHeight( 0.0f );
+		if ( clntArea.getWidth() < 0.0f ) clntArea.setWidth( 0.0f );
+		clntArea.offset( FVector2( mPadding, mPadding ) );
+
 		//update all docked controls
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {
@@ -459,6 +470,22 @@ namespace OpenGUI {
 		const FVector2& pos = getPosition();
 		point += m_ClientAreaOffset_UL;
 		point += pos;
+	}
+	//############################################################################
+	/*! Padding is the distance within the inside of this container to keep children away from the client area edges during auto layout.
+
+		The given \c padding cannot be negative, and is clamped to 0.0f if a negative value is given.
+	*/
+	void ContainerControl::setPadding( float padding ) {
+		if ( padding < 0.0f ) padding = 0.0f;
+		if ( mPadding == padding ) return;
+		mPadding = padding;
+		invalidateLayout();
+	}
+	//############################################################################
+	/*! \see setPadding() for description of Padding */
+	float ContainerControl::getPadding() {
+		return mPadding;
 	}
 	//############################################################################
 } // namespace OpenGUI {

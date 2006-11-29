@@ -27,6 +27,9 @@ namespace OpenGUI {
 	values for both of these is (0.0fx0.0f), which will result in the full area of the container
 	being used as client area.
 
+	\par Properties
+		- Padding (setPadding, getPadding)
+
 	\par Events Introduced
 		- \ref Event_ChildAttached "ChildAttached"
 		- \ref Event_ChildDetached "ChildDetached"
@@ -43,6 +46,11 @@ namespace OpenGUI {
 		ContainerControl();
 		//! public destructor
 		virtual ~ContainerControl();
+
+		//! sets the padding of this container
+		void setPadding( float padding );
+		//! gets the current padding of this container
+		float getPadding();
 
 		//! suspends automatic layout updates until resumeLayout() is called
 		void suspendLayout();
@@ -147,6 +155,8 @@ namespace OpenGUI {
 		bool m_InUpdateLayout; // state variable: true if currently running updateLayout()
 		Brush_Caching* mCacheBrush;
 		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
+
+		float mPadding; // holds the padding of the container
 	};
 
 } // namespace OpenGUI{
