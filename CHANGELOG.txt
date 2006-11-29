@@ -1,8 +1,10 @@
-Version 0.8 Release Candidate 1 - 11/27/2006)
+Version 0.8 Release Candidate 1 - 11/28/2006)
 * Complete library redesign. A LOT has changed, so read the documentation over again even if you've used previous releases.
 * New Brush based widget drawing system.
 * New Renderer implementation requirements. (Sorry guys, had to be done.)
 * Removed Corona dependency from OpenGUI. No longer supports built in loading of textures. Renderers must now provide their own texture loading.
+* All base widgets have been REMOVED from the core library. In there place are core classes that are designed to be inherited.
+* Amethyst, the official widget set, has been started. It is far from complete. Your mileage will vary until it is officially completed.
 
 
 Version 0.7.7 - 08/11/2006)
