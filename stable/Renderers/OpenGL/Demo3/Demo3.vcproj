@@ -62,10 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI_d.lib Renderer_OpenGL_d.lib corona_d.lib glfw_d.lib glu32.lib opengl32.lib"
+				AdditionalDependencies="OpenGUI_d.lib Renderer_OpenGL_d.lib corona_d.lib glfw_static_d.lib glu32.lib opengl32.lib"
 				OutputFile="$(OutDir)/Demo3_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../lib; ../lib; ../deps/glfw/lib/win32; ../deps/corona"
+				AdditionalLibraryDirectories="../../../lib; ../lib; ../deps/glfw; ../deps/corona"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/Demo3_d.pdb"
@@ -150,10 +150,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGUI.lib Renderer_OpenGL.lib corona.lib glfw.lib glu32.lib opengl32.lib"
+				AdditionalDependencies="OpenGUI.lib Renderer_OpenGL.lib corona.lib glfw_static.lib glu32.lib opengl32.lib"
 				OutputFile="$(OutDir)/Demo3.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../lib; ../lib; ../deps/glfw/lib/win32; ../deps/corona"
+				AdditionalLibraryDirectories="../../../lib; ../lib; ../deps/glfw; ../deps/corona"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/Demo3.pdb"
 				SubSystem="2"

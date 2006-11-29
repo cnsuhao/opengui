@@ -604,7 +604,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Macros.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Math.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_NoMacros.h"
 				>
 			</File>
 			<File

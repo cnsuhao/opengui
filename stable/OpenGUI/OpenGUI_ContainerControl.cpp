@@ -1,12 +1,16 @@
 #include "OpenGUI_ContainerControl.h"
 #include "OpenGUI_Brush_Caching.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
+
+	SimpleProperty_Float( property_Padding, "Padding", ContainerControl, getPadding, setPadding );
+
 	//############################################################################
 	class ContainerControl_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		ContainerControl_ObjectAccessorList() {
-			/* Currently has no accessors to bind */
+			addAccessor( &property_Padding );
 		}
 		~ContainerControl_ObjectAccessorList() {}
 	}
@@ -270,42 +274,59 @@ namespace OpenGUI {
 		static FRect oldClntArea = getClientArea();
 		FRect clntArea = getClientArea();
 
+		//update clntArea to respect Padding
+		clntArea.setWidth( clntArea.getWidth() - ( mPadding * 2.0f ) );
+		clntArea.setHeight( clntArea.getHeight() - ( mPadding * 2.0f ) );
+		if ( clntArea.getHeight() < 0.0f ) clntArea.setHeight( 0.0f );
+		if ( clntArea.getWidth() < 0.0f ) clntArea.setWidth( 0.0f );
+		clntArea.offset( FVector2( mPadding, mPadding ) );
+
 		//update all docked controls
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Control* ctrl = dynamic_cast<Control*>( iter.get() );
 			if ( ctrl ) {
 				int dock = ctrl->getDocking();
+				float margin = ctrl->getMargin();
 				if ( dock ) {
 
 					//Next two IF's cover position and height for 'Fill' as well
 					if (( dock & Control::Left ) || ( dock & Control::Right ) ) {
-						ctrl->setTop( clntArea.getPosition().y );
-						ctrl->setHeight( clntArea.getHeight() );
+						ctrl->setTop( clntArea.getPosition().y + margin );
+						ctrl->setHeight( clntArea.getHeight() - ( margin*2.0f ) );
 					}
 					if (( dock & Control::Top ) || ( dock & Control::Bottom ) ) {
-						ctrl->setLeft( clntArea.getPosition().x );
-						ctrl->setWidth( clntArea.getWidth() );
+						ctrl->setLeft( clntArea.getPosition().x  + margin );
+						ctrl->setWidth( clntArea.getWidth() - ( margin*2.0f ) );
 					}
 
 					if ( dock == Control::Left ) {
-						ctrl->setLeft( clntArea.getPosition().x );
-						clntArea.setWidth( clntArea.getWidth() - ctrl->getWidth() );
-						clntArea.offset( FVector2( ctrl->getWidth(), 0.0f ) );
+						ctrl->setLeft( clntArea.getPosition().x + margin );
+						float newwidth = clntArea.getWidth() - ( ctrl->getWidth() + ( margin * 2.0f ) );
+						clntArea.setWidth( newwidth > 0.0f ? newwidth : 0.0f ); // width can't be less than 0.0f
+						clntArea.offset( FVector2( ctrl->getWidth() + ( margin*2.0f ), 0.0f ) );
 					}
 					if ( dock == Control::Right ) {
-						ctrl->setLeft( clntArea.getPosition().x + clntArea.getWidth() - ctrl->getWidth() );
-						clntArea.setWidth( clntArea.getWidth() - ctrl->getWidth() );
+						float newpos = clntArea.getPosition().x + clntArea.getWidth();
+						newpos = newpos - ( ctrl->getWidth() + margin );
+						ctrl->setLeft( newpos );
+						float newwidth = newpos - margin;
+						newwidth = newwidth - clntArea.getPosition().x;
+						clntArea.setWidth( newwidth > 0.0f ? newwidth : 0.0f ); // width can't be less than 0.0f
 					}
 
 					if ( dock == Control::Top ) {
-						ctrl->setTop( clntArea.getPosition().y );
-						clntArea.setHeight( clntArea.getHeight() - ctrl->getHeight() );
-						clntArea.offset( FVector2( 0.0f, ctrl->getHeight() ) );
+						ctrl->setTop( clntArea.getPosition().y + margin );
+						float newheight = clntArea.getHeight() - ( ctrl->getHeight() + ( margin * 2.0f ) );
+						clntArea.setHeight( newheight > 0.0f ? newheight : 0.0f ); // height can't be less than 0.0f
+						clntArea.offset( FVector2( 0.0f, ctrl->getHeight() + ( margin*2.0f ) ) );
 					}
 					if ( dock == Control::Bottom ) {
-						ctrl->setTop( clntArea.getPosition().y + clntArea.getHeight() - ctrl->getHeight() );
-						clntArea.setHeight( clntArea.getHeight() - ctrl->getHeight() );
+						float newtop = clntArea.getPosition().y + clntArea.getHeight();
+						newtop = newtop - ( ctrl->getHeight() + margin );
+						ctrl->setTop( newtop );
+						float newheight = clntArea.getHeight() - ( ctrl->getHeight() + margin * 2.0f );
+						clntArea.setHeight( newheight > 0.0f ? newheight : 0.0f ); // height can't be less than 0.0f
 					}
 				}
 			}
@@ -449,6 +470,22 @@ namespace OpenGUI {
 		const FVector2& pos = getPosition();
 		point += m_ClientAreaOffset_UL;
 		point += pos;
+	}
+	//############################################################################
+	/*! Padding is the distance within the inside of this container to keep children away from the client area edges during auto layout.
+
+		The given \c padding cannot be negative, and is clamped to 0.0f if a negative value is given.
+	*/
+	void ContainerControl::setPadding( float padding ) {
+		if ( padding < 0.0f ) padding = 0.0f;
+		if ( mPadding == padding ) return;
+		mPadding = padding;
+		invalidateLayout();
+	}
+	//############################################################################
+	/*! \see setPadding() for description of Padding */
+	float ContainerControl::getPadding() {
+		return mPadding;
 	}
 	//############################################################################
 } // namespace OpenGUI {
