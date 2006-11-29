@@ -72,7 +72,7 @@ void Demo2App::preRun() {
 	headerText->setAlignment(TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP);
 	mScreen->Children.add_back( headerText, true );
 
-#if 1
+#if 0
 	Amethyst::SimpleButton* testButton = new Amethyst::SimpleButton();
 	testButton->setName("SampleMetalButton");
 	testButton->setImagery("MetalButtonNormal");
@@ -86,18 +86,26 @@ void Demo2App::preRun() {
 	testButton->setText("Button!");
 	mScreen->Children.add_back( testButton, true );
 #else
+	// create a container for the button
+	Amethyst::Panel *pButtonPanel = (Amethyst::Panel *) Amethyst::Panel::CreatePanelFactory();
+	pButtonPanel->setTop(70);
+	pButtonPanel->setLeft(40);
+	pButtonPanel->setHeight(60);
+	pButtonPanel->setWidth(200);
+	mScreen->Children.add_back(pButtonPanel, true);
+
 	Amethyst::SimpleButton* testButton = new Amethyst::SimpleButton();
 	testButton->setName("SampleBlueButton");
 	testButton->setImagery("BlueGuiButtonNormal");
 	testButton->setImageryMouseOver("BlueGuiButtonHover");
 	testButton->setImageryPressed("BlueGuiButtonPress"); 
 	testButton->setImageryDisabled("BlueGuiButtonDisabled");
-	testButton->setTop(70);
-	testButton->setLeft(40);
-	testButton->setWidth(200);
-	testButton->setHeight(60);
+	testButton->setTop(10);
+	testButton->setLeft(30);
+	testButton->setWidth(32);
+	testButton->setHeight(32);
 	testButton->setText("Button!");
-	mScreen->Children.add_back( testButton, true );
+	pButtonPanel->Children.add_back( testButton, true );
 #endif
 
 	testButton->getEvents().createEvent("Activate");
