@@ -25,16 +25,17 @@ namespace OpenGUI {
 			if ( _isInside( evtArgs.Position ) ){
 				invalidate();
 				m_bMouseButtonState = true;
+				grabCursorFocus();
 			}
 		}
 		//! "Cursor_Release" event
 		void ButtonBase::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-
-			if ( _isInside( evtArgs.Position ) && m_bMouseButtonState ) {
+			if ( _isInside( pointFromScreen(evtArgs.Position) ) && m_bMouseButtonState ) {
 				invalidate();
 				preActivate();
 				EventArgs args;
 				getEvents().sendEvent( "Activate", args );
+				releaseCursorFocus();
 			}
 
 			m_bMouseButtonState = false;
