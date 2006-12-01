@@ -58,7 +58,7 @@ namespace OpenGUI {
 				// gerenate the new "top" location
 				float x = evtArgs.Position.x - m_vMosueOffset.x;
 
-				mThumbPosValue = 0.5f; //x / mPageSize;
+				mThumbPosValue = x / mPageSize;
 				invalidate();
 			}
 		}
