@@ -46,6 +46,8 @@ namespace OpenGUI {
 
 		void Frame::onDraw( Object* sender, Draw_EventArgs& evtArgs )
 		{
+			ContainerControl::onDraw(sender, evtArgs);
+
 			Brush& b = evtArgs.brush;
 
 			mBGRect = FRect(0,0,0,0);
