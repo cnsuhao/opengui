@@ -472,6 +472,22 @@ namespace OpenGUI {
 		drawImageTiled( imageryPtr, rect, xtiles, ytiles );
 	}
 	//############################################################################
+	void BrushImagery::drawFace( const FacePtr& facePtr, const FRect& rect ) {
+		const Face& face = *( facePtr.get() );
+
+		//get total available consumable area
+		FVector2 totalArea = rect.getSize();
+
+
+
+		//Iterate over all slices and draw them if needed
+	}
+	//############################################################################
+	void BrushImagery::drawFace( const FacePtr& facePtr, const FVector2& position, const FVector2& size ) {
+		FRect rect( position.x, position.y, position.x + size.x, position.y + size.y );
+		drawFace( facePtr, rect );
+	}
+	//############################################################################
 	//############################################################################
 
 

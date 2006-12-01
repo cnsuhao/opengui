@@ -22,6 +22,16 @@ private:
 using namespace OpenGUI;
 
 
+class TestFrame:public Control{
+public:
+	TestFrame(FacePtr face):mFace(face){}
+protected:
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Image.drawFace(mFace,getRect());
+	}
+	FacePtr mFace;
+};
 
 
 
@@ -36,6 +46,59 @@ void Demo4App::preRun() {
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();
 
+
+	ImageryPtr ul = ImageryManager::getSingleton().getImagery("GenericFrameUL");
+	ImageryPtr um = ImageryManager::getSingleton().getImagery("GenericFrameUM");
+	ImageryPtr ur = ImageryManager::getSingleton().getImagery("GenericFrameUR");
+	ImageryPtr ml = ImageryManager::getSingleton().getImagery("GenericFrameML");
+	ImageryPtr mm = ImageryManager::getSingleton().getImagery("GenericFrameMM");
+	ImageryPtr mr = ImageryManager::getSingleton().getImagery("GenericFrameMR");
+	ImageryPtr ll = ImageryManager::getSingleton().getImagery("GenericFrameLL");
+	ImageryPtr lm = ImageryManager::getSingleton().getImagery("GenericFrameLM");
+	ImageryPtr lr = ImageryManager::getSingleton().getImagery("GenericFrameLR");
+
+	FacePtr fptr;
+
+	FaceDef faceDef;
+	SliceDef sliceDef;
+	faceDef.Metric=Face::FM_UNITS;
+	sliceDef = SliceDef(0,false,20.0f,20.0f,false,false);
+
+	sliceDef.Imagery = ul;
+	faceDef.getSlice(0,0) = sliceDef;
+	sliceDef.Imagery = ur;
+	faceDef.getSlice(0,2) = sliceDef;
+
+	sliceDef.Imagery = ll;
+	faceDef.getSlice(2,0) = sliceDef;
+	sliceDef.Imagery = lr;
+	faceDef.getSlice(2,2) = sliceDef;
+
+	sliceDef.Imagery = um;
+	sliceDef.GrowWidth = true;
+	faceDef.getSlice(0,1) = sliceDef;
+
+	
+	fptr = Face::Create(faceDef);
+
+	/*
+	<Imagery Name="GenericFrameUL" Left="1" Top="33" Width="20" Height="20" />
+	<Imagery Name="GenericFrameUM" Left="24" Top="33" Width="2" Height="20" />
+	<Imagery Name="GenericFrameUR" Left="43" Top="33" Width="20" Height="20" />
+	<Imagery Name="GenericFrameML" Left="1" Top="64" Width="20" Height="2" />
+	<Imagery Name="GenericFrameMM" Left="48" Top="64" Width="2" Height="2" />
+	<Imagery Name="GenericFrameMR" Left="43" Top="64" Width="20" Height="2" />
+	<Imagery Name="GenericFrameLL" Left="1" Top="74" Width="20" Height="20" />
+	<Imagery Name="GenericFrameLM" Left="24" Top="74" Width="2" Height="20" />
+	<Imagery Name="GenericFrameLR" Left="43" Top="74" Width="20" Height="20" />
+	*/
+
+	TestFrame* frame = new TestFrame(fptr);
+	frame->setTop( 200 );
+	frame->setLeft( 200 );
+	frame->setWidth( 90 );
+	frame->setHeight( 60 );
+	mScreen->Children.add_front(frame,true);
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");
 	//label->setProperty("Text","This is some text");

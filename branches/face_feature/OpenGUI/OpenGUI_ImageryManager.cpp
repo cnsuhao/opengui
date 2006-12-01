@@ -215,6 +215,36 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
+	void ImageryManager::addFace( const std::string& faceName, FacePtr facePtr ) {
+		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
+		if ( iter != mFacePtrMap.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Face already registered with name: " + faceName, __FUNCTION__ );
+		mFacePtrMap[faceName] = facePtr;
+	}
+	//############################################################################
+	FacePtr ImageryManager::getFace( const std::string& faceName ) {
+		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
+		if ( iter == mFacePtrMap.end() )
+			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Face not found: " + faceName, __FUNCTION__ );
+		return iter->second;
+	}
+	//############################################################################
+	void ImageryManager::removeFace( const std::string& faceName ) {
+		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
+		if ( iter == mFacePtrMap.end() )
+			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Face not found: " + faceName, __FUNCTION__ );
+		mFacePtrMap.erase( iter );
+	}
+	//############################################################################
+	StringList ImageryManager::getFaceList() {
+		StringList out;
+		FacePtrMap::iterator iter, iterend = mFacePtrMap.end();
+		for ( iter = mFacePtrMap.begin(); iter != iterend; iter++ ) {
+			out.push_back( iter->first );
+		}
+		return out;
+	}
+	//############################################################################
 }
 ; //namespace OpenGUI{
 
