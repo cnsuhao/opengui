@@ -12,6 +12,21 @@ namespace OpenGUI {
 			ScrollBar_H();
 			virtual ~ScrollBar_H();
 
+			//! "Cursor_Click" event
+			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Enter" event; invokes Targeted
+			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Leave" event; invokes UnTargeted
+			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
+
+			//! "Cursor_Press" event
+			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Release" event
+			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
+			//! "Cursor_Move" event
+			void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+
+
 			//! Sets the imagery for the thumb.
 			void setThumbImagery( std::string imageryName);
 			//! Gets the imagery for the thumb.
@@ -34,12 +49,18 @@ namespace OpenGUI {
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
+			void _positionThumb();
+
 			ImageryPtr mThumbImage;
 
 			FRect mThumbImageOffsets;
 			float mThumbPosValue;
 			float mPageSize;
 			float mLineSize;
+
+			bool m_bMouseDraggingThumb;
+			FVector2 m_vMosueOffset;
+			FRect m_rThumbRect;
 		};
 	} // namespace Amethyst{
 } // namespace OpenGUI{
