@@ -35,9 +35,8 @@ namespace OpenGUI {
 				preActivate();
 				EventArgs args;
 				getEvents().sendEvent( "Activate", args );
-				releaseCursorFocus();
 			}
-
+			releaseCursorFocus();
 			m_bMouseButtonState = false;
 		}
 
