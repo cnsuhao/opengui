@@ -1,0 +1,19 @@
+# This SConscript is only intended for use when corona is part of a larger build
+# See the SConstruct for info on what you should be providing before calling this
+# Created by: OpenGUI project
+
+import os
+import string
+import sys
+
+EnsureSConsVersion(0, 12)
+
+Import('base_env')
+Import('platform')
+base_env = base_env.Copy()
+if platform == 'posix':
+	base_env.Append(CXXFLAGS = ['-Wno-non-virtual-dtor'])
+
+Export('base_env') # exports are only importable by child SConscripts, so this is safe
+
+SConscript('src/SConscript')
