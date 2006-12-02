@@ -744,6 +744,125 @@ namespace OpenGUI {
 
 	/*! @} */ //end of Types group
 
+	//! An auto growing 2d array of whatever you want
+	/*! This array will grow as needed during the standard arrayObject[x][y] access.
+	In order to support this, the held type must allow a default constructor.
+	If you'd like more control over the value of the new data points, you should test
+	the array for adequate size via the growSize() function.
+
+	Another nifty option is the lock()/unlock() feature, which allows you to lock the
+	array to prevent all resize operations. If a resize is attempted on a locked array
+	a std::overflow_error exception is thrown. This class is always initialized in an
+	unlocked state.
+
+	*/
+	template <typename T>
+	class AutoArray2D {
+	public:
+		template <typename T>
+		class Column {
+			template <typename T> friend class AutoArray2D; // mutual friends
+		public:
+			T& operator[]( size_t y ) {
+				if (( y+1 ) > mData.size() )
+					mParent->resize( mParent->mSizeX, y + 1 ); // this will sufficiently lengthen us in the process
+				return mData[y];
+			}
+			Column<typename T>& operator=( const Column<typename T>&right ) {
+				mParent = right.mParent;
+				return *this;
+			}
+		private:
+			Column( AutoArray2D* parent ): mParent( parent ) {}
+			typedef std::vector<T> EntryVector;
+			EntryVector mData;
+			AutoArray2D* mParent;
+		};
+		template <typename T> friend class Column; // mutual friends
+		typedef Column<T> ColumnType;
+
+		//! Constructor allows for pre-sizing the array, if desired
+		AutoArray2D( size_t x_size = 0, size_t y_size = 0 ): mSizeX( 0 ), mSizeY( 0 ) {
+			mLocked = false;
+			if ( x_size && y_size )resize( x_size, y_size );
+		}
+
+		ColumnType& operator[]( size_t x ) {
+			if (( x+1 ) > mData.size() )
+				resize( x + 1, mSizeY ); //lengthen as necessary
+			return mData[x];
+		}
+
+		//! Get current width of the array
+		size_t getSizeX() {
+			return mSizeX;
+		}
+		//! Get current height of the array
+		size_t getSizeY() {
+			return mSizeY;
+		}
+
+		//! Resize the array to the given size
+		void resize( size_t x_size, size_t y_size ) {
+			if ( mLocked ) throw std::overflow_error( "AutoArray2D is locked" ); // throw if we're locked
+			mData.resize( x_size, ColumnType( this ) );
+			ColVector::iterator i, ie = mData.end();
+			for ( i = mData.begin(); i != ie; i++ )
+				i->mData.resize( y_size );
+			mSizeX = x_size;
+			mSizeY = y_size;
+		}
+
+		//! Grows the array to be at least the given size. No action is taken if the array is larger than the needed size
+		void growSize( size_t x_size, size_t y_size ) {
+			if ( x_size <= mSizeX || y_size <= mSizeY ) return; // no sizing necessary
+			if ( mLocked ) throw std::overflow_error( "AutoArray2D is locked" ); // throw if we're locked
+
+			if ( x_size < mSizeX ) x_size = mSizeX; // do not let ourselves resize smaller than we are
+			if ( y_size < mSizeY ) y_size = mSizeY;
+
+			mData.resize( x_size, ColumnType( this ) );
+			ColVector::iterator i, ie = mData.end();
+			for ( i = mData.begin(); i != ie; i++ )
+				i->mData.resize( y_size );
+			mSizeX = x_size;
+			mSizeY = y_size;
+		}
+
+		//! Same as previous only allows the values of new entries to be provided via the \c value argument
+		void growSize( size_t x_size, size_t y_size, T value ) {
+			if ( x_size <= mSizeX || y_size <= mSizeY ) return; // no sizing necessary
+			if ( mLocked ) throw std::overflow_error( "AutoArray2D is locked" );// throw if we're locked
+
+			if ( x_size < mSizeX ) x_size = mSizeX; // do not let ourselves resize smaller than we are
+			if ( y_size < mSizeY ) y_size = mSizeY;
+
+			mData.resize( x_size, ColumnType( this ) );
+			ColVector::iterator i, ie = mData.end();
+			for ( i = mData.begin(); i != ie; i++ )
+				i->mData.resize( y_size, value );
+			mSizeX = x_size;
+			mSizeY = y_size;
+		}
+
+		//! Locks this array from changing size
+		void lock () {
+			mLocked = true;
+		}
+		//! Unlocks this array so that it can be resized again
+		void unlock() {
+			mLocked = false;
+		}
+
+	private:
+		typedef std::vector < ColumnType > ColVector;
+		ColVector mData;
+		size_t mSizeX;
+		size_t mSizeY;
+		bool mLocked;
+	};
+
+
 }//namespace OpenGUI {
 
 #endif

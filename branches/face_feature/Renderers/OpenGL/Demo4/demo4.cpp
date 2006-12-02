@@ -77,7 +77,24 @@ void Demo4App::preRun() {
 	sliceDef.Imagery = um;
 	sliceDef.GrowWidth = true;
 	faceDef.getSlice(0,1) = sliceDef;
+	sliceDef.Imagery = lm;
+sliceDef.ColSpan=1;
+	faceDef.getSlice(2,1) = sliceDef;
+sliceDef.ColSpan=0;
 
+	sliceDef.Imagery = ml;
+	sliceDef.GrowWidth = false;
+	sliceDef.GrowHeight = true;
+	faceDef.getSlice(1,0) = sliceDef;
+	sliceDef.Imagery = mr;
+	faceDef.getSlice(1,2) = sliceDef;
+
+	sliceDef.Imagery = mm;
+	sliceDef.GrowWidth = true;
+	sliceDef.GrowHeight = true;
+sliceDef.ColSpan=1;
+sliceDef.RowSpan=1;
+	faceDef.getSlice(1,1) = sliceDef;
 	
 	fptr = Face::Create(faceDef);
 
