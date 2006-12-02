@@ -73,11 +73,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onChildAttached( Object* sender, Attach_EventArgs& evtArgs ) {
-		dirtyCache(); // need to invalidate caches for hierarchy change
+		invalidate(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
 	void ContainerControl::onChildDetached( Object* sender, Attach_EventArgs& evtArgs ) {
-		dirtyCache(); // need to invalidate caches for hierarchy change
+		invalidate(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
 	void ContainerControl::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
@@ -413,7 +413,6 @@ namespace OpenGUI {
 			delete mCacheBrush;
 			mCacheBrush = 0;
 		}
-		invalidate();
 	}
 	//############################################################################
 	bool ContainerControl::isCacheDirty() const {
@@ -443,8 +442,13 @@ namespace OpenGUI {
 		triggerEvent( "InvalidatedChild", event );
 	}
 	//############################################################################
-	void ContainerControl::onInvalidatedChild( Object* sender, EventArgs& evtArgs ) {
+	void ContainerControl::onInvalidated( Object* sender, EventArgs& evtArgs ) {
 		dirtyCache();
+		Control::onInvalidated( sender, evtArgs );
+	}
+	//############################################################################
+	void ContainerControl::onInvalidatedChild( Object* sender, EventArgs& evtArgs ) {
+		invalidate();
 	}
 	//############################################################################
 	void ContainerControl::onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs ) {
@@ -452,7 +456,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ContainerControl::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
-		dirtyCache();
+		invalidate();
 		Control::onResized( sender, evtArgs );
 	}
 	//############################################################################
