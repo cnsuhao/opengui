@@ -131,7 +131,7 @@ The Widget was invalidated and will need to be redrawn next Screen::update()
 	- OpenGUI::Widget::eventInvalidated
 	
 	\par EventArgs:
-	OpenGUI::Draw_EventArgs
+	OpenGUI::EventArgs
 	\see OpenGUI::Screen::update(), OpenGUI::Screen::invalidateAll(), OpenGUI::Widget::invalidate(), \link Event_Draw Draw Event \endlink
 
 
