@@ -105,7 +105,9 @@ namespace OpenGUI {
 		//! Re-issues the \c Cursor_Release to children with a proper offset
 		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
-		//! Flushes the local Brush output cache that contains operations from this and all child Widgets, which also invalidates this widget
+		//! Flushes the local Brush output cache that contains operations from this and all child Widgets
+		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
+		//! Invalidates this widget, which causes a flush of the local cache of child operations
 		virtual void onInvalidatedChild( Object* sender, EventArgs& evtArgs );
 
 		//! flushes local Brush cache in addition to normal functionality

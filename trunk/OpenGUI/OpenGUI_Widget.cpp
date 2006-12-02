@@ -202,9 +202,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::_invalidatedChild() {
-		Widget* parent = dynamic_cast<Widget*>( getContainer() );
-		if ( parent )
-			parent->_invalidatedChild();
+		/* Default does nothing */
 	}
 	//############################################################################
 	void Widget::flush() {

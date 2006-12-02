@@ -247,7 +247,7 @@ namespace OpenGUI {
 		//! \internal returns the child with the given name. Virtual so that container widgets can redefine it to fit their storage type. Default returns 0 always
 		virtual Widget* _getChildByName( const std::string& childName ) const;
 
-		//! \internal called by a child when they have been invalidated
+		//! \internal called by a child when they have been invalidated. Default does nothing. Override me if you need more functionality
 		virtual void _invalidatedChild();
 	private:
 		I_WidgetContainer* mContainer;
