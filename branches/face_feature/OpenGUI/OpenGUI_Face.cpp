@@ -66,7 +66,7 @@ namespace OpenGUI {
 				if ( !slicePtr ) continue; // skip blank entries
 
 				// if this is a new entry, create the slice entry and map it
-				if ( sliceMap.find( slicePtr ) != sliceMap.end() ) {
+				if ( sliceMap.find( slicePtr ) == sliceMap.end() ) {
 					Slice tmpSlice;
 					tmpSlice.CellCol = col; // both column and row are accurate if this is the first time we've encountered the slice
 					tmpSlice.CellRow = row;
@@ -77,6 +77,8 @@ namespace OpenGUI {
 					mSlices.push_back( tmpSlice );
 					Slice* finalPtr = &( mSlices.back() );
 					sliceMap[slicePtr] = finalPtr;
+				} else {
+					assert( false ); // we should never find a previously touched slicedef
 				}
 
 				if ( slicePtr->ColSpan ) {
@@ -84,8 +86,10 @@ namespace OpenGUI {
 					colSpanned.insert( slicePtr );
 				} else {
 					//spans a single column, so we can update the column information as necessary
-					if ( slicePtr->GrowWidth ) mColDims[col].Grow = true;
-					if ( mColDims[col].MinSize < slicePtr->Width ) mColDims[col].MinSize = slicePtr->Width;
+					if ( slicePtr->GrowWidth )
+						mColDims[col].Grow = true;
+					if ( mColDims[col].MinSize < slicePtr->Width )
+						mColDims[col].MinSize = slicePtr->Width;
 				}
 
 				if ( slicePtr->RowSpan ) {
@@ -93,8 +97,10 @@ namespace OpenGUI {
 					rowSpanned.insert( slicePtr );
 				} else {
 					//spans a single row, so we can update the row information as necessary
-					if ( slicePtr->GrowHeight ) mRowDims[row].Grow = true;
-					if ( mRowDims[row].MinSize < slicePtr->Height ) mRowDims[row].MinSize = slicePtr->Height;
+					if ( slicePtr->GrowHeight )
+						mRowDims[row].Grow = true;
+					if ( mRowDims[row].MinSize < slicePtr->Height )
+						mRowDims[row].MinSize = slicePtr->Height;
 				}
 
 				// in order to prevent unnecessary processing of duplicates, we'll zero out any spans
@@ -109,8 +115,118 @@ namespace OpenGUI {
 		}
 
 		// now go back through to 2nd pass items and deal with them as necessary
-		// TODO: add me for rows and columns individually!
 
+		// first do columns
+		SliceDefSet::iterator iter, iterend = colSpanned.end();
+		for ( iter = colSpanned.begin(); iter != iterend; iter++ ) {
+			const SliceDef* sliceDefPtr = ( *iter );
+			const Slice* slicePtr = sliceMap[sliceDefPtr];
+
+			// we need to know the growing columns for both of the upcoming situations, so we calculate it here
+			// might as well get the total span size while we're at it (since we need that later as well)
+			float spanSize = 0.0f;
+			typedef std::vector<size_t> SizeTVector;
+			SizeTVector growingColumns;
+			for ( size_t i = 0; i <= slicePtr->ColSpan; i++ ) {
+				size_t col = slicePtr->CellCol + i;
+				if ( mColDims[col].Grow )
+					growingColumns.push_back( col );
+				spanSize += mColDims[col].MinSize;
+			}
+
+			// do we need to force one of the columns to grow?
+			if ( sliceDefPtr->GrowWidth && growingColumns.size() == 0 ) {
+				// just force the first cell to grow
+				mColDims[slicePtr->CellCol].Grow = true;
+				growingColumns.push_back( slicePtr->CellCol );
+			}
+
+			// does the span fit into the current columns?
+			if ( spanSize < sliceDefPtr->Width ) {
+				// need to widen, so select who will grow
+				SizeTVector widen_cols;
+				if ( growingColumns.size() ) {
+					// we have volunteers, so only widen them
+					widen_cols = growingColumns;
+				} else {
+					// no volunteers means everyone gets to widen
+					for ( size_t i = 0; i < slicePtr->ColSpan; i++ ) {
+						size_t col = slicePtr->CellCol + i;
+						widen_cols.push_back( col );
+					}
+				}
+				// calculate the deficit and grow each selected column by an equal amount
+				float deficit = sliceDefPtr->Width - spanSize;
+				float amount_per_col = deficit / (( float )widen_cols.size() );
+				for ( size_t i = 0; i < widen_cols.size(); i++ )
+					mColDims[widen_cols[i]].MinSize += amount_per_col;
+
+				// recalculate new span size and throw any remainder into the first column to complete the pass
+				spanSize = 0.0f;
+				for ( size_t i = 0; i <= slicePtr->ColSpan; i++ ) {
+					size_t col = slicePtr->CellCol + i;
+					spanSize += mColDims[col].MinSize;
+				}
+				deficit = sliceDefPtr->Width - spanSize;
+				mColDims[slicePtr->CellCol].MinSize += deficit;
+			}
+		}
+
+		// and then do rows
+		iterend = rowSpanned.end();
+		for ( iter = rowSpanned.begin(); iter != iterend; iter++ ) {
+			const SliceDef* sliceDefPtr = ( *iter );
+			const Slice* slicePtr = sliceMap[sliceDefPtr];
+
+			// we need to know the growing rows for both of the upcoming situations, so we calculate it here
+			// might as well get the total span size while we're at it (since we need that later as well)
+			float spanSize = 0.0f;
+			typedef std::vector<size_t> SizeTVector;
+			SizeTVector growingRows;
+			for ( size_t i = 0; i <= slicePtr->RowSpan; i++ ) {
+				size_t row = slicePtr->CellRow + i;
+				if ( mRowDims[row].Grow )
+					growingRows.push_back( row );
+				spanSize += mRowDims[row].MinSize;
+			}
+
+			// do we need to force one of the rows to grow?
+			if ( sliceDefPtr->GrowHeight && growingRows.size() == 0 ) {
+				// just force the first cell to grow
+				mRowDims[slicePtr->CellRow].Grow = true;
+				growingRows.push_back( slicePtr->CellRow );
+			}
+
+			// does the span fit into the current rows?
+			if ( spanSize < sliceDefPtr->Height ) {
+				// need to heighten, so select who will grow
+				SizeTVector widen_rows;
+				if ( growingRows.size() ) {
+					// we have volunteers, so only widen them
+					widen_rows = growingRows;
+				} else {
+					// no volunteers means everyone gets to widen
+					for ( size_t i = 0; i < slicePtr->RowSpan; i++ ) {
+						size_t row = slicePtr->CellRow + i;
+						widen_rows.push_back( row );
+					}
+				}
+				// calculate the deficit and grow each selected row by an equal amount
+				float deficit = sliceDefPtr->Height - spanSize;
+				float amount_per_row = deficit / (( float )widen_rows.size() );
+				for ( size_t i = 0; i < widen_rows.size(); i++ )
+					mRowDims[widen_rows[i]].MinSize += amount_per_row;
+
+				// recalculate new span size and throw any remainder into the first row to complete the pass
+				spanSize = 0.0f;
+				for ( size_t i = 0; i <= slicePtr->RowSpan; i++ ) {
+					size_t row = slicePtr->CellRow + i;
+					spanSize += mRowDims[row].MinSize;
+				}
+				deficit = sliceDefPtr->Height - spanSize;
+				mRowDims[slicePtr->CellRow].MinSize += deficit;
+			}
+		}
 
 		// At this point we have all rows and columns widened as necessary to
 		// minimally fit their contents, and we have properly set the "grow"
