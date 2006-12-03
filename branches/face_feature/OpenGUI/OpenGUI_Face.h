@@ -23,6 +23,10 @@ namespace OpenGUI {
 		bool Tiled; //!< true if imagery should be displayed native scale and tiled, otherwise it is stretched to fit
 	};
 
+	//! list of Slices from a Face
+	typedef std::list<Slice> SliceList;
+	//! Array of float dimensions representing column or row size in a Face
+	typedef std::vector<float> FaceDimArray;
 
 	//! Provides an HTML table like system for controlled stretching and tiling of logical groups of display imagery
 	class OPENGUI_API Face {
@@ -34,11 +38,17 @@ namespace OpenGUI {
 		};
 		static FacePtr Create( const FaceDef& faceDefinition );
 		~Face() {}
+		//! Indicates the metric that should be used when rendering this Face
 		const FaceMetric Metric;
+
+		//! fills the \c columnArray_out with column widths to fit the \c totalWidth
+		void getColumnWidths( float totalWidth, FaceDimArray& columnArray_out );
+		//! fills the \c rowArray_out with row heights to fit the \c totalHeight
+		void getRowHeights( float totalHeight, FaceDimArray& rowArray_out );
+		//! returns a reference to the list of Slices used in this Face
+		const SliceList& getSlices();
 	private:
 		Face( const FaceDef& faceDefinition );
-		
-		typedef std::list<Slice> SliceList;
 		SliceList mSlices;
 
 		class SliceDim	{
@@ -51,6 +61,12 @@ namespace OpenGUI {
 		typedef std::vector<SliceDim> AxisDimArray;
 		AxisDimArray mRowDims;
 		AxisDimArray mColDims;
+
+		// a few cache objects to save a bit of time later
+		float m_CacheRowSize;
+		float m_CacheColSize;
+		size_t m_CacheRowGrowing;
+		size_t m_CacheColGrowing;
 
 		class Cell {
 		public:

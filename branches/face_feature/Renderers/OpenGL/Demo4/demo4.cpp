@@ -78,9 +78,8 @@ void Demo4App::preRun() {
 	sliceDef.GrowWidth = true;
 	faceDef.getSlice(0,1) = sliceDef;
 	sliceDef.Imagery = lm;
-sliceDef.ColSpan=1;
 	faceDef.getSlice(2,1) = sliceDef;
-sliceDef.ColSpan=0;
+
 
 	sliceDef.Imagery = ml;
 	sliceDef.GrowWidth = false;
@@ -92,8 +91,6 @@ sliceDef.ColSpan=0;
 	sliceDef.Imagery = mm;
 	sliceDef.GrowWidth = true;
 	sliceDef.GrowHeight = true;
-sliceDef.ColSpan=1;
-sliceDef.RowSpan=1;
 	faceDef.getSlice(1,1) = sliceDef;
 	
 	fptr = Face::Create(faceDef);
@@ -113,8 +110,8 @@ sliceDef.RowSpan=1;
 	TestFrame* frame = new TestFrame(fptr);
 	frame->setTop( 200 );
 	frame->setLeft( 200 );
-	frame->setWidth( 90 );
-	frame->setHeight( 60 );
+	frame->setWidth( 190 );
+	frame->setHeight( 160 );
 	mScreen->Children.add_front(frame,true);
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");

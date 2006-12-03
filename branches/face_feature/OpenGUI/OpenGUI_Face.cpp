@@ -228,11 +228,88 @@ namespace OpenGUI {
 			}
 		}
 
+		// generate final caches of the total sizes so we can quickly tell what needs to happen during later usage
+		m_CacheRowSize = 0.0f;
+		m_CacheRowGrowing = 0;
+		for ( size_t i = 0; i < mRowDims.size(); i++ ) {
+			m_CacheRowSize += mRowDims[i].MinSize;
+			if ( mRowDims[i].Grow )
+				m_CacheRowGrowing++;
+		}
+
+		m_CacheColSize = 0.0f;
+		m_CacheColGrowing = 0;
+		for ( size_t i = 0; i < mColDims.size(); i++ ) {
+			m_CacheColSize += mColDims[i].MinSize;
+			if ( mColDims[i].Grow )
+				m_CacheColGrowing++;
+		}
+
 		// At this point we have all rows and columns widened as necessary to
 		// minimally fit their contents, and we have properly set the "grow"
 		// attributes for each location. This completes the preprocessing.
 		// There is nothing more we can do until we are asked for a specific
 		// size to grow/shrink into. End of constructor. Thanks for playing.
+	}
+	//############################################################################
+	void Face::getColumnWidths( float totalWidth, FaceDimArray& columnArray_out ) {
+		columnArray_out.clear(); // start with a clean slate
+		float dif = totalWidth - m_CacheColSize;
+
+		// determine best stretch path
+		if ( dif > 0 && m_CacheColGrowing ) {
+			// we need to grow and we have designated "grow" columns...
+			float addPer = dif / (( float )m_CacheColGrowing );
+			size_t s = mColDims.size();
+			for ( size_t i = 0; i < s; i++ ) {
+				if ( mColDims[i].Grow )
+					columnArray_out.push_back( mColDims[i].MinSize + addPer );
+				else
+					columnArray_out.push_back( mColDims[i].MinSize );
+			}
+		} else {
+			// This covers all other situations:
+			//  * Need to grow uniformly
+			//  * Need to shrink uniformly
+			//  * Don't need to grow or shrink
+			float mulPer = totalWidth / m_CacheColSize;
+			size_t s = mColDims.size();
+			for ( size_t i = 0; i < s; i++ ) {
+				columnArray_out.push_back( mColDims[i].MinSize * mulPer );
+			}
+		}
+	}
+	//############################################################################
+	void Face::getRowHeights( float totalHeight, FaceDimArray& rowArray_out ) {
+		rowArray_out.clear(); // start with a clean slate
+		float dif = totalHeight - m_CacheRowSize;
+
+		// determine best stretch path
+		if ( dif > 0 && m_CacheRowGrowing ) {
+			// we need to grow and we have designated "grow" rows...
+			float addPer = dif / (( float )m_CacheRowGrowing );
+			size_t s = mRowDims.size();
+			for ( size_t i = 0; i < s; i++ ) {
+				if ( mRowDims[i].Grow )
+					rowArray_out.push_back( mRowDims[i].MinSize + addPer );
+				else
+					rowArray_out.push_back( mRowDims[i].MinSize );
+			}
+		} else {
+			// This covers all other situations:
+			//  * Need to grow uniformly
+			//  * Need to shrink uniformly
+			//  * Don't need to grow or shrink
+			float mulPer = totalHeight / m_CacheRowSize;
+			size_t s = mRowDims.size();
+			for ( size_t i = 0; i < s; i++ ) {
+				rowArray_out.push_back( mRowDims[i].MinSize * mulPer );
+			}
+		}
+	}
+	//############################################################################
+	const SliceList& Face::getSlices() {
+		return mSlices;
 	}
 	//############################################################################
 } // namespace OpenGUI {
