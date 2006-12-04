@@ -41,37 +41,52 @@
 	
 	<Face Name="BrassBalls_Panel_Outset" Metric="Units">
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_UL" Width="2" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_O_UM" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_O_UR" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_O_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_O_UR" Width="2" Height="2" />
 		</Row>
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_ML" Width="2">
-			<Slice Imagery="BrassBalls.png/Panel_O_MM" GrowWidth="true" GrowHeight="true">
-			<Slice Imagery="BrassBalls.png/Panel_O_MR" Width="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png/Panel_O_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png/Panel_O_MR" Width="2" />
 		</Row>		
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_LL" Width="2" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_O_LM" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_O_LR" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_O_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_O_LR" Width="2" Height="2" />
 		</Row>
 	</Face>
 	<Face Name="BrassBalls_Panel_Inset" Metric="Units">
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_UL" Width="2" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_I_UM" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_I_UR" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_I_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_I_UR" Width="2" Height="2" />
 		</Row>
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_ML" Width="2">
-			<Slice Imagery="BrassBalls.png/Panel_I_MM" GrowWidth="true" GrowHeight="true">
-			<Slice Imagery="BrassBalls.png/Panel_I_MR" Width="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png/Panel_I_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png/Panel_I_MR" Width="2" />
 		</Row>		
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_LL" Width="2" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_I_LM" Height="2">
-			<Slice Imagery="BrassBalls.png/Panel_I_LR" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_I_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png/Panel_I_LR" Width="2" Height="2" />
 		</Row>
 	</Face>
 
 </OpenGUI>
+
+<Amethyst>
+	<Theme Name="BrassBalls">
+		<Widget Name="Panel">
+			<State Name="Inset" Face="BrassBalls_Panel_Inset" />
+			<State Name="Outset" Face="BrassBalls_Panel_Outset" />
+			<Property ValueName="ClientAreaOffset_UL" ValueType="FVECTOR2" ValueData="(2x2)" />
+			<Property ValueName="ClientAreaOffset_LL" ValueType="FVECTOR2" ValueData="(2x2)" />
+		</Widget>
+		
+		<Widget Name="CheckBox">
+			<State Name="Normal" />
+		</Widget>
+	</Theme>
+</Amethyst>

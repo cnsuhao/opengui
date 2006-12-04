@@ -244,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_Theme.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_ThemeManager.cpp"
 				>
 			</File>
@@ -319,6 +323,10 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_TextBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_Theme.h"
 				>
 			</File>
 			<File
