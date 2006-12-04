@@ -10,6 +10,26 @@
 <Include File="BlueGui.xml" />
 <Include File="Generic.xml" />
 
+<OpenGUI>
+	<Face Name="GenericFrame" Metric="Units">
+		<Row>
+			<Slice Width="20" Height="20" Imagery="GenericFrameUL" />
+			<Slice Height="20" Imagery="GenericFrameUM" />
+			<Slice Width="20" Height="20" Imagery="GenericFrameUR" />
+		</Row>
+		<Row>
+			<Slice Width="20" Height="20" Imagery="GenericFrameML" />
+			<Slice GrowWidth="true" GrowHeight="true" Imagery="GenericFrameMM" />
+			<Slice Width="20" Height="20" Imagery="GenericFrameMR" Tile="0" />
+		</Row>
+		<Row>
+			<Slice Width="20" Height="20" Imagery="GenericFrameLL" />
+			<Slice Height="20" Imagery="GenericFrameLM" />
+			<Slice Width="20" Height="20" Imagery="GenericFrameLR" />
+		</Row>
+	</Face>
+</OpenGUI>
+
 <!-- Set up some widgets in advance to save time later -->
 <OpenGUI>
 

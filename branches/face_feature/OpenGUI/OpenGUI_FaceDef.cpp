@@ -3,7 +3,7 @@
 
 namespace OpenGUI {
 	//############################################################################
-	SliceDef& FaceDef::getSlice( size_t row, size_t col ) {
+	SliceDef& FaceDef::getSlice( size_t col, size_t row ) {
 		if (( row + 1 ) > Rows.size() )
 			Rows.resize( row + 1 );
 
@@ -13,7 +13,7 @@ namespace OpenGUI {
 		return Rows[row][col];
 	}
 	//############################################################################
-	size_t FaceDef::getRequiredRows() const {
+	size_t FaceDef::getRowSizeEstimate() const {
 		size_t totalRows = 0;
 		const size_t NumSliceRows = Rows.size();
 		for ( size_t r = 0; r < NumSliceRows; r++ ) {
@@ -30,7 +30,7 @@ namespace OpenGUI {
 		return totalRows;
 	}
 	//############################################################################
-	size_t FaceDef::getRequiredCols() const {
+	size_t FaceDef::getColSizeEstimate() const {
 		size_t totalCols = 0;
 		const size_t NumSliceRows = Rows.size();
 		for ( size_t r = 0; r < NumSliceRows; r++ ) {

@@ -3,38 +3,6 @@
 <Amethyst>
 	<Theme Name="BlueGui">
 		<Widget Name="Button">
-			<Face Name="Normal" Rows="3" Columns="3">
-				<Row Index="0" Size="" Metric="Pixels" />
-				<Row Index="1" Size="" Metric="None" />
-				<Row Index="2" Size="" />
-				<Column Index="0" Size="" />
-				<Column Index="1" Size="" />
-				<Column Index="2" Size="" />
-				
-				<Slice Row="" Column="" Imagery="" Tiled="false" />
-
-			</Face>
-
-
-
-			<Face Name="Normal" Metric="Pixels">
-				<Row Height="*">
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-				</Row>
-				<Row Height="*">
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-				</Row>
-				<Row Height="*">
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-					<Slice ColSpan="1" RowSpan="1" Width="*" Imagery="" Tiled="1" />
-				</Row>
-			</Face>
-
 		</Widget>
 	</Theme>
 </Amethyst>

@@ -119,6 +119,10 @@ namespace OpenGUI {
 		// XML tag handlers for <Imageset> tags
 		static bool _Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+
+		// XML tag handlers for <Face> tags
+		static bool _Face_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Face_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 
 }

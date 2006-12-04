@@ -12,8 +12,8 @@ namespace OpenGUI {
 	Face::Face( const FaceDef& faceDefinition ): Metric( faceDefinition.Metric ) {
 		//Note: these may be a waste of time, since they aren't always accurate to begin with
 		// (they have the potential to report smaller sizes than they should)
-		size_t initCols = faceDefinition.getRequiredCols();
-		size_t initRows = faceDefinition.getRequiredRows();
+		size_t initCols = faceDefinition.getColSizeEstimate();
+		size_t initRows = faceDefinition.getRowSizeEstimate();
 
 		// Construct a grid to represent the rows and columns needed
 		typedef AutoArray2D<const SliceDef*> SliceDefArray;

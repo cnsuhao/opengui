@@ -29,6 +29,13 @@ namespace OpenGUI {
 	typedef std::vector<float> FaceDimArray;
 
 	//! Provides an HTML table like system for controlled stretching and tiling of logical groups of display imagery
+	/*!	Faces are used to join several previously defined Imagery together in an HTML table-like fashion,
+	providing minimum widths and heights, selective growth, and column/row spanning. They are drawn as a
+	single unit, automatically scaling as necessary to fit the desired coverage area, while doing their
+	best to scale only in designated directions.
+
+	\see BrushImagery::drawFace()
+	*/
 	class OPENGUI_API Face {
 	public:
 		//! Used to dictate the metric of measurement used in Face related objects
@@ -36,6 +43,7 @@ namespace OpenGUI {
 			FM_UNITS = 0, //!< The size is in Screen units
 			FM_PIXELS = 1 //!< The size is in pixels of the native display
 		};
+		//! Takes a FaceDef (Face definition) and generates a Face which is returned in a reference counted pointer
 		static FacePtr Create( const FaceDef& faceDefinition );
 		~Face() {}
 		//! Indicates the metric that should be used when rendering this Face
