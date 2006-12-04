@@ -7,7 +7,7 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
-		class AMETHYST_API ScrollBar_H: public Frame {
+		class AMETHYST_API ScrollBar_H: public Control {
 		public:
 			ScrollBar_H();
 			virtual ~ScrollBar_H();
@@ -27,6 +27,8 @@ namespace OpenGUI {
 			void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 
 
+			//! Sets the BG imagery. TEMP until face/themes get in 
+			void setImagery( std::string imageryName);
 			//! Sets the imagery for the thumb.
 			void setThumbImagery( std::string imageryName);
 			//! Gets the imagery for the thumb.
@@ -34,6 +36,8 @@ namespace OpenGUI {
 
 			void setThumbPos(float p) {mThumbPosValue = p;}
 			float getThumbPos() {return mThumbPosValue;}
+			void setCanvasSize(float c) {mCanvasSize = c;}
+			float getCanvasSize() {return mCanvasSize;}
 			void setPageSize(float p) {mPageSize = p;}
 			float getPageSize() {return mPageSize;}
 			void setLineSize(float p) {mLineSize = p;}
@@ -51,14 +55,17 @@ namespace OpenGUI {
 
 			void _positionThumb();
 
+			ImageryPtr mBGImage;
 			ImageryPtr mThumbImage;
 
 			FRect mThumbImageOffsets;
 			float mThumbPosValue;
+			float mCanvasSize;
 			float mPageSize;
 			float mLineSize;
 
 			bool m_bMouseDraggingThumb;
+			bool m_bMousePaging;
 			FVector2 m_vMosueOffset;
 			FRect m_rThumbRect;
 		};
