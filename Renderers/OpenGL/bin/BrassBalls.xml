@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+
+<OpenGUI>
+	<Imageset File="BrassBalls.png">
+	<!-- Round Button -->
+		<!-- Round Button Not Checked -->
+		<Imagery Name="RndBtn_N" Left="64" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_H" Left="83" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_P" Left="102" Top="41" Width="15" Height="15" />
+		<!-- Round Button Checked -->
+		<Imagery Name="RndBtn_CN" Left="121" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_CH" Left="140" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_CP" Left="159" Top="41" Width="15" Height="15" />
+	
+	<!-- Panel -->
+		<!-- Outset -->
+		<Imagery Name="Panel_O_UL" Left="208" Top="38" Width="2" Height="2" />
+		<Imagery Name="Panel_O_UM" Left="210" Top="38" Width="16" Height="2" />
+		<Imagery Name="Panel_O_UR" Left="226" Top="38" Width="2" Height="2" />
+		<Imagery Name="Panel_O_ML" Left="208" Top="40" Width="2" Height="16" />
+		<Imagery Name="Panel_O_MM" Left="210" Top="40" Width="16" Height="16" />
+		<Imagery Name="Panel_O_MR" Left="226" Top="40" Width="2" Height="16" />
+		<Imagery Name="Panel_O_LL" Left="208" Top="56" Width="2" Height="2" />
+		<Imagery Name="Panel_O_LM" Left="210" Top="56" Width="16" Height="2" />
+		<Imagery Name="Panel_O_LR" Left="226" Top="56" Width="2" Height="2" />
+		<!-- Inset -->
+		<Imagery Name="Panel_I_UL" Left="230" Top="38" Width="2" Height="2" />
+		<Imagery Name="Panel_I_UM" Left="232" Top="38" Width="16" Height="2" />
+		<Imagery Name="Panel_I_UR" Left="248" Top="38" Width="2" Height="2" />
+		<Imagery Name="Panel_I_ML" Left="230" Top="40" Width="2" Height="16" />
+		<Imagery Name="Panel_I_MM" Left="232" Top="40" Width="16" Height="16" />
+		<Imagery Name="Panel_I_MR" Left="248" Top="40" Width="2" Height="16" />
+		<Imagery Name="Panel_I_LL" Left="230" Top="56" Width="2" Height="2" />
+		<Imagery Name="Panel_I_LM" Left="232" Top="56" Width="16" Height="2" />
+		<Imagery Name="Panel_I_LR" Left="248" Top="56" Width="2" Height="2" />
+	
+	<!-- Cursors -->
+		<!-- Arrow -->
+		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
+	</Imageset>
+	
+	<Face Name="BrassBalls_Panel_Outset" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_O_UL" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_UM" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_UR" Width="2" Height="2">
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_O_ML" Width="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_MM" GrowWidth="true" GrowHeight="true">
+			<Slice Imagery="BrassBalls.png/Panel_O_MR" Width="2">
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_O_LL" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_LM" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_O_LR" Width="2" Height="2">
+		</Row>
+	</Face>
+	<Face Name="BrassBalls_Panel_Inset" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_I_UL" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_UM" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_UR" Width="2" Height="2">
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_I_ML" Width="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_MM" GrowWidth="true" GrowHeight="true">
+			<Slice Imagery="BrassBalls.png/Panel_I_MR" Width="2">
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png/Panel_I_LL" Width="2" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_LM" Height="2">
+			<Slice Imagery="BrassBalls.png/Panel_I_LR" Width="2" Height="2">
+		</Row>
+	</Face>
+
+</OpenGUI>
