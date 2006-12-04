@@ -268,15 +268,7 @@ void Demo2App::preRun() {
 	pSH->setLeft(370);
 	pSH->setHeight(35);
 	pSH->setWidth(150);
-	pSH->setImagery("GenericHScrollUL", Amethyst::Frame::UL);
-	pSH->setImagery("GenericHScrollUM", Amethyst::Frame::UM);
-	pSH->setImagery("GenericHScrollUR", Amethyst::Frame::UR);
-	pSH->setImagery("GenericHScrollML", Amethyst::Frame::ML);
-	pSH->setImagery("GenericHScrollMM", Amethyst::Frame::MM);
-	pSH->setImagery("GenericHScrollMR", Amethyst::Frame::MR);
-	pSH->setImagery("GenericHScrollLL", Amethyst::Frame::LL);
-	pSH->setImagery("GenericHScrollLM", Amethyst::Frame::LM);
-	pSH->setImagery("GenericHScrollLR", Amethyst::Frame::LR);
+	pSH->setImagery("GenericHScroll1");
 	pSH->setThumbImagery("GenericHScrollThumb1");
 	mScreen->Children.add_back(pSH, true);
 
