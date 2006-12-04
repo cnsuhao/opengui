@@ -47,6 +47,8 @@
 #include "OpenGUI_XML.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_Imagery.h"
+#include "OpenGUI_Face.h"
+#include "OpenGUI_FaceDef.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_ImageryManager.h"
 

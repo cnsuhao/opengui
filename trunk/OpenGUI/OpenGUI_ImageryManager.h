@@ -5,7 +5,9 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Imageset.h"
+#include "OpenGUI_Face.h"
 #include "OpenGUI_XML.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 
@@ -93,17 +95,34 @@ namespace OpenGUI {
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
 
-		//! Returns an ImagesetList of all imagesets that are currently loaded. Items can be fed back into getImageset()
+		//! Returns an ImagesetList of all Imagesets that are currently loaded. Items can be fed back into getImageset()
 		ImagesetList getImagesetList();
+
+		//! Adds the given FacePtr to the managed list of Faces so that it can be retrieved later by name
+		void addFace( const std::string& faceName, FacePtr facePtr );
+		//! Retrieves a previously added Face by name
+		FacePtr getFace( const std::string& faceName );
+		//! Removes a previously added Face by name.
+		void removeFace( const std::string& faceName );
+		//! Returns a list of all registered faces
+		StringList getFaceList();
 
 	private:
 		ImagesetPtrList mImagesetList;
 		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
 		ResourceProvider* mResourceProvider;
 
+		//! list of FacePtrs
+		typedef std::map<std::string, FacePtr> FacePtrMap;
+		FacePtrMap mFacePtrMap;
+
 		// XML tag handlers for <Imageset> tags
 		static bool _Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
 		static bool _Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+
+		// XML tag handlers for <Face> tags
+		static bool _Face_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+		static bool _Face_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 	};
 
 }

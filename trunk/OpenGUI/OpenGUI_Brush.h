@@ -6,6 +6,7 @@
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Imagery.h"
+#include "OpenGUI_Face.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_BrushModifierStack.h"
@@ -62,16 +63,20 @@ namespace OpenGUI {
 	public:
 		~BrushImagery() {}
 
-		//! Draws the given imagery using the given rect
+		//! Draws the given Imagery using the given rect
 		void drawImage( const ImageryPtr& imageryPtr, const FRect& rect );
-		//! Draws the given imagery at the given position and size
+		//! Draws the given Imagery at the given position and size
 		void drawImage( const ImageryPtr& imageryPtr, const FVector2& position, const FVector2& size );
-		//! Draws the given imagery at the given position at it's native pixel size
+		//! Draws the given Imagery at the given position at it's native pixel size
 		void drawImageUnscaled( const ImageryPtr& imageryPtr, const FVector2& position );
-		//! Draws the given imagery filling the given rect using the given number of tiles
+		//! Draws the given Imagery filling the given rect using the given number of tiles
 		void drawImageTiled( const ImageryPtr& imageryPtr, const FRect& rect, float x_tiles, float y_tiles );
-		//! Draws the given imagery at the given position at it's native pixel size, tiling or clipping it as necessary to fill the area
+		//! Draws the given Imagery at the given position at it's native pixel size, tiling or clipping it as necessary to fill the area
 		void drawImageUnscaledAndTiled( const ImageryPtr& imageryPtr, const FRect& rect );
+		//! Draws the given Face, filling the given rect
+		void drawFace( const FacePtr& facePtr, const FRect& rect );
+		//! Draws the given Face, filling a rect constructed from the given position and size
+		void drawFace( const FacePtr& facePtr, const FVector2& position, const FVector2& size );
 	};
 
 	//! Provides methods for rendering text

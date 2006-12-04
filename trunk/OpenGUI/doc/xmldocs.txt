@@ -34,6 +34,9 @@ Universal tags:
     - \ref XMLwidget
      - \ref XMLproperty
      - ...
+  - \ref XMLface
+   - \ref XMLrow
+    - \ref XMLslice
   - \ref XMLscreen
    - \ref XMLwidget
     - \ref XMLproperty
@@ -353,6 +356,92 @@ Example:
  - \c FormDef (required)
    - \em Type: string
    - \em Description: The name of the form definition to intantiate
+
+
+
+<hr>
+\section XMLface <Face>
+OpenGUI::Face objects can be defined in XML, and will be stored by the OpenGUI::ImageryManager for later retrieval. In order to define a Face via XML, you need to declare both a Name and a Metric, and fill it with \<Row\>s of \<Slice\>s.
+
+Example:
+\verbatim
+<Face Name="FaceName" Metric="Units">
+	<!-- contains <Row>s of <Slice>s, as shown below -->
+	<Row>
+		<Slice />
+	</Row>
+</Face>
+\endverbatim
+
+\par Attributes
+ - \c Name (required)
+   - \em Type: string
+   - \em Description: The name to store the Face under
+ - \c Metric (required)
+   - \em Type: string
+   - \em Description: The OpenGUI::Face::Metric to use when evaluating dimensions within the Face. Must be either "Units" or "Pixels".
+
+
+
+<hr>
+\section XMLrow <Row>
+Groups contained \<Slice\>s into logical rows.
+
+Example:
+\verbatim
+<Face Name="FaceName" Metric="Units">
+	<!-- contains <Row>s of <Slice>s, as shown below -->
+	<Row>
+		<Slice />
+	</Row>
+</Face>
+\endverbatim
+
+\par Attributes
+Has no attributes. It is purely a grouping mechanism.
+
+
+
+<hr>
+\section XMLslice <Slice>
+Defines a single Slice of a Face. Must be contained by a \<Row\>, which is also contained by a \<Face\>. All attributes are optional, the defaults of which are specified by OpenGUI::SliceDef.
+
+Example:
+\verbatim
+<Face Name="FaceName" Metric="Units">
+	<!-- contains <Row>s of <Slice>s, as shown below -->
+	<Row>
+		<Slice Width="20" Height="20" Imagery="GenericFrameML" />
+	</Row>
+</Face>
+\endverbatim
+
+\par Attributes
+ - \c Imagery
+   - \em Type: string
+   - \em Description: Name of a previously defined Imagery to display in this Slice area
+ - \c Width
+   - \em Type: float
+   - \em Description: The minimum width of this Slice, measured in the Face metric.
+ - \c Height
+   - \em Type: float
+   - \em Description: The minimum height of this Slice, measured in the Face metric.
+ - \c GrowWidth
+   - \em Type: bool
+   - \em Description: If true, the slice will volunteer to grow in width to help fill the total coverage area when the Face is rendered.
+ - \c GrowHeight
+   - \em Type: bool
+   - \em Description: If true, the slice will volunteer to grow in height to help fill the total coverage area when the Face is rendered.
+ - \c ColSpan
+   - \em Type: int
+   - \em Description: The number of \em additional columns to span this Slice across.
+ - \c RowSpan
+   - \em Type: int
+   - \em Description: The number of \em additional rows to span this Slice across.
+ - \c Tile
+   - \em Type: bool
+   - \em Description: If true, the Imagery of the Slice will be rendered at native size, but will be tiled to fill the required area. Otherwise the Imagery is stretched to fit (the default).
+   
 
 
 

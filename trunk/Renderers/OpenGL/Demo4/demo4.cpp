@@ -22,6 +22,16 @@ private:
 using namespace OpenGUI;
 
 
+class TestFrame:public Control{
+public:
+	TestFrame(FacePtr face):mFace(face){}
+protected:
+	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+		Brush& b = evtArgs.brush;
+		b.Image.drawFace(mFace,getRect());
+	}
+	FacePtr mFace;
+};
 
 
 
@@ -36,6 +46,17 @@ void Demo4App::preRun() {
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();
 
+
+	FacePtr fptr;
+	fptr = ImageryManager::getSingleton().getFace("GenericFrame");
+
+
+	TestFrame* frame = new TestFrame(fptr);
+	frame->setTop( 200 );
+	frame->setLeft( 200 );
+	frame->setWidth( 190 );
+	frame->setHeight( 160 );
+	mScreen->Children.add_front(frame,true);
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");
 	//label->setProperty("Text","This is some text");
