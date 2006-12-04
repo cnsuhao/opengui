@@ -79,14 +79,23 @@
 <Amethyst>
 	<Theme Name="BrassBalls">
 		<Widget Name="Panel">
-			<State Name="Inset" Face="BrassBalls_Panel_Inset" />
-			<State Name="Outset" Face="BrassBalls_Panel_Outset" />
+			<StateImage Name="Inset" Face="BrassBalls_Panel_Inset" />
+			<StateImage Name="Outset" Face="BrassBalls_Panel_Outset" />
 			<Property ValueName="ClientAreaOffset_UL" ValueType="FVECTOR2" ValueData="(2x2)" />
 			<Property ValueName="ClientAreaOffset_LL" ValueType="FVECTOR2" ValueData="(2x2)" />
 		</Widget>
 		
 		<Widget Name="CheckBox">
-			<State Name="Normal" />
+			<StateImage Name="Normal" Imagery="RndBtn_N" />
+			<StateImage Name="Hover" Imagery="RndBtn_H" />
+			<StateImage Name="Pressed" Imagery="RndBtn_P" />
+			<StateImage Name="Normal_Checked" Imagery="RndBtn_CN" />
+			<StateImage Name="Hover_Checked" Imagery="RndBtn_CH" />
+			<StateImage Name="Pressed_Checked" Imagery="RndBtn_CP" />
 		</Widget>
 	</Theme>
 </Amethyst>
+
+
+<OpenGUI>
+</OpenGUI>
