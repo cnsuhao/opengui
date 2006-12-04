@@ -472,6 +472,80 @@ namespace OpenGUI {
 		drawImageTiled( imageryPtr, rect, xtiles, ytiles );
 	}
 	//############################################################################
+	void BrushImagery::drawFace( const FacePtr& facePtr, const FRect& rect ) {
+		const FVector2& PPU = mParentBrush->getPPU();
+		const Face& face = *( facePtr.get() );
+
+		//get total available consumable area
+		FVector2 totalArea = rect.getSize();
+
+		// translate coverage area into pixels if we're supposed to
+		// and store the query result for later (we'll need it)
+		bool inPixels = false;
+		if ( facePtr->Metric == Face::FM_PIXELS )
+			inPixels = true;
+		if ( inPixels )
+			totalArea *= PPU;
+
+		FaceDimArray cols, rows;
+		const SliceList& sliceList = facePtr->getSlices();
+		facePtr->getColumnWidths( totalArea.x, cols );
+		facePtr->getRowHeights( totalArea.y, rows );
+
+
+		//Iterate over all slices and draw them
+		FRect sliceRect;
+		FVector2 pos;
+		FVector2 sizes;
+		SliceList::const_iterator iter, iterend = sliceList.end();
+		for ( iter = sliceList.begin(); iter != iterend; iter++ ) {
+			const Slice& slice = ( *iter );
+			if ( slice.Imagery ) { // not all slices have imagery to draw, so we can skip the ones that don't
+				// determine starting x position
+				pos.x = 0.0f;
+				for ( size_t i = 0; i < slice.CellCol; i++ )
+					pos.x += cols[i];
+
+				// determine starting y position
+				pos.y = 0.0f;
+				for ( size_t i = 0; i < slice.CellRow; i++ )
+					pos.y += rows[i];
+
+				//determine width
+				sizes.x = 0.0f;
+				for ( size_t i = 0; i <= slice.ColSpan; i++ )
+					sizes.x += cols[slice.CellCol + i];
+
+				//determine height
+				sizes.y = 0.0f;
+				for ( size_t i = 0; i <= slice.RowSpan; i++ )
+					sizes.y += rows[slice.CellRow + i];
+
+				if ( inPixels ) {
+					//convert back to units if necessary
+					pos /= PPU;
+					sizes /= PPU;
+				}
+
+				sliceRect.setPosition( pos );
+				sliceRect.setSize( sizes );
+				sliceRect.offset( rect.getPosition() );
+
+				//draw according to tiling
+				if ( slice.Tiled ) {
+					drawImageUnscaledAndTiled( slice.Imagery, sliceRect );
+				} else {
+					drawImage( slice.Imagery, sliceRect );
+				}
+			}
+		}
+	}
+	//############################################################################
+	void BrushImagery::drawFace( const FacePtr& facePtr, const FVector2& position, const FVector2& size ) {
+		FRect rect( position.x, position.y, position.x + size.x, position.y + size.y );
+		drawFace( facePtr, rect );
+	}
+	//############################################################################
 	//############################################################################
 
 

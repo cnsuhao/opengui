@@ -2,6 +2,7 @@
 
 <Amethyst>
 	<Theme Name="BlueGui">
-		
+		<Widget Name="Button">
+		</Widget>
 	</Theme>
 </Amethyst>

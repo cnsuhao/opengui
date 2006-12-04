@@ -286,6 +286,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_Face.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FaceDef.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Font.cpp"
 				>
 			</File>
@@ -541,6 +549,14 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Exports.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_Face.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FaceDef.h"
 				>
 			</File>
 			<File
