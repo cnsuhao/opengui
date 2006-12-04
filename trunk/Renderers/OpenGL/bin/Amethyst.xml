@@ -3,6 +3,9 @@
 <Amethyst>
 	<Theme Name="BlueGui">
 		<Widget Name="Button">
+		<State Name="Normal" Face="">
+		</Widget>
+		<Widget Name="RadioButton">
 		</Widget>
 	</Theme>
 </Amethyst>
