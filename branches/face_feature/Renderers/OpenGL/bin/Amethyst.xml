@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-
-<Amethyst>
-	<Theme Name="BlueGui">
-		<Widget Name="Button">
-		</Widget>
-	</Theme>
-</Amethyst>
