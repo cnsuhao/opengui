@@ -272,6 +272,14 @@ void Demo2App::preRun() {
 	pSH->setThumbImagery("GenericHScrollThumb1");
 	mScreen->Children.add_back(pSH, true);
 
+	Amethyst::ScrollBar_V *pSV = (Amethyst::ScrollBar_V *) Amethyst::ScrollBar_V::CreateScrollBar_VFactory();
+	pSV->setTop(430);
+	pSV->setLeft(550);
+	pSV->setHeight(150);
+	pSV->setWidth(35);
+	pSV->setImagery("GenericVScroll1");
+	pSV->setThumbImagery("GenericVScrollThumb1");
+	mScreen->Children.add_back(pSV, true);
 }
 
 

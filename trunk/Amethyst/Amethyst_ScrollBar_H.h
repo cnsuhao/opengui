@@ -3,7 +3,6 @@
 
 #include "OpenGUI.h"
 #include "Amethyst_Exports.h"
-#include "Amethyst_Frame.h"
 namespace OpenGUI {
 	namespace Amethyst {
 
@@ -29,6 +28,8 @@ namespace OpenGUI {
 
 			//! Sets the BG imagery. TEMP until face/themes get in 
 			void setImagery( std::string imageryName);
+			//! Sets the BG imagery. TEMP until face/themes get in 
+			std::string getImagery();
 			//! Sets the imagery for the thumb.
 			void setThumbImagery( std::string imageryName);
 			//! Gets the imagery for the thumb.
@@ -43,6 +44,11 @@ namespace OpenGUI {
 			void setLineSize(float p) {mLineSize = p;}
 			float getLineSize() {return mLineSize;}
 
+			void setInitialScrollTime(float t) {m_fInitialScrollTime = t;}
+			float getInitialScrollTime() {return m_fInitialScrollTime;}
+			void setScrollRepeatTime(float t) {m_fScrollRepeatTime = t;}
+			float getScrollRepeatTime() {return m_fScrollRepeatTime;}
+
 			static Widget* CreateScrollBar_HFactory();
 
 			void pageUp();
@@ -52,6 +58,12 @@ namespace OpenGUI {
 
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
+			//! "Tick" event
+			virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
+
+			float	m_fCountdownTime;
+			float	m_fInitialScrollTime;
+			float	m_fScrollRepeatTime;
 
 			void _positionThumb();
 
@@ -68,6 +80,7 @@ namespace OpenGUI {
 			bool m_bMousePaging;
 			FVector2 m_vMosueOffset;
 			FRect m_rThumbRect;
+			FVector2 m_vMousePosition;
 		};
 	} // namespace Amethyst{
 } // namespace OpenGUI{
