@@ -42,9 +42,9 @@ namespace OpenGUI {
 				can also be used to later retrieve the Imageset pointer via getImageset()
 			\return pointer to the newly created imageset, or 0 on failure.
 		*/
-		ImagesetPtr createImageset( std::string imageFilename );
+		ImagesetPtr createImageset( const std::string& imageFilename );
 		//! Static pass through function to createImageset()
-		static ImagesetPtr createImagesetEx( std::string imageFilename ) {
+		static ImagesetPtr createImagesetEx( const std::string& imageFilename ) {
 			return ImageryManager::getSingleton().createImageset( imageFilename );
 		}
 
@@ -73,10 +73,10 @@ namespace OpenGUI {
 
 			\returns On success the return value is the pointer to the Imageset created.
 		*/
-		ImagesetPtr createImagesetFromTexture( TexturePtr texture, std::string imageFilename = "" );
+		ImagesetPtr createImagesetFromTexture( TexturePtr texture, const std::string& imageFilename = "" );
 
 		//! Returns a pointer to the Imageset that was created using the given filename, or 0 on failure.
-		ImagesetPtr getImageset( std::string imageFilename );
+		ImagesetPtr getImageset( const std::string& imageFilename );
 
 		//! Returns a pointer to the Imageset that is based on the given \c texture, or 0 on failure.
 		ImagesetPtr getImagesetByTexture( TexturePtr texture );
@@ -84,13 +84,13 @@ namespace OpenGUI {
 		//! Destroys an Imageset.
 		void destroyImageset( ImagesetPtr pImageset );
 		//! Destroys an Imageset.
-		void destroyImageset( std::string imageFilename );
+		void destroyImageset( const std::string& imageFilename );
 		//! Destroys all Imagesets
 		void destroyAllImagesets();
 
 		//! Searches all Imagesets for imagery of the given name and returns the first instance found.
 		/*! \returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
-		ImageryPtr getImagery( std::string imageryName );
+		ImageryPtr getImagery( const std::string& imageryName );
 
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
