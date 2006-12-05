@@ -14,25 +14,25 @@
 	
 	<!-- Panel -->
 		<!-- Outset -->
-		<Imagery Name="Panel_O_UL" Left="208" Top="38" Width="2" Height="2" />
-		<Imagery Name="Panel_O_UM" Left="210" Top="38" Width="16" Height="2" />
-		<Imagery Name="Panel_O_UR" Left="226" Top="38" Width="2" Height="2" />
-		<Imagery Name="Panel_O_ML" Left="208" Top="40" Width="2" Height="16" />
-		<Imagery Name="Panel_O_MM" Left="210" Top="40" Width="16" Height="16" />
-		<Imagery Name="Panel_O_MR" Left="226" Top="40" Width="2" Height="16" />
-		<Imagery Name="Panel_O_LL" Left="208" Top="56" Width="2" Height="2" />
-		<Imagery Name="Panel_O_LM" Left="210" Top="56" Width="16" Height="2" />
-		<Imagery Name="Panel_O_LR" Left="226" Top="56" Width="2" Height="2" />
+		<Imagery Name="Panel_O_UL" Left="208" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_O_UM" Left="210" Top="41" Width="16" Height="2" />
+		<Imagery Name="Panel_O_UR" Left="226" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_O_ML" Left="208" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_O_MM" Left="210" Top="43" Width="16" Height="16" />
+		<Imagery Name="Panel_O_MR" Left="226" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_O_LL" Left="208" Top="59" Width="2" Height="2" />
+		<Imagery Name="Panel_O_LM" Left="210" Top="59" Width="16" Height="2" />
+		<Imagery Name="Panel_O_LR" Left="226" Top="59" Width="2" Height="2" />
 		<!-- Inset -->
-		<Imagery Name="Panel_I_UL" Left="230" Top="38" Width="2" Height="2" />
-		<Imagery Name="Panel_I_UM" Left="232" Top="38" Width="16" Height="2" />
-		<Imagery Name="Panel_I_UR" Left="248" Top="38" Width="2" Height="2" />
-		<Imagery Name="Panel_I_ML" Left="230" Top="40" Width="2" Height="16" />
-		<Imagery Name="Panel_I_MM" Left="232" Top="40" Width="16" Height="16" />
-		<Imagery Name="Panel_I_MR" Left="248" Top="40" Width="2" Height="16" />
-		<Imagery Name="Panel_I_LL" Left="230" Top="56" Width="2" Height="2" />
-		<Imagery Name="Panel_I_LM" Left="232" Top="56" Width="16" Height="2" />
-		<Imagery Name="Panel_I_LR" Left="248" Top="56" Width="2" Height="2" />
+		<Imagery Name="Panel_I_UL" Left="230" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_I_UM" Left="232" Top="41" Width="16" Height="2" />
+		<Imagery Name="Panel_I_UR" Left="248" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_I_ML" Left="230" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_I_MM" Left="232" Top="43" Width="16" Height="16" />
+		<Imagery Name="Panel_I_MR" Left="248" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_I_LL" Left="230" Top="59" Width="2" Height="2" />
+		<Imagery Name="Panel_I_LM" Left="232" Top="59" Width="16" Height="2" />
+		<Imagery Name="Panel_I_LR" Left="248" Top="59" Width="2" Height="2" />
 	
 	<!-- Cursors -->
 		<!-- Arrow -->
