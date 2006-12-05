@@ -10,6 +10,8 @@
 <Include File="BlueGui.xml" />
 <Include File="Generic.xml" />
 
+<Include File="BrassBalls.xml" />
+
 <OpenGUI>
 	<Face Name="GenericFrame" Metric="Units">
 		<Row>
@@ -36,7 +38,7 @@
 	<!-- a ready to use cursor -->
 	<CursorDef Name="Arrow" BaseName="Generic" BaseLibrary="OpenGUI">
 		<Property ValueName="Size" ValueType="FVECTOR2" ValueData="(20x20)" />
-		<Property ValueName="Imagery" ValueType="STRING" ValueData="BlueGuiCursorArrow" />
+		<Property ValueName="Imagery" ValueType="STRING" ValueData="BrassBalls.png:Arrow" />
 		<Property ValueName="Offset" ValueType="IVECTOR2" ValueData="(0x0)" />
 	</CursorDef>
 
