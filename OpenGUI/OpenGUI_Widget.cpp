@@ -412,7 +412,7 @@ namespace OpenGUI {
 		return event.Consumed;
 	}
 	//############################################################################
-	bool Widget::eventKey_Entered( char character ) {
+	bool Widget::eventKey_Pressed( char character ) {
 		Key_EventArgs event( character );
 		triggerEvent( "Key_Pressed", event );
 		return event.Consumed;

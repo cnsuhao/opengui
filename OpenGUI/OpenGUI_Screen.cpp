@@ -303,7 +303,7 @@ namespace OpenGUI {
 
 		bool retval = false;
 		m_KeyFocus->eventKey_Down( character );
-		retval = m_KeyFocus->eventKey_Entered( character );
+		retval = m_KeyFocus->eventKey_Pressed( character );
 		m_KeyFocus->eventKey_Up( character );
 		return retval;
 	}
