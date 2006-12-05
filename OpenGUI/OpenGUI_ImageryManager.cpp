@@ -145,6 +145,20 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	ImageryPtr ImageryManager::getImagery( const std::string& imageryName ) {
+		// test for fully qualified name lookups
+		size_t splitLoc = imageryName.find( ':' );
+		if ( splitLoc != std::string::npos ) {
+			// yep, we can do a FQN lookup, so let's do it
+			const std::string setName = imageryName.substr( 0, splitLoc );
+			const std::string imgName = imageryName.substr( splitLoc + 1 );
+			ImagesetPtr imgSet = getImageset( setName );
+			if ( imgSet ) {
+				return imgSet->getImagery( imgName );
+			}
+			return ImageryPtr( 0 ); // these aren't the droids you're looking for
+		}
+
+		// look up by brute force
 		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			ImageryPtr retptr = ( *iter )->getImagery( imageryName );

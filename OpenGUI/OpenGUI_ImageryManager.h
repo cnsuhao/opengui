@@ -88,8 +88,20 @@ namespace OpenGUI {
 		//! Destroys all Imagesets
 		void destroyAllImagesets();
 
-		//! Searches all Imagesets for imagery of the given name and returns the first instance found.
-		/*! \returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
+		//! Retrieves an Imagery by fully qualified name, or by first match on name alone
+		/*! This method provides 2 paths for Imagery lookup. The first method attempted is lookup by
+		fully qualified name. This is in the format "<Imageset_Name>:<Imagery_Name>", and if used will
+		provide a perfect lookup of the Imagery specified. Fully qualified name is identified by the
+		presence of the ':' character, and if this is found the function will only return a valid pointer
+		if that exact Imagery can be found.
+
+		The second method of lookup is used when the ':' character is not found in given the Imagery name.
+		This method searches all Imagesets for the first Imagery found with the given name. If an Imagery
+		is found it is immediately returned. This method is only useful if you can guarantee that the Imagery
+		you are searching for has a globally unique name, otherwise you may not get the Imagery you were
+		intending.
+
+		\returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
 		ImageryPtr getImagery( const std::string& imageryName );
 
 		//! A string list used by ImageryManager::getImagesetList()
