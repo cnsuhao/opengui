@@ -27,14 +27,25 @@ namespace OpenGUI {
 
 		class AMETHYST_API WidgetTheme {
 		public:
-			WidgetTheme() {}
-			~WidgetTheme() {}
+			WidgetTheme() {
+				/**/
+			}
+			~WidgetTheme() {
+				/**/
+			}
+			
 			void drawStateImage( const std::string& stateName, const FRect& rect, Brush& brush ) const {
 				( mStateImageMap.find( stateName ) )->second.draw( rect, brush );
 			}
 			typedef std::map<std::string, StateImage> StateImageMap;
 			StateImageMap mStateImageMap;
 
+			const Value& getValue( const std::string& name, const Value& defaultValue ) const {
+				ValueMap::const_iterator iter = mValueMap.find( name );
+				if ( iter == mValueMap.end() )
+					return defaultValue;
+				return iter->second;
+			}
 			typedef std::map<std::string, Value> ValueMap;
 			ValueMap mValueMap;
 		};
