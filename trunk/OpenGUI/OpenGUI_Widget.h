@@ -163,7 +163,7 @@ namespace OpenGUI {
 		//! Called when the given \c character is pressed down
 		bool eventKey_Down( char character );
 		//! Called when the given \c character is entered
-		bool eventKey_Entered( char character );
+		bool eventKey_Pressed( char character );
 		//! Called then this widget receives key focus
 		void eventKey_Focused( Widget* cur, Widget* prev );
 		//! Called then this widget loses key focus
