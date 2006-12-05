@@ -39,38 +39,38 @@
 		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
 	</Imageset>
 	
-	<Face Name="BrassBalls_Panel_Outset" Metric="Units">
+	<Face Name="BrassBalls:Panel_Outset" Metric="Units">
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_UL" Width="2" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_O_UM" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_O_UR" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_UR" Width="2" Height="2" />
 		</Row>
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_ML" Width="2" />
-			<Slice Imagery="BrassBalls.png/Panel_O_MM" GrowWidth="true" GrowHeight="true" />
-			<Slice Imagery="BrassBalls.png/Panel_O_MR" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Panel_O_MR" Width="2" />
 		</Row>		
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_O_LL" Width="2" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_O_LM" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_O_LR" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_LR" Width="2" Height="2" />
 		</Row>
 	</Face>
-	<Face Name="BrassBalls_Panel_Inset" Metric="Units">
+	<Face Name="BrassBalls:Panel_Inset" Metric="Units">
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_UL" Width="2" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_I_UM" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_I_UR" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_UR" Width="2" Height="2" />
 		</Row>
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_ML" Width="2" />
-			<Slice Imagery="BrassBalls.png/Panel_I_MM" GrowWidth="true" GrowHeight="true" />
-			<Slice Imagery="BrassBalls.png/Panel_I_MR" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Panel_I_MR" Width="2" />
 		</Row>		
 		<Row>
-			<Slice Imagery="BrassBalls.png/Panel_I_LL" Width="2" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_I_LM" Height="2" />
-			<Slice Imagery="BrassBalls.png/Panel_I_LR" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_LR" Width="2" Height="2" />
 		</Row>
 	</Face>
 
@@ -79,19 +79,19 @@
 <Amethyst>
 	<Theme Name="BrassBalls">
 		<Widget Name="Panel">
-			<StateImage Name="Inset" Face="BrassBalls_Panel_Inset" />
-			<StateImage Name="Outset" Face="BrassBalls_Panel_Outset" />
+			<StateImage Name="Inset" Face="BrassBalls:Panel_Inset" />
+			<StateImage Name="Outset" Face="BrassBalls:Panel_Outset" />
 			<Property ValueName="ClientAreaOffset_UL" ValueType="FVECTOR2" ValueData="(2x2)" />
 			<Property ValueName="ClientAreaOffset_LL" ValueType="FVECTOR2" ValueData="(2x2)" />
 		</Widget>
 		
 		<Widget Name="CheckBox">
-			<StateImage Name="Normal" Imagery="RndBtn_N" />
-			<StateImage Name="Hover" Imagery="RndBtn_H" />
-			<StateImage Name="Pressed" Imagery="RndBtn_P" />
-			<StateImage Name="Normal_Checked" Imagery="RndBtn_CN" />
-			<StateImage Name="Hover_Checked" Imagery="RndBtn_CH" />
-			<StateImage Name="Pressed_Checked" Imagery="RndBtn_CP" />
+			<StateImage Name="Normal" Imagery="BrassBalls.png:RndBtn_N" />
+			<StateImage Name="Hover" Imagery="BrassBalls.png:RndBtn_H" />
+			<StateImage Name="Pressed" Imagery="BrassBalls.png:RndBtn_P" />
+			<StateImage Name="Normal_Checked" Imagery="BrassBalls.png:RndBtn_CN" />
+			<StateImage Name="Hover_Checked" Imagery="BrassBalls.png:RndBtn_CH" />
+			<StateImage Name="Pressed_Checked" Imagery="BrassBalls.png:RndBtn_CP" />
 		</Widget>
 	</Theme>
 </Amethyst>
