@@ -35,6 +35,10 @@ namespace OpenGUI {
 			std::string mDefaultTheme;
 			typedef std::map<std::string, Theme> ThemeMap;
 			ThemeMap mThemeMap;
+
+			// XML handlers for <Theme> tags
+			static bool _Theme_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
+			static bool _Theme_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
 		};
 
 	} // namespace Amethyst{

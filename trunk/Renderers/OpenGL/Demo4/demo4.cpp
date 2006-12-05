@@ -1,7 +1,7 @@
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "Renderer_OpenGL.h"
-
+#include "Amethyst.h"
 
 class Demo4App : public DemoApp {
 public:
