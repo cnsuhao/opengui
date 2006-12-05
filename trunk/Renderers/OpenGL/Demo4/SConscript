@@ -13,6 +13,7 @@ Source = fnmatch.filter(files,"*.cpp")
 
 CPPPATH = """
 	#/OpenGUI
+	#/Amethyst
 	../Renderer_OpenGL
 	../deps/glfw/include
 	../deps/corona/src
@@ -34,6 +35,7 @@ LIBPATH_R = """
 LIBS_D = """
 	OpenGUI_d
 	Renderer_OpenGL_d
+	Amethyst_d
 	corona_d
 	glfw_static_d
 	"""
@@ -41,6 +43,7 @@ LIBS_D = """
 LIBS_R = """
 	OpenGUI
 	Renderer_OpenGL
+	Amethyst
 	corona
 	glfw_static
 	"""
