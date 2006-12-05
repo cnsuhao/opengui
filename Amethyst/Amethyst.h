@@ -5,4 +5,7 @@
 
 #include "Amethyst_Exports.h"
 
+#include "Amethyst_Theme.h"
+#include "Amethyst_ThemeManager.h"
+
 #endif // Amethyst_h__
