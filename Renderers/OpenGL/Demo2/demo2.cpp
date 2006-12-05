@@ -12,6 +12,7 @@
 #include "../Amethyst/Amethyst_ListBox.h"
 #include "../Amethyst/Amethyst_ScrollBar_H.h"
 #include "../Amethyst/Amethyst_ScrollBar_V.h"
+#include "../Amethyst/Amethyst_TextBox.h"
 
 #include "OpenGUI.h"
 #include "OpenGUI_EventHandler.h"
@@ -27,6 +28,8 @@ public:
 	}
 	virtual void mousePositionCallback( int x, int y );
 	virtual void mouseButtonCallback( int button, int action );
+	virtual void keyCallback( int key, int action );
+
 private:
 	//OpenGUI::Widgets::TextLabel* mLabel;
 	OpenGUI::TimerPtr mTimer;
@@ -280,6 +283,16 @@ void Demo2App::preRun() {
 	pSV->setImagery("GenericVScroll1");
 	pSV->setThumbImagery("GenericVScrollThumb1");
 	mScreen->Children.add_back(pSV, true);
+
+
+	Amethyst::TextBox *pBox = (Amethyst::TextBox *) Amethyst::TextBox::createTextBoxFactory();
+	pBox->setTop(400);
+	pBox->setLeft(370);
+	pBox->setHeight(35);
+	pBox->setWidth(150);
+	pBox->setImagery("GenericHScroll1");
+	mScreen->Children.add_back(pBox, true);
+
 }
 
 
@@ -304,6 +317,13 @@ void Demo2App::mouseButtonCallback( int button, int action ) {
 			mScreen->injectCursorRelease();
 	}
 }
+
+void Demo2App::keyCallback( int key, int action )
+{
+	if(action)
+		mScreen->injectCharacter(key);
+}
+
 
 int main( void ) {
 	Demo2App app;

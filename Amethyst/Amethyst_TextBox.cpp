@@ -5,18 +5,19 @@ namespace OpenGUI {
 
 		//! Constructor
 		TextBox::TextBox() {
-//			if(gSimpleButton_ObjectAccessorList.getParent() == NULL)
-//				gSimpleButton_ObjectAccessorList.setParent(Widget::getAccessors());
+//			if(gTextBox_ObjectAccessorList.getParent() == NULL)
+//				gTextBox_ObjectAccessorList.setParent(Widget::getAccessors());
 
 			mText = "";
-			m_alignh = TextAlignment::ALIGN_CENTER;
+			m_alignh = TextAlignment::ALIGN_LEFT;
 			m_alignv = TextAlignment::ALIGN_CENTER;
 			mFont = Font( "pecot", 10 );
+
+
 		}
 
 		//! virtual Destructor
 		TextBox::~TextBox() {
-			/**/
 		}
 
 		//! Sets the normal button imagery.
@@ -76,6 +77,7 @@ namespace OpenGUI {
 
 		//! Called when cursor was pressed and released within this Control
 		void TextBox::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
+			grabKeyFocus();
 			OpenGUI::Control::onCursor_Click( sender, evtArgs );
 		}
 		//! Called when the cursor enters this Control
@@ -89,6 +91,7 @@ namespace OpenGUI {
 
 		//! "Cursor_Press" event
 		void TextBox::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+			grabKeyFocus();
 			Control::onCursor_Press( sender, evtArgs );
 		}
 		//! "Cursor_Release" event
@@ -96,6 +99,46 @@ namespace OpenGUI {
 			Control::onCursor_Release( sender, evtArgs );
 		}
 
+		//! "Key_Up" event
+		void TextBox::onKey_Up( Object* sender, Key_EventArgs& evtArgs )
+		{
+			Control::onKey_Up( sender, evtArgs );
+		}
+		//! "Key_Down" event
+		void TextBox::onKey_Down( Object* sender, Key_EventArgs& evtArgs )
+		{
+			Control::onKey_Down( sender, evtArgs );
+		}
+		//! "Key_Pressed" event
+		void TextBox::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs )
+		{
+			mText = mText + evtArgs.Character;
+			evtArgs.eat();
+			Control::onKey_Pressed( sender, evtArgs );
+		}
+		//! "Key_Focused" event
+		void TextBox::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs )
+		{
+			Control::onKey_Focused( sender, evtArgs );
+		}
+		//! "Key_FocusLost" event
+		void TextBox::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs )
+		{
+			Control::onKey_FocusLost( sender, evtArgs );
+		}
+
+		//! "Attached" event
+		void TextBox::onAttached( Object* sender, Attach_EventArgs& evtArgs )
+		{
+			Widget::onAttached(sender, evtArgs );
+			grabKeyFocus();
+		}
+		//! "Detached" event
+		void TextBox::onDetached( Object* sender, Attach_EventArgs& evtArgs )
+		{
+			releaseKeyFocus();
+			Widget::onDetached(sender, evtArgs );
+		}
 
 	} // namespace Amethyst{
 } // namespace OpenGUI{
