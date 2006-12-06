@@ -42,6 +42,9 @@ namespace OpenGUI {
 			case T_STRING:
 				setValue( copy.getValueAsString() );
 				break;
+			case T_FONT:
+				setValue( copy.getValueAsFont() );
+				break;
 			}
 		}
 		setName( copy.getName() );
