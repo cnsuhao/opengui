@@ -7,7 +7,7 @@ Within %OpenGUI there are several object types that can be converted to and from
 Throughout %OpenGUI, all string readable and writable objects are converted through the \ref OpenGUI::StrConv "StrConv" class. The following is a guide to the input that StrConv expects, as well as what you can expect the output of StrConv to look like.
 
 \note
-Whitespace is present in many of the string formats. This whitespace is optional. The presence or lack of whitespace should not affect processing. All other non-base type decorations such as <pre>{ } ( ) x X # @ :</pre> are used for structure verification and delimiting, and are required.
+Whitespace is present in many of the string formats. This whitespace is optional. The presence or lack of whitespace should not affect processing. All other non-base type decorations such as <pre>{ } ( ) x X # @ | :</pre> are used for structure verification and delimiting, and are required.
 
 
 <hr>
@@ -94,6 +94,29 @@ Whitespace is present in many of the string formats. This whitespace is optional
 	\e font_name \b @ \e font_size
 
 	The \c font_name and \c font_size are sent directly to the \ref OpenGUI::Font::Font() "Font() constructor".
+
+
+<hr>
+\section FormatTextAlignment TextAlignment
+	- Conversion functions: OpenGUI::StrConv::toTextAlignment(), OpenGUI::StrConv::fromTextAlignment()
+	- Example: Left | Bottom
+	 
+	General format:<BR>
+	\e horizontal_alignment \b | \e vertical_alignment
+
+	Horizontal alignment must be one of:
+	 - Left
+	 - Center
+	 - Right
+	 - Justified
+	
+	Vertical alignment must be one of:
+	 - Top
+	 - Center
+	 - Bottom
+	 - Justified
+	 
+	 Case is irrelevant, but watch your spelling.
 
 
 */

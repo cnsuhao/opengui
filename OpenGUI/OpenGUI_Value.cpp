@@ -45,6 +45,11 @@ namespace OpenGUI {
 			case T_FONT:
 				setValue( copy.getValueAsFont() );
 				break;
+			case T_TEXTALIGNMENT:
+				setValue( copy.getValueAsTextAlignment() );
+				break;
+			default:
+				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
 			}
 		}
 		setName( copy.getName() );
@@ -105,6 +110,18 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	Value::Value( const Color& value, const std::string& Name ) {
+		constructor();
+		setValue( value );
+		setName( Name );
+	}
+	//#####################################################################
+	Value::Value( const Font& value, const std::string& Name ) {
+		constructor();
+		setValue( value );
+		setName( Name );
+	}
+	//#####################################################################
+	Value::Value( const TextAlignment& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
@@ -315,8 +332,11 @@ namespace OpenGUI {
 			case T_FONT:
 				if ( mFont ) delete mFont;
 				break;
+			case T_TEXTALIGNMENT:
+				if ( mTextAlignment ) delete mTextAlignment;
+				break;
 			default:
-				if ( mRaw ) delete mRaw;
+				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
 			}
 			mRaw = 0;
 		}
@@ -360,6 +380,9 @@ namespace OpenGUI {
 				break;
 			case T_FONT:
 				setValue( right.getValueAsFont() );
+				break;
+			case T_TEXTALIGNMENT:
+				setValue( right.getValueAsTextAlignment() );
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
@@ -415,6 +438,9 @@ namespace OpenGUI {
 			break;
 		case T_FONT:
 			return right.getValueAsFont() == ( *mFont );
+			break;
+		case T_TEXTALIGNMENT:
+			return right.getValueAsTextAlignment() == ( *mTextAlignment );
 			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__ );
@@ -697,6 +723,14 @@ namespace OpenGUI {
 		case T_STRING:
 			return getValueAsString();
 			break;
+		case T_FONT:
+			StrConv::fromFont( getValueAsFont(), ret );
+			return ret;
+			break;
+		case T_TEXTALIGNMENT:
+			StrConv::fromTextAlignment( getValueAsTextAlignment(), ret );
+			return ret;
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
@@ -730,6 +764,7 @@ namespace OpenGUI {
 	  - COLOR
 	  - STRING
 	  - FONT
+	  - TEXTALIGNMENT
 
 	  \see \ref StringFormats for further information on the text formatting syntax of %OpenGUI objects.
 	*/
@@ -776,6 +811,9 @@ namespace OpenGUI {
 		case T_FONT:
 			setValueAsFont( valuestr );
 			break;
+		case T_TEXTALIGNMENT:
+			setValueAsTextAlignment( valuestr );
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unhandled type", __FUNCTION__ );
 		}
@@ -813,6 +851,9 @@ namespace OpenGUI {
 		case T_FONT:
 			return "FONT";
 			break;
+		case T_TEXTALIGNMENT:
+			return "TEXTALIGNMENT";
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
@@ -846,7 +887,29 @@ namespace OpenGUI {
 		if ( type == "FONT" )
 			return T_FONT;
 
+		if ( type == "TEXTALIGNMENT" )
+			return T_TEXTALIGNMENT;
+
 		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Given string does not match a known type: " + type, __FUNCTION__ );
+	}
+	//#####################################################################
+	void Value::setValue( const TextAlignment& textAlignment ) {
+		clearValue();
+		mType = T_TEXTALIGNMENT;
+		mTextAlignment = new TextAlignment( textAlignment );
+		mHasValue = true;
+	}
+	//#####################################################################
+	TextAlignment Value::getValueAsTextAlignment() const {
+		if ( !isSet() || getType() != T_TEXTALIGNMENT )
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a TextAlignment", __FUNCTION__ );
+		return *mTextAlignment;
+	}
+	//#####################################################################
+	void Value::setValueAsTextAlignment( const std::string& textAlignmentStr ) {
+		TextAlignment value;
+		StrConv::toTextAlignment( textAlignmentStr, value );
+		setValue( value );
 	}
 	//#####################################################################
 

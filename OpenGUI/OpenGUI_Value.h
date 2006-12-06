@@ -49,6 +49,10 @@ namespace OpenGUI {
 		Value( const IRect& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const Color& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const Font& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const TextAlignment& value, const std::string& Name = "" );
 //@}
 
 		//! gets the name of this Value
@@ -71,7 +75,8 @@ namespace OpenGUI {
 			T_IVECTOR2 = 6, //!< IVector2 value type
 			T_IRECT = 7, //!< IRect value type
 			T_COLOR = 8, //!< Color value type
-			T_FONT = 9 //!< Font value type
+			T_FONT = 9, //!< Font value type
+			T_TEXTALIGNMENT = 10 //!< TextAlignment value type
 		};
 
 		//! Returns the type of this value
@@ -120,6 +125,8 @@ namespace OpenGUI {
 		void setValue( const Color& color );
 		//! Sets the value, stored value is a copy
 		void setValue( const Font& font );
+		//! Sets the value, stored value is a copy
+		void setValue( const TextAlignment& textAlignment );
 //@}
 
 //!\name Get value as explicit type
@@ -146,6 +153,8 @@ namespace OpenGUI {
 		Color getValueAsColor() const;
 		//! Gets the stored value, throws exception if no value is stored
 		Font getValueAsFont() const;
+		//! Gets the stored value, throws exception if no value is stored
+		TextAlignment getValueAsTextAlignment() const;
 //@}
 
 //!\name Set from string with explicit type conversion
@@ -170,6 +179,8 @@ namespace OpenGUI {
 		void setValueAsBool( const std::string& boolStr );
 		//! Sets the value from a string, parsed into a Font
 		void setValueAsFont( const std::string& fontStr );
+		//! Sets the value from a string, parsed into a TextAlignment
+		void setValueAsTextAlignment( const std::string& textAlignmentStr );
 //@}
 
 //!\name Purely string based functions
@@ -201,6 +212,7 @@ namespace OpenGUI {
 			IRect* mIRect;
 			Color* mColor;
 			Font* mFont;
+			TextAlignment* mTextAlignment;
 		};
 		std::string mName;
 
