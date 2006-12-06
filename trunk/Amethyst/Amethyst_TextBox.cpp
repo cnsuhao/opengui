@@ -64,7 +64,7 @@ namespace OpenGUI {
 			if ( !mImageryPtr.isNull() ) {
 				Brush& b = evtArgs.brush;
 				b.Image.drawImage( mImageryPtr, getRect() );
-				b.Text.drawTextArea( mText, getRect(), mFont, true, m_alignh, m_alignv );
+				b.Text.drawTextArea( mText, getRect(), mFont, true, TextAlignment(m_alignh, m_alignv) );
 			}
 		}
 

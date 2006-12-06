@@ -372,7 +372,7 @@ namespace OpenGUI {
 				const float scaleX = getRect().getWidth() / (( float )pCurrentImage->getImagesetRect().getWidth() ) ;
 				const float scaleY = getRect().getWidth()  / (( float )pCurrentImage->getImagesetRect().getHeight() );
 				b.Image.drawImage( pCurrentImage, getRect() );
-				b.Text.drawTextArea( mText, getRect(), mFont, true, m_alignh, m_alignv );
+				b.Text.drawTextArea( mText, getRect(), mFont, true, TextAlignment(m_alignh, m_alignv) );
 			}
 		}
 

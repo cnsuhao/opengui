@@ -213,7 +213,7 @@ namespace OpenGUI {
 			char buf[16];
 			sprintf(buf, "%3.0f%%",mCurrentValue*100.0f);
 			std::string pctText = buf;
-			b.Text.drawTextArea( pctText, getRect(), mFont, false, TextAlignment::ALIGN_CENTER, TextAlignment::ALIGN_CENTER );
+			b.Text.drawTextArea( pctText, getRect(), mFont, false, TextAlignment(TextAlignment::ALIGN_CENTER) );
 		}
 
 		void ProgressBar::onResized( Object* sender, Resized_EventArgs& evtArgs )

@@ -26,8 +26,6 @@ using namespace OpenGUI;
 class SimpleText: public Control {
 public:
 	SimpleText() {
-		mVAlign = TextAlignment::ALIGN_TOP;
-		mHAlign = TextAlignment::ALIGN_LEFT;
 		mAutoWrap = false;
 	}
 	virtual ~SimpleText() {}
@@ -45,25 +43,23 @@ public:
 	const Font& getFont() const {
 		return mFont;
 	}
-	void setAlignment( TextAlignment h_align, TextAlignment v_align ) {
+	void setAlignment( TextAlignment align ) {
 		invalidate();
-		mVAlign = v_align;
-		mHAlign = h_align;
+		mAlign = align;
 	}
-	void setWrap(bool wrap){
+	void setWrap( bool wrap ) {
 		invalidate();
 		mAutoWrap = wrap;
 	}
 protected:
 	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		Brush& b = evtArgs.brush;
-		b.Text.drawTextArea( mText, getRect(), mFont, mAutoWrap, mHAlign, mVAlign );
+		b.Text.drawTextArea( mText, getRect(), mFont, mAutoWrap, mAlign );
 	}
 private:
 	std::string mText;
 	Font mFont;
-	TextAlignment mVAlign;
-	TextAlignment mHAlign;
+	TextAlignment mAlign;
 	bool mAutoWrap;
 };
 
@@ -82,8 +78,8 @@ void Demo1App::preRun() {
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	Viewport* v = (static_cast<Renderer_OpenGL*>(Renderer::getSingletonPtr()))->getDefaultViewport();
-	mScreen->setViewport(v);
+	Viewport* v = ( static_cast<Renderer_OpenGL*>( Renderer::getSingletonPtr() ) )->getDefaultViewport();
+	mScreen->setViewport( v );
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
 	mScreen->setCursor( cursorPtr );
 	mScreen->enableCursor();
@@ -92,9 +88,9 @@ void Demo1App::preRun() {
 	mTach->setName( "Tachometer" );
 	mTach->setBackgroundImagery( "TachBG" );
 	mTach->setNeedleImagery( "TachNeedle" );
-	mTach->setNeedleStartAngle(135.0f);
-	mTach->setNeedleMaxValue(900.0f);
-	mTach->setNeedleSweepAngle(225.0f);
+	mTach->setNeedleStartAngle( 135.0f );
+	mTach->setNeedleMaxValue( 900.0f );
+	mTach->setNeedleSweepAngle( 225.0f );
 	mTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	mTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	mTach->setNeedleValue( 0.0f );
@@ -111,7 +107,7 @@ void Demo1App::preRun() {
 	headerText->setLeft( 0 );
 	headerText->setWidth( 400 );
 	headerText->setHeight( 60 );
-	headerText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	headerText->setAlignment( TextAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP ) );
 	mScreen->Children.add_back( headerText, true );
 
 	SimpleText* statText = new SimpleText();
@@ -123,7 +119,7 @@ void Demo1App::preRun() {
 	statText->setLeft( 500 );
 	statText->setWidth( 400 );
 	statText->setHeight( 60 );
-	statText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	statText->setAlignment( TextAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP ) );
 	mScreen->Children.add_back( statText, true );
 
 	MyWnd* wnd = new MyWnd();
@@ -137,13 +133,13 @@ void Demo1App::preRun() {
 	SimpleText* wndText = new SimpleText();
 	wndText->setName( "wndText" );
 	wndText->setFont( Font( "pecot", 12 ) );
-	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well.");
-	wndText->setWrap(true);
+	wndText->setText( "The contents of this small window are cached. The mini-tach shows your FPS as well." );
+	wndText->setWrap( true );
 	wndText->setTop( 0 );
 	wndText->setLeft( 5 );
 	wndText->setWidth( 200 );
 	wndText->setHeight( 200 );
-	wndText->setAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+	wndText->setAlignment( TextAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP ) );
 	wnd->Children.add_back( wndText, true );
 	//wnd->setVisible(false);
 
@@ -151,9 +147,9 @@ void Demo1App::preRun() {
 	wndTach->setName( "wndTach" );
 	wndTach->setBackgroundImagery( "TachBG" );
 	wndTach->setNeedleImagery( "TachNeedle" );
-	wndTach->setNeedleStartAngle(135.0f);
-	wndTach->setNeedleMaxValue(900.0f);
-	wndTach->setNeedleSweepAngle(225.0f);
+	wndTach->setNeedleStartAngle( 135.0f );
+	wndTach->setNeedleMaxValue( 900.0f );
+	wndTach->setNeedleSweepAngle( 225.0f );
 	wndTach->setNeedlePivot( FVector2( 0.5f, 0.5f ) );
 	wndTach->setNeedleAnchor( FVector2( 0.10f, 0.50f ) );
 	wndTach->setNeedleValue( 0.0f );
