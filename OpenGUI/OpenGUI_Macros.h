@@ -56,7 +56,7 @@ public: \
 CLASS_NAME
 
 //! Helper macro for quick creation of generic string properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -67,7 +67,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_STRING, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsString )
 
 //! Helper macro for quick creation of generic boolean properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -78,7 +78,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_BOOL, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsBool )
 
 //! Helper macro for quick creation of generic float properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -89,7 +89,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_FLOAT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsFloat )
 
 //! Helper macro for quick creation of generic FVector2 properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -100,7 +100,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_FVECTOR2, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsFVector2 )
 
 //! Helper macro for quick creation of generic FRect properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -111,7 +111,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_FRECT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsFRect )
 
 //! Helper macro for quick creation of generic integer properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -122,7 +122,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_INTEGER, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsInt )
 
 //! Helper macro for quick creation of generic IVector2 properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -133,7 +133,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_IVECTOR2, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsIVector2 )
 
 //! Helper macro for quick creation of generic IRect properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -144,7 +144,7 @@ CLASS_NAME
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_IRECT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsIRect )
 
 //! Helper macro for quick creation of generic Color properties for Object derived classes.
-/*! 
+/*!
 \param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
 \param PROPERTY_NAME A string literal that will be used as the name of the property
 \param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
@@ -153,6 +153,28 @@ CLASS_NAME
 */
 #define SimpleProperty_Color(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_COLOR, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsColor )
+
+//! Helper macro for quick creation of generic Font properties for Object derived classes.
+/*!
+\param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
+\param PROPERTY_NAME A string literal that will be used as the name of the property
+\param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
+\param GETTER The name of the TARGET_OBJECT_CLASS method that is used to get the current value of the property
+\param SETTER The name of the TARGET_OBJECT_CLASS method that is used to set the value of the property
+*/
+#define SimpleProperty_Font(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
+	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_FONT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsFont )
+
+//! Helper macro for quick creation of generic TextAlignment properties for Object derived classes.
+/*!
+\param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
+\param PROPERTY_NAME A string literal that will be used as the name of the property
+\param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
+\param GETTER The name of the TARGET_OBJECT_CLASS method that is used to get the current value of the property
+\param SETTER The name of the TARGET_OBJECT_CLASS method that is used to set the value of the property
+*/
+#define SimpleProperty_TextAlignment(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
+	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_TEXTALIGNMENT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsTextAlignment )
 
 /*!
 @}
