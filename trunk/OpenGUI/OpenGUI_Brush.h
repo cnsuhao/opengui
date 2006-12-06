@@ -102,7 +102,7 @@ namespace OpenGUI {
 		void drawText( const std::string& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
 
 		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
-		void drawTextArea( const std::string& text, const FRect& area, Font& font, bool wrap = false, TextAlignment horizAlign = TextAlignment::ALIGN_LEFT, TextAlignment vertAlign = TextAlignment::ALIGN_TOP );
+		void drawTextArea( const std::string& text, const FRect& area, Font& font, bool wrap = false, const TextAlignment alignment = TextAlignment() );
 
 		//! draws the given \c character at the given \c position using the given \c font.
 		void drawCharacter( const char character, Font& font );
