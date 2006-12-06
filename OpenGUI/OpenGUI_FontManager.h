@@ -5,6 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Font.h"
+#include "OpenGUI_FontSet.h"
 #include "OpenGUI_FontGlyph.h"
 #include "OpenGUI_XML.h"
 

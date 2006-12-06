@@ -310,6 +310,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_FontSet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_FormManager.cpp"
 				>
 			</File>
@@ -577,6 +581,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_FontManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_FontSet.h"
 				>
 			</File>
 			<File

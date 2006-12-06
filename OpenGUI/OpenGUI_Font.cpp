@@ -2,17 +2,13 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
-#include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Exports.h"
+#include "OpenGUI_Font.h"
+
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
-#include "OpenGUI_Types.h"
 #include "OpenGUI_FontManager.h"
-#include "OpenGUI_Font.h"
-#include "OpenGUI_FontCache.h"
-#include "OpenGUI_TextureDataRect.h"
-#include "OpenGUI_System.h"
-#include "OpenGUI_ResourceProvider.h"
+#include "OpenGUI_FontSet.h"
+
 
 namespace OpenGUI {
 	//############################################################################
@@ -89,236 +85,68 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	//////////////////////////////////////////////////////////////////////////////
-	//############################################################################
-	void FontSet::finalize() {
-		delete this;
-	}
-	//############################################################################
-	FontSet::FontSet( const std::string& sourceFilename, const std::string& fontName ) {
-		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << fontName << ") [" << sourceFilename << "]"
-		<< " Creation" << Log::endlog;
+	/*! Equality for Font handles comes in two stages. If both of the handles are
+	bound, then they are only equal if the two Fonts are bound to the same FontSet
+	at the same size. If either of the Fonts is not bound, then copies of the
+	compared Fonts are created, and a bind on the copies is attempted. The result
+	is then determined by comparison of the fully bound copies. If one of the Fonts
+	binds while the other fails, they are obviously not equal and are returned as such.
 
-		mFilename = sourceFilename;
-		mFontName = fontName;
-
-		mFT_Face = 0;
-		mFontResource = new Resource;
-
-		ResourceProvider* resProvider = System::getSingleton()._getResourceProvider();
-		resProvider->loadResource( sourceFilename, *mFontResource );
-
-		FT_Library* library = ( FT_Library* ) FontManager::getSingleton().mFTLibrary;
-		FT_Face* tFace = new FT_Face;
-
-		FT_Open_Args ftOpenArgs;
-		ftOpenArgs.flags = FT_OPEN_MEMORY;
-		ftOpenArgs.memory_base = mFontResource->getData();
-		ftOpenArgs.memory_size = mFontResource->getSize();
-		FT_Error error = FT_Open_Face( *library, &ftOpenArgs, 0, tFace );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR )
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			delete tFace;
-			tFace = 0;
-			delete mFontResource;
-			mFontResource = 0;
-			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Fatal Error loading Font. Freetype error occurred during Font creation.", "FontSet::Font" );
-		}
-		mFT_Face = tFace;
-	}
-	//############################################################################
-	FontSet::~FontSet() {
-		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << mFontName << ") [" << mFilename << "]"
-		<< " Destruction" << Log::endlog;
-		if ( FontManager::getSingletonPtr() )
-			if ( FontManager::getSingleton().mFontCache ) {
-				FontManager::getSingleton().mFontCache->FlushFont( this );
+	In extreme cases, where both of the Fonts cannot be bound, they are compared by
+	their stored FontSet name and point size.
+	*/
+	bool Font::operator ==( const Font& right ) {
+		if ( isBound() && right.isBound() ) {
+			return ( m_FontSetPtr == right.m_FontSetPtr ) && ( m_FontSize == right.m_FontSize );
+		} else {
+			bool freeLeft = false;
+			bool freeRight = false;
+			Font* leftPtr = this;
+			Font* rightPtr = const_cast<Font*>( &right );
+			// get a bound leftPtr if we can
+			if ( !isBound() ) {
+				leftPtr = new Font( m_FontName, m_FontSize );
+				if ( leftPtr->_tryBind() ) {
+					freeLeft = true;
+				} else {
+					delete leftPtr;
+					leftPtr = this;
+					freeLeft = false;
+				}
 			}
 
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
-		if ( tFace ) {
-			FT_Error error = FT_Done_Face( *tFace );
-			if ( error ) {
-				LogManager::SlogMsg( "Font", OGLL_ERR )
-				<< "Error unloading Font - "
-				<< "FreeType 2 Error: (" << (( int )error ) << ") "
-				<< FontManager::getSingleton()._GetFTErrorString( error )
-				<< Log::endlog;
+			//get a bound rightPtr if we can
+			if ( !right.isBound() ) {
+				rightPtr = new Font( right.m_FontName, right.m_FontSize );
+				if ( rightPtr->_tryBind() ) {
+					freeRight = true;
+				} else {
+					delete rightPtr;
+					rightPtr = const_cast<Font*>( &right );
+					freeRight = false;
+				}
 			}
-			delete tFace;
-		}
-		mFT_Face = 0;
-		if ( mFontResource )
-			delete mFontResource;
-		mFontResource = 0;
-	}
-	//############################################################################
-	void FontSet::renderGlyph( char glyph_charCode, const IVector2& pixelSize,
-							   TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics ) {
-		FT_Error error;
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
 
-		//set the glyph size requested
-		error = FT_Set_Pixel_Sizes( *tFace, pixelSize.x, pixelSize.y );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[renderGlyph] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return;
-		}
-		error = FT_Load_Char( *tFace, glyph_charCode, FT_LOAD_RENDER );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[renderGlyph] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return;
-		}
-
-		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
-		FT_Glyph_Metrics* metrics = &(( *tFace )->glyph->metrics );
-		destGlyphMetrics.width = metrics->width / 64;
-		destGlyphMetrics.height = metrics->height / 64;
-		destGlyphMetrics.horiBearingX = metrics->horiBearingX / 64;
-		destGlyphMetrics.horiBearingY = metrics->horiBearingY / 64;
-		destGlyphMetrics.horiAdvance = metrics->horiAdvance / 64;
-		destGlyphMetrics.vertBearingX = metrics->vertBearingX / 64;
-		destGlyphMetrics.vertBearingY = metrics->vertBearingY / 64;
-		destGlyphMetrics.vertAdvance = metrics->vertAdvance / 64;
-		destGlyphMetrics.horizLineSpacing = sMetrics->height / 64;
-
-
-		FT_Bitmap* bitmap = &(( *tFace )->glyph->bitmap ); //easier pointer
-
-		//Resize the destTDR to perfectly hold the output
-		destTDR->setSize( IVector2( bitmap->width, bitmap->rows ), TDRColor() );
-
-		//Copy the rendered bitmap to the TDR buffer
-		IVector2 writeLoc;
-		TDRColor writeColor;
-		for ( int y = 0; y < bitmap->rows; y++ ) {
-			writeLoc.y = y;
-			for ( int x = 0; x < bitmap->width; x++ ) {
-				writeLoc.x = x;
-				unsigned char* data_slot =
-					&( bitmap->buffer[( y * bitmap->width ) + x] );
-				writeColor.Alpha = *data_slot;
-				destTDR->write( writeLoc, writeColor );
+			// now we can do some evaluations to determine equality
+			bool retval;
+			if ( leftPtr->isBound() != rightPtr->isBound() ) {
+				// if one bound and the other didn't, they can't possibly be equal
+				retval = false;
+			} else if ( leftPtr->isBound() ) { // they're equal, so we can test just one
+				// both are bound, so we can just test pointers
+				retval = ( leftPtr->m_FontSetPtr == rightPtr->m_FontSetPtr ) && ( leftPtr->m_FontSize == rightPtr->m_FontSize );
+			} else {
+				// fall back if neither bound
+				retval = ( leftPtr->m_FontName == rightPtr->m_FontName ) && ( leftPtr->m_FontSize == rightPtr->m_FontSize );
 			}
+
+			//once we have our result, we need to do some cleanup
+			if ( freeRight ) delete rightPtr;
+			if ( freeLeft ) delete leftPtr;
+
+			// and finally return the fruits of our labor
+			return retval;
 		}
-	}
-	//############################################################################
-	//! Returns the line height in pixels for a given pixelSizeY
-	unsigned int FontSet::getLineSpacing( unsigned int pointSize ) {
-		IVector2 pixelRes;
-		pixelRes.x = pointSize;
-		pixelRes.y = pointSize;
-
-		FT_Error error;
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
-
-		//set the glyph size requested
-		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return pointSize; //fugly fallback value
-		}
-		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
-		return sMetrics->height / 64;
-	}
-	//############################################################################
-	int FontSet::getAscender( unsigned int pointSize ) {
-		IVector2 pixelRes;
-		pixelRes.x = pointSize;
-		pixelRes.y = pointSize;
-
-		FT_Error error;
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
-
-		//set the glyph size requested
-		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return pointSize; //fugly fallback value
-		}
-		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
-		return sMetrics->ascender / 64;
-	}
-	//############################################################################
-	int FontSet::getDescender( unsigned int pointSize ) {
-		IVector2 pixelRes;
-		pixelRes.x = pointSize;
-		pixelRes.y = pointSize;
-
-		FT_Error error;
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
-
-		//set the glyph size requested
-		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return pointSize; //fugly fallback value
-		}
-		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
-		return sMetrics->descender / 64;
-	}
-	//############################################################################
-	int FontSet::getMaxAdvance( unsigned int pointSize ) {
-		IVector2 pixelRes;
-		pixelRes.x = pointSize;
-		pixelRes.y = pointSize;
-
-		FT_Error error;
-		FT_Face* tFace = ( FT_Face* ) mFT_Face;
-
-		//set the glyph size requested
-		error = FT_Set_Pixel_Sizes( *tFace, pixelRes.x, pixelRes.y );
-		if ( error ) {
-			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[getLineSpacing] "
-			<< "FreeType 2 Error: (" << (( int )error ) << ") "
-			<< FontManager::getSingleton()._GetFTErrorString( error )
-			<< Log::endlog;
-			return pointSize; //fugly fallback value
-		}
-		FT_Size_Metrics* sMetrics = &(( *tFace )->size->metrics );
-		return sMetrics->max_advance / 64;
-	}
-	//############################################################################
-	int FontSet::getTextWidth( const IVector2& pixelSize, const std::string& text ) {
-		int retval = 0;
-		FontGlyph glyph;
-		const char* str = text.c_str();
-		const size_t len = text.length();
-		for ( size_t i = 0; i < len; i++ ) {
-			getGlyph( str[i], pixelSize, glyph );
-			retval += glyph.metrics.horiAdvance;
-		}
-		return retval;
-	}
-	//############################################################################
-	bool FontSet::getGlyph( const char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph ) {
-		if ( !FontManager::getSingletonPtr() ) {
-			//err msg
-			return false;
-		}
-
-		FontManager::getSingletonPtr()->mFontCache
-		->GetGlyph( this, glyph_charCode, pixelSize, outFontGlyph );
-
-		return true;
 	}
 	//############################################################################
 };
