@@ -145,7 +145,7 @@ namespace OpenGUI {
 
 		void Label::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			b.Text.drawTextArea( mText, getRect(), mFont, false, m_alignh, m_alignv );
+			b.Text.drawTextArea( mText, getRect(), mFont, false, TextAlignment(m_alignh, m_alignv) );
 		}
 		//############################################################################
 	} // namespace Amethyst{
