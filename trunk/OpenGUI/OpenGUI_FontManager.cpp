@@ -10,6 +10,7 @@
 #include "OpenGUI_TextureData.h"
 #include "OpenGUI_FontManager.h"
 #include "OpenGUI_Font.h"
+#include "OpenGUI_FontSet.h"
 #include "OpenGUI_FontCache.h"
 #include "OpenGUI_System.h"
 #include "OpenGUI_ResourceProvider.h"

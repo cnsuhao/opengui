@@ -2,6 +2,7 @@
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_StrConv.h"
 #include "OpenGUI_XML.h"
+#include "OpenGUI_Font.h"
 
 namespace OpenGUI {
 	//#####################################################################
@@ -130,7 +131,7 @@ namespace OpenGUI {
 	//#####################################################################
 	std::string Value::getValueAsString() const {
 		if ( !isSet() || getType() != T_STRING )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a string", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a string", __FUNCTION__ );
 		return *mString;
 	}
 	//#####################################################################
@@ -155,7 +156,7 @@ namespace OpenGUI {
 	//#####################################################################
 	bool Value::getValueAsBool() const {
 		if ( !isSet() || getType() != T_BOOL )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a bool", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a bool", __FUNCTION__ );
 		return *mBool;
 	}
 	//#####################################################################
@@ -169,7 +170,7 @@ namespace OpenGUI {
 	//#####################################################################
 	float Value::getValueAsFloat() const {
 		if ( !isSet() || getType() != T_FLOAT )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a float", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a float", __FUNCTION__ );
 		return *mFloat;
 	}
 	//#####################################################################
@@ -183,7 +184,7 @@ namespace OpenGUI {
 	//#####################################################################
 	FVector2 Value::getValueAsFVector2() const {
 		if ( !isSet() || getType() != T_FVECTOR2 )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a FVector2", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a FVector2", __FUNCTION__ );
 		return *mFVector2;
 	}
 	//#####################################################################
@@ -197,7 +198,7 @@ namespace OpenGUI {
 	//#####################################################################
 	FRect Value::getValueAsFRect() const {
 		if ( !isSet() || getType() != T_FRECT )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a FRect", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a FRect", __FUNCTION__ );
 		return *mFRect;
 	}
 	//#####################################################################
@@ -211,7 +212,7 @@ namespace OpenGUI {
 	//#####################################################################
 	int Value::getValueAsInt() const {
 		if ( !isSet() || getType() != T_INTEGER )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not an integer", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an integer", __FUNCTION__ );
 		return *mInt;
 	}
 	//#####################################################################
@@ -225,7 +226,7 @@ namespace OpenGUI {
 	//#####################################################################
 	IVector2 Value::getValueAsIVector2() const {
 		if ( !isSet() || getType() != T_IVECTOR2 )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not an IVector2", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an IVector2", __FUNCTION__ );
 		return *mIVector2;
 	}
 	//#####################################################################
@@ -239,7 +240,7 @@ namespace OpenGUI {
 	//#####################################################################
 	IRect Value::getValueAsIRect() const {
 		if ( !isSet() || getType() != T_IRECT )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not an IRect", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an IRect", __FUNCTION__ );
 		return *mIRect;
 	}
 	//#####################################################################
@@ -253,8 +254,28 @@ namespace OpenGUI {
 	//#####################################################################
 	Color Value::getValueAsColor() const {
 		if ( !isSet() || getType() != T_COLOR )
-			OG_THROW( Exception::OP_FAILED, "Stored value is not a Color", "Value::getValueAsString" );
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a Color", __FUNCTION__ );
 		return *mColor;
+	}
+	//#####################################################################
+	void Value::setValueAsFont( const std::string& fontStr ) {
+		Font value;
+		StrConv::toFont( fontStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValue( const Font& font ) {
+		clearValue();
+		mType = T_FONT;
+		mFont = new Font();
+		*mFont = font;
+		mHasValue = true;
+	}
+	//#####################################################################
+	Font Value::getValueAsFont() const {
+		if ( !isSet() || getType() != T_FONT )
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a Font", __FUNCTION__ );
+		return *mFont;
 	}
 	//#####################################################################
 	void Value::clearValue() {
@@ -287,6 +308,9 @@ namespace OpenGUI {
 				break;
 			case T_STRING:
 				if ( mString ) delete mString;
+				break;
+			case T_FONT:
+				if ( mFont ) delete mFont;
 				break;
 			default:
 				if ( mRaw ) delete mRaw;
@@ -330,6 +354,9 @@ namespace OpenGUI {
 				break;
 			case T_STRING:
 				setValue( right.getValueAsString() );
+				break;
+			case T_FONT:
+				setValue( right.getValueAsFont() );
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
@@ -382,6 +409,9 @@ namespace OpenGUI {
 			break;
 		case T_STRING:
 			return right.getValueAsString() == ( *mString );
+			break;
+		case T_FONT:
+			return right.getValueAsFont() == ( *mFont );
 			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__ );
@@ -458,7 +488,10 @@ namespace OpenGUI {
 	several tests to try to determine the type of the input.
 	\note Depending on the input, this function may cause some exceptions to be
 	thrown around as part of type detection. These exceptions are caught and
-	handled internally, but will show up in the logs nonetheless. */
+	handled internally, but will show up in the logs nonetheless.
+
+	\deprecated Due to the unreliable nature of this function, it will likely be removed in the future.
+	%OpenGUI does not use this function internally, so it's removal is likely. */
 	void Value::setValueAuto( const std::string& std_string ) {
 		std::string tmp = std_string;
 		StrConv::trim( tmp );
@@ -693,6 +726,7 @@ namespace OpenGUI {
 	  - IRECT
 	  - COLOR
 	  - STRING
+	  - FONT
 
 	  \see \ref StringFormats for further information on the text formatting syntax of %OpenGUI objects.
 	*/
@@ -736,6 +770,9 @@ namespace OpenGUI {
 		case T_STRING:
 			setValueAsString( valuestr );
 			break;
+		case T_FONT:
+			setValueAsFont( valuestr );
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unhandled type", __FUNCTION__ );
 		}
@@ -770,6 +807,9 @@ namespace OpenGUI {
 		case T_STRING:
 			return "STRING";
 			break;
+		case T_FONT:
+			return "FONT";
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
@@ -799,6 +839,9 @@ namespace OpenGUI {
 
 		if ( type == "COLOR" )
 			return T_COLOR;
+
+		if ( type == "FONT" )
+			return T_FONT;
 
 		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Given string does not match a known type: " + type, __FUNCTION__ );
 	}

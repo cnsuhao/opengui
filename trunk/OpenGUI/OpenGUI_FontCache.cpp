@@ -7,6 +7,7 @@
 #include "OpenGUI_Exception.h"
 
 #include "OpenGUI_Font.h"
+#include "OpenGUI_FontSet.h"
 #include "OpenGUI_FontCache.h"
 #include "OpenGUI_FontAtlas.h"
 #include "OpenGUI_TextureDataRect.h"

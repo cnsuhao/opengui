@@ -3,14 +3,14 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_Value.h"
-//
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
 
 namespace OpenGUI {
 
 	class ObjectAccessorList; //forward declaration
+	class Value;
+	class ValueList;
 
 	//! Base class for all GUI objects. Provides an exposed interface to the Accessor and Event systems.
 	class OPENGUI_API Object {

@@ -7,6 +7,7 @@
 
 namespace OpenGUI {
 	class XMLNode; // forward declaration
+	class Font; // forward declaration
 
 	/*! \addtogroup Types
 		@{
@@ -69,7 +70,8 @@ namespace OpenGUI {
 			T_INTEGER = 5, //!< Integer value type
 			T_IVECTOR2 = 6, //!< IVector2 value type
 			T_IRECT = 7, //!< IRect value type
-			T_COLOR = 8 //!< Color value type
+			T_COLOR = 8, //!< Color value type
+			T_FONT = 9 //!< Font value type
 		};
 
 		//! Returns the type of this value
@@ -116,6 +118,8 @@ namespace OpenGUI {
 		void setValue( const IRect& intRect );
 		//! Sets the value, stored value is a copy
 		void setValue( const Color& color );
+		//! Sets the value, stored value is a copy
+		void setValue( const Font& font );
 //@}
 
 //!\name Get value as explicit type
@@ -140,6 +144,8 @@ namespace OpenGUI {
 		IRect getValueAsIRect() const;
 		//! Gets the stored value, throws exception if no value is stored
 		Color getValueAsColor() const;
+		//! Gets the stored value, throws exception if no value is stored
+		Font getValueAsFont() const;
 //@}
 
 //!\name Set from string with explicit type conversion
@@ -162,6 +168,8 @@ namespace OpenGUI {
 		void setValueAsString( const std::string& stringStr );
 		//! Sets the value from a string, parsed into a boolean
 		void setValueAsBool( const std::string& boolStr );
+		//! Sets the value from a string, parsed into a Font
+		void setValueAsFont( const std::string& fontStr );
 //@}
 
 //!\name Purely string based functions
@@ -171,7 +179,7 @@ namespace OpenGUI {
 
 		//! Returns a string representation of the stored value
 		std::string toStr() const;
-//}@
+//@}
 		//! Saves this Value to the given XMLNode object, overwriting any colliding content
 		void SaveToXMLNode( XMLNode& node ) const;
 		//! Loads this value from the given XMLNode object
@@ -192,6 +200,7 @@ namespace OpenGUI {
 			IVector2* mIVector2;
 			IRect* mIRect;
 			Color* mColor;
+			Font* mFont;
 		};
 		std::string mName;
 

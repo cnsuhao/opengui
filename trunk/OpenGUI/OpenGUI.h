@@ -55,9 +55,9 @@
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_TimerManager.h"
 
-//#include "OpenGUI_DynamicLib.h" // This shouldn't be needed by applications, or any other part of OpenGUI except the plugin manager
 #include "OpenGUI_PluginManager.h"
 #include "OpenGUI_Font.h"
+#include "OpenGUI_FontSet.h"
 #include "OpenGUI_FontManager.h"
 #include "OpenGUI_System.h"
 

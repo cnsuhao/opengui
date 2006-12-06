@@ -2,7 +2,7 @@
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
 #include "OpenGUI_Exception.h"
-
+#include "OpenGUI_Value.h"
 
 namespace OpenGUI {
 	//############################################################################
