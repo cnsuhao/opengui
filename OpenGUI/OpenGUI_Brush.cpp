@@ -652,7 +652,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
-								  bool wrap, TextAlignment horizAlign, TextAlignment vertAlign ) {
+								  bool wrap, const TextAlignment alignment ) {
 		font.bind();
 		const FVector2& PPU = mParentBrush->getPPU();
 		IVector2 glyphSize = pointsToPixels( font.getSize() );
@@ -673,14 +673,14 @@ namespace OpenGUI {
 		if ( strList.size() == 0 ) return; //just in case...
 
 		//set up vertical alignment
-		if ( vertAlign == TextAlignment::ALIGN_TOP ) {
+		if ( alignment.getVertical() == TextAlignment::ALIGN_TOP ) {
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			myPen.y = area.getPosition().y + lineAdvance + descender;
-		} else if ( vertAlign == TextAlignment::ALIGN_BOTTOM ) {
+		} else if ( alignment.getVertical() == TextAlignment::ALIGN_BOTTOM ) {
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
 			myPen.y = area.max.y - ((( strList.size() - 1 ) * lineAdvance ) - descender ); // descender is negative, so we subtract to add
-		} else if ( vertAlign == TextAlignment::ALIGN_CENTER ) {
+		} else if ( alignment.getVertical() == TextAlignment::ALIGN_CENTER ) {
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
 			float totalheight;
@@ -691,7 +691,7 @@ namespace OpenGUI {
 			myPen.y = area.getPosition().y + ( rect_size.y / 2.0f ); // move to center
 			myPen.y -= totalheight / 2.0f; // retract half of the total height
 			myPen.y += (( ascender + descender ) / 2.0f ) + extraSpace;
-		} else if ( vertAlign == TextAlignment::ALIGN_JUSTIFIED ) {
+		} else if ( alignment.getVertical() == TextAlignment::ALIGN_JUSTIFIED ) {
 			const float ascender = (( float )font->getAscender( glyphSize.y ) ) / PPU.y;
 			const float descender = (( float )font->getDescender( glyphSize.y ) ) / PPU.y;
 			float totalheight;
@@ -713,20 +713,20 @@ namespace OpenGUI {
 		StringList::iterator iter = strList.begin();
 		while ( iter != strList.end() ) {
 			std::string& text = ( *iter );
-			if ( horizAlign == TextAlignment::ALIGN_LEFT ) {
+			if ( alignment.getHorizontal() == TextAlignment::ALIGN_LEFT ) {
 				myPen.x = area.getPosition().x;
 				drawText( text, myPen, font );
-			} else if ( horizAlign == TextAlignment::ALIGN_CENTER ) {
+			} else if ( alignment.getHorizontal() == TextAlignment::ALIGN_CENTER ) {
 				int w = font->getTextWidth( glyphSize, text );
 				float fw = (( float )w ) / PPU.x;
 				myPen.x = (( area.max.x + area.min.x ) / 2.0f ) - ( fw / 2.0f );
 				drawText( text, myPen, font );
-			} else if ( horizAlign == TextAlignment::ALIGN_RIGHT ) {
+			} else if ( alignment.getHorizontal() == TextAlignment::ALIGN_RIGHT ) {
 				int w = font->getTextWidth( glyphSize, text );
 				float fw = (( float )w ) / PPU.x;
 				myPen.x = area.max.x - fw;
 				drawText( text, myPen, font );
-			} else if ( horizAlign == TextAlignment::ALIGN_JUSTIFIED ) {
+			} else if ( alignment.getHorizontal() == TextAlignment::ALIGN_JUSTIFIED ) {
 				int w = font->getTextWidth( glyphSize, text );
 				float fw = (( float )w ) / PPU.x;
 				myPen.x = area.getPosition().x;

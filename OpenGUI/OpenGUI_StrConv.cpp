@@ -296,4 +296,92 @@ namespace OpenGUI {
 		out = Font( name, size );
 	}
 	//############################################################################
+	void StrConv::fromTextAlignment( const TextAlignment& in, std::string& out ) {
+		std::stringstream ss;
+		switch ( in.getHorizontal() ) {
+		case TextAlignment::ALIGN_LEFT:
+			ss << "Left";
+			break;
+		case TextAlignment::ALIGN_CENTER:
+			ss << "Center";
+			break;
+		case TextAlignment::ALIGN_RIGHT:
+			ss << "Right";
+			break;
+		case TextAlignment::ALIGN_JUSTIFIED:
+			ss << "Justified";
+			break;
+		default:
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+		}
+		ss << " | ";
+		switch ( in.getVertical() ) {
+		case TextAlignment::ALIGN_TOP:
+			ss << "Top";
+			break;
+		case TextAlignment::ALIGN_CENTER:
+			ss << "Center";
+			break;
+		case TextAlignment::ALIGN_BOTTOM:
+			ss << "Bottom";
+			break;
+		case TextAlignment::ALIGN_JUSTIFIED:
+			ss << "Justified";
+			break;
+		default:
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+		}
+		out = ss.str();
+	}
+	//############################################################################
+	void StrConv::toTextAlignment( const std::string& in, TextAlignment& out ) {
+		StringList slist;
+		tokenize( in, slist, '|' );
+		if ( slist.size() > 2 )
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+
+		// get the string components
+		std::string h, v;
+		if ( slist.size() == 2 ) {
+			h = slist.front();
+			v = slist.back();
+			trim( h );
+			trim( v );
+			toLower( h );
+			toLower( v );
+		}
+		if ( slist.size() == 1 ) {
+			h = slist.front();
+			trim( h );
+			toLower( h );
+			v = h;
+		}
+
+		//convert the strings into values
+		TextAlignment::Alignment ha, va;
+		if ( h == "left" )
+			ha = TextAlignment::ALIGN_LEFT;
+		else if ( h == "center" )
+			ha = TextAlignment::ALIGN_CENTER;
+		else if ( h == "right" )
+			ha = TextAlignment::ALIGN_RIGHT;
+		else if ( h == "justified" )
+			ha = TextAlignment::ALIGN_JUSTIFIED;
+		else
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+		if ( v == "top" )
+			va = TextAlignment::ALIGN_TOP;
+		else if ( v == "center" )
+			va = TextAlignment::ALIGN_CENTER;
+		else if ( v == "bottom" )
+			va = TextAlignment::ALIGN_BOTTOM;
+		else if ( v == "justified" )
+			va = TextAlignment::ALIGN_JUSTIFIED;
+		else
+			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
+
+		// assign the values to out
+		out = TextAlignment( ha, va );
+	}
+	//############################################################################
 }

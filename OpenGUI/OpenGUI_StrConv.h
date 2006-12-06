@@ -57,6 +57,10 @@ namespace OpenGUI {
 		static void fromFont( Font& in, std::string& out );
 		//! Turn a string into a Font
 		static void toFont( const std::string& in, Font& out );
+		//! Turn a TextAlignment into a string
+		static void fromTextAlignment( const TextAlignment& in, std::string& out );
+		//! Turn a string into a TextAlignment
+		static void toTextAlignment( const std::string& in, TextAlignment& out );
 //@}
 
 //!\name Utility Functions

@@ -618,9 +618,8 @@ namespace OpenGUI {
 		FVector2 max; //!< direct access to lower right point
 	};
 
-	/*! \brief
-	This type is used throughout %OpenGUI to represent the 4 horizontal
-	alignment types (Left,Center,Right,Justified)
+	//! This type is used throughout %OpenGUI to represent horizontal and vertical text alignment
+	/*! Text alignment is combined into a single object to represent both vertical and horizontal alignments.
 	*/
 	class TextAlignment {
 	public:
@@ -638,29 +637,43 @@ namespace OpenGUI {
 			*/
 			ALIGN_JUSTIFIED = 3
 		};
+		//! Default constructor initializes with Left and Top alignments
+		TextAlignment(): mH( ALIGN_LEFT ), mV( ALIGN_TOP ) {
+			/**/
+		}
+		//! The single argument constructor sets both axis to the same alignment
+		TextAlignment( Alignment both ): mH( both ), mV( both ) {
+			/**/
+		}
+		//! The double argument constructor sets each alignment axis individually
+		TextAlignment( Alignment horizontal_alignment, Alignment vertical_alignment ): mH( horizontal_alignment ), mV( vertical_alignment ) {
+			/**/
+		}
 
-		TextAlignment& operator=( const Alignment& rhs ) {
-			value = rhs;
+		//! returns the horizontal alignment component
+		Alignment getHorizontal() const {
+			return mH;
+		}
+		//! returns the vertical alignment component
+		Alignment getVertical() const {
+			return mV;
+		}
+
+		//! Assignment operator, copies both axis from the right hand side TextAlignment object
+		TextAlignment& operator=( const TextAlignment& rhs ) {
+			mV = rhs.mV;
+			mH = rhs.mH;
 			return *this;
 		}
 
-		bool operator==( const Alignment& rhs ) {
-			return value == rhs;
+		//! TextAlignment objects are equal if both axis have equal values
+		bool operator==( const TextAlignment& rhs ) const {
+			return mV == rhs.mV && mH == rhs.mH;
 		}
-		bool operator==( const TextAlignment& rhs ) {
-			return value == rhs.value;
-		}
-		Alignment value;
 
-		//a few little methods to handle various casts and assignments
-		operator Alignment&() {
-			return value;
-		}
-		TextAlignment( const Alignment& rhs ) {
-			value = rhs;
-		}
-		//! Default constructor initializes as ALIGN_LEFT/ALIGN_TOP depending on usage context. (They have same value)
-		TextAlignment(): value( ALIGN_LEFT ) {} //default constructor
+	private:
+		Alignment mH;
+		Alignment mV;
 	};
 
 	//! Used throughout %OpenGUI to define colors.
