@@ -112,26 +112,17 @@ namespace OpenGUI {
 		//############################################################################
 		void Button::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			switch ( mButtonState ) {
-			case BS_NORMAL:
-				b.Image.drawFace( mFace_Normal, getRect() );
-				break;
-			case BS_PRESSED:
-				b.Image.drawFace( mFace_Pressed, getRect() );
-				break;
-			case BS_HOVER:
-				b.Image.drawFace( mFace_Over, getRect() );
-				break;
-			case BS_DISABLED:
-				b.Image.drawFace( mFace_Disabled, getRect() );
-				break;
+			FacePtr drawFace;
+			drawFace = mFace_Normal;
+			if ( mFace_Over && mButtonState == BS_OVER )
+				drawFace = mFace_Over;
+			if ( mFace_Pressed && mButtonState == BS_PRESSED )
+				drawFace = mFace_Pressed;
+			if ( mFace_Disabled && mButtonState == BS_DISABLED )
+				drawFace = mFace_Disabled;
 
-			default:
-				//todo:: throw exception
-				break;
-			}
+			b.Image.drawFace( drawFace, getRect() );
 
-			//b.Image.drawImage( pCurrentImage, getRect() );
 			if ( mText != "" )
 				b.Text.drawTextArea( mText, getRect(), mFont, true, m_TextAlignment );
 		}

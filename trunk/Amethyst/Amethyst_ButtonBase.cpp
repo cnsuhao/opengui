@@ -93,7 +93,7 @@ namespace OpenGUI {
 			}
 			mButtonState = BS_NORMAL;
 			if ( m_Inside )
-				mButtonState = BS_HOVER;
+				mButtonState = BS_OVER;
 			if ( m_bMouseButtonState && m_Inside )
 				mButtonState = BS_PRESSED;
 		}
