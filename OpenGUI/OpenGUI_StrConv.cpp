@@ -223,25 +223,79 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void StrConv::toColor( const std::string& in, Color& out ) {
-		//!\todo add support for #RRGGBBAA style color representation
-		StringList strList;
-		_Tokenize( in, strList, ':' );
-		int i = 0;
-		StringList::iterator iter = strList.begin();
-		while ( i < 4 && iter != strList.end() ) {
-			if ( i == 0 )
-				toFloat(( *iter ), out.Red );
-			if ( i == 1 )
-				toFloat(( *iter ), out.Green );
-			if ( i == 2 )
-				toFloat(( *iter ), out.Blue );
-			if ( i == 3 )
-				toFloat(( *iter ), out.Alpha );
-			iter++;
-			i++;
+		std::string inCopy = in;
+		trim( inCopy );
+
+		// test for hex encoding
+		if ( inCopy.length() > 0 && inCopy[0] == '#' ) {
+			inCopy = inCopy.substr( 1 );
+			// split on spaces, only a single contiguous string is valid
+			StringList strList;
+			_Tokenize( inCopy, strList, ' ' );
+			if ( strList.size() != 1 ) // make sure we only came back with 1 result
+				OG_THROW( Exception::OP_FAILED, "Color conversion failed: " + in, __FUNCTION__ );
+			inCopy = strList.front();
+
+			unsigned int dwordContaner = 0;
+			std::istringstream iss;
+			iss.exceptions( std::ios_base::failbit | std::ios_base::badbit );
+			iss.str( inCopy );
+			iss >> std::hex; // set hex input
+			iss >> dwordContaner; // read whatever we have
+			size_t shift = ( 8 - inCopy.length() ); // number of missing characters
+			shift *= 4; // each character is 4 bits
+			dwordContaner = dwordContaner << shift; // shift for each missing character
+
+
+			unsigned char tmp;
+			out = Color::PresetWhite(); // preset all values to 1.0 in case we do not reach them
+
+			// red
+			if ( inCopy.length() > 0 ) {
+				tmp = ( dwordContaner >> 24 ) & 0xFF;
+				out.Red = ( float )tmp / 255.0f;
+			}
+
+			// green
+			if ( inCopy.length() > 2 ) {
+				tmp = ( dwordContaner >> 16 ) & 0xFF;
+				out.Green = ( float )tmp / 255.0f;
+			}
+
+			// blue
+			if ( inCopy.length() > 4 ) {
+				tmp = ( dwordContaner >> 8 ) & 0xFF;
+				out.Blue = ( float )tmp / 255.0f;
+			}
+
+			// alpha
+			if ( inCopy.length() > 6 ) {
+				tmp = dwordContaner & 0xFF;
+				out.Alpha = ( float )tmp / 255.0f;
+			}
+
+			// and we're done (yay)
+
+		} else {
+			StringList strList;
+			_Tokenize( in, strList, ':' );
+			int i = 0;
+			StringList::iterator iter = strList.begin();
+			while ( i < 4 && iter != strList.end() ) {
+				if ( i == 0 )
+					toFloat(( *iter ), out.Red );
+				if ( i == 1 )
+					toFloat(( *iter ), out.Green );
+				if ( i == 2 )
+					toFloat(( *iter ), out.Blue );
+				if ( i == 3 )
+					toFloat(( *iter ), out.Alpha );
+				iter++;
+				i++;
+			}
+			if ( i < 3 )
+				OG_THROW( Exception::OP_FAILED, "Color conversion failed: " + in, __FUNCTION__ );
 		}
-		if ( i != 4 )
-			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 	}
 	//############################################################################
 	void StrConv::fromBool( bool in, std::string& out ) {
