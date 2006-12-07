@@ -198,6 +198,11 @@
 		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
 		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Center|Center" />
 		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+		
+		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#d8d8d8" />
+		<Property ValueName="FontColor_Over" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="FontColor_Pressed" ValueType="COLOR" ValueData="#EAEA00" />
+		<Property ValueName="FontColor_Disabled" ValueType="COLOR" ValueData="#888888" />
 	</WidgetDef>
 </OpenGUI>
 
