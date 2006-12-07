@@ -3,6 +3,9 @@
 #include "OpenGUI_StrConv.h"
 #include "OpenGUI_XML.h"
 #include "OpenGUI_Font.h"
+#include "OpenGUI_Imagery.h"
+#include "OpenGUI_Face.h"
+#include "OpenGUI_ImageryManager.h"
 
 namespace OpenGUI {
 	//#####################################################################
@@ -47,6 +50,12 @@ namespace OpenGUI {
 				break;
 			case T_TEXTALIGNMENT:
 				setValue( copy.getValueAsTextAlignment() );
+				break;
+			case T_IMAGERY:
+				setValue( copy.getValueAsImageryPtr() );
+				break;
+			case T_FACE:
+				setValue(copy.getValueAsFacePtr() );
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
@@ -122,6 +131,18 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	Value::Value( const TextAlignment& value, const std::string& Name ) {
+		constructor();
+		setValue( value );
+		setName( Name );
+	}
+	//#####################################################################
+	Value::Value( const ImageryPtr& value, const std::string& Name ){
+		constructor();
+		setValue( value );
+		setName( Name );
+	}
+	//#####################################################################
+	Value::Value( const FacePtr& value, const std::string& Name ){
 		constructor();
 		setValue( value );
 		setName( Name );
@@ -335,8 +356,14 @@ namespace OpenGUI {
 			case T_TEXTALIGNMENT:
 				if ( mTextAlignment ) delete mTextAlignment;
 				break;
+			case T_IMAGERY:
+				if(mImageryPtr) delete mImageryPtr;
+				break;
+			case T_FACE:
+				if(mFacePtr) delete mFacePtr;
+				break;
 			default:
-				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
+				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for held Value", __FUNCTION__ );
 			}
 			mRaw = 0;
 		}
@@ -383,6 +410,12 @@ namespace OpenGUI {
 				break;
 			case T_TEXTALIGNMENT:
 				setValue( right.getValueAsTextAlignment() );
+				break;
+			case T_IMAGERY:
+				setValue( right.getValueAsImageryPtr() );
+				break;
+			case T_FACE:
+				setValue( right.getValueAsFacePtr() );
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
@@ -441,6 +474,12 @@ namespace OpenGUI {
 			break;
 		case T_TEXTALIGNMENT:
 			return right.getValueAsTextAlignment() == ( *mTextAlignment );
+			break;
+		case T_IMAGERY:
+			return right.getValueAsImageryPtr() == ( *mImageryPtr);
+			break;
+		case T_FACE:
+			return right.getValueAsFacePtr() == ( *mFacePtr );
 			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__ );
@@ -731,6 +770,14 @@ namespace OpenGUI {
 			StrConv::fromTextAlignment( getValueAsTextAlignment(), ret );
 			return ret;
 			break;
+		case T_IMAGERY:
+			ret = getValueAsImageryPtr()->getFQN();
+			return ret;
+			break;
+		case T_FACE:
+			ret = getValueAsFacePtr()->getName();
+			return ret;
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
@@ -765,6 +812,8 @@ namespace OpenGUI {
 	  - STRING
 	  - FONT
 	  - TEXTALIGNMENT
+	  - IMAGERY
+	  - FACE
 
 	  \see \ref StringFormats for further information on the text formatting syntax of %OpenGUI objects.
 	*/
@@ -814,6 +863,12 @@ namespace OpenGUI {
 		case T_TEXTALIGNMENT:
 			setValueAsTextAlignment( valuestr );
 			break;
+		case T_IMAGERY:
+			setValueAsImageryPtr( valuestr );
+			break;
+		case T_FACE:
+			setValueAsFacePtr( valuestr );
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unhandled type", __FUNCTION__ );
 		}
@@ -854,6 +909,12 @@ namespace OpenGUI {
 		case T_TEXTALIGNMENT:
 			return "TEXTALIGNMENT";
 			break;
+		case T_IMAGERY:
+			return "IMAGERY";
+			break;
+		case T_FACE:
+			return "FACE";
+			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type, cannot convert to string", __FUNCTION__ );
 		}
@@ -890,6 +951,11 @@ namespace OpenGUI {
 		if ( type == "TEXTALIGNMENT" )
 			return T_TEXTALIGNMENT;
 
+		if ( type == "IMAGERY" )
+			return T_IMAGERY;
+		if ( type == "FACE" )
+			return T_FACE;
+
 		OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Given string does not match a known type: " + type, __FUNCTION__ );
 	}
 	//#####################################################################
@@ -909,6 +975,46 @@ namespace OpenGUI {
 	void Value::setValueAsTextAlignment( const std::string& textAlignmentStr ) {
 		TextAlignment value;
 		StrConv::toTextAlignment( textAlignmentStr, value );
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValue( const ImageryPtr& imageryPtr) {
+		clearValue();
+		mType = T_IMAGERY;
+		mImageryPtr= new ImageryPtr;
+		*mImageryPtr = imageryPtr;
+		mHasValue = true;
+	}
+	//#####################################################################
+	ImageryPtr Value::getValueAsImageryPtr() const {
+		if ( !isSet() || getType() != T_IMAGERY )
+			OG_THROW( Exception::OP_FAILED, "Stored value is not an ImageryPtr", __FUNCTION__ );
+		return *mImageryPtr;
+	}
+	//#####################################################################
+	void Value::setValueAsImageryPtr( const std::string& imageryName ) {
+		ImageryPtr value;
+		value = ImageryManager::getSingleton().getImagery(imageryName);
+		setValue( value );
+	}
+	//#####################################################################
+	void Value::setValue( const FacePtr& facePtr ) {
+		clearValue();
+		mType = T_FACE;
+		mFacePtr = new FacePtr;
+		*mFacePtr = facePtr;
+		mHasValue = true;
+	}
+	//#####################################################################
+	FacePtr Value::getValueAsFacePtr() const {
+		if ( !isSet() || getType() != T_FACE )
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a FacePtr", __FUNCTION__ );
+		return *mFacePtr;
+	}
+	//#####################################################################
+	void Value::setValueAsFacePtr( const std::string& faceName ){
+		FacePtr value;
+		value = ImageryManager::getSingleton().getFace(faceName);
 		setValue( value );
 	}
 	//#####################################################################
