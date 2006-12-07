@@ -8,6 +8,11 @@
 namespace OpenGUI {
 	class XMLNode; // forward declaration
 	class Font; // forward declaration
+	template<typename> class RefPtr; // forward declaration
+	class Imagery; // forward declaration
+	typedef RefPtr<Imagery> ImageryPtr; // forward declaration
+	class Face; // forward declaration
+	typedef RefPtr<Face> FacePtr; // forward declaration
 
 	/*! \addtogroup Types
 		@{
@@ -53,6 +58,10 @@ namespace OpenGUI {
 		Value( const Font& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const TextAlignment& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const ImageryPtr& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const FacePtr& value, const std::string& Name = "" );
 //@}
 
 		//! gets the name of this Value
@@ -76,7 +85,9 @@ namespace OpenGUI {
 			T_IRECT = 7, //!< IRect value type
 			T_COLOR = 8, //!< Color value type
 			T_FONT = 9, //!< Font value type
-			T_TEXTALIGNMENT = 10 //!< TextAlignment value type
+			T_TEXTALIGNMENT = 10, //!< TextAlignment value type
+			T_IMAGERY = 11, //!< ImageryPtr value type
+			T_FACE = 12, //!< FacePtr value type
 		};
 
 		//! Returns the type of this value
@@ -127,6 +138,10 @@ namespace OpenGUI {
 		void setValue( const Font& font );
 		//! Sets the value, stored value is a copy
 		void setValue( const TextAlignment& textAlignment );
+		//! Sets the value, stored value is a copy
+		void setValue( const ImageryPtr& imageryPtr );
+		//! Sets the value, stored value is a copy
+		void setValue( const FacePtr& facePtr );
 //@}
 
 //!\name Get value as explicit type
@@ -155,6 +170,10 @@ namespace OpenGUI {
 		Font getValueAsFont() const;
 		//! Gets the stored value, throws exception if no value is stored
 		TextAlignment getValueAsTextAlignment() const;
+		//! Gets the stored value, throws exception if no value is stored
+		ImageryPtr getValueAsImageryPtr() const;
+		//! Gets the stored value, throws exception if no value is stored
+		FacePtr getValueAsFacePtr() const;
 //@}
 
 //!\name Set from string with explicit type conversion
@@ -181,6 +200,10 @@ namespace OpenGUI {
 		void setValueAsFont( const std::string& fontStr );
 		//! Sets the value from a string, parsed into a TextAlignment
 		void setValueAsTextAlignment( const std::string& textAlignmentStr );
+		//! Sets the value from a string, used to look up the Imagery (can be either short name or FQN)
+		void setValueAsImageryPtr( const std::string& imageryName );
+		//! Sets the value from a string, used to look up the Face
+		void setValueAsFacePtr( const std::string& faceName );
 //@}
 
 //!\name Purely string based functions
@@ -213,6 +236,8 @@ namespace OpenGUI {
 			Color* mColor;
 			Font* mFont;
 			TextAlignment* mTextAlignment;
+			ImageryPtr* mImageryPtr;
+			FacePtr* mFacePtr;
 		};
 		std::string mName;
 
