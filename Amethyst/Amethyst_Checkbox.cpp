@@ -425,6 +425,7 @@ std::string CheckBox::getSelImageryDisabled() {
 
 
 void CheckBox::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+	/*
 	ImageryPtr pCurrentImage = NULL;
 	if(mSelected)
 	{
@@ -488,6 +489,7 @@ void CheckBox::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 		const float scaleY = getRect().getWidth()  / (( float )pCurrentImage->getImagesetRect().getHeight() );
 		b.Image.drawImage( pCurrentImage, getRect() );
 	}
+	*/
 }
 
 

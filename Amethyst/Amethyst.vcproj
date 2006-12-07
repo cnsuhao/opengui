@@ -204,6 +204,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Amethyst_ButtonBase.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Amethyst_Checkbox.cpp"
 				>
 			</File>
@@ -248,14 +252,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Amethyst_Theme.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ThemeManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Amethyst_Window.cpp"
 				>
 			</File>
@@ -271,6 +267,10 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_Button.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Amethyst_ButtonBase.h"
 				>
 			</File>
 			<File
@@ -327,14 +327,6 @@
 			</File>
 			<File
 				RelativePath=".\Amethyst_TextBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_Theme.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ThemeManager.h"
 				>
 			</File>
 			<File
