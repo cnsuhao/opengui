@@ -3,105 +3,63 @@
 
 #include "OpenGUI.h"
 #include "Amethyst_Exports.h"
+#include "Amethyst_ButtonBase.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
 
-		enum {
-			BS_NORMAL,
-			BS_PRESSED,
-			BS_HOVER,
-			BS_DISABLED
-		};
-
-		//! encapsulates the basic mouse/button interaction for all button variants
-		class AMETHYST_API ButtonBase : public Control {
-		public:
-			ButtonBase() : m_bMouseButtonState(false), mButtonState(BS_NORMAL) {}
-			virtual ~ButtonBase() {}
-
-		protected:
-			// events we care about
-
-			//! "Cursor_Click" event
-			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
-			//! "Cursor_Enter" event; invokes Targeted
-			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-			//! "Cursor_Leave" event; invokes UnTargeted
-			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-
-			//! "Cursor_Press" event
-			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-			//! "Cursor_Release" event
-			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-
-			bool m_bMouseButtonState;
-			int mButtonState;
-
-			virtual void preActivate()=0;
-		};
-
-		//! Simple button
-		class AMETHYST_API SimpleButton : public ButtonBase {
+		//! Button
+		class AMETHYST_API Button : public ButtonBase {
 		public:
 			//! Constructor
-			SimpleButton();
+			Button();
 			//! virtual Destructor
-			virtual ~SimpleButton();
-			//! Sets the normal button imagery.
-			void setImagery( std::string imageryName );
-			//! Sets the pressed button imagery. If none specified, uses the Normal imagery.
-			void setImageryPressed( std::string imageryName );
-			//! Sets the mouse over button imagery. If none specified, uses the Normal imagery.
-			void setImageryMouseOver( std::string imageryName );
-			//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
-			void setImageryDisabled( std::string imageryName );
+			virtual ~Button();
 
-			//! Gets the normal button imagery.
-			std::string getImagery();
-			//! Gets the pressed button imagery.
-			std::string getImageryPressed();
-			//! Gets the mouse over button imagery.
-			std::string getImageryMouseOver();
-			//! Gets the disabled button imagery.
-			std::string getImageryDisabled();
+			//! Sets the Face used to draw the button in the Normal state
+			void setFaceNormal( FacePtr normalFace );
+			//! Gets the Face used to draw the button in the Normal state
+			FacePtr getFaceNormal();
+			//! Sets the Face used to draw the button in the Over state
+			void setFaceOver( FacePtr overFace );
+			//! Gets the Face used to draw the button in the Over state
+			FacePtr getFaceOver();
+			//! Sets the Face used to draw the button in the Pressed state
+			void setFacePressed( FacePtr pressedFace );
+			//! Gets the Face used to draw the button in the Pressed state
+			FacePtr getFacePressed();
+			//! Sets the Face used to draw the button in the Disabled state
+			void setFaceDisabled( FacePtr disabledFace );
+			//! Gets the Face used to draw the button in the Disabled state
+			FacePtr getFaceDisabled();
 
-			void setText( std::string &nText )		{
-				mText = nText;
-			}
-			void setText( const char *p )				{
-				mText = p;
-			}
-			const std::string getText( void ) const	{
-				return mText;
-			}
-			void setFont( const Font& fnt )			{
-				mFont = fnt;
-			}
-			const Font& getFont() const				{
-				return mFont;
-			}
+			//! Sets the text that is displayed on this button
+			void setText( const std::string& nText );
+			//! Gets the text that is displayed on this button
+			const std::string& getText( void ) const;
+			//! Sets the Font used to draw the text on this button
+			void setFont( const Font& fnt );
+			//! Gets the Font used to draw the text on this button
+			const Font& getFont() const;
+			//! Sets the text alignment used when drawing the button text
+			void setAlignment( const TextAlignment& alignment );
+			//! Gets the text alignment used when drawing the button text
+			const TextAlignment& getAlignment();
 
-			void setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v );
-			void getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v );
-			void setAlignment( IVector2 &align );
-			void getAlignment( IVector2 &align );
 
-			static Widget* createSimpleButtonFactory();
+			static Widget* createButtonFactory();
+			virtual ObjectAccessorList* getAccessors();
 
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
-			virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
-
-			ImageryPtr mImageryPtr;
-			ImageryPtr mImageryPtrPressed;
-			ImageryPtr mImageryPtrMouseOver;
-			ImageryPtr mImageryPtrDisabled;
 
 			std::string mText;
 			Font mFont;
-			TextAlignment::Alignment m_alignh;
-			TextAlignment::Alignment m_alignv;
+			TextAlignment m_TextAlignment;
+			FacePtr mFace_Normal;
+			FacePtr mFace_Over;
+			FacePtr mFace_Pressed;
+			FacePtr mFace_Disabled;
 
 			// internal notification of button "Active" event about to be sent
 			virtual void preActivate() {}

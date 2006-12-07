@@ -2,6 +2,48 @@
 
 <OpenGUI>
 	<Imageset File="BrassBalls.png">
+	<!-- Button -->
+		<!-- Normal -->
+		<Imagery Name="Button_N_UL" Left="63" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_N_UM" Left="76" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_N_UR" Left="91" Top="1" Width="10" Height="10" />		
+		<Imagery Name="Button_N_ML" Left="63" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_N_MM" Left="76" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_N_MR" Left="91" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_N_LL" Left="63" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_N_LM" Left="76" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_N_LR" Left="91" Top="30" Width="10" Height="9" />
+		<!-- Over -->
+		<Imagery Name="Button_O_UL" Left="103" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_O_UM" Left="116" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_O_UR" Left="131" Top="1" Width="10" Height="10" />		
+		<Imagery Name="Button_O_ML" Left="103" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_O_MM" Left="116" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_O_MR" Left="131" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_O_LL" Left="103" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_O_LM" Left="116" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_O_LR" Left="131" Top="30" Width="10" Height="9" />
+		<!-- Pressed -->
+		<Imagery Name="Button_P_UL" Left="143" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_P_UM" Left="156" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_P_UR" Left="171" Top="1" Width="10" Height="10" />		
+		<Imagery Name="Button_P_ML" Left="143" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_P_MM" Left="156" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_P_MR" Left="171" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_P_LL" Left="143" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_P_LM" Left="156" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_P_LR" Left="171" Top="30" Width="10" Height="9" />
+		<!-- Disabled -->
+		<Imagery Name="Button_D_UL" Left="183" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_D_UM" Left="196" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_D_UR" Left="211" Top="1" Width="10" Height="10" />		
+		<Imagery Name="Button_D_ML" Left="183" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_D_MM" Left="196" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_D_MR" Left="211" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_D_LL" Left="183" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_D_LM" Left="196" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_D_LR" Left="211" Top="30" Width="10" Height="9" />
+		
 	<!-- Round Button -->
 		<!-- Round Button Not Checked -->
 		<Imagery Name="RndBtn_N" Left="64" Top="41" Width="15" Height="15" />
@@ -38,7 +80,78 @@
 		<!-- Arrow -->
 		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
 	</Imageset>
+
+<!-- Button Faces -->
+	<Face Name="BrassBalls:Button_N" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_N_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_N_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_N_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_N_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_N_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_N_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_O" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_O_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_O_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_O_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_O_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_O_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_O_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_P" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_P_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_P_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_P_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_P_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_P_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_P_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_D" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_D_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_D_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_D_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_D_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_D_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_D_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
 	
+<!-- Panel Faces -->
 	<Face Name="BrassBalls:Panel_Outset" Metric="Units">
 		<Row>
 			<Slice Imagery="BrassBalls.png:Panel_O_UL" Width="2" Height="2" />
@@ -73,29 +186,18 @@
 			<Slice Imagery="BrassBalls.png:Panel_I_LR" Width="2" Height="2" />
 		</Row>
 	</Face>
+	
 
-</OpenGUI>
-
-<Amethyst>
-	<Theme Name="BrassBalls">
-		<WidgetTheme Name="Panel">
-			<StateImage Name="Inset" Face="BrassBalls:Panel_Inset" />
-			<StateImage Name="Outset" Face="BrassBalls:Panel_Outset" />
-			<Property ValueName="ClientAreaOffset_UL" ValueType="FVECTOR2" ValueData="(2x2)" />
-			<Property ValueName="ClientAreaOffset_LL" ValueType="FVECTOR2" ValueData="(2x2)" />
-		</WidgetTheme>
+	<WidgetDef Name="BrassBalls:Button" BaseName="Button" BaseLibrary="Amethyst">		
+		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:Button_N" />
+		<Property ValueName="Face_Over" ValueType="FACE" ValueData="BrassBalls:Button_O" />
+		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:Button_P" />
+		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:Button_D" />
 		
-		<WidgetTheme Name="CheckBox">
-			<StateImage Name="Normal" Imagery="BrassBalls.png:RndBtn_N" />
-			<StateImage Name="Hover" Imagery="BrassBalls.png:RndBtn_H" />
-			<StateImage Name="Pressed" Imagery="BrassBalls.png:RndBtn_P" />
-			<StateImage Name="Normal_Checked" Imagery="BrassBalls.png:RndBtn_CN" />
-			<StateImage Name="Hover_Checked" Imagery="BrassBalls.png:RndBtn_CH" />
-			<StateImage Name="Pressed_Checked" Imagery="BrassBalls.png:RndBtn_CP" />
-		</WidgetTheme>
-	</Theme>
-</Amethyst>
-
-
-<OpenGUI>
+		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
+		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Center|Center" />
+		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+	</WidgetDef>
 </OpenGUI>
+

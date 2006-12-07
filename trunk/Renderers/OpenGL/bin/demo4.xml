@@ -48,11 +48,8 @@
 	</WidgetDef>
 	
 	<!-- a button -->
-	<WidgetDef Name="Button" BaseName="SimpleButton" BaseLibrary="Amethyst">
-		<Property ValueName="Imagery" ValueType="STRING" ValueData="BlueGuiButtonAltNormal" />
-		<Property ValueName="ImageryMouseOver" ValueType="STRING" ValueData="BlueGuiButtonAltHover" />
-		<Property ValueName="ImageryPressed" ValueType="STRING" ValueData="BlueGuiButtonAltPress" />
-		<Property ValueName="ImageryDisabled" ValueType="STRING" ValueData="BlueGuiButtonAltDisabled" />
+	<WidgetDef Name="Button" BaseName="Button" BaseLibrary="Amethyst">
+		<Property ValueName="Theme" ValueType="STRING" ValueData="BrassBalls" />
 	</WidgetDef>
 
 
