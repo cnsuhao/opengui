@@ -8,7 +8,23 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
-		//! Button
+		//! Your average pushable button
+		/*! Performs the usual barrage of button-like activity. Fires the "Activate" event when pressed.
+
+		\par Properties
+		- Face_Normal
+		- Face_Over
+		- Face_Pressed
+		- Face_Disabled
+		- Font
+		- TextAlignment
+		- Text
+		- FontColor
+		- FontColor_Over
+		- FontColor_Pressed
+		- FontColor_Disabled
+
+		*/
 		class AMETHYST_API Button : public ButtonBase {
 		public:
 			//! Constructor
