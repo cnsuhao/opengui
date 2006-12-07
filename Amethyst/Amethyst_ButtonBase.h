@@ -40,7 +40,7 @@ namespace OpenGUI {
 			enum {
 				BS_NORMAL,
 				BS_PRESSED,
-				BS_HOVER,
+				BS_OVER,
 				BS_DISABLED
 			};
 
