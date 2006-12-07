@@ -238,7 +238,8 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	void ImageryManager::addFace( const std::string& faceName, FacePtr facePtr ) {
+	void ImageryManager::addFace( FacePtr facePtr ) {
+		const std::string& faceName = facePtr->getName();
 		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
 		if ( iter != mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Face already registered with name: " + faceName, __FUNCTION__ );
@@ -350,8 +351,8 @@ namespace OpenGUI {
 		}
 
 		// create the face and store it for later
-		FacePtr face = Face::Create( faceDef );
-		manager.addFace( faceNameStr, face );
+		FacePtr face = Face::Create( faceNameStr, faceDef );
+		manager.addFace( face );
 
 		return true;
 	}

@@ -5,14 +5,17 @@
 
 namespace OpenGUI {
 	//############################################################################
-	Imagery::Imagery( const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture )
+	Imagery::Imagery( const std::string ImagesetName, const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture )
 			: mName( Name ), mAreaRect( areaRect ), mNativeRect( nativeRect ), mTexture( texture ) {
-		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mName << ") "
+		std::stringstream ss;
+		ss << ImagesetName << ":" << Name;
+		mFQN = ss.str();
+		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mFQN << ") "
 		<< "Creation" << Log::endlog;
 	}
 	//############################################################################
 	Imagery::~Imagery() {
-		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mName << ") "
+		LogManager::SlogMsg( "Imagery", OGLL_INFO2 ) << "(" << mFQN << ") "
 		<< "Destruction" << Log::endlog;
 	}
 	//############################################################################
@@ -30,6 +33,10 @@ namespace OpenGUI {
 	//############################################################################
 	const std::string& Imagery::getName() const {
 		return mName;
+	}
+	//############################################################################
+	const std::string& Imagery::getFQN() const {
+		return mFQN;
 	}
 	//############################################################################
 

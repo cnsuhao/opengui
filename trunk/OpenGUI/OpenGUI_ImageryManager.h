@@ -111,7 +111,7 @@ namespace OpenGUI {
 		ImagesetList getImagesetList();
 
 		//! Adds the given FacePtr to the managed list of Faces so that it can be retrieved later by name
-		void addFace( const std::string& faceName, FacePtr facePtr );
+		void addFace( FacePtr facePtr );
 		//! Retrieves a previously added Face by name
 		FacePtr getFace( const std::string& faceName );
 		//! Removes a previously added Face by name.
