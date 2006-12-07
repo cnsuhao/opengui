@@ -44,10 +44,15 @@ namespace OpenGUI {
 			FM_PIXELS = 1 //!< The size is in pixels of the native display
 		};
 		//! Takes a FaceDef (Face definition) and generates a Face which is returned in a reference counted pointer
-		static FacePtr Create( const FaceDef& faceDefinition );
+		static FacePtr Create( const std::string& faceName, const FaceDef& faceDefinition );
 		~Face() {}
 		//! Indicates the metric that should be used when rendering this Face
 		const FaceMetric Metric;
+
+		//! Returns the name of this Face
+		const std::string& getName(){
+			return mName;
+		}
 
 		//! fills the \c columnArray_out with column widths to fit the \c totalWidth
 		void getColumnWidths( float totalWidth, FaceDimArray& columnArray_out );
@@ -55,8 +60,10 @@ namespace OpenGUI {
 		void getRowHeights( float totalHeight, FaceDimArray& rowArray_out );
 		//! returns a reference to the list of Slices used in this Face
 		const SliceList& getSlices();
+
 	private:
-		Face( const FaceDef& faceDefinition );
+		std::string mName;
+		Face( const std::string& faceName, const FaceDef& faceDefinition );
 		SliceList mSlices;
 
 		class SliceDim	{

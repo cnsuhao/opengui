@@ -54,7 +54,7 @@ namespace OpenGUI {
 			imagesetRect.max.y = ( int )( areaRect.max.y * ( float )texSize.y );
 		}
 
-		ImageryPtr imgptr = new Imagery( imageryName, areaRect, imagesetRect, mpTexture );
+		ImageryPtr imgptr = new Imagery( mFilename, imageryName, areaRect, imagesetRect, mpTexture );
 		mChildImageryList.push_back( imgptr );
 		return imgptr;
 	}

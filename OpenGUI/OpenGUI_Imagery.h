@@ -31,9 +31,13 @@ namespace OpenGUI {
 		//! Returns the name of this Imagery object
 		const std::string& getName() const;
 
+		//! Returns the fully qualified name of this Imagery object
+		const std::string& getFQN() const;
+
 	private:
-		Imagery( const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture );
+		Imagery( const std::string ImagesetName, const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture );
 		~Imagery();
+		std::string mFQN;
 		std::string mName;
 		FRect mAreaRect;
 		IRect mNativeRect;

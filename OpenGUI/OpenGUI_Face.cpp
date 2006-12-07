@@ -5,11 +5,13 @@
 namespace OpenGUI {
 	//############################################################################
 	// We're doing this to ensure that memory destroyed within OpenGUI is also created within OpenGUI
-	FacePtr Face::Create( const FaceDef& faceDefinition ) {
-		return new Face( faceDefinition );
+	FacePtr Face::Create( const std::string& faceName, const FaceDef& faceDefinition ) {
+		return new Face( faceName, faceDefinition );
 	}
 	//############################################################################
-	Face::Face( const FaceDef& faceDefinition ): Metric( faceDefinition.Metric ) {
+	Face::Face( const std::string& faceName, const FaceDef& faceDefinition ): Metric( faceDefinition.Metric ) {
+		mName = faceName;
+
 		//Note: these may be a waste of time, since they aren't always accurate to begin with
 		// (they have the potential to report smaller sizes than they should)
 		size_t initCols = faceDefinition.getColSizeEstimate();
