@@ -9,6 +9,9 @@ namespace OpenGUI {
 
 
 		//! encapsulates the basic mouse/button interaction for all button variants
+		/*! All objects that derive from ButtonBase will emit the "Activate" event when they
+		are pressed.
+		*/
 		class AMETHYST_API ButtonBase : public Control {
 		public:
 			ButtonBase();

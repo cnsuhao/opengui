@@ -194,7 +194,6 @@
 		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:Button_P" />
 		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:Button_D" />
 		
-		<Property ValueName="Text" ValueType="STRING" ValueData="" />
 		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
 		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Center|Center" />
 		<Property ValueName="Text" ValueType="STRING" ValueData="" />
