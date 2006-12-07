@@ -176,6 +176,28 @@ CLASS_NAME
 #define SimpleProperty_TextAlignment(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
 	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_TEXTALIGNMENT, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsTextAlignment )
 
+//! Helper macro for quick creation of generic Imagery properties for Object derived classes.
+/*!
+\param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
+\param PROPERTY_NAME A string literal that will be used as the name of the property
+\param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
+\param GETTER The name of the TARGET_OBJECT_CLASS method that is used to get the current value of the property
+\param SETTER The name of the TARGET_OBJECT_CLASS method that is used to set the value of the property
+*/
+#define SimpleProperty_Imagery(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
+	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_IMAGERY, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsImageryPtr )
+
+//! Helper macro for quick creation of generic Face properties for Object derived classes.
+/*!
+\param CLASS_NAME This is used as part of the class name, but will be used verbatim as the resulting object name.
+\param PROPERTY_NAME A string literal that will be used as the name of the property
+\param TARGET_OBJECT_CLASS The name of the Object class that contains the GETTER and SETTER methods
+\param GETTER The name of the TARGET_OBJECT_CLASS method that is used to get the current value of the property
+\param SETTER The name of the TARGET_OBJECT_CLASS method that is used to set the value of the property
+*/
+#define SimpleProperty_Face(CLASS_NAME, PROPERTY_NAME, TARGET_OBJECT_CLASS, GETTER, SETTER) \
+	SimpleProperty( CLASS_NAME, PROPERTY_NAME, Value::T_FACE, TARGET_OBJECT_CLASS, GETTER, SETTER, getValueAsFacePtr )
+
 /*!
 @}
 */
