@@ -166,7 +166,8 @@ namespace OpenGUI {
 				fontColor = mColor_Disabled;
 			}
 
-			b.Image.drawFace( drawFace, getRect() );
+			if ( drawFace )
+				b.Image.drawFace( drawFace, getRect() );
 
 			if ( mText != "" ) {
 				b.pushColor( fontColor );
