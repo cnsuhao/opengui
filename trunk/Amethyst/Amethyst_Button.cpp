@@ -11,6 +11,10 @@ namespace OpenGUI {
 		SimpleProperty_Face( ButtonProperty_FaceOver, "Face_Over", Button, getFaceOver, setFaceOver );
 		SimpleProperty_Face( ButtonProperty_FacePresseed, "Face_Pressed", Button, getFacePressed, setFacePressed );
 		SimpleProperty_Face( ButtonProperty_FaceDisabled, "Face_Disabled", Button, getFaceDisabled, setFaceDisabled );
+		SimpleProperty_Color( ButtonProperty_FontColor, "FontColor", Button, getFontColor, setFontColor );
+		SimpleProperty_Color( ButtonProperty_FontColor_Over, "FontColor_Over", Button, getFontColorOver, setFontColorOver );
+		SimpleProperty_Color( ButtonProperty_FontColor_Pressed, "FontColor_Pressed", Button, getFontColorPressed, setFontColorPressed );
+		SimpleProperty_Color( ButtonProperty_FontColor_Disabled, "FontColor_Disabled", Button, getFontColorDisabled, setFontColorDisabled );
 		//############################################################################
 		class Button_ObjectAccessorList : public ObjectAccessorList {
 		public:
@@ -22,6 +26,10 @@ namespace OpenGUI {
 				addAccessor( &ButtonProperty_FaceOver );
 				addAccessor( &ButtonProperty_FacePresseed );
 				addAccessor( &ButtonProperty_FaceDisabled );
+				addAccessor( &ButtonProperty_FontColor );
+				addAccessor( &ButtonProperty_FontColor_Over );
+				addAccessor( &ButtonProperty_FontColor_Pressed );
+				addAccessor( &ButtonProperty_FontColor_Disabled );
 			}
 			~Button_ObjectAccessorList() {}
 		}
@@ -51,7 +59,7 @@ namespace OpenGUI {
 			mFace_Normal = normalFace;
 		}
 		//############################################################################
-		FacePtr Button::getFaceNormal() {
+		FacePtr Button::getFaceNormal() const {
 			return mFace_Normal;
 		}
 		//############################################################################
@@ -59,7 +67,7 @@ namespace OpenGUI {
 			mFace_Over = overFace;
 		}
 		//############################################################################
-		FacePtr Button::getFaceOver() {
+		FacePtr Button::getFaceOver() const {
 			return mFace_Over;
 		}
 		//############################################################################
@@ -67,7 +75,7 @@ namespace OpenGUI {
 			mFace_Pressed = pressedFace;
 		}
 		//############################################################################
-		FacePtr Button::getFacePressed() {
+		FacePtr Button::getFacePressed() const {
 			return mFace_Pressed;
 		}
 		//############################################################################
@@ -75,7 +83,7 @@ namespace OpenGUI {
 			mFace_Disabled = disabledFace;
 		}
 		//############################################################################
-		FacePtr Button::getFaceDisabled() {
+		FacePtr Button::getFaceDisabled() const {
 			return mFace_Disabled;
 		}
 		//############################################################################
@@ -106,26 +114,67 @@ namespace OpenGUI {
 			return m_TextAlignment;
 		}
 		//############################################################################
+		void Button::setFontColor( const Color& color ) {
+			mColor_Normal = color;
+		}
 		//############################################################################
+		const Color& Button::getFontColor() const {
+			return mColor_Normal;
+		}
 		//############################################################################
+		void Button::setFontColorOver( const Color& color ) {
+			mColor_Over = color;
+		}
 		//############################################################################
+		const Color& Button::getFontColorOver() const {
+			return mColor_Over;
+		}
+		//############################################################################
+		void Button::setFontColorPressed( const Color& color ) {
+			mColor_Pressed = color;
+		}
+		//############################################################################
+		const Color& Button::getFontColorPressed() const {
+			return mColor_Pressed;
+		}
+		//############################################################################
+		void Button::setFontColorDisabled( const Color& color ) {
+			mColor_Disabled = color;
+		}
+		//############################################################################
+		const Color& Button::getFontColorDisabled() const {
+			return mColor_Disabled;
+		}
 		//############################################################################
 		void Button::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			FacePtr drawFace;
-			drawFace = mFace_Normal;
-			if ( mFace_Over && mButtonState == BS_OVER )
+			FacePtr drawFace = mFace_Normal;
+			Color fontColor = mColor_Normal;
+
+			if ( mFace_Over && mButtonState == BS_OVER ) {
 				drawFace = mFace_Over;
-			if ( mFace_Pressed && mButtonState == BS_PRESSED )
+				fontColor = mColor_Over;
+			}
+
+			if ( mFace_Pressed && mButtonState == BS_PRESSED ) {
 				drawFace = mFace_Pressed;
-			if ( mFace_Disabled && mButtonState == BS_DISABLED )
+				fontColor = mColor_Pressed;
+			}
+
+			if ( mFace_Disabled && mButtonState == BS_DISABLED ) {
 				drawFace = mFace_Disabled;
+				fontColor = mColor_Disabled;
+			}
 
 			b.Image.drawFace( drawFace, getRect() );
 
-			if ( mText != "" )
+			if ( mText != "" ) {
+				b.pushColor( fontColor );
 				b.Text.drawTextArea( mText, getRect(), mFont, true, m_TextAlignment );
+				b.pop();
+			}
 		}
+		//############################################################################
 
 
 	} // namespace Amethyst{

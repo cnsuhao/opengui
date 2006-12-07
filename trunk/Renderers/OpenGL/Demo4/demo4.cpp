@@ -61,10 +61,11 @@ void Demo4App::preRun() {
 	Widget* w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Button");
 	w->setProperty("Top", Value(50.0f));
 	w->setProperty("Left", Value(50.0f));
-	w->setProperty("Width", Value(50.0f));
-	w->setProperty("Height", Value(50.0f));
+	w->setProperty("Width", Value(55.0f));
+	w->setProperty("Height", Value(30.f));
 	w->setProperty("Text",Value("Test"));
 	mScreen->Children.add_front(w, true);
+
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");
 	//label->setProperty("Text","This is some text");
