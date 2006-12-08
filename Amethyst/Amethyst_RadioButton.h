@@ -15,7 +15,6 @@ namespace OpenGUI {
 
 		protected:
 			std::string mGroupName;
-			virtual void preActivate();
 
 		private:
 			static std::list<RadioButton *> mRadioList;

@@ -53,17 +53,32 @@ void Demo4App::preRun() {
 
 	TestFrame* frame = new TestFrame(fptr);
 	frame->setTop( 200 );
-	frame->setLeft( 200 );
+	frame->setLeft( 250 );
 	frame->setWidth( 190 );
 	frame->setHeight( 160 );
 	mScreen->Children.add_front(frame,true);
 
-	Widget* w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Button");
+	Widget* w;
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Button");
 	w->setProperty("Top", Value(50.0f));
 	w->setProperty("Left", Value(50.0f));
 	w->setProperty("Width", Value(55.0f));
 	w->setProperty("Height", Value(30.f));
 	w->setProperty("Text",Value("Test"));
+	mScreen->Children.add_front(w, true);
+
+
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:CheckBox");
+	w->setProperty("Top", Value(150.0f));
+	w->setProperty("Left", Value(150.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.0f));
+	mScreen->Children.add_front(w, true);
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:CheckBox");
+	w->setProperty("Top", Value(170.0f));
+	w->setProperty("Left", Value(150.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.f));
 	mScreen->Children.add_front(w, true);
 
 

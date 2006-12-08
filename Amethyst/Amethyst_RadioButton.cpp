@@ -72,21 +72,5 @@ namespace OpenGUI {
 		}
 
 
-		void RadioButton::preActivate()
-		{
-			/* find all radio buttons that are in my group and deactivate them */
-			std::list<RadioButton *>::iterator it = mRadioList.begin();
-			while(it != mRadioList.end())
-			{
-				if( ((*it) != this) && ((*it)->getGroup() == this->getGroup()) )
-				{
-					(*it)->setCurrentState(false);
-				}
-				++it;
-			}
-
-			// call the base class behavior
-			CheckBox::preActivate();
-		}
 	}
 }

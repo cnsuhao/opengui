@@ -46,9 +46,8 @@ namespace OpenGUI {
 				BS_OVER,
 				BS_DISABLED
 			};
-
 			int mButtonState;
-			virtual void preActivate() = 0;
+
 		private:
 			bool m_Inside;
 			bool m_bMouseButtonState;

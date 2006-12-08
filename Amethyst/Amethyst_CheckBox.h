@@ -1,7 +1,7 @@
 #ifndef Amethyst_CheckBox_h__
 #define Amethyst_CheckBox_h__
 
-#include "Amethyst_Button.h"
+#include "Amethyst_ButtonBase.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
@@ -11,66 +11,69 @@ namespace OpenGUI {
 			CheckBox();
 			virtual ~CheckBox();
 
-			//! Sets the normal button imagery.
-			void setImagery( std::string imageryName);
-			//! Sets the pressed button imagery. If none specified, uses the Normal imagery.
-			void setImageryPressed( std::string imageryName);
-			//! Sets the mouse over button imagery. If none specified, uses the Normal imagery.
-			void setImageryMouseOver( std::string imageryName);
-			//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
-			void setImageryDisabled( std::string imageryName);
+			//! Called when the CheckBox is toggled
+			void eventToggled();
 
-			//! Gets the normal button imagery.
-			std::string getImagery();
-			//! Gets the pressed button imagery.
-			std::string getImageryPressed();
-			//! Gets the mouse over button imagery.
-			std::string getImageryMouseOver();
-			//! Gets the disabled button imagery.
-			std::string getImageryDisabled();
+			//! Sets the Face used to draw the button in the Normal state
+			void setFaceNormal( FacePtr normalFace );
+			//! Gets the Face used to draw the button in the Normal state
+			FacePtr getFaceNormal() const;
+			//! Sets the Face used to draw the button in the Over state
+			void setFaceOver( FacePtr overFace );
+			//! Gets the Face used to draw the button in the Over state
+			FacePtr getFaceOver() const;
+			//! Sets the Face used to draw the button in the Pressed state
+			void setFacePressed( FacePtr pressedFace );
+			//! Gets the Face used to draw the button in the Pressed state
+			FacePtr getFacePressed() const;
+			//! Sets the Face used to draw the button in the Disabled state
+			void setFaceDisabled( FacePtr disabledFace );
+			//! Gets the Face used to draw the button in the Disabled state
+			FacePtr getFaceDisabled() const;
 
-			//! Sets the selected/normal button imagery.
-			void setSelImagery( std::string imageryName);
-			//! Sets the selected/pressed button imagery. If none specified, uses the Normal imagery.
-			void setSelImageryPressed( std::string imageryName);
-			//! Sets the selected/mouse over button imagery. If none specified, uses the Normal imagery.
-			void setSelImageryMouseOver( std::string imageryName);
-			//! Sets the selected/disabled button imagery. If none specified, uses the Normal imagery.
-			void setSelImageryDisabled( std::string imageryName);
+			//! Sets the Face used to draw the button in the Normal selected state
+			void setFaceSelNormal( FacePtr normalFace );
+			//! Gets the Face used to draw the button in the Normal selected state
+			FacePtr getFaceSelNormal() const;
+			//! Sets the Face used to draw the button in the Over selected state
+			void setFaceSelOver( FacePtr overFace );
+			//! Gets the Face used to draw the button in the Over selected state
+			FacePtr getFaceSelOver() const;
+			//! Sets the Face used to draw the button in the Pressed selected state
+			void setFaceSelPressed( FacePtr pressedFace );
+			//! Gets the Face used to draw the button in the Pressed selected state
+			FacePtr getFaceSelPressed() const;
+			//! Sets the Face used to draw the button in the Disabled selected state
+			void setFaceSelDisabled( FacePtr disabledFace );
+			//! Gets the Face used to draw the button in the Disabled selected state
+			FacePtr getFaceSelDisabled() const;
 
-			//! Gets the selected/normal button imagery.
-			std::string getSelImagery();
-			//! Gets the selected/pressed button imagery.
-			std::string getSelImageryPressed();
-			//! Gets the selected/mouse over button imagery.
-			std::string getSelImageryMouseOver();
-			//! Gets the selected/disabled button imagery.
-			std::string getSelImageryDisabled();
+			//! Gets the current selected state of the CheckBox
+			bool getSelected();
+			//! Sets the selected state of the CheckBox
+			void setSelected( bool selected );
 
 			static Widget* createCheckBoxFactory();
-
-			bool getCurrentState() {return mSelected;}
-			void setCurrentState(bool s) {mSelected = s;}
+			virtual ObjectAccessorList* getAccessors();
 
 		protected:
+			//! "Activate" event, captured to toggle the checked value, which fires "Toggled" event
+			virtual void onActivate( Object* sender, EventArgs& evtArgs );
+			//! "Toggled" event, fired whenever the selected value changes
+			virtual void onToggled( Object* sender, EventArgs& evtArgs );
+
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
-			virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
-
-			ImageryPtr mImageryPtr;
-			ImageryPtr mImageryPtrPressed;
-			ImageryPtr mImageryPtrMouseOver;
-			ImageryPtr mImageryPtrDisabled;
-
-			ImageryPtr mSelImageryPtr;
-			ImageryPtr mSelImageryPtrPressed;
-			ImageryPtr mSelImageryPtrMouseOver;
-			ImageryPtr mSelImageryPtrDisabled;
-
 			bool mSelected;
-
-			virtual void preActivate();
-
+			FacePtr mFace_Normal;
+			FacePtr mFace_Over;
+			FacePtr mFace_Pressed;
+			FacePtr mFace_Disabled;
+			FacePtr mFace_SelNormal;
+			FacePtr mFace_SelOver;
+			FacePtr mFace_SelPressed;
+			FacePtr mFace_SelDisabled;
 		};
+
 	} // namespace Amethyst{
 } // namespace OpenGUI{
 
