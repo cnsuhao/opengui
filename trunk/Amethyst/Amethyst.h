@@ -7,5 +7,6 @@
 
 #include "Amethyst_ButtonBase.h"
 #include "Amethyst_Button.h"
+#include "Amethyst_CheckBox.h"
 
 #endif // Amethyst_h__

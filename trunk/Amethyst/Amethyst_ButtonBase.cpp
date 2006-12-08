@@ -55,7 +55,6 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void ButtonBase::eventActivate() {
-			preActivate();
 			EventArgs args;
 			getEvents().sendEvent( "Activate", args );
 		}

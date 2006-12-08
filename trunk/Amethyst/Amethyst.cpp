@@ -14,6 +14,7 @@ namespace OpenGUI {
 			// register all widgets
 			WidgetManager& wm = WidgetManager::getSingleton();
 			wm.RegisterWidgetFactory( "Button", "Amethyst", &Button::createButtonFactory );
+			wm.RegisterWidgetFactory( "CheckBox", "Amethyst", &CheckBox::createCheckBoxFactory );
 		}
 		//############################################################################
 		void Shutdown() {
@@ -23,6 +24,7 @@ namespace OpenGUI {
 			// remove widget registrations
 			WidgetManager& wm = WidgetManager::getSingleton();
 			wm.UnregisterWidgetFactory( "Button", "Amethyst" );
+			wm.UnregisterWidgetFactory( "CheckBox", "Amethyst" );
 		}
 		//############################################################################
 

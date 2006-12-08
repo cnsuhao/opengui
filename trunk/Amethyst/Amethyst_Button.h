@@ -61,20 +61,20 @@ namespace OpenGUI {
 			//! Sets the color of the font
 			void setFontColor( const Color& color );
 			//! Gets the color of the font
-			const Color& getFontColor( ) const;
+			const Color& getFontColor() const;
 			
 			//! Sets the color of the font in the Over state
 			void setFontColorOver( const Color& color );
 			//! Gets the color of the font in the Over state
-			const Color& getFontColorOver( ) const;
+			const Color& getFontColorOver() const;
 			//! Sets the color of the font in the Pressed state
 			void setFontColorPressed( const Color& color );
 			//! Gets the color of the font in the Pressed state
-			const Color& getFontColorPressed( ) const;
+			const Color& getFontColorPressed() const;
 			//! Sets the color of the font in the Disabled state
 			void setFontColorDisabled( const Color& color );
 			//! Gets the color of the font in the Disabled state
-			const Color& getFontColorDisabled( ) const;
+			const Color& getFontColorDisabled() const;
 
 			//! Sets the text alignment used when drawing the button text
 			void setAlignment( const TextAlignment& alignment );
@@ -100,8 +100,6 @@ namespace OpenGUI {
 			Color mColor_Pressed;
 			Color mColor_Disabled;
 
-			// internal notification of button "Active" event about to be sent
-			virtual void preActivate() {}
 		};
 
 

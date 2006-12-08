@@ -1,504 +1,186 @@
 #include "Amethyst_Checkbox.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
-		class CheckBox_SBaseImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Sel Imagery";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getSelImagery() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setSelImagery( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_SBaseImage_ObjectProperty;
 		//############################################################################
-		class CheckBox_SHoverImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Sel ImageryMouseOver";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getSelImageryMouseOver() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setSelImageryMouseOver( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_SHoverImage_ObjectProperty;
+		SimpleProperty_Face( CheckBoxProperty_FaceNormal, "Face_Normal", CheckBox, getFaceNormal, setFaceNormal );
+		SimpleProperty_Face( CheckBoxProperty_FaceOver, "Face_Over", CheckBox, getFaceOver, setFaceOver );
+		SimpleProperty_Face( CheckBoxProperty_FacePresseed, "Face_Pressed", CheckBox, getFacePressed, setFacePressed );
+		SimpleProperty_Face( CheckBoxProperty_FaceDisabled, "Face_Disabled", CheckBox, getFaceDisabled, setFaceDisabled );
+		SimpleProperty_Face( CheckBoxProperty_FaceSelNormal, "Face_SelNormal", CheckBox, getFaceSelNormal, setFaceSelNormal );
+		SimpleProperty_Face( CheckBoxProperty_FaceSelOver, "Face_SelOver", CheckBox, getFaceSelOver, setFaceSelOver );
+		SimpleProperty_Face( CheckBoxProperty_FaceSelPresseed, "Face_SelPressed", CheckBox, getFaceSelPressed, setFaceSelPressed );
+		SimpleProperty_Face( CheckBoxProperty_FaceSelDisabled, "Face_SelDisabled", CheckBox, getFaceSelDisabled, setFaceSelDisabled );
+		SimpleProperty_Bool( CheckBoxProperty_Checked, "Checked", CheckBox, getSelected, setSelected );
 		//############################################################################
-		class CheckBox_SPressedImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Sel ImageryPressed";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getSelImageryPressed() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setSelImageryPressed( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_SPressedImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_SDisabledImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Sel ImageryDisabled";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getSelImageryDisabled() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setSelImageryDisabled( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_SDisabledImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_BaseImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Imagery";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getImagery() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setImagery( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_BaseImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_HoverImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "ImageryMouseOver";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getImageryMouseOver() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setImageryMouseOver( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_HoverImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_PressedImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "ImageryPressed";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getImageryPressed() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setImageryPressed( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_PressedImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_DisabledImage_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "ImageryDisabled";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getImageryDisabled() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setImageryDisabled( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gCheckBox_DisabledImage_ObjectProperty;
-		//############################################################################
-		class CheckBox_CurrentState_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Current State";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					valueOut.setValue( b.getCurrentState() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					CheckBox& b = dynamic_cast<CheckBox&>( objectRef );
-					b.setCurrentState( valueIn.getValueAsBool() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_BOOL;
-			}
-		}
-		gCheckBox_CurrentState_ObjectProperty;
-		//############################################################################
-
 		class CheckBox_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			CheckBox_ObjectAccessorList() {
-				addAccessor( &gCheckBox_BaseImage_ObjectProperty );
-				addAccessor( &gCheckBox_HoverImage_ObjectProperty );
-				addAccessor( &gCheckBox_PressedImage_ObjectProperty );
-				addAccessor( &gCheckBox_DisabledImage_ObjectProperty );
-				addAccessor( &gCheckBox_SBaseImage_ObjectProperty );
-				addAccessor( &gCheckBox_SHoverImage_ObjectProperty );
-				addAccessor( &gCheckBox_SPressedImage_ObjectProperty );
-				addAccessor( &gCheckBox_SDisabledImage_ObjectProperty );
-				addAccessor( &gCheckBox_CurrentState_ObjectProperty );
+				addAccessor( &CheckBoxProperty_FaceNormal );
+				addAccessor( &CheckBoxProperty_FaceOver );
+				addAccessor( &CheckBoxProperty_FacePresseed );
+				addAccessor( &CheckBoxProperty_FaceDisabled );
+				addAccessor( &CheckBoxProperty_FaceSelNormal );
+				addAccessor( &CheckBoxProperty_FaceSelOver );
+				addAccessor( &CheckBoxProperty_FaceSelPresseed );
+				addAccessor( &CheckBoxProperty_FaceSelDisabled );
+				addAccessor( &CheckBoxProperty_Checked );
 			}
 			~CheckBox_ObjectAccessorList() {}
 		}
 		gCheckBox_ObjectAccessorList;
-
-
-Widget* CheckBox::createCheckBoxFactory() {
-	return new CheckBox;
-}
-
-//! Constructor
-CheckBox::CheckBox() {
-	if(gCheckBox_ObjectAccessorList.getParent() == NULL)
-		gCheckBox_ObjectAccessorList.setParent(Widget::getAccessors());
-
-	mImageryPtr = NULL;
-	mImageryPtrPressed = NULL;
-	mImageryPtrMouseOver = NULL;
-	mImageryPtrDisabled = NULL;
-
-	mSelImageryPtr = NULL;
-	mSelImageryPtrPressed = NULL;
-	mSelImageryPtrMouseOver = NULL;
-	mSelImageryPtrDisabled = NULL;
-
-	mSelected = false;
-}
-
-//! virtual Destructor
-CheckBox::~CheckBox() {
-	/**/
-}
-
-void CheckBox::preActivate()
-{
-	mSelected = !mSelected;
-}
-
-//! Sets the normal button imagery.
-void CheckBox::setSelImagery( std::string selImageryName ) {
-	invalidate();
-	mSelImageryPtr = ImageryManager::getSingleton().getImagery( selImageryName );
-}
-
-//! Sets the pressed button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setSelImageryPressed( std::string selImageryName ) {
-	invalidate();
-	mSelImageryPtrPressed = ImageryManager::getSingleton().getImagery( selImageryName );
-}
-
-//! Sets the mouse over button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setSelImageryMouseOver( std::string selImageryName ) {
-	invalidate();
-	mSelImageryPtrMouseOver = ImageryManager::getSingleton().getImagery( selImageryName );
-}
-//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setSelImageryDisabled( std::string selImageryName ) {
-	invalidate();
-	mSelImageryPtrDisabled = ImageryManager::getSingleton().getImagery( selImageryName );
-}
-
-//! Gets the normal button imagery.
-std::string CheckBox::getImagery() {
-	if ( mImageryPtr )
-		return  mImageryPtr->getName();
-	return "";
-}
-//! Gets the pressed button imagery.
-std::string CheckBox::getImageryPressed() {
-	if ( mImageryPtrPressed )
-		return mImageryPtrPressed->getName();
-	return getImagery();
-}
-//! Gets the mouse over button imagery.
-std::string CheckBox::getImageryMouseOver() {
-	if ( mImageryPtrMouseOver )
-		return mImageryPtrMouseOver->getName();
-	return getImagery();
-}
-//! Gets the disabled button imagery.
-std::string CheckBox::getImageryDisabled() {
-	if ( mImageryPtrDisabled )
-		return mImageryPtrDisabled->getName();
-	return getImagery();
-}
-
-
-//8******************************************
-
-//! Sets the normal button imagery.
-void CheckBox::setImagery( std::string imageryName) {
-	invalidate();
-	mImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
-}
-
-//! Sets the pressed button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setImageryPressed( std::string imageryName ) {
-	invalidate();
-	mImageryPtrPressed = ImageryManager::getSingleton().getImagery( imageryName );
-}
-
-//! Sets the mouse over button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setImageryMouseOver( std::string imageryName ) {
-	invalidate();
-	mImageryPtrMouseOver = ImageryManager::getSingleton().getImagery( imageryName );
-}
-//! Sets the disabled button imagery. If none specified, uses the Normal imagery.
-void CheckBox::setImageryDisabled( std::string imageryName ) {
-	invalidate();
-	mImageryPtrDisabled = ImageryManager::getSingleton().getImagery( imageryName );
-}
-
-//! Gets the normal button imagery.
-std::string CheckBox::getSelImagery() {
-	if ( mSelImageryPtr )
-		return mSelImageryPtr->getName();
-	return "";
-}
-//! Gets the pressed button imagery.
-std::string CheckBox::getSelImageryPressed() {
-	if ( mSelImageryPtrPressed )
-		return mSelImageryPtrPressed->getName();
-	return getSelImagery();
-}
-//! Gets the mouse over button imagery.
-std::string CheckBox::getSelImageryMouseOver() {
-	if ( mSelImageryPtrMouseOver )
-		return mSelImageryPtrMouseOver->getName();
-	return getSelImagery();
-}
-//! Gets the disabled button imagery.
-std::string CheckBox::getSelImageryDisabled() {
-	if ( mSelImageryPtrDisabled )
-		return mSelImageryPtrDisabled->getName();
-	return getSelImagery();
-}
-
-
-
-void CheckBox::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
-	/*
-	ImageryPtr pCurrentImage = NULL;
-	if(mSelected)
-	{
-		pCurrentImage = mSelImageryPtr;
-		switch ( mButtonState ) {
-				case BS_NORMAL:
-					break;
-				case BS_PRESSED:
-					if ( mSelImageryPtrPressed )
-						pCurrentImage = mSelImageryPtrPressed;
-					break;
-				case BS_HOVER:
-					if ( mSelImageryPtrMouseOver )
-						pCurrentImage = mSelImageryPtrMouseOver;
-
-					if ( m_bMouseButtonState && mSelImageryPtrPressed)
-						pCurrentImage = mSelImageryPtrPressed;
-					break;
-				case BS_DISABLED:
-					if ( mSelImageryPtrDisabled )
-						pCurrentImage = mSelImageryPtrDisabled;
-					break;
-
-				default:
-					//todo:: throw exception
-					break;
+		//############################################################################
+		//############################################################################
+		Widget* CheckBox::createCheckBoxFactory() {
+			return new CheckBox;
 		}
-	}
-	else
-	{
-		pCurrentImage = mImageryPtr;
-		switch ( mButtonState ) {
-				case BS_NORMAL:
-					break;
-				case BS_PRESSED:
-					if ( mImageryPtrPressed )
-						pCurrentImage = mImageryPtrPressed;
-					break;
-				case BS_HOVER:
-					if ( mImageryPtrMouseOver )
-						pCurrentImage = mImageryPtrMouseOver;
-
-					if ( m_bMouseButtonState )
-						pCurrentImage = mImageryPtrPressed;
-					break;
-				case BS_DISABLED:
-					if ( mImageryPtrDisabled )
-						pCurrentImage = mImageryPtrDisabled;
-					break;
-
-				default:
-					//todo:: throw exception
-					break;
+		//############################################################################
+		ObjectAccessorList* CheckBox::getAccessors() {
+			return &gCheckBox_ObjectAccessorList;
 		}
-	}
+		//############################################################################
+		CheckBox::CheckBox() {
+			if ( gCheckBox_ObjectAccessorList.getParent() == NULL )
+				gCheckBox_ObjectAccessorList.setParent( Control::getAccessors() );
+			mSelected = false;
 
-	if ( pCurrentImage ) {
-		Brush& b = evtArgs.brush;
-		const FVector2& PPU = b.getPPU();
-		const float scaleX = getRect().getWidth() / (( float )pCurrentImage->getImagesetRect().getWidth() ) ;
-		const float scaleY = getRect().getWidth()  / (( float )pCurrentImage->getImagesetRect().getHeight() );
-		b.Image.drawImage( pCurrentImage, getRect() );
-	}
-	*/
-}
+			getEvents().createEvent( "Toggled" );
+			getEvents()["Toggled"].add( new EventDelegate( this, &CheckBox::onToggled ) );
+		}
+		//############################################################################
+		CheckBox::~CheckBox() {
+			/**/
+		}
+		//############################################################################
+		void CheckBox::setFaceNormal( FacePtr normalFace ) {
+			mFace_Normal = normalFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceNormal() const {
+			return mFace_Normal;
+		}
+		//############################################################################
+		void CheckBox::setFaceOver( FacePtr overFace ) {
+			mFace_Over = overFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceOver() const {
+			return mFace_Over;
+		}
+		//############################################################################
+		void CheckBox::setFacePressed( FacePtr pressedFace ) {
+			mFace_Pressed = pressedFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFacePressed() const {
+			return mFace_Pressed;
+		}
+		//############################################################################
+		void CheckBox::setFaceDisabled( FacePtr disabledFace ) {
+			mFace_Disabled = disabledFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceDisabled() const {
+			return mFace_Disabled;
+		}
+		//############################################################################
+		void CheckBox::setFaceSelNormal( FacePtr normalFace ) {
+			mFace_SelNormal = normalFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceSelNormal() const {
+			return mFace_SelNormal;
+		}
+		//############################################################################
+		void CheckBox::setFaceSelOver( FacePtr overFace ) {
+			mFace_SelOver = overFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceSelOver() const {
+			return mFace_SelOver;
+		}
+		//############################################################################
+		void CheckBox::setFaceSelPressed( FacePtr pressedFace ) {
+			mFace_SelPressed = pressedFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceSelPressed() const {
+			return mFace_SelPressed;
+		}
+		//############################################################################
+		void CheckBox::setFaceSelDisabled( FacePtr disabledFace ) {
+			mFace_SelDisabled = disabledFace;
+		}
+		//############################################################################
+		FacePtr CheckBox::getFaceSelDisabled() const {
+			return mFace_SelDisabled;
+		}
+		//############################################################################
+		bool CheckBox::getSelected() {
+			return mSelected;
+		}
+		//############################################################################
+		void CheckBox::setSelected( bool selected ) {
+			if ( mSelected == selected ) return;
+			mSelected = selected;
+			eventToggled();
 
+		}
+		//############################################################################
+		void CheckBox::eventToggled() {
+			EventArgs args;
+			getEvents().sendEvent( "Toggled", args );
+		}
+		//############################################################################
+		void CheckBox::onActivate( Object* sender, EventArgs& evtArgs ) {
+			setSelected( !getSelected() );
+		}
+		//############################################################################
+		void CheckBox::onToggled( Object* sender, EventArgs& evtArgs ) {
+			/* default does nothing but invalidate (work has been done elsewhere) */
+			invalidate();
+		}
+		//############################################################################
+		//############################################################################
+		void CheckBox::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
+			Brush& b = evtArgs.brush;
+			FacePtr drawFace = mFace_Normal;
+			// if we're in the selected state, we should switch to the selected Normal Face if available
+			if ( mSelected && mFace_SelNormal )
+				drawFace = mFace_SelNormal;
 
+			if ( mSelected ) {
+				// selected state
+				if ( mFace_SelOver && mButtonState == BS_OVER ) {
+					drawFace = mFace_SelOver;
+				}
 
-void CheckBox::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
-	/**/
-}
+				if ( mFace_SelPressed && mButtonState == BS_PRESSED ) {
+					drawFace = mFace_SelPressed;
+				}
 
+				if ( mFace_SelDisabled && mButtonState == BS_DISABLED ) {
+					drawFace = mFace_SelDisabled;
+				}
+			} else {
+				// unselected state
+				if ( mFace_Over && mButtonState == BS_OVER ) {
+					drawFace = mFace_Over;
+				}
 
-// close the namespace stuff
-	}
-}
+				if ( mFace_Pressed && mButtonState == BS_PRESSED ) {
+					drawFace = mFace_Pressed;
+				}
+
+				if ( mFace_Disabled && mButtonState == BS_DISABLED ) {
+					drawFace = mFace_Disabled;
+				}
+			}
+
+			if ( drawFace )
+				b.Image.drawFace( drawFace, getRect() );
+		}
+		//############################################################################
+	} // namespace Amethyst {
+} // namespace OpenGUI {
