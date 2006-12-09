@@ -12,7 +12,7 @@ namespace OpenGUI {
 		SimpleProperty_Face( CheckBoxProperty_FaceSelOver, "Face_SelOver", CheckBox, getFaceSelOver, setFaceSelOver );
 		SimpleProperty_Face( CheckBoxProperty_FaceSelPresseed, "Face_SelPressed", CheckBox, getFaceSelPressed, setFaceSelPressed );
 		SimpleProperty_Face( CheckBoxProperty_FaceSelDisabled, "Face_SelDisabled", CheckBox, getFaceSelDisabled, setFaceSelDisabled );
-		SimpleProperty_Bool( CheckBoxProperty_Checked, "Checked", CheckBox, getSelected, setSelected );
+		SimpleProperty_Bool( CheckBoxProperty_Checked, "Selected", CheckBox, getSelected, setSelected );
 		//############################################################################
 		class CheckBox_ObjectAccessorList : public ObjectAccessorList {
 		public:
@@ -45,8 +45,12 @@ namespace OpenGUI {
 				gCheckBox_ObjectAccessorList.setParent( Control::getAccessors() );
 			mSelected = false;
 
-			getEvents().createEvent( "Toggled" );
-			getEvents()["Toggled"].add( new EventDelegate( this, &CheckBox::onToggled ) );
+			getEvents().createEvent( "Activate" );
+			getEvents()["Activate"].add( new EventDelegate( this, &CheckBox::onActivate ) );
+			getEvents().createEvent( "ToggledOn" );
+			getEvents().createEvent( "ToggledOff" );
+			getEvents()["ToggledOn"].add( new EventDelegate( this, &CheckBox::onToggledOn ) );
+			getEvents()["ToggledOff"].add( new EventDelegate( this, &CheckBox::onToggledOff ) );
 		}
 		//############################################################################
 		CheckBox::~CheckBox() {
@@ -117,29 +121,48 @@ namespace OpenGUI {
 			return mFace_SelDisabled;
 		}
 		//############################################################################
-		bool CheckBox::getSelected() {
+		bool CheckBox::getSelected() const {
 			return mSelected;
 		}
 		//############################################################################
 		void CheckBox::setSelected( bool selected ) {
 			if ( mSelected == selected ) return;
 			mSelected = selected;
-			eventToggled();
-
+			if(mSelected)
+				eventToggledOn();
+			else
+				eventToggledOff();
 		}
 		//############################################################################
-		void CheckBox::eventToggled() {
+		void CheckBox::eventActivate(){
 			EventArgs args;
-			getEvents().sendEvent( "Toggled", args );
+			getEvents().sendEvent( "Activate", args );
 		}
 		//############################################################################
-		void CheckBox::onActivate( Object* sender, EventArgs& evtArgs ) {
+		void CheckBox::eventToggledOn(){
+			EventArgs args;
+			getEvents().sendEvent( "ToggledOn", args );
+		}
+		//############################################################################
+		void CheckBox::eventToggledOff(){
+			EventArgs args;
+			getEvents().sendEvent( "ToggledOff", args );
+		}
+		//############################################################################
+		void CheckBox::onActivate( Object* sender, EventArgs& evtArgs ){
 			setSelected( !getSelected() );
 		}
 		//############################################################################
-		void CheckBox::onToggled( Object* sender, EventArgs& evtArgs ) {
-			/* default does nothing but invalidate (work has been done elsewhere) */
-			invalidate();
+		void CheckBox::onToggledOn( Object* sender, EventArgs& evtArgs ){
+			/* default action is to do nothing */
+		}
+		//############################################################################
+		void CheckBox::onToggledOff( Object* sender, EventArgs& evtArgs ){
+			/* default action is to do nothing */
+		}
+		//############################################################################
+		void CheckBox::_buttonActivate(){
+			eventActivate();
 		}
 		//############################################################################
 		//############################################################################

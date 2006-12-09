@@ -48,7 +48,8 @@ namespace OpenGUI {
 			if ( gButton_ObjectAccessorList.getParent() == NULL )
 				gButton_ObjectAccessorList.setParent( Control::getAccessors() );
 
-			//
+			getEvents().createEvent( "Activate" );
+			getEvents()["Activate"].add( new EventDelegate( this, &Button::onActivate ) );
 		}
 		//############################################################################
 		Button::~Button() {
@@ -144,6 +145,19 @@ namespace OpenGUI {
 		//############################################################################
 		const Color& Button::getFontColorDisabled() const {
 			return mColor_Disabled;
+		}
+		//############################################################################
+		void Button::eventActivate() {
+			EventArgs args;
+			getEvents().sendEvent( "Activate", args );
+		}
+		//############################################################################
+		void Button::onActivate( Object* sender, EventArgs& evtArgs ) {
+			/* default does nothing */
+		}
+		//############################################################################
+		void Button::_buttonActivate(){
+			eventActivate();
 		}
 		//############################################################################
 		void Button::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {

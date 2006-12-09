@@ -5,14 +5,34 @@
 
 namespace OpenGUI {
 	namespace Amethyst {
-		//! checkbox
+		//! Its a Check Box
+		/*! Performs the usual barrage of checkbox-like activity.
+		Fires the "Activate" event when the Selected value changes.
+		Fires "ToggledOn" event when the Selected value changes becomes TRUE.
+		Fires "ToggledOff" event when the Selected value changes becomes FALSE.
+
+		\par Properties
+		- Selected
+		- Face_Normal
+		- Face_Over
+		- Face_Pressed
+		- Face_Disabled
+		- Face_SelNormal
+		- Face_SelOver
+		- Face_SelPressed
+		- Face_SelDisabled
+		*/
 		class AMETHYST_API CheckBox : public ButtonBase {
 		public:
 			CheckBox();
 			virtual ~CheckBox();
 
-			//! Called when the CheckBox is toggled
-			void eventToggled();
+			//! Called when the check box is pressed, fires "Activate" event
+			void eventActivate();
+			//! Called when the Selected state changes to TRUE, fires "ToggledOn" event
+			void eventToggledOn();
+			//! Called when the Selected state changes to TRUE, fires "ToggledOff" event
+			void eventToggledOff();
 
 			//! Sets the Face used to draw the button in the Normal state
 			void setFaceNormal( FacePtr normalFace );
@@ -49,7 +69,7 @@ namespace OpenGUI {
 			FacePtr getFaceSelDisabled() const;
 
 			//! Gets the current selected state of the CheckBox
-			bool getSelected();
+			bool getSelected() const;
 			//! Sets the selected state of the CheckBox
 			void setSelected( bool selected );
 
@@ -57,10 +77,14 @@ namespace OpenGUI {
 			virtual ObjectAccessorList* getAccessors();
 
 		protected:
-			//! "Activate" event, captured to toggle the checked value, which fires "Toggled" event
+			//! "Activate" event, default action inverts the Selected state
 			virtual void onActivate( Object* sender, EventArgs& evtArgs );
-			//! "Toggled" event, fired whenever the selected value changes
-			virtual void onToggled( Object* sender, EventArgs& evtArgs );
+			//! "ToggledOn" event, fired whenever the Selected value changes to TRUE
+			virtual void onToggledOn( Object* sender, EventArgs& evtArgs );
+			//! "ToggledOff" event, fired whenever the Selected value changes to FALSE
+			virtual void onToggledOff( Object* sender, EventArgs& evtArgs );
+			// inherited from ButtonBase
+			virtual void _buttonActivate();
 
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			bool mSelected;

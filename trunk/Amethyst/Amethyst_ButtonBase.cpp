@@ -9,8 +9,6 @@ namespace OpenGUI {
 			m_bMouseButtonState = false;
 			m_Focused = false;
 			mButtonState = BS_NORMAL;
-			getEvents().createEvent( "Activate" );
-			getEvents()["Activate"].add( new EventDelegate( this, &ButtonBase::onActivate ) );
 		}
 		//############################################################################
 		ButtonBase::~ButtonBase() {
@@ -46,21 +44,12 @@ namespace OpenGUI {
 		//############################################################################
 		void ButtonBase::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( m_Inside && m_bMouseButtonState ) {
-				eventActivate();
+				_buttonActivate();
 			}
 			m_bMouseButtonState = false;
 			updateButtonState();
 			invalidate();
 			releaseCursorFocus();
-		}
-		//############################################################################
-		void ButtonBase::eventActivate() {
-			EventArgs args;
-			getEvents().sendEvent( "Activate", args );
-		}
-		//############################################################################
-		void ButtonBase::onActivate( Object* sender, EventArgs& evtArgs ) {
-			/* default does nothing */
 		}
 		//############################################################################
 		void ButtonBase::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
@@ -96,5 +85,6 @@ namespace OpenGUI {
 			if ( m_bMouseButtonState && m_Inside )
 				mButtonState = BS_PRESSED;
 		}
+		//############################################################################
 	} // namespace Amethyst {
 } // namespace OpenGUI {
