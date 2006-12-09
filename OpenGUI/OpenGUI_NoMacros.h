@@ -24,5 +24,9 @@ been previously included.
 #undef SimpleProperty_IVector2
 #undef SimpleProperty_IRect
 #undef SimpleProperty_Color
+#undef SimpleProperty_Font
+#undef SimpleProperty_TextAlignment
+#undef SimpleProperty_Imagery
+#undef SimpleProperty_Face
 
 #endif
