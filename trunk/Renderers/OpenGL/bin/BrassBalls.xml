@@ -255,5 +255,16 @@
 		<Property ValueName="Face_SelPressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_CP" />
 		<Property ValueName="Face_SelDisabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_CD" />
 	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:RadioButton" BaseName="RadioButton" BaseLibrary="Amethyst">
+		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:CheckBox_N" />
+		<Property ValueName="Face_Over" ValueType="FACE" ValueData="BrassBalls:CheckBox_O" />
+		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_P" />
+		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_D" />
+		<Property ValueName="Face_SelNormal" ValueType="FACE" ValueData="BrassBalls:CheckBox_CN" />
+		<Property ValueName="Face_SelOver" ValueType="FACE" ValueData="BrassBalls:CheckBox_CO" />
+		<Property ValueName="Face_SelPressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_CP" />
+		<Property ValueName="Face_SelDisabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_CD" />
+	</WidgetDef>
 </OpenGUI>
 

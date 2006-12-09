@@ -81,6 +81,38 @@ void Demo4App::preRun() {
 	w->setProperty("Height", Value(15.f));
 	mScreen->Children.add_front(w, true);
 
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:RadioButton");
+	w->setProperty("Top", Value(150.0f));
+	w->setProperty("Left", Value(190.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.f));
+	w->setProperty("Group", Value("One"));
+	mScreen->Children.add_front(w, true);
+
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:RadioButton");
+	w->setProperty("Top", Value(150.0f));
+	w->setProperty("Left", Value(210.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.f));
+	w->setProperty("Group", Value("One"));
+	mScreen->Children.add_front(w, true);
+
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:RadioButton");
+	w->setProperty("Top", Value(170.0f));
+	w->setProperty("Left", Value(190.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.f));
+	w->setProperty("Group", Value("Two"));
+	mScreen->Children.add_front(w, true);
+
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:RadioButton");
+	w->setProperty("Top", Value(170.0f));
+	w->setProperty("Left", Value(210.0f));
+	w->setProperty("Width", Value(15.0f));
+	w->setProperty("Height", Value(15.f));
+	w->setProperty("Group", Value("Two"));
+	mScreen->Children.add_front(w, true);
+
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");
 	//label->setProperty("Text","This is some text");

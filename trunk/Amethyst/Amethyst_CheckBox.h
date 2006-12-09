@@ -1,6 +1,8 @@
 #ifndef Amethyst_CheckBox_h__
 #define Amethyst_CheckBox_h__
 
+#include "OpenGUI.h"
+#include "Amethyst_Exports.h"
 #include "Amethyst_ButtonBase.h"
 
 namespace OpenGUI {
