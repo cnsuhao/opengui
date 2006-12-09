@@ -69,41 +69,50 @@ namespace OpenGUI {
 			collection_iterator( const collection_iterator& copy ) {
 				mIter = copy.mIter;
 			}
+			//! Equality comparison. Iterators are equal when they point to the same object
 			bool operator==( const collection_iterator& right ) {
 				return mIter == right.mIter;
 			}
+			//! Not Equal comparison
 			bool operator!=( const collection_iterator& right ) {
 				return mIter != right.mIter;
 			}
+			//! Assign the iterator value from another iterator
 			collection_iterator& operator=( const collection_iterator& right ) {
 				mIter = right.mIter;
 				return *this;
 			}
+			//! Move to next
 			collection_iterator operator++( int ) {
 				collection_iterator t( *this );
 				++mIter;
 				return t;
 			}
+			//! Move to previous
 			collection_iterator operator--( int ) {
 				collection_iterator t( *this );
 				--mIter;
 				return t;
 			}
-
+			//! Move to next
 			collection_iterator& operator++() {
 				++mIter;
 				return *this;
 			}
+			//! Move to previous
 			collection_iterator& operator--() {
 				--mIter;
 				return *this;
 			}
+			//! Returns the widget at iterator by reference
 			Widget& operator*() {
 				return *(( *mIter )->widgetPtr );
 			}
+			//! Returns a pointer to the widget at iterator
 			Widget* operator->() {
 				return (( *mIter )->widgetPtr );
 			}
+			//! Returns a pointer to the widget at iterator
 			Widget* get() {
 				return (( *mIter )->widgetPtr );
 			}
