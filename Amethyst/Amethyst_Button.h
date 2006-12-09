@@ -32,6 +32,9 @@ namespace OpenGUI {
 			//! virtual Destructor
 			virtual ~Button();
 
+			//! Called when the button is clicked
+			void eventActivate();
+
 			//! Sets the Face used to draw the button in the Normal state
 			void setFaceNormal( FacePtr normalFace );
 			//! Gets the Face used to draw the button in the Normal state
@@ -86,6 +89,11 @@ namespace OpenGUI {
 			virtual ObjectAccessorList* getAccessors();
 
 		protected:
+			//! "Activate" event
+			virtual void onActivate( Object* sender, EventArgs& evtArgs );
+			// inherited from ButtonBase
+			virtual void _buttonActivate();
+
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
 			std::string mText;
