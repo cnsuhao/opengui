@@ -17,7 +17,8 @@ namespace OpenGUI {
 			wm.RegisterWidgetFactory( "Button", "Amethyst", &Button::createButtonFactory );
 			wm.RegisterWidgetFactory( "CheckBox", "Amethyst", &CheckBox::createCheckBoxFactory );
 			wm.RegisterWidgetFactory( "RadioButton", "Amethyst", &RadioButton::createRadioButtonFactory );
-			wm.RegisterWidgetFactory( "StaticImage", "Amethyst", &StaticImage::createStaticImageFactory);
+			wm.RegisterWidgetFactory( "StaticImage", "Amethyst", &StaticImage::createStaticImageFactory );
+			wm.RegisterWidgetFactory( "ProgressBar", "Amethyst", &ProgressBar::createProgressBarFactory );
 		}
 		//############################################################################
 		void Shutdown() {
@@ -31,6 +32,7 @@ namespace OpenGUI {
 			wm.UnregisterWidgetFactory( "CheckBox", "Amethyst" );
 			wm.UnregisterWidgetFactory( "RadioButton", "Amethyst" );
 			wm.UnregisterWidgetFactory( "StaticImage", "Amethyst" );
+			wm.UnregisterWidgetFactory( "ProgressBar", "Amethyst" );
 		}
 		//############################################################################
 
