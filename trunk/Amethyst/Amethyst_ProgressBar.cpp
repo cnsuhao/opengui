@@ -46,7 +46,12 @@ namespace OpenGUI {
 			if ( gProgressBar_ObjectAccessorList.getParent() == NULL )
 				gProgressBar_ObjectAccessorList.setParent( Control::getAccessors() );
 
-
+			// initialize the defaults
+			mTotal = 100.0f;
+			mValue = 0.0f;
+			mStepSize = 1.0f;
+			mVertical = false;
+			mInverted = false;
 		}
 		//############################################################################
 		ProgressBar::~ProgressBar() {
