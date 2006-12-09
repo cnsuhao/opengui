@@ -11,6 +11,13 @@ namespace OpenGUI {
 		/*! Labels have no borders or backgrounds. They simply draw text where they are
 		located. They will clip the text glyphs within their bounds, so you must use an
 		appropriately sized Label if you want all of your text to be visible.
+		
+		\par Properties
+		 - Text
+		 - Font
+		 - FontColor
+		 - Wrap
+		 - Alignment
 		*/
 		class AMETHYST_API Label: public Control {
 		public:

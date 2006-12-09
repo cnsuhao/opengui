@@ -10,5 +10,6 @@
 #include "Amethyst_Button.h"
 #include "Amethyst_CheckBox.h"
 #include "Amethyst_RadioButton.h"
+#include "Amethyst_StaticImage.h"
 
 #endif // Amethyst_h__

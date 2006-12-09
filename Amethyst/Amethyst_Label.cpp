@@ -7,7 +7,7 @@ namespace OpenGUI {
 		SimpleProperty_Bool( LabelP_Wrap, "Wrap", Label, getWrap, setWrap );
 		SimpleProperty_String( LabelP_Text, "Text", Label, getText, setText );
 		SimpleProperty_Font( LabelP_Font, "Font", Label, getFont, setFont );
-		SimpleProperty_TextAlignment( LabelP_TextAlignment, "TextAlignment", Label, getAlignment, setAlignment );
+		SimpleProperty_TextAlignment( LabelP_Alignment, "Alignment", Label, getAlignment, setAlignment );
 		SimpleProperty_Color( LabelP_FontColor, "FontColor", Label, getFontColor, setFontColor );
 		//############################################################################
 		class Label_ObjectAccessorList : public ObjectAccessorList {
@@ -16,7 +16,7 @@ namespace OpenGUI {
 				addAccessor( &LabelP_Wrap );
 				addAccessor( &LabelP_Text );
 				addAccessor( &LabelP_Font );
-				addAccessor( &LabelP_TextAlignment );
+				addAccessor( &LabelP_Alignment );
 				addAccessor( &LabelP_FontColor );
 			}
 			~Label_ObjectAccessorList() {}
@@ -39,6 +39,7 @@ namespace OpenGUI {
 			//setup defaults for properties
 			mText = "";
 			mAlignment = TextAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
+			mWrap = false;
 		}
 		//############################################################################
 		Label::~Label() {
