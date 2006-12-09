@@ -156,7 +156,7 @@ namespace OpenGUI {
 			/* default does nothing */
 		}
 		//############################################################################
-		void Button::_buttonActivate(){
+		void Button::_buttonActivate() {
 			eventActivate();
 		}
 		//############################################################################

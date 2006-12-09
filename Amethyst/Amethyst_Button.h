@@ -60,12 +60,12 @@ namespace OpenGUI {
 			void setFont( const Font& fnt );
 			//! Gets the Font used to draw the text on this button
 			const Font& getFont() const;
-			
+
 			//! Sets the color of the font
 			void setFontColor( const Color& color );
 			//! Gets the color of the font
 			const Color& getFontColor() const;
-			
+
 			//! Sets the color of the font in the Over state
 			void setFontColorOver( const Color& color );
 			//! Gets the color of the font in the Over state
