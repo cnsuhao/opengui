@@ -10,6 +10,9 @@ namespace OpenGUI {
 		//! A CheckBox variant that provides grouping with peers so only 1 is Selected at any point in time
 		/*! Aside from the addition of the grouping mechanism, a RadioButton behaves
 		exactly like a CheckBox, sharing the same properties and events.
+
+		\par Properties
+		- Group
 		*/
 		class AMETHYST_API RadioButton : public CheckBox {
 		public:
