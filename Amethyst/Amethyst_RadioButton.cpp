@@ -1,76 +1,73 @@
 #include "Amethyst_RadioButton.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
-
-		std::list<RadioButton *> RadioButton::mRadioList;
-
 		//############################################################################
-		class RadioButton_Group_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Group";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					RadioButton& b = dynamic_cast<RadioButton&>( objectRef );
-					valueOut.setValue( b.getGroup() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					RadioButton& b = dynamic_cast<RadioButton&>( objectRef );
-					b.setGroup( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gRadioButton_Group_ObjectProperty;
+		SimpleProperty_String( RadioButtonProperty_Group, "Group", RadioButton, getGroup, setGroup );
 		//############################################################################
-
 		class RadioButton_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			RadioButton_ObjectAccessorList() {
-				addAccessor( &gRadioButton_Group_ObjectProperty );
+				addAccessor( &RadioButtonProperty_Group );
 			}
-			~RadioButton_ObjectAccessorList() {}
 		}
 		gRadioButton_ObjectAccessorList;
-
-		RadioButton::RadioButton()
-		{
-			mGroupName = "Default";
-			mRadioList.push_back(this);
-			if ( gRadioButton_ObjectAccessorList.getParent() == 0 ) 
-				gRadioButton_ObjectAccessorList.setParent( Widget::getAccessors() ); 
+		//############################################################################
+		//############################################################################
+		Widget* RadioButton::createRadioButtonFactory() {
+			return new RadioButton;
 		}
-
-		RadioButton::~RadioButton()
-		{
-			/* remove this radio button from our list */
-			std::list<RadioButton *>::iterator it = mRadioList.begin();
-			bool bFound = false;
-			while(!bFound && (it != mRadioList.end()))
-			{
-				if((*it) == this)
-				{
-					mRadioList.erase(it);
-					bFound = true;
+		//############################################################################
+		ObjectAccessorList* RadioButton::getAccessors() {
+			return &gRadioButton_ObjectAccessorList;
+		}
+		//############################################################################
+		RadioButton::RadioButton() {
+			mGroupName = "";
+			if ( gRadioButton_ObjectAccessorList.getParent() == 0 )
+				gRadioButton_ObjectAccessorList.setParent( CheckBox::getAccessors() );
+		}
+		//############################################################################
+		RadioButton::~RadioButton() {
+			/**/
+		}//############################################################################
+		/*! To maintain the single selected per group criteria, if you move a selected
+		radio button into an existing group it will automatically un-select its new peers.
+		(This will cause ToggledOff events as necessary.)
+		*/
+		void RadioButton::setGroup( const std::string& groupName ) {
+			mGroupName = groupName;
+			if ( getSelected() )
+				unselectPeers();
+		}
+		//############################################################################
+		const std::string& RadioButton::getGroup() {
+			return mGroupName;
+		}
+		//############################################################################
+		void RadioButton::unselectPeers() {
+			I_WidgetContainer* p = getContainer();
+			WidgetCollection::iterator iter, iterend = p->Children.end();
+			for ( iter = p->Children.begin(); iter != iterend; iter++ ) {
+				Widget* w = iter.get();
+				RadioButton* rb = dynamic_cast<RadioButton*>( w );
+				if ( rb ) {
+					if ( rb != this && rb->getGroup() == mGroupName ) {
+						rb->setSelected( false );
+					}
 				}
-				else
-					++it;
 			}
+
 		}
-
-
-	}
-}
+		//############################################################################
+		void RadioButton::onToggledOn( Object* sender, EventArgs& evtArgs ) {
+			unselectPeers();
+		}
+		//############################################################################
+		void RadioButton::onActivate( Object* sender, EventArgs& evtArgs ) {
+			setSelected( true );
+		}
+		//############################################################################
+	} // namespace Amethyst {
+} // namespace OpenGUI {
