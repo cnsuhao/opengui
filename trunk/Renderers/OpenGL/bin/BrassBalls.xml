@@ -2,6 +2,7 @@
 
 <OpenGUI>
 	<Imageset File="BrassBalls.png">
+		<Imagery Name="All" Left="0" Top="0" Width="256" Height="256" />
 	<!-- Button -->
 		<!-- Normal -->
 		<Imagery Name="Button_N_UL" Left="63" Top="1" Width="13" Height="10" />
@@ -269,9 +270,10 @@
 	
 	<WidgetDef Name="BrassBalls:Label" BaseName="Label" BaseLibrary="Amethyst">
 		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
-		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Left|Top" />
+		<Property ValueName="Alignment" ValueType="TEXTALIGNMENT" ValueData="Left|Top" />
 		<Property ValueName="Text" ValueType="STRING" ValueData="" />
 		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#5555d8" />
 	</WidgetDef>
+	
 </OpenGUI>
 

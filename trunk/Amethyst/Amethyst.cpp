@@ -17,6 +17,7 @@ namespace OpenGUI {
 			wm.RegisterWidgetFactory( "Button", "Amethyst", &Button::createButtonFactory );
 			wm.RegisterWidgetFactory( "CheckBox", "Amethyst", &CheckBox::createCheckBoxFactory );
 			wm.RegisterWidgetFactory( "RadioButton", "Amethyst", &RadioButton::createRadioButtonFactory );
+			wm.RegisterWidgetFactory( "StaticImage", "Amethyst", &StaticImage::createStaticImageFactory);
 		}
 		//############################################################################
 		void Shutdown() {
@@ -29,6 +30,7 @@ namespace OpenGUI {
 			wm.UnregisterWidgetFactory( "Button", "Amethyst" );
 			wm.UnregisterWidgetFactory( "CheckBox", "Amethyst" );
 			wm.UnregisterWidgetFactory( "RadioButton", "Amethyst" );
+			wm.UnregisterWidgetFactory( "StaticImage", "Amethyst" );
 		}
 		//############################################################################
 

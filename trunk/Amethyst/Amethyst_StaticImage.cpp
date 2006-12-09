@@ -1,92 +1,113 @@
 #include "Amethyst_StaticImage.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
-
-		class StaticImage_Image_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Image";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					StaticImage& b = dynamic_cast<StaticImage&>( objectRef );
-					valueOut.setValue( b.getImagery() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					StaticImage& b = dynamic_cast<StaticImage&>( objectRef );
-					b.setImagery( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gStaticImage_Image_ObjectProperty;
+		SimpleProperty_Imagery( SIProp_Imagery, "Imagery", StaticImage, getImagery, setImagery );
+		SimpleProperty_Bool( SIProp_NativeScale, "Native_Scale", StaticImage, getNativeScale, setNativeScale );
+		SimpleProperty_Bool( SIProp_NativeFill, "Native_Fill", StaticImage, getNativeFill, setNativeFill );
+		SimpleProperty_Float( SIProp_TilingX, "TilingX", StaticImage, getTilingX, setTilingX );
+		SimpleProperty_Float( SIProp_TilingY, "TilingY", StaticImage, getTilingY, setTilingY );
 		//############################################################################
 		class StaticImage_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			StaticImage_ObjectAccessorList() {
-				addAccessor( &gStaticImage_Image_ObjectProperty );
+				addAccessor( &SIProp_Imagery );
+				addAccessor( &SIProp_NativeScale );
+				addAccessor( &SIProp_NativeFill );
+				addAccessor( &SIProp_TilingX );
+				addAccessor( &SIProp_TilingY );
 			}
 			~StaticImage_ObjectAccessorList() {}
 		}
 		gStaticImage_ObjectAccessorList;
-
-
-
-		StaticImage::StaticImage()
-		{
-			if(gStaticImage_ObjectAccessorList.getParent() == NULL)
-				gStaticImage_ObjectAccessorList.setParent(Widget::getAccessors());
+		//############################################################################
+		//############################################################################
+		ObjectAccessorList* StaticImage::getAccessors() {
+			return &gStaticImage_ObjectAccessorList;
+		}
+		//############################################################################
+		StaticImage::StaticImage() {
+			if ( gStaticImage_ObjectAccessorList.getParent() == NULL )
+				gStaticImage_ObjectAccessorList.setParent( Control::getAccessors() );
 
 			mImageryPtr = NULL;
+			mTileX = 1.0f;
+			mTileY = 1.0f;
+			mNativeScale = false;
+			mNativeFill = false;
 		}
-
-		StaticImage::~StaticImage()
-		{
+		//############################################################################
+		StaticImage::~StaticImage() {
+			/**/
 		}
-
-
-		void StaticImage::setImagery( std::string imageryName ) {
+		//############################################################################
+		void StaticImage::setImagery( ImageryPtr imageryPtr ) {
+			mImageryPtr = imageryPtr;
 			invalidate();
-			mImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
-
-		std::string StaticImage::getImagery() {
-			if ( mImageryPtr )
-				return mImageryPtr->getName();
-
-			return "";
+		//############################################################################
+		ImageryPtr StaticImage::getImagery() const {
+			return mImageryPtr;
 		}
-
-		Widget* StaticImage::CreateStaticImageFactory()
-		{
+		//############################################################################
+		void StaticImage::setNativeScale( bool nativeScale ) {
+			mNativeScale = nativeScale;
+			invalidate();
+		}
+		//############################################################################
+		bool StaticImage::getNativeScale() const {
+			return mNativeScale;
+		}
+		//############################################################################
+		void StaticImage::setNativeFill( bool nativeFill ) {
+			mNativeFill = nativeFill;
+			invalidate();
+		}
+		//############################################################################
+		bool StaticImage::getNativeFill() const {
+			return mNativeFill;
+		}
+		//############################################################################
+		void StaticImage::setTilingX( float tiling ) {
+			mTileX = tiling;
+			invalidate();
+		}
+		//############################################################################
+		float StaticImage::getTilingX() const {
+			return mTileX;
+		}
+		//############################################################################
+		void StaticImage::setTilingY( float tiling ) {
+			mTileY = tiling;
+			invalidate();
+		}
+		//############################################################################
+		float StaticImage::getTilingY() const {
+			return mTileY;
+		}
+		//############################################################################
+		Widget* StaticImage::createStaticImageFactory() {
 			return new StaticImage;
 		}
-
-		void StaticImage::onDraw( Object* sender, Draw_EventArgs& evtArgs )
-		{
+		//############################################################################
+		void StaticImage::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			if ( mImageryPtr ) {
 				Brush& b = evtArgs.brush;
-				const FVector2& PPU = b.getPPU();
-				const float scaleX = getRect().getWidth() / (( float )mImageryPtr->getImagesetRect().getWidth() ) ;
-				const float scaleY = getRect().getWidth()  / (( float )mImageryPtr->getImagesetRect().getHeight() );
-				b.Image.drawImage( mImageryPtr, getRect() );
+				if ( mNativeScale ) {
+					if ( mNativeFill ) {
+						b.Image.drawImageUnscaledAndTiled( mImageryPtr, getRect() );
+					} else {
+						b.pushClippingRect( getRect() );
+						b.Image.drawImageUnscaled( mImageryPtr, getPosition() );
+						b.pop();
+					}
+				} else {
+					b.Image.drawImageTiled( mImageryPtr, getRect(), mTileX, mTileY );
+				}
 			}
-
-			Control::onDraw( sender, evtArgs );
 		}
+		//############################################################################
 
-
-	}
-}
+	} // namespace Amethyst {
+} // namespace OpenGUI {

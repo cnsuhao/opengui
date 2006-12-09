@@ -59,6 +59,16 @@ void Demo4App::preRun() {
 	mScreen->Children.add_front(frame,true);
 
 	Widget* w;
+	// Application label in the upper left
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Label");
+	w->setProperty("Top", Value(0.0f));
+	w->setProperty("Left", Value(0.0f));
+	w->setProperty("Width", Value(250.0f));
+	w->setProperty("Height", Value(25.f));
+	w->setProperty("Text", Value("Amethyst Regression Test Bed"));
+	mScreen->Children.add_front(w, true);
+
+
 	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Button");
 	w->setProperty("Top", Value(50.0f));
 	w->setProperty("Left", Value(50.0f));
@@ -113,13 +123,17 @@ void Demo4App::preRun() {
 	w->setProperty("Group", Value("Two"));
 	mScreen->Children.add_front(w, true);
 
-	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Label");
-	w->setProperty("Top", Value(0.0f));
-	w->setProperty("Left", Value(0.0f));
-	w->setProperty("Width", Value(150.0f));
-	w->setProperty("Height", Value(15.f));
-	w->setProperty("Text", Value("Amethyst Demo"));
-	mScreen->Children.add_front(w, true);
+	
+
+	// Show the full source Imageset in the lower right
+	w = WidgetManager::getSingleton().CreateRawWidget("StaticImage","Amethyst");
+	w->setProperty("Top", Value(600.0f - 256.0f));
+	w->setProperty("Left", Value(800.0f - 256.0f));
+	w->setProperty("Width", Value(256.0f));
+	w->setProperty("Height", Value(256.0f));
+	w->setProperty("Native_Scale", Value(false));
+	w->setProperty("Imagery", Value(ImageryManager::getSingleton().getImagery("BrassBalls.png:All")));
+	mScreen->Children.add_back(w, true);
 
 
 	//Widget* label = WidgetManager::CreateDefinedWidget("Label");
