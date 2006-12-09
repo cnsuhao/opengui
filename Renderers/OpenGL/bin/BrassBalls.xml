@@ -74,7 +74,31 @@
 		<Imagery Name="Panel_I_LL" Left="230" Top="59" Width="2" Height="2" />
 		<Imagery Name="Panel_I_LM" Left="232" Top="59" Width="16" Height="2" />
 		<Imagery Name="Panel_I_LR" Left="248" Top="59" Width="2" Height="2" />
-	
+
+	<!-- ProgressBar/ScrollBar container -->
+		<Imagery Name="ScrollBG_UL" Left="62" Top="62" Width="4" Height="4" />
+		<Imagery Name="ScrollBG_UM" Left="66" Top="62" Width="11" Height="4" />
+		<Imagery Name="ScrollBG_UR" Left="77" Top="62" Width="4" Height="4" />
+		<Imagery Name="ScrollBG_ML" Left="62" Top="66" Width="4" Height="11" />
+		<Imagery Name="ScrollBG_MM" Left="66" Top="66" Width="11" Height="11" />
+		<Imagery Name="ScrollBG_MR" Left="77" Top="66" Width="4" Height="11" />
+		<Imagery Name="ScrollBG_LL" Left="62" Top="77" Width="4" Height="4" />
+		<Imagery Name="ScrollBG_LM" Left="66" Top="77" Width="11" Height="4" />
+		<Imagery Name="ScrollBG_LR" Left="77" Top="77" Width="4" Height="4" />
+
+
+	<!-- ProgressBar -->
+		<Imagery Name="ProgressBar_UL" Left="88" Top="88" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_UM" Left="91" Top="88" Width="14" Height="3" />
+		<Imagery Name="ProgressBar_UR" Left="105" Top="88" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_ML" Left="88" Top="91" Width="3" Height="11" />
+		<Imagery Name="ProgressBar_MM" Left="91" Top="91" Width="14" Height="14" />
+		<Imagery Name="ProgressBar_MR" Left="105" Top="91" Width="3" Height="14" />
+		<Imagery Name="ProgressBar_LL" Left="88" Top="105" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_LM" Left="91" Top="105" Width="14" Height="3" />
+		<Imagery Name="ProgressBar_LR" Left="105" Top="105" Width="3" Height="3" />
+
+
 	<!-- Cursors -->
 		<!-- Arrow -->
 		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
@@ -229,6 +253,47 @@
 			<Slice Imagery="BrassBalls.png:RndBtn_FilledHaze" GrowWidth="true" GrowHeight="true" />
 		</Row>
 	</Face>
+	
+<!-- ScrollBar BG -->
+	<Face Name="BrassBalls:ScrollBarBG" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBG_UL" Width="4" Height="4" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_UM" GrowWidth="true" Height="4" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_UR" Width="4" Height="4" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBG_ML" Width="4" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_MR" Width="4" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBG_LL" Width="4" Height="4" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_LM" GrowWidth="true" Height="4" />
+			<Slice Imagery="BrassBalls.png:ScrollBG_LR" Width="4" Height="4" />
+		</Row>
+	</Face>
+
+
+<!-- ScrollBar BG -->
+	<Face Name="BrassBalls:ProgressBar" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_UL" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_UM" GrowWidth="true" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_UR" Width="3" Height="3" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_ML" Width="3" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_MR" Width="3" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_LL" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_LM" GrowWidth="true" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_LR" Width="3" Height="3" />
+		</Row>
+	</Face>
+
+
 
 	<WidgetDef Name="BrassBalls:Button" BaseName="Button" BaseLibrary="Amethyst">
 		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:Button_N" />
