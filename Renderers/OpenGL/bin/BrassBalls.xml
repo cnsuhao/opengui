@@ -266,5 +266,12 @@
 		<Property ValueName="Face_SelPressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_CP" />
 		<Property ValueName="Face_SelDisabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_CD" />
 	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:Label" BaseName="Label" BaseLibrary="Amethyst">
+		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
+		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Left|Top" />
+		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#5555d8" />
+	</WidgetDef>
 </OpenGUI>
 
