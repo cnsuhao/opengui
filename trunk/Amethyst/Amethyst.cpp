@@ -13,6 +13,7 @@ namespace OpenGUI {
 
 			// register all widgets
 			WidgetManager& wm = WidgetManager::getSingleton();
+			wm.RegisterWidgetFactory( "Label", "Amethyst", &Label::createLabelFactory );
 			wm.RegisterWidgetFactory( "Button", "Amethyst", &Button::createButtonFactory );
 			wm.RegisterWidgetFactory( "CheckBox", "Amethyst", &CheckBox::createCheckBoxFactory );
 			wm.RegisterWidgetFactory( "RadioButton", "Amethyst", &RadioButton::createRadioButtonFactory );
@@ -24,6 +25,7 @@ namespace OpenGUI {
 
 			// remove widget registrations
 			WidgetManager& wm = WidgetManager::getSingleton();
+			wm.UnregisterWidgetFactory( "Label", "Amethyst" );
 			wm.UnregisterWidgetFactory( "Button", "Amethyst" );
 			wm.UnregisterWidgetFactory( "CheckBox", "Amethyst" );
 			wm.UnregisterWidgetFactory( "RadioButton", "Amethyst" );

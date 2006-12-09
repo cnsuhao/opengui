@@ -1,74 +1,23 @@
 #include "Amethyst_Label.h"
+#include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
 	namespace Amethyst {
-		class Label_Text_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Text";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					Label& l = dynamic_cast<Label&>( objectRef );
-					valueOut.setValue( l.getText() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					Label& l = dynamic_cast<Label&>( objectRef );
-					l.setText( valueIn.getValueAsString() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_STRING;
-			}
-		}
-		gLabel_Text_ObjectProperty;
 		//############################################################################
-		class Label_Alignment_ObjectProperty : public ObjectProperty {
-		public:
-			virtual const char* getAccessorName() {
-				return "Text Alignment";
-			}
-			//############################################################################
-			virtual void get( Object& objectRef, Value& valueOut ) {
-				try {
-					Label& l = dynamic_cast<Label&>( objectRef );
-					IVector2 v;
-					l.getAlignment(v);
-					valueOut.setValue( v );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
-				try {
-					Label& l = dynamic_cast<Label&>( objectRef );
-					l.setAlignment( valueIn.getValueAsIVector2() );
-				} catch ( std::bad_cast e ) {
-					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
-				}
-			}
-			//############################################################################
-			virtual Value::ValueType getPropertyType() {
-				return Value::T_IVECTOR2;
-			}
-		}
-		gLabel_Alignment_ObjectProperty;
+		SimpleProperty_Bool( LabelP_Wrap, "Wrap", Label, getWrap, setWrap );
+		SimpleProperty_String( LabelP_Text, "Text", Label, getText, setText );
+		SimpleProperty_Font( LabelP_Font, "Font", Label, getFont, setFont );
+		SimpleProperty_TextAlignment( LabelP_TextAlignment, "TextAlignment", Label, getAlignment, setAlignment );
+		SimpleProperty_Color( LabelP_FontColor, "FontColor", Label, getFontColor, setFontColor );
 		//############################################################################
 		class Label_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			Label_ObjectAccessorList() {
-				addAccessor( &gLabel_Text_ObjectProperty );
-				addAccessor( &gLabel_Alignment_ObjectProperty );
+				addAccessor( &LabelP_Wrap );
+				addAccessor( &LabelP_Text );
+				addAccessor( &LabelP_Font );
+				addAccessor( &LabelP_TextAlignment );
+				addAccessor( &LabelP_FontColor );
 			}
 			~Label_ObjectAccessorList() {}
 		}
@@ -79,11 +28,7 @@ namespace OpenGUI {
 			return &gLabel_ObjectAccessorList;
 		}
 		//############################################################################
-		char* Label::getClassName() {
-			return "Amethyst::Label";
-		}
-		//############################################################################
-		Widget* Label::CreateLabelFactory() {
+		Widget* Label::createLabelFactory() {
 			return new Label();
 		}
 		//############################################################################
@@ -93,8 +38,7 @@ namespace OpenGUI {
 
 			//setup defaults for properties
 			mText = "";
-			m_alignh = TextAlignment::ALIGN_LEFT;
-			m_alignv = TextAlignment::ALIGN_TOP;
+			mAlignment = TextAlignment( TextAlignment::ALIGN_LEFT, TextAlignment::ALIGN_TOP );
 		}
 		//############################################################################
 		Label::~Label() {
@@ -102,8 +46,8 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void Label::setText( const std::string& text ) {
-			invalidate();
 			mText = text;
+			invalidate();
 		}
 		//############################################################################
 		const std::string& Label::getText() const {
@@ -112,40 +56,49 @@ namespace OpenGUI {
 		//############################################################################
 		void Label::setFont( const Font& fnt ) {
 			mFont = fnt;
+			invalidate();
 		}
 		//############################################################################
 		const Font& Label::getFont() const {
 			return mFont;
 		}
 		//############################################################################
-		void Label::setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v ) {
-			m_alignh = h;
-			m_alignv = v;
+		void Label::setFontColor( const Color& color ) {
+			mColor = color;
 		}
 		//############################################################################
-		void Label::getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v ) {
-			h = m_alignh;
-			v = m_alignv;
+		const Color& Label::getFontColor() const {
+			return mColor;
 		}
 		//############################################################################
-		void Label::setAlignment( IVector2 &align ) {
-			TextAlignment::Alignment h = ( TextAlignment::Alignment ) align.x;
-			TextAlignment::Alignment v = ( TextAlignment::Alignment ) align.y;
-			setAlignment( h, v );
+		void Label::setAlignment( const TextAlignment& alignment ) {
+			mAlignment = alignment;
+			invalidate();
 		}
 		//############################################################################
-		void Label::getAlignment( IVector2 &align ) {
-			TextAlignment::Alignment h;
-			TextAlignment::Alignment v;
-			getAlignment( h, v );
-			align.x = h;
-			align.y = v;
+		const TextAlignment&  Label::getAlignment() const {
+			return mAlignment;
+		}
+		//############################################################################
+		void Label::setWrap( bool wrap ) {
+			mWrap = wrap;
+			invalidate();
+		}
+		//############################################################################
+		bool Label::getWrap() const {
+			return mWrap;
 		}
 		//############################################################################
 
 		void Label::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
-			Brush& b = evtArgs.brush;
-			b.Text.drawTextArea( mText, getRect(), mFont, false, TextAlignment(m_alignh, m_alignv) );
+			if ( mText.length() > 0 ) {
+				Brush& b = evtArgs.brush;
+				b.pushColor( mColor );
+				b.pushClippingRect( getRect() );
+				b.Text.drawTextArea( mText, getRect(), mFont, mWrap, mAlignment );
+				b.pop(); //pop clipping rect
+				b.pop(); // pop color
+			}
 		}
 		//############################################################################
 	} // namespace Amethyst{

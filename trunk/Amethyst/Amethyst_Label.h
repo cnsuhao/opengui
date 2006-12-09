@@ -7,13 +7,13 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
-		//! Non interactive text box
+		//! Non interactive text label
+		/*! Labels have no borders or backgrounds. They simply draw text where they are
+		located. They will clip the text glyphs within their bounds, so you must use an
+		appropriately sized Label if you want all of your text to be visible.
+		*/
 		class AMETHYST_API Label: public Control {
 		public:
-			//Object Functions
-			virtual ObjectAccessorList* getAccessors();
-			virtual char* getClassName();
-
 			Label();
 			virtual ~Label();
 
@@ -27,24 +27,33 @@ namespace OpenGUI {
 			//! Get the font used for this label
 			const Font& getFont() const;
 
-			static Widget* CreateLabelFactory();
+			//! Sets the color of the font
+			void setFontColor( const Color& color );
+			//! Gets the color of the font
+			const Color& getFontColor() const;
 
-			void setAlignment( TextAlignment::Alignment h, TextAlignment::Alignment v );
-			void getAlignment( TextAlignment::Alignment &h, TextAlignment::Alignment &v );
-			void setAlignment( IVector2 &align );
-			void getAlignment( IVector2 &align );
+			//! Sets the alignment of the text within the label
+			void setAlignment( const TextAlignment& alignment );
+			//! Gets the current text alignment
+			const TextAlignment&  getAlignment() const;
+
+			//! Sets text wrapping
+			void setWrap( bool wrap );
+			//! Gets the current text wrapping
+			bool getWrap() const;
+
+			static Widget* createLabelFactory();
+			virtual ObjectAccessorList* getAccessors();
+
 		protected:
-//!\name Event Handlers
-//@{
-			//! Handles the "Draw" event
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
-//@}
+
 		private:
 			std::string mText;
 			Font mFont;
-			TextAlignment::Alignment m_alignh;
-			TextAlignment::Alignment m_alignv;
-
+			TextAlignment mAlignment;
+			bool mWrap;
+			Color mColor;
 		};
 
 	} // namespace Amethyst{
