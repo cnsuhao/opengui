@@ -128,40 +128,40 @@ namespace OpenGUI {
 		void CheckBox::setSelected( bool selected ) {
 			if ( mSelected == selected ) return;
 			mSelected = selected;
-			if(mSelected)
+			if ( mSelected )
 				eventToggledOn();
 			else
 				eventToggledOff();
 		}
 		//############################################################################
-		void CheckBox::eventActivate(){
+		void CheckBox::eventActivate() {
 			EventArgs args;
 			getEvents().sendEvent( "Activate", args );
 		}
 		//############################################################################
-		void CheckBox::eventToggledOn(){
+		void CheckBox::eventToggledOn() {
 			EventArgs args;
 			getEvents().sendEvent( "ToggledOn", args );
 		}
 		//############################################################################
-		void CheckBox::eventToggledOff(){
+		void CheckBox::eventToggledOff() {
 			EventArgs args;
 			getEvents().sendEvent( "ToggledOff", args );
 		}
 		//############################################################################
-		void CheckBox::onActivate( Object* sender, EventArgs& evtArgs ){
+		void CheckBox::onActivate( Object* sender, EventArgs& evtArgs ) {
 			setSelected( !getSelected() );
 		}
 		//############################################################################
-		void CheckBox::onToggledOn( Object* sender, EventArgs& evtArgs ){
+		void CheckBox::onToggledOn( Object* sender, EventArgs& evtArgs ) {
 			/* default action is to do nothing */
 		}
 		//############################################################################
-		void CheckBox::onToggledOff( Object* sender, EventArgs& evtArgs ){
+		void CheckBox::onToggledOff( Object* sender, EventArgs& evtArgs ) {
 			/* default action is to do nothing */
 		}
 		//############################################################################
-		void CheckBox::_buttonActivate(){
+		void CheckBox::_buttonActivate() {
 			eventActivate();
 		}
 		//############################################################################

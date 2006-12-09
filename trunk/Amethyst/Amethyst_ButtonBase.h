@@ -37,7 +37,7 @@ namespace OpenGUI {
 			virtual void onDisabled( Object* sender, EventArgs& evtArgs );
 
 			//! This function is called when ButtonBase determines that a button activating circumstance has occurred
-			virtual void _buttonActivate()=0;
+			virtual void _buttonActivate() = 0;
 
 			//! List of possible button states
 			enum {
