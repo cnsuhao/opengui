@@ -12,11 +12,6 @@ namespace OpenGUI {
 			ProgressBar();
 			virtual ~ProgressBar();
 
-			//! Sets the font used to display the completion statistics
-			void setFont( const Font& fnt );
-			//! Gets the font used to display the completion statistics
-			const Font& getFont() const;
-
 			//! Sets the total range of the progress bar (default is 100.0f)
 			void setTotal( float total );
 			//! Gets the total range
@@ -63,13 +58,21 @@ namespace OpenGUI {
 			//! Gets the current fill direction reversal setting
 			bool getInverted() const;
 
+			//! Sets the bar padding from the control edge in the horizontal directions
+			void setBarPadHoriz( float padding );
+			//! Gets the current bar padding from the control edge in the horizontal directions
+			float getBarPadHoriz() const;
+			//! Sets the bar padding from the control edge in the vertical directions
+			void setBarPadVert( float padding );
+			//! Gets the current bar padding from the control edge in the vertical directions
+			float getBarPadVert() const;
+
 			static Widget* createProgressBarFactory();
 			virtual ObjectAccessorList* getAccessors();
 
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
-			Font mFont;
 			float mTotal;
 			float mValue;
 			float mStepSize;
@@ -82,6 +85,9 @@ namespace OpenGUI {
 
 			bool mVertical;
 			bool mInverted;
+
+			float mPadHoriz;
+			float mPadVert;
 		};
 	}
 }
