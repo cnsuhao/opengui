@@ -326,10 +326,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_I_WidgetContainer.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Imagery.cpp"
 				>
 			</File>
@@ -604,10 +600,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_I_WidgetContainer.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_Imagery.h"
 				>
 			</File>
@@ -757,6 +749,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_WidgetCollection.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_WidgetCollectionListener.h"
 				>
 			</File>
 			<File

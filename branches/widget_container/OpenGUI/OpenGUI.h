@@ -80,7 +80,7 @@
 
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_WidgetCollection.h"
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollectionListener.h"
 
 #include "OpenGUI_Control.h"
 #include "OpenGUI_ContainerControl.h"

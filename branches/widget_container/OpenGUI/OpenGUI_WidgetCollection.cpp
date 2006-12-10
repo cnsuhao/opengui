@@ -1,6 +1,7 @@
 #include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Widget.h"
+#include "OpenGUI_I_WidgetContainer.h"
 
 namespace OpenGUI {
 	//############################################################################
@@ -33,7 +34,7 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_front( widget, takeOwnership );
-		mIContainer->notifyChildAdded( widget );
+		mIContainer->_notifyChildAdded(this, widget );
 	}
 	//############################################################################
 	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
@@ -46,16 +47,15 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_back( widget, takeOwnership );
-		mIContainer->notifyChildAdded( widget );
+		mIContainer->_notifyChildAdded(this, widget );
 	}
 	//############################################################################
 	void WidgetCollection::remove( Widget* widget ) {
 		_remove( widget );
-		mIContainer->notifyChildRemoved( widget );
+		mIContainer->_notifyChildRemoved(this, widget );
 	}
 	//############################################################################
 	void WidgetCollection::_add_front( Widget* widget, bool takeOwnership ) {
-		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
 		ptr->widgetPtr = widget;
@@ -63,7 +63,6 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::_add_back( Widget* widget, bool takeOwnership ) {
-		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
 		ptr->widgetPtr = widget;
@@ -87,7 +86,6 @@ namespace OpenGUI {
 	\throw Exception if the widget is not part of this collection
 	*/
 	void WidgetCollection::_remove( Widget* widget ) {
-		mIContainer->notifyChildRemoving( widget );
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 			iter != mCollectionObjects.end(); iter++ ) {
 				WidgetCollectionItem* ptr = ( *iter );
