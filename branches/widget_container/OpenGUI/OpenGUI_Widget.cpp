@@ -268,13 +268,13 @@ namespace OpenGUI {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::eventAttached( I_WidgetContainer* newParent, Widget* widget ) {
-		Attach_EventArgs event( newParent, widget );
+	void Widget::eventAttached( WidgetCollection* newContainer, Widget* widget ) {
+		Attach_EventArgs event( newContainer, widget );
 		triggerEvent( "Attached", event );
 	}
 	//############################################################################
-	void Widget::eventDetached( I_WidgetContainer* prevParent, Widget* widget ) {
-		Attach_EventArgs event( prevParent, widget );
+	void Widget::eventDetached( WidgetCollection* prevContainer, Widget* widget ) {
+		Attach_EventArgs event( prevContainer, widget );
 		triggerEvent( "Detached", event );
 	}
 	//############################################################################

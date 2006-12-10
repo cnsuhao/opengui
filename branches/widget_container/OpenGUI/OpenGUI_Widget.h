@@ -73,6 +73,8 @@ namespace OpenGUI {
 
 		//! invalidate this Widget, as well as any and all potential children
 		void flush();
+		//! Needs to be overridden by container widgets to invalidate self and call _doFlush() for all children
+		virtual void _doflush();
 
 		//! returns the collection this widget is held within
 		/*! Every displayable Widget is guaranteed to have a container.*/
@@ -123,9 +125,9 @@ namespace OpenGUI {
 //!\name Event Injectors
 //@{
 		//! Widget was attached to a container
-		void eventAttached( I_WidgetContainer* newParent, Widget* widget );
+		void eventAttached( WidgetCollection* newContainer, Widget* widget );
 		//! Widget was removed from a container
-		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
+		void eventDetached( WidgetCollection* prevContainer, Widget* widget );
 
 		//! Draw this object's foreground using the given brush
 		void eventDraw( Brush& brush );
@@ -234,9 +236,6 @@ namespace OpenGUI {
 		//! releases focus for this Widget for cursor events
 		void releaseCursorFocus();
 
-		//! Needs to be overridden by container widgets to invalidate self and call _doFlush() for all children
-		virtual void _doflush();
-
 		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
 		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );
 		//! \internal virtual implementation for getChildAt(). Hidden because overriding is almost always unnecessary
@@ -248,7 +247,7 @@ namespace OpenGUI {
 		//! \internal called by a child when they have been invalidated. Default does nothing. Override me if you need more functionality
 		virtual void _invalidatedChild();
 	private:
-		WidgetCollection* mContainer;
+		WidgetCollection* mContainer; // <- managed by WidgetCollection. We should never touch this.
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events
 
 		bool mEnabled;

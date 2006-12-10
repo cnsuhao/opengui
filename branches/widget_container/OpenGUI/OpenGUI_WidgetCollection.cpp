@@ -48,6 +48,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::_fireWidgetAdded( Widget* widget ) {
+		widget->eventAttached( this, widget );
 		ListenerSet::iterator iter, iterend = mListeners.end();
 		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
 			WidgetCollectionListener* l = ( *iter );
@@ -56,6 +57,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void WidgetCollection::_fireWidgetRemoved( Widget* widget ) {
+		widget->eventDetached( this, widget );
 		ListenerSet::iterator iter, iterend = mListeners.end();
 		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
 			WidgetCollectionListener* l = ( *iter );

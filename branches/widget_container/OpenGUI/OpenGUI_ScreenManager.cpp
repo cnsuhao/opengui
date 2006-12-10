@@ -5,6 +5,7 @@
 #include "OpenGUI_TimerManager.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_StrConv.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_CursorManager.h"
 #include "OpenGUI_WidgetManager.h"
 #include "OpenGUI_FormManager.h"
@@ -179,7 +180,7 @@ namespace OpenGUI {
 			}
 
 			//at this point we can start loading <Widget> and <Form> tags as needed
-			I_WidgetContainer& container = ( *screen );
+			WidgetCollection& container = ( screen->Children );
 			XMLNodeList children = node.getChildren();
 			for ( XMLNodeList::iterator iter = children.begin(); iter != children.end(); iter++ ) {
 				XMLNode* child = ( *iter );
@@ -189,9 +190,9 @@ namespace OpenGUI {
 					const std::string formDef = child->getAttribute( "FormDef" );
 					if ( child->hasAttribute( "Name" ) ) {
 						std::string rootName =  child->getAttribute( "Name" );
-						FormManager::getSingleton().CreateForm( formDef, container, rootName );
+						FormManager::getSingleton().CreateForm( formDef, &container, rootName );
 					} else {
-						FormManager::getSingleton().CreateForm( formDef, container );
+						FormManager::getSingleton().CreateForm( formDef, &container );
 					}
 				}
 			}

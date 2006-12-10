@@ -10,7 +10,7 @@ namespace OpenGUI {
 
 	class Object; //forward declaration
 	class EventHandlerList; //forward declaration
-	class I_WidgetContainer; //forward declaration
+	class WidgetCollection; //forward declaration
 	class Widget; //forward declaration
 
 	//! Base class for event arguments
@@ -68,14 +68,14 @@ namespace OpenGUI {
 	class OPENGUI_API Attach_EventArgs: public EventArgs {
 	public:
 		//! Constructor requires a pointer to the parent being attached/detached to/from
-		Attach_EventArgs( I_WidgetContainer* parent, Widget* child ): parent( parent ), child( child ) {
+		Attach_EventArgs( WidgetCollection* collection, Widget* child ): collection( collection ), child( child ) {
 			/**/
 		}
 		virtual ~Attach_EventArgs() {
 			/**/
 		}
-		//! Pointer to the parent being attached/detached to/from
-		const I_WidgetContainer* parent;
+		//! Pointer to the WidgetCollection being attached/detached to/from
+		const WidgetCollection* collection;
 		//! Pointer to the child that was attached/detached
 		const Widget* child;
 	};

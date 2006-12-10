@@ -3,7 +3,8 @@
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_XMLParser.h"
 #include "OpenGUI_Widget.h"
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollection.h"
+#include "OpenGUI_ContainerControl.h"
 #include "OpenGUI_WidgetManager.h"
 #include "OpenGUI_Value.h"
 
@@ -81,7 +82,7 @@ namespace OpenGUI {
 		mFormDefinitions.clear();
 	}
 	//############################################################################
-	void FormManager::CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName ) {
+	Widget* FormManager::CreateForm( const std::string& formName, WidgetCollection* container, const std::string& widgetName ) {
 		FormDefinitionMap::iterator iter = mFormDefinitions.find( formName );
 		if ( iter == mFormDefinitions.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "FormDefinition with given name not found: " + formName, __FUNCTION__ );
@@ -93,16 +94,16 @@ namespace OpenGUI {
 		if ( !rootWidget )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create Form: " + formName, __FUNCTION__ );
 		//change the name and attach it
-		if ( rootWidget ) {
-			try {
-				if ( widgetName != "" )
-					rootWidget->setName( widgetName );
-				container.Children.add_back( rootWidget, true );
-			} catch ( Exception& ) {
-				delete rootWidget;
-				throw;
-			}
+		try {
+			if ( widgetName != "" )
+				rootWidget->setName( widgetName );
+			if ( container )
+				container->add_back( rootWidget, true );
+		} catch ( Exception& ) {
+			delete rootWidget;
+			throw;
 		}
+		return rootWidget;
 	}
 	//############################################################################
 	bool FormManager::_FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
@@ -195,10 +196,6 @@ namespace OpenGUI {
 		return thisEntry;
 	}
 	//############################################################################
-// 	void FormManager::_Form_XMLNode_IntoContainer( const XMLNode& formNode, I_WidgetContainer& widgetContainer ) {
-// 		OG_NYI;
-// 	}
-	//############################################################################
 
 
 	//############################################################################
@@ -276,7 +273,7 @@ namespace OpenGUI {
 
 			//if we're supposed to have children, this is where we create and attach them
 			if ( mChildren.size() > 0 ) {
-				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				ContainerControl* container = dynamic_cast<ContainerControl*>( widget );
 				if ( !container )
 					OG_THROW( Exception::OP_FAILED, "Failed to cast widget into a container, as required to bare children", __FUNCTION__ );
 				else {
