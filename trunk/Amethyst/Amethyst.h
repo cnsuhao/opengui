@@ -12,5 +12,6 @@
 #include "Amethyst_RadioButton.h"
 #include "Amethyst_StaticImage.h"
 #include "Amethyst_ProgressBar.h"
+#include "Amethyst_Panel.h"
 
 #endif // Amethyst_h__

@@ -19,6 +19,7 @@ namespace OpenGUI {
 			wm.RegisterWidgetFactory( "RadioButton", "Amethyst", &RadioButton::createRadioButtonFactory );
 			wm.RegisterWidgetFactory( "StaticImage", "Amethyst", &StaticImage::createStaticImageFactory );
 			wm.RegisterWidgetFactory( "ProgressBar", "Amethyst", &ProgressBar::createProgressBarFactory );
+			wm.RegisterWidgetFactory( "Panel", "Amethyst", &Panel::createPanelFactory );
 		}
 		//############################################################################
 		void Shutdown() {
@@ -33,6 +34,7 @@ namespace OpenGUI {
 			wm.UnregisterWidgetFactory( "RadioButton", "Amethyst" );
 			wm.UnregisterWidgetFactory( "StaticImage", "Amethyst" );
 			wm.UnregisterWidgetFactory( "ProgressBar", "Amethyst" );
+			wm.UnregisterWidgetFactory( "Panel", "Amethyst" );
 		}
 		//############################################################################
 

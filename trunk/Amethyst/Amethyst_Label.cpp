@@ -90,7 +90,6 @@ namespace OpenGUI {
 			return mWrap;
 		}
 		//############################################################################
-
 		void Label::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			if ( mText.length() > 0 ) {
 				Brush& b = evtArgs.brush;
