@@ -340,5 +340,18 @@
 		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#5555d8" />
 	</WidgetDef>
 	
+	<WidgetDef Name="BrassBalls:ProgressBar" BaseName="ProgressBar" BaseLibrary="Amethyst">
+		<Property ValueName="BGFace" ValueType="FACE" ValueData="BrassBalls:ScrollBarBG" />
+		<Property ValueName="FillFace" ValueType="FACE" ValueData="BrassBalls:ProgressBar" />
+		<Property ValueName="Step_Size" ValueType="FLOAT" ValueData="1.0" />
+		<Property ValueName="Total" ValueType="FLOAT" ValueData="100.0" />
+		<Property ValueName="Value" ValueType="FLOAT" ValueData="20.0" />
+		<Property ValueName="Vertical" ValueType="BOOL" ValueData="false" />
+		<Property ValueName="Inverted" ValueType="BOOL" ValueData="false" />
+		<Property ValueName="FillColor" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="BGColor" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="BarPadVert" ValueType="FLOAT" ValueData="3.0" />
+		<Property ValueName="BarPadHoriz" ValueType="FLOAT" ValueData="3.0" />
+	</WidgetDef>
 </OpenGUI>
 
