@@ -4,7 +4,6 @@
 namespace OpenGUI {
 	namespace Amethyst {
 		//############################################################################
-		SimpleProperty_Font( PBProp_Font, "Font", ProgressBar, getFont, setFont );
 		SimpleProperty_Face( PBProp_BGFace, "BGFace", ProgressBar, getBGFace, setBGFace );
 		SimpleProperty_Face( PBProp_FillFace, "FillFace", ProgressBar, getFillFace, setFillFace );
 		SimpleProperty_Float( PBProp_StepSize, "Step_Size", ProgressBar, getStepSize, setStepSize );
@@ -14,11 +13,12 @@ namespace OpenGUI {
 		SimpleProperty_Bool( PBProp_Inverted, "Inverted", ProgressBar, getInverted, setInverted );
 		SimpleProperty_Color( PBProp_FillColor, "FillColor", ProgressBar, getFillColor, setFillColor );
 		SimpleProperty_Color( PBProp_BGColor, "BGColor", ProgressBar, getBGColor, setBGColor );
+		SimpleProperty_Float( PBProp_BarPadVert, "BarPadVert", ProgressBar, getBarPadHoriz, setBarPadHoriz );
+		SimpleProperty_Float( PBProp_BarPadHoriz, "BarPadHoriz", ProgressBar, getBarPadHoriz, setBarPadHoriz );
 		//############################################################################
 		class ProgressBar_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			ProgressBar_ObjectAccessorList() {
-				addAccessor( &PBProp_Font );
 				addAccessor( &PBProp_BGFace );
 				addAccessor( &PBProp_FillFace );
 				addAccessor( &PBProp_StepSize );
@@ -28,6 +28,8 @@ namespace OpenGUI {
 				addAccessor( &PBProp_Inverted );
 				addAccessor( &PBProp_FillColor );
 				addAccessor( &PBProp_BGColor );
+				addAccessor( &PBProp_BarPadVert );
+				addAccessor( &PBProp_BarPadHoriz );
 			}
 			~ProgressBar_ObjectAccessorList() {}
 		}
@@ -52,19 +54,12 @@ namespace OpenGUI {
 			mStepSize = 1.0f;
 			mVertical = false;
 			mInverted = false;
+			mPadHoriz = 0.0f;
+			mPadVert = 0.0f;
 		}
 		//############################################################################
 		ProgressBar::~ProgressBar() {
 			/**/
-		}
-		//############################################################################
-		void ProgressBar::setFont( const Font& fnt ) {
-			mFont = fnt;
-			invalidate();
-		}
-		//############################################################################
-		const Font& ProgressBar::getFont() const {
-			return mFont;
 		}
 		//############################################################################
 		void ProgressBar::setTotal( float total ) {
@@ -152,8 +147,31 @@ namespace OpenGUI {
 			return mInverted;
 		}
 		//############################################################################
+		void ProgressBar::setBarPadHoriz( float padding ) {
+			mPadHoriz = padding;
+			invalidate();
+		}
+		//############################################################################
+		float ProgressBar::getBarPadHoriz() const {
+			return mPadHoriz;
+		}
+		//############################################################################
+		void ProgressBar::setBarPadVert( float padding ) {
+			mPadVert = padding;
+			invalidate();
+		}
+		//############################################################################
+		float ProgressBar::getBarPadVert() const {
+			return mPadVert;
+		}
+		//############################################################################
 		void ProgressBar::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
+			if(mVertical){
+				//
+			}else{
+				//
+			}
 		}
 		//############################################################################
 	} //namespace Amethyst {
