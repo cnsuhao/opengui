@@ -79,6 +79,7 @@
 #include "OpenGUI_Brush_Caching.h"
 
 #include "OpenGUI_Widget.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_I_WidgetContainer.h"
 
 #include "OpenGUI_Control.h"
