@@ -7,6 +7,7 @@
 
 namespace OpenGUI {
 	class Widget; // forward declaration
+	class WidgetCollection; // forward declaration
 
 	//! Interface for objects that contain collections of children Widget objects
 	/*!

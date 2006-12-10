@@ -4,8 +4,9 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_Object.h"
 #include "OpenGUI_Widget.h"
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_RenderTexture.h"
 #include "OpenGUI_Cursor.h"
 #include "OpenGUI_Statistic.h"
@@ -18,9 +19,10 @@ namespace OpenGUI {
 	//! Every GUI is built into a screen.
 	/*! Screens are the base of every GUI display, and it's often best to think
 		of them as a sort of virtual monitor. They contain widgets and windows,
-		they accept input on an individual basis, and they can draw their output
-		either to the main viewport (the default) or to a RenderTexture via
-		bindRenderTexture().
+		and they accept input on an individual basis.
+		They draw their output to Viewport objects, which are created and managed
+		by the Renderer implementation. The active Viewport for a Screen can be set
+		via the setViewport() function.
 
 		Each Screen has it's own cursor, which can be shown or hidden and enabled
 		or disabled individually from all other screens. While the cursor is disabled
@@ -28,7 +30,7 @@ namespace OpenGUI {
 		updates, no input consumption), and the cursor is considered non-existent
 		so it will not interact with the GUI in any way.
 	*/
-	class OPENGUI_API Screen : public I_WidgetContainer {
+	class OPENGUI_API Screen : public Object {
 		friend class ScreenManager; //Allow ScreenManager to create and destroy us
 	public:
 //!\name Cursor Functions (Input Injection & Utility)
@@ -183,6 +185,9 @@ namespace OpenGUI {
 
 		//! \internal returns \c true if this Screen is both active and has a valid Viewport set
 		bool _isRenderable();
+
+		//! The public collection of child widgets
+		WidgetCollection Children;
 
 	protected:
 		// We aren't for creation outside of ScreenManager

@@ -6,7 +6,7 @@
 namespace OpenGUI {
 	//############################################################################
 	WidgetCollection::WidgetCollection() {
-		mOwner = 0;
+		mParent = 0;
 	}
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
@@ -25,12 +25,12 @@ namespace OpenGUI {
 	create it, then you shouldn't be claiming ownership of it. 
 	\deprecated May move this functionality into the constructor to ultimately eliminate
 	the potential for misuse. */
-	void WidgetCollection::setOwner( Object* object ) {
-		mOwner = object;
+	void WidgetCollection::setParent( Object* object ) {
+		mParent = object;
 	}
 	//############################################################################
-	Object* WidgetCollection::getOwner() {
-		return mOwner;
+	Object* WidgetCollection::getParent() {
+		return mParent;
 	}
 	//############################################################################
 	void WidgetCollection::attachListener( WidgetCollectionListener* listener ) {

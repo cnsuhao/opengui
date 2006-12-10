@@ -75,8 +75,7 @@ namespace OpenGUI {
 		void flush();
 
 		//! returns the collection this widget is held within
-		/*! Every displayable Widget is guaranteed to have a container.
-		*/
+		/*! Every displayable Widget is guaranteed to have a container.*/
 		WidgetCollection* getContainer() const;
 
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
@@ -221,6 +220,9 @@ namespace OpenGUI {
 
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen() const;
+
+		//! returns a pointer to the parenting Object of this Widget, or 0 if there isn't one
+		Object* getParent() const;
 
 		//! grabs focus for this Widget for keyboard events
 		void grabKeyFocus();

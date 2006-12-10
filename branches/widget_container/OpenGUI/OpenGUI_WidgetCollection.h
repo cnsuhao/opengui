@@ -42,7 +42,7 @@ namespace OpenGUI {
 		typedef std::list<WidgetCollectionItem*> WidgetCollectionItemPtrList;
 		WidgetCollectionItemPtrList mCollectionObjects;
 		WidgetCollectionItem* getWidgetHolder( Widget* widget );
-		Object* mOwner;
+		Object* mParent;
 
 	public:
 		//! public constructor
@@ -74,10 +74,10 @@ namespace OpenGUI {
 		//! Removes a previously attached WidgetCollectionListener from this WidgetCollection
 		void detachListener( WidgetCollectionListener* listener );
 
-		//! Claim this collection for the given Object
-		void setOwner( Object* object );
-		//! Get the Object that last claimed ownership of this collection
-		Object* getOwner();
+		//! Sets the hierarchical parent of this collection
+		void setParent( Object* object );
+		//! Gets the hierarchical parent of this collection
+		Object* getParent();
 
 		//! Template class providing iterator encapsulation
 		template <typename IterType>

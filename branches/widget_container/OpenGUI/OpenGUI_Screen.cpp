@@ -66,6 +66,7 @@ namespace OpenGUI {
 		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
 
+		Children.setParent( this ); // mark ownership of the WidgetCollection
 		mCursorPressed = false; // cursor starts not pressed
 		mCursorPos.x = mSize.x / 2.0f; // cursor starts in the middle of the Screen
 		mCursorPos.y = mSize.y / 2.0f;

@@ -162,18 +162,15 @@ namespace OpenGUI {
 			return;
 		}
 
-		OG_NYI; // FIXME
-		/*
 		WidgetCollection* container = getContainer();
 		if ( container ) {
 			Widget* w = container->getWidget( name );
 			if ( w && w != this ) {
-				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot assign name '" + name + "'. Container holds another widget with the same name.", __FUNCTION__ );
+				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot assign name '" + name + "'. Current WidgetContainer holds another widget with the same name.", __FUNCTION__ );
 				return;
 			}
 		}
 		mWidgetName = name;
-		*/
 	}
 	//############################################################################
 	bool Widget::getEnabled() {
@@ -195,17 +192,25 @@ namespace OpenGUI {
 		return mContainer;
 	}
 	//############################################################################
+	/*! This is a helper function for Widget::getContainer()->WidgetCollection::getParent()
+	with some additional safety checks. */
+	Object* Widget::getParent() const {
+		WidgetCollection* c = getContainer();
+		if ( c ) {
+			Object* p = c->getParent();
+			return p;
+		}
+		return 0;
+	}
+	//############################################################################
 	void Widget::invalidate() {
 		if ( mValid ) { // only trigger "Invalidated" once per invalidation period
 			mValid = false;
 			eventInvalidated();
 
-			OG_NYI; // FIXME
-			/*
-			Widget* parent = dynamic_cast<Widget*>( getContainer() );
+			Widget* parent = dynamic_cast<Widget*>( getParent() );
 			if ( parent )
 				parent->_invalidatedChild();
-			*/
 		}
 	}
 	//############################################################################
@@ -214,13 +219,10 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::flush() {
-		OG_NYI; // FIXME
-		/*
-		Widget* parent = dynamic_cast<Widget*>( mContainer );
+		Widget* parent = dynamic_cast<Widget*>( getParent() );
 		if ( parent )
 			parent->invalidate();
 		_doflush();
-		*/
 	}
 	//############################################################################
 	void Widget::_doflush() {
@@ -261,16 +263,13 @@ namespace OpenGUI {
 	//############################################################################
 	Screen* Widget::getScreen() const {
 		if ( !mContainer ) return 0;
-		OG_NYI; // FIXME
-		/*
-		Widget* parentW = dynamic_cast<Widget*>( mContainer );
+		Widget* parentW = dynamic_cast<Widget*>( getParent() );
 		if ( parentW )
 			return parentW->getScreen();
-		Screen* parentS = dynamic_cast<Screen*>( mContainer );
+		Screen* parentS = dynamic_cast<Screen*>( getParent() );
 		if ( parentS )
 			return parentS;
 		return 0;
-		*/
 	}
 	//############################################################################
 	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
@@ -612,17 +611,14 @@ namespace OpenGUI {
 			return _getPath( pathList );
 		}
 		if ( top == ".." ) {
-			OG_NYI; // FIXME
-			/*
-			Widget* parent = dynamic_cast<Widget*>( getContainer() );
+			Widget* parent = dynamic_cast<Widget*>( getParent() );
 			if ( parent ) {
 				return parent->_getPath( pathList );
 			}
-			Screen* screen = dynamic_cast<Screen*>( getContainer() );
+			Screen* screen = dynamic_cast<Screen*>( getParent() );
 			if ( screen ) {
 				return screen->_getPath( pathList );
 			}
-			*/
 			OG_THROW( Exception::OP_FAILED, "Unknown container type. Cannot proceed to parent path", __FUNCTION__ );
 		}
 
@@ -669,52 +665,36 @@ namespace OpenGUI {
 	//############################################################################
 	FVector2 Widget::pointToScreen( const FVector2& local_point ) {
 		FVector2 point = local_point;
-		OG_NYI; // FIXME
-		/*
-		I_WidgetContainer* container = getContainer();
-		Widget* parent = dynamic_cast<Widget*>( container );
+		Widget* parent = dynamic_cast<Widget*>( getParent() );
 		if ( parent ) {
 			parent->_doPointToScreen( point );
 		}
 		return point;
-		*/
 	}
 	//############################################################################
 	FVector2 Widget::pointFromScreen( const FVector2& screen_point ) {
 		FVector2 point = screen_point;
-		OG_NYI; // FIXME
-		/*
-		I_WidgetContainer* container = getContainer();
-		Widget* parent = dynamic_cast<Widget*>( container );
+		Widget* parent = dynamic_cast<Widget*>( getParent() );
 		if ( parent ) {
 			parent->_doPointFromScreen( point );
 		}
 		return point;
-		*/
 	}
 	//############################################################################
 	void Widget::_doPointToScreen( FVector2& local_point ) {
 		_translatePointOut( local_point );
-		OG_NYI; // FIXME
-		/*
-		I_WidgetContainer* container = getContainer();
-		Widget* parent = dynamic_cast<Widget*>( container );
+		Widget* parent = dynamic_cast<Widget*>( getParent() );
 		if ( parent ) {
 			parent->_doPointToScreen( local_point );
 		}
-		*/
 	}
 	//############################################################################
 	void Widget::_doPointFromScreen( FVector2& screen_point ) {
-		OG_NYI; // FIXME
-		/*
-		I_WidgetContainer* container = getContainer();
-		Widget* parent = dynamic_cast<Widget*>( container );
+		Widget* parent = dynamic_cast<Widget*>( getParent() );
 		if ( parent ) {
 			parent->_doPointFromScreen( screen_point );
 		}
 		_translatePointIn( screen_point );
-		*/
 	}
 	//############################################################################
 	/*! If this Widget is not attached to a Screen, the return value is always \c false. */
