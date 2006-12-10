@@ -13,13 +13,13 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API WidgetCollectionListener {
 	public:
-		WidgetCollectionListener(){}
+		WidgetCollectionListener() {}
 		virtual ~WidgetCollectionListener() {}
 
 		//! Container had a child attached
-		virtual void eventChildAttached( WidgetCollection* container, Widget* newChild )=0;
+		virtual void eventChildAttached( WidgetCollection* container, Widget* newChild ) = 0;
 		//! Container had a child detached
-		virtual void eventChildDetached( WidgetCollection* container, Widget* prevChild )=0;
+		virtual void eventChildDetached( WidgetCollection* container, Widget* prevChild ) = 0;
 	};
 
 }

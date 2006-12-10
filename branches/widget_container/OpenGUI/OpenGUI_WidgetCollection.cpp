@@ -1,12 +1,12 @@
 #include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Widget.h"
-#include "OpenGUI_I_WidgetContainer.h"
+
 
 namespace OpenGUI {
 	//############################################################################
-	WidgetCollection::WidgetCollection(){
-		/**/
+	WidgetCollection::WidgetCollection() {
+		mOwner = 0;
 	}
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
@@ -20,6 +20,49 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! \warning Do not take this operation lightly. Stealing ownership of WidgetCollections
+	can lead to very unpredictable results. The general rule of thumb is, if you didn't
+	create it, then you shouldn't be claiming ownership of it. 
+	\deprecated May move this functionality into the constructor to ultimately eliminate
+	the potential for misuse. */
+	void WidgetCollection::setOwner( Object* object ) {
+		mOwner = object;
+	}
+	//############################################################################
+	Object* WidgetCollection::getOwner() {
+		return mOwner;
+	}
+	//############################################################################
+	void WidgetCollection::attachListener( WidgetCollectionListener* listener ) {
+		ListenerSet::iterator iter = mListeners.find( listener );
+		if ( iter != mListeners.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "The given WidgetCollectionListener is already attached to this WidgetCollection", __FUNCTION__ );
+		mListeners.insert( listener );
+	}
+	//############################################################################
+	void WidgetCollection::detachListener( WidgetCollectionListener* listener ) {
+		ListenerSet::iterator iter = mListeners.find( listener );
+		if ( iter == mListeners.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "The given WidgetCollectionListener is not attached to this WidgetCollection", __FUNCTION__ );
+		mListeners.erase( listener );
+	}
+	//############################################################################
+	void WidgetCollection::_fireWidgetAdded( Widget* widget ) {
+		ListenerSet::iterator iter, iterend = mListeners.end();
+		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
+			WidgetCollectionListener* l = ( *iter );
+			l->eventChildAttached( this, widget );
+		}
+	}
+	//############################################################################
+	void WidgetCollection::_fireWidgetRemoved( Widget* widget ) {
+		ListenerSet::iterator iter, iterend = mListeners.end();
+		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
+			WidgetCollectionListener* l = ( *iter );
+			l->eventChildDetached( this, widget );
+		}
+	}
+	//############################################################################
 	void WidgetCollection::_notifyChildDelete( Widget* widgetToRemove ) {
 		remove( widgetToRemove );
 	}
@@ -27,6 +70,8 @@ namespace OpenGUI {
 	void WidgetCollection::add_front( Widget* widget, bool takeOwnership ) {
 		if ( !widget )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		if ( widget->mContainer )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
 		const std::string wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
@@ -34,12 +79,14 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_front( widget, takeOwnership );
-		mIContainer->_notifyChildAdded(this, widget );
+		_fireWidgetAdded( widget );
 	}
 	//############################################################################
 	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
 		if ( !widget )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		if ( widget->mContainer )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
 		const std::string wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
@@ -47,36 +94,7 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_back( widget, takeOwnership );
-		mIContainer->_notifyChildAdded(this, widget );
-	}
-	//############################################################################
-	void WidgetCollection::remove( Widget* widget ) {
-		_remove( widget );
-		mIContainer->_notifyChildRemoved(this, widget );
-	}
-	//############################################################################
-	void WidgetCollection::_add_front( Widget* widget, bool takeOwnership ) {
-		WidgetCollectionItem* ptr = new WidgetCollectionItem;
-		ptr->own = takeOwnership;
-		ptr->widgetPtr = widget;
-		mCollectionObjects.push_front( ptr );
-	}
-	//############################################################################
-	void WidgetCollection::_add_back( Widget* widget, bool takeOwnership ) {
-		WidgetCollectionItem* ptr = new WidgetCollectionItem;
-		ptr->own = takeOwnership;
-		ptr->widgetPtr = widget;
-		mCollectionObjects.push_back( ptr );
-	}
-	//############################################################################
-	bool WidgetCollection::hasWidget( Widget* widget ) {
-		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
-			iter != mCollectionObjects.end(); iter++ ) {
-				WidgetCollectionItem* ptr = ( *iter );
-				if ( widget == ptr->widgetPtr )
-					return true;
-		}
-		return false;
+		_fireWidgetAdded( widget );
 	}
 	//############################################################################
 	/*! If the collection was told to take ownership of the requested widget,
@@ -85,14 +103,46 @@ namespace OpenGUI {
 
 	\throw Exception if the widget is not part of this collection
 	*/
+	void WidgetCollection::remove( Widget* widget ) {
+		_remove( widget );
+		_fireWidgetRemoved( widget );
+	}
+	//############################################################################
+	void WidgetCollection::_add_front( Widget* widget, bool takeOwnership ) {
+		WidgetCollectionItem* ptr = new WidgetCollectionItem;
+		ptr->own = takeOwnership;
+		ptr->widgetPtr = widget;
+		widget->mContainer = this;
+		mCollectionObjects.push_front( ptr );
+	}
+	//############################################################################
+	void WidgetCollection::_add_back( Widget* widget, bool takeOwnership ) {
+		WidgetCollectionItem* ptr = new WidgetCollectionItem;
+		ptr->own = takeOwnership;
+		ptr->widgetPtr = widget;
+		widget->mContainer = this;
+		mCollectionObjects.push_back( ptr );
+	}
+	//############################################################################
+	bool WidgetCollection::hasWidget( Widget* widget ) {
+		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
+				iter != mCollectionObjects.end(); iter++ ) {
+			WidgetCollectionItem* ptr = ( *iter );
+			if ( widget == ptr->widgetPtr )
+				return true;
+		}
+		return false;
+	}
+	//############################################################################
 	void WidgetCollection::_remove( Widget* widget ) {
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
-			iter != mCollectionObjects.end(); iter++ ) {
-				WidgetCollectionItem* ptr = ( *iter );
-				if ( widget == ptr->widgetPtr ) {
-					mCollectionObjects.erase( iter );
-					return;
-				}
+				iter != mCollectionObjects.end(); iter++ ) {
+			WidgetCollectionItem* ptr = ( *iter );
+			if ( widget == ptr->widgetPtr ) {
+				widget->mContainer = 0;
+				mCollectionObjects.erase( iter );
+				return;
+			}
 		}
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Widget not found in WidgetCollection", __FUNCTION__ );
 	}
@@ -111,11 +161,11 @@ namespace OpenGUI {
 	//############################################################################
 	Widget* WidgetCollection::getWidget( const std::string& widgetName ) const {
 		for ( WidgetCollectionItemPtrList::const_iterator iter = mCollectionObjects.begin();
-			iter != mCollectionObjects.end(); iter++ ) {
-				WidgetCollectionItem* ptr = ( *iter );
-				if ( ptr && ptr->widgetPtr && widgetName == ptr->widgetPtr->getName() ) {
-					return ptr->widgetPtr;
-				}
+				iter != mCollectionObjects.end(); iter++ ) {
+			WidgetCollectionItem* ptr = ( *iter );
+			if ( ptr && ptr->widgetPtr && widgetName == ptr->widgetPtr->getName() ) {
+				return ptr->widgetPtr;
+			}
 		}
 		return 0;
 	}
@@ -124,18 +174,18 @@ namespace OpenGUI {
 		Widget* widget = getWidget( widgetName );
 		if ( !widget ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND,
-				"Widget not found in collection: " + widgetName, __FUNCTION__ );
+					  "Widget not found in collection: " + widgetName, __FUNCTION__ );
 		}
 		return *widget;
 	}
 	//############################################################################
 	WidgetCollection::WidgetCollectionItem* WidgetCollection::getWidgetHolder( Widget* widget ) {
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
-			iter != mCollectionObjects.end(); iter++ ) {
-				WidgetCollectionItem* ptr = ( *iter );
-				if ( widget == ptr->widgetPtr ) {
-					return ptr;
-				}
+				iter != mCollectionObjects.end(); iter++ ) {
+			WidgetCollectionItem* ptr = ( *iter );
+			if ( widget == ptr->widgetPtr ) {
+				return ptr;
+			}
 		}
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Widget not found in WidgetCollection", __FUNCTION__ );
 	}

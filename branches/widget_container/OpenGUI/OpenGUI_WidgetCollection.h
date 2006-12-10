@@ -4,10 +4,11 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_WidgetCollectionListener.h"
 
 namespace OpenGUI {
-	class I_WidgetContainer; // forward declaration
 	class Widget; // forward declaration
+	class Object; // forward declaration
 
 	//! Ordered collection of Widget objects.
 	/*! Maintains an ordered list of Widget pointers. Also provides the option to take
@@ -17,12 +18,17 @@ namespace OpenGUI {
 	class OPENGUI_API WidgetCollection {
 		friend class Widget;
 	private:
+		typedef std::set<WidgetCollectionListener*> ListenerSet;
+		ListenerSet mListeners;
+
 		struct OPENGUI_API WidgetCollectionItem {
 			WidgetCollectionItem()
-				: widgetPtr( 0 ), own( false ) {}
+					: widgetPtr( 0 ), own( false ) {}
 			Widget* widgetPtr;
 			bool own;
 		};
+		void _fireWidgetAdded( Widget* widget );
+		void _fireWidgetRemoved( Widget* widget );
 
 		// These are the actual functions that perform the adds/removes
 		// They are an additional level deep so we can reuse them without triggering Widget events
@@ -36,12 +42,12 @@ namespace OpenGUI {
 		typedef std::list<WidgetCollectionItem*> WidgetCollectionItemPtrList;
 		WidgetCollectionItemPtrList mCollectionObjects;
 		WidgetCollectionItem* getWidgetHolder( Widget* widget );
-		I_WidgetContainer* mIContainer; //pointer to the I_WidgetContainer that owns this WidgetCollection
-	protected:
-		
+		Object* mOwner;
+
 	public:
-		//! Anyone can create a WidgetCollection
+		//! public constructor
 		WidgetCollection();
+		//! public destructor
 		~WidgetCollection();
 		//! Adds given widget pointer to the front of the collection
 		void add_front( Widget* widget, bool takeOwnership = false );
@@ -62,6 +68,16 @@ namespace OpenGUI {
 
 		//! returns true if the given widget pointer is in the collection
 		bool hasWidget( Widget* widget );
+
+		//! Attaches a WidgetCollectionListener to this WidgetCollection
+		void attachListener( WidgetCollectionListener* listener );
+		//! Removes a previously attached WidgetCollectionListener from this WidgetCollection
+		void detachListener( WidgetCollectionListener* listener );
+
+		//! Claim this collection for the given Object
+		void setOwner( Object* object );
+		//! Get the Object that last claimed ownership of this collection
+		Object* getOwner();
 
 		//! Template class providing iterator encapsulation
 		template <typename IterType>

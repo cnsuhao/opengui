@@ -48,7 +48,7 @@ namespace OpenGUI {
 	\see \ref EventList_Widget "Widget Events"
 	*/
 	class OPENGUI_API Widget : public Object {
-		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
+		friend class WidgetCollection; //we'll need this so containers can manage our handle to them
 		//friend class Screen; // Screen needs access to the protected input event triggers
 	public:
 		//! public constructor
