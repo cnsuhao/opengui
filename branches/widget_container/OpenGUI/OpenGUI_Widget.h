@@ -234,7 +234,8 @@ namespace OpenGUI {
 		//! releases focus for this Widget for cursor events
 		void releaseCursorFocus();
 
-		void _doflush();
+		//! Needs to be overridden by container widgets to invalidate self and call _doFlush() for all children
+		virtual void _doflush();
 
 		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
 		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );

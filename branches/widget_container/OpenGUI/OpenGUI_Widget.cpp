@@ -227,18 +227,6 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::_doflush() {
 		eventInvalidated();
-
-		OG_NYI; // FIXME
-		/*
-		I_WidgetContainer* meContainer = dynamic_cast<I_WidgetContainer*>( this );
-		if ( meContainer ) {
-			WidgetCollection::iterator iter = meContainer->Children.begin();
-			while ( iter != meContainer->Children.end() ) {
-				iter->_doflush();
-				iter++;
-			}
-		}
-		*/
 	}
 	//############################################################################
 	void Widget::_draw( Brush& brush ) {
