@@ -13,7 +13,7 @@ namespace OpenGUI {
 		SimpleProperty_Bool( PBProp_Inverted, "Inverted", ProgressBar, getInverted, setInverted );
 		SimpleProperty_Color( PBProp_FillColor, "FillColor", ProgressBar, getFillColor, setFillColor );
 		SimpleProperty_Color( PBProp_BGColor, "BGColor", ProgressBar, getBGColor, setBGColor );
-		SimpleProperty_Float( PBProp_BarPadVert, "BarPadVert", ProgressBar, getBarPadHoriz, setBarPadHoriz );
+		SimpleProperty_Float( PBProp_BarPadVert, "BarPadVert", ProgressBar, getBarPadVert, setBarPadVert );
 		SimpleProperty_Float( PBProp_BarPadHoriz, "BarPadHoriz", ProgressBar, getBarPadHoriz, setBarPadHoriz );
 		//############################################################################
 		class ProgressBar_ObjectAccessorList : public ObjectAccessorList {
@@ -167,11 +167,50 @@ namespace OpenGUI {
 		//############################################################################
 		void ProgressBar::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			if(mVertical){
-				//
-			}else{
-				//
+			// draw the background
+			b.pushColor( mColorBG );
+			if ( mFaceBG )
+				b.Image.drawFace( mFaceBG, getRect() );
+			else
+				b.Primitive.drawRect( getRect() );
+			b.pop(); // pop BG color
+
+			// calculate the available bar area based on the padding
+			FRect barArea = getRect();
+			barArea.setWidth( barArea.getWidth() - ( mPadHoriz * 2.0f ) );
+			barArea.setHeight( barArea.getHeight() - ( mPadVert * 2.0f ) );
+			barArea.offset( FVector2( mPadHoriz, mPadVert ) );
+
+			// get fill coverage
+			float fillPerc = mValue / mTotal;
+			if ( fillPerc > 1.0f ) fillPerc = 1.0f; // clamp to 1.0f max
+			if ( fillPerc < 0.0f ) fillPerc = 0.0f; // clamp to 0.0f min
+			if ( fillPerc <= 0.0f ) return; // abort here if there is nothing worth drawing
+			if ( mVertical ) {
+				if ( mInverted ) {
+					barArea.setHeight( barArea.getHeight() * fillPerc );
+				} else {
+					barArea.offset( FVector2( 0.0f, barArea.getHeight() ) );
+					barArea.setHeight( barArea.getHeight() * fillPerc );
+					barArea.offset( FVector2( 0.0f, -barArea.getHeight() ) );
+				}
+			} else {
+				if ( mInverted ) {
+					barArea.offset( FVector2( barArea.getWidth(), 0.0f ) );
+					barArea.setWidth( barArea.getWidth() * fillPerc );
+					barArea.offset( FVector2( -barArea.getWidth(), 0.0f ) );
+				} else {
+					barArea.setWidth( barArea.getWidth() * fillPerc );
+				}
 			}
+
+			// draw the fill bar
+			b.pushColor( mColorFG );
+			if ( mFaceFG )
+				b.Image.drawFace( mFaceFG, barArea );
+			else
+				b.Primitive.drawRect( barArea );
+			b.pop(); // pop FG color
 		}
 		//############################################################################
 	} //namespace Amethyst {

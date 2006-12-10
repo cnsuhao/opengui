@@ -123,6 +123,14 @@ void Demo4App::preRun() {
 	w->setProperty("Group", Value("Two"));
 	mScreen->Children.add_front(w, true);
 
+	// Add a progress bar
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:ProgressBar");
+	w->setProperty("Top", Value(100.0f));
+	w->setProperty("Left", Value(400.0f));
+	w->setProperty("Width", Value(150.0f));
+	w->setProperty("Height", Value(20.f));
+	mScreen->Children.add_front(w, true);
+
 	
 
 	// Show the full source Imageset in the lower right
