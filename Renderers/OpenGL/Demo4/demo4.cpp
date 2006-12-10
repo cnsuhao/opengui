@@ -131,6 +131,13 @@ void Demo4App::preRun() {
 	w->setProperty("Height", Value(20.f));
 	mScreen->Children.add_front(w, true);
 
+	// Add a panel
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Panel");
+	w->setProperty("Top", Value(100.0f));
+	w->setProperty("Left", Value(300.0f));
+	w->setProperty("Width", Value(40.0f));
+	w->setProperty("Height", Value(20.f));
+	mScreen->Children.add_front(w, true);
 	
 
 	// Show the full source Imageset in the lower right

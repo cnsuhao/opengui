@@ -274,7 +274,7 @@
 	</Face>
 
 
-<!-- ScrollBar BG -->
+<!-- ProgressBar FG -->
 	<Face Name="BrassBalls:ProgressBar" Metric="Units">
 		<Row>
 			<Slice Imagery="BrassBalls.png:ProgressBar_UL" Width="3" Height="3" />
@@ -352,6 +352,14 @@
 		<Property ValueName="BGColor" ValueType="COLOR" ValueData="#ffffff" />
 		<Property ValueName="BarPadVert" ValueType="FLOAT" ValueData="3.0" />
 		<Property ValueName="BarPadHoriz" ValueType="FLOAT" ValueData="3.0" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:Panel" BaseName="Panel" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:Panel_Outset" />
+		<Property ValueName="Padding_Top" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Bottom" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Left" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Right" ValueType="FLOAT" ValueData="2.0" />
 	</WidgetDef>
 </OpenGUI>
 
