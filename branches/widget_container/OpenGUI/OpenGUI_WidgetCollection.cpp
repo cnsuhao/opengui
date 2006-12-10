@@ -1,7 +1,12 @@
 #include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Widget.h"
 
 namespace OpenGUI {
+	//############################################################################
+	WidgetCollection::WidgetCollection(){
+		/**/
+	}
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
 		while ( mCollectionObjects.size() > 0 ) {
@@ -12,6 +17,10 @@ namespace OpenGUI {
 			if ( own )
 				delete w;
 		}
+	}
+	//############################################################################
+	void WidgetCollection::_notifyChildDelete( Widget* widgetToRemove ) {
+		remove( widgetToRemove );
 	}
 	//############################################################################
 	void WidgetCollection::add_front( Widget* widget, bool takeOwnership ) {

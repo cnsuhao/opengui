@@ -1,7 +1,7 @@
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Renderer.h"
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Screen.h"
 #include "OpenGUI_StrConv.h"
 
@@ -85,6 +85,7 @@ namespace OpenGUI {
 
 	Widget::Widget() {
 		mContainer = 0; //we always start with no container
+
 		if ( gWidget_ObjectAccessorList.getParent() == 0 )
 			gWidget_ObjectAccessorList.setParent( Object::getAccessors() );
 
@@ -136,7 +137,7 @@ namespace OpenGUI {
 	//############################################################################
 	Widget::~Widget() {
 		if ( mContainer )
-			mContainer->notifyChildDelete( this );
+			mContainer->_notifyChildDelete( this );
 	}
 	//############################################################################
 	ObjectAccessorList* Widget::getAccessors() {
@@ -160,15 +161,19 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Widget names cannot contain '/' and cannot be '.' or '..'", __FUNCTION__ );
 			return;
 		}
-		I_WidgetContainer* container = getContainer();
+
+		OG_NYI; // FIXME
+		/*
+		WidgetCollection* container = getContainer();
 		if ( container ) {
-			Widget* w = container->Children.getWidget( name );
+			Widget* w = container->getWidget( name );
 			if ( w && w != this ) {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot assign name '" + name + "'. Container holds another widget with the same name.", __FUNCTION__ );
 				return;
 			}
 		}
 		mWidgetName = name;
+		*/
 	}
 	//############################################################################
 	bool Widget::getEnabled() {
@@ -186,7 +191,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	I_WidgetContainer* Widget::getContainer() const {
+	WidgetCollection* Widget::getContainer() const {
 		return mContainer;
 	}
 	//############################################################################
@@ -195,9 +200,12 @@ namespace OpenGUI {
 			mValid = false;
 			eventInvalidated();
 
+			OG_NYI; // FIXME
+			/*
 			Widget* parent = dynamic_cast<Widget*>( getContainer() );
 			if ( parent )
 				parent->_invalidatedChild();
+			*/
 		}
 	}
 	//############################################################################
@@ -206,14 +214,20 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::flush() {
+		OG_NYI; // FIXME
+		/*
 		Widget* parent = dynamic_cast<Widget*>( mContainer );
 		if ( parent )
 			parent->invalidate();
 		_doflush();
+		*/
 	}
 	//############################################################################
 	void Widget::_doflush() {
 		eventInvalidated();
+
+		OG_NYI; // FIXME
+		/*
 		I_WidgetContainer* meContainer = dynamic_cast<I_WidgetContainer*>( this );
 		if ( meContainer ) {
 			WidgetCollection::iterator iter = meContainer->Children.begin();
@@ -222,6 +236,7 @@ namespace OpenGUI {
 				iter++;
 			}
 		}
+		*/
 	}
 	//############################################################################
 	void Widget::_draw( Brush& brush ) {
@@ -246,6 +261,8 @@ namespace OpenGUI {
 	//############################################################################
 	Screen* Widget::getScreen() const {
 		if ( !mContainer ) return 0;
+		OG_NYI; // FIXME
+		/*
 		Widget* parentW = dynamic_cast<Widget*>( mContainer );
 		if ( parentW )
 			return parentW->getScreen();
@@ -253,6 +270,7 @@ namespace OpenGUI {
 		if ( parentS )
 			return parentS;
 		return 0;
+		*/
 	}
 	//############################################################################
 	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
@@ -594,6 +612,8 @@ namespace OpenGUI {
 			return _getPath( pathList );
 		}
 		if ( top == ".." ) {
+			OG_NYI; // FIXME
+			/*
 			Widget* parent = dynamic_cast<Widget*>( getContainer() );
 			if ( parent ) {
 				return parent->_getPath( pathList );
@@ -602,6 +622,7 @@ namespace OpenGUI {
 			if ( screen ) {
 				return screen->_getPath( pathList );
 			}
+			*/
 			OG_THROW( Exception::OP_FAILED, "Unknown container type. Cannot proceed to parent path", __FUNCTION__ );
 		}
 
@@ -648,40 +669,52 @@ namespace OpenGUI {
 	//############################################################################
 	FVector2 Widget::pointToScreen( const FVector2& local_point ) {
 		FVector2 point = local_point;
+		OG_NYI; // FIXME
+		/*
 		I_WidgetContainer* container = getContainer();
 		Widget* parent = dynamic_cast<Widget*>( container );
 		if ( parent ) {
 			parent->_doPointToScreen( point );
 		}
 		return point;
+		*/
 	}
 	//############################################################################
 	FVector2 Widget::pointFromScreen( const FVector2& screen_point ) {
 		FVector2 point = screen_point;
+		OG_NYI; // FIXME
+		/*
 		I_WidgetContainer* container = getContainer();
 		Widget* parent = dynamic_cast<Widget*>( container );
 		if ( parent ) {
 			parent->_doPointFromScreen( point );
 		}
 		return point;
+		*/
 	}
 	//############################################################################
 	void Widget::_doPointToScreen( FVector2& local_point ) {
 		_translatePointOut( local_point );
+		OG_NYI; // FIXME
+		/*
 		I_WidgetContainer* container = getContainer();
 		Widget* parent = dynamic_cast<Widget*>( container );
 		if ( parent ) {
 			parent->_doPointToScreen( local_point );
 		}
+		*/
 	}
 	//############################################################################
 	void Widget::_doPointFromScreen( FVector2& screen_point ) {
+		OG_NYI; // FIXME
+		/*
 		I_WidgetContainer* container = getContainer();
 		Widget* parent = dynamic_cast<Widget*>( container );
 		if ( parent ) {
 			parent->_doPointFromScreen( screen_point );
 		}
 		_translatePointIn( screen_point );
+		*/
 	}
 	//############################################################################
 	/*! If this Widget is not attached to a Screen, the return value is always \c false. */

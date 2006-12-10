@@ -4,10 +4,10 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
-#include "OpenGUI_Widget.h"
 
 namespace OpenGUI {
-	class I_WidgetContainer;
+	class I_WidgetContainer; // forward declaration
+	class Widget; // forward declaration
 
 	//! Ordered collection of Widget objects.
 	/*! Maintains an ordered list of Widget pointers. Also provides the option to take
@@ -15,7 +15,7 @@ namespace OpenGUI {
 	destruction.
 	*/
 	class OPENGUI_API WidgetCollection {
-		friend class I_WidgetContainer;
+		friend class Widget;
 	private:
 		struct OPENGUI_API WidgetCollectionItem {
 			WidgetCollectionItem()
@@ -30,14 +30,18 @@ namespace OpenGUI {
 		void _add_back( Widget* widget, bool takeOwnership = false );
 		void _remove( Widget* widget );
 
+		//! automatically called by Widget during destruction to notify us so we can remove its entry
+		void _notifyChildDelete( Widget* widgetToRemove );
+
 		typedef std::list<WidgetCollectionItem*> WidgetCollectionItemPtrList;
 		WidgetCollectionItemPtrList mCollectionObjects;
 		WidgetCollectionItem* getWidgetHolder( Widget* widget );
 		I_WidgetContainer* mIContainer; //pointer to the I_WidgetContainer that owns this WidgetCollection
 	protected:
-		//! Protects us from being created by anyone but an I_WidgetContainer
-		WidgetCollection() {}
+		
 	public:
+		//! Anyone can create a WidgetCollection
+		WidgetCollection();
 		~WidgetCollection();
 		//! Adds given widget pointer to the front of the collection
 		void add_front( Widget* widget, bool takeOwnership = false );

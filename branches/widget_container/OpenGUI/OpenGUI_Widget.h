@@ -13,7 +13,7 @@
 namespace OpenGUI {
 
 	class Renderer; //forward declaration
-	class I_WidgetContainer; //forward declaration
+	class WidgetCollection; //forward declaration
 	class Screen; //forward declaration
 	class Widget; //forward declaration
 
@@ -74,15 +74,10 @@ namespace OpenGUI {
 		//! invalidate this Widget, as well as any and all potential children
 		void flush();
 
-		//! returns the container this widget is held within
-		/*! Every Widget is guaranteed to have a container, but not every container is
-			guaranteed to be a Widget. To test if the returned pointer is, in fact, another
-			Widget you should perform a dynamic_cast on the returned pointer.
-		\code
-		Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
-		\endcode
+		//! returns the collection this widget is held within
+		/*! Every displayable Widget is guaranteed to have a container.
 		*/
-		I_WidgetContainer* getContainer() const;
+		WidgetCollection* getContainer() const;
 
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
 		/*! The list is depth sorted, with top-most widgets at the top and bottom-most widgets at the bottom.
@@ -250,7 +245,7 @@ namespace OpenGUI {
 		//! \internal called by a child when they have been invalidated. Default does nothing. Override me if you need more functionality
 		virtual void _invalidatedChild();
 	private:
-		I_WidgetContainer* mContainer;
+		WidgetCollection* mContainer;
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events
 
 		bool mEnabled;
