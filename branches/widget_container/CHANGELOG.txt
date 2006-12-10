@@ -2,6 +2,8 @@ Version 0.8 Release Candidate 2 - ??/??/????)
 * TextAlignment now represents both horizontal and vertical alignment properties within a single class object
 * Font handles can now be held within Value objects, making them representable in XML
 * TextAlignment can now be held within Value objects, making them representable in XML
+* Screen now derives from Object
+* I_WidgetContainer has been removed, WidgetCollection has been modified
 
 
 Version 0.8 Release Candidate 1 - 11/28/2006)
