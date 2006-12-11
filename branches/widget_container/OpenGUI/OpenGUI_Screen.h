@@ -189,6 +189,8 @@ namespace OpenGUI {
 		//! The public collection of child widgets
 		WidgetCollection Children;
 
+		// inherited from Object, used to provide properties
+		virtual ObjectAccessorList* getAccessors();
 	protected:
 		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport );
