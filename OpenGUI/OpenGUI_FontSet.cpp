@@ -96,7 +96,7 @@ namespace OpenGUI {
 			<< Log::endlog;
 			return;
 		}
-		error = FT_Load_Char( *tFace, glyph_charCode, FT_LOAD_RENDER );
+		error = FT_Load_Char( *tFace, ( unsigned char )glyph_charCode, FT_LOAD_RENDER );
 		if ( error ) {
 			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[renderGlyph] "
 			<< "FreeType 2 Error: (" << (( int )error ) << ") "
