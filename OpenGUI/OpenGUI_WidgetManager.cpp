@@ -3,8 +3,9 @@
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_XMLParser.h"
-#include "OpenGUI_I_WidgetContainer.h"
 #include "OpenGUI_FormManager.h"
+#include "OpenGUI_WidgetCollection.h"
+#include "OpenGUI_ContainerControl.h"
 
 namespace OpenGUI {
 	template<> WidgetManager* Singleton<WidgetManager>::mptr_Singleton = 0;
@@ -241,7 +242,7 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	void WidgetManager::_Widget_XMLNode_IntoContainer( const XMLNode& widgetNode, I_WidgetContainer& widgetContainer ) {
+	void WidgetManager::_Widget_XMLNode_IntoContainer( const XMLNode& widgetNode, WidgetCollection& widgetContainer ) {
 		if ( widgetNode.hasAttribute( "DefName" )
 				&& ( widgetNode.hasAttribute( "BaseName" ) || widgetNode.hasAttribute( "BaseLibrary" ) ) ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Widget> attribute 'DefName' is mutually exclusive with 'BaseName' and 'BaseLibrary': " + widgetNode.dump(), __FUNCTION__ );
@@ -261,7 +262,7 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Failed to create Widget from XML: " + widgetNode.dump(), __FUNCTION__ );
 		widget->setName( name );
 
-		widgetContainer.Children.add_back( widget, true );
+		widgetContainer.add_back( widget, true );
 
 		//handle all properties
 		XMLNodeList xmlProps = widgetNode.getChildren( "Property" );
@@ -277,22 +278,22 @@ namespace OpenGUI {
 		for ( XMLNodeList::iterator iter = childNodes.begin(); iter != childNodes.end(); iter++ ) {
 			XMLNode* child = ( *iter );
 			if ( child->getTagName() == "Widget" ) {
-				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				ContainerControl* container = dynamic_cast<ContainerControl*>( widget );
 				if ( !container )
 					OG_THROW( Exception::OP_FAILED, "Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(), __FUNCTION__ );
 				else
-					_Widget_XMLNode_IntoContainer( *child, *container );
+					_Widget_XMLNode_IntoContainer( *child, container->Children );
 			} else if ( child->getTagName() == "Form" ) {
-				I_WidgetContainer* container = dynamic_cast<I_WidgetContainer*>( widget );
+				ContainerControl* container = dynamic_cast<ContainerControl*>( widget );
 				if ( !container )
 					OG_THROW( Exception::OP_FAILED, "Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(), __FUNCTION__ );
 				else {
 					const std::string formDef = child->getAttribute( "FormDef" );
 					if ( child->hasAttribute( "Name" ) ) {
 						std::string rootName =  child->getAttribute( "Name" );
-						FormManager::getSingleton().CreateForm( formDef, *container, rootName );
+						FormManager::getSingleton().CreateForm( formDef, &(container->Children), rootName );
 					} else {
-						FormManager::getSingleton().CreateForm( formDef, *container );
+						FormManager::getSingleton().CreateForm( formDef, &(container->Children) );
 					}
 				}
 			}

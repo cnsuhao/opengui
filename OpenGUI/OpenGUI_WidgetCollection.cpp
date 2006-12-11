@@ -1,7 +1,13 @@
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Exception.h"
+#include "OpenGUI_Widget.h"
+
 
 namespace OpenGUI {
+	//############################################################################
+	WidgetCollection::WidgetCollection() {
+		mParent = 0;
+	}
 	//############################################################################
 	WidgetCollection::~WidgetCollection() {
 		while ( mCollectionObjects.size() > 0 ) {
@@ -14,9 +20,60 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! \warning Do not take this operation lightly. Stealing ownership of WidgetCollections
+	can lead to very unpredictable results. The general rule of thumb is, if you didn't
+	create it, then you shouldn't be claiming ownership of it. 
+	\deprecated May move this functionality into the constructor to ultimately eliminate
+	the potential for misuse. */
+	void WidgetCollection::setParent( Object* object ) {
+		mParent = object;
+	}
+	//############################################################################
+	Object* WidgetCollection::getParent() {
+		return mParent;
+	}
+	//############################################################################
+	void WidgetCollection::attachListener( WidgetCollectionListener* listener ) {
+		ListenerSet::iterator iter = mListeners.find( listener );
+		if ( iter != mListeners.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "The given WidgetCollectionListener is already attached to this WidgetCollection", __FUNCTION__ );
+		mListeners.insert( listener );
+	}
+	//############################################################################
+	void WidgetCollection::detachListener( WidgetCollectionListener* listener ) {
+		ListenerSet::iterator iter = mListeners.find( listener );
+		if ( iter == mListeners.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "The given WidgetCollectionListener is not attached to this WidgetCollection", __FUNCTION__ );
+		mListeners.erase( listener );
+	}
+	//############################################################################
+	void WidgetCollection::_fireWidgetAdded( Widget* widget ) {
+		widget->eventAttached( this, widget );
+		ListenerSet::iterator iter, iterend = mListeners.end();
+		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
+			WidgetCollectionListener* l = ( *iter );
+			l->eventChildAttached( this, widget );
+		}
+	}
+	//############################################################################
+	void WidgetCollection::_fireWidgetRemoved( Widget* widget ) {
+		widget->eventDetached( this, widget );
+		ListenerSet::iterator iter, iterend = mListeners.end();
+		for ( iter = mListeners.begin();iter != iterend; iter++ ) {
+			WidgetCollectionListener* l = ( *iter );
+			l->eventChildDetached( this, widget );
+		}
+	}
+	//############################################################################
+	void WidgetCollection::_notifyChildDelete( Widget* widgetToRemove ) {
+		remove( widgetToRemove );
+	}
+	//############################################################################
 	void WidgetCollection::add_front( Widget* widget, bool takeOwnership ) {
 		if ( !widget )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		if ( widget->mContainer )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
 		const std::string wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
@@ -24,12 +81,14 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_front( widget, takeOwnership );
-		mIContainer->notifyChildAdded( widget );
+		_fireWidgetAdded( widget );
 	}
 	//############################################################################
 	void WidgetCollection::add_back( Widget* widget, bool takeOwnership ) {
 		if ( !widget )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
+		if ( widget->mContainer )
+			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
 		const std::string wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
@@ -37,27 +96,33 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cannot have more than 1 widget with same name per container: " + wName, __FUNCTION__ );
 		}
 		_add_back( widget, takeOwnership );
-		mIContainer->notifyChildAdded( widget );
+		_fireWidgetAdded( widget );
 	}
 	//############################################################################
+	/*! If the collection was told to take ownership of the requested widget,
+	this operation removes that ownership. The collection will no longer
+	delete the removed widget on destruction.
+
+	\throw Exception if the widget is not part of this collection
+	*/
 	void WidgetCollection::remove( Widget* widget ) {
 		_remove( widget );
-		mIContainer->notifyChildRemoved( widget );
+		_fireWidgetRemoved( widget );
 	}
 	//############################################################################
 	void WidgetCollection::_add_front( Widget* widget, bool takeOwnership ) {
-		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
 		ptr->widgetPtr = widget;
+		widget->mContainer = this;
 		mCollectionObjects.push_front( ptr );
 	}
 	//############################################################################
 	void WidgetCollection::_add_back( Widget* widget, bool takeOwnership ) {
-		mIContainer->notifyChildAdding( widget );
 		WidgetCollectionItem* ptr = new WidgetCollectionItem;
 		ptr->own = takeOwnership;
 		ptr->widgetPtr = widget;
+		widget->mContainer = this;
 		mCollectionObjects.push_back( ptr );
 	}
 	//############################################################################
@@ -71,18 +136,12 @@ namespace OpenGUI {
 		return false;
 	}
 	//############################################################################
-	/*! If the collection was told to take ownership of the requested widget,
-		this operation removes that ownership. The collection will no longer
-		delete the removed widget on destruction.
-
-		\throw Exception if the widget is not part of this collection
-	*/
 	void WidgetCollection::_remove( Widget* widget ) {
-		mIContainer->notifyChildRemoving( widget );
 		for ( WidgetCollectionItemPtrList::iterator iter = mCollectionObjects.begin();
 				iter != mCollectionObjects.end(); iter++ ) {
 			WidgetCollectionItem* ptr = ( *iter );
 			if ( widget == ptr->widgetPtr ) {
+				widget->mContainer = 0;
 				mCollectionObjects.erase( iter );
 				return;
 			}
@@ -157,52 +216,4 @@ namespace OpenGUI {
 		return iter;
 	}
 	//############################################################################
-	//############################################################################
-
-
-
-	//############################################################################
-	//############################################################################
-	I_WidgetContainer::I_WidgetContainer() {
-		Children.mIContainer = this;
-	}
-	//############################################################################
-	void I_WidgetContainer::notifyChildDelete( Widget* widgetToRemove ) {
-		Children.remove( widgetToRemove );
-	}
-	//############################################################################
-	void I_WidgetContainer::notifyChildAdding( Widget* widgetPtr ) {
-		if ( widgetPtr->mContainer != 0 )
-			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  "Widget is already a child of another container!", __FUNCTION__ );
-		widgetPtr->_attaching();
-		widgetPtr->mContainer = this;
-	}
-	//############################################################################
-	void I_WidgetContainer::notifyChildRemoving( Widget* widgetPtr ) {
-		if ( widgetPtr->mContainer != this )
-			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  "Widget is not a child of this container!", __FUNCTION__ );
-		widgetPtr->_detaching();
-		widgetPtr->mContainer = 0;
-	}
-	//############################################################################
-	void I_WidgetContainer::notifyChildAdded( Widget* widgetPtr ) {
-		eventChildAttached( this, widgetPtr );
-		widgetPtr->eventAttached( this, widgetPtr );
-	}
-	//############################################################################
-	void I_WidgetContainer::notifyChildRemoved( Widget* widgetPtr ) {
-		eventChildDetached( this, widgetPtr );
-		widgetPtr->eventDetached( this, widgetPtr );
-	}
-	//############################################################################
-	void I_WidgetContainer::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void I_WidgetContainer::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-}
+} // namespace OpenGUI {

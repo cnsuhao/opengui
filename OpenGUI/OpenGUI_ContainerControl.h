@@ -5,7 +5,7 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Widget.h"
-#include "OpenGUI_I_WidgetContainer.h"
+#include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Control.h"
 
 namespace OpenGUI {
@@ -40,7 +40,7 @@ namespace OpenGUI {
 		- \ref Event_Cursor_Release "Cursor_Release"
 	\see \ref EventList_ContainerControl "ContainerControl Events"
 	*/
-	class OPENGUI_API ContainerControl : public Control, public I_WidgetContainer {
+	class OPENGUI_API ContainerControl : public Control, WidgetCollectionListener {
 	public:
 		//! public constructor
 		ContainerControl();
@@ -69,6 +69,9 @@ namespace OpenGUI {
 		//! \internal Calls base class _tick() function and passed the Tick on to all children
 		virtual void _tick( float seconds );
 
+		//! Collection of child widgets that are contained by this ContainerControl
+		WidgetCollection Children;
+
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
 		virtual char* getClassName();
@@ -78,9 +81,9 @@ namespace OpenGUI {
 		//! Draw this object's background using the given brush
 		void eventDrawBG( Brush& brush );
 		//! A new child has been attached to this container
-		void eventChildAttached( I_WidgetContainer* container, Widget* newChild );
+		void eventChildAttached( WidgetCollection* container, Widget* newChild );
 		//! A child has been detached from this container
-		void eventChildDetached( I_WidgetContainer* container, Widget* prevChild );
+		void eventChildDetached( WidgetCollection* container, Widget* prevChild );
 		//! A child of this container has been invalidated
 		void eventInvalidatedChild();
 //@}
@@ -88,6 +91,8 @@ namespace OpenGUI {
 		// reimplementations from Widget
 		virtual void _translatePointIn( FVector2& point );
 		virtual void _translatePointOut( FVector2& point );
+
+		virtual void _doflush();
 
 	protected:
 //!\name Event Handlers
