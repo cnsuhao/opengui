@@ -22,8 +22,6 @@
 	
 	- \subpage XMLDOC "XML Configuration Files"
 	
-	- \subpage CreatingWidgets "Creating Widgets"
-	
 	- \subpage Events  "Events"
 	
 	- \subpage CustomWidgets "Extending via Custom Widgets"
@@ -45,19 +43,19 @@
 	<HR>
 	\verbinclude LICENSE.TXT
 	<BR><HR><BR>
-	%OpenGUI also utilizes a few external libraries. The names, websites and license types of these
+	%OpenGUI also utilizes a few external libraries. The names, web sites and license types of these
 	external libraries are listed below.
 	<HR>
 	Name: Corona (version 1.0.2)\n
-	Website: http://corona.sourceforge.net/ \n
+	Web site: http://corona.sourceforge.net/ \n
 	License: <a href="http://opensource.org/licenses/zlib-license.html">zlib license</a> \n
 	<HR>
 	Name: TinyXML (version 2.4.3)\n
-	Website: http://www.grinninglizard.com/tinyxml/index.html \n
+	Web site: http://www.grinninglizard.com/tinyxml/index.html \n
 	License: <a href="http://opensource.org/licenses/zlib-license.html">zlib license</a> \n
 	<HR>
 	Name: Freetype (version 2.1.10)\n
-	Website: http://www.freetype.org/ \n
+	Web site: http://www.freetype.org/ \n
 	License: <a href="http://freetype.sourceforge.net/FTL.TXT">The FreeType License</a> \n
 	Credit as requested:\n
 \verbatim
@@ -130,7 +128,7 @@ namespace OpenGUI {
 \subsection ClassImplementation Class Implementation
 	This next section is where the fun really begins. In the following section we're going to go step by step implementing our new widget. But before we do that, here's the obligatory complete dump:
 	\include custom_widget.cpp
-	That's an awful lot to chew on, so now we'll break it down into more manageable pieces with some more detailed explainations as to what is going on.
+	That's an awful lot to chew on, so now we'll break it down into more manageable pieces with some more detailed explanations as to what is going on.
 
 	Its funny how the most initially obscure looking code is always first. ;) The following code exposes access to the "MyBool" property. This is done by creating a new class that derives from OpenGUI::ObjectProperty and performing the necessary virtual function implementations to achieve the desired effect. You should notice that within get() and set() we end up simply calling our native property accessor functions.
 	\skip MyWidget_MyBool_ObjectProperty
@@ -147,10 +145,10 @@ namespace OpenGUI {
 	\until }
 	The last 2 statements create the event "MyEvent", and then bind our default event handler using an \ref OpenGUI::EventDelegate EventDelegate. Obviously events are currently far easier to bind than properties. One day this may change, but for now we'll live with it.
 
-	On to the destructor. If your class requires special clean up actions, you can obviousl perform them here. Our destructor does nothing special, so we'll move on.
+	On to the destructor. If your class requires special clean up actions, you can obviously perform them here. Our destructor does nothing special, so we'll move on.
 	\until }
 
-	The following 2 methods are the native property accessors. They were used in the property binding to access the the internal state variable. You obviously don't \em need to use a state variable, and can happily generate the results purely progmatically if you so desire. But since this is just an example, we took the easy way out.
+	The following 2 methods are the native property accessors. They were used in the property binding to access the internal state variable. You obviously don't \em need to use a state variable, and can happily generate the results purely pragmatically if you so desire. But since this is just an example, we took the easy way out.
 	\until }
 	\until }
 
@@ -166,7 +164,7 @@ namespace OpenGUI {
 	As you can see, we call the base class's implementation first so that our draw operations come afterward, which would allow us to draw over top of their's. Since Control::onDraw doesn't draw anything by default, this particular instance of calling the base implementation is a waste of time, but I added it as an example to show that you should normally call the base implementation within your override. A cursory glance at the rest of our implementation shows that we're just drawing a red rect that fills our control. You should notice that we're popping off the brush modifiers that we pushed. Popping the modifiers is good practice, but %OpenGUI brushes have some internal tracking that allows it to auto pop whatever onDraw's leave behind. Still, if you're calling base implementations in addition to your own code, if you fail to pop the brush you'll leave it in an unknown state for the next user, which usually results in strange things happening. But if you're clever you can use this to your advantage and make interesting things. Like buttons that draw upside down... ;)
 
 \subsection RinseRepeat Rinse Repeat
-	And that's pretty much the end of implementation. Aside from property binding, creating new widgets is rediculously simple. (And even the property binding isn't all that bad.) All you need to do is find a suitable base class to inherit from, and fill your new creation with all sorts of nifty functionality. If you'd like more example code, it's probably best to refer directly to the source. The source is regularly ran through code beautifiers to maintain readability, and is fairly straight forward in its purpose.
+	And that's pretty much the end of implementation. Aside from property binding, creating new widgets is ridiculously simple. (And even the property binding isn't all that bad.) All you need to do is find a suitable base class to inherit from, and fill your new creation with all sorts of nifty functionality. If you'd like more example code, it's probably best to refer directly to the source. The source is regularly ran through code beautifiers to maintain readability, and is fairly straight forward in its purpose.
 
 	The source for the base widget classes can be found in the following files:
 	- OpenGUI_Widget.h/cpp
@@ -187,7 +185,7 @@ namespace OpenGUI {
 	This guide covers how to use %OpenGUI in a C++ project. Interfaces to %OpenGUI may exist for other languages, and those interfaces should provide their own usage documentation as they are not covered here.
 	
 	Should you need assistance using %OpenGUI beyond the scope of this documentation, the following sources are made available for public use:
-	- <a href="http://opengui.sourceforge.net/" target=_new>OpenGUI Website</a>
+	- <a href="http://opengui.sourceforge.net/" target=_new>OpenGUI Web site</a>
 	- <a href="http://opengui.rightbracket.com/trac/" target=_new>OpenGUI Wiki/Trac</a>
 	- <a href="http://opengui.rightbracket.com/phpBB2/" target=_new>OpenGUI Forums</a>
 
@@ -211,7 +209,7 @@ namespace OpenGUI {
 	- OpenGUI.dll - Release DLL
 
 <HR>
-\section initalize Initializing OpenGUI
+\section initialize Initializing OpenGUI
 	Initialization of %OpenGUI can be broken up into a few simple steps.
 	- Create a \ref OpenGUI::Renderer "Renderer"
 	- Create a \ref OpenGUI::ResourceProvider "ResourceProvider" <i>(optional)</i>
@@ -233,7 +231,7 @@ System* system = new System( renderer );
 
 <HR>
 \section createscreen Create a Screen
-	All GUIs are built upon \ref OpenGUI::Screen "Screen" objects. A Screen is basically a virtual monitor. A Screen can either render directly to the main frame buffer, or it can render to a texture. In this case, we're going to use the default render targetting of a Screen, which is to render directly to the frame buffer.
+	All GUIs are built upon \ref OpenGUI::Screen "Screen" objects. A Screen is basically a virtual monitor. A Screen can either render directly to the main frame buffer, or it can render to a texture. In this case, we're going to use the default render targeting of a Screen, which is to render directly to the frame buffer.
 \code
 screen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
 \endcode
@@ -247,16 +245,16 @@ screen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800
 // assume that "yourInputSystem" is a pointer to some input system
 float x_abs, y_abs; // some floats to hold the mouse position
 // The next function call represents your own input system
-// retreiving the mouse position as a percentage (0.0f thru 1.0f)
+// retrieving the mouse position as a percentage (0.0f thru 1.0f)
 yourInputSystem->getMousePosition( &x_abs, &y_abs );
 screen->injectCursorPosition_Percent( x_abs, y_abs );
 screen->injectCursorPress_State( yourInputSystem->isButtonDown() );
 \endcode
-The previous code uses the ficticious \c yourInputSystem to retreive the mouse position, which it then injects into the Screen as an absolute position within the GUI using \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The next call retreives the button up/down state for the mouse, and feeds it into the state-aware button function \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The Screen class provides several different methods for input injections, so you can use the one that is most appropriate for your specific needs.
+The previous code uses the fictitious \c yourInputSystem to retrieve the mouse position, which it then injects into the Screen as an absolute position within the GUI using \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The next call retrieves the button up/down state for the mouse, and feeds it into the state-aware button function \ref OpenGUI::Screen::injectCursorPress_State "injectCursorPress_State". The Screen class provides several different methods for input injections, so you can use the one that is most appropriate for your specific needs.
 
 <HR>
 \section show_cursor Showing the Cursor
-	Unlike many GUI systems, %OpenGUI does not assume that you want a visible cursor, or that you always want to process cursor input injections. By default the cursor is visible but disabled. A cursor will not draw unless it is both enabled and visible, so initially there is no displayed cursor until you enable it. However, you cannot have a visible cursor without first defining the default cursor for the Screen. The default cursor is the cursor that will be drawn when the cursor is over a widget that does not define its own prefered cursor.
+	Unlike many GUI systems, %OpenGUI does not assume that you want a visible cursor, or that you always want to process cursor input injections. By default the cursor is visible but disabled. A cursor will not draw unless it is both enabled and visible, so initially there is no displayed cursor until you enable it. However, you cannot have a visible cursor without first defining the default cursor for the Screen. The default cursor is the cursor that will be drawn when the cursor is over a widget that does not define its own preferred cursor.
 \code
 // for our purposes, we'll assume that "Arrow" is an already defined Cursor
 CursorPtr cursor = CursorManager::getSingleton().CreateDefinedCursor( "Arrow" ); // create an instance of the cursor
@@ -271,7 +269,7 @@ screen->enableCursor(); // enable the cursor for this Screen, it will automatica
 
 <HR>
 \section update_screen Updating the Screen
-	In order for anything to be drawn at all, we need to tell %OpenGUI when to perform updates for the Screens. This can be done at serveral different levels, with the application assuming varying amounts of additional work. For the purposes of this example, we'll use the most basic update method, which is to ask System to update all Screens for us.
+	In order for anything to be drawn at all, we need to tell %OpenGUI when to perform updates for the Screens. This can be done at several different levels, with the application assuming varying amounts of additional work. For the purposes of this example, we'll use the most basic update method, which is to ask System to update all Screens for us.
 \code
 system->update(); // perform fully automated update
 \endcode
@@ -281,19 +279,6 @@ system->update(); // perform fully automated update
 	That pretty much covers the basics of integrating %OpenGUI into your application. The demos can be referenced for further example code, and the resources listed at the top can be utilized if you require further assistance.
 */
 
-/*!
-	\page CreatingWidgets Creating Widgets
-	\todo this page needs to be finished
-	
-	\section newWidget Direct Creation via "new"
-	SomeWidget* w = new SomeWidget;
-	
-	\section createWidget Widgets by name
-	Widgets can be created via System::createWidget
-	
-	\section WidgetTemplate Widget Templates
-	Templates allow you to create widgets with preconfigured properties.
-*/
 
 /*! \page WidgetFocus Widgets and Focus
 	The concept of "focus" isn't a new concept in GUI systems these days, but it is most definitely a concept that is required. Focus is the redirection of input to a specific target in a GUI. In other words, if your widget grabs cursor focus then your widget gets to receive cursor events before any other widget, allowing you to perform functions that are normally not available (such as tracking cursor movement regardless of where it goes). %OpenGUI provides focusing mechanisms for all input types, but due to the specifics of each input type the functionality of focusing has varying effects.
@@ -301,7 +286,7 @@ system->update(); // perform fully automated update
 	\section FocusCursor Cursor Focus (mouse input)
 	When no widget has cursor focus, the cursor input events are sent to all root level GUI widgets, and it is up to their discretion to pass the event on to any children they may have. This usually means that the child will not receive any cursor events until the cursor is already within the parent widget, as the default implementation for cursor events in OpenGUI::ContainerControl is to cull any events that occur while the cursor is outside of its bounds. Sometimes this is not the desired effect, so in that case a child widget can elect to grab cursor focus. Grabbing cursor focus redirects all cursor events directly to the child widget, and the rest of the GUI no longer receives any cursor events until the focus is released. This does not mean you get a "first peek with the option to defer to original processing". Once you have focus, you get it all, and everyone else gets absolutely nothing until you give up the focus. It is important to note that when you have focus, you are receiving the cursor events directly from the Screen, so the cursor position information is provided in the full Screen coordinate space. Normally the cursor input events have the cursor position information offset according to the widget's container for convenience, but again, this is not the case when you have focus.
 	
-	There is no %OpenGUI generated event that can occur that will force the loss of cursor focus. Once you have it, you've pretty much got it until you release it. Destruction of the widget with focus will automatically free focus, so don't worry about that. If the cursor is disabled on the screen, you may want to free your focus, but you are not obligated or forced to do so. There is, however, one condition that will cause the loss of cursor focus, and that is when another widget grabs it from you. Only one widget can ever have a particular focus at any given point in time. So when someone else asks for it when you have it, the only option is to give it to them. In practice, most cursor focuses are caused as the result of previous cursor activity, so the likelyhood that you'll ever be interupted from focusing the cursor is fairly low. However the possibility remains that some evil widget might steal it from you, so you should write your widgets with that possibility in mind.
+	There is no %OpenGUI generated event that can occur that will force the loss of cursor focus. Once you have it, you've pretty much got it until you release it. Destruction of the widget with focus will automatically free focus, so don't worry about that. If the cursor is disabled on the screen, you may want to free your focus, but you are not obligated or forced to do so. There is, however, one condition that will cause the loss of cursor focus, and that is when another widget grabs it from you. Only one widget can ever have a particular focus at any given point in time. So when someone else asks for it when you have it, the only option is to give it to them. In practice, most cursor focuses are caused as the result of previous cursor activity, so the likelihood that you'll ever be interrupted from focusing the cursor is fairly low. However the possibility remains that some evil widget might steal it from you, so you should write your widgets with that possibility in mind.
 
 	\section FocusKey Key Focus (keyboard input)
 	Key focus works much like cursor focus, with a few exceptions. The most glaring exception is that key events are not automatically sent to the root level widgets. They are only sent to widgets that specifically ask for it. The best way to receive key events is to simply grab the key focus for the duration that you need it, and release it when you're done with it. As with all focusing, only one widget can ever have any one particular focus at any point in time. Since keyboard focuses are often the result of cursor events, don't be too surprised to have your keyboard focus yanked away.
