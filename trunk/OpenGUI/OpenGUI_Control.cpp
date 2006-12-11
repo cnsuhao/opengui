@@ -582,7 +582,7 @@ namespace OpenGUI {
 	//############################################################################
 	void Control::_invalidateLayout() {
 		if ( !m_InLayout ) {
-			ContainerControl* c = dynamic_cast<ContainerControl*>( getContainer() );
+			ContainerControl* c = dynamic_cast<ContainerControl*>( getParent() );
 			if ( c )
 				c->invalidateLayout();
 		}

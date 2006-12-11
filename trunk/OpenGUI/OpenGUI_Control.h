@@ -5,7 +5,6 @@
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Widget.h"
-#include "OpenGUI_I_WidgetContainer.h"
 #include "OpenGUI_Cursor.h"
 
 namespace OpenGUI {

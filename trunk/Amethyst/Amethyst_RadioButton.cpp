@@ -47,18 +47,19 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void RadioButton::unselectPeers() {
-			I_WidgetContainer* p = getContainer();
-			WidgetCollection::iterator iter, iterend = p->Children.end();
-			for ( iter = p->Children.begin(); iter != iterend; iter++ ) {
-				Widget* w = iter.get();
-				RadioButton* rb = dynamic_cast<RadioButton*>( w );
-				if ( rb ) {
-					if ( rb != this && rb->getGroup() == mGroupName ) {
-						rb->setSelected( false );
+			WidgetCollection* p = getContainer();
+			if(p){
+				WidgetCollection::iterator iter, iterend = p->end();
+				for ( iter = p->begin(); iter != iterend; iter++ ) {
+					Widget* w = iter.get();
+					RadioButton* rb = dynamic_cast<RadioButton*>( w );
+					if ( rb ) {
+						if ( rb != this && rb->getGroup() == mGroupName ) {
+							rb->setSelected( false );
+						}
 					}
 				}
 			}
-
 		}
 		//############################################################################
 		void RadioButton::onToggledOn( Object* sender, EventArgs& evtArgs ) {

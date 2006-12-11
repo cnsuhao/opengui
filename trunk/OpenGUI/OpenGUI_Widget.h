@@ -13,7 +13,7 @@
 namespace OpenGUI {
 
 	class Renderer; //forward declaration
-	class I_WidgetContainer; //forward declaration
+	class WidgetCollection; //forward declaration
 	class Screen; //forward declaration
 	class Widget; //forward declaration
 
@@ -48,7 +48,7 @@ namespace OpenGUI {
 	\see \ref EventList_Widget "Widget Events"
 	*/
 	class OPENGUI_API Widget : public Object {
-		friend class I_WidgetContainer; //we'll need this so containers can manage our handle to them
+		friend class WidgetCollection; //we'll need this so containers can manage our handle to them
 		//friend class Screen; // Screen needs access to the protected input event triggers
 	public:
 		//! public constructor
@@ -73,16 +73,12 @@ namespace OpenGUI {
 
 		//! invalidate this Widget, as well as any and all potential children
 		void flush();
+		//! Needs to be overridden by container widgets to invalidate self and call _doFlush() for all children
+		virtual void _doflush();
 
-		//! returns the container this widget is held within
-		/*! Every Widget is guaranteed to have a container, but not every container is
-			guaranteed to be a Widget. To test if the returned pointer is, in fact, another
-			Widget you should perform a dynamic_cast on the returned pointer.
-		\code
-		Widget* myParent = dynamic_cast<Widget*>( this->getContainer() );
-		\endcode
-		*/
-		I_WidgetContainer* getContainer() const;
+		//! returns the collection this widget is held within
+		/*! Every displayable Widget is guaranteed to have a container.*/
+		WidgetCollection* getContainer() const;
 
 		//! Fills the given \c outList with pointers to all child Widgets that are under the given \c position
 		/*! The list is depth sorted, with top-most widgets at the top and bottom-most widgets at the bottom.
@@ -129,9 +125,9 @@ namespace OpenGUI {
 //!\name Event Injectors
 //@{
 		//! Widget was attached to a container
-		void eventAttached( I_WidgetContainer* newParent, Widget* widget );
+		void eventAttached( WidgetCollection* newContainer, Widget* widget );
 		//! Widget was removed from a container
-		void eventDetached( I_WidgetContainer* prevParent, Widget* widget );
+		void eventDetached( WidgetCollection* prevContainer, Widget* widget );
 
 		//! Draw this object's foreground using the given brush
 		void eventDraw( Brush& brush );
@@ -227,6 +223,9 @@ namespace OpenGUI {
 		//! returns the screen that this Widget is attached to, or 0 if not attached
 		Screen* getScreen() const;
 
+		//! returns a pointer to the parenting Object of this Widget, or 0 if there isn't one
+		Object* getParent() const;
+
 		//! grabs focus for this Widget for keyboard events
 		void grabKeyFocus();
 		//! releases focus for this Widget for keyboard events
@@ -236,8 +235,6 @@ namespace OpenGUI {
 		void grabCursorFocus();
 		//! releases focus for this Widget for cursor events
 		void releaseCursorFocus();
-
-		void _doflush();
 
 		//! \internal virtual implementation for getChildrenAt(). Hidden because overriding is almost always unnecessary
 		virtual void _getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive );
@@ -250,7 +247,7 @@ namespace OpenGUI {
 		//! \internal called by a child when they have been invalidated. Default does nothing. Override me if you need more functionality
 		virtual void _invalidatedChild();
 	private:
-		I_WidgetContainer* mContainer;
+		WidgetCollection* mContainer; // <- managed by WidgetCollection. We should never touch this.
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events
 
 		bool mEnabled;

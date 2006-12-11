@@ -26,6 +26,8 @@ namespace OpenGUI {
 			gContainerControl_ObjectAccessorList.setParent( Control::getAccessors() );
 
 		// initialize state variables
+		Children.setParent( this );
+		Children.attachListener( this );
 		mCacheBrush = 0;
 		m_LayoutSuspended = false; // layouts are instantaneous by default
 		m_LayoutValid = true; // layout begins valid (as there are no controls to update, it does not matter)
@@ -80,12 +82,12 @@ namespace OpenGUI {
 		invalidate(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
-	void ContainerControl::eventChildAttached( I_WidgetContainer* container, Widget* newChild ) {
+	void ContainerControl::eventChildAttached( WidgetCollection* container, Widget* newChild ) {
 		Attach_EventArgs event( container, newChild );
 		triggerEvent( "ChildAttached", event );
 	}
 	//############################################################################
-	void ContainerControl::eventChildDetached( I_WidgetContainer* container, Widget* prevChild ) {
+	void ContainerControl::eventChildDetached( WidgetCollection* container, Widget* prevChild ) {
 		Attach_EventArgs event( container, prevChild );
 		triggerEvent( "ChildDetached", event );
 	}
@@ -490,6 +492,15 @@ namespace OpenGUI {
 	/*! \see setPadding() for description of Padding */
 	float ContainerControl::getPadding() {
 		return mPadding;
+	}
+	//############################################################################
+	void ContainerControl::_doflush(){
+		eventInvalidated();
+		WidgetCollection::iterator iter, iterend = Children.end();
+		for ( iter = Children.begin(); iter != iterend; iter++ ) {
+			Widget* child = iter.get();
+			child->_doflush();
+		}
 	}
 	//############################################################################
 } // namespace OpenGUI {

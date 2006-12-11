@@ -7,9 +7,9 @@
 #include "OpenGUI_Control.h"
 #include "OpenGUI_TimerManager.h"
 #include "OpenGUI_Viewport.h"
-
-//#include "OpenGUI_Brush_RTT.h"
 #include "OpenGUI_TextureManager.h"
+#include "OpenGUI_Macros.h"
+
 
 namespace OpenGUI {
 	class ScreenBrush: public Brush {
@@ -60,12 +60,65 @@ namespace OpenGUI {
 	};
 
 	//############################################################################
+	//############################################################################
+	SimpleProperty_FVector2( ScreenProp_Size, "Size", Screen, getSize, setSize );
+	SimpleProperty_Bool( ScreenProp_Active, "Active", Screen, isActive, setActive );
+	SimpleProperty_Bool( ScreenProp_AUpdate, "AutoUpdate", Screen, isAutoUpdating, setAutoUpdating );
+	SimpleProperty_Bool( ScreenProp_ATime, "AutoTime", Screen, isAutoTiming, setAutoTiming );
+	class ScreenProp_Name_CLASS : public ObjectProperty {
+	public:
+		virtual ~ScreenProp_Name_CLASS() {}
+		virtual const char* getAccessorName() {
+			return "Name";
+		}
+		virtual void get( Object& objectRef, Value& valueOut ) {
+			try {
+				Screen& s = dynamic_cast<Screen&>( objectRef );
+				valueOut.setValue( s.getName() );
+			} catch ( std::bad_cast e ) {
+				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+			}
+		}
+		virtual void set( Object& objectRef, Value& valueIn ) {
+			/* read-only */
+		}
+		virtual Value::ValueType getPropertyType() {
+			return Value::T_STRING;
+		}
+		virtual bool getPermSettable() {
+			return false;
+		}
+	}
+	ScreenProp_Name;
+	//############################################################################
+	class Screen_ObjectAccessorList : public ObjectAccessorList {
+	public:
+		Screen_ObjectAccessorList() {
+			addAccessor( &ScreenProp_Size );
+			addAccessor( &ScreenProp_Active );
+			addAccessor( &ScreenProp_AUpdate );
+			addAccessor( &ScreenProp_ATime );
+			addAccessor( &ScreenProp_Name );
+		}
+		~Screen_ObjectAccessorList() {}
+	}
+	gScreen_ObjectAccessorList;
+	//############################################################################
+	ObjectAccessorList* Screen::getAccessors() {
+		return &gScreen_ObjectAccessorList;
+	}
+	//############################################################################
+	//############################################################################
 	Screen::Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport ) {
+		if ( gScreen_ObjectAccessorList.getParent() == 0 )
+			gScreen_ObjectAccessorList.setParent( Object::getAccessors() );
+
 		mName = screenName;
 		mSize = initialSize;
 		mUPI = FVector2( DEFAULT_SCREEN_UPI_X, DEFAULT_SCREEN_UPI_Y );
 		_DirtyPPUcache();
 
+		Children.setParent( this ); // mark ownership of the WidgetCollection
 		mCursorPressed = false; // cursor starts not pressed
 		mCursorPos.x = mSize.x / 2.0f; // cursor starts in the middle of the Screen
 		mCursorPos.y = mSize.y / 2.0f;

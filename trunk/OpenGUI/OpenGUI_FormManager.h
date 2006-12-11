@@ -11,9 +11,9 @@
 namespace OpenGUI {
 
 	class System; // forward declaration
-	class I_WidgetContainer; // forward declaration
 	class Widget; // forward declaration
 	class FormEntry; // forward declaration
+	class WidgetCollection; // forward declaration
 
 
 	//! The base unit that comprises FormDefinition objects
@@ -65,7 +65,7 @@ namespace OpenGUI {
 		void UndefineForm( const std::string& formName );
 
 		//! Creates a predefined form, signified by \c formName, within the given \c container, assigning the given \c widgetName to the form's root widget
-		void CreateForm( const std::string& formName, I_WidgetContainer& container, const std::string& widgetName = "" );
+		Widget* CreateForm( const std::string& formName, WidgetCollection* container = 0, const std::string& widgetName = "" );
 
 	protected:
 		//! Same as other DefineForm, except that this does not duplicate the given \c formRoot, and instead stored the pointer and assumes ownership
