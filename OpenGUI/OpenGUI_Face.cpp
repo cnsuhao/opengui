@@ -270,14 +270,23 @@ namespace OpenGUI {
 					columnArray_out.push_back( mColDims[i].MinSize );
 			}
 		} else {
-			// This covers all other situations:
-			//  * Need to grow uniformly
-			//  * Need to shrink uniformly
-			//  * Don't need to grow or shrink
-			float mulPer = totalWidth / m_CacheColSize;
-			size_t s = mColDims.size();
-			for ( size_t i = 0; i < s; i++ ) {
-				columnArray_out.push_back( mColDims[i].MinSize * mulPer );
+			if ( m_CacheColSize <= 0 ) {
+				// this catches and handles divide by zero errors incurred by the preferred method
+				size_t s = mColDims.size();
+				float sizePer = totalWidth / ( float )s;
+				for ( size_t i = 0; i < s; i++ ) {
+					columnArray_out.push_back( sizePer );
+				}
+			} else {
+				// This covers all other situations:
+				//  * Need to grow uniformly
+				//  * Need to shrink uniformly
+				//  * Don't need to grow or shrink
+				float mulPer = totalWidth / m_CacheColSize;
+				size_t s = mColDims.size();
+				for ( size_t i = 0; i < s; i++ ) {
+					columnArray_out.push_back( mColDims[i].MinSize * mulPer );
+				}
 			}
 		}
 	}
@@ -298,14 +307,23 @@ namespace OpenGUI {
 					rowArray_out.push_back( mRowDims[i].MinSize );
 			}
 		} else {
-			// This covers all other situations:
-			//  * Need to grow uniformly
-			//  * Need to shrink uniformly
-			//  * Don't need to grow or shrink
-			float mulPer = totalHeight / m_CacheRowSize;
-			size_t s = mRowDims.size();
-			for ( size_t i = 0; i < s; i++ ) {
-				rowArray_out.push_back( mRowDims[i].MinSize * mulPer );
+			if ( m_CacheRowSize <= 0 ) {
+				// this catches and handles divide by zero errors incurred by the preferred method
+				size_t s = mRowDims.size();
+				float sizePer = totalHeight / ( float )s;
+				for ( size_t i = 0; i < s; i++ ) {
+					rowArray_out.push_back( sizePer );
+				}
+			} else {
+				// This covers all other situations:
+				//  * Need to grow uniformly
+				//  * Need to shrink uniformly
+				//  * Don't need to grow or shrink
+				float mulPer = totalHeight / m_CacheRowSize;
+				size_t s = mRowDims.size();
+				for ( size_t i = 0; i < s; i++ ) {
+					rowArray_out.push_back( mRowDims[i].MinSize * mulPer );
+				}
 			}
 		}
 	}

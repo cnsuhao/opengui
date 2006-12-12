@@ -244,6 +244,7 @@ namespace OpenGUI {
 		if ( iter != mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Face already registered with name: " + faceName, __FUNCTION__ );
 		mFacePtrMap[faceName] = facePtr;
+		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "AddFace: " << facePtr->getName() << Log::endlog;
 	}
 	//############################################################################
 	FacePtr ImageryManager::getFace( const std::string& faceName ) {
@@ -258,6 +259,7 @@ namespace OpenGUI {
 		if ( iter == mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Face not found: " + faceName, __FUNCTION__ );
 		mFacePtrMap.erase( iter );
+		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "RemoveFace: " << faceName << Log::endlog;
 	}
 	//############################################################################
 	StringList ImageryManager::getFaceList() {
