@@ -78,10 +78,10 @@ namespace OpenGUI {
 		AxisDimArray mColDims;
 
 		// a few cache objects to save a bit of time later
-		float m_CacheRowSize;
-		float m_CacheColSize;
-		size_t m_CacheRowGrowing;
-		size_t m_CacheColGrowing;
+		float m_CacheRowSize; // minimum possible height of the entire face
+		float m_CacheColSize; // minimum possible width of the entire face
+		size_t m_CacheRowGrowing; // the number of rows that volunteer growth
+		size_t m_CacheColGrowing; // the number of columns that volunteer growth
 
 		class Cell {
 		public:
