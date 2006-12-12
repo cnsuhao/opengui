@@ -97,30 +97,54 @@ namespace OpenGUI {
 			return mVertical;
 		}
 		//############################################################################
+		void ScrollBar::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
+		void ScrollBar::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
+		void ScrollBar::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
+		void ScrollBar::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
+		void ScrollBar::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
+		void ScrollBar::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+			/**/
+		}
+		//############################################################################
 		void ScrollBar::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			if(mFaceBG){
-				b.Image.drawFace(mFaceBG, getRect());
+			if ( mFaceBG ) {
+				b.Image.drawFace( mFaceBG, getRect() );
 			}
 
 			float thumbCoverage = mCoverage / mMaximum;
 
-			if(mFaceFG){
+			if ( mFaceFG ) {
 				FRect thumbRect = getRect();
-				if(mCoverage < mMaximum){
-					if(mVertical){
-						thumbRect.setHeight(thumbRect.getHeight()* thumbCoverage);
+				if ( mCoverage < mMaximum ) {
+					if ( mVertical ) {
+						thumbRect.setHeight( thumbRect.getHeight()* thumbCoverage );
 						float remainingSize = getRect().getHeight() - thumbRect.getHeight();
-						float offset = (mValue / mMaximum )*remainingSize;
-						thumbRect.offset(FVector2(0.0f,offset));
-					}else{
-						thumbRect.setWidth(thumbRect.getWidth()* thumbCoverage);
+						float offset = ( mValue / mMaximum ) * remainingSize;
+						thumbRect.offset( FVector2( 0.0f, offset ) );
+					} else {
+						thumbRect.setWidth( thumbRect.getWidth()* thumbCoverage );
 						float remainingSize = getRect().getWidth() - thumbRect.getWidth();
-						float offset = (mValue / mMaximum )*remainingSize;
-						thumbRect.offset(FVector2(offset,0.0f));
+						float offset = ( mValue / mMaximum ) * remainingSize;
+						thumbRect.offset( FVector2( offset, 0.0f ) );
 					}
 				}
-				b.Image.drawFace(mFaceFG, thumbRect);
+				b.Image.drawFace( mFaceFG, thumbRect );
 			}
 		}
 		//############################################################################
