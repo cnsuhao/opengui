@@ -131,6 +131,22 @@ void Demo4App::preRun() {
 	w->setProperty("Height", Value(20.f));
 	mScreen->Children.add_front(w, true);
 
+	// Add a horizontal scroll bar
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:ScrollBar_H");
+	w->setProperty("Top", Value(130.0f));
+	w->setProperty("Left", Value(400.0f));
+	w->setProperty("Width", Value(150.0f));
+	w->setProperty("Height", Value(20.f));
+	mScreen->Children.add_front(w, true);
+
+	// Add a vertical scroll bar
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:ScrollBar_V");
+	w->setProperty("Top", Value(130.0f));
+	w->setProperty("Left", Value(700.0f));
+	w->setProperty("Width", Value(20.f));
+	w->setProperty("Height", Value(150.0f));
+	mScreen->Children.add_front(w, true);
+
 	// Add a panel
 	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Panel");
 	w->setProperty("Top", Value(100.0f));
