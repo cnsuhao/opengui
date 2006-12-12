@@ -232,11 +232,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Amethyst_ScrollBar_H.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ScrollBar_V.cpp"
+				RelativePath=".\Amethyst_ScrollBar.cpp"
 				>
 			</File>
 			<File
@@ -306,11 +302,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Amethyst_ScrollBar_H.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Amethyst_ScrollBar_V.h"
+				RelativePath=".\Amethyst_ScrollBar.h"
 				>
 			</File>
 			<File
