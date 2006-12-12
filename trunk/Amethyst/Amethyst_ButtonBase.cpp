@@ -15,10 +15,6 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Control::onCursor_Click( sender, evtArgs );
-		}
-		//############################################################################
 		void ButtonBase::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
 			m_Inside = true;
 			updateButtonState();

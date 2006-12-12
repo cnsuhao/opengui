@@ -26,7 +26,6 @@ namespace OpenGUI {
 
 		protected:
 			// These are all events that we overload in order to perform necessary actions
-			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
