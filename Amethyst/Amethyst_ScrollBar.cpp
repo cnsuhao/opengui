@@ -37,10 +37,14 @@ namespace OpenGUI {
 		ScrollBar::ScrollBar() {
 			if ( gScrollBar_ObjectAccessorList.getParent() == 0 )
 				gScrollBar_ObjectAccessorList.setParent( Control::getAccessors() );
+
 			mCoverage = 10.0f;
 			mMaximum = 100.0f;
 			mValue = 0.0f;
 			mVertical = false;
+
+			getEvents().createEvent( "ValueChanged" );
+			getEvents()["ValueChanged"].add( new EventDelegate( this, &ScrollBar::onValueChanged ) );
 		}
 		//############################################################################
 		ScrollBar::~ScrollBar() {
@@ -66,11 +70,13 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void ScrollBar::setValue( float value ) {
+			if ( value == mValue ) return;
 			mValue = value;
 			if ( mMaximum < mValue ) mValue = mMaximum;
 			if ( mValue < 0 ) mValue = 0;
 			invalidate();
 			updateThumbRect();
+			eventValueChanged();
 		}
 		//############################################################################
 		float ScrollBar::getValue() const {
@@ -196,6 +202,15 @@ namespace OpenGUI {
 		//############################################################################
 		bool ScrollBar::isInsideThumb( const FVector2& point ) const {
 			return mThumbRect.isInside( point );
+		}
+		//############################################################################
+		void ScrollBar::eventValueChanged() {
+			EventArgs args;
+			triggerEvent( "ValueChanged", args );
+		}
+		//############################################################################
+		void ScrollBar::onValueChanged( Object* sender, EventArgs& evtArgs ) {
+			/**/
 		}
 		//############################################################################
 	} // namespace Amethyst{
