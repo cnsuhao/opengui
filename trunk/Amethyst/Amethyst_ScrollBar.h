@@ -6,6 +6,14 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
+		//! A scroll bar with scaling thumb size based on Maximum value and Coverage area
+		/*! This scroll bar automatically sizes the movable thumb based on the coverage / maximum ratio.
+		As coverage becomes closer to maximum, the thumb will automatically increase in size to consume the
+		appropriate amount of scroll bar area.
+
+		It also fires the "ValueChanged" event whenever the Value property is altered, allowing you to
+		hook into the updates to perform automatic scrolling of text fields, etc.
+		*/
 		class AMETHYST_API ScrollBar: public Control {
 		public:
 			ScrollBar();
@@ -41,6 +49,8 @@ namespace OpenGUI {
 			//! Returns the current vertical filling selection
 			bool getVertical() const;
 
+			//! Called whenever the scroll Value changes, firing the "ValueChanged" event
+			void eventValueChanged();
 
 			static Widget* createScrollBarFactory();
 			virtual ObjectAccessorList* getAccessors();
@@ -48,7 +58,6 @@ namespace OpenGUI {
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
-
 			virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
@@ -57,6 +66,8 @@ namespace OpenGUI {
 			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
+			//! Default handler for "ValueChanged" event
+			virtual void onValueChanged( Object* sender, EventArgs& evtArgs );
 		private:
 			FacePtr mFaceBG;
 			FacePtr mFaceFG;
