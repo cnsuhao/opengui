@@ -126,10 +126,36 @@
 		<Imagery Name="ScrollBarVT_IB" Left="62" Top="108" Width="19" Height="3" />
 		<Imagery Name="ScrollBarVT_OB" Left="62" Top="111" Width="19" Height="2" />
 
+	<!-- Window -->
+		<Imagery Name="Window_Top" Left="10" Top="2" Width="36" Height="3" />
+		<Imagery Name="Window_Bottom" Left="10" Top="51" Width="36" Height="3" />
+		<Imagery Name="Window_Left" Left="2" Top="10" Width="3" Height="36" />
+		<Imagery Name="Window_Right" Left="51" Top="10" Width="3" Height="36" />
+		<Imagery Name="Window_Middle" Left="5" Top="5" Width="46" Height="46" />
+		
+		<Imagery Name="Window_UL1" Left="2" Top="5" Width="3" Height="5" />
+		<Imagery Name="Window_UL2" Left="2" Top="2" Width="3" Height="3" />
+		<Imagery Name="Window_UL3" Left="5" Top="2" Width="5" Height="3" />
+		
+		<Imagery Name="Window_UR1" Left="46" Top="2" Width="5" Height="3" />
+		<Imagery Name="Window_UR2" Left="51" Top="2" Width="3" Height="3" />
+		<Imagery Name="Window_UR3" Left="51" Top="5" Width="3" Height="5" />
+		
+		<Imagery Name="Window_LR1" Left="51" Top="46" Width="3" Height="5" />
+		<Imagery Name="Window_LR2" Left="51" Top="51" Width="3" Height="3" />
+		<Imagery Name="Window_LR3" Left="46" Top="51" Width="5" Height="3" />
+		
+		<Imagery Name="Window_LL1" Left="5" Top="51" Width="5" Height="3" />
+		<Imagery Name="Window_LL2" Left="2" Top="51" Width="3" Height="3" />
+		<Imagery Name="Window_LL3" Left="2" Top="46" Width="3" Height="5" />
 
 	<!-- Cursors -->
 		<!-- Arrow -->
 		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
+		<Imagery Name="Sizer_WE" Left="43" Top="227" Width="41" Height="14" />
+		<Imagery Name="Sizer_NWSE" Left="97" Top="219" Width="29" Height="30" />
+		<Imagery Name="Sizer_NESW" Left="145" Top="219" Width="29" Height="30" />
+		<Imagery Name="Sizer_NS" Left="198" Top="213" Width="15" Height="42" />
 	</Imageset>
 
 <!-- Button Faces -->
@@ -375,6 +401,36 @@
 			<Slice Imagery="BrassBalls.png:ScrollBarVT_OB" Height="2" />
 		</Row>
 	</Face>
+	
+	<Face Name="BrassBalls:Window" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_UL2" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UL3" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_Top" GrowWidth="True" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UR1" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UR2" Width="3" Height="3" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_UL1" Width="3" Height="5" />
+			<Slice Imagery="BrassBalls.png:Window_Middle" GrowWidth="True" GrowHeight="True" ColSpan=2 RowSpan=2 />
+			<Slice Imagery="BrassBalls.png:Window_UR3" Width="3" Height="5" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_Left" Width="3" GrowHeight="True" />
+			<Slice Imagery="BrassBalls.png:Window_Right" Width="3" GrowHeight="True" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_LL3" Width="3" Height="5" />
+			<Slice Imagery="BrassBalls.png:Window_LR1" Width="3" Height="5" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_LL2" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LL1" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_Bottom" GrowWidth="True" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LR3" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LR2" Width="3" Height="3" />
+		</Row>
+	</Face>
 
 	<WidgetDef Name="BrassBalls:Button" BaseName="Button" BaseLibrary="Amethyst">
 		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:Button_N" />
@@ -459,6 +515,11 @@
 		<Property ValueName="Maximum" ValueType="FLOAT" ValueData="100.0" />
 		<Property ValueName="Coverage" ValueType="FLOAT" ValueData="15.0" />
 		<Property ValueName="Vertical" ValueType="BOOL" ValueData="true" />
+	</WidgetDef>
+	
+	
+	<WidgetDef Name="BrassBalls:Window" BaseName="Window" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:Window" />
 	</WidgetDef>
 </OpenGUI>
 

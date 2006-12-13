@@ -14,5 +14,6 @@
 #include "Amethyst_ProgressBar.h"
 #include "Amethyst_Panel.h"
 #include "Amethyst_ScrollBar.h"
+#include "Amethyst_Window.h"
 
 #endif // Amethyst_h__
