@@ -391,7 +391,7 @@ namespace OpenGUI {
 			max = max + offsetVector;
 		}
 		//! return true if given point is inside this IRect
-		bool inside( IVector2 point ) {
+		bool inside( IVector2 point ) const {
 			if (	point.x >= min.x && point.x < max.x &&
 					point.y >= min.y && point.y < max.y )
 				return true;
@@ -577,7 +577,7 @@ namespace OpenGUI {
 			return ( *this );
 		}
 		//! return true if given point is within bounds of this rect
-		bool isInside( const FVector2& point ) {
+		bool isInside( const FVector2& point ) const {
 			if (	point.x >= min.x && point.x < max.x &&
 					point.y >= min.y && point.y < max.y )
 				return true;
