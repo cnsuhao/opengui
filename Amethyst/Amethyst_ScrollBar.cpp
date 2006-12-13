@@ -37,6 +37,10 @@ namespace OpenGUI {
 		ScrollBar::ScrollBar() {
 			if ( gScrollBar_ObjectAccessorList.getParent() == 0 )
 				gScrollBar_ObjectAccessorList.setParent( Control::getAccessors() );
+			mCoverage = 10.0f;
+			mMaximum = 100.0f;
+			mValue = 0.0f;
+			mVertical = false;
 		}
 		//############################################################################
 		ScrollBar::~ScrollBar() {
@@ -63,7 +67,10 @@ namespace OpenGUI {
 		//############################################################################
 		void ScrollBar::setValue( float value ) {
 			mValue = value;
+			if ( mMaximum < mValue ) mValue = mMaximum;
+			if ( mValue < 0 ) mValue = 0;
 			invalidate();
+			updateThumbRect();
 		}
 		//############################################################################
 		float ScrollBar::getValue() const {
@@ -72,7 +79,9 @@ namespace OpenGUI {
 		//############################################################################
 		void ScrollBar::setMaximum( float maximum ) {
 			mMaximum = maximum;
+			if ( mMaximum < mValue ) mValue = mMaximum;
 			invalidate();
+			updateThumbRect();
 		}
 		//############################################################################
 		float ScrollBar::getMaximum() const {
@@ -82,6 +91,7 @@ namespace OpenGUI {
 		void ScrollBar::setCoverage( float coverage ) {
 			mCoverage = coverage;
 			invalidate();
+			updateThumbRect();
 		}
 		//############################################################################
 		float ScrollBar::getCoverage() const {
@@ -91,6 +101,7 @@ namespace OpenGUI {
 		void ScrollBar::setVertical( bool vertical ) {
 			mVertical = vertical;
 			invalidate();
+			updateThumbRect();
 		}
 		//############################################################################
 		bool ScrollBar::getVertical() const {
@@ -106,11 +117,17 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void ScrollBar::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
+			if ( isInsideThumb( evtArgs.Position ) ) {
+				mThumbDownPt = evtArgs.Position;
+				mThumbDownValue = mValue;
+				grabCursorFocus();
+			}
 		}
 		//############################################################################
 		void ScrollBar::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
+			if ( hasCursorFocus() ) {
+				releaseCursorFocus();
+			}
 		}
 		//############################################################################
 		void ScrollBar::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
@@ -121,35 +138,64 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
+		void ScrollBar::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+			if ( hasCursorFocus() ) {
+				FVector2 pos = pointFromScreen( evtArgs.Position );
+				pos -= mThumbDownPt;
+				float thumbCoveragePercent = mCoverage / mMaximum;
+				float travel;
+				float space = 1.0f - thumbCoveragePercent;
+				float valuePerUnit;
+				if ( mVertical ) {
+					space = getHeight() * space;
+					valuePerUnit = mMaximum / space;
+					travel = pos.y;
+				} else {
+					space = getWidth() * space;
+					valuePerUnit = mMaximum / space;
+					travel = pos.x;
+				}
+				setValue( mThumbDownValue + ( valuePerUnit*travel ) );
+			}
+		}
+		//############################################################################
 		void ScrollBar::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
 			if ( mFaceBG ) {
 				b.Image.drawFace( mFaceBG, getRect() );
 			}
 
-			float thumbCoverage = mCoverage / mMaximum;
+			updateThumbRect();
 
 			if ( mFaceFG ) {
-				FRect thumbRect = getRect();
-				if ( mCoverage < mMaximum ) {
-					if ( mVertical ) {
-						thumbRect.setHeight( thumbRect.getHeight()* thumbCoverage );
-						float remainingSize = getRect().getHeight() - thumbRect.getHeight();
-						float offset = ( mValue / mMaximum ) * remainingSize;
-						thumbRect.offset( FVector2( 0.0f, offset ) );
-					} else {
-						thumbRect.setWidth( thumbRect.getWidth()* thumbCoverage );
-						float remainingSize = getRect().getWidth() - thumbRect.getWidth();
-						float offset = ( mValue / mMaximum ) * remainingSize;
-						thumbRect.offset( FVector2( offset, 0.0f ) );
-					}
-				}
-				b.Image.drawFace( mFaceFG, thumbRect );
+				b.Image.drawFace( mFaceFG, mThumbRect );
 			}
 		}
 		//############################################################################
 		void ScrollBar::onTick( Object* sender, Tick_EventArgs& evtArgs ) {
 			/**/
+		}
+		//############################################################################
+		void ScrollBar::updateThumbRect() {
+			mThumbRect = getRect();
+			if ( mCoverage < mMaximum ) {
+				float thumbCoverage = mCoverage / mMaximum;
+				if ( mVertical ) {
+					mThumbRect.setHeight( mThumbRect.getHeight()* thumbCoverage );
+					float remainingSize = getRect().getHeight() - mThumbRect.getHeight();
+					float offset = ( mValue / mMaximum ) * remainingSize;
+					mThumbRect.offset( FVector2( 0.0f, offset ) );
+				} else {
+					mThumbRect.setWidth( mThumbRect.getWidth()* thumbCoverage );
+					float remainingSize = getRect().getWidth() - mThumbRect.getWidth();
+					float offset = ( mValue / mMaximum ) * remainingSize;
+					mThumbRect.offset( FVector2( offset, 0.0f ) );
+				}
+			}
+		}
+		//############################################################################
+		bool ScrollBar::isInsideThumb( const FVector2& point ) const {
+			return mThumbRect.isInside( point );
 		}
 		//############################################################################
 	} // namespace Amethyst{

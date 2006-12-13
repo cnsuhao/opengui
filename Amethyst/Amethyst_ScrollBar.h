@@ -49,6 +49,7 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
 
+			virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
@@ -63,6 +64,12 @@ namespace OpenGUI {
 			float mMaximum;
 			float mCoverage;
 			bool mVertical;
+
+			float mThumbDownValue;
+			FVector2 mThumbDownPt;
+			FRect mThumbRect;
+			void updateThumbRect();
+			bool isInsideThumb( const FVector2& point ) const;
 		};
 	} // namespace Amethyst{
 } // namespace OpenGUI{

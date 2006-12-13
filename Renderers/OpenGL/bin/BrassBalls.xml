@@ -455,7 +455,7 @@
 	<WidgetDef Name="BrassBalls:ScrollBar_V" BaseName="ScrollBar" BaseLibrary="Amethyst">
 		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:ScrollBarV" />
 		<Property ValueName="FaceThumb" ValueType="FACE" ValueData="BrassBalls:ScrollBarVThumb" />
-		<Property ValueName="Value" ValueType="FLOAT" ValueData="96.0" />
+		<Property ValueName="Value" ValueType="FLOAT" ValueData="0.0" />
 		<Property ValueName="Maximum" ValueType="FLOAT" ValueData="100.0" />
 		<Property ValueName="Coverage" ValueType="FLOAT" ValueData="15.0" />
 		<Property ValueName="Vertical" ValueType="BOOL" ValueData="true" />
