@@ -22,16 +22,7 @@ private:
 using namespace OpenGUI;
 
 
-class TestFrame:public Control{
-public:
-	TestFrame(FacePtr face):mFace(face){}
-protected:
-	virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
-		Brush& b = evtArgs.brush;
-		b.Image.drawFace(mFace,getRect());
-	}
-	FacePtr mFace;
-};
+
 
 
 
@@ -50,13 +41,6 @@ void Demo4App::preRun() {
 	FacePtr fptr;
 	fptr = ImageryManager::getSingleton().getFace("GenericFrame");
 
-
-	TestFrame* frame = new TestFrame(fptr);
-	frame->setTop( 200 );
-	frame->setLeft( 250 );
-	frame->setWidth( 190 );
-	frame->setHeight( 160 );
-	mScreen->Children.add_front(frame,true);
 
 	Widget* w;
 	// Application label in the upper left
@@ -153,6 +137,14 @@ void Demo4App::preRun() {
 	w->setProperty("Left", Value(300.0f));
 	w->setProperty("Width", Value(40.0f));
 	w->setProperty("Height", Value(20.f));
+	mScreen->Children.add_front(w, true);
+
+	// Add a window
+	w = WidgetManager::getSingleton().CreateDefinedWidget("BrassBalls:Window");
+	w->setProperty("Top", Value(200.0f));
+	w->setProperty("Left", Value(200.0f));
+	w->setProperty("Width", Value(150.0f));
+	w->setProperty("Height", Value(150.f));
 	mScreen->Children.add_front(w, true);
 	
 

@@ -37,7 +37,7 @@
 
 	<!-- a ready to use cursor -->
 	<CursorDef Name="Arrow" BaseName="Generic" BaseLibrary="OpenGUI">
-		<Property ValueName="Size" ValueType="FVECTOR2" ValueData="(20x20)" />
+		<Property ValueName="Size" ValueType="FVECTOR2" ValueData="(30x30)" />
 		<Property ValueName="Imagery" ValueType="STRING" ValueData="BrassBalls.png:Arrow" />
 		<Property ValueName="Offset" ValueType="IVECTOR2" ValueData="(0x0)" />
 	</CursorDef>

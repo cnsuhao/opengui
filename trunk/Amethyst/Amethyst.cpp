@@ -21,6 +21,7 @@ namespace OpenGUI {
 			wm.RegisterWidgetFactory( "ProgressBar", "Amethyst", &ProgressBar::createProgressBarFactory );
 			wm.RegisterWidgetFactory( "Panel", "Amethyst", &Panel::createPanelFactory );
 			wm.RegisterWidgetFactory( "ScrollBar", "Amethyst", &ScrollBar::createScrollBarFactory );
+			wm.RegisterWidgetFactory( "Window", "Amethyst", &Window::createWindowFactory );
 		}
 		//############################################################################
 		void Shutdown() {
@@ -37,6 +38,7 @@ namespace OpenGUI {
 			wm.UnregisterWidgetFactory( "ProgressBar", "Amethyst" );
 			wm.UnregisterWidgetFactory( "Panel", "Amethyst" );
 			wm.UnregisterWidgetFactory( "ScrollBar", "Amethyst" );
+			wm.UnregisterWidgetFactory( "Window", "Amethyst" );
 		}
 		//############################################################################
 
