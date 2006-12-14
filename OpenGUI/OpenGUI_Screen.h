@@ -48,6 +48,11 @@ namespace OpenGUI {
 		//! Injects cursor press/release at the last known cursor position using built in state logic
 		bool injectCursorPress_State( bool pressed );
 
+		//! gets the current cursor position
+		const FVector2& getCursorPos() const;
+		//! gets the current cursor position as a percentage of the screen
+		FVector2 getCursorPos_Percent() const;
+
 		//! sets the default Cursor for this Screen.
 		void setCursor( CursorPtr cursor );
 
