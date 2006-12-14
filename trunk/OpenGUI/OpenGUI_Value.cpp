@@ -57,10 +57,10 @@ namespace OpenGUI {
 				setValue( copy.getValueAsImageryPtr() );
 				break;
 			case T_FACE:
-				setValue(copy.getValueAsFacePtr() );
+				setValue( copy.getValueAsFacePtr() );
 				break;
 			case T_CURSOR:
-				setValue(copy.getValueAsCursorPtr() );
+				setValue( copy.getValueAsCursorPtr() );
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for source Value", __FUNCTION__ );
@@ -141,19 +141,19 @@ namespace OpenGUI {
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const ImageryPtr& value, const std::string& Name ){
+	Value::Value( const ImageryPtr& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FacePtr& value, const std::string& Name ){
+	Value::Value( const FacePtr& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const CursorPtr& value, const std::string& Name ){
+	Value::Value( const CursorPtr& value, const std::string& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
@@ -368,13 +368,13 @@ namespace OpenGUI {
 				if ( mTextAlignment ) delete mTextAlignment;
 				break;
 			case T_IMAGERY:
-				if(mImageryPtr) delete mImageryPtr;
+				if ( mImageryPtr ) delete mImageryPtr;
 				break;
 			case T_FACE:
-				if(mFacePtr) delete mFacePtr;
+				if ( mFacePtr ) delete mFacePtr;
 				break;
 			case T_CURSOR:
-				if(mCursorPtr) delete mCursorPtr;
+				if ( mCursorPtr ) delete mCursorPtr;
 				break;
 			default:
 				OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Unknown type for held Value", __FUNCTION__ );
@@ -493,13 +493,13 @@ namespace OpenGUI {
 			return right.getValueAsTextAlignment() == ( *mTextAlignment );
 			break;
 		case T_IMAGERY:
-			return right.getValueAsImageryPtr() == ( *mImageryPtr);
+			return right.getValueAsImageryPtr() == ( *mImageryPtr );
 			break;
 		case T_FACE:
 			return right.getValueAsFacePtr() == ( *mFacePtr );
 			break;
 		case T_CURSOR:
-			return right.getValueAsCursorPtr() == ( *mCursorPtr);
+			return right.getValueAsCursorPtr() == ( *mCursorPtr );
 			break;
 		default:
 			OG_THROW( Exception::ERR_NOT_IMPLEMENTED, "Comparison of type that is not implemented but should be!", __FUNCTION__ );
@@ -1012,10 +1012,10 @@ namespace OpenGUI {
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValue( const ImageryPtr& imageryPtr) {
+	void Value::setValue( const ImageryPtr& imageryPtr ) {
 		clearValue();
 		mType = T_IMAGERY;
-		mImageryPtr= new ImageryPtr;
+		mImageryPtr = new ImageryPtr;
 		*mImageryPtr = imageryPtr;
 		mHasValue = true;
 	}
@@ -1028,7 +1028,7 @@ namespace OpenGUI {
 	//#####################################################################
 	void Value::setValueAsImageryPtr( const std::string& imageryName ) {
 		ImageryPtr value;
-		value = ImageryManager::getSingleton().getImagery(imageryName);
+		value = ImageryManager::getSingleton().getImagery( imageryName );
 		setValue( value );
 	}
 	//#####################################################################
@@ -1046,13 +1046,12 @@ namespace OpenGUI {
 		return *mFacePtr;
 	}
 	//#####################################################################
-	void Value::setValueAsFacePtr( const std::string& faceName ){
+	void Value::setValueAsFacePtr( const std::string& faceName ) {
 		FacePtr value;
-		value = ImageryManager::getSingleton().getFace(faceName);
+		value = ImageryManager::getSingleton().getFace( faceName );
 		setValue( value );
 	}
 	//#####################################################################
-
 	void Value::setValue( const CursorPtr& cursorPtr ) {
 		clearValue();
 		mType = T_CURSOR;
@@ -1067,9 +1066,9 @@ namespace OpenGUI {
 		return *mCursorPtr;
 	}
 	//#####################################################################
-	void Value::setValueAsCursorPtr( const std::string& cursorName ){
+	void Value::setValueAsCursorPtr( const std::string& cursorName ) {
 		CursorPtr value;
-		value = CursorManager::getSingleton().CreateDefinedCursor(cursorName);
+		value = CursorManager::getSingleton().CreateDefinedCursor( cursorName );
 		setValue( value );
 	}
 	//#####################################################################
