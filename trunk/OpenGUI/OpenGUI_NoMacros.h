@@ -28,5 +28,6 @@ been previously included.
 #undef SimpleProperty_TextAlignment
 #undef SimpleProperty_Imagery
 #undef SimpleProperty_Face
+#undef SimpleProperty_Cursor
 
 #endif

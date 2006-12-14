@@ -83,10 +83,10 @@ namespace OpenGUI {
 
 	private:
 		typedef enum {
-			RS_NONE = 0,
-			RS_SWIDTH = 0x01,
+			RS_NONE    = 0,
+			RS_SWIDTH  = 0x01,
 			RS_SHEIGHT = 0x02,
-			RS_RWIDTH = 0x04,
+			RS_RWIDTH  = 0x04,
 			RS_RHEIGHT = 0x08,
 			RS_UL = RS_SWIDTH | RS_SHEIGHT | RS_RHEIGHT | RS_RWIDTH,
 			RS_LL = RS_SWIDTH | RS_SHEIGHT | RS_RWIDTH,
