@@ -42,7 +42,7 @@ namespace OpenGUI {
 			mCursorLL = cursorPtr;
 		}
 		//############################################################################
-		CursorPtr Window::getCursorLL() {
+		CursorPtr Window::getCursorLL() const {
 			return mCursorLL;
 		}
 		//############################################################################
@@ -50,7 +50,7 @@ namespace OpenGUI {
 			mCursorLR = cursorPtr;
 		}
 		//############################################################################
-		CursorPtr Window::getCursorLR() {
+		CursorPtr Window::getCursorLR() const {
 			return mCursorLR;
 		}
 		//############################################################################
@@ -58,7 +58,7 @@ namespace OpenGUI {
 			mCursorUL = cursorPtr;
 		}
 		//############################################################################
-		CursorPtr Window::getCursorUL() {
+		CursorPtr Window::getCursorUL() const {
 			return mCursorUL;
 		}
 		//############################################################################
@@ -66,7 +66,7 @@ namespace OpenGUI {
 			mCursorUR = cursorPtr;
 		}
 		//############################################################################
-		CursorPtr Window::getCursorUR() {
+		CursorPtr Window::getCursorUR() const {
 			return mCursorUR;
 		}
 		//############################################################################
@@ -89,35 +89,31 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void Window::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
 			OpenGUI::Window::onCursor_Enter( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
 			OpenGUI::Window::onCursor_Leave( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			//eventMove_Begin();
-			eventResize_Begin( true, true );
 			OpenGUI::Window::onCursor_Press( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-			//eventMove_End();
-			eventResize_End();
 			OpenGUI::Window::onCursor_Release( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-			/**/
 			OpenGUI::Window::onCursor_Focused( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-			/**/
 			OpenGUI::Window::onCursor_FocusLost( sender, evtArgs );
+		}
+		//############################################################################
+		void Window::updateCursor(){
+			/**/
 		}
 		//############################################################################
 	} //namespace Amethyst {
