@@ -48,12 +48,20 @@ namespace OpenGUI {
 			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
 		private:
+			typedef enum{
+				NORMAL = 0,
+				UL     = 1,
+				UR     = 2,
+				LL     = 3,
+				LR     = 4,
+			} CursorState;
+			CursorState mCursorState;
 			FacePtr mFaceBG;
 			CursorPtr mCursorLL;
 			CursorPtr mCursorLR;
 			CursorPtr mCursorUL;
 			CursorPtr mCursorUR;
-			void updateCursor();
+			void updateCursor(); // sets the cursor according to mCursorState
 		};
 
 	} //namespace Amethyst {

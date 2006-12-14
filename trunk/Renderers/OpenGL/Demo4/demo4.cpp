@@ -145,6 +145,12 @@ void Demo4App::preRun() {
 	w->setProperty("Left", Value(200.0f));
 	w->setProperty("Width", Value(150.0f));
 	w->setProperty("Height", Value(150.f));
+	CursorPtr sizer_NWSE = CursorManager::getSingleton().CreateDefinedCursor( "Sizer_NWSE" );
+	CursorPtr sizer_NESW = CursorManager::getSingleton().CreateDefinedCursor( "Sizer_NESW" );
+	w->setProperty("CursorUL", Value(sizer_NWSE));
+	w->setProperty("CursorLR", Value(sizer_NWSE));
+	w->setProperty("CursorLL", Value(sizer_NESW));
+	w->setProperty("CursorUR", Value(sizer_NESW));
 	mScreen->Children.add_front(w, true);
 	
 
