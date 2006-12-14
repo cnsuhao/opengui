@@ -1,4 +1,5 @@
 #include "OpenGUI_Window.h"
+#include "OpenGUI_Screen.h"
 
 namespace OpenGUI {
 
@@ -20,8 +21,8 @@ namespace OpenGUI {
 		if ( gWindow_ObjectAccessorList.getParent() == 0 )
 			gWindow_ObjectAccessorList.setParent( ContainerControl::getAccessors() );
 
-		m_Resizable = false;
-		m_Moveable = false;
+		m_Moving = false;
+		m_Resizing = false;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Move_Begin" );
@@ -67,32 +68,34 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Window::onMove_Begin( Object* sender, EventArgs& evtArgs ) {
-		if ( m_Moveable ) {
-			mInitial = getPosition();
-			mMoving = true;
-			grabCursorFocus();
-		}
+		mInitial = getPosition();
+		mInitialCursor = getScreen()->getCursorPos();
+		m_Moving = true;
+		grabCursorFocus();
 	}
 	//############################################################################
 	void Window::onMove_End( Object* sender, EventArgs& evtArgs ) {
-		if ( m_Moveable ) {
-			mMoving = false;
-			releaseCursorFocus();
-		}
+		m_Moving = false;
+		releaseCursorFocus();
 	}
 	//############################################################################
 	void Window::onResize_Begin( Object* sender, EventArgs& evtArgs ) {
-		if ( m_Resizable ) {
-			mInitial = getSize();
-			mResizing = true;
-			grabCursorFocus();
-		}
+		mInitial = getSize();
+		m_Resizing = true;
+		grabCursorFocus();
 	}
 	//############################################################################
 	void Window::onResize_End( Object* sender, EventArgs& evtArgs ) {
-		if ( m_Resizable ) {
-			mResizing = false;
-			releaseCursorFocus();
+		m_Resizing = false;
+		releaseCursorFocus();
+	}
+	//############################################################################
+	void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if(m_Moving && hasCursorFocus()){
+			FVector2 diff = evtArgs.Position - mInitialCursor;
+			FVector2 newPos = mInitial + diff;
+			setLeft(newPos.x);
+			setTop(newPos.y);
 		}
 	}
 	//############################################################################

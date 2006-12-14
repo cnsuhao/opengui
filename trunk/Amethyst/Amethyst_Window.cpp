@@ -53,31 +53,37 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
+			OpenGUI::Window::onCursor_Move( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
 			/**/
+			OpenGUI::Window::onCursor_Enter( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
 			/**/
+			OpenGUI::Window::onCursor_Leave( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
+			eventMove_Begin();
+			OpenGUI::Window::onCursor_Press( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-			/**/
+			eventMove_End();
+			OpenGUI::Window::onCursor_Release( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
 			/**/
+			OpenGUI::Window::onCursor_Focused( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
 			/**/
+			OpenGUI::Window::onCursor_FocusLost( sender, evtArgs );
 		}
 		//############################################################################
 	} //namespace Amethyst {
