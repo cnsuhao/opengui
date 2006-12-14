@@ -60,23 +60,15 @@ namespace OpenGUI {
 		virtual void onResize_Begin( Object* sender, EventArgs& evtArgs );
 		//! "Resize_End" event
 		virtual void onResize_End( Object* sender, EventArgs& evtArgs );
+
+		virtual void onCursor_Move(Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
-		//! Sets if Window is resizable
-		/*! This toggles if this Window will perform automatic resizing when triggered
-		to do so by \c Resize_Begin events. The default value is \c false, which will
-		cause the Window to ignore \c Resize_Begin events. */
-		bool m_Resizable;
-		//! Sets if Window is movable
-		/*! This toggles if this Window will perform automatic moving when triggered
-		to do so by \c Move_Begin events. The default value is \c false, which will
-		cause the Window to ignore \c Move_Begin events. */
-		bool m_Moveable;
-
 	private:
-		bool mMoving;
-		bool mResizing;
+		bool m_Moving;
+		bool m_Resizing;
 		FVector2 mInitial; // used by both auto move and auto resize to hold an initial value
+		FVector2 mInitialCursor; // used by both auto move and auto resize to hold an initial value
 	};
 
 } // namespace OpenGUI{
