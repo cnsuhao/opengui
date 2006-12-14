@@ -91,11 +91,11 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		if(m_Moving && hasCursorFocus()){
+		if ( m_Moving && hasCursorFocus() ) {
 			FVector2 diff = evtArgs.Position - mInitialCursor;
 			FVector2 newPos = mInitial + diff;
-			setLeft(newPos.x);
-			setTop(newPos.y);
+			setLeft( newPos.x );
+			setTop( newPos.y );
 		}
 	}
 	//############################################################################
