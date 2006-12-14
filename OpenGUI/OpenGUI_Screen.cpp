@@ -300,7 +300,7 @@ namespace OpenGUI {
 			if ( overWidget ) {
 				Control* overControl = dynamic_cast<Control*>( overWidget );
 				if ( overControl ) {
-					drawCursor = overControl->_getCursor();
+					drawCursor = overControl->_getCurrentCursor();
 				}
 			}
 			if ( !drawCursor )

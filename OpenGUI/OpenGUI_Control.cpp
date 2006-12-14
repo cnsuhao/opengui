@@ -609,4 +609,16 @@ namespace OpenGUI {
 		return mMargin;
 	}
 	//############################################################################
+	const CursorPtr& Control::_getCurrentCursor() const {
+		return m_Cursor;
+	}
+	//############################################################################
+	void Control::setCursor( CursorPtr cursorPtr ) {
+		m_Cursor = cursorPtr;
+	}
+	//############################################################################
+	CursorPtr Control::getCursor() const {
+		return m_Cursor;
+	}
+	//############################################################################
 } // namespace OpenGUI {

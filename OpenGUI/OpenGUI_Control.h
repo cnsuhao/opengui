@@ -119,9 +119,7 @@ namespace OpenGUI {
 		virtual void _draw( Brush& brush );
 
 		//! \internal  Returns a reference to the cursor to draw over this Control
-		const CursorPtr& _getCursor() {
-			return m_Cursor;
-		}
+		const CursorPtr& _getCurrentCursor() const;
 
 //!\name Event Injectors
 //@{
@@ -169,12 +167,11 @@ namespace OpenGUI {
 		//! "UnTargeted" event
 		virtual void onUnTargeted( Object* sender, EventArgs& evtArgs );
 //@}
+		//! Sets the cursor displayed when the Screen cursor is over this Control
+		void setCursor( CursorPtr cursorPtr );
+		//! Gets the current cursor displayed when the Screen cursor is over this Control
+		CursorPtr getCursor() const;
 
-		//! Cursor to draw when over this Control.
-		/*! The cursor contained here will be drawn whenever the cursor is over this control.
-		If this object holds a null pointer, the Screen's default cursor will be used instead.
-		*/
-		CursorPtr m_Cursor;
 
 	private:
 		//! Call for any operation that invalidates layouts, like moves and resizes.
@@ -191,6 +188,8 @@ namespace OpenGUI {
 		int mAnchors; // anchored sides
 		int mDock; // docking preference
 		float mMargin; // layout margin
+
+		CursorPtr m_Cursor; // the cursor drawn when over this Control
 
 		bool mCursorInside; // cursor position state variable
 		bool m_InDockAnchor; // prevents re-entry into setDocking/setAnchor
