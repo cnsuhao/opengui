@@ -9,6 +9,19 @@
 #include "OpenGUI_ContainerControl.h"
 
 namespace OpenGUI {
+	//! EventArgs used for "Resize_Begin" event
+	class OPENGUI_API WindowResizeBeginEventArgs: public EventArgs {
+	public:
+		//! constructor specifies any axis reversals
+		WindowResizeBeginEventArgs( bool sizeHeight, bool revHeight, bool sizeWidth, bool revWidth )
+				: sizingHeight( sizeHeight ), reverseHeight( revHeight ), sizingWidth( sizeWidth ), reverseWidth( revWidth ) {
+			/**/
+		}
+		const bool sizingHeight; //!< are we sizing the height?
+		const bool reverseHeight; //!< is the height axis reversed?
+		const bool sizingWidth; //!< are we sizing the width?
+		const bool reverseWidth; //!< is the width axis reversed?
+	};
 
 	//! base class for Windows
 	/*! Windows are ContainerControls that provide some basic built in window-like
@@ -40,10 +53,12 @@ namespace OpenGUI {
 		//! Called to trigger end of a click & drag move sequence
 		void eventMove_End();
 		//! Called to trigger beginning of a click & drag resize sequence
-		void eventResize_Begin();
+		void eventResize_Begin( bool sizeHeight = true, bool sizeWidth = true, bool revWidth = false, bool revHeight = false );
 		//! Called to trigger end of a click & drag resize sequence
 		void eventResize_End();
 //@}
+		bool isMoving() const;
+		bool isResizing() const;
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
@@ -57,18 +72,33 @@ namespace OpenGUI {
 		//! "Move_End" event
 		virtual void onMove_End( Object* sender, EventArgs& evtArgs );
 		//! "Resize_Begin" event
-		virtual void onResize_Begin( Object* sender, EventArgs& evtArgs );
+		virtual void onResize_Begin( Object* sender, WindowResizeBeginEventArgs& evtArgs );
 		//! "Resize_End" event
 		virtual void onResize_End( Object* sender, EventArgs& evtArgs );
 
 		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
 //@}
 
 	private:
+		typedef enum {
+			RS_NONE = 0,
+			RS_SWIDTH = 0x01,
+			RS_SHEIGHT = 0x02,
+			RS_RWIDTH = 0x04,
+			RS_RHEIGHT = 0x08,
+			RS_UL = RS_SWIDTH | RS_SHEIGHT | RS_RHEIGHT | RS_RWIDTH,
+			RS_LL = RS_SWIDTH | RS_SHEIGHT | RS_RWIDTH,
+			RS_UR = RS_SWIDTH | RS_SHEIGHT | RS_RHEIGHT,
+			RS_LR = RS_SWIDTH | RS_SHEIGHT,
+		}
+		ResizeState;
 		bool m_Moving;
-		bool m_Resizing;
-		FVector2 mInitial; // used by both auto move and auto resize to hold an initial value
-		FVector2 mInitialCursor; // used by both auto move and auto resize to hold an initial value
+		ResizeState m_Resizing;
+		FVector2 mInitialPos; // holds the initial position for auto resize/move
+		FVector2 mInitialSize; // holds the initial size for auto resize/move
+		FVector2 mInitialCursor; // holds the initial cursor position for auto resize/move
 	};
 
 } // namespace OpenGUI{

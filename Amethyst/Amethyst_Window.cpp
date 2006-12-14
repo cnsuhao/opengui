@@ -38,6 +38,38 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
+		void Window::setCursorLL( CursorPtr cursorPtr ) {
+			mCursorLL = cursorPtr;
+		}
+		//############################################################################
+		CursorPtr Window::getCursorLL() {
+			return mCursorLL;
+		}
+		//############################################################################
+		void Window::setCursorLR( CursorPtr cursorPtr ) {
+			mCursorLR = cursorPtr;
+		}
+		//############################################################################
+		CursorPtr Window::getCursorLR() {
+			return mCursorLR;
+		}
+		//############################################################################
+		void Window::setCursorUL( CursorPtr cursorPtr ) {
+			mCursorUL = cursorPtr;
+		}
+		//############################################################################
+		CursorPtr Window::getCursorUL() {
+			return mCursorUL;
+		}
+		//############################################################################
+		void Window::setCursorUR( CursorPtr cursorPtr ) {
+			mCursorUR = cursorPtr;
+		}
+		//############################################################################
+		CursorPtr Window::getCursorUR() {
+			return mCursorUR;
+		}
+		//############################################################################
 		void Window::setFaceBG( FacePtr faceBG ) {
 			mFaceBG = faceBG;
 			invalidate();
@@ -67,12 +99,14 @@ namespace OpenGUI {
 		}
 		//############################################################################
 		void Window::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-			eventMove_Begin();
+			//eventMove_Begin();
+			eventResize_Begin( true, true );
 			OpenGUI::Window::onCursor_Press( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-			eventMove_End();
+			//eventMove_End();
+			eventResize_End();
 			OpenGUI::Window::onCursor_Release( sender, evtArgs );
 		}
 		//############################################################################

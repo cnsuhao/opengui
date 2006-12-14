@@ -19,6 +19,27 @@ namespace OpenGUI {
 			//! Gets the background Face used to fill the ScrollBar rect
 			FacePtr getFaceBG() const;
 
+			//! Sets the resize cursor for the lower left
+			void setCursorLL( CursorPtr cursorPtr );
+			//! Gets the resize cursor for the lower left
+			CursorPtr getCursorLL();
+			//! Sets the resize cursor for the lower right
+			void setCursorLR( CursorPtr cursorPtr );
+			//! Gets the resize cursor for the lower right
+			CursorPtr getCursorLR();
+			//! Sets the resize cursor for the upper left
+			void setCursorUL( CursorPtr cursorPtr );
+			//! Gets the resize cursor for the upper left
+			CursorPtr getCursorUL();
+			//! Sets the resize cursor for the upper right
+			void setCursorUR( CursorPtr cursorPtr );
+			//! Gets the resize cursor for the upper right
+			CursorPtr getCursorUR();
+
+			static Widget* createWindowFactory();
+			virtual ObjectAccessorList* getAccessors();
+		protected:
+			virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
@@ -26,13 +47,12 @@ namespace OpenGUI {
 			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
-
-			static Widget* createWindowFactory();
-			virtual ObjectAccessorList* getAccessors();
-		protected:
-			virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
 		private:
 			FacePtr mFaceBG;
+			CursorPtr mCursorLL;
+			CursorPtr mCursorLR;
+			CursorPtr mCursorUL;
+			CursorPtr mCursorUR;
 		};
 
 	} //namespace Amethyst {
