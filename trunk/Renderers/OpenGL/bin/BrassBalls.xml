@@ -131,20 +131,16 @@
 		<Imagery Name="Window_Bottom" Left="10" Top="51" Width="36" Height="3" />
 		<Imagery Name="Window_Left" Left="2" Top="10" Width="3" Height="36" />
 		<Imagery Name="Window_Right" Left="51" Top="10" Width="3" Height="36" />
-		<Imagery Name="Window_Middle" Left="5" Top="5" Width="46" Height="46" />
-		
+		<Imagery Name="Window_Middle" Left="6" Top="6" Width="44" Height="44" />
 		<Imagery Name="Window_UL1" Left="2" Top="5" Width="3" Height="5" />
 		<Imagery Name="Window_UL2" Left="2" Top="2" Width="3" Height="3" />
 		<Imagery Name="Window_UL3" Left="5" Top="2" Width="5" Height="3" />
-		
 		<Imagery Name="Window_UR1" Left="46" Top="2" Width="5" Height="3" />
 		<Imagery Name="Window_UR2" Left="51" Top="2" Width="3" Height="3" />
 		<Imagery Name="Window_UR3" Left="51" Top="5" Width="3" Height="5" />
-		
 		<Imagery Name="Window_LR1" Left="51" Top="46" Width="3" Height="5" />
 		<Imagery Name="Window_LR2" Left="51" Top="51" Width="3" Height="3" />
 		<Imagery Name="Window_LR3" Left="46" Top="51" Width="5" Height="3" />
-		
 		<Imagery Name="Window_LL1" Left="5" Top="51" Width="5" Height="3" />
 		<Imagery Name="Window_LL2" Left="2" Top="51" Width="3" Height="3" />
 		<Imagery Name="Window_LL3" Left="2" Top="46" Width="3" Height="5" />
