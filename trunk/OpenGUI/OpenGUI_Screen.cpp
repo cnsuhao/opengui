@@ -639,4 +639,14 @@ namespace OpenGUI {
 		return mActive && mViewport;
 	}
 	//############################################################################
+	const FVector2& Screen::getCursorPos() const {
+		return mCursorPos;
+	}
+	//############################################################################
+	FVector2 Screen::getCursorPos_Percent() const {
+		FVector2 ret = mCursorPos;
+		ret = mCursorPos / mSize;
+		return ret;
+	}
+	//############################################################################
 }//namespace OpenGUI{
