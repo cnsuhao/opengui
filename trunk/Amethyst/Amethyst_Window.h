@@ -22,19 +22,19 @@ namespace OpenGUI {
 			//! Sets the resize cursor for the lower left
 			void setCursorLL( CursorPtr cursorPtr );
 			//! Gets the resize cursor for the lower left
-			CursorPtr getCursorLL();
+			CursorPtr getCursorLL() const;
 			//! Sets the resize cursor for the lower right
 			void setCursorLR( CursorPtr cursorPtr );
 			//! Gets the resize cursor for the lower right
-			CursorPtr getCursorLR();
+			CursorPtr getCursorLR() const;
 			//! Sets the resize cursor for the upper left
 			void setCursorUL( CursorPtr cursorPtr );
 			//! Gets the resize cursor for the upper left
-			CursorPtr getCursorUL();
+			CursorPtr getCursorUL() const;
 			//! Sets the resize cursor for the upper right
 			void setCursorUR( CursorPtr cursorPtr );
 			//! Gets the resize cursor for the upper right
-			CursorPtr getCursorUR();
+			CursorPtr getCursorUR() const;
 
 			static Widget* createWindowFactory();
 			virtual ObjectAccessorList* getAccessors();
@@ -53,6 +53,7 @@ namespace OpenGUI {
 			CursorPtr mCursorLR;
 			CursorPtr mCursorUL;
 			CursorPtr mCursorUR;
+			void updateCursor();
 		};
 
 	} //namespace Amethyst {
