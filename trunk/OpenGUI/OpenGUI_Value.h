@@ -13,6 +13,8 @@ namespace OpenGUI {
 	typedef RefPtr<Imagery> ImageryPtr; // forward declaration
 	class Face; // forward declaration
 	typedef RefPtr<Face> FacePtr; // forward declaration
+	class Cursor; // forward declaration
+	typedef RefPtr<Cursor> CursorPtr; // forward declaration
 
 	/*! \addtogroup Types
 		@{
@@ -62,6 +64,8 @@ namespace OpenGUI {
 		Value( const ImageryPtr& value, const std::string& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
 		Value( const FacePtr& value, const std::string& Name = "" );
+		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
+		Value( const CursorPtr& value, const std::string& Name = "" );
 //@}
 
 		//! gets the name of this Value
@@ -88,6 +92,7 @@ namespace OpenGUI {
 			T_TEXTALIGNMENT = 10, //!< TextAlignment value type
 			T_IMAGERY = 11, //!< ImageryPtr value type
 			T_FACE = 12, //!< FacePtr value type
+			T_CURSOR = 13, //!< CursorPtr value type
 		};
 
 		//! Returns the type of this value
@@ -142,6 +147,8 @@ namespace OpenGUI {
 		void setValue( const ImageryPtr& imageryPtr );
 		//! Sets the value, stored value is a copy
 		void setValue( const FacePtr& facePtr );
+		//! Sets the value, stored value is a copy
+		void setValue( const CursorPtr& cursorPtr );
 //@}
 
 //!\name Get value as explicit type
@@ -174,6 +181,8 @@ namespace OpenGUI {
 		ImageryPtr getValueAsImageryPtr() const;
 		//! Gets the stored value, throws exception if no value is stored
 		FacePtr getValueAsFacePtr() const;
+		//! Gets the stored value, throws exception if no value is stored
+		CursorPtr getValueAsCursorPtr() const;
 //@}
 
 //!\name Set from string with explicit type conversion
@@ -204,6 +213,8 @@ namespace OpenGUI {
 		void setValueAsImageryPtr( const std::string& imageryName );
 		//! Sets the value from a string, used to look up the Face
 		void setValueAsFacePtr( const std::string& faceName );
+		//! Sets the value from a string, used to look up the Cursor via CursorManager::CreateDefinedCursor()
+		void setValueAsCursorPtr( const std::string& cursorName );
 //@}
 
 //!\name Purely string based functions
@@ -238,6 +249,7 @@ namespace OpenGUI {
 			TextAlignment* mTextAlignment;
 			ImageryPtr* mImageryPtr;
 			FacePtr* mFacePtr;
+			CursorPtr* mCursorPtr;
 		};
 		std::string mName;
 
