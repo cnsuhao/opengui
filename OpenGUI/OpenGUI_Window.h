@@ -61,7 +61,7 @@ namespace OpenGUI {
 		//! "Resize_End" event
 		virtual void onResize_End( Object* sender, EventArgs& evtArgs );
 
-		virtual void onCursor_Move(Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
 	private:
