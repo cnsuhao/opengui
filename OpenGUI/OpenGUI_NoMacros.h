@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 /*! \addtogroup Macros
 @{
 */
@@ -10,9 +14,9 @@ been previously included.
 
 /*! @} */
 
-#ifdef __H_OENGUI_MACROS__
+#ifdef __H_OPENGUI_MACROS__
 
-#undef __H_OENGUI_MACROS__
+#undef __H_OPENGUI_MACROS__
 
 #undef SimpleProperty
 #undef SimpleProperty_String

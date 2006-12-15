@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_Control.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_ContainerControl.h"
@@ -392,7 +396,7 @@ namespace OpenGUI {
 
 	In the case of Controls that contain other Controls, Alpha of the parent is
 	automatically applied to the children in a multiplicative fashion. In other words,
-	if both the parent and child Controls are set to 50% alpha, at final output the 
+	if both the parent and child Controls are set to 50% alpha, at final output the
 	parent will draw at 50% alpha, and the child will draw at 25% alpha.
 	\n (50% * 50% = 25%)
 	*/
@@ -595,7 +599,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! The "margin" is the distance to stay away from sibling Controls' margins
 	during automatic layouts. It is up to the control performing the layout
-	operations to honor this value. 
+	operations to honor this value.
 	\param margin The margin size in Screen units. Negative values are clamped to 0.0f */
 	void Control::setMargin( float margin ) {
 		if ( margin < 0.0f ) margin = 0.0f;

@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef A7EB8CEB_DF02_4714_AD1E_53FDCDD6C2E2
 #define A7EB8CEB_DF02_4714_AD1E_53FDCDD6C2E2
 
@@ -64,7 +68,7 @@ namespace OpenGUI {
 			Due to TexturePtr caching, the redefinition of an Imageset's texture would result in
 			staggered usage across the GUI, which is undesirable. If you want to have dynamically
 			changing textures for use within Imagery, you should create a texture specifically for that
-			purpose and directly update the Texture's contents as needed.		
+			purpose and directly update the Texture's contents as needed.
 
 			If the given \c imageFilename does not match any existing Imageset filenames, but a duplicate
 			\c texture is found, the Imageset will successfully create using the texture for yet another

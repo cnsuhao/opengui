@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef DC3E54A4_1432_4fa1_A635_D76797D7ED89
 #define DC3E54A4_1432_4fa1_A635_D76797D7ED89
 
@@ -63,7 +67,7 @@ namespace OpenGUI {
 		//! The constructor for the System object.
 		/*! Firstly, the System object is a singleton, so only one can exist
 			in an application at any given point in time.
-			
+
 			In order to create an instance of the System object, you must
 			provide a pointer to a valid Renderer. The resourceProvider pointer
 			is optional, as a generic implementation of that comes pre-built

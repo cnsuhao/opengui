@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_WidgetCollection.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Widget.h"
@@ -22,7 +26,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! \warning Do not take this operation lightly. Stealing ownership of WidgetCollections
 	can lead to very unpredictable results. The general rule of thumb is, if you didn't
-	create it, then you shouldn't be claiming ownership of it. 
+	create it, then you shouldn't be claiming ownership of it.
 	\deprecated May move this functionality into the constructor to ultimately eliminate
 	the potential for misuse. */
 	void WidgetCollection::setParent( Object* object ) {

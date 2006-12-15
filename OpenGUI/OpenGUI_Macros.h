@@ -1,5 +1,9 @@
-#ifndef __H_OENGUI_MACROS__
-#define __H_OENGUI_MACROS__
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
+#ifndef __H_OPENGUI_MACROS__
+#define __H_OPENGUI_MACROS__
 
 /*! \addtogroup Macros
 	%OpenGUI provides a few macros to make certain common operations quicker to implement.
@@ -212,4 +216,4 @@ CLASS_NAME
 //@}
 
 
-#endif
+#endif // __H_OPENGUI_MACROS__

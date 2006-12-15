@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef C6B5FF01_4797_4ddd_A312_AE5468E80F5D
 #define C6B5FF01_4797_4ddd_A312_AE5468E80F5D
 
@@ -17,7 +21,7 @@ namespace OpenGUI {
 		unloaded. Plugins that wish to receive this notification need to export:\n
 		- void pluginStart(void);\n
 		- void pluginStop(void);\n
-		
+
 		\remarks
 		Depending on how %OpenGUI was configured when compiled the plugin system may
 		perform varying degrees of filename mangling. An explanation and the current

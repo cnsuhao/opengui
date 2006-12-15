@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_BrushModifierStack.h"
 #include "OpenGUI_BrushModifier_Marker.h"
 #include "OpenGUI_Exception.h"

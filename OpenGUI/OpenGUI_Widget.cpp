@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Renderer.h"
@@ -367,8 +371,8 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Containers should not cull this message.
 	Cursor position will be in the same coordinate space as the receiving Widget.
-	\param xPos X position of the cursor 
-	\param yPos Y position of the cursor 
+	\param xPos X position of the cursor
+	\param yPos Y position of the cursor
 	*/
 	void Widget::eventCursor_Enabled( float xPos, float yPos ) {
 		EventArgs event;
@@ -515,7 +519,7 @@ namespace OpenGUI {
 	which also means that it occurs during widget destruction. Requires attachment
 	to a Screen at time of calling or will have no effect.
 	\note This operation will generate an additional (fake, but accurate) \c Cursor_Move
-	event. 
+	event.
 	\see grabCursorFocus() */
 	void Widget::releaseCursorFocus() {
 		Screen* screen = getScreen();
