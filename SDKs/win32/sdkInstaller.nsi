@@ -124,10 +124,13 @@ Section "Precompiled SDKs" SEC01
 	SetOutPath "$INSTDIR"
 	File /r "${BUILD_DIR}\Demos"
 	File /r "${BUILD_DIR}\OpenGUI"
-	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\API Documentation.lnk" "$INSTDIR\OpenGUI\OpenGUI.chm"  
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OpenGUI API Documentation.lnk" "$INSTDIR\OpenGUI\OpenGUI.chm"  
 	File /r "${BUILD_DIR}\Renderer_Ogre"
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Ogre Documentation.lnk" "$INSTDIR\Renderer_Ogre\Renderer_Ogre.chm"
 	File /r "${BUILD_DIR}\Renderer_OpenGL"
+	
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Amethyst Documentation.lnk" "$INSTDIR\Amethyst\Amethyst.chm"
+	File /r "${BUILD_DIR}\Amethyst"
 	Call AddEnvVars
 SectionEnd
 
