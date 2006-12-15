@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 // Renderer_Ogre.cpp : Defines the entry point for the DLL application.
 //
 

@@ -1,3 +1,6 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "../TachometerWidget/Tachometer.h"
@@ -85,11 +88,11 @@ void Demo3App::preRun() {
 	XMLParser::getSingleton().LoadFromFile( "demo1.xml" );
 
 	mScreen = ScreenManager::getSingleton().createScreen( "MainScreen", FVector2( 800, 600 ) );
-	
+
 	mScreen->setViewport(mRTTViewport);
 
 
-	
+
 
 	CursorPtr cursorPtr = CursorManager::getSingleton().CreateDefinedCursor( "Square" );
 	mScreen->setCursor( cursorPtr );
@@ -233,7 +236,7 @@ void Demo3App::postframeRun() {
 	getWindowSize( sx, sy );
 	glViewport( 0, 0, sx, sy );
 
-	
+
 	glBindTexture( GL_TEXTURE_RECTANGLE_ARB, rTex->textureId );
 	glEnable(GL_TEXTURE_RECTANGLE_ARB);
 	glBegin(GL_QUADS);

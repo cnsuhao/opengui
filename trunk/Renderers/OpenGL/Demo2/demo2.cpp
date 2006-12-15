@@ -1,3 +1,6 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 
@@ -80,7 +83,7 @@ void Demo2App::preRun() {
 	testButton->setName("SampleMetalButton");
 	testButton->setImagery("MetalButtonNormal");
 	testButton->setImageryMouseOver("MetalButtonHover");
-	testButton->setImageryPressed("MetalButtonPress"); 
+	testButton->setImageryPressed("MetalButtonPress");
 	testButton->setImageryDisabled("MetalButtonDisabled");
 	testButton->setTop(70);
 	testButton->setLeft(40);
@@ -101,7 +104,7 @@ void Demo2App::preRun() {
 	testButton->setName("SampleBlueButton");
 	testButton->setImagery("BlueGuiButtonNormal");
 	testButton->setImageryMouseOver("BlueGuiButtonHover");
-	testButton->setImageryPressed("BlueGuiButtonPress"); 
+	testButton->setImageryPressed("BlueGuiButtonPress");
 	testButton->setImageryDisabled("BlueGuiButtonDisabled");
 	testButton->setTop(10);
 	testButton->setLeft(30);
@@ -118,11 +121,11 @@ void Demo2App::preRun() {
 	testCheck->setName("SampleMetalCheck");
 	testCheck->setImagery("MetalButtonNormal");
 	testCheck->setImageryMouseOver("MetalButtonHover");
-	testCheck->setImageryPressed("MetalButtonPress"); 
+	testCheck->setImageryPressed("MetalButtonPress");
 	testCheck->setImageryDisabled("MetalButtonDisabled");
 	testCheck->setSelImagery("MetalButtonNormalX");
 	testCheck->setSelImageryMouseOver("MetalButtonHoverX");
-	testCheck->setSelImageryPressed("MetalButtonPressX"); 
+	testCheck->setSelImageryPressed("MetalButtonPressX");
 	testCheck->setSelImageryDisabled("MetalButtonDisabledX");
 	testCheck->setTop(70);
 	testCheck->setLeft(400);
@@ -138,11 +141,11 @@ void Demo2App::preRun() {
 	testRadio1->setName("SampleMetalCheckRadio1");
 	testRadio1->setImagery("MetalButtonNormal");
 	testRadio1->setImageryMouseOver("MetalButtonHover");
-	testRadio1->setImageryPressed("MetalButtonPress"); 
+	testRadio1->setImageryPressed("MetalButtonPress");
 	testRadio1->setImageryDisabled("MetalButtonDisabled");
 	testRadio1->setSelImagery("MetalButtonNormalX");
 	testRadio1->setSelImageryMouseOver("MetalButtonHoverX");
-	testRadio1->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio1->setSelImageryPressed("MetalButtonPressX");
 	testRadio1->setSelImageryDisabled("MetalButtonDisabledX");
 	testRadio1->setTop(150);
 	testRadio1->setLeft(40);
@@ -158,11 +161,11 @@ void Demo2App::preRun() {
 	testRadio2->setName("SampleMetalCheckRadio2");
 	testRadio2->setImagery("MetalButtonNormal");
 	testRadio2->setImageryMouseOver("MetalButtonHover");
-	testRadio2->setImageryPressed("MetalButtonPress"); 
+	testRadio2->setImageryPressed("MetalButtonPress");
 	testRadio2->setImageryDisabled("MetalButtonDisabled");
 	testRadio2->setSelImagery("MetalButtonNormalX");
 	testRadio2->setSelImageryMouseOver("MetalButtonHoverX");
-	testRadio2->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio2->setSelImageryPressed("MetalButtonPressX");
 	testRadio2->setSelImageryDisabled("MetalButtonDisabledX");
 	testRadio2->setTop(220);
 	testRadio2->setLeft(40);
@@ -178,11 +181,11 @@ void Demo2App::preRun() {
 	testRadio3->setName("SampleMetalCheckRadio3");
 	testRadio3->setImagery("MetalButtonNormal");
 	testRadio3->setImageryMouseOver("MetalButtonHover");
-	testRadio3->setImageryPressed("MetalButtonPress"); 
+	testRadio3->setImageryPressed("MetalButtonPress");
 	testRadio3->setImageryDisabled("MetalButtonDisabled");
 	testRadio3->setSelImagery("MetalButtonNormalX");
 	testRadio3->setSelImageryMouseOver("MetalButtonHoverX");
-	testRadio3->setSelImageryPressed("MetalButtonPressX"); 
+	testRadio3->setSelImageryPressed("MetalButtonPressX");
 	testRadio3->setSelImageryDisabled("MetalButtonDisabledX");
 	testRadio3->setTop(290);
 	testRadio3->setLeft(40);

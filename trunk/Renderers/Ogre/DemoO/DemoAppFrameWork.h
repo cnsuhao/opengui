@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef D99F07AC_F0B7_4434_978D_CEF7D16D46DE
 #define D99F07AC_F0B7_4434_978D_CEF7D16D46DE
 
@@ -49,7 +53,7 @@ protected:
 	virtual void mouseWheelCallback( int pos ) {}
 
 private:
-	
+
 
 	int m_WndWidth;
 	int m_WndHeight;

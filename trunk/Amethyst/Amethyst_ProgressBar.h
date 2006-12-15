@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef Amethyst_ProgressBar_h__
 #define Amethyst_ProgressBar_h__
 
