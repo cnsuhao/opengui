@@ -5,19 +5,18 @@
 
 Amethyst is a complete widget library for %OpenGUI, containing implementations for widgets that are used in most GUIs.
 
-Widgets Provided:
+\par Widgets Provided:
 - Label
-- TextBox
 - Button
 - CheckBox
 - RadioButton
 - ProgressBar
-- ImageBox
-- ListBox
-- ComboBox
 - ScrollBar
 - Panel
 - Window
+
+\par Notice:
+Amethyst is not finished. This is a preview release. The widgets listed are considered ready for use, though minor additions to them may occur over time. There are more widgets that are still in progress, but if they are not listed here then they are not considered ready for use. The final build of Amethyst will be released when %OpenGUI reaches version 1.0.
 
 
 <hr>	
