@@ -1,3 +1,6 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
 
 #include "../DemoAppFramework/DemoAppFrameWork.h"
 #include "Renderer_OpenGL.h"
@@ -152,7 +155,7 @@ void Demo4App::preRun() {
 	w->setProperty("CursorLL", Value(sizer_NESW));
 	w->setProperty("CursorUR", Value(sizer_NESW));
 	mScreen->Children.add_front(w, true);
-	
+
 
 	// Show the full source Imageset in the lower right
 	w = WidgetManager::getSingleton().CreateRawWidget("StaticImage","Amethyst");

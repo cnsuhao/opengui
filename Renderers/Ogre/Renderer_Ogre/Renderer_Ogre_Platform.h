@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef _OGR_OGRE_PLATFORM_H_
 #define _OGR_OGRE_PLATFORM_H_
 

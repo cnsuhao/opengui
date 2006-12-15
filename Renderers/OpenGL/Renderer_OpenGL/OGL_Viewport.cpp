@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OGL_Viewport.h"
 #include "OGL_Texture.h"
 #include "Renderer_OpenGL.h"

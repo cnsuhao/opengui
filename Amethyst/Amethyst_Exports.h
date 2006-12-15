@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_Platform.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC

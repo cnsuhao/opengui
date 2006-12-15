@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef F7817EF2_3AC8_4cd1_9117_72EECA430C97
 #define F7817EF2_3AC8_4cd1_9117_72EECA430C97
 #include "OpenGUI.h"

@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 /*
 This file is mostly stolen from Ogre's ExampleRefAppApplication.h, so
 we're including the credits/licensing from that file below.
@@ -144,7 +148,7 @@ public:
 	OpenGUI::OgreResourceProvider* ogResourceProvider;
 	OpenGUI::System* ogSystem;
 protected:
-    
+
     /** Configures the application - returns false if the user chooses to abandon configuration. */
     virtual bool configure(void)
     {
@@ -242,7 +246,7 @@ protected:
             }
         }
     }
- 
+
 	/// Optional override method where you can create resource listeners (e.g. for loading screens)
 	virtual void createResourceListener(void)
 	{

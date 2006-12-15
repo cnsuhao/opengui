@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef _H_RENDERER_OGRE_VIEWPORT_
 #define _H_RENDERER_OGRE_VIEWPORT_
 
