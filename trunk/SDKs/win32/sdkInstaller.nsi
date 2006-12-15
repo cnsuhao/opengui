@@ -33,9 +33,10 @@ SetCompressor /FINAL /SOLID lzma ;used for finals because it's much better
 !define MUI_HEADERIMAGE_BITMAP "header.bmp"
 !define MUI_HEADERIMAGE_RIGHT
 ; Don't call it a "Readme"
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "View Relesae Notes?"
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "View Release Notes?"
 !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\RELEASE_NOTES.txt"
-
+; Panel image for Welcome page
+!define MUI_WELCOMEFINISHPAGE_BITMAP "panel.bmp"
 
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
