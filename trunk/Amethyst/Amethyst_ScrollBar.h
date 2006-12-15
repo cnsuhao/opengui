@@ -17,6 +17,14 @@ namespace OpenGUI {
 
 		It also fires the "ValueChanged" event whenever the Value property is altered, allowing you to
 		hook into the updates to perform automatic scrolling of text fields, etc.
+
+		\par Properties
+				- Value
+				- Maximum
+				- Coverage
+				- FaceBG
+				- FaceThumb
+				- Vertical
 		*/
 		class AMETHYST_API ScrollBar: public Control {
 		public:

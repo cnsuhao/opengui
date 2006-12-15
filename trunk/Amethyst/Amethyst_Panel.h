@@ -12,6 +12,15 @@ namespace OpenGUI {
 	namespace Amethyst {
 
 		//! This is a standard panel container
+		/*! Just your average ContainerControl with a background Face and
+		individually controllable padding on each side.
+		\par Properties
+		- FaceBG
+		- Padding_Top
+		- Padding_Bottom
+		- Padding_Left
+		- Padding_Right
+		*/
 		class AMETHYST_API Panel: public ContainerControl {
 		public:
 			Panel();

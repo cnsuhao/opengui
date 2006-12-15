@@ -11,6 +11,22 @@
 namespace OpenGUI {
 	namespace Amethyst {
 		//! A progress bar
+		/*! The progress bar can be drawn to fill either horizontally or vertically, both
+		supporting direction reversal (filling from the other side).
+
+		\par Properties
+		- BGFace
+		- FillFace
+		- Step_Size
+		- Total
+		- Value
+		- Vertical
+		- Inverted
+		- FillColor
+		- BGColor
+		- BarPadVert
+		- BarPadHoriz
+		*/
 		class AMETHYST_API ProgressBar : public Control {
 		public:
 			ProgressBar();

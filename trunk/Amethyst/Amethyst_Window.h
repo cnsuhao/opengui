@@ -12,15 +12,27 @@
 namespace OpenGUI {
 	namespace Amethyst {
 
-		//! encapsulates the basic mouse/button interaction for all button variants
+		//! A window providing built in resizing functionality
+		/*! This is an extension of the OpenGUI::Window class. It's purpose
+		is to provide a slightly less generic implementation of a window by
+		providing built in functionality for background imagery and location
+		sensitive resizing with cursor replacement to signify these "hot spots".
+
+		\par Properties
+		- FaceBG
+		- CursorUL
+		- CursorUR
+		- CursorLL
+		- CursorLR
+		*/
 		class AMETHYST_API Window : public OpenGUI::Window {
 		public:
 			Window();
 			virtual ~Window();
 
-			//! Sets the background Face used to fill the ScrollBar rect
+			//! Sets the background Face used to fill the Window rect
 			void setFaceBG( FacePtr faceBG );
-			//! Gets the background Face used to fill the ScrollBar rect
+			//! Gets the background Face used to fill the Window rect
 			FacePtr getFaceBG() const;
 
 			//! Sets the resize cursor for the lower left
@@ -52,13 +64,14 @@ namespace OpenGUI {
 			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
 		private:
-			typedef enum{
+			typedef enum {
 				NORMAL = 0,
 				UL     = 1,
 				UR     = 2,
 				LL     = 3,
 				LR     = 4,
-			} CursorState;
+			}
+			CursorState;
 			CursorState mCursorState;
 			FacePtr mFaceBG;
 			CursorPtr mCursorLL;

@@ -11,6 +11,9 @@ namespace OpenGUI {
 	namespace Amethyst {
 
 		//! encapsulates the basic GUI Keyboard input interaction
+		/*!
+		<b>This control is not yet finished!</b>
+		*/
 		class AMETHYST_API TextBox : public Control {
 		public:
 			TextBox() ;
