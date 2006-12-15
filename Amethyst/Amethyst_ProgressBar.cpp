@@ -20,6 +20,23 @@ namespace OpenGUI {
 		SimpleProperty_Float( PBProp_BarPadVert, "BarPadVert", ProgressBar, getBarPadVert, setBarPadVert );
 		SimpleProperty_Float( PBProp_BarPadHoriz, "BarPadHoriz", ProgressBar, getBarPadHoriz, setBarPadHoriz );
 		//############################################################################
+		class PBMethod_doStep: public ObjectMethod {
+		public:
+			~PBMethod_doStep() {}
+			virtual const char* getAccessorName() {
+				return "doStep";
+			}
+			virtual void invoke( Object& objectRef, ValueList& paramIn, ValueList& returnOut ) {
+				try {
+					ProgressBar& pb = dynamic_cast<ProgressBar&>( objectRef );
+					pb.doStep();
+				} catch ( std::bad_cast e ) {
+					OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
+				}
+			}
+		}
+		gPBMethod_doStep;
+		//############################################################################
 		class ProgressBar_ObjectAccessorList : public ObjectAccessorList {
 		public:
 			ProgressBar_ObjectAccessorList() {
@@ -34,6 +51,7 @@ namespace OpenGUI {
 				addAccessor( &PBProp_BGColor );
 				addAccessor( &PBProp_BarPadVert );
 				addAccessor( &PBProp_BarPadHoriz );
+				addAccessor( &gPBMethod_doStep );
 			}
 			~ProgressBar_ObjectAccessorList() {}
 		}
