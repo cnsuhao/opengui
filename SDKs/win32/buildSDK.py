@@ -67,6 +67,13 @@ def MAIN():
 	DirTree += [WORKDIR + '/OpenGUI/vc8/bin']
 	DirTree += [WORKDIR + '/OpenGUI/vc71/lib']
 	DirTree += [WORKDIR + '/OpenGUI/vc71/bin']
+	DirTree += [WORKDIR + '/Amethyst']
+	DirTree += [WORKDIR + '/Amethyst/include']
+	DirTree += [WORKDIR + '/Amethyst/vc8/lib']
+	DirTree += [WORKDIR + '/Amethyst/vc8/bin']
+	DirTree += [WORKDIR + '/Amethyst/vc71/lib']
+	DirTree += [WORKDIR + '/Amethyst/vc71/bin']
+	
 	MakeTree(DirTree)
 
 
@@ -79,6 +86,8 @@ def MAIN():
 ##### REMOVE SOURCE TOOLS ######
 	rmtree(WORKDIR + '/src/tools/')
 
+##### REMOVE CORONA LINUX ######
+	rmtree(WORKDIR + '/src/Renderers/OpenGL/deps/corona-linux/')
 
 
 ##### CLEANING ALL BUILDS #######
@@ -218,6 +227,7 @@ def BuildDocs():
 	global SCONSROOT
 	mainDocDir = SCONSROOT + '/OpenGUI/doc/'
 	ogreDocDir = SCONSROOT + '/Renderers/Ogre/Renderer_Ogre/doc/'
+	amethystDocDir = SCONSROOT + '/Amethyst/doc/'
 	# OpenGUI
 	RunCommand('Building OpenGUI Documentation...', 'buildUserDocs.bat', mainDocDir)
 	file = ['OpenGUI.chm']
@@ -226,6 +236,10 @@ def BuildDocs():
 	RunCommand('Building Renderer_Ogre Documentation...', 'buildDocs.bat', ogreDocDir)
 	file = ['Renderer_Ogre.chm']
 	CopyFiles(ogreDocDir, WORKDIR + '/Renderer_Ogre/', file)
+	# Amethyst
+	RunCommand('Building Amethyst Documentation...', 'buildDocs.bat', amethystDocDir)
+	file = ['Amethyst.chm']
+	CopyFiles(amethystDocDir, WORKDIR + '/Amethyst/', file)
 
 
 
@@ -248,6 +262,12 @@ def CopyIncludes():
 	# Renderer_Ogre
 	dstdir = WORKDIR + '/Renderer_Ogre/include/'
 	srcdir = SCONSROOT + '/Renderers/Ogre/Renderer_Ogre/'
+	files = listdir(srcdir)
+	files = fnmatch.filter(files,"*.h")
+	CopyFiles(srcdir,dstdir,files)
+	# Amethyst
+	dstdir = WORKDIR + '/Amethyst/include/'
+	srcdir = SCONSROOT + '/Amethyst/'
 	files = listdir(srcdir)
 	files = fnmatch.filter(files,"*.h")
 	CopyFiles(srcdir,dstdir,files)
@@ -280,7 +300,17 @@ def CopyReleaseBins(SDKtype):
 	srcdir = SCONSROOT + '/Renderers/Ogre/lib/'
 	files = ['Renderer_Ogre.lib']
 	CopyFiles(srcdir,dstdir,files)
+	# Amethyst
+	dstdir = WORKDIR + '/Amethyst/' + SDKtype + '/bin/'
+	srcdir = SCONSROOT + '/bin/'
+	files = ['Amethyst.dll','Amethyst.pdb']
+	CopyFiles(srcdir,dstdir,files)
+	dstdir = WORKDIR + '/Amethyst/' + SDKtype + '/lib/'
+	srcdir = SCONSROOT + '/lib/'
+	files = ['Amethyst.lib']
+	CopyFiles(srcdir,dstdir,files)
 	pass
+
 def CopyDebugBins(SDKtype):
 	SDKtype = SDKtype.lower()
 	print "Copying DEBUG binaries..."
@@ -307,6 +337,15 @@ def CopyDebugBins(SDKtype):
 	srcdir = SCONSROOT + '/Renderers/Ogre/lib/'
 	files = ['Renderer_Ogre_d.lib']
 	CopyFiles(srcdir,dstdir,files)
+	# Amethyst
+	dstdir = WORKDIR + '/Amethyst/' + SDKtype + '/bin/'
+	srcdir = SCONSROOT + '/bin/'
+	files = ['Amethyst_d.dll','Amethyst_d.pdb']
+	CopyFiles(srcdir,dstdir,files)
+	dstdir = WORKDIR + '/Amethyst/' + SDKtype + '/lib/'
+	srcdir = SCONSROOT + '/lib/'
+	files = ['Amethyst_d.lib']
+	CopyFiles(srcdir,dstdir,files)
 	pass
 
 def CopyFiles(srcdir,dstdir,fileList):
@@ -316,5 +355,6 @@ def CopyFiles(srcdir,dstdir,fileList):
 		dst = dstdir + '/' + f
 		print "        ->",f
 		copyfile(src,dst)
+
 #### Begin execution
 MAIN()
