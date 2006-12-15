@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Amethyst_d.lib OpenGUI_d.lib Renderer_OpenGL_d.lib corona_d.lib glfw_static_d.lib glu32.lib opengl32.lib"
+				AdditionalDependencies="OpenGUI_d.lib Renderer_OpenGL_d.lib corona_d.lib glfw_static_d.lib glu32.lib opengl32.lib"
 				OutputFile="$(OutDir)/Demo4_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../lib; ../lib; ../deps/glfw; ../deps/corona"
