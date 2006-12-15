@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef BD2BBBC1_8162_4B02_A871_4AEAC49BAC26
 #define BD2BBBC1_8162_4B02_A871_4AEAC49BAC26
 

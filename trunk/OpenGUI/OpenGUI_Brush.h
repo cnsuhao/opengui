@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef B955248E_7EDD_47CA_B588_BAA9C55E4380
 #define B955248E_7EDD_47CA_B588_BAA9C55E4380
 
@@ -118,7 +122,7 @@ namespace OpenGUI {
 	//! The base of all widget rendering operations
 	/*! The Brush object is provided during widget onDraw events, and is used
 		by the widget to draw itself. Functions that should use the Brush object
-		will be provided one as a function parameter. 
+		will be provided one as a function parameter.
 
 
 		\par Modifier Stack:
@@ -131,7 +135,7 @@ namespace OpenGUI {
 		\par
 		Each brush is created with a completely empty modifier stack. That doesn't mean
 		that the brush you may have received in a draw function has an empty stack (as the
-		caller will likely have initialized the brush with some stack pushes) 
+		caller will likely have initialized the brush with some stack pushes)
 
 		\par
 		The stack is always processed from top to bottom. (The last modifier you

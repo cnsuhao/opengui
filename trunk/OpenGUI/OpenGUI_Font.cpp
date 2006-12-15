@@ -1,3 +1,6 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
 
 #include "ft2build.h"
 #include FT_FREETYPE_H

@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef C7BE5683_7863_41b9_A158_EF352D2B90C4
 #define C7BE5683_7863_41b9_A158_EF352D2B90C4
 
@@ -102,7 +106,7 @@ namespace OpenGUI {
 			that are passed to doRenderOperation(). Most implementations simply
 			load the data as necessary for their graphics API and store their
 			graphics API specific texture handles in customized Texture objects.
-			
+
 			The short explanation is: Texture objects are almost entirely
 			for Renderer use only, and as such you can do nearly whatever you want
 			with them, so long as they can be used later to signify which texture
@@ -119,7 +123,7 @@ namespace OpenGUI {
 		//! Create a texture from a TextureData object (memory)
 		/*! The passed in TextureData object does not become the sole property of
 			the createTextureFromTextureData() function. So it must not attempt
-			to delete it. It is the responsibility of the TextureData creator 
+			to delete it. It is the responsibility of the TextureData creator
 			to clean up the TextureData object when it is no longer needed.
 			The caller \b must guarantee that the given TextureData object
 			is valid for the entire lifetime of the texture. Meaning that
@@ -133,7 +137,7 @@ namespace OpenGUI {
 
 		//! Replaces an existing texture with the given TextureData
 		/*! This should cause a Renderer implementation to completely replace the
-			contents of a texture with the newly provided data. 
+			contents of a texture with the newly provided data.
 			The given \c texture pointer must remain valid, but other than that it doesn't
 			matter how this is achieved internally. Renderer implementations can feel
 			free to discard their hardware textures and rebuild from scratch if they
@@ -208,7 +212,7 @@ namespace OpenGUI {
 		provide proper texel alignment when rendering to and from the texture.
 
 		\note
-		It is expected that all render textures are available for use by all other 
+		It is expected that all render textures are available for use by all other
 		rendering contexts. In other words, it must be usable in render operations
 		for every context, only excluding itself.
 

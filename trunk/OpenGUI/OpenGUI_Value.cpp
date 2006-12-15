@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_Value.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_StrConv.h"
@@ -808,7 +812,7 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	/*! This works by storing the necessary information in attributes of the given tag.
-	If any of the attributes already exist, their contents are silently overwritten. 
+	If any of the attributes already exist, their contents are silently overwritten.
 	\n The used attributes are:
 	- ValueType - identifies the type of data held within ValueData
 	- ValueName - the Name of this Value

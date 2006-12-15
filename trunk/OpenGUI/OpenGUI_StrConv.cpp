@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #include "OpenGUI_StrConv.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Font.h"

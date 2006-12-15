@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef AA81C3C7_DB32_41b6_A625_F39F16EFF868
 #define AA81C3C7_DB32_41b6_A625_F39F16EFF868
 
@@ -13,7 +17,7 @@ namespace OpenGUI {
 	/*! Viewports are, as stated, the final render targets for Screens.
 	%OpenGUI does not supply any built in method to create/destroy or otherwise
 	manage Viewport objects. It is up to the Renderer implementation to supply
-	its own methods for the creation and destruction of Viewports.	
+	its own methods for the creation and destruction of Viewports.
 	*/
 	class OPENGUI_API Viewport {
 		friend class Screen; // screen needs access to preUpdate/postUpdate

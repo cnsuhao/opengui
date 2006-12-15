@@ -1,4 +1,7 @@
-#pragma once
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef B2AE3F25_D739_4f77_93B3_0930B8015415
 #define B2AE3F25_D739_4f77_93B3_0930B8015415
 

@@ -1,7 +1,12 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 // OpenGUI.cpp : Defines the entry point for the DLL application.
 //
 // Since we don't really use this for anything, we'll just define it
 // to do absolutely nothing.
+
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI.h"

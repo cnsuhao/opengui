@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef CA247652_FCF4_483C_B34C_810A39296B18
 #define CA247652_FCF4_483C_B34C_810A39296B18
 
@@ -182,12 +186,12 @@ namespace OpenGUI {
 		\endcode
 
 		And now an example of binding an object of the example class and its method to an event.
-		Assume \c obj is a pointer to a valid Object, \c desiredEvent is a valid event for that 
+		Assume \c obj is a pointer to a valid Object, \c desiredEvent is a valid event for that
 		Object, and \c myClassObj is a valid pointer to an instance of \c MyClass.
 		\code
 		obj->getEvents()["desiredEvent"].add( new EventDelegate(myClassObj, &MyClass::myMethod) );
 		\endcode
-		\note 
+		\note
 		In the first code area, the \a sender is a pointer to the Object that is experiencing the event,
 		and \a args is a reference to the appropriate EventArgs derived class. You can use either EventArgs
 		specifically, and cast it yourself later, or you can use the specific EventArgs derived class

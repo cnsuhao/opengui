@@ -1,3 +1,7 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
+
 #ifndef A71D801F_7E09_4AF0_ADAE_DAD481AC5450
 #define A71D801F_7E09_4AF0_ADAE_DAD481AC5450
 

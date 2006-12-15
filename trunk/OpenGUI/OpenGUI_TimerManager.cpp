@@ -1,3 +1,6 @@
+// OpenGUI (http://opengui.sourceforge.net)
+// This source code is release under the BSD License
+// See LICENSE.TXT for details
 
 
 #include "OpenGUI_TimerManager.h"
@@ -49,7 +52,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Time can only be advanced, you cannot go backwards. Attempts to do so will
 	result in undefined behavior, but the most likely result will be a huge jump
-	forward in time passed. 
+	forward in time passed.
 	\note This should not be called unless you are not allowing System to perform
 	its own time advancement. */
 	void TimerManager::setTime( unsigned long timefromstart_milliseconds ) {
