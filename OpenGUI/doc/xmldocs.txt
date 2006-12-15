@@ -274,7 +274,7 @@ If the processing of the \<Screen\> tag fails at any stage, the entire Screen is
 
 <hr>
 \section XMLwidget <Widget>
-The \<Widget\> tag is used to create widgets underneath of the containing \<Widget\> or \<Screen\> or \<FormDef\> tag. When processing this tag, the parent is cast into a \ref OpenGUI::I_WidgetContainer "container". If this cast fails, the operation will fail. It is the XML writer's responsibility to ensure that they only place children \<Widget\> tags within proper containing objects.
+The \<Widget\> tag is used to create widgets underneath of the containing \<Widget\> or \<Screen\> or \<FormDef\> tag. When processing this tag, the parent is cast into a \ref OpenGUI::ContainerControl "ContainerControl". If this cast fails, the operation will fail. It is the XML writer's responsibility to ensure that they only place children \<Widget\> tags within proper containing objects.
 
 Example:
 \verbatim
