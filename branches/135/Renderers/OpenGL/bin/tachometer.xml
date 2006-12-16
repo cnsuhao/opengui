@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+
+
+<Template name="tachometer2" group="OpenGUI" type="StaticImage">
+	<Property name="Imagery" value="TachBG" />
+	<Property name="position" value="(0.59875 x0.465)" />
+	<Property name="size" value="(0.40125x0.535)" />
+</Template>
+
+<Template name="tachometer" group="OpenGUIExt" type="Tachometer">
+	<Property name="BGImagery" value="TachBG" />
+	<Property name="NeedleImagery" value="TachNeedle" />
+	
+	<Property name="position" value="(0.59875 x0.465)" />
+	<Property name="size" value="(0.40125x0.535)" />
+	
+	<Property name="needlepivot" value="(0.50x0.50)" />
+	<Property name="needleanchor" value="(0.10x0.50)" />
+	
+	<Property name="NeedleMinValue" value="0" />
+	<Property name="NeedleMaxValue" value="900" />
+	<Property name="NeedleMinAngle" value="-135" />
+	<Property name="NeedleMaxAngle" value="90" />
+	
+	<Property name="needlevalue" value="0" />
+</Template>
+

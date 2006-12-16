@@ -1,0 +1,26 @@
+This directory contains tools that are used by the OpenGUI project. They are
+NOT in any way affiliated with the OpenGUI project, nor are they subject to
+the same licensing. These tools are all released under open source or
+otherwise free (as in beer) licenses and are distributed with the SVN tree
+ONLY. They are never packaged with the SDKs. If you are the owner of any one
+of these tools and you would like your tool removed from the OpenGUI source
+tree for any reason, please send an email to opengui@rightbracket.com and
+provide your name and the name of the tool you would like removed. Upon
+verification of ownership, the tool will be removed as soon as possible, and
+a note to never include this tool in our SVN tree will be made in this file.
+(And a replacement will undoubtedly be included instead. Gratz, you lost a
+user.)
+
+Only windows binary builds of these tools are currently included, as that is
+the primary development environment for OpenGUI maintainers, and linux
+installs are often more system invasive. (Sad but true.)
+
+
+--------------------------------------------------------------------------
+Tools used:
+astyle.exe (Artistic Style ver 1.19)
+[http://sourceforge.net/projects/astyle/]
+
+
+--------------------------------------------------------------------------
+Tools banned:
