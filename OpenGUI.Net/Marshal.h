@@ -9,13 +9,15 @@ using namespace System;
 #include <vcclr.h>
 #define THRU_THROW_BEGIN try{
 #define THRU_THROW_END }catch(OpenGUI::Exception& e){ \
-	String^ msg = Marshal::String(e.getFullMessage()); \
+	String^ msg = Marshal::STRING(e.getFullMessage()); \
 	throw gcnew ::System::Exception(msg); }
+
+#include "Types.h"
 
 namespace OpenGUI_Net {
 	namespace Marshal {
 		//############################################################################
-		inline const std::string& String( ::System::String ^ managedString ) {
+		inline const std::string& STRING( ::System::String ^ managedString ) {
 			static std::string out;
 			pin_ptr<const wchar_t> wch = PtrToStringChars( managedString );
 			int len = (( managedString->Length + 1 ) * 2 );
@@ -28,8 +30,36 @@ namespace OpenGUI_Net {
 			return out;
 		}
 		//############################################################################
-		inline ::System::String ^ String( const std::string& stdString ) {
+		inline ::System::String ^ STRING( const std::string& stdString ) {
 			::System::String ^ out = gcnew ::System::String( stdString.c_str() );
+			return out;
+		}
+		//############################################################################
+		inline OpenGUI::IVector2 IVECTOR2(OpenGUI_Net::IVector2 source){
+			OpenGUI::IVector2 out;
+			out.x = source.x;
+			out.y = source.y;
+			return out;
+		}
+		//############################################################################
+		inline OpenGUI_Net::IVector2 IVECTOR2(const OpenGUI::IVector2& source){
+			OpenGUI_Net::IVector2 out;
+			out.x = source.x;
+			out.y = source.y;
+			return out;
+		}
+		//############################################################################
+		inline OpenGUI::FVector2 FVECTOR2(OpenGUI_Net::FVector2 source){
+			OpenGUI::FVector2 out;
+			out.x = source.x;
+			out.y = source.y;
+			return out;
+		}
+		//############################################################################
+		inline OpenGUI_Net::FVector2 FVECTOR2(const OpenGUI::FVector2& source){
+			OpenGUI_Net::FVector2 out;
+			out.x = source.x;
+			out.y = source.y;
 			return out;
 		}
 		//############################################################################

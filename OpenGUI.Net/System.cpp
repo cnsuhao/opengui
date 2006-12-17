@@ -45,14 +45,37 @@ namespace OpenGUI_Net {
 	}
 	//############################################################################
 	void System::loadPlugin( String ^ fileName ) {
+		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->loadPlugin( Marshal::String( fileName ) );
+		gSystem->loadPlugin( Marshal::STRING( fileName ) );
 		THRU_THROW_END
 	}
 	//############################################################################
 	void System::unloadPlugin( String ^ fileName ) {
+		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->unloadPlugin( Marshal::String( fileName ) );
+		gSystem->unloadPlugin( Marshal::STRING( fileName ) );
+		THRU_THROW_END
+	}
+	//############################################################################
+	void System::update() {
+		sanityTest();
+		THRU_THROW_BEGIN
+		gSystem->update();
+		THRU_THROW_END
+	}
+	//############################################################################
+	void System::updateScreens() {
+		sanityTest();
+		THRU_THROW_BEGIN
+		gSystem->updateScreens();
+		THRU_THROW_END
+	}
+	//############################################################################
+	void System::updateTime() {
+		sanityTest();
+		THRU_THROW_BEGIN
+		gSystem->updateTime();
 		THRU_THROW_END
 	}
 	//############################################################################

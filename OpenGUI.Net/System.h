@@ -16,6 +16,9 @@ namespace OpenGUI_Net {
 
 		void loadPlugin( String ^ fileName );
 		void unloadPlugin( String ^ fileName );
+		void update();
+		void updateScreens();
+		void updateTime();
 	private:
 		System( OpenGUI::System* systemPtr );
 		OpenGUI::System* gSystem;
