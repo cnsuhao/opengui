@@ -8,21 +8,20 @@
 using namespace System;
 
 namespace OpenGUI_Net {
-	public ref class System
-	{
+	public ref class System {
 	public:
-		static System^ getHandle();
-		static System^ initialize();
+		static System ^ getHandle();
+		static System ^ initialize();
 		void shutdown();
 
-		void loadPlugin(String^ fileName);
-		void unloadPlugin(String^ fileName);
+		void loadPlugin( String ^ fileName );
+		void unloadPlugin( String ^ fileName );
 	private:
-		System(OpenGUI::System* systemPtr);
+		System( OpenGUI::System* systemPtr );
 		OpenGUI::System* gSystem;
 		void sanityTest();
 
-		static System^ gHandle;
+		static System ^ gHandle;
 	};
 
 } // namespace OpenGUINet {

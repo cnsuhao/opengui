@@ -10,10 +10,6 @@ using namespace System;
 
 namespace OpenGUI_Net {
 
-	public ref class Class1
-	{
-		// TODO: Add your methods for this class here.
-	};
 } // namespace OpenGUINet {
 
 #endif // OpenGUI_Net_h__
