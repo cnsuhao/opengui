@@ -8,132 +8,110 @@
 using namespace System;
 namespace OpenGUI_Net {
 	//############################################################################
-	Radian::Radian() {
-		mValue = 0.0f;
+	void Radian::setDegrees(float degree_value){
+		fValue = OpenGUI::Math::DegreesToRadians(degree_value);
 	}
 	//############################################################################
-	Radian::Radian( float radian_value ) {
-		mValue = radian_value;
+	Radian Radian::operator + ( Radian left, Radian right ) {
+		Radian out;
+		out.fValue = left.fValue + right.fValue;
+		return out;
 	}
 	//############################################################################
-	Radian ^ Radian::operator = ( const Radian ^ right ) {
-		mValue = right->mValue;
-		return this;
+	Radian Radian::operator - ( Radian right ) {
+		Radian out;
+		out.fValue = -right.fValue;
+		return out;
 	}
 	//############################################################################
-	Radian ^ Radian::operator + ( const Radian ^ right ) {
-		return gcnew Radian( mValue + right->mValue );
+	Radian Radian::operator - ( Radian left, Radian right ){
+		Radian out;
+		out.fValue = left.fValue - right.fValue;
+		return out;
 	}
 	//############################################################################
-	Radian ^ Radian::operator += ( const Radian ^ right ) {
-		mValue += right->mValue;
-		return this;
+	bool Radian::operator == ( Radian left, Radian right ){
+		return left.fValue == right.fValue;
 	}
 	//############################################################################
-	Radian ^ Radian::operator - () {
-		return gcnew Radian( -mValue );
+	bool Radian::operator != ( Radian left, Radian right ){
+		return left.fValue != right.fValue;
 	}
 	//############################################################################
-	Radian ^ Radian::operator - ( const Radian ^ right ) {
-		return gcnew Radian( mValue - right->mValue );
+	bool Radian::operator < ( Radian left, Radian right ){
+		return left.fValue < right.fValue;
 	}
 	//############################################################################
-	Radian ^ Radian::operator -= ( const Radian ^ right ) {
-		mValue -= right->mValue;
-		return this;
+	bool Radian::operator <= ( Radian left, Radian right ){
+		return left.fValue <= right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator == ( const Radian ^ right ) {
-		return mValue == right->mValue;
+	bool Radian::operator > ( Radian left, Radian right ){
+		return left.fValue > right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator != ( const Radian ^ right ) {
-		return mValue != right->mValue;
+	bool Radian::operator >= ( Radian left, Radian right ){
+		return left.fValue >= right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator < ( const Radian ^ right ) {
-		return mValue <  right->mValue;
-	}
-	//############################################################################
-	bool Radian::operator <= ( const Radian ^ right ) {
-		return mValue <= right->mValue;
-	}
-	//############################################################################
-	bool Radian::operator > ( const Radian ^ right ) {
-		return mValue >  right->mValue;
-	}
-	//############################################################################
-	bool Radian::operator >= ( const Radian ^ right ) {
-		return mValue >= right->mValue;
-	}
-	//############################################################################
-	Degree ^ Radian::toDegree() {
-		return gcnew Degree( OpenGUI::Math::RadiansToDegrees( mValue ) );
+	Degree Radian::toDegree(){
+		Degree out;
+		out.setRadians(fValue);
+		return out;
 	}
 	//############################################################################
 	//////////////////////////////////////////////////////////////////////////
 	//############################################################################
-	Degree::Degree() {
-		mValue = 0.0f;
+	void Degree::setRadians(float radian_value){
+		fValue = OpenGUI::Math::RadiansToDegrees(radian_value);
 	}
 	//############################################################################
-	Degree::Degree( float degree_value ) {
-		mValue = degree_value;
+	Degree Degree::operator + ( Degree left, Degree right ) {
+		Degree out;
+		out.fValue = left.fValue + right.fValue;
+		return out;
 	}
 	//############################################################################
-	Degree ^ Degree::operator = ( const Degree ^ right ) {
-		mValue = right->mValue;
-		return this;
+	Degree Degree::operator - ( Degree right ) {
+		Degree out;
+		out.fValue = -right.fValue;
+		return out;
 	}
 	//############################################################################
-	Degree ^ Degree::operator + ( const Degree ^ right ) {
-		return gcnew Degree( mValue + right->mValue );
+	Degree Degree::operator - ( Degree left, Degree right ){
+		Degree out;
+		out.fValue = left.fValue - right.fValue;
+		return out;
 	}
 	//############################################################################
-	Degree ^ Degree::operator += ( const Degree ^ right ) {
-		mValue += right->mValue;
-		return this;
+	bool Degree::operator == ( Degree left, Degree right ){
+		return left.fValue == right.fValue;
 	}
 	//############################################################################
-	Degree ^ Degree::operator - () {
-		return gcnew Degree( -mValue );
+	bool Degree::operator != ( Degree left, Degree right ){
+		return left.fValue != right.fValue;
 	}
 	//############################################################################
-	Degree ^ Degree::operator - ( const Degree ^ right ) {
-		return gcnew Degree( mValue - right->mValue );
+	bool Degree::operator < ( Degree left, Degree right ){
+		return left.fValue < right.fValue;
 	}
 	//############################################################################
-	Degree ^ Degree::operator -= ( const Degree ^ right ) {
-		mValue -= right->mValue;
-		return this;
+	bool Degree::operator <= ( Degree left, Degree right ){
+		return left.fValue <= right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator == ( const Degree ^ right ) {
-		return mValue == right->mValue;
+	bool Degree::operator > ( Degree left, Degree right ){
+		return left.fValue > right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator != ( const Degree ^ right ) {
-		return mValue != right->mValue;
+	bool Degree::operator >= ( Degree left, Degree right ){
+		return left.fValue >= right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator < ( const Degree ^ right ) {
-		return mValue <  right->mValue;
-	}
-	//############################################################################
-	bool Degree::operator <= ( const Degree ^ right ) {
-		return mValue <= right->mValue;
-	}
-	//############################################################################
-	bool Degree::operator > ( const Degree ^ right ) {
-		return mValue >  right->mValue;
-	}
-	//############################################################################
-	bool Degree::operator >= ( const Degree ^ right ) {
-		return mValue >= right->mValue;
-	}
-	//############################################################################
-	Radian ^ Degree::toRadian() {
-		return gcnew Radian( OpenGUI::Math::DegreesToRadians( mValue ) );
+	Radian Degree::toRadian(){
+		Radian out;
+		out.setDegrees(fValue);
+		return out;
 	}
 	//############################################################################
 	//////////////////////////////////////////////////////////////////////////
@@ -154,6 +132,28 @@ namespace OpenGUI_Net {
 		fv2 = Marshal::FVECTOR2( *this );
 		std::string cstr;
 		OpenGUI::StrConv::fromFVector2( fv2, cstr );
+		String ^ ret = Marshal::STRING( cstr );
+		return ret;
+	}
+	//############################################################################
+	//////////////////////////////////////////////////////////////////////////
+	//############################################################################
+	String ^ IRect::toStr() {
+		OpenGUI::IRect ir;
+		ir = Marshal::IRECT( *this );
+		std::string cstr;
+		OpenGUI::StrConv::fromIRect( ir, cstr );
+		String ^ ret = Marshal::STRING( cstr );
+		return ret;
+	}
+	//############################################################################
+	//////////////////////////////////////////////////////////////////////////
+	//############################################################################
+	String ^ FRect::toStr() {
+		OpenGUI::FRect fr;
+		fr = Marshal::FRECT( *this );
+		std::string cstr;
+		OpenGUI::StrConv::fromFRect( fr, cstr );
 		String ^ ret = Marshal::STRING( cstr );
 		return ret;
 	}
