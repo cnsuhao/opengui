@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using OpenGUI_Net;
 
 namespace Builder {
+
 	static class Program {
 		/// <summary>
 		/// The main entry point for the application.
@@ -13,7 +14,10 @@ namespace Builder {
 			Radian r1, r2;
 			r1.fValue = 4;
 			r2.fValue = 5;
-
+			TestRenderer render = new TestRenderer();
+			OpenGUI_Net.System sys = OpenGUI_Net.System.initialize(render);
+			Viewport vp = render.getViewport();
+			sys.shutdown();
 			r2 = r1 + r2;
 			r1 = r1 - r2;
 			TextAlignment ta;
@@ -24,8 +28,8 @@ namespace Builder {
 			c = Color.PresetGreen();
 
 			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
+			Application.SetCompatibleTextRenderingDefault( false );
+			Application.Run( new Form1() );
 		}
 	}
 }
