@@ -63,6 +63,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenGUI.Net\OpenGUI.Net.vcproj">
+      <Project>{CBFE34BF-EEB0-489D-9F9F-1EF745E1B26D}</Project>
+      <Name>OpenGUI.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
