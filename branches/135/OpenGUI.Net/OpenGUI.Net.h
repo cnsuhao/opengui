@@ -8,7 +8,6 @@
 
 using namespace System;
 
-namespace OpenGUI_Net {
-} // namespace OpenGUINet {
+namespace OpenGUI_Net {} // namespace OpenGUINet {
 
 #endif // OpenGUI_Net_h__
