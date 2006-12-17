@@ -12,47 +12,47 @@ namespace OpenGUI_Net {
 	//OpenGUI::System* System::gSystem = 0;
 	//############################################################################
 	//############################################################################
-	System^ System::getHandle(){
-		if(gHandle == nullptr)
-			throw gcnew ::System::Exception("Need to initialize System before getting a handle.");
+	System ^ System::getHandle() {
+		if ( gHandle == nullptr )
+			throw gcnew ::System::Exception( "Need to initialize System before getting a handle." );
 		return gHandle;
 	}
 	//############################################################################
-	System^ System::initialize(){
-		if(gHandle != nullptr)
-			throw gcnew ::System::Exception("Cannot initialize OpenGUI::System because it is already initialized.");
+	System ^ System::initialize() {
+		if ( gHandle != nullptr )
+			throw gcnew ::System::Exception( "Cannot initialize OpenGUI::System because it is already initialized." );
 		OpenGUI::System* tmp;
 		THRU_THROW_BEGIN
-			tmp = new OpenGUI::System(0);
+		tmp = new OpenGUI::System( 0 );
 		THRU_THROW_END
-		gHandle = gcnew System(tmp);
+		gHandle = gcnew System( tmp );
 		return gHandle;
 	}
 	//############################################################################
-	void System::shutdown(){
+	void System::shutdown() {
 		sanityTest();
 		delete gSystem;
 		gSystem = 0;
 	}
 	//############################################################################
-	void System::sanityTest(){
-		if(gSystem == 0 || gHandle != this)
-			throw gcnew ::System::Exception("Expired OpenGUI::System handle.");
+	void System::sanityTest() {
+		if ( gSystem == 0 || gHandle != this )
+			throw gcnew ::System::Exception( "Expired OpenGUI::System handle." );
 	}
 	//############################################################################
-	System::System(OpenGUI::System* systemPtr){
+	System::System( OpenGUI::System* systemPtr ) {
 		gSystem = systemPtr;
 	}
 	//############################################################################
-	void System::loadPlugin(String^ fileName){
+	void System::loadPlugin( String ^ fileName ) {
 		THRU_THROW_BEGIN
-		gSystem->loadPlugin(Marshal::String(fileName));
+		gSystem->loadPlugin( Marshal::String( fileName ) );
 		THRU_THROW_END
 	}
 	//############################################################################
-	void System::unloadPlugin(String^ fileName){
+	void System::unloadPlugin( String ^ fileName ) {
 		THRU_THROW_BEGIN
-		gSystem->unloadPlugin(Marshal::String(fileName));
+		gSystem->unloadPlugin( Marshal::String( fileName ) );
 		THRU_THROW_END
 	}
 	//############################################################################
