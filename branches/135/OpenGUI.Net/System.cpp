@@ -33,7 +33,9 @@ namespace OpenGUI_Net {
 	//############################################################################
 	void System::shutdown() {
 		sanityTest();
+		THRU_THROW_BEGIN
 		delete gSystem;
+		THRU_THROW_END
 		gSystem = 0;
 	}
 	//############################################################################

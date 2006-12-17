@@ -9,8 +9,9 @@ using namespace System;
 
 namespace OpenGUI_Net {
 
-	public ref class Viewport {
+	public ref class Viewport abstract {
 	public:
+		virtual OpenGUI::Viewport* getNativeViewport() = 0;
 	};
 
 } // namespace OpenGUI_Net {
