@@ -115,6 +115,7 @@ namespace OpenGUI_Net {
 			out.vertical = ( TextAlignment::Alignment ) v;
 			return out;
 		}
+		//############################################################################
 	} // namespace Marshal{
 } // namespace OpenGUINet {
 

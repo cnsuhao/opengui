@@ -8,6 +8,7 @@
 using namespace System;
 
 namespace OpenGUI_Net {
+	ref class Texture; // forward declaration
 
 	public value class Vertex {
 	public:
@@ -26,6 +27,9 @@ namespace OpenGUI_Net {
 
 	public ref class RenderOperation {
 	public:
+		array<Triangle^>^ triangleList;
+		Texture^ texture;
+		Texture^ mask;
 	};
 
 } // namespace OpenGUI_Net {
