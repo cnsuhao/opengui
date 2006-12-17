@@ -193,6 +193,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EventArgs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Object.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI.Net.cpp"
 				>
 			</File>
@@ -243,7 +251,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\EventArgs.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Marshal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Object.h"
 				>
 			</File>
 			<File
