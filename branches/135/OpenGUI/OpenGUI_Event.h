@@ -113,7 +113,7 @@ namespace OpenGUI {
 		virtual ~Key_EventArgs() {
 			/**/
 		}
-		const char Character;
+		const char Character; //!< the character of the event
 	};
 
 	//! Specialization of EventArgs for Control Moved events
