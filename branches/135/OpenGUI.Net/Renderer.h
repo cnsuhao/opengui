@@ -13,6 +13,8 @@ namespace OpenGUI_Net {
 	ref class RenderOperation;
 	ref class TextureData;
 
+	class test {};
+
 	public ref class Renderer abstract {
 	public:
 		virtual void selectViewport( Viewport ^ activeViewport ) = 0;
@@ -23,7 +25,8 @@ namespace OpenGUI_Net {
 		virtual Texture ^ createTextureFromTextureData( const TextureData ^ textureData ) = 0;
 		virtual void updateTextureFromTextureData( Texture ^ texture, const TextureData ^ textureData ) = 0;
 		virtual void destroyTexture( Texture ^ texturePtr ) = 0;
-
+	private:
+		test* mTest;
 	};
 } // namespace OpenGUI_Net {
 

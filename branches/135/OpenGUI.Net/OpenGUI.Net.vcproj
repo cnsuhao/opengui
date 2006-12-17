@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RenderOperation.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Screen.cpp"
 				>
 			</File>
@@ -226,6 +230,10 @@
 			</File>
 			<File
 				RelativePath=".\System.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Texture.cpp"
 				>
 			</File>
 			<File
@@ -255,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\RenderOperation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Screen.h"
 				>
 			</File>
@@ -264,6 +276,10 @@
 			</File>
 			<File
 				RelativePath=".\System.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Texture.h"
 				>
 			</File>
 			<File
