@@ -8,8 +8,8 @@
 using namespace System;
 namespace OpenGUI_Net {
 	//############################################################################
-	void Radian::setDegrees(float degree_value){
-		fValue = OpenGUI::Math::DegreesToRadians(degree_value);
+	void Radian::setDegrees( float degree_value ) {
+		fValue = OpenGUI::Math::DegreesToRadians( degree_value );
 	}
 	//############################################################################
 	Radian Radian::operator + ( Radian left, Radian right ) {
@@ -24,46 +24,46 @@ namespace OpenGUI_Net {
 		return out;
 	}
 	//############################################################################
-	Radian Radian::operator - ( Radian left, Radian right ){
+	Radian Radian::operator - ( Radian left, Radian right ) {
 		Radian out;
 		out.fValue = left.fValue - right.fValue;
 		return out;
 	}
 	//############################################################################
-	bool Radian::operator == ( Radian left, Radian right ){
+	bool Radian::operator == ( Radian left, Radian right ) {
 		return left.fValue == right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator != ( Radian left, Radian right ){
+	bool Radian::operator != ( Radian left, Radian right ) {
 		return left.fValue != right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator < ( Radian left, Radian right ){
+	bool Radian::operator < ( Radian left, Radian right ) {
 		return left.fValue < right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator <= ( Radian left, Radian right ){
+	bool Radian::operator <= ( Radian left, Radian right ) {
 		return left.fValue <= right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator > ( Radian left, Radian right ){
+	bool Radian::operator > ( Radian left, Radian right ) {
 		return left.fValue > right.fValue;
 	}
 	//############################################################################
-	bool Radian::operator >= ( Radian left, Radian right ){
+	bool Radian::operator >= ( Radian left, Radian right ) {
 		return left.fValue >= right.fValue;
 	}
 	//############################################################################
-	Degree Radian::toDegree(){
+	Degree Radian::toDegree() {
 		Degree out;
-		out.setRadians(fValue);
+		out.setRadians( fValue );
 		return out;
 	}
 	//############################################################################
 	//////////////////////////////////////////////////////////////////////////
 	//############################################################################
-	void Degree::setRadians(float radian_value){
-		fValue = OpenGUI::Math::RadiansToDegrees(radian_value);
+	void Degree::setRadians( float radian_value ) {
+		fValue = OpenGUI::Math::RadiansToDegrees( radian_value );
 	}
 	//############################################################################
 	Degree Degree::operator + ( Degree left, Degree right ) {
@@ -78,39 +78,39 @@ namespace OpenGUI_Net {
 		return out;
 	}
 	//############################################################################
-	Degree Degree::operator - ( Degree left, Degree right ){
+	Degree Degree::operator - ( Degree left, Degree right ) {
 		Degree out;
 		out.fValue = left.fValue - right.fValue;
 		return out;
 	}
 	//############################################################################
-	bool Degree::operator == ( Degree left, Degree right ){
+	bool Degree::operator == ( Degree left, Degree right ) {
 		return left.fValue == right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator != ( Degree left, Degree right ){
+	bool Degree::operator != ( Degree left, Degree right ) {
 		return left.fValue != right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator < ( Degree left, Degree right ){
+	bool Degree::operator < ( Degree left, Degree right ) {
 		return left.fValue < right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator <= ( Degree left, Degree right ){
+	bool Degree::operator <= ( Degree left, Degree right ) {
 		return left.fValue <= right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator > ( Degree left, Degree right ){
+	bool Degree::operator > ( Degree left, Degree right ) {
 		return left.fValue > right.fValue;
 	}
 	//############################################################################
-	bool Degree::operator >= ( Degree left, Degree right ){
+	bool Degree::operator >= ( Degree left, Degree right ) {
 		return left.fValue >= right.fValue;
 	}
 	//############################################################################
-	Radian Degree::toRadian(){
+	Radian Degree::toRadian() {
 		Radian out;
-		out.setDegrees(fValue);
+		out.setDegrees( fValue );
 		return out;
 	}
 	//############################################################################

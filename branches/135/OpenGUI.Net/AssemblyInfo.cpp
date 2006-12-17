@@ -15,14 +15,14 @@ using namespace System::Security::Permissions;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly:AssemblyTitleAttribute("OpenGUI.Net")];
-[assembly:AssemblyDescriptionAttribute("")];
-[assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("")];
-[assembly:AssemblyProductAttribute("OpenGUI.Net")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c)  2006")];
-[assembly:AssemblyTrademarkAttribute("")];
-[assembly:AssemblyCultureAttribute("")];
+[assembly:AssemblyTitleAttribute( "OpenGUI.Net" )];
+[assembly:AssemblyDescriptionAttribute( ".NET Framework Binding for OpenGUI" )];
+[assembly:AssemblyConfigurationAttribute( "" )];
+[assembly:AssemblyCompanyAttribute( "OpenGUI Project (http://opengui.sourceforge.net/)" )];
+[assembly:AssemblyProductAttribute( "OpenGUI.Net" )];
+[assembly:AssemblyCopyrightAttribute( "Copyright (c)  2006" )];
+[assembly:AssemblyTrademarkAttribute( "" )];
+[assembly:AssemblyCultureAttribute( "" )];
 
 //
 // Version information for an assembly consists of the following four values:
@@ -35,10 +35,10 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("1.0.*")];
+[assembly:AssemblyVersionAttribute( "1.0.*" )];
 
-[assembly:ComVisible(false)];
+[assembly:ComVisible( false )];
 
-[assembly:CLSCompliantAttribute(true)];
+[assembly:CLSCompliantAttribute( true )];
 
-[assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)];
+[assembly:SecurityPermission( SecurityAction::RequestMinimum, UnmanagedCode = true )];
