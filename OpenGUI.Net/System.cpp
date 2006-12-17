@@ -4,6 +4,7 @@
 
 #include "Stdafx.h"
 #include "System.h"
+#include "Renderer.h"
 
 using namespace System;
 
@@ -18,12 +19,13 @@ namespace OpenGUI_Net {
 		return gHandle;
 	}
 	//############################################################################
-	System ^ System::initialize() {
+	System ^ System::initialize( Renderer ^ renderer ) {
 		if ( gHandle != nullptr )
 			throw gcnew ::System::Exception( "Cannot initialize OpenGUI::System because it is already initialized." );
 		OpenGUI::System* tmp;
 		THRU_THROW_BEGIN
-		tmp = new OpenGUI::System( 0 );
+		OpenGUI::Renderer* rPtr = renderer->getNativeRenderer();
+		tmp = new OpenGUI::System( rPtr );
 		THRU_THROW_END
 		gHandle = gcnew System( tmp );
 		return gHandle;

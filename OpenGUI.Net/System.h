@@ -8,10 +8,12 @@
 using namespace System;
 
 namespace OpenGUI_Net {
+	ref class Renderer; // forward declaration
+
 	public ref class System {
 	public:
 		static System ^ getHandle();
-		static System ^ initialize();
+		static System ^ initialize( Renderer ^ renderer );
 		void shutdown();
 
 		void loadPlugin( String ^ fileName );
