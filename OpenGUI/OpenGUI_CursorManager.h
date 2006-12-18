@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Cursor.h"
 #include "OpenGUI_Value.h"
@@ -19,7 +20,7 @@ namespace OpenGUI {
 	typedef CursorPtr CursorFactoryCallback();
 
 	//! Provides Cursor registration and definition functionality
-	class OPENGUI_API CursorManager : public Singleton<CursorManager> {
+	class OPENGUI_API CursorManager : public Singleton<CursorManager>, public HandledObject {
 		friend class System; //so System can create and destroy us
 		CursorManager(); // private constructor
 		~CursorManager(); // private destructor

@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Imagery.h"
@@ -204,7 +205,7 @@ namespace OpenGUI {
 		Masks are imagery that are used to determine alpha visibility on a texel level.
 		You can create alpha masks of any shape and apply them using this modifier.
 	*/
-	class OPENGUI_API Brush {
+	class OPENGUI_API Brush: public HandledObject {
 		//friend classes to access addRenderOperation
 		friend class BrushText;
 		friend class BrushPrimitive;

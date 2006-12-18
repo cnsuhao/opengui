@@ -498,7 +498,7 @@ namespace OpenGUI {
 		return mPadding;
 	}
 	//############################################################################
-	void ContainerControl::_doflush(){
+	void ContainerControl::_doflush() {
 		eventInvalidated();
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {

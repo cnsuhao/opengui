@@ -5,5 +5,4 @@
 #include "OpenGUI_HandledObject.h"
 
 namespace OpenGUI {
-
 } //namespace OpenGUI {

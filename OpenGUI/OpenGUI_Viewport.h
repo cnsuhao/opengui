@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Exception.h"
 
@@ -19,7 +20,7 @@ namespace OpenGUI {
 	manage Viewport objects. It is up to the Renderer implementation to supply
 	its own methods for the creation and destruction of Viewports.
 	*/
-	class OPENGUI_API Viewport {
+	class OPENGUI_API Viewport: public HandledObject {
 		friend class Screen; // screen needs access to preUpdate/postUpdate
 	public:
 		//! Set of Screen pointers, used to contain the list of Screens that are attached to a Viewport

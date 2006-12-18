@@ -295,9 +295,9 @@ namespace OpenGUI {
 					const std::string formDef = child->getAttribute( "FormDef" );
 					if ( child->hasAttribute( "Name" ) ) {
 						std::string rootName =  child->getAttribute( "Name" );
-						FormManager::getSingleton().CreateForm( formDef, &(container->Children), rootName );
+						FormManager::getSingleton().CreateForm( formDef, &( container->Children ), rootName );
 					} else {
-						FormManager::getSingleton().CreateForm( formDef, &(container->Children) );
+						FormManager::getSingleton().CreateForm( formDef, &( container->Children ) );
 					}
 				}
 			}
