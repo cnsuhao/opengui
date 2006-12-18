@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
 
@@ -17,7 +18,7 @@ namespace OpenGUI {
 	class ValueList;
 
 	//! Base class for all GUI objects. Provides an exposed interface to the Accessor and Event systems.
-	class OPENGUI_API Object {
+	class OPENGUI_API Object: public HandledObject {
 	public:
 		Object();
 		virtual ~Object();

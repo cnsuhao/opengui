@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_Face.h"
@@ -21,7 +22,7 @@ namespace OpenGUI {
 		Provides management services for loading, unloading, keeping track of,
 		and searching for Imageset and the children Image objects.\n \b [Singleton]
 	*/
-	class OPENGUI_API ImageryManager : public Singleton<ImageryManager> {
+	class OPENGUI_API ImageryManager : public Singleton<ImageryManager>, public HandledObject {
 		friend class XMLParser;
 		friend class Imageset;
 	public:

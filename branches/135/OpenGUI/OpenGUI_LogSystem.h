@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
@@ -28,7 +29,7 @@ namespace OpenGUI {
 
 
 	//! LogListener interface class for creating custom log output streams.
-	class OPENGUI_API LogListener {
+	class OPENGUI_API LogListener: public HandledObject {
 	public:
 		virtual ~LogListener() {}
 		/*!
@@ -108,7 +109,7 @@ namespace OpenGUI {
 
 
 	//! Central log manager. Logging messages can be sent through this object, or a specific Log object
-	class OPENGUI_API LogManager : public Singleton<LogManager> {
+	class OPENGUI_API LogManager : public Singleton<LogManager>, public HandledObject {
 		friend class Log;
 	public:
 		//NOTE : GCC doesn't like the -1 compiler trick
@@ -172,7 +173,7 @@ namespace OpenGUI {
 
 
 	//! A log represents a categorization type for messages. Each log is given its own logLevel setting, in addition to the setLevel of the LogManager.
-	class OPENGUI_API Log {
+	class OPENGUI_API Log: public HandledObject {
 		friend class LogManager;
 	public:
 

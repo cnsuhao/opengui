@@ -54,7 +54,7 @@ namespace OpenGUI {
 		const FaceMetric Metric;
 
 		//! Returns the name of this Face
-		const std::string& getName(){
+		const std::string& getName() {
 			return mName;
 		}
 

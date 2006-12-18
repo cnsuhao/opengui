@@ -16,19 +16,19 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API HandledObject {
 	public:
-		HandledObject(): m_HandlePtr(0){}
-		~HandledObject(){
-			if(m_HandlePtr){
+		HandledObject(): m_HandlePtr( 0 ) {}
+		~HandledObject() {
+			if ( m_HandlePtr ) {
 				_Free_ObjectHandle();
 			}
 		}
-		void _Init_ObjectHandle(void* handlePointer){
+		void _Init_ObjectHandle( void* handlePointer ) {
 			m_HandlePtr = handlePointer;
 		}
-		void _Free_ObjectHandle(void){
+		void _Free_ObjectHandle( void ) {
 			delete m_HandlePtr;
 		}
-		void* _Get_ObjectHandle(void){
+		void* _Get_ObjectHandle( void ) {
 			return m_HandlePtr;
 		}
 	private:

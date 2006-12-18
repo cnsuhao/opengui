@@ -8,6 +8,7 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Types.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_XML.h"
 
@@ -53,7 +54,7 @@ namespace OpenGUI {
 		%OpenGUI processes by default
 
 	*/
-	class OPENGUI_API XMLParser: public Singleton<XMLParser> {
+	class OPENGUI_API XMLParser: public Singleton<XMLParser>, public HandledObject {
 		friend class System;
 	private:
 		XMLParser();

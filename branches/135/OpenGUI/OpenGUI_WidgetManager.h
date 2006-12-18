@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_XML.h"
@@ -21,7 +22,7 @@ namespace OpenGUI {
 	typedef Widget* WidgetFactoryCallback();
 
 	//! Provides Widget registration and definition functionality
-	class OPENGUI_API WidgetManager : public Singleton<WidgetManager> {
+	class OPENGUI_API WidgetManager : public Singleton<WidgetManager>, public HandledObject {
 		friend class System; //so System can create and destroy us
 		friend class ScreenManager; // need access via ScreenManager::_Screen_XMLNode_Load()
 		WidgetManager(); // private constructor
