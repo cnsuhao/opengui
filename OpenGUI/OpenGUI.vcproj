@@ -326,6 +326,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OpenGUI_HandledObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI_Imagery.cpp"
 				>
 			</File>
@@ -597,6 +601,10 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_GenericResourceProvider.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenGUI_HandledObject.h"
 				>
 			</File>
 			<File

@@ -41,6 +41,9 @@
 //###########################################################################################
 //###########################################################################################
 
+//*******************************//
+//    DEFAULT SCREEN SETTINGS    //
+//*******************************//
 // These settings are used to hold the default Screen UPI (Units per Inch). These are used to
 // determine constant font glyph scaling along each axis. These defaults are normally adequate
 // for most situations. They are held here in a #define to allow easy changing in the event
@@ -83,6 +86,34 @@ This section is copied verbatim from OpenGUI_CONFIG.h:
 // demos, as it will invalidate the xml config files they utilize.
 \endverbatim */
 #define DYNAMICLIB_FILENAME_MANGLING 1
+
+
+//###########################################################################################
+//###########################################################################################
+//###########################################################################################
+
+//*******************************//
+//    .NET FRAMEWORK SUPPORT     //
+//*******************************//
+// In order to better support the usage of OpenGUI within the .NET Framework,
+// there are a few basic features that can be optionally built into the library
+// to better support the OpenGUI.NET library. The additions applied by this
+// setting are fairly small, and should not affect the binary compatibility of
+// OpenGUI with native plugins and usages that do not require the .NET Framework.
+//
+// By default, these extensions are NOT built into OpenGUI. To build with the
+// extensions enabled, you can either change the value of SUPPORT_DOT_NET to 1
+// or you can define DOTNET with a compiler switch. If either method is employed,
+// the extensions will be built.
+//
+// NOTE: The .NET extensions REQUIRE .NET 2.0, which means you must be using
+// Visual Studio 2005.
+//
+#define SUPPORT_DOT_NET 1
+// This test allows for inclusion of the .NET extensions from the command line
+#ifdef DOTNET
+#define SUPPORT_DOT_NET 1
+#endif
 
 
 #endif
