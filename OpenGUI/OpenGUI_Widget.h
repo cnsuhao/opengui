@@ -235,7 +235,7 @@ namespace OpenGUI {
 		//! releases focus for this Widget for keyboard events
 		void releaseKeyFocus();
 
-		//! releases focus for this Widget for cursor events
+		//! grabs focus for this Widget for cursor events
 		void grabCursorFocus();
 		//! releases focus for this Widget for cursor events
 		void releaseCursorFocus();
