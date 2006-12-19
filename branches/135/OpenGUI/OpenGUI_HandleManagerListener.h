@@ -25,7 +25,9 @@ namespace OpenGUI {
 		virtual void onHandledObjectCreated( HandledObject* handledObject ) = 0;
 		//! Called when a HandledObject is destroyed
 		/*! This is only called for each HandleManagerListener that has attached an ObjectHandle to the object.
-		If you do not attach a handle, you will not receive notification about the object's destruction. */
+		If you do not attach a handle, you will not receive notification about the object's destruction.
+		Also, your handle will be automatically deleted by HandledObject if you do not remove it yourself
+		during this call. */
 		virtual void onHandledObjectDestroyed( HandledObject* handledObject ) = 0;
 	};
 

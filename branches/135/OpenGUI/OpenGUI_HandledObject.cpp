@@ -29,12 +29,13 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No handle stored for the given listener", __FUNCTION__ );
 	}
 	//############################################################################
+	/*! If no handle was added for the given listener, the return value will be 0. */
 	ObjectHandle* HandledObject::_Get_ObjectHandle( HandleManagerListener* sourceListener ) {
 		assert( sourceListener );
 		HandleMap::iterator iter = mHandleMap.find( sourceListener );
 		if ( iter != mHandleMap.end() )
 			return iter->second;
-		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No handle stored for the given listener", __FUNCTION__ );
+		return 0;
 	}
 	//############################################################################
 	void HandledObject::_Init_ObjectHandles() {
@@ -42,7 +43,16 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void HandledObject::_Free_ObjectHandles() {
+		// send notifications
 		HandleManager::_Object_Destroyed( this );
+
+		// free whatever we have left over
+		HandleMap::iterator iter, iterend = mHandleMap.end();
+		for ( iter = mHandleMap.begin(); iter != iterend; iter++ ) {
+			ObjectHandle* handle = iter->second;
+			delete handle;
+		}
+		mHandleMap.clear();
 	}
 	//############################################################################
 	HandledObject::HandledObject() {
