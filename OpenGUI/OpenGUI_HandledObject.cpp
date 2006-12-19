@@ -11,6 +11,7 @@ namespace OpenGUI {
 	//############################################################################
 	void HandledObject::_Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener ) {
 		assert( sourceListener );
+		assert( handle );
 		HandleMap::iterator iter = mHandleMap.find( sourceListener );
 		if ( iter != mHandleMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Already have a handle stored for the given listener", __FUNCTION__ );
