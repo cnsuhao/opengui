@@ -2,7 +2,7 @@
 // This source code is release under the BSD License
 // See LICENSE.TXT for details
 
-#include "HandleManager.h"
+#include "OpenGUI_HandleManager.h"
 #include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
