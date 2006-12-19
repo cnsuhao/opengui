@@ -11,7 +11,9 @@
 
 namespace OpenGUI {
 
-	//class ObjectHandle; // forward declaration
+	class HandleManagerListener; // forward declaration
+	class ObjectHandle; // forward declaration
+
 	//! Provides a single base class to maintain object handles for use with bindings
 	/*! Each base class that is likely to require a retrievable handle derives from
 	HandledObject. Each HandledObject provides creation and destruction notification
@@ -29,9 +31,13 @@ namespace OpenGUI {
 	public:
 		HandledObject() {}
 		~HandledObject() {}
-		void _Init_ObjectHandles() {}
-		void _Free_ObjectHandles() {}
-		void _Get_ObjectHandle() {}
+		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
+		void _Remove_ObjectHandle( ObjectHandle* handle );
+		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
+	protected:
+		void _Init_ObjectHandles();
+		void _Free_ObjectHandles();
+
 	private:
 
 	};
