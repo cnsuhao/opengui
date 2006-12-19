@@ -51,6 +51,8 @@ namespace OpenGUI {
 		void updateTime();
 
 		//! returns an iterator to walk the current list of screens
+		/*! The Key half of the iterator is the Screen name (std::string),
+		the %Value half is a pointer to the Screen (Screen *) */
 		iterator getIterator() {
 			return iterator( mScreenMap.begin(), mScreenMap.end() );
 		}
