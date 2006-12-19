@@ -12,18 +12,22 @@ namespace OpenGUI {
 
 	class HandledObject; // forward declaration
 
+	//! Base class for custom handles to HandledObject derived objects
+	/*! The HandledObject will automatically manage the pointer this class
+	holds to it, so you don't have to deal with that aspect. */
 	class OPENGUI_API ObjectHandle {
-	public:
-		ObjectHandle();
-		~ObjectHandle();
-		//! Returns a pointer to the object referenced by this handle
-		HandledObject* getHandledObject();
-		//! Returns an integer signifying the type of object referenced by this handle
-		unsigned int getHandledObjectType();
+		friend class HandledObject; // so HandledObject can reach m_HandledObject
 
-		//! Must be overridden to return a unique ID number to signify the type of handle
-		virtual unsigned int getHandleType() = 0;
+	public:
+		ObjectHandle(): m_HandledObject( 0 ) {}
+		~ObjectHandle() {}
+		//! Returns a pointer to the object referenced by this handle
+		HandledObject* getHandledObject() {
+			return m_HandledObject;
+		}
+
 	private:
+		//This is automatically set by HandledObject when the handle is added, and cleared when removed
 		HandledObject* m_HandledObject;
 	};
 
