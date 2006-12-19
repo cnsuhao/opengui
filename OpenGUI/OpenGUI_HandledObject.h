@@ -31,9 +31,13 @@ namespace OpenGUI {
 	public:
 		HandledObject();
 		~HandledObject();
+		//! Adds a new handle to the object, indexing it by the given \c sourceListener
 		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
+		//! Removes a previously added handle, retrieving it by the given \c sourceListener
 		void _Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
+		//! Gets the handle that was previously added for the given \c sourceListener
 		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
+
 	protected:
 		void _Init_ObjectHandles();
 		void _Free_ObjectHandles();
