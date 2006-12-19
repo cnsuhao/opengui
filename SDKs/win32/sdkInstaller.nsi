@@ -122,8 +122,18 @@ SectionEnd
 
 
 Section "Precompiled SDKs" SEC01
+; Demos
 	SetOutPath "$INSTDIR"
 	File /r "${BUILD_DIR}\Demos"
+	CreateDirectory "$SMPROGRAMS\OpenGUI SDK\Demos"
+	SetOutPath "$INSTDIR\Demos\OpenGL"
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 1.lnk" "$INSTDIR\Demos\OpenGL\Demo1.exe"
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 2.lnk" "$INSTDIR\Demos\OpenGL\Demo2.exe"
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 3.lnk" "$INSTDIR\Demos\OpenGL\Demo3.exe"
+	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\Ogre Demo.lnk" "$INSTDIR\Demos\Ogre\DemoO.exe"
+	
+; All the rest
+	SetOutPath "$INSTDIR"
 	File /r "${BUILD_DIR}\OpenGUI"
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\OpenGUI API Documentation.lnk" "$INSTDIR\OpenGUI\OpenGUI.chm"  
 	File /r "${BUILD_DIR}\Renderer_Ogre"
