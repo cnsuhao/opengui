@@ -10,29 +10,30 @@
 #include "OpenGUI_CONFIG.h"
 
 namespace OpenGUI {
+
+	//class ObjectHandle; // forward declaration
 	//! Provides a single base class to maintain object handles for use with bindings
 	/*! Each base class that is likely to require a retrievable handle derives from
-	HandledObject. 
+	HandledObject. Each HandledObject provides creation and destruction notification
+	to the HandleManager, which allows languages to attach listeners to intercept these
+	events so that they may attach their own ObjectHandle to the object for later retrieval.
+
+	Any single HandledObject is capable of storing multiple ObjectHandles, allowing multiple
+	bindings to interact with the same HandledObject without stumbling over each other. The
+	stored ObjectHandles are referenced by the value of their HandleManagerListener pointer.
+	It is intended that a binding only use a single HandleManagerListener, and this mechanism
+	ensures that all bindings have a unique value to identify their specific handle for the
+	object.
 	*/
 	class OPENGUI_API HandledObject {
 	public:
-		HandledObject(): m_HandlePtr( 0 ) {}
-		~HandledObject() {
-			if ( m_HandlePtr ) {
-				_Free_ObjectHandle();
-			}
-		}
-		void _Init_ObjectHandle( void* handlePointer ) {
-			m_HandlePtr = handlePointer;
-		}
-		void _Free_ObjectHandle( void ) {
-			delete m_HandlePtr;
-		}
-		void* _Get_ObjectHandle( void ) {
-			return m_HandlePtr;
-		}
+		HandledObject() {}
+		~HandledObject() {}
+		void _Init_ObjectHandles() {}
+		void _Free_ObjectHandles() {}
+		void _Get_ObjectHandle() {}
 	private:
-		void* m_HandlePtr;
+
 	};
 } // namespace OpenGUI {
 
