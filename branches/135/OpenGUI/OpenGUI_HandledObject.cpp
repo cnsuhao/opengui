@@ -4,6 +4,7 @@
 
 #include "OpenGUI_HandledObject.h"
 #include "OpenGUI_ObjectHandle.h"
+#include "OpenGUI_HandleManager.h"
 #include "OpenGUI_Exception.h"
 
 namespace OpenGUI {
