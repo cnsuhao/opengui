@@ -29,17 +29,18 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API HandledObject {
 	public:
-		HandledObject() {}
-		~HandledObject() {}
+		HandledObject();
+		~HandledObject();
 		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
-		void _Remove_ObjectHandle( ObjectHandle* handle );
+		void _Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
 		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
 	protected:
 		void _Init_ObjectHandles();
 		void _Free_ObjectHandles();
 
 	private:
-
+		typedef std::map<HandleManagerListener*, ObjectHandle*> HandleMap;
+		HandleMap mHandleMap;
 	};
 } // namespace OpenGUI {
 
