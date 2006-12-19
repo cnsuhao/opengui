@@ -22,11 +22,11 @@ namespace OpenGUI {
 		//! Called when a HandledObject is created
 		/*! This is called for all newly created objects.
 		Objects that already exist at the time of listener attachment will not be provided. */
-		virtual void onHandledObjectCreated(HandledObject* handledObject)=0;
+		virtual void onHandledObjectCreated( HandledObject* handledObject ) = 0;
 		//! Called when a HandledObject is destroyed
 		/*! This is only called for each HandleManagerListener that has attached an ObjectHandle to the object.
 		If you do not attach a handle, you will not receive notification about the object's destruction. */
-		virtual void onHandledObjectDestroyed(HandledObject* handledObject)=0;
+		virtual void onHandledObjectDestroyed( HandledObject* handledObject ) = 0;
 	};
 
 } // namespace OpenGUI {
