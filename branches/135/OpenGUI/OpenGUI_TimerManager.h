@@ -7,7 +7,6 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Timer.h"
 
@@ -24,7 +23,7 @@ namespace OpenGUI {
 		mechanism. Manually providing inaccurate time deltas via System::injectTick()
 		will cause these statistics to generate inaccurate results.
 	*/
-	class OPENGUI_API TimerManager : public Singleton<TimerManager>, public HandledObject {
+	class OPENGUI_API TimerManager : public Singleton<TimerManager> {
 		friend class System;
 	public:
 		TimerManager();
