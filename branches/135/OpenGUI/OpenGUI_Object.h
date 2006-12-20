@@ -24,7 +24,7 @@ namespace OpenGUI {
 	Each Object provides creation and destruction notification to the HandleManager,
 	which allows languages to attach listeners to intercept these events so that they
 	may attach their own ObjectHandle for later retrieval.
-	
+
 	Any single Object is capable of storing multiple ObjectHandles, allowing multiple
 	bindings to interact with the same Object without stumbling over each other.
 	The	stored ObjectHandles are referenced by the value of their HandleManagerListener
@@ -72,7 +72,7 @@ namespace OpenGUI {
 		virtual unsigned int getObjectType() = 0;
 
 		//! These are the possible return values for _Get_ObjectType()
-		enum Object_Type{
+		enum Object_Type {
 			OT_UNKNOWN          = 0, //!< should never happen
 			OT_SCREEN           = 1, //!< Object is a Screen
 			OT_CURSOR           = 2, //!< Object is a Cursor

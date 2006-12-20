@@ -66,6 +66,7 @@ namespace OpenGUI {
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
+		virtual unsigned int getObjectType();
 
 	protected:
 //!\name Event Handlers

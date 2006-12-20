@@ -47,6 +47,10 @@ namespace OpenGUI {
 		return &gWindow_ObjectAccessorList;
 	}
 	//############################################################################
+	unsigned int Window::getObjectType() {
+		return OT_WINDOW;
+	}
+	//############################################################################
 	void Window::eventMove_Begin() {
 		EventArgs event;
 		triggerEvent( "Move_Begin", event );
