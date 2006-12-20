@@ -134,7 +134,7 @@ namespace OpenGUI {
 		triggerEvent( "Cursor_Shown", event );
 	}
 	//############################################################################
-	unsigned int Cursor::getObjectType() {
+	unsigned int Cursor::getObjectType() const {
 		return OT_CURSOR;
 	}
 	//############################################################################

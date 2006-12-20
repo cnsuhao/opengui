@@ -47,7 +47,7 @@ namespace OpenGUI {
 		return &gWindow_ObjectAccessorList;
 	}
 	//############################################################################
-	unsigned int Window::getObjectType() {
+	unsigned int Window::getObjectType() const {
 		return OT_WINDOW;
 	}
 	//############################################################################

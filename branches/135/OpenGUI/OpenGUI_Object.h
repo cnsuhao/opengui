@@ -69,9 +69,9 @@ namespace OpenGUI {
 
 		//! Returns an integer identifying the type of object
 		/*! \see Object_Type */
-		virtual unsigned int getObjectType() = 0;
+		virtual unsigned int getObjectType() const = 0;
 
-		//! These are the possible return values for _Get_ObjectType()
+		//! These are the possible return values for getObjectType()
 		enum Object_Type {
 			OT_UNKNOWN          = 0, //!< should never happen
 			OT_SCREEN           = 1, //!< Object is a Screen

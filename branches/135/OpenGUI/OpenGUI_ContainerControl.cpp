@@ -65,7 +65,7 @@ namespace OpenGUI {
 		return &gContainerControl_ObjectAccessorList;
 	}
 	//############################################################################
-	unsigned int ContainerControl::getObjectType() {
+	unsigned int ContainerControl::getObjectType() const {
 		return OT_CONTAINERCONTROL;
 	}
 	//############################################################################

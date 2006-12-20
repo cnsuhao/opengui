@@ -148,7 +148,7 @@ namespace OpenGUI {
 		return &gWidget_ObjectAccessorList;
 	}
 	//############################################################################
-	unsigned int Widget::getObjectType() {
+	unsigned int Widget::getObjectType() const {
 		return OT_WIDGET;
 	}
 	//############################################################################
