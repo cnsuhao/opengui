@@ -21,7 +21,7 @@ namespace OpenGUI {
 	// Constants for buffer management control
 	// Sizes are in vertices. Values should ideally be divisible by 3 (since we work in triangle lists)
 	const size_t BUFFER_SIZE_INITIAL = 6; // just the cursor alone takes 2 polygons minimum
-	const size_t BUFFER_SIZE_MAX = 1536; // 1536(vertices) = 3(points) * 512(triangles)
+	const size_t BUFFER_SIZE_MAX = 1536; // 1536(vertices) = 3(points) * 512(triangles) -- 24 bytes per vertex makes this ~36.8kB
 	/* Note: BUFFER_SIZE_MAX is a SOFT LIMIT
 	It is the maximum buffer growth size to use to promote batch combining. However, if a single
 	batch comes along that is larger than BUFFER_SIZE_MAX all by itself, this limit will be broken.
@@ -454,6 +454,7 @@ namespace OpenGUI {
 	Texture* OgreRenderer::createTextureFromFile( const std::string &filename ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFile( filename, mTextureResourceGroup );
 		return tex;
@@ -462,6 +463,7 @@ namespace OpenGUI {
 	Texture* OgreRenderer::createTextureFromTextureData( const TextureData *textureData ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadFromTextureData( textureData, mTextureResourceGroup );
 		return tex;
@@ -470,6 +472,7 @@ namespace OpenGUI {
 	Texture* OgreRenderer::createTextureFromOgreTexturePtr( Ogre::TexturePtr& texture ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		OgreStaticTexture* tex = new OgreStaticTexture();
 		tex->loadOgreTexture( texture );
 		return tex;
@@ -478,6 +481,7 @@ namespace OpenGUI {
 	void OgreRenderer::updateTextureFromTextureData( Texture* texture, const TextureData *textureData ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		if ( texture )
 			static_cast<OgreStaticTexture*>( texture )->loadFromTextureData( textureData, mTextureResourceGroup );
 	}
@@ -485,6 +489,7 @@ namespace OpenGUI {
 	void OgreRenderer::destroyTexture( Texture* texturePtr ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		if ( texturePtr )
 			delete texturePtr;
 	}
@@ -536,6 +541,7 @@ namespace OpenGUI {
 	RenderTexture* OgreRenderer::createRenderTexture( const IVector2 &size ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		OgreRenderTexture* tex = new OgreRenderTexture( size );
 		return tex;
 	}
@@ -543,6 +549,7 @@ namespace OpenGUI {
 	void OgreRenderer::destroyRenderTexture( RenderTexture *texturePtr ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
+		safeSetTextureState( 0, 0 ); // Ref #137
 		if ( texturePtr )
 			delete texturePtr;
 	}
