@@ -179,7 +179,7 @@ namespace OpenGUI {
 		return &gControl_ObjectAccessorList;
 	}
 	//############################################################################
-	unsigned int Control::getObjectType() {
+	unsigned int Control::getObjectType() const {
 		return OT_CONTROL;
 	}
 	//############################################################################

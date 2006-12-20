@@ -200,7 +200,7 @@ namespace OpenGUI {
 
 		// inherited from Object, used to provide properties
 		virtual ObjectAccessorList* getAccessors();
-		virtual unsigned int getObjectType();
+		virtual unsigned int getObjectType() const;
 
 	protected:
 		// We aren't for creation outside of ScreenManager
