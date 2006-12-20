@@ -7,8 +7,8 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
+#include "OpenGUI_HandledObject.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 // This warning can be disregarded
@@ -29,7 +29,7 @@ namespace OpenGUI {
 
 
 	//! LogListener interface class for creating custom log output streams.
-	class OPENGUI_API LogListener: public HandledObject {
+	class OPENGUI_API LogListener {
 	public:
 		virtual ~LogListener() {}
 		/*!
@@ -109,7 +109,7 @@ namespace OpenGUI {
 
 
 	//! Central log manager. Logging messages can be sent through this object, or a specific Log object
-	class OPENGUI_API LogManager : public Singleton<LogManager>, public HandledObject {
+	class OPENGUI_API LogManager : public Singleton<LogManager> {
 		friend class Log;
 	public:
 		//NOTE : GCC doesn't like the -1 compiler trick

@@ -7,7 +7,6 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontSet.h"
@@ -20,7 +19,7 @@ namespace OpenGUI {
 
 
 	//! Provides font loading and texture UV generation for glyphs loaded from fonts.
-	class OPENGUI_API FontManager : public Singleton<FontManager>, public HandledObject {
+	class OPENGUI_API FontManager : public Singleton<FontManager> {
 		friend class FontSet;
 		friend class XMLParser;
 	public:

@@ -7,7 +7,6 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Singleton.h"
@@ -40,7 +39,7 @@ namespace OpenGUI {
 		implementors. The singleton logic is automatically handled, so all you need to worry
 		about is getting your implementation working.
 	*/
-	class OPENGUI_API Renderer : public Singleton<Renderer>, public HandledObject {
+	class OPENGUI_API Renderer : public Singleton<Renderer> {
 	public:
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.

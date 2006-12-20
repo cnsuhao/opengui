@@ -8,7 +8,6 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_RenderTexture.h"
@@ -24,7 +23,7 @@ namespace OpenGUI {
 	Provides a common interface for creating textures from various sources.
 	\n \b [Singleton]
 	*/
-	class OPENGUI_API TextureManager : public Singleton<TextureManager>, public HandledObject {
+	class OPENGUI_API TextureManager : public Singleton<TextureManager> {
 		friend class System;
 		friend class Texture;
 		friend class RenderTexture;

@@ -8,7 +8,6 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_Iterators.h"
@@ -21,7 +20,7 @@ namespace OpenGUI {
 	class Viewport;
 
 	//! Manages creating, destroying, and lookup of Screen objects
-	class OPENGUI_API ScreenManager: public Singleton<ScreenManager>, public HandledObject {
+	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
 		friend class System;
 	public:
 		typedef std::map<std::string, Screen*> ScreenMap;

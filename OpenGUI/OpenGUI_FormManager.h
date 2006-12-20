@@ -7,7 +7,6 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Value.h"
@@ -53,7 +52,7 @@ namespace OpenGUI {
 
 
 	//! Manages creating, destroying, and lookup of FormDefinition objects
-	class OPENGUI_API FormManager: public Singleton<FormManager>, public HandledObject {
+	class OPENGUI_API FormManager: public Singleton<FormManager> {
 		friend class System; // so System can create/destroy
 	public:
 		//Reimplementation required for this style of singleton implementation to work across DLLs

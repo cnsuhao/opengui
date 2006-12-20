@@ -13,7 +13,6 @@
 #include "OpenGUI_Math.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_XML.h"
-#include "OpenGUI_HandledObject.h"
 
 //! All %OpenGUI classes are contained under the "OpenGUI" namespace
 namespace OpenGUI {
@@ -55,7 +54,7 @@ namespace OpenGUI {
 		This class is implemented using the Singleton system. There can only be one System
 		object instantiated at any point in time.
 	*/
-	class OPENGUI_API System : public Singleton<System>, public HandledObject {
+	class OPENGUI_API System : public Singleton<System> {
 	public:
 		//Reimplementation required for this style of singleton implementation to work across DLLs
 		//! Retrieve the current singleton, if one exists. If none exists, this will cause an error.
