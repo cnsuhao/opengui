@@ -6,17 +6,21 @@
 #include "OpenGUI_ObjectAccessor.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Value.h"
+#include "OpenGUI_ObjectHandle.h"
+#include "OpenGUI_HandleManager.h"
 
 namespace OpenGUI {
+
 	//############################################################################
 	Object::Object() {
 		mEventReceiver.mParent = this;
+
+		//!\todo need to fix this so that it is not called within the constructor :-/
+		_Init_ObjectHandles();
 	}
 	//############################################################################
-	Object::~Object() {}
-	//############################################################################
-	char* Object::getClassName() {
-		return "OpenGUI::Object";
+	Object::~Object() {
+		_Free_ObjectHandles();
 	}
 	//############################################################################
 	EventReceiver& Object::getEvents() {
@@ -120,4 +124,55 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+
+
+	//############################################################################
+	void Object::_Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener ) {
+		assert( sourceListener );
+		assert( handle );
+		HandleMap::iterator iter = mHandleMap.find( sourceListener );
+		if ( iter != mHandleMap.end() )
+			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Already have a handle stored for the given listener", __FUNCTION__ );
+		handle->m_HandledObject = this;
+		mHandleMap[sourceListener] = handle;
+	}
+	//############################################################################
+	void Object::_Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener ) {
+		assert( sourceListener );
+		HandleMap::iterator iter = mHandleMap.find( sourceListener );
+		if ( iter != mHandleMap.end() ) {
+			assert( handle == iter->second );
+			iter->second->m_HandledObject = 0;
+			mHandleMap.erase( iter );
+		}
+		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No handle stored for the given listener", __FUNCTION__ );
+	}
+	//############################################################################
+	/*! If no handle was added for the given listener, the return value will be 0. */
+	ObjectHandle* Object::_Get_ObjectHandle( HandleManagerListener* sourceListener ) {
+		assert( sourceListener );
+		HandleMap::iterator iter = mHandleMap.find( sourceListener );
+		if ( iter != mHandleMap.end() )
+			return iter->second;
+		return 0;
+	}
+	//############################################################################
+	void Object::_Init_ObjectHandles() {
+		HandleManager::_Object_Created( this );
+	}
+	//############################################################################
+	void Object::_Free_ObjectHandles() {
+		// send notifications
+		HandleManager::_Object_Destroyed( this );
+
+		// free whatever we have left over
+		HandleMap::iterator iter, iterend = mHandleMap.end();
+		for ( iter = mHandleMap.begin(); iter != iterend; iter++ ) {
+			ObjectHandle* handle = iter->second;
+			delete handle;
+		}
+		mHandleMap.clear();
+	}
+	//############################################################################
+
 }//namespace OpenGUI{

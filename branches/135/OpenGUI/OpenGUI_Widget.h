@@ -124,7 +124,6 @@ namespace OpenGUI {
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
-		virtual char* getClassName();
 
 //!\name Event Injectors
 //@{

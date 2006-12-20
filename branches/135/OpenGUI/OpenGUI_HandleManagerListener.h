@@ -10,25 +10,25 @@
 
 namespace OpenGUI {
 
-	class HandledObject; // forward declaration
+	class Object; // forward declaration
 	class ObjectHandle; // forward declaration
 
 
-	//! Listener for the creation and destruction of HandledObject classes
+	//! Listener for the creation and destruction of Object classes
 	/*! These listeners are registered through the HandleManager
 	*/
 	class HandleManagerListener {
 	public:
-		//! Called when a HandledObject is created
+		//! Called when an Object is created
 		/*! This is called for all newly created objects.
 		Objects that already exist at the time of listener attachment will not be provided. */
-		virtual void onHandledObjectCreated( HandledObject* handledObject ) = 0;
-		//! Called when a HandledObject is destroyed
+		virtual void onObjectCreated( Object* handledObject ) = 0;
+		//! Called when an Object is destroyed
 		/*! This is only called for each HandleManagerListener that has attached an ObjectHandle to the object.
 		If you do not attach a handle, you will not receive notification about the object's destruction.
-		Also, your handle will be automatically deleted by HandledObject if you do not remove it yourself
+		Also, your handle will be automatically deleted by Object if you do not remove it yourself
 		during this call. */
-		virtual void onHandledObjectDestroyed( HandledObject* handledObject ) = 0;
+		virtual void onObjectDestroyed( Object* handledObject ) = 0;
 	};
 
 } // namespace OpenGUI {

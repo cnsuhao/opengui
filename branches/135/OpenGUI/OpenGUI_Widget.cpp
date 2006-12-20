@@ -148,10 +148,6 @@ namespace OpenGUI {
 		return &gWidget_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Widget::getClassName() {
-		return "OpenGUI::Widget";
-	}
-	//############################################################################
 	const std::string& Widget::getName() {
 		return mWidgetName;
 	}
