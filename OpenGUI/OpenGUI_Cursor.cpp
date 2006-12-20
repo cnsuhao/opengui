@@ -53,10 +53,6 @@ namespace OpenGUI {
 		return &gCursor_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Cursor::getClassName() {
-		return "OpenGUI::Cursor";
-	}
-	//############################################################################
 	//############################################################################
 	Cursor::Cursor() {
 		if ( gCursor_ObjectAccessorList.getParent() == 0 )
@@ -136,6 +132,10 @@ namespace OpenGUI {
 	void Cursor::eventCursor_Shown( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
 		triggerEvent( "Cursor_Shown", event );
+	}
+	//############################################################################
+	unsigned int Cursor::getObjectType(){
+		return OT_CURSOR;
 	}
 	//############################################################################
 }//namespace OpenGUI{

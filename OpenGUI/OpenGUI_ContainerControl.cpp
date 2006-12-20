@@ -65,10 +65,6 @@ namespace OpenGUI {
 		return &gContainerControl_ObjectAccessorList;
 	}
 	//############################################################################
-	char* ContainerControl::getClassName() {
-		return "OpenGUI::ContainerControl";
-	}
-	//############################################################################
 	void ContainerControl::eventDrawBG( Brush& brush ) {
 		Draw_EventArgs event( brush );
 		triggerEvent( "DrawBG", event );

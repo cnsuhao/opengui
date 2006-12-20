@@ -8,7 +8,6 @@
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
 #include "OpenGUI_Singleton.h"
-#include "OpenGUI_HandledObject.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 // This warning can be disregarded
@@ -173,7 +172,7 @@ namespace OpenGUI {
 
 
 	//! A log represents a categorization type for messages. Each log is given its own logLevel setting, in addition to the setLevel of the LogManager.
-	class OPENGUI_API Log: public HandledObject {
+	class OPENGUI_API Log {
 		friend class LogManager;
 	public:
 

@@ -5,7 +5,7 @@
 #include "OpenGUI_HandleManager.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_HandleManagerListener.h"
-#include "OpenGUI_HandledObject.h"
+#include "OpenGUI_Object.h"
 
 namespace OpenGUI {
 	HandleManager::ListenerSet HandleManager::mListenerSet;
@@ -27,23 +27,23 @@ namespace OpenGUI {
 		mListenerSet.erase( listener );
 	}
 	//############################################################################
-	void HandleManager::_Object_Created( HandledObject* object ) {
+	void HandleManager::_Object_Created( Object* object ) {
 		assert( object );
 		ListenerSet::iterator iter, iterend = mListenerSet.end();
 		for ( iter = mListenerSet.begin(); iter != iterend; iter++ ) {
 			HandleManagerListener* listener = ( *iter );
-			listener->onHandledObjectCreated( object );
+			listener->onObjectCreated( object );
 		}
 	}
 	//############################################################################
-	void HandleManager::_Object_Destroyed( HandledObject* object ) {
+	void HandleManager::_Object_Destroyed( Object* object ) {
 		assert( object );
 		ListenerSet::iterator iter, iterend = mListenerSet.end();
 		for ( iter = mListenerSet.begin(); iter != iterend; iter++ ) {
 			HandleManagerListener* listener = ( *iter );
 			ObjectHandle* handle = object->_Get_ObjectHandle( listener );
 			if ( handle )
-				listener->onHandledObjectDestroyed( object );
+				listener->onObjectDestroyed( object );
 		}
 	}
 	//############################################################################

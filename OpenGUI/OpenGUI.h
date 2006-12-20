@@ -24,7 +24,6 @@
 #include "OpenGUI_Singleton.h"
 
 // These provide the handle management system for binding assistance
-#include "OpenGUI_HandledObject.h"
 #include "OpenGUI_ObjectHandle.h"
 #include "OpenGUI_HandleManager.h"
 #include "OpenGUI_HandleManagerListener.h"

@@ -200,6 +200,8 @@ namespace OpenGUI {
 
 		// inherited from Object, used to provide properties
 		virtual ObjectAccessorList* getAccessors();
+		virtual unsigned int getObjectType();
+
 	protected:
 		// We aren't for creation outside of ScreenManager
 		Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport );

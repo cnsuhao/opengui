@@ -179,10 +179,6 @@ namespace OpenGUI {
 		return &gControl_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Control::getClassName() {
-		return "OpenGUI::Control";
-	}
-	//############################################################################
 	void Control::_draw( Brush& brush ) {
 		if ( mVisible ) {
 			brush.pushAlpha( mAlpha );
