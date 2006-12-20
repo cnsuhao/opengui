@@ -179,6 +179,10 @@ namespace OpenGUI {
 		return &gControl_ObjectAccessorList;
 	}
 	//############################################################################
+	unsigned int Control::getObjectType() {
+		return OT_CONTROL;
+	}
+	//############################################################################
 	void Control::_draw( Brush& brush ) {
 		if ( mVisible ) {
 			brush.pushAlpha( mAlpha );

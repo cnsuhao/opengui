@@ -91,6 +91,7 @@ namespace OpenGUI {
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
+		virtual unsigned int getObjectType();
 
 		//! Values used by get/setDocking and get/setAnchor
 		enum ControlSides {
