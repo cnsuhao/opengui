@@ -6,6 +6,7 @@
 
 #include "HandleSystem.h"
 #include "Object.h"
+#include "ObjectHandle.h"
 #include "Screen.h"
 
 namespace OpenGUI_Net {

@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ObjectHandle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OpenGUI.Net.cpp"
 				>
 			</File>
@@ -272,6 +276,10 @@
 			</File>
 			<File
 				RelativePath=".\Object.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ObjectHandle.h"
 				>
 			</File>
 			<File

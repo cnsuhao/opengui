@@ -7,6 +7,7 @@
 #include "Viewport.h"
 #include "Screen.h"
 #include "HandleSystem.h"
+#include "ObjectHandle.h"
 
 using namespace System;
 
@@ -43,18 +44,28 @@ namespace OpenGUI_Net {
 		return screen;
 	}
 	//############################################################################
-	void ScreenManager::destroyScreen( Screen ^ screenRef ){
+	void ScreenManager::destroyScreen( Screen ^ screenRef ) {
 		OpenGUI::Screen* s;
-		s = static_cast<OpenGUI::Screen*>(screenRef->getHandle()->getObject());
+		s = static_cast<OpenGUI::Screen*>( screenRef->getHandle()->getObject() );
 		sanityTest();
 		THRU_THROW_BEGIN
 		mScreenManager->destroyScreen( s );
 		THRU_THROW_END
 	}
 	//############################################################################
-	void ScreenManager::updateScreens() {}
+	void ScreenManager::updateScreens() {
+		sanityTest();
+		THRU_THROW_BEGIN
+		mScreenManager->updateScreens();
+		THRU_THROW_END
+	}
 	//############################################################################
-	void ScreenManager::updateTime() {}
+	void ScreenManager::updateTime() {
+		sanityTest();
+		THRU_THROW_BEGIN
+		mScreenManager->updateTime();
+		THRU_THROW_END
+	}
 	//############################################################################
 	float ScreenManager::statGetFPS() {
 		sanityTest();

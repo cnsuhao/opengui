@@ -30,9 +30,9 @@ namespace OpenGUI_Net {
 		OpenGUI::System* tmp;
 		THRU_THROW_BEGIN
 		OpenGUI::Renderer* rPtr = renderer->getNativeRenderer();
-		tmp = new OpenGUI::System( rPtr);
+		tmp = new OpenGUI::System( rPtr );
 		THRU_THROW_END
-		gHandle = gcnew System( tmp, handleSystem  );
+		gHandle = gcnew System( tmp, handleSystem );
 		return gHandle;
 	}
 	//############################################################################
@@ -54,7 +54,7 @@ namespace OpenGUI_Net {
 	System::System( OpenGUI::System* systemPtr, HandleSystem* handleSystem ) {
 		mSystem = systemPtr;
 		mHandleSystem = handleSystem;
-		mScreenManager = gcnew ScreenManager(OpenGUI::ScreenManager::getSingletonPtr());
+		mScreenManager = gcnew ScreenManager( OpenGUI::ScreenManager::getSingletonPtr() );
 	}
 	//############################################################################
 	void System::loadPlugin( String ^ fileName ) {
