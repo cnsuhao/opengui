@@ -7,6 +7,7 @@
 
 using namespace System;
 #include <vcclr.h>
+#define MNYI throw gcnew ::System::Exception("Not Yet Implemented")
 #define THRU_THROW_BEGIN try{
 #define THRU_THROW_END }catch(OpenGUI::Exception& e){ \
 	String^ msg = Marshal::STRING(e.getFullMessage()); \

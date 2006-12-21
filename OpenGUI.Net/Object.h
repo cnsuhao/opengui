@@ -32,6 +32,8 @@ namespace OpenGUI_Net {
 		//returns this object's ObjectAccessorList head
 		//virtual ObjectAccessorList* getAccessors ();
 		//EventReceiver &  getEvents ();
+	protected:
+		void sanityTest();
 	private:
 		ObjectHandle* mNativeHandle;
 	};

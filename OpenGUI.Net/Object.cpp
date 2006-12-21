@@ -12,7 +12,7 @@ namespace OpenGUI_Net {
 
 	//############################################################################
 	Object::Object() {
-		/**/
+		mNativeHandle = 0;
 	}
 	//############################################################################
 	Object::~Object() {
@@ -25,6 +25,11 @@ namespace OpenGUI_Net {
 	//############################################################################
 	ObjectHandle* Object::getHandle() {
 		return mNativeHandle;
+	}
+	//############################################################################
+	void Object::sanityTest() {
+		if ( mNativeHandle == 0 || mNativeHandle->getObject() == 0 )
+			throw gcnew ::System::Exception( "Expired OpenGUI::Object handle." );
 	}
 	//############################################################################
 
