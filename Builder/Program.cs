@@ -25,6 +25,10 @@ namespace Builder {
 			sys.shutdown();
 			r2 = r1 + r2;
 			r1 = r1 - r2;
+			OpenGUI_Net.Widget w = new OpenGUI_Net.Widget();
+			List<Widget> wl = w.getChildrenAt(size);
+
+			//wa;
 			TextAlignment ta;
 			ta.horizontal = TextAlignment.Alignment.LEFT;
 			ta.vertical = TextAlignment.Alignment.CENTER;
