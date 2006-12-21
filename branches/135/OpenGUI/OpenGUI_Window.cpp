@@ -21,7 +21,7 @@ namespace OpenGUI {
 
 
 	//############################################################################
-	Window::Window() {
+	Window::Window(): ContainerControl( true ) {
 		if ( gWindow_ObjectAccessorList.getParent() == 0 )
 			gWindow_ObjectAccessorList.setParent( ContainerControl::getAccessors() );
 
@@ -37,6 +37,8 @@ namespace OpenGUI {
 		getEvents()["Move_End"].add( new EventDelegate( this, &Window::onMove_End ) );
 		getEvents()["Resize_Begin"].add( new EventDelegate( this, &Window::onResize_Begin ) );
 		getEvents()["Resize_End"].add( new EventDelegate( this, &Window::onResize_End ) );
+
+		_Initialize_Object();
 	}
 	//############################################################################
 	Window::~Window() {

@@ -74,6 +74,8 @@ namespace OpenGUI {
 		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Cursor::onCursor_Release ) );
 		getEvents()["Cursor_Hidden"].add( new EventDelegate( this, &Cursor::onCursor_Hidden ) );
 		getEvents()["Cursor_Shown"].add( new EventDelegate( this, &Cursor::onCursor_Shown ) );
+
+		_Initialize_Object();
 	}
 	//############################################################################
 	Cursor::~Cursor() {

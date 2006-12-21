@@ -148,6 +148,8 @@ namespace OpenGUI {
 		else
 			ss << "  No Viewport";
 		LogManager::SlogMsg( "Screen", OGLL_INFO ) << ss.str() << Log::endlog;
+
+		_Initialize_Object();
 	}
 	//############################################################################
 	Screen::~Screen() {

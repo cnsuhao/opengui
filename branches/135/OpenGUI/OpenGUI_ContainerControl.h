@@ -47,7 +47,7 @@ namespace OpenGUI {
 	class OPENGUI_API ContainerControl : public Control, WidgetCollectionListener {
 	public:
 		//! public constructor
-		ContainerControl();
+		ContainerControl( bool delayObjectInit = false );
 		//! public destructor
 		virtual ~ContainerControl();
 

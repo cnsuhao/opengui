@@ -25,7 +25,7 @@ namespace OpenGUI {
 
 
 	//############################################################################
-	ContainerControl::ContainerControl() {
+	ContainerControl::ContainerControl( bool delayObjectInit ): Control( true ) {
 		if ( gContainerControl_ObjectAccessorList.getParent() == 0 )
 			gContainerControl_ObjectAccessorList.setParent( Control::getAccessors() );
 
@@ -52,6 +52,9 @@ namespace OpenGUI {
 
 		//additional (unblockable) event bindings
 		getEvents()["Detached"].add( new EventDelegate( this, &ContainerControl::onDetached_BrushCache ) );
+
+		if ( !delayObjectInit )
+			_Initialize_Object();
 	}
 	//############################################################################
 	ContainerControl::~ContainerControl() {
