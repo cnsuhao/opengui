@@ -13,7 +13,7 @@ namespace OpenGUI_Net {
 
 	public ref class Screen: OpenGUI_Net::Object {
 	public:
-		Screen(){}
+		Screen() {}
 		//const ScreenSet &  getScreenSet()=0;
 	};
 

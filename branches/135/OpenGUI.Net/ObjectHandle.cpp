@@ -3,7 +3,6 @@
 // See LICENSE.TXT for details
 
 #include "Stdafx.h"
-
 #include "Object.h"
 #include "ObjectHandle.h"
 #include "HandleSystem.h"
@@ -11,20 +10,14 @@
 namespace OpenGUI_Net {
 
 	//############################################################################
-	Object::Object() {
-		/**/
+	ObjectHandle::ObjectHandle() {
+		m_ObjectRef = nullptr;
 	}
 	//############################################################################
-	Object::~Object() {
-		/**/
-	}
-	//############################################################################
-	void Object::_setHandle( ObjectHandle* handle ) {
-		mNativeHandle = handle;
-	}
-	//############################################################################
-	ObjectHandle* Object::getHandle() {
-		return mNativeHandle;
+	ObjectHandle::~ObjectHandle() {
+		if ( m_ObjectRef && m_ObjectRef->getHandle() == this ) {
+			m_ObjectRef->_setHandle( 0 );
+		}
 	}
 	//############################################################################
 
