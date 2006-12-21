@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HandleSystem.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Object.cpp"
 				>
 			</File>
@@ -252,6 +256,10 @@
 			>
 			<File
 				RelativePath=".\EventArgs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HandleSystem.h"
 				>
 			</File>
 			<File

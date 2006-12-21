@@ -9,6 +9,7 @@ using namespace System;
 
 namespace OpenGUI_Net {
 
+	//############################################################################
 	public ref class EventArgs {
 	public:
 		//
@@ -70,6 +71,7 @@ namespace OpenGUI_Net {
 		char mKey;
 	};
 	//############################################################################
+
 } // namespace OpenGUI_Net {
 
 #endif // EventArgs_h__
