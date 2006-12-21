@@ -217,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ScreenManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Stdafx.cpp"
 				>
 				<FileConfiguration
@@ -280,6 +284,10 @@
 			</File>
 			<File
 				RelativePath=".\Screen.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ScreenManager.h"
 				>
 			</File>
 			<File

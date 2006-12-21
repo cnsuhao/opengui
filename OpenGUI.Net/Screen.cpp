@@ -4,6 +4,5 @@
 
 #include "Stdafx.h"
 
-#include "Object.h"
 #include "Screen.h"
 

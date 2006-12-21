@@ -6,6 +6,7 @@
 #include "System.h"
 #include "Renderer.h"
 #include "HandleSystem.h"
+#include "ScreenManager.h"
 
 using namespace System;
 
@@ -38,55 +39,56 @@ namespace OpenGUI_Net {
 	void System::shutdown() {
 		sanityTest();
 		THRU_THROW_BEGIN
-		delete gSystem;
+		delete mSystem;
 		THRU_THROW_END
-		gSystem = 0;
+		mSystem = 0;
 
 		delete mHandleSystem;
 	}
 	//############################################################################
 	void System::sanityTest() {
-		if ( gSystem == 0 || gHandle != this )
+		if ( mSystem == 0 || gHandle != this )
 			throw gcnew ::System::Exception( "Expired OpenGUI::System handle." );
 	}
 	//############################################################################
 	System::System( OpenGUI::System* systemPtr, HandleSystem* handleSystem ) {
-		gSystem = systemPtr;
+		mSystem = systemPtr;
 		mHandleSystem = handleSystem;
+		mScreenManager = gcnew ScreenManager(OpenGUI::ScreenManager::getSingletonPtr());
 	}
 	//############################################################################
 	void System::loadPlugin( String ^ fileName ) {
 		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->loadPlugin( Marshal::STRING( fileName ) );
+		mSystem->loadPlugin( Marshal::STRING( fileName ) );
 		THRU_THROW_END
 	}
 	//############################################################################
 	void System::unloadPlugin( String ^ fileName ) {
 		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->unloadPlugin( Marshal::STRING( fileName ) );
+		mSystem->unloadPlugin( Marshal::STRING( fileName ) );
 		THRU_THROW_END
 	}
 	//############################################################################
 	void System::update() {
 		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->update();
+		mSystem->update();
 		THRU_THROW_END
 	}
 	//############################################################################
 	void System::updateScreens() {
 		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->updateScreens();
+		mSystem->updateScreens();
 		THRU_THROW_END
 	}
 	//############################################################################
 	void System::updateTime() {
 		sanityTest();
 		THRU_THROW_BEGIN
-		gSystem->updateTime();
+		mSystem->updateTime();
 		THRU_THROW_END
 	}
 	//############################################################################

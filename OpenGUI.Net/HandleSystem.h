@@ -11,6 +11,7 @@ using namespace System;
 namespace OpenGUI_Net {
 
 	class HandleSystem; // forward declaration
+	ref class Object; // forward declaration
 
 	class HandleListener: public OpenGUI::HandleManagerListener {
 	public:
@@ -27,8 +28,10 @@ namespace OpenGUI_Net {
 	public:
 		HandleSystem();
 		~HandleSystem();
+		static Object ^ getManaged( OpenGUI::Object* object );
 	private:
 		HandleListener* mHandleListener;
+		static HandleSystem* mCurrentHandleSystem;
 	};
 
 } // namespace OpenGUI_Net {

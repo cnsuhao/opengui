@@ -5,6 +5,8 @@
 #ifndef Screen_h__
 #define Screen_h__
 
+#include "Object.h"
+
 using namespace System;
 
 namespace OpenGUI_Net {

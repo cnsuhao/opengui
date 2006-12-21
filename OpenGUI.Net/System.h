@@ -8,8 +8,9 @@
 using namespace System;
 
 namespace OpenGUI_Net {
-	ref class Renderer; // forward declaration
 	class HandleSystem; // forward declaration
+	ref class Renderer; // forward declaration
+	ref class ScreenManager; // forward declaration
 
 	public ref class System {
 	public:
@@ -24,11 +25,13 @@ namespace OpenGUI_Net {
 		void updateTime();
 	private:
 		System( OpenGUI::System* systemPtr, HandleSystem* handleSystem );
-		OpenGUI::System* gSystem;
+		OpenGUI::System* mSystem;
 		void sanityTest();
 
 		static System ^ gHandle;
 		HandleSystem* mHandleSystem;
+
+		ScreenManager ^ mScreenManager;
 	};
 
 } // namespace OpenGUINet {

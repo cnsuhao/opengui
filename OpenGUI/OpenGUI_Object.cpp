@@ -148,6 +148,7 @@ namespace OpenGUI {
 			assert( handle == iter->second );
 			iter->second->m_HandledObject = 0;
 			mHandleMap.erase( iter );
+			return;
 		}
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No handle stored for the given listener", __FUNCTION__ );
 	}

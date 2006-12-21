@@ -17,6 +17,10 @@ namespace Builder {
 			TestRenderer render = new TestRenderer();
 			OpenGUI_Net.System sys = OpenGUI_Net.System.initialize(render);
 			Viewport vp = render.getViewport();
+			FVector2 size;
+			size.x = 800; size.y = 600;
+			OpenGUI_Net.Screen screen = OpenGUI_Net.ScreenManager.getHandle().createScreen("test", size);
+			OpenGUI_Net.ScreenManager.getHandle().destroyScreen(screen);
 			sys.shutdown();
 			r2 = r1 + r2;
 			r1 = r1 - r2;
