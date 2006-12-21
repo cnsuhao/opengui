@@ -63,7 +63,32 @@ namespace OpenGUI_Net {
 	//############################################################################
 	//WidgetCollection* getContainer() const;
 	//############################################################################
-	//void getChildrenAt( FVector2 position, WidgetPtrList& outList, bool recursive = false );
+	WidgetList ^ Widget::getChildrenAt( FVector2 position ) {
+		return Widget::getChildrenAt( position, false );
+	}
+	//############################################################################
+	WidgetList ^ Widget::getChildrenAt( FVector2 position, bool recursive ) {
+		sanityTest();
+		OpenGUI::Widget* w = dynamic_cast<OpenGUI::Widget*>( getHandle()->getObject() );
+		OpenGUI::FVector2 pos = Marshal::FVECTOR2( position );
+		OpenGUI::WidgetPtrList ptrList; // something to hold the results
+
+		//do the function call
+		THRU_THROW_BEGIN
+		w->getChildrenAt( pos, ptrList, recursive );
+		THRU_THROW_END
+
+		// now build the managed list from the native result
+		WidgetList ^ out = gcnew WidgetList();
+		OpenGUI::WidgetPtrList::iterator iter, iterend = ptrList.end();
+		for ( iter = ptrList.begin(); iter != iterend; iter++ ) {
+			OpenGUI::Widget* nchild = ( *iter ); // native child
+			Widget ^ mchild = dynamic_cast < Widget ^ >( HandleSystem::getManaged( nchild ) ); // managed child
+			out->Add( mchild ); // add the managed child reference to the list
+		}
+		// and out goes the final list (that was "fun")
+		return out;
+	}
 	//############################################################################
 	Widget ^ Widget::getChildAt( FVector2 position ) {
 		return getChildAt( position, false );
