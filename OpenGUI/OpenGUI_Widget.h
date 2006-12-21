@@ -56,7 +56,7 @@ namespace OpenGUI {
 		//friend class Screen; // Screen needs access to the protected input event triggers
 	public:
 		//! public constructor
-		Widget();
+		Widget( bool delayObjectInit = false );
 		//! public destructor
 		virtual ~Widget();
 

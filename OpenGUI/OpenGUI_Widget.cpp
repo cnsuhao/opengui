@@ -87,7 +87,7 @@ namespace OpenGUI {
 	//############################################################################
 
 
-	Widget::Widget() {
+	Widget::Widget( bool delayObjectInit ) {
 		mContainer = 0; //we always start with no container
 
 		if ( gWidget_ObjectAccessorList.getParent() == 0 )
@@ -137,6 +137,9 @@ namespace OpenGUI {
 		getEvents()["Key_FocusLost"].add( new EventDelegate( this, &Widget::onKey_FocusLost ) );
 		getEvents().createEvent( "Tick" );
 		getEvents()["Tick"].add( new EventDelegate( this, &Widget::onTick ) );
+
+		if ( !delayObjectInit )
+			_Initialize_Object();
 	}
 	//############################################################################
 	Widget::~Widget() {

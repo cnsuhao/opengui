@@ -59,6 +59,9 @@ namespace OpenGUI {
 		EventReceiver& getEvents();
 
 		//############################################################################
+		//! Returns an integer identifying the type of object
+		/*! \see Object_Type */
+		virtual unsigned int getObjectType() const = 0;
 
 		//! Adds a new handle to the object, indexing it by the given \c sourceListener
 		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
@@ -66,10 +69,6 @@ namespace OpenGUI {
 		void _Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
 		//! Gets the handle that was previously added for the given \c sourceListener
 		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
-
-		//! Returns an integer identifying the type of object
-		/*! \see Object_Type */
-		virtual unsigned int getObjectType() const = 0;
 
 		//! These are the possible return values for getObjectType()
 		enum Object_Type {
@@ -82,6 +81,9 @@ namespace OpenGUI {
 			OT_WINDOW           = 8, //!< Object is a Window
 		};
 
+	protected:
+		//! \internal This should be called once at the end of the last constructor that overrides getObjectType()
+		void _Initialize_Object();
 	private:
 		EventReceiver mEventReceiver;
 
@@ -89,6 +91,7 @@ namespace OpenGUI {
 		void _Free_ObjectHandles();
 		typedef std::map<HandleManagerListener*, ObjectHandle*> HandleMap;
 		HandleMap mHandleMap;
+		bool mInitialized;
 	};
 
 }//namespace OpenGUI{

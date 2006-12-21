@@ -14,8 +14,12 @@ namespace OpenGUI {
 	//############################################################################
 	Object::Object() {
 		mEventReceiver.mParent = this;
-
-		//!\todo need to fix this so that it is not called within the constructor :-/
+		mInitialized = false;
+	}
+	//############################################################################
+	void Object::_Initialize_Object() {
+		assert( !mInitialized );
+		mInitialized = true;
 		_Init_ObjectHandles();
 	}
 	//############################################################################

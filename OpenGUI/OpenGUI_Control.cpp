@@ -135,7 +135,7 @@ namespace OpenGUI {
 	//############################################################################
 
 	//############################################################################
-	Control::Control() {
+	Control::Control( bool delayObjectInit ): Widget( true ) {
 		if ( gControl_ObjectAccessorList.getParent() == 0 )
 			gControl_ObjectAccessorList.setParent( Widget::getAccessors() );
 
@@ -169,6 +169,9 @@ namespace OpenGUI {
 		getEvents().createEvent( "Resized" );
 		getEvents()["Moved"].add( new EventDelegate( this, &Control::onMoved ) );
 		getEvents()["Resized"].add( new EventDelegate( this, &Control::onResized ) );
+
+		if ( !delayObjectInit )
+			_Initialize_Object();
 	}
 	//############################################################################
 	Control::~Control() {

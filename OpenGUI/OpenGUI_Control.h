@@ -42,7 +42,7 @@ namespace OpenGUI {
 		friend class ContainerControl; //needed for layout state protection
 	public:
 		//! public constructor
-		Control();
+		Control( bool delayObjectInit = false );
 		//! public destructor
 		virtual ~Control();
 
