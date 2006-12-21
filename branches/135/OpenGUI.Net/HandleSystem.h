@@ -12,18 +12,18 @@ namespace OpenGUI_Net {
 
 	class HandleSystem; // forward declaration
 
-	class HandleListener: public OpenGUI::HandleManagerListener{
+	class HandleListener: public OpenGUI::HandleManagerListener {
 	public:
-		HandleListener(HandleSystem* system):mHandleSystem(system){}
-		// Called when a HandledObject is created. 
-		virtual void onObjectCreated(OpenGUI::Object* handledObject);
-		// Called when a HandledObject is destroyed. 
-		virtual void onObjectDestroyed(OpenGUI::Object* handledObject);
+		HandleListener( HandleSystem* system ): mHandleSystem( system ) {}
+		// Called when a HandledObject is created.
+		virtual void onObjectCreated( OpenGUI::Object* handledObject );
+		// Called when a HandledObject is destroyed.
+		virtual void onObjectDestroyed( OpenGUI::Object* handledObject );
 	private:
 		HandleSystem* mHandleSystem;
 	};
 
-	class HandleSystem{
+	class HandleSystem {
 	public:
 		HandleSystem();
 		~HandleSystem();

@@ -5,3 +5,25 @@
 #include "Stdafx.h"
 
 #include "Object.h"
+#include "HandleSystem.h"
+
+namespace OpenGUI_Net {
+
+	//############################################################################
+	Object::Object(){
+		//
+	}
+	//############################################################################
+	Object::~Object(){
+		//
+	}
+	//############################################################################
+	void Object::_setHandle(ObjectHandle* handle){
+		mNativeHandle = handle;
+	}
+	//############################################################################
+	ObjectHandle* Object::getHandle(){
+		return mNativeHandle;
+	}
+	//############################################################################
+} // namespace OpenGUI_Net {

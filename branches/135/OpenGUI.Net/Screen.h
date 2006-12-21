@@ -9,8 +9,9 @@ using namespace System;
 
 namespace OpenGUI_Net {
 
-	public ref class Screen {
+	public ref class Screen: OpenGUI_Net::Object {
 	public:
+		Screen(){}
 		//const ScreenSet &  getScreenSet()=0;
 	};
 
