@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "ObjectHandle.h"
 #include "Screen.h"
+#include "Widget.h"
 
 namespace OpenGUI_Net {
 	//############################################################################
@@ -18,6 +19,13 @@ namespace OpenGUI_Net {
 			Screen ^ screen = gcnew Screen();
 			screen->_setHandle( handle );
 			handle->_setManaged( screen );
+			return;
+		}
+		if ( handledObject->getObjectType() == OpenGUI::Object::OT_WIDGET ) {
+			Widget ^ widget = gcnew Widget();
+			widget->_setHandle( handle );
+			handle->_setManaged( widget );
+			return;
 		}
 	}
 	//############################################################################
@@ -48,6 +56,7 @@ namespace OpenGUI_Net {
 	}
 	//############################################################################
 	Object ^ HandleSystem::getManaged( OpenGUI::Object* object ) {
+		if ( object == 0 ) return nullptr;
 		return static_cast<ObjectHandle*>( object->_Get_ObjectHandle( mCurrentHandleSystem->mHandleListener ) )->getManaged();
 	}
 	//############################################################################
