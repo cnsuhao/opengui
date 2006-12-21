@@ -5,6 +5,7 @@
 #include "Stdafx.h"
 #include "System.h"
 #include "Renderer.h"
+#include "HandleSystem.h"
 
 using namespace System;
 
@@ -22,12 +23,15 @@ namespace OpenGUI_Net {
 	System ^ System::initialize( Renderer ^ renderer ) {
 		if ( gHandle != nullptr )
 			throw gcnew ::System::Exception( "Cannot initialize OpenGUI::System because it is already initialized." );
+
+		HandleSystem* handleSystem = new HandleSystem;
+
 		OpenGUI::System* tmp;
 		THRU_THROW_BEGIN
 		OpenGUI::Renderer* rPtr = renderer->getNativeRenderer();
-		tmp = new OpenGUI::System( rPtr );
+		tmp = new OpenGUI::System( rPtr);
 		THRU_THROW_END
-		gHandle = gcnew System( tmp );
+		gHandle = gcnew System( tmp, handleSystem  );
 		return gHandle;
 	}
 	//############################################################################
@@ -37,6 +41,8 @@ namespace OpenGUI_Net {
 		delete gSystem;
 		THRU_THROW_END
 		gSystem = 0;
+
+		delete mHandleSystem;
 	}
 	//############################################################################
 	void System::sanityTest() {
@@ -44,8 +50,9 @@ namespace OpenGUI_Net {
 			throw gcnew ::System::Exception( "Expired OpenGUI::System handle." );
 	}
 	//############################################################################
-	System::System( OpenGUI::System* systemPtr ) {
+	System::System( OpenGUI::System* systemPtr, HandleSystem* handleSystem ) {
 		gSystem = systemPtr;
+		mHandleSystem = handleSystem;
 	}
 	//############################################################################
 	void System::loadPlugin( String ^ fileName ) {
