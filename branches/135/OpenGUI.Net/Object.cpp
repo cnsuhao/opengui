@@ -8,21 +8,31 @@
 #include "HandleSystem.h"
 
 namespace OpenGUI_Net {
-
 	//############################################################################
-	Object::Object(){
-		//
+	ObjectHandle::ObjectHandle() {
+		m_ObjectRef = nullptr;
 	}
 	//############################################################################
-	Object::~Object(){
-		//
+	ObjectHandle::~ObjectHandle() {
+		if ( m_ObjectRef && m_ObjectRef->getHandle() == this ) {
+			m_ObjectRef->_setHandle( 0 );
+		}
 	}
 	//############################################################################
-	void Object::_setHandle(ObjectHandle* handle){
+	//############################################################################
+	Object::Object() {
+		/**/
+	}
+	//############################################################################
+	Object::~Object() {
+		/**/
+	}
+	//############################################################################
+	void Object::_setHandle( ObjectHandle* handle ) {
 		mNativeHandle = handle;
 	}
 	//############################################################################
-	ObjectHandle* Object::getHandle(){
+	ObjectHandle* Object::getHandle() {
 		return mNativeHandle;
 	}
 	//############################################################################

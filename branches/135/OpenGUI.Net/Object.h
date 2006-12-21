@@ -14,7 +14,8 @@ namespace OpenGUI_Net {
 
 	class ObjectHandle: public OpenGUI::ObjectHandle {
 	public:
-		ObjectHandle() {}
+		ObjectHandle();
+		~ObjectHandle();
 		Object ^ getManaged() {
 			return m_ObjectRef;
 		}
