@@ -67,7 +67,14 @@ namespace OpenGUI {
 		if ( tmp != screenPtr )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
 					  "Invalid Screen pointer", __FUNCTION__ );
+
+		// delete the screen, which will likely fire off some events
 		delete screenPtr;
+
+		// Remove the entry from the screen map last.
+		// We need to wait because events during deletion might try to do
+		// something stupid like look us up by name again.
+		mScreenMap.erase( iter );
 	}
 	//############################################################################
 	Screen* ScreenManager::getScreen( const std::string& screenName ) {
