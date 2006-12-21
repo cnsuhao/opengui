@@ -15,12 +15,13 @@ namespace Builder {
 			r1.fValue = 4;
 			r2.fValue = 5;
 			TestRenderer render = new TestRenderer();
-			OpenGUI_Net.System sys = OpenGUI_Net.System.initialize(render);
+			OpenGUI_Net.System sys = OpenGUI_Net.System.initialize( render );
 			Viewport vp = render.getViewport();
 			FVector2 size;
-			size.x = 800; size.y = 600;
-			OpenGUI_Net.Screen screen = OpenGUI_Net.ScreenManager.getHandle().createScreen("test", size);
-			OpenGUI_Net.ScreenManager.getHandle().destroyScreen(screen);
+			size.x = 800;
+			size.y = 600;
+			OpenGUI_Net.Screen screen = OpenGUI_Net.ScreenManager.getHandle().createScreen( "test", size );
+			OpenGUI_Net.ScreenManager.getHandle().destroyScreen( screen );
 			sys.shutdown();
 			r2 = r1 + r2;
 			r1 = r1 - r2;
