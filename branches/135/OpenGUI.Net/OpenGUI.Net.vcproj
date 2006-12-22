@@ -323,6 +323,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Value.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Viewport.h"
 				>
 			</File>
