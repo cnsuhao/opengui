@@ -87,7 +87,10 @@ namespace OpenGUI_Net {
 	}
 	//############################################################################
 	Widget ^ WidgetCollection::operator[]( String^ widgetName ) {
-		return getWidget( widgetName );
+		Widget ^ w = getWidget( widgetName );
+		if ( w == nullptr )
+			throw gcnew ::System::Exception( "Widget is not part of this collection: " + widgetName );
+		return w;
 	}
 	//############################################################################
 } // namespace OpenGUI_Net {
