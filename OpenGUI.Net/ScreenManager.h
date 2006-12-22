@@ -12,7 +12,7 @@ namespace OpenGUI_Net {
 	ref class Viewport;
 	ref class Screen;
 
-	public ref class ScreenManager {
+	public ref class ScreenManager sealed {
 	public:
 		static ScreenManager ^ getHandle();
 
