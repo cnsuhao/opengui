@@ -13,7 +13,7 @@ namespace OpenGUI_Net {
 	ref class ScreenManager; // forward declaration
 	ref class WidgetManager; // forward declaration
 
-	public ref class System {
+	public ref class System sealed {
 	public:
 		static System ^ getHandle();
 		static System ^ initialize( Renderer ^ renderer );
