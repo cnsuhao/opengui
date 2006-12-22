@@ -6,6 +6,7 @@
 #define Widget_h__
 
 #include "Object.h"
+#include "WidgetCollection.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -32,7 +33,7 @@ namespace OpenGUI_Net {
 		// invalidate this Widget, as well as any and all potential children
 		void flush();
 		// returns the collection this widget is held within
-//WidgetCollection* getContainer() const;
+		WidgetCollection ^ getContainer();
 		// Fills the given \c outList with pointers to all child Widgets that are under the given \c position
 		WidgetList ^ getChildrenAt( FVector2 position );
 		WidgetList ^ getChildrenAt( FVector2 position, bool recursive );

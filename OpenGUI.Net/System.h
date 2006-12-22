@@ -11,6 +11,7 @@ namespace OpenGUI_Net {
 	class HandleSystem; // forward declaration
 	ref class Renderer; // forward declaration
 	ref class ScreenManager; // forward declaration
+	ref class WidgetManager; // forward declaration
 
 	public ref class System {
 	public:
@@ -32,6 +33,7 @@ namespace OpenGUI_Net {
 		HandleSystem* mHandleSystem;
 
 		ScreenManager ^ mScreenManager;
+		WidgetManager ^ mWidgetManager;
 	};
 
 } // namespace OpenGUINet {

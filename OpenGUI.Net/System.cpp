@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "HandleSystem.h"
 #include "ScreenManager.h"
+#include "WidgetManager.h"
 
 using namespace System;
 
@@ -55,6 +56,7 @@ namespace OpenGUI_Net {
 		mSystem = systemPtr;
 		mHandleSystem = handleSystem;
 		mScreenManager = gcnew ScreenManager( OpenGUI::ScreenManager::getSingletonPtr() );
+		mWidgetManager = gcnew WidgetManager( OpenGUI::WidgetManager::getSingletonPtr() );
 	}
 	//############################################################################
 	void System::loadPlugin( String ^ fileName ) {

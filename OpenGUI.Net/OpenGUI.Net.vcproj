@@ -264,6 +264,10 @@
 				RelativePath=".\WidgetCollection.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WidgetManager.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -328,6 +332,10 @@
 			</File>
 			<File
 				RelativePath=".\WidgetCollection.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WidgetManager.h"
 				>
 			</File>
 		</Filter>

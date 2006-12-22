@@ -61,7 +61,17 @@ namespace OpenGUI_Net {
 		THRU_THROW_END
 	}
 	//############################################################################
-	//WidgetCollection* getContainer() const;
+	WidgetCollection ^ Widget::getContainer() {
+		sanityTest();
+		OpenGUI::Widget* w = dynamic_cast<OpenGUI::Widget*>( getHandle()->getObject() );
+		OpenGUI::WidgetCollection* wc;
+		THRU_THROW_BEGIN
+		wc = w->getContainer();
+		THRU_THROW_END
+		if ( !wc ) return nullptr;
+		WidgetCollection ^ mwc = gcnew WidgetCollection( wc );
+		return mwc;
+	}
 	//############################################################################
 	WidgetList ^ Widget::getChildrenAt( FVector2 position ) {
 		return Widget::getChildrenAt( position, false );
