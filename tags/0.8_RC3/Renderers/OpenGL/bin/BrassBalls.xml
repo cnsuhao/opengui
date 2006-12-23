@@ -1,0 +1,521 @@
+<?xml version="1.0" ?>
+
+<OpenGUI>
+	<Imageset File="BrassBalls.png">
+		<Imagery Name="All" Left="0" Top="0" Width="256" Height="256" />
+	<!-- Button -->
+		<!-- Normal -->
+		<Imagery Name="Button_N_UL" Left="63" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_N_UM" Left="76" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_N_UR" Left="91" Top="1" Width="10" Height="10" />
+		<Imagery Name="Button_N_ML" Left="63" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_N_MM" Left="76" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_N_MR" Left="91" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_N_LL" Left="63" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_N_LM" Left="76" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_N_LR" Left="91" Top="30" Width="10" Height="9" />
+		<!-- Over -->
+		<Imagery Name="Button_O_UL" Left="103" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_O_UM" Left="116" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_O_UR" Left="131" Top="1" Width="10" Height="10" />
+		<Imagery Name="Button_O_ML" Left="103" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_O_MM" Left="116" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_O_MR" Left="131" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_O_LL" Left="103" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_O_LM" Left="116" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_O_LR" Left="131" Top="30" Width="10" Height="9" />
+		<!-- Pressed -->
+		<Imagery Name="Button_P_UL" Left="143" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_P_UM" Left="156" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_P_UR" Left="171" Top="1" Width="10" Height="10" />
+		<Imagery Name="Button_P_ML" Left="143" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_P_MM" Left="156" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_P_MR" Left="171" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_P_LL" Left="143" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_P_LM" Left="156" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_P_LR" Left="171" Top="30" Width="10" Height="9" />
+		<!-- Disabled -->
+		<Imagery Name="Button_D_UL" Left="183" Top="1" Width="13" Height="10" />
+		<Imagery Name="Button_D_UM" Left="196" Top="1" Width="15" Height="10" />
+		<Imagery Name="Button_D_UR" Left="211" Top="1" Width="10" Height="10" />
+		<Imagery Name="Button_D_ML" Left="183" Top="11" Width="13" Height="19" />
+		<Imagery Name="Button_D_MM" Left="196" Top="11" Width="15" Height="19" />
+		<Imagery Name="Button_D_MR" Left="211" Top="11" Width="10" Height="19" />
+		<Imagery Name="Button_D_LL" Left="183" Top="30" Width="13" Height="9" />
+		<Imagery Name="Button_D_LM" Left="196" Top="30" Width="15" Height="9" />
+		<Imagery Name="Button_D_LR" Left="211" Top="30" Width="10" Height="9" />
+		
+	<!-- Round Button -->
+		<Imagery Name="RndBtn_Empty" Left="64" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_EmptyLight" Left="83" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_FilledHaze" Left="102" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_Filled" Left="121" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_FilledLight" Left="140" Top="41" Width="15" Height="15" />
+		<Imagery Name="RndBtn_FilledInvert" Left="159" Top="41" Width="15" Height="15" />
+	
+	<!-- Panel -->
+		<!-- Outset -->
+		<Imagery Name="Panel_O_UL" Left="208" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_O_UM" Left="210" Top="41" Width="16" Height="2" />
+		<Imagery Name="Panel_O_UR" Left="226" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_O_ML" Left="208" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_O_MM" Left="210" Top="43" Width="16" Height="16" />
+		<Imagery Name="Panel_O_MR" Left="226" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_O_LL" Left="208" Top="59" Width="2" Height="2" />
+		<Imagery Name="Panel_O_LM" Left="210" Top="59" Width="16" Height="2" />
+		<Imagery Name="Panel_O_LR" Left="226" Top="59" Width="2" Height="2" />
+		<!-- Inset -->
+		<Imagery Name="Panel_I_UL" Left="230" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_I_UM" Left="232" Top="41" Width="16" Height="2" />
+		<Imagery Name="Panel_I_UR" Left="248" Top="41" Width="2" Height="2" />
+		<Imagery Name="Panel_I_ML" Left="230" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_I_MM" Left="232" Top="43" Width="16" Height="16" />
+		<Imagery Name="Panel_I_MR" Left="248" Top="43" Width="2" Height="16" />
+		<Imagery Name="Panel_I_LL" Left="230" Top="59" Width="2" Height="2" />
+		<Imagery Name="Panel_I_LM" Left="232" Top="59" Width="16" Height="2" />
+		<Imagery Name="Panel_I_LR" Left="248" Top="59" Width="2" Height="2" />
+
+	<!-- ProgressBar container -->
+		<Imagery Name="ProgressBarBG_UL" Left="62" Top="62" Width="4" Height="4" />
+		<Imagery Name="ProgressBarBG_UM" Left="66" Top="62" Width="11" Height="4" />
+		<Imagery Name="ProgressBarBG_UR" Left="77" Top="62" Width="4" Height="4" />
+		<Imagery Name="ProgressBarBG_ML" Left="62" Top="66" Width="4" Height="11" />
+		<Imagery Name="ProgressBarBG_MM" Left="66" Top="66" Width="11" Height="11" />
+		<Imagery Name="ProgressBarBG_MR" Left="77" Top="66" Width="4" Height="11" />
+		<Imagery Name="ProgressBarBG_LL" Left="62" Top="77" Width="4" Height="4" />
+		<Imagery Name="ProgressBarBG_LM" Left="66" Top="77" Width="11" Height="4" />
+		<Imagery Name="ProgressBarBG_LR" Left="77" Top="77" Width="4" Height="4" />
+
+
+	<!-- ProgressBar -->
+		<Imagery Name="ProgressBar_UL" Left="88" Top="88" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_UM" Left="91" Top="88" Width="14" Height="3" />
+		<Imagery Name="ProgressBar_UR" Left="105" Top="88" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_ML" Left="88" Top="91" Width="3" Height="11" />
+		<Imagery Name="ProgressBar_MM" Left="91" Top="91" Width="14" Height="14" />
+		<Imagery Name="ProgressBar_MR" Left="105" Top="91" Width="3" Height="14" />
+		<Imagery Name="ProgressBar_LL" Left="88" Top="105" Width="3" Height="3" />
+		<Imagery Name="ProgressBar_LM" Left="91" Top="105" Width="14" Height="3" />
+		<Imagery Name="ProgressBar_LR" Left="105" Top="105" Width="3" Height="3" />
+
+	<!-- ScrollBar BG -->
+		<!-- Horizonal -->
+		<Imagery Name="ScrollBarH_L" Left="115" Top="83" Width="1" Height="19" />
+		<Imagery Name="ScrollBarH_T" Left="116" Top="83" Width="17" Height="1" />
+		<Imagery Name="ScrollBarH_M" Left="117" Top="84" Width="15" Height="17" />
+		<Imagery Name="ScrollBarH_B" Left="116" Top="101" Width="17" Height="1" />
+		<Imagery Name="ScrollBarH_R" Left="133" Top="83" Width="1" Height="19" />
+		<!-- Vertical -->
+		<Imagery Name="ScrollBarV_T" Left="115" Top="62" Width="19" Height="1" />
+		<Imagery Name="ScrollBarV_L" Left="115" Top="63" Width="1" Height="17" />
+		<Imagery Name="ScrollBarV_M" Left="116" Top="64" Width="17" Height="15" />
+		<Imagery Name="ScrollBarV_R" Left="133" Top="63" Width="1" Height="17" />
+		<Imagery Name="ScrollBarV_B" Left="115" Top="80" Width="19" Height="1" />
+
+	<!-- ScrollBar Thumb -->
+		<!-- Horizonal -->
+		<Imagery Name="ScrollBarHT_OL" Left="83" Top="62" Width="2" Height="19" />
+		<Imagery Name="ScrollBarHT_IL" Left="85" Top="62" Width="3" Height="19" />
+		<Imagery Name="ScrollBarHT_M"  Left="88" Top="62" Width="20" Height="19" />
+		<Imagery Name="ScrollBarHT_IR" Left="108" Top="62" Width="3" Height="19" />
+		<Imagery Name="ScrollBarHT_OR" Left="111" Top="62" Width="2" Height="19" />
+		<!-- Vertical -->
+		<Imagery Name="ScrollBarVT_OT" Left="62" Top="83" Width="19" Height="2" />
+		<Imagery Name="ScrollBarVT_IT" Left="62" Top="85" Width="19" Height="3" />
+		<Imagery Name="ScrollBarVT_M"  Left="62" Top="88" Width="19" Height="20" />
+		<Imagery Name="ScrollBarVT_IB" Left="62" Top="108" Width="19" Height="3" />
+		<Imagery Name="ScrollBarVT_OB" Left="62" Top="111" Width="19" Height="2" />
+
+	<!-- Window -->
+		<Imagery Name="Window_Top" Left="10" Top="2" Width="36" Height="3" />
+		<Imagery Name="Window_Bottom" Left="10" Top="51" Width="36" Height="3" />
+		<Imagery Name="Window_Left" Left="2" Top="10" Width="3" Height="36" />
+		<Imagery Name="Window_Right" Left="51" Top="10" Width="3" Height="36" />
+		<Imagery Name="Window_Middle" Left="6" Top="6" Width="44" Height="44" />
+		<Imagery Name="Window_UL1" Left="2" Top="5" Width="3" Height="5" />
+		<Imagery Name="Window_UL2" Left="2" Top="2" Width="3" Height="3" />
+		<Imagery Name="Window_UL3" Left="5" Top="2" Width="5" Height="3" />
+		<Imagery Name="Window_UR1" Left="46" Top="2" Width="5" Height="3" />
+		<Imagery Name="Window_UR2" Left="51" Top="2" Width="3" Height="3" />
+		<Imagery Name="Window_UR3" Left="51" Top="5" Width="3" Height="5" />
+		<Imagery Name="Window_LR1" Left="51" Top="46" Width="3" Height="5" />
+		<Imagery Name="Window_LR2" Left="51" Top="51" Width="3" Height="3" />
+		<Imagery Name="Window_LR3" Left="46" Top="51" Width="5" Height="3" />
+		<Imagery Name="Window_LL1" Left="5" Top="51" Width="5" Height="3" />
+		<Imagery Name="Window_LL2" Left="2" Top="51" Width="3" Height="3" />
+		<Imagery Name="Window_LL3" Left="2" Top="46" Width="3" Height="5" />
+
+	<!-- Cursors -->
+		<!-- Arrow -->
+		<Imagery Name="Arrow" Left="9" Top="217" Width="30" Height="30" />
+		<Imagery Name="Sizer_WE" Left="43" Top="227" Width="41" Height="14" />
+		<Imagery Name="Sizer_NWSE" Left="97" Top="219" Width="29" Height="30" />
+		<Imagery Name="Sizer_NESW" Left="145" Top="219" Width="29" Height="30" />
+		<Imagery Name="Sizer_NS" Left="198" Top="213" Width="15" Height="42" />
+	</Imageset>
+
+<!-- Button Faces -->
+	<Face Name="BrassBalls:Button_N" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_N_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_N_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_N_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_N_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_N_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_N_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_N_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_O" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_O_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_O_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_O_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_O_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_O_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_O_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_O_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_P" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_P_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_P_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_P_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_P_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_P_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_P_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_P_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Button_D" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_UL" Width="13" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_D_UM" Height="10" />
+			<Slice Imagery="BrassBalls.png:Button_D_UR" Width="10" Height="10" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_ML" Width="13" />
+			<Slice Imagery="BrassBalls.png:Button_D_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Button_D_MR" Width="10" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Button_D_LL" Width="13" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_D_LM" Height="9" />
+			<Slice Imagery="BrassBalls.png:Button_D_LR" Width="10" Height="9" />
+		</Row>
+	</Face>
+	
+<!-- Panel Faces -->
+	<Face Name="BrassBalls:Panel_Outset" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_O_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_UR" Width="2" Height="2" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_O_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Panel_O_MR" Width="2" />
+		</Row>		
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_O_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_O_LR" Width="2" Height="2" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:Panel_Inset" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_I_UL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_UM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_UR" Width="2" Height="2" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_I_ML" Width="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:Panel_I_MR" Width="2" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Panel_I_LL" Width="2" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_LM" Height="2" />
+			<Slice Imagery="BrassBalls.png:Panel_I_LR" Width="2" Height="2" />
+		</Row>
+	</Face>
+
+<!-- CheckBox Faces -->
+	<!-- UnChecked -->
+	<Face Name="BrassBalls:CheckBox_N" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_Empty" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_O" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_EmptyLight" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_P" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_FilledInvert" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_D" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_EmptyLight" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<!-- Checked -->
+	<Face Name="BrassBalls:CheckBox_CN" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_Filled" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_CO" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_FilledLight" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_CP" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_FilledInvert" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:CheckBox_CD" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:RndBtn_FilledHaze" GrowWidth="true" GrowHeight="true" />
+		</Row>
+	</Face>
+	
+<!-- ScrollBar BG -->
+	<Face Name="BrassBalls:ProgressBarBG" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_UL" Width="4" Height="4" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_UM" GrowWidth="true" Height="4" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_UR" Width="4" Height="4" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_ML" Width="4" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_MR" Width="4" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_LL" Width="4" Height="4" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_LM" GrowWidth="true" Height="4" />
+			<Slice Imagery="BrassBalls.png:ProgressBarBG_LR" Width="4" Height="4" />
+		</Row>
+	</Face>
+
+
+<!-- ProgressBar FG -->
+	<Face Name="BrassBalls:ProgressBar" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_UL" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_UM" GrowWidth="true" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_UR" Width="3" Height="3" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_ML" Width="3" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_MM" GrowWidth="true" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_MR" Width="3" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ProgressBar_LL" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_LM" GrowWidth="true" Height="3" />
+			<Slice Imagery="BrassBalls.png:ProgressBar_LR" Width="3" Height="3" />
+		</Row>
+	</Face>
+
+<!-- ScrollBar Backgrounds -->
+	<Face Name="BrassBalls:ScrollBarH" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarH_L" Width="1" GrowHeight="true" RowSpan=2 />
+			<Slice Imagery="BrassBalls.png:ScrollBarH_T" Height="1" GrowWidth="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBarH_R" Width="1" GrowHeight="true" RowSpan=2 />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarH_M" GrowHeight="true" GrowWidth="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarH_B" Height="1" GrowWidth="true" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:ScrollBarV" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarV_T" Height="1" GrowWidth="true" ColSpan=2 />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarV_L" Width="1" GrowHeight="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBarV_M" GrowHeight="true" GrowWidth="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBarV_R" Width="1" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarV_B" Height="1" GrowWidth="true" ColSpan=2 />
+		</Row>
+	</Face>
+<!-- ScrollBar Thumbs -->
+	<Face Name="BrassBalls:ScrollBarHThumb" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarHT_OL" Width="2" />
+			<Slice Imagery="BrassBalls.png:ScrollBarHT_IL" Width="3" GrowWidth="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBarHT_M"  Width="20" />
+			<Slice Imagery="BrassBalls.png:ScrollBarHT_IR" Width="3" GrowWidth="true" />
+			<Slice Imagery="BrassBalls.png:ScrollBarHT_OR" Width="2" />
+		</Row>
+	</Face>
+	<Face Name="BrassBalls:ScrollBarVThumb" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarVT_OT" Height="2" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarVT_IT" Height="3" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarVT_M"  Height="20" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarVT_IB" Height="3" GrowHeight="true" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:ScrollBarVT_OB" Height="2" />
+		</Row>
+	</Face>
+	
+	<Face Name="BrassBalls:Window" Metric="Units">
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_UL2" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UL3" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_Top" GrowWidth="True" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UR1" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_UR2" Width="3" Height="3" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_UL1" Width="3" Height="5" />
+			<Slice Imagery="BrassBalls.png:Window_Middle" GrowWidth="True" GrowHeight="True" ColSpan=2 RowSpan=2 />
+			<Slice Imagery="BrassBalls.png:Window_UR3" Width="3" Height="5" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_Left" Width="3" GrowHeight="True" />
+			<Slice Imagery="BrassBalls.png:Window_Right" Width="3" GrowHeight="True" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_LL3" Width="3" Height="5" />
+			<Slice Imagery="BrassBalls.png:Window_LR1" Width="3" Height="5" />
+		</Row>
+		<Row>
+			<Slice Imagery="BrassBalls.png:Window_LL2" Width="3" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LL1" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_Bottom" GrowWidth="True" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LR3" Width="5" Height="3" />
+			<Slice Imagery="BrassBalls.png:Window_LR2" Width="3" Height="3" />
+		</Row>
+	</Face>
+
+	<WidgetDef Name="BrassBalls:Button" BaseName="Button" BaseLibrary="Amethyst">
+		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:Button_N" />
+		<Property ValueName="Face_Over" ValueType="FACE" ValueData="BrassBalls:Button_O" />
+		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:Button_P" />
+		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:Button_D" />
+		
+		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
+		<Property ValueName="TextAlignment" ValueType="TEXTALIGNMENT" ValueData="Center|Center" />
+		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+		
+		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#d8d8d8" />
+		<Property ValueName="FontColor_Over" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="FontColor_Pressed" ValueType="COLOR" ValueData="#EAEA00" />
+		<Property ValueName="FontColor_Disabled" ValueType="COLOR" ValueData="#888888" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:CheckBox" BaseName="CheckBox" BaseLibrary="Amethyst">
+		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:CheckBox_N" />
+		<Property ValueName="Face_Over" ValueType="FACE" ValueData="BrassBalls:CheckBox_O" />
+		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_P" />
+		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_D" />
+		<Property ValueName="Face_SelNormal" ValueType="FACE" ValueData="BrassBalls:CheckBox_CN" />
+		<Property ValueName="Face_SelOver" ValueType="FACE" ValueData="BrassBalls:CheckBox_CO" />
+		<Property ValueName="Face_SelPressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_CP" />
+		<Property ValueName="Face_SelDisabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_CD" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:RadioButton" BaseName="RadioButton" BaseLibrary="Amethyst">
+		<Property ValueName="Face_Normal" ValueType="FACE" ValueData="BrassBalls:CheckBox_N" />
+		<Property ValueName="Face_Over" ValueType="FACE" ValueData="BrassBalls:CheckBox_O" />
+		<Property ValueName="Face_Pressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_P" />
+		<Property ValueName="Face_Disabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_D" />
+		<Property ValueName="Face_SelNormal" ValueType="FACE" ValueData="BrassBalls:CheckBox_CN" />
+		<Property ValueName="Face_SelOver" ValueType="FACE" ValueData="BrassBalls:CheckBox_CO" />
+		<Property ValueName="Face_SelPressed" ValueType="FACE" ValueData="BrassBalls:CheckBox_CP" />
+		<Property ValueName="Face_SelDisabled" ValueType="FACE" ValueData="BrassBalls:CheckBox_CD" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:Label" BaseName="Label" BaseLibrary="Amethyst">
+		<Property ValueName="Font" ValueType="FONT" ValueData="pecot@12" />
+		<Property ValueName="Alignment" ValueType="TEXTALIGNMENT" ValueData="Left|Top" />
+		<Property ValueName="Text" ValueType="STRING" ValueData="" />
+		<Property ValueName="FontColor" ValueType="COLOR" ValueData="#5555d8" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:ProgressBar" BaseName="ProgressBar" BaseLibrary="Amethyst">
+		<Property ValueName="BGFace" ValueType="FACE" ValueData="BrassBalls:ProgressBarBG" />
+		<Property ValueName="FillFace" ValueType="FACE" ValueData="BrassBalls:ProgressBar" />
+		<Property ValueName="Step_Size" ValueType="FLOAT" ValueData="1.0" />
+		<Property ValueName="Total" ValueType="FLOAT" ValueData="100.0" />
+		<Property ValueName="Value" ValueType="FLOAT" ValueData="20.0" />
+		<Property ValueName="Vertical" ValueType="BOOL" ValueData="false" />
+		<Property ValueName="Inverted" ValueType="BOOL" ValueData="false" />
+		<Property ValueName="FillColor" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="BGColor" ValueType="COLOR" ValueData="#ffffff" />
+		<Property ValueName="BarPadVert" ValueType="FLOAT" ValueData="3.0" />
+		<Property ValueName="BarPadHoriz" ValueType="FLOAT" ValueData="3.0" />
+	</WidgetDef>
+	
+	<WidgetDef Name="BrassBalls:Panel" BaseName="Panel" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:Panel_Outset" />
+		<Property ValueName="Padding_Top" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Bottom" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Left" ValueType="FLOAT" ValueData="2.0" />
+		<Property ValueName="Padding_Right" ValueType="FLOAT" ValueData="2.0" />
+	</WidgetDef>
+	
+	
+	<WidgetDef Name="BrassBalls:ScrollBar_H" BaseName="ScrollBar" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:ScrollBarH" />
+		<Property ValueName="FaceThumb" ValueType="FACE" ValueData="BrassBalls:ScrollBarHThumb" />
+		<Property ValueName="Value" ValueType="FLOAT" ValueData="12.0" />
+		<Property ValueName="Maximum" ValueType="FLOAT" ValueData="100.0" />
+		<Property ValueName="Coverage" ValueType="FLOAT" ValueData="25.0" />
+		<Property ValueName="Vertical" ValueType="BOOL" ValueData="false" />
+	</WidgetDef>
+	<WidgetDef Name="BrassBalls:ScrollBar_V" BaseName="ScrollBar" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:ScrollBarV" />
+		<Property ValueName="FaceThumb" ValueType="FACE" ValueData="BrassBalls:ScrollBarVThumb" />
+		<Property ValueName="Value" ValueType="FLOAT" ValueData="0.0" />
+		<Property ValueName="Maximum" ValueType="FLOAT" ValueData="100.0" />
+		<Property ValueName="Coverage" ValueType="FLOAT" ValueData="15.0" />
+		<Property ValueName="Vertical" ValueType="BOOL" ValueData="true" />
+	</WidgetDef>
+	
+	
+	<WidgetDef Name="BrassBalls:Window" BaseName="Window" BaseLibrary="Amethyst">
+		<Property ValueName="FaceBG" ValueType="FACE" ValueData="BrassBalls:Window" />
+	</WidgetDef>
+</OpenGUI>
+

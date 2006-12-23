@@ -1,0 +1,21 @@
+SCC = This is a Source Code Control file
+
+[echo.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/CompanyLibraries/OpenGUI/dependancies/TINYXML", ZVEAAAAA
+
+[tinyxmlSTL.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/CompanyLibraries/OpenGUI/dependancies/TINYXML", ZVEAAAAA
+
+[tinyXmlTest.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/CompanyLibraries/OpenGUI/dependancies/TINYXML", ZVEAAAAA
+
+[tinyXmlTestSTL.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/CompanyLibraries/OpenGUI/dependancies/TINYXML", ZVEAAAAA
+
+[tinyxml_lib.dsp]
+SCC_Aux_Path = "C:\Program Files\Microsoft Visual Studio\VSS"
+SCC_Project_Name = "$/CompanyLibraries/OpenGUI/dependancies/TINYXML", ZVEAAAAA
