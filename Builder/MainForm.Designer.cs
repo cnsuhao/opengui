@@ -1,5 +1,5 @@
 namespace Builder {
-	partial class Form1 {
+	partial class MainForm {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -23,9 +23,17 @@ namespace Builder {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.components = new System.ComponentModel.Container();
+			this.SuspendLayout();
+			// 
+			// MainForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "Form1";
+			this.ClientSize = new System.Drawing.Size(812, 476);
+			this.Name = "MainForm";
+			this.Text = "OpenGUI Builder";
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
