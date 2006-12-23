@@ -130,6 +130,7 @@ Section "Precompiled SDKs" SEC01
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 1.lnk" "$INSTDIR\Demos\OpenGL\Demo1.exe"
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 2.lnk" "$INSTDIR\Demos\OpenGL\Demo2.exe"
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\OpenGL Demo 3.lnk" "$INSTDIR\Demos\OpenGL\Demo3.exe"
+	SetOutPath "$INSTDIR\Demos\Ogre"
 	CreateShortCut "$SMPROGRAMS\OpenGUI SDK\Demos\Ogre Demo.lnk" "$INSTDIR\Demos\Ogre\DemoO.exe"
 	
 ; All the rest
