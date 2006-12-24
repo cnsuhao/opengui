@@ -366,7 +366,7 @@ A child Widget has been detached from this ContainerControl.
 
 
 
-\page Event_DrawBG "DrawBG"
+\page Event_DrawBG DrawBG
 Draw the background of this object using the given brush. The background will appear underneath the contained widgets, whereas the foreground (drawn within the usual \c Draw event) will be drawn on top of the contained widgets.
 	\par Occurs In:
 	OpenGUI::ContainerControl
@@ -377,7 +377,7 @@ Draw the background of this object using the given brush. The background will ap
 
 
 
-\page Event_Moved "Moved"
+\page Event_Moved Moved
 The Control has been moved
 	\par Occurs In:
 	OpenGUI::Control
@@ -387,7 +387,7 @@ The Control has been moved
 	OpenGUI::Moved_EventArgs
 
 
-\page Event_Resized "Resized"
+\page Event_Resized Resized
 The Control has been resized
 	\par Occurs In:
 	OpenGUI::Control
@@ -398,7 +398,7 @@ The Control has been resized
 
 
 
-\page Event_Move_Begin "Move_Begin"
+\page Event_Move_Begin Move_Begin
 Signals the beginning of a drag-to-move operation.
 \par Occurs In:
 	OpenGUI::Window
@@ -409,7 +409,7 @@ Signals the beginning of a drag-to-move operation.
 
 
 
-\page Event_Move_End "Move_End"
+\page Event_Move_End Move_End
 Signals the end of a drag-to-move operation.
 \par Occurs In:
 	OpenGUI::Window
@@ -420,7 +420,7 @@ Signals the end of a drag-to-move operation.
 
 
 
-\page Event_Resize_Begin "Resize_Begin"
+\page Event_Resize_Begin Resize_Begin
 Signals the beginning of a drag-to-resize operation.
 Signals the end of a drag-to-move operation.
 \par Occurs In:
@@ -432,7 +432,7 @@ Signals the end of a drag-to-move operation.
 
 
 
-\page Event_Resize_End "Resize_End"
+\page Event_Resize_End Resize_End
 Signals the end of a drag-to-resize operation.
 Signals the end of a drag-to-move operation.
 \par Occurs In:
