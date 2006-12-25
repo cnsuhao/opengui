@@ -156,6 +156,10 @@ namespace OpenGUI {
 		//! "Resized" event
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
+		//! "Cursor_Press" event
+		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_Release" event
+		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Click" event
 		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "Cursor_Enter" event; invokes Targeted
@@ -200,6 +204,7 @@ namespace OpenGUI {
 		bool m_InLayout; // managed entirely by ContainerControl.
 		// ^-- Signifies that layout is in process, so ignore invalidations and docking breaking operations
 
+		bool mClickTrack; // press/release tracking for Cursor_Click event generation
 	};
 
 } // namespace OpenGUI{
