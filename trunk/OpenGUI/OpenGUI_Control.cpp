@@ -171,6 +171,12 @@ namespace OpenGUI {
 		getEvents().createEvent( "Resized" );
 		getEvents()["Moved"].add( new EventDelegate( this, &Control::onMoved ) );
 		getEvents()["Resized"].add( new EventDelegate( this, &Control::onResized ) );
+		getEvents().createEvent( "Cursor_MoveInside" );
+		getEvents().createEvent( "Cursor_PressInside" );
+		getEvents().createEvent( "Cursor_ReleaseInside" );
+		getEvents()["Cursor_MoveInside"].add( new EventDelegate( this, &Control::onCursor_MoveInside ) );
+		getEvents()["Cursor_PressInside"].add( new EventDelegate( this, &Control::onCursor_PressInside ) );
+		getEvents()["Cursor_ReleaseInside"].add( new EventDelegate( this, &Control::onCursor_ReleaseInside ) );
 	}
 	//############################################################################
 	Control::~Control() {
@@ -418,6 +424,11 @@ namespace OpenGUI {
 			mClickTrack = true;
 		}
 		Widget::onCursor_Press( sender, evtArgs );
+
+		if ( _isInside( evtArgs.Position ) ) {
+			if ( eventCursor_PressInside( evtArgs.X, evtArgs.Y ) )
+				evtArgs.eat();
+		}
 	}
 	//############################################################################
 	void Control::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
@@ -426,6 +437,11 @@ namespace OpenGUI {
 			mClickTrack = false;
 		}
 		Widget::onCursor_Release( sender, evtArgs );
+
+		if ( _isInside( evtArgs.Position ) ) {
+			if ( eventCursor_ReleaseInside( evtArgs.X, evtArgs.Y ) )
+				evtArgs.eat();
+		}
 	}
 	//############################################################################
 	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
@@ -467,18 +483,27 @@ namespace OpenGUI {
 		if ( hasCursorFocus() ) // translate point if necessary
 			pos = pointFromScreen( pos );
 
+		const bool inside = _isInside( pos );
+
 		//mCursorEnterLeave_Sent
 		if ( mCursorInside ) {
 			// test if cursor is outside
-			if ( !_isInside( pos ) ) {
+			if ( !inside ) {
 				mCursorInside = false; // store the new state
 				eventCursor_Leave( evtArgs ); // let everyone know
+			} else {
+				// if we're still inside, then we should re-issue the event as Inside
+				if ( eventCursor_MoveInside( evtArgs.X, evtArgs.Y ) )
+					evtArgs.eat();
 			}
 		} else {
 			// test if cursor is inside
-			if ( _isInside( pos ) ) {
+			if ( inside ) {
 				mCursorInside = true; // store the new state
 				eventCursor_Enter( evtArgs ); // let everyone know
+				// and don't forget to issue the move event afterward
+				if ( eventCursor_MoveInside( evtArgs.X, evtArgs.Y ) )
+					evtArgs.eat();
 			}
 		}
 	}
@@ -641,6 +666,36 @@ namespace OpenGUI {
 	//############################################################################
 	CursorPtr Control::getCursor() const {
 		return m_Cursor;
+	}
+	//############################################################################
+	void Control::onCursor_MoveInside( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* no default action */
+	}
+	//############################################################################
+	void Control::onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* no default action */
+	}
+	//############################################################################
+	void Control::onCursor_ReleaseInside( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* no default action */
+	}
+	//############################################################################
+	bool Control::eventCursor_MoveInside( float xPos, float yPos ) {
+		Cursor_EventArgs event( xPos, yPos );
+		triggerEvent( "Cursor_MoveInside", event );
+		return event.Consumed;
+	}
+	//############################################################################
+	bool Control::eventCursor_PressInside( float xPos, float yPos ) {
+		Cursor_EventArgs event( xPos, yPos );
+		triggerEvent( "Cursor_PressInside", event );
+		return event.Consumed;
+	}
+	//############################################################################
+	bool Control::eventCursor_ReleaseInside( float xPos, float yPos ) {
+		Cursor_EventArgs event( xPos, yPos );
+		triggerEvent( "Cursor_ReleaseInside", event );
+		return event.Consumed;
 	}
 	//############################################################################
 } // namespace OpenGUI {

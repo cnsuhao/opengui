@@ -41,6 +41,9 @@
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
 - \subpage Event_Resized "Resized"
+- \subpage Event_Cursor_MoveInside "Cursor_MoveInside"
+- \subpage Event_Cursor_PressInside "Cursor_PressInside"
+- \subpage Event_Cursor_ReleaseInside "Cursor_ReleaseInside"
 - \subpage Event_Cursor_Click "Cursor_Click"
 - \subpage Event_Cursor_Enter "Cursor_Enter"
 - \subpage Event_Cursor_Leave "Cursor_Leave"
@@ -138,13 +141,25 @@ The Widget was invalidated and will need to be redrawn next Screen::update()
 
 
 \page Event_Cursor_Move Cursor_Move
-The cursor has moved.
+The cursor has moved within the immediate container and this widget is being given a chance to evaluate and possibly consume that event. If the widget is a Control, the default \c onCursor_Move handler will trigger the Cursor_MoveInside event if the movement was inside the bounds of the Control as defined by OpenGUI::Control::_isInside().
 
 OpenGUI::ContainerControl culls these messages, only sending them to siblings when the cursor is currently inside of itself as well.
 	\par Occurs In:
 	OpenGUI::Widget
 	- OpenGUI::Widget::onCursor_Move
 	- OpenGUI::Widget::eventCursor_Move
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_MoveInside Cursor_MoveInside
+The cursor has moved while inside of this Control.
+
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onCursor_MoveInside
+	- OpenGUI::Control::eventCursor_MoveInside
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
@@ -167,6 +182,28 @@ Called when the cursor button was released.
 	OpenGUI::Widget
 	- OpenGUI::Widget::onCursor_Release
 	- OpenGUI::Widget::eventCursor_Release
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_PressInside Cursor_PressInside
+Called when the cursor button was pressed inside this Control
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Control::onCursor_PressInside
+	- OpenGUI::Control::eventCursor_PressInside
+	\par EventArgs:
+	OpenGUI::Cursor_EventArgs
+
+
+
+\page Event_Cursor_ReleaseInside Cursor_ReleaseInside
+Called when the cursor button was released inside this Control
+	\par Occurs In:
+	OpenGUI::Widget
+	- OpenGUI::Control::onCursor_ReleaseInside
+	- OpenGUI::Control::eventCursor_ReleaseInside
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 

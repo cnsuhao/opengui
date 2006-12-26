@@ -322,7 +322,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! Cursor position will be in the same coordinate space as the receiving Widget.
-	This message may be culled by containers if the cursor is not within their bounds.
+	This event may be culled by containers if the cursor is not within their bounds.
 	(Meaning that children may not receive this event unless it is potentially relevant
 	to them as determined by the container.)
 	\param xPos X position of the cursor
