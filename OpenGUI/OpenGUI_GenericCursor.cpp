@@ -78,17 +78,9 @@ namespace OpenGUI {
 	}
 	gGenericCursor_ObjectAccessorList;
 	//############################################################################
-	//############################################################################
-
-	//############################################################################
 	ObjectAccessorList* GenericCursor::getAccessors() {
 		return &gGenericCursor_ObjectAccessorList;
 	}
-	//############################################################################
-	char* GenericCursor::getClassName() {
-		return "OpenGUI::GenericCursor";
-	}
-	//############################################################################
 	//############################################################################
 	GenericCursor::GenericCursor() {
 		if ( gGenericCursor_ObjectAccessorList.getParent() == 0 )

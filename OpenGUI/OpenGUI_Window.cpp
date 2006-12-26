@@ -47,8 +47,8 @@ namespace OpenGUI {
 		return &gWindow_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Window::getClassName() {
-		return "OpenGUI::Window";
+	unsigned int Window::getObjectType() const {
+		return OT_WINDOW;
 	}
 	//############################################################################
 	void Window::eventMove_Begin() {

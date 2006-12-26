@@ -65,8 +65,8 @@ namespace OpenGUI {
 		return &gContainerControl_ObjectAccessorList;
 	}
 	//############################################################################
-	char* ContainerControl::getClassName() {
-		return "OpenGUI::ContainerControl";
+	unsigned int ContainerControl::getObjectType() const {
+		return OT_CONTAINERCONTROL;
 	}
 	//############################################################################
 	void ContainerControl::eventDrawBG( Brush& brush ) {
@@ -498,7 +498,7 @@ namespace OpenGUI {
 		return mPadding;
 	}
 	//############################################################################
-	void ContainerControl::_doflush(){
+	void ContainerControl::_doflush() {
 		eventInvalidated();
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {
