@@ -56,6 +56,11 @@ namespace OpenGUI {
 		//! gets the current padding of this container
 		float getPadding();
 
+		//! toggles auto consumption of input that occurs inside this container, preventing it from reaching overdrawn widgets. Default is \c TRUE
+		void setConsumeInput( bool consume );
+		//! retrieves current ConsumeInput setting
+		bool getConsumeInput();
+
 		//! suspends automatic layout updates until resumeLayout() is called
 		void suspendLayout();
 		//! resumes automatic layout updates and performs an immediate layout update if the current layout is out of date
@@ -168,6 +173,8 @@ namespace OpenGUI {
 		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
 
 		float mPadding; // holds the padding of the container
+
+		bool mConsumeInput; // holds setting to auto-consume input that occurs within this container
 	};
 
 } // namespace OpenGUI{

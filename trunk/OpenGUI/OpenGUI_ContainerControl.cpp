@@ -9,12 +9,14 @@
 namespace OpenGUI {
 
 	SimpleProperty_Float( property_Padding, "Padding", ContainerControl, getPadding, setPadding );
+	SimpleProperty_Bool( property_ConsumeInput, "ConsumeInput", ContainerControl, getConsumeInput, setConsumeInput );
 
 	//############################################################################
 	class ContainerControl_ObjectAccessorList : public ObjectAccessorList {
 	public:
 		ContainerControl_ObjectAccessorList() {
 			addAccessor( &property_Padding );
+			addAccessor( &property_ConsumeInput );
 		}
 		~ContainerControl_ObjectAccessorList() {}
 	}
@@ -37,6 +39,7 @@ namespace OpenGUI {
 		m_LayoutValid = true; // layout begins valid (as there are no controls to update, it does not matter)
 		m_InUpdateLayout = false; // we are not in updateLayout() quite yet
 		m_ClipChildren = false;
+		mConsumeInput = true; // by default we consume all appropriate input to prevent it from reaching overdrawn widgets
 
 		// set up defaults for properties
 
@@ -110,10 +113,12 @@ namespace OpenGUI {
 
 		static bool lastInside = false;
 		bool reissue = lastInside;
-		if ( _isInside( pos ) )
+		if ( _isInside( pos ) ) {
 			lastInside = reissue = true;
-		else
+			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
+		} else {
 			lastInside = false;
+		}
 
 		if ( reissue ) {
 			FVector2 newPos;
@@ -138,6 +143,8 @@ namespace OpenGUI {
 			pos = pointFromScreen( pos );
 
 		if ( _isInside( evtArgs.Position ) ) {
+			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
+
 			FVector2 newPos;
 			newPos = pos - getPosition();
 			newPos.x -= m_ClientAreaOffset_UL.x;
@@ -160,6 +167,8 @@ namespace OpenGUI {
 			pos = pointFromScreen( pos );
 
 		if ( _isInside( pos ) ) {
+			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
+
 			FVector2 newPos;
 			newPos = pos - getPosition();
 			newPos.x -= m_ClientAreaOffset_UL.x;
@@ -505,6 +514,14 @@ namespace OpenGUI {
 			Widget* child = iter.get();
 			child->_doflush();
 		}
+	}
+	//############################################################################
+	void ContainerControl::setConsumeInput( bool consume ) {
+		mConsumeInput = consume;
+	}
+	//############################################################################
+	bool ContainerControl::getConsumeInput() {
+		return mConsumeInput;
 	}
 	//############################################################################
 } // namespace OpenGUI {
