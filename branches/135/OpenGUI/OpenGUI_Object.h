@@ -63,13 +63,6 @@ namespace OpenGUI {
 		/*! \see Object_Type */
 		virtual unsigned int getObjectType() const = 0;
 
-		//! Adds a new handle to the object, indexing it by the given \c sourceListener
-		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
-		//! Removes a previously added handle, retrieving it by the given \c sourceListener
-		void _Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
-		//! Gets the handle that was previously added for the given \c sourceListener
-		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
-
 		//! These are the possible return values for getObjectType()
 		enum Object_Type {
 			OT_UNKNOWN          = 0, //!< should never happen
@@ -80,6 +73,13 @@ namespace OpenGUI {
 			OT_CONTAINERCONTROL = 7, //!< Object is a ContainerControl
 			OT_WINDOW           = 8, //!< Object is a Window
 		};
+
+		//! Adds a new handle to the object, indexing it by the given \c sourceListener
+		void _Add_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
+		//! Removes a previously added handle, retrieving it by the given \c sourceListener
+		void _Remove_ObjectHandle( ObjectHandle* handle, HandleManagerListener* sourceListener );
+		//! Gets the handle that was previously added for the given \c sourceListener
+		ObjectHandle* _Get_ObjectHandle( HandleManagerListener* sourceListener );
 
 	protected:
 		//! \internal This should be called once at the end of the last constructor that overrides getObjectType()
