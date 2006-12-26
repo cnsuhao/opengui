@@ -132,6 +132,13 @@ namespace OpenGUI {
 		//! Control has been resized
 		void eventResized( const FVector2& oldSize, const FVector2& newSize );
 
+		//! Called for cursor movement inside this Control, giving the X,Y position of the cursor
+		bool eventCursor_MoveInside( float xPos, float yPos );
+		//! Called when the cursor button is pressed inside this Control, giving the X,Y position of the cursor
+		bool eventCursor_PressInside( float xPos, float yPos );
+		//! Called when the cursor button is released inside this Control, giving the X,Y position of the cursor
+		bool eventCursor_ReleaseInside( float xPos, float yPos );
+
 		//! Called when cursor was pressed and released within this Control
 		void eventCursor_Click( Cursor_EventArgs& evtArgs );
 		//! Called when the cursor enters this Control
@@ -169,6 +176,14 @@ namespace OpenGUI {
 
 		//! Adds cursor tracking to trigger Cursor_Enter and Cursor_Leave when appropriate.
 		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
+
+		//! "Cursor_MoveInside" event
+		virtual void onCursor_MoveInside( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_PressInside" event
+		virtual void onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "Cursor_ReleaseInside" event
+		virtual void onCursor_ReleaseInside( Object* sender, Cursor_EventArgs& evtArgs );
+		
 
 		//! "Targeted" event
 		virtual void onTargeted( Object* sender, EventArgs& evtArgs );
