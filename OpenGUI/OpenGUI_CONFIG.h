@@ -41,6 +41,9 @@
 //###########################################################################################
 //###########################################################################################
 
+//*******************************//
+//    DEFAULT SCREEN SETTINGS    //
+//*******************************//
 // These settings are used to hold the default Screen UPI (Units per Inch). These are used to
 // determine constant font glyph scaling along each axis. These defaults are normally adequate
 // for most situations. They are held here in a #define to allow easy changing in the event

@@ -27,6 +27,7 @@ namespace OpenGUI {
 	//! Triangle. Wow.
 	class OPENGUI_API Triangle {
 	public:
+		//! Array of three vertices
 		Vertex vertex[3];
 	};
 	//! TriangleList. More Wow.
