@@ -1,4 +1,4 @@
-Version 0.8 Release Candidate 3 - ??/??/????)
+Version 0.8 Release Candidate 3 - 12/22/2006)
 * Corrected visual artifact bug in Renderer_Ogre when using D3D9 render system. #137
 * Added shortcuts to demos in SDK installer
 * Various documentation updates

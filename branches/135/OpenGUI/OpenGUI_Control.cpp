@@ -154,6 +154,8 @@ namespace OpenGUI {
 		mDock = None;
 		mMargin = 0.0f;
 
+		mClickTrack = false;
+
 		//Set up events and default bindings
 		getEvents().createEvent( "Cursor_Click" );
 		getEvents().createEvent( "Cursor_Enter" );
@@ -414,6 +416,21 @@ namespace OpenGUI {
 		return mAlpha;
 	}
 	//############################################################################
+	void Control::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( mCursorInside ) {
+			mClickTrack = true;
+		}
+		Widget::onCursor_Press( sender, evtArgs );
+	}
+	//############################################################################
+	void Control::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( mClickTrack ) {
+			eventCursor_Click( evtArgs );
+			mClickTrack = false;
+		}
+		Widget::onCursor_Release( sender, evtArgs );
+	}
+	//############################################################################
 	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
@@ -423,6 +440,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		mClickTrack = false;
 		eventUnTargeted(); // notify untargeted
 	}
 	//############################################################################
