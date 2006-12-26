@@ -668,16 +668,19 @@ namespace OpenGUI {
 		return m_Cursor;
 	}
 	//############################################################################
+	/*! The default action is to consume the event, since it is inside our coverage area */
 	void Control::onCursor_MoveInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* no default action */
+		evtArgs.eat();
 	}
 	//############################################################################
+	/*! The default action is to consume the event, since it is inside our coverage area */
 	void Control::onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* no default action */
+		evtArgs.eat();
 	}
 	//############################################################################
+	/*! The default action is to consume the event, since it is inside our coverage area */
 	void Control::onCursor_ReleaseInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/* no default action */
+		evtArgs.eat();
 	}
 	//############################################################################
 	bool Control::eventCursor_MoveInside( float xPos, float yPos ) {

@@ -127,8 +127,10 @@ namespace OpenGUI {
 			newPos.y -= m_ClientAreaOffset_UL.y;
 			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Move( newPos.x, newPos.y ) )
+				if ( iter->eventCursor_Move( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
+					break; // stop processing after first consumption
+				}
 			}
 		}
 	}
@@ -151,8 +153,10 @@ namespace OpenGUI {
 			newPos.y -= m_ClientAreaOffset_UL.y;
 			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Press( newPos.x, newPos.y ) )
+				if ( iter->eventCursor_Press( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
+					break; // stop processing after first consumption
+				}
 			}
 		}
 	}
@@ -175,8 +179,10 @@ namespace OpenGUI {
 			newPos.y -= m_ClientAreaOffset_UL.y;
 			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Release( newPos.x, newPos.y ) )
+				if ( iter->eventCursor_Release( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
+					break; // stop processing after first consumption
+				}
 			}
 		}
 	}
