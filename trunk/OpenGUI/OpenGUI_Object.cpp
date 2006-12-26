@@ -8,16 +8,13 @@
 #include "OpenGUI_Value.h"
 
 namespace OpenGUI {
+
 	//############################################################################
 	Object::Object() {
 		mEventReceiver.mParent = this;
 	}
 	//############################################################################
 	Object::~Object() {}
-	//############################################################################
-	char* Object::getClassName() {
-		return "OpenGUI::Object";
-	}
 	//############################################################################
 	EventReceiver& Object::getEvents() {
 		return mEventReceiver;

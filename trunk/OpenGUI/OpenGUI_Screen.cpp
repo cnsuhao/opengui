@@ -653,4 +653,8 @@ namespace OpenGUI {
 		return ret;
 	}
 	//############################################################################
+	unsigned int Screen::getObjectType() const {
+		return OT_SCREEN;
+	}
+	//############################################################################
 }//namespace OpenGUI{

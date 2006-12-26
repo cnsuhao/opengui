@@ -13,8 +13,8 @@
 namespace OpenGUI {
 
 	class ObjectAccessorList; //forward declaration
-	class Value;
-	class ValueList;
+	class Value; // forward declaration
+	class ValueList; // forward declaration
 
 	//! Base class for all GUI objects. Provides an exposed interface to the Accessor and Event systems.
 	class OPENGUI_API Object {
@@ -39,12 +39,25 @@ namespace OpenGUI {
 
 		//! returns this object's ObjectAccessorList head
 		virtual ObjectAccessorList* getAccessors();
-		//! Returns the most specific class name available for this object
-		/*! \note Developers, make sure you override this function in your Object derived classes. */
-		virtual char* getClassName();
 
 		//! Returns the Event::EventReceiver for this Object instance
 		EventReceiver& getEvents();
+
+		//############################################################################
+		//! Returns an integer identifying the type of object
+		/*! \see Object_Type */
+		virtual unsigned int getObjectType() const = 0;
+
+		//! These are the possible return values for getObjectType()
+		enum Object_Type {
+			OT_UNKNOWN          = 0, //!< should never happen
+			OT_SCREEN           = 1, //!< Object is a Screen
+			OT_CURSOR           = 2, //!< Object is a Cursor
+			OT_WIDGET           = 5, //!< Object is a Widget
+			OT_CONTROL          = 6, //!< Object is a Control
+			OT_CONTAINERCONTROL = 7, //!< Object is a ContainerControl
+			OT_WINDOW           = 8, //!< Object is a Window
+		};
 
 	private:
 		EventReceiver mEventReceiver;

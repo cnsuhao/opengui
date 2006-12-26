@@ -53,10 +53,9 @@ namespace OpenGUI {
 		return &gCursor_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Cursor::getClassName() {
-		return "OpenGUI::Cursor";
+	unsigned int Cursor::getObjectType() const {
+		return OT_CURSOR;
 	}
-	//############################################################################
 	//############################################################################
 	Cursor::Cursor() {
 		if ( gCursor_ObjectAccessorList.getParent() == 0 )

@@ -181,8 +181,8 @@ namespace OpenGUI {
 		return &gControl_ObjectAccessorList;
 	}
 	//############################################################################
-	char* Control::getClassName() {
-		return "OpenGUI::Control";
+	unsigned int Control::getObjectType() const {
+		return OT_CONTROL;
 	}
 	//############################################################################
 	void Control::_draw( Brush& brush ) {

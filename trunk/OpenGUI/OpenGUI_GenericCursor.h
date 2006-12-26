@@ -35,7 +35,6 @@ namespace OpenGUI {
 
 		//Object Functions
 		virtual ObjectAccessorList* getAccessors();
-		virtual char* getClassName();
 
 	protected:
 		//! draws this cursor
