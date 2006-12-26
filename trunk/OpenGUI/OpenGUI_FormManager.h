@@ -6,8 +6,8 @@
 #define EE1973FF_45A9_47ea_BBE1_A9DEFA47DF60
 
 #include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_XML.h"
