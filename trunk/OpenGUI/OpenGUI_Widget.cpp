@@ -242,7 +242,7 @@ namespace OpenGUI {
 	/*! This function is intended to be overridden by subclasses to reflect their
 	own personal interpretation of the given point (in local coordinates) and if
 	that point is considered to be inside the widget. This allows new widgets to
-	break free from the existing "axis aligned rect" paradigm that is currently
+	break free from the existing "axis aligned rect" paradigm that is usually
 	in place.
 
 	\note
