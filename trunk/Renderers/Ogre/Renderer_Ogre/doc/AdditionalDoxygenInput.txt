@@ -67,9 +67,9 @@ your application may induce previously unknown issues.
 	
 	Example include layout:
 \verbatim
-#include <Ogre.h>
-#include <OpenGUI.h>
-#include <Renderer_Ogre.h>
+#include "Ogre.h"
+#include "OpenGUI.h"
+#include "Renderer_Ogre.h"
 \endverbatim
 
 <hr>
