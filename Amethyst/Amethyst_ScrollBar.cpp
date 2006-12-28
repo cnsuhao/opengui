@@ -126,7 +126,7 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( isInsideThumb( evtArgs.Position ) ) {
 				mThumbDownPt = evtArgs.Position;
 				mThumbDownValue = mValue;

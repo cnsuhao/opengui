@@ -129,7 +129,6 @@ namespace OpenGUI {
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Move( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
-					break; // stop processing after first consumption
 				}
 			}
 		}
@@ -155,7 +154,6 @@ namespace OpenGUI {
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Press( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
-					break; // stop processing after first consumption
 				}
 			}
 		}
@@ -181,7 +179,6 @@ namespace OpenGUI {
 			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
 				if ( iter->eventCursor_Release( newPos.x, newPos.y ) ) {
 					evtArgs.eat();
-					break; // stop processing after first consumption
 				}
 			}
 		}

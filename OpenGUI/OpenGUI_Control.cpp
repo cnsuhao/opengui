@@ -425,7 +425,7 @@ namespace OpenGUI {
 		}
 		Widget::onCursor_Press( sender, evtArgs );
 
-		if ( _isInside( evtArgs.Position ) ) {
+		if ( _isInside( evtArgs.Position ) && getSiblingAt( evtArgs.Position ) == this ) {
 			if ( eventCursor_PressInside( evtArgs.X, evtArgs.Y ) )
 				evtArgs.eat();
 		}
@@ -438,7 +438,7 @@ namespace OpenGUI {
 		}
 		Widget::onCursor_Release( sender, evtArgs );
 
-		if ( _isInside( evtArgs.Position ) ) {
+		if ( _isInside( evtArgs.Position ) && getSiblingAt( evtArgs.Position ) == this ) {
 			if ( eventCursor_ReleaseInside( evtArgs.X, evtArgs.Y ) )
 				evtArgs.eat();
 		}
@@ -469,6 +469,16 @@ namespace OpenGUI {
 		triggerEvent( "Cursor_Leave", evtArgs );
 	}
 	//############################################################################
+	Widget* Control::getSiblingAt( const FVector2& pos ) {
+		WidgetCollection* wc = getContainer();
+		if ( !wc ) return 0;
+		WidgetCollection::iterator i, ie = wc->end();
+		for ( i = wc->begin(); i != ie; i++ ) {
+			if ( i->_isInside( pos ) )
+				return i.get();
+		}
+		return 0;
+	}
 	/*! To preserve this functionality in future overrides, the base class
 	version of this method will need to be called.
 
@@ -488,7 +498,7 @@ namespace OpenGUI {
 		//mCursorEnterLeave_Sent
 		if ( mCursorInside ) {
 			// test if cursor is outside
-			if ( !inside ) {
+			if ( !inside || getSiblingAt( pos ) != this ) {
 				mCursorInside = false; // store the new state
 				eventCursor_Leave( evtArgs ); // let everyone know
 			} else {
@@ -498,7 +508,7 @@ namespace OpenGUI {
 			}
 		} else {
 			// test if cursor is inside
-			if ( inside ) {
+			if ( inside && getSiblingAt( pos ) == this ) {
 				mCursorInside = true; // store the new state
 				eventCursor_Enter( evtArgs ); // let everyone know
 				// and don't forget to issue the move event afterward

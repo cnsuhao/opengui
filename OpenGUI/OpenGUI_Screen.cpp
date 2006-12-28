@@ -396,13 +396,14 @@ namespace OpenGUI {
 		}
 
 		//send to everyone
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
 			if(iter->eventCursor_Move( x_pos, y_pos ) )
-				return true;
+				retval = true;
 			iter++;
 		}
-		return false;
+		return retval;
 	}
 	//############################################################################
 	/*! 0.0 x 0.0 is the upper left corner of the screen, 1.0 x 1.0 is the lower right of the screen.
@@ -424,13 +425,14 @@ namespace OpenGUI {
 		}
 
 		//send to everyone else
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
 			if(iter->eventCursor_Press( mCursorPos.x, mCursorPos.y ))
-				return true;
+				retval = true;
 			iter++;
 		}
-		return false;
+		return retval;
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -444,13 +446,14 @@ namespace OpenGUI {
 		}
 
 		//send to everyone else
+		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
 			if(iter->eventCursor_Release( mCursorPos.x, mCursorPos.y ) )
-				return true;
+				retval = true;
 			iter++;
 		}
-		return false;
+		return retval;
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
