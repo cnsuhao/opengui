@@ -197,6 +197,9 @@ namespace OpenGUI {
 
 
 	private:
+		// returns a pointer to the first sibling found at the given position
+		Widget* getSiblingAt(const FVector2& pos);
+
 		//! Call for any operation that invalidates layouts, like moves and resizes.
 		void _invalidateLayout();
 		//! Call for any operation that breaks docking. (Moves and resizes along a conflicting axis)

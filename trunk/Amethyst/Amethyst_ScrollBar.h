@@ -73,7 +73,7 @@ namespace OpenGUI {
 			virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
