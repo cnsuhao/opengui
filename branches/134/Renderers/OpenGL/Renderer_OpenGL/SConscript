@@ -1,0 +1,82 @@
+# Build Script for Renderer_OpenGL
+import os
+import fnmatch
+
+
+# Source files (and yes, this is indeed much like cheating)
+files = os.listdir(".")
+Source = fnmatch.filter(files,"*.cpp")
+
+CPPPATH = """
+	#/OpenGUI
+	../deps/glfw/include
+	../deps/corona/src
+	"""
+LIBPATH_D = """
+	#/lib
+	../deps/glfw
+	../deps/corona
+	"""
+	
+LIBPATH_R = """
+	#/lib
+	../deps/glfw
+	../deps/corona
+	"""
+
+LIBS_D = """
+	OpenGUI_d
+	corona_d
+	glfw_static_d
+	"""
+
+LIBS_R = """
+	OpenGUI
+	corona
+	glfw_static
+	"""
+
+OUTFILE = 'Renderer_OpenGL'
+
+
+
+################################################################
+Import('platform')
+Import('base_env')
+env = base_env.Copy()
+
+OUTFILE_orig = OUTFILE
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = Split(LIBPATH_D)
+	libs = Split(LIBS_D)
+else:
+	libpath = Split(LIBPATH_R)
+	libs = Split(LIBS_R)
+
+
+
+cppdefine = [] #['_USRDLL', 'AMETHYST_EXPORTS']
+env.Append(CPPDEFINES = cppdefine)
+env.Append(CPPPATH = Split(CPPPATH))
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+
+env['PDB'] = OUTFILE + '.pdb'
+
+
+lib = env.StaticLibrary( OUTFILE, Source )
+
+
+if debug and platform == "win32":
+	env.SideEffect(OUTFILE + '.ilk', lib)
+	Clean(lib, OUTFILE + '.ilk')
+
+final = []
+final += env.Install('../lib', OUTFILE + '.lib')
+Alias('renderer_opengl',final)
+Alias('opengl',final)
+Alias('all',final)
