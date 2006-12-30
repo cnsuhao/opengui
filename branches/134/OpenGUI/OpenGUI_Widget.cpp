@@ -271,7 +271,7 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventAttached( WidgetCollection* newContainer, Widget* widget ) {
@@ -280,7 +280,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventDetached( WidgetCollection* prevContainer, Widget* widget ) {
@@ -289,7 +289,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDraw( Object* obj, Draw_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* obj, EventArgs& evtArgs ) {
@@ -319,7 +319,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	/*! \param xPos X position of the cursor
@@ -333,7 +333,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	/*! \param xPos X position of the cursor
@@ -347,7 +347,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventCursorEnter() {
@@ -356,7 +356,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventCursorLeave() {
@@ -365,7 +365,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventCursorFocused( Widget* cur, Widget* prev ) {
@@ -374,7 +374,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventCursorFocusLost( Widget* cur, Widget* prev ) {
@@ -383,7 +383,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	//############################################################################
@@ -394,7 +394,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onKey_Up( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	bool Widget::eventKey_Down( char character ) {
@@ -404,7 +404,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onKey_Down( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	bool Widget::eventKey_Pressed( char character ) {
@@ -414,7 +414,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventKey_Focused( Widget* cur, Widget* prev ) {
@@ -423,7 +423,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventKey_FocusLost( Widget* cur, Widget* prev ) {
@@ -432,7 +432,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	//############################################################################
@@ -442,7 +442,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventDisabled() {
@@ -451,7 +451,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	//############################################################################
@@ -540,7 +540,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onTick( Object* sender, Tick_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	Widget* Widget::_getChildByName( const std::string& childName ) const {
