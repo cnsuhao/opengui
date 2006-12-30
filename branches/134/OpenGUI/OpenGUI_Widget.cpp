@@ -783,4 +783,8 @@ namespace OpenGUI {
 		eventKeyFocusLost( cur, prev );
 	}
 	//############################################################################
+	void Widget::_getEventChildList(WidgetPtrList& childList){
+		/* we have no children, so we do nothing */
+	}
+	//############################################################################
 }//namespace OpenGUI{

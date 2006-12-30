@@ -487,7 +487,7 @@ namespace OpenGUI {
 				hideCursor();
 			}
 
-			// send a null move to bring the gui state into proper planetary alignment
+			// send a null move to bring the GUI state into proper planetary alignment
 			_injectCursorPosition( mCursorPos.x, mCursorPos.y );
 		}
 	}

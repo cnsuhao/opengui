@@ -129,16 +129,19 @@ namespace OpenGUI {
 		//! Returns true if the given point is inside this Widget
 		virtual bool isInside( const FVector2& position );
 
-		virtual bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event 
-		virtual void _sendCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
-		virtual bool _injectCursorPress( float xPos, float yPos );
-		virtual bool _injectCursorRelease( float xPos, float yPos );
+		//! fill the given list with a complete list of immediate child widgets that should receive events
+		virtual void _getEventChildList(WidgetPtrList& childList);
+
+		bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event 
+		void _sendCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
+		bool _injectCursorPress( float xPos, float yPos );
+		bool _injectCursorRelease( float xPos, float yPos );
 		void _sendCursorFocused( Widget* cur, Widget* prev );
 		void _sendCursorFocusLost( Widget* cur, Widget* prev );
 
-		virtual bool _injectKeyDown( char character );
-		virtual bool _injectKeyPressed( char character );
-		virtual bool _injectKeyUp( char character );
+		bool _injectKeyDown( char character );
+		bool _injectKeyPressed( char character );
+		bool _injectKeyUp( char character );
 		void _sendKeyFocused( Widget* cur, Widget* prev );
 		void _sendKeyFocusLost( Widget* cur, Widget* prev );
 
