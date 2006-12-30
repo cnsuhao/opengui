@@ -183,7 +183,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void Screen::_setCursorFocus( Widget* widget ) {
+	void Screen::_setCursorFocus( Widget* widget, bool issueMove ) {
 		Widget* prev = m_CursorFocus;
 		Widget* next = widget;
 
@@ -203,8 +203,9 @@ namespace OpenGUI {
 			next->_sendCursorFocused( next, prev );
 		}
 
-		//inject a Cursor_Move to update the new receiver about the cursor's position
-		_injectCursorPosition( mCursorPos.x, mCursorPos.y );
+		//inject a CursorMove to update the new receiver about the cursor's position
+		if ( issueMove )
+			_injectCursorPosition( mCursorPos.x, mCursorPos.y );
 	}
 	//############################################################################
 	void Screen::_UpdatePPU() const {
@@ -387,7 +388,7 @@ namespace OpenGUI {
 	//############################################################################
 	bool Screen::_injectCursorPosition( float x_pos, float y_pos ) {
 		// before we do anything, abort if the cursor is disabled
-		if ( !m_CursorEnabled )return false;
+		if ( !m_CursorEnabled ) return false;
 
 		//store the new cursor position for future use
 		mCursorPos.x = x_pos;
@@ -428,18 +429,18 @@ namespace OpenGUI {
 
 		//send to focus holder if present
 		if ( m_CursorFocus ) {
-			//return m_CursorFocus->eventCursor_Press( mCursorPos.x, mCursorPos.y );
+			return m_CursorFocus->_injectCursorPress( mCursorPos.x, mCursorPos.y );
 		}
 
 		//send to everyone else
-		bool retval = false;
+		bool consumed = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			//if(iter->eventCursor_Press( mCursorPos.x, mCursorPos.y ))
-			//	retval = true;
+			if ( !consumed )
+				consumed = iter->_injectCursorPress( mCursorPos.x, mCursorPos.y );
 			iter++;
 		}
-		return retval;
+		return consumed;
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -449,18 +450,18 @@ namespace OpenGUI {
 
 		//send to focus holder if present
 		if ( m_CursorFocus ) {
-			//return m_CursorFocus->eventCursor_Release( mCursorPos.x, mCursorPos.y );
+			return m_CursorFocus->_injectCursorRelease( mCursorPos.x, mCursorPos.y );
 		}
 
 		//send to everyone else
-		bool retval = false;
+		bool consumed = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			//if(iter->eventCursor_Release( mCursorPos.x, mCursorPos.y ) )
-			//	retval = true;
+			if ( !consumed )
+				consumed = iter->_injectCursorRelease( mCursorPos.x, mCursorPos.y );
 			iter++;
 		}
-		return retval;
+		return consumed;
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -474,7 +475,7 @@ namespace OpenGUI {
 		return false;
 	}
 	//############################################################################
-	/*! Cursor starts disabled, so you will need to call this to enabled it before
+	/*! Cursor starts disabled, so you will need to call this to enable it before
 	you can realistically use it. Multiple calls have no ill effect.
 	\note You cannot enable a visible cursor until the default cursor for the Screen
 	has been set. If no default cursor is set when this is called, the cursor will
@@ -485,11 +486,9 @@ namespace OpenGUI {
 			if ( mDefaultCursor.isNull() && cursorVisible() ) {
 				hideCursor();
 			}
-			WidgetCollection::iterator iter = Children.begin();
-			while ( iter != Children.end() ) {
-				//iter->eventCursor_Enabled( mCursorPos.x, mCursorPos.y );
-				iter++;
-			}
+
+			// send a null move to bring the gui state into proper planetary alignment
+			_injectCursorPosition( mCursorPos.x, mCursorPos.y );
 		}
 	}
 	//############################################################################
@@ -501,9 +500,14 @@ namespace OpenGUI {
 				mPrevCursor = 0;
 			}
 			m_CursorEnabled = false;
+
+			// clear any existing cursor focus, but don't issue the state updating move event
+			_setCursorFocus( 0, false );
+
+			// end any existing cursor involvement by issuing a sweeping consumed event
 			WidgetCollection::iterator iter = Children.begin();
 			while ( iter != Children.end() ) {
-				//iter->eventCursor_Disabled();
+				iter->_sendCursorMoveConsumed();
 				iter++;
 			}
 		}

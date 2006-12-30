@@ -77,7 +77,7 @@ namespace OpenGUI {
 		Widget* getCursorFocusedWidget();
 
 		//! \internal Sets cursor focus to the given Widget. Called by the widget via Widget::grabCursorFocus() or Widget::releaseCursorFocus()
-		void _setCursorFocus( Widget* widget );
+		void _setCursorFocus( Widget* widget, bool issueMove = true );
 //@} Cursor Functions
 
 //!\name Keyboard Input Injection
