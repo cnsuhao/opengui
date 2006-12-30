@@ -567,5 +567,13 @@ namespace OpenGUI {
 	CursorPtr Control::getCursor() const {
 		return m_Cursor;
 	}
-	//############################################################################	
+	//############################################################################
+	void Control::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
+		evtArgs.eat();
+	}
+	//############################################################################
+	void Control::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
+		evtArgs.eat();
+	}
+	//############################################################################
 } // namespace OpenGUI {

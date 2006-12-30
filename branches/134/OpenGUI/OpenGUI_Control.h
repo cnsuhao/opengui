@@ -149,9 +149,9 @@ namespace OpenGUI {
 		//! "Resized" event
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
-		//! "Cursor_Press" event
+		//! "CursorPress" event
 		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
+		//! "CursorRelease" event
 		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 
 		//! "Targeted" event

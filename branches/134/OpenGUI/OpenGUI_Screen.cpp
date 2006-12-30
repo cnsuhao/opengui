@@ -171,7 +171,7 @@ namespace OpenGUI {
 		Widget* next = widget;
 		//notify previous of focus lost
 		if ( prev ) {
-			prev->eventKey_FocusLost( next, prev );
+			prev->_sendKeyFocusLost( next, prev );
 		}
 
 		//set the new focus target
@@ -179,7 +179,7 @@ namespace OpenGUI {
 
 		//notify the new of focus acquired
 		if ( next ) {
-			next->eventKey_Focused( next, prev );
+			next->_sendKeyFocused( next, prev );
 		}
 	}
 	//############################################################################
@@ -192,7 +192,7 @@ namespace OpenGUI {
 
 		//notify previous of focus lost
 		if ( prev ) {
-			prev->eventCursor_FocusLost( next, prev );
+			prev->_sendCursorFocusLost( next, prev );
 		}
 
 		//set the new focus target
@@ -200,7 +200,7 @@ namespace OpenGUI {
 
 		//notify the new of focus acquired
 		if ( next ) {
-			next->eventCursor_Focused( next, prev );
+			next->_sendCursorFocused( next, prev );
 		}
 
 		//inject a Cursor_Move to update the new receiver about the cursor's position
@@ -359,9 +359,9 @@ namespace OpenGUI {
 			return false;
 
 		bool retval = false;
-		m_KeyFocus->eventKey_Down( character );
-		retval = m_KeyFocus->eventKey_Pressed( character );
-		m_KeyFocus->eventKey_Up( character );
+		m_KeyFocus->_injectKeyDown( character );
+		retval = m_KeyFocus->_injectKeyPressed( character );
+		m_KeyFocus->_injectKeyUp( character );
 		return retval;
 	}
 	//############################################################################
@@ -386,24 +386,31 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool Screen::_injectCursorPosition( float x_pos, float y_pos ) {
+		// before we do anything, abort if the cursor is disabled
+		if ( !m_CursorEnabled )return false;
+
 		//store the new cursor position for future use
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
 
 		//send to focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->eventCursor_Move( x_pos, y_pos );
+			return m_CursorFocus->_injectCursorMove( x_pos, y_pos );
 		}
 
 		//send to everyone
-		bool retval = false;
+		bool consumed = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			if(iter->eventCursor_Move( x_pos, y_pos ) )
-				retval = true;
+			if ( !consumed )
+				consumed = iter->_injectCursorMove( x_pos, y_pos );
+			else
+				iter->_sendCursorMoveConsumed();
 			iter++;
 		}
-		return retval;
+		// we always return true if the move was issued to the widgets, regardless if anyone consumed it
+		// (merely processing it signifies that it was useful)
+		return true;
 	}
 	//############################################################################
 	/*! 0.0 x 0.0 is the upper left corner of the screen, 1.0 x 1.0 is the lower right of the screen.
@@ -421,15 +428,15 @@ namespace OpenGUI {
 
 		//send to focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->eventCursor_Press( mCursorPos.x, mCursorPos.y );
+			//return m_CursorFocus->eventCursor_Press( mCursorPos.x, mCursorPos.y );
 		}
 
 		//send to everyone else
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			if(iter->eventCursor_Press( mCursorPos.x, mCursorPos.y ))
-				retval = true;
+			//if(iter->eventCursor_Press( mCursorPos.x, mCursorPos.y ))
+			//	retval = true;
 			iter++;
 		}
 		return retval;
@@ -442,15 +449,15 @@ namespace OpenGUI {
 
 		//send to focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->eventCursor_Release( mCursorPos.x, mCursorPos.y );
+			//return m_CursorFocus->eventCursor_Release( mCursorPos.x, mCursorPos.y );
 		}
 
 		//send to everyone else
 		bool retval = false;
 		WidgetCollection::iterator iter = Children.begin();
 		while ( iter != Children.end() ) {
-			if(iter->eventCursor_Release( mCursorPos.x, mCursorPos.y ) )
-				retval = true;
+			//if(iter->eventCursor_Release( mCursorPos.x, mCursorPos.y ) )
+			//	retval = true;
 			iter++;
 		}
 		return retval;
@@ -480,7 +487,7 @@ namespace OpenGUI {
 			}
 			WidgetCollection::iterator iter = Children.begin();
 			while ( iter != Children.end() ) {
-				iter->eventCursor_Enabled( mCursorPos.x, mCursorPos.y );
+				//iter->eventCursor_Enabled( mCursorPos.x, mCursorPos.y );
 				iter++;
 			}
 		}
@@ -496,7 +503,7 @@ namespace OpenGUI {
 			m_CursorEnabled = false;
 			WidgetCollection::iterator iter = Children.begin();
 			while ( iter != Children.end() ) {
-				iter->eventCursor_Disabled();
+				//iter->eventCursor_Disabled();
 				iter++;
 			}
 		}
@@ -545,7 +552,7 @@ namespace OpenGUI {
 	Widget* Screen::getWidgetAt( const FVector2& position, bool recursive ) {
 		for ( WidgetCollection::iterator iter = Children.begin();iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
-			if ( child->_isInside( position ) ) {
+			if ( child->isInside( position ) ) {
 				Widget* ret = child;
 				if ( recursive ) {
 					child = child->getChildAt( position, true );
@@ -561,7 +568,7 @@ namespace OpenGUI {
 	void Screen::getWidgetsAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
 		for ( WidgetCollection::iterator iter = Children.begin(); iter != Children.end(); iter++ ) {
 			Widget* child = iter.get();
-			if ( child->_isInside( position ) ) {
+			if ( child->isInside( position ) ) {
 				if ( recursive ) {
 					child->getChildrenAt( position, outList, true );
 				}

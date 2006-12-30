@@ -129,15 +129,18 @@ namespace OpenGUI {
 		//! Returns true if the given point is inside this Widget
 		virtual bool isInside( const FVector2& position );
 
-		virtual bool _injectCursorMove( float xPos, float yPos );
-		virtual void _injectCursorEnter();
-		virtual void _injectCursorLeave();
+		virtual bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event 
+		virtual void _sendCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
 		virtual bool _injectCursorPress( float xPos, float yPos );
 		virtual bool _injectCursorRelease( float xPos, float yPos );
+		void _sendCursorFocused( Widget* cur, Widget* prev );
+		void _sendCursorFocusLost( Widget* cur, Widget* prev );
 
-		virtual bool _injectKey_Down( char character );
-		virtual bool _injectKey_Pressed( char character );
-		virtual bool _injectKey_Up( char character );
+		virtual bool _injectKeyDown( char character );
+		virtual bool _injectKeyPressed( char character );
+		virtual bool _injectKeyUp( char character );
+		void _sendKeyFocused( Widget* cur, Widget* prev );
+		void _sendKeyFocusLost( Widget* cur, Widget* prev );
 
 	protected:
 //!\name Event Triggers
@@ -173,15 +176,15 @@ namespace OpenGUI {
 		void eventCursorFocusLost( Widget* cur, Widget* prev );
 
 		//! Called when the given \c character is released
-		bool eventKey_Up( char character );
+		bool eventKeyUp( char character );
 		//! Called when the given \c character is pressed down
-		bool eventKey_Down( char character );
+		bool eventKeyDown( char character );
 		//! Called when the given \c character is entered
-		bool eventKey_Pressed( char character );
+		bool eventKeyPressed( char character );
 		//! Called then this widget receives key focus
-		void eventKey_Focused( Widget* cur, Widget* prev );
+		void eventKeyFocused( Widget* cur, Widget* prev );
 		//! Called then this widget loses key focus
-		void eventKey_FocusLost( Widget* cur, Widget* prev );
+		void eventKeyFocusLost( Widget* cur, Widget* prev );
 
 		//! Called when the passage of time has been measured
 		void eventTick( float seconds );
@@ -220,15 +223,15 @@ namespace OpenGUI {
 		virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 		//! "Key_Up" event
-		virtual void onKey_Up( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyUp( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Down" event
-		virtual void onKey_Down( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyDown( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Pressed" event
-		virtual void onKey_Pressed( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyPressed( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Focused" event
-		virtual void onKey_Focused( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onKeyFocused( Object* sender, Focus_EventArgs& evtArgs );
 		//! "Key_FocusLost" event
-		virtual void onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 		//! "Tick" event
 		virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );

@@ -113,6 +113,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/*
 		if ( isMoving() ) {
 			FVector2 diff = evtArgs.Position - mInitialCursor;
 			FVector2 newPos = mInitialPos + diff;
@@ -149,10 +150,11 @@ namespace OpenGUI {
 			}
 		}
 		ContainerControl::onCursor_Move( sender, evtArgs );
+		*/
 	}
 	//############################################################################
 	void Window::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-		ContainerControl::onCursor_Focused( sender, evtArgs );
+		//ContainerControl::onCursor_Focused( sender, evtArgs );
 	}
 	//############################################################################
 	void Window::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
@@ -160,7 +162,7 @@ namespace OpenGUI {
 			eventMove_End();
 		if ( isResizing() )
 			eventResize_End();
-		ContainerControl::onCursor_FocusLost( sender, evtArgs );
+		//ContainerControl::onCursor_FocusLost( sender, evtArgs );
 	}
 	//############################################################################
 	bool Window::isMoving() const {

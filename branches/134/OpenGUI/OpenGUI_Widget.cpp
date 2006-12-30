@@ -129,16 +129,16 @@ namespace OpenGUI {
 		getEvents()["Enabled"].add( new EventDelegate( this, &Widget::onEnabled ) );
 		getEvents()["Disabled"].add( new EventDelegate( this, &Widget::onDisabled ) );
 
-		getEvents().createEvent( "Key_Up" );
-		getEvents().createEvent( "Key_Down" );
-		getEvents().createEvent( "Key_Pressed" );
-		getEvents().createEvent( "Key_Focused" );
-		getEvents().createEvent( "Key_FocusLost" );
-		getEvents()["Key_Up"].add( new EventDelegate( this, &Widget::onKey_Up ) );
-		getEvents()["Key_Down"].add( new EventDelegate( this, &Widget::onKey_Down ) );
-		getEvents()["Key_Pressed"].add( new EventDelegate( this, &Widget::onKey_Pressed ) );
-		getEvents()["Key_Focused"].add( new EventDelegate( this, &Widget::onKey_Focused ) );
-		getEvents()["Key_FocusLost"].add( new EventDelegate( this, &Widget::onKey_FocusLost ) );
+		getEvents().createEvent( "KeyUp" );
+		getEvents().createEvent( "KeyDown" );
+		getEvents().createEvent( "KeyPressed" );
+		getEvents().createEvent( "KeyFocused" );
+		getEvents().createEvent( "KeyFocusLost" );
+		getEvents()["KeyUp"].add( new EventDelegate( this, &Widget::onKeyUp ) );
+		getEvents()["KeyDown"].add( new EventDelegate( this, &Widget::onKeyDown ) );
+		getEvents()["KeyPressed"].add( new EventDelegate( this, &Widget::onKeyPressed ) );
+		getEvents()["KeyFocused"].add( new EventDelegate( this, &Widget::onKeyFocused ) );
+		getEvents()["KeyFocusLost"].add( new EventDelegate( this, &Widget::onKeyFocusLost ) );
 
 		getEvents().createEvent( "Tick" );
 		getEvents()["Tick"].add( new EventDelegate( this, &Widget::onTick ) );
@@ -387,51 +387,51 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//############################################################################
-	bool Widget::eventKey_Up( char character ) {
+	bool Widget::eventKeyUp( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Up", event );
+		triggerEvent( "KeyUp", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	void Widget::onKey_Up( Object* sender, Key_EventArgs& evtArgs ) {
+	void Widget::onKeyUp( Object* sender, Key_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	bool Widget::eventKey_Down( char character ) {
+	bool Widget::eventKeyDown( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Down", event );
+		triggerEvent( "KeyDown", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	void Widget::onKey_Down( Object* sender, Key_EventArgs& evtArgs ) {
+	void Widget::onKeyDown( Object* sender, Key_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	bool Widget::eventKey_Pressed( char character ) {
+	bool Widget::eventKeyPressed( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Pressed", event );
+		triggerEvent( "KeyPressed", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	void Widget::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs ) {
+	void Widget::onKeyPressed( Object* sender, Key_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::eventKey_Focused( Widget* cur, Widget* prev ) {
+	void Widget::eventKeyFocused( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Key_Focused", event );
+		triggerEvent( "KeyFocused", event );
 	}
 	//############################################################################
-	void Widget::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+	void Widget::onKeyFocused( Object* sender, Focus_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::eventKey_FocusLost( Widget* cur, Widget* prev ) {
+	void Widget::eventKeyFocusLost( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Key_FocusLost", event );
+		triggerEvent( "KeyFocusLost", event );
 	}
 	//############################################################################
-	void Widget::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+	void Widget::onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
 	}
 	//############################################################################
@@ -696,20 +696,55 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool Widget::_injectCursorMove( float xPos, float yPos ) {
-		assert( m_CursorInside );
-		return eventCursorMove( xPos, yPos );
+		/*
+		This function is responsible for culling out move events we aren't interested in,
+		as well as maintaining the cursor's enter/leave state.
+		This particular implementation should be flexible enough to work for all widgets,
+		including containers, however it will need to be extended for containers to
+		pass the events on to the children.
+		*/
+
+		// gather info about the focus state and convert the given move position if necessary
+		const bool isFocused = hasCursorFocus();
+		FVector2 localPos;
+		if ( isFocused ) {
+			localPos = pointFromScreen( FVector2( xPos, yPos ) );
+		} else {
+			localPos = FVector2( xPos, yPos );
+		}
+
+		bool consumed = false; // we don't consume unless we're explicitly consumed during CursorMove
+		// we only pass through move events that we actually care about
+		if ( isInside( localPos ) ) {
+			if ( !m_CursorInside ) {
+				m_CursorInside = true;
+				eventCursorEnter();
+			}
+			assert( m_CursorInside );
+			consumed = eventCursorMove( xPos, yPos );
+		} else {
+			if ( m_CursorInside ) {
+				m_CursorInside = false;
+				eventCursorLeave();
+			}
+			if ( isFocused ) { // if we're focused, then we should supply the move even if it is outside of our coverage area
+				consumed = eventCursorMove( xPos, yPos );
+			}
+		}
+		return consumed;
 	}
 	//############################################################################
-	void Widget::_injectCursorEnter() {
+	void Widget::_sendCursorMoveConsumed() {
+		/*
+		This function ensures that we properly receive the CursorLeave event if
+		we haven't already. It will need to be extended in containers to notify
+		children.
+		*/
+		if ( m_CursorInside ) {
+			m_CursorInside = false;
+			eventCursorLeave();
+		}
 		assert( !m_CursorInside );
-		m_CursorInside = true;
-		eventCursorEnter();
-	}
-	//############################################################################
-	void Widget::_injectCursorLeave() {
-		assert( m_CursorInside );
-		m_CursorInside = false;
-		eventCursorLeave();
 	}
 	//############################################################################
 	bool Widget::_injectCursorPress( float xPos, float yPos ) {
@@ -720,16 +755,32 @@ namespace OpenGUI {
 		return eventCursorRelease( xPos, yPos );
 	}
 	//############################################################################
-	bool Widget::_injectKey_Down( char character ) {
-		return eventKey_Down( character );
+	bool Widget::_injectKeyDown( char character ) {
+		return eventKeyDown( character );
 	}
 	//############################################################################
-	bool Widget::_injectKey_Pressed( char character ) {
-		return eventKey_Pressed( character );
+	bool Widget::_injectKeyPressed( char character ) {
+		return eventKeyPressed( character );
 	}
 	//############################################################################
-	bool Widget::_injectKey_Up( char character ) {
-		return eventKey_Up( character );
+	bool Widget::_injectKeyUp( char character ) {
+		return eventKeyUp( character );
+	}
+	//############################################################################
+	void Widget::_sendCursorFocused( Widget* cur, Widget* prev ) {
+		eventCursorFocused( cur, prev );
+	}
+	//############################################################################
+	void Widget::_sendCursorFocusLost( Widget* cur, Widget* prev ) {
+		eventCursorFocusLost( cur, prev );
+	}
+	//############################################################################
+	void Widget::_sendKeyFocused( Widget* cur, Widget* prev ) {
+		eventKeyFocusLost( cur, prev );
+	}
+	//############################################################################
+	void Widget::_sendKeyFocusLost( Widget* cur, Widget* prev ) {
+		eventKeyFocusLost( cur, prev );
 	}
 	//############################################################################
 }//namespace OpenGUI{
