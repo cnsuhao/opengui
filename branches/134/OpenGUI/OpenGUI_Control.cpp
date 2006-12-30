@@ -157,26 +157,15 @@ namespace OpenGUI {
 		mClickTrack = false;
 
 		//Set up events and default bindings
-		getEvents().createEvent( "Cursor_Click" );
-		getEvents().createEvent( "Cursor_Enter" );
-		getEvents().createEvent( "Cursor_Leave" );
-		getEvents()["Cursor_Click"].add( new EventDelegate( this, &Control::onCursor_Click ) );
-		getEvents()["Cursor_Enter"].add( new EventDelegate( this, &Control::onCursor_Enter ) );
-		getEvents()["Cursor_Leave"].add( new EventDelegate( this, &Control::onCursor_Leave ) );
 		getEvents().createEvent( "Targeted" );
 		getEvents().createEvent( "UnTargeted" );
 		getEvents()["Targeted"].add( new EventDelegate( this, &Control::onTargeted ) );
 		getEvents()["UnTargeted"].add( new EventDelegate( this, &Control::onUnTargeted ) );
+
 		getEvents().createEvent( "Moved" );
 		getEvents().createEvent( "Resized" );
 		getEvents()["Moved"].add( new EventDelegate( this, &Control::onMoved ) );
 		getEvents()["Resized"].add( new EventDelegate( this, &Control::onResized ) );
-		getEvents().createEvent( "Cursor_MoveInside" );
-		getEvents().createEvent( "Cursor_PressInside" );
-		getEvents().createEvent( "Cursor_ReleaseInside" );
-		getEvents()["Cursor_MoveInside"].add( new EventDelegate( this, &Control::onCursor_MoveInside ) );
-		getEvents()["Cursor_PressInside"].add( new EventDelegate( this, &Control::onCursor_PressInside ) );
-		getEvents()["Cursor_ReleaseInside"].add( new EventDelegate( this, &Control::onCursor_ReleaseInside ) );
 	}
 	//############################################################################
 	Control::~Control() {
@@ -203,7 +192,7 @@ namespace OpenGUI {
 	otherwise false.
 	\note This function is \b not focus aware. The given \c position should already
 	be in the correct coordinate space. */
-	bool Control::_isInside( const FVector2& position ) {
+	bool Control::isInside( const FVector2& position ) {
 		return mRect.isInside( position );
 	}
 	//############################################################################
@@ -419,116 +408,17 @@ namespace OpenGUI {
 		return mAlpha;
 	}
 	//############################################################################
-	void Control::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-		if ( mCursorInside ) {
-			mClickTrack = true;
-		}
-		Widget::onCursor_Press( sender, evtArgs );
-
-		if ( _isInside( evtArgs.Position ) && getSiblingAt( evtArgs.Position ) == this ) {
-			if ( eventCursor_PressInside( evtArgs.X, evtArgs.Y ) )
-				evtArgs.eat();
-		}
-	}
-	//############################################################################
-	void Control::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-		if ( mClickTrack ) {
-			eventCursor_Click( evtArgs );
-			mClickTrack = false;
-		}
-		Widget::onCursor_Release( sender, evtArgs );
-
-		if ( _isInside( evtArgs.Position ) && getSiblingAt( evtArgs.Position ) == this ) {
-			if ( eventCursor_ReleaseInside( evtArgs.X, evtArgs.Y ) )
-				evtArgs.eat();
-		}
-	}
-	//############################################################################
-	void Control::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Control::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-		eventTargeted(); // notify targeted
-	}
-	//############################################################################
-	void Control::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-		mClickTrack = false;
-		eventUnTargeted(); // notify untargeted
-	}
-	//############################################################################
-	void Control::eventCursor_Click( Cursor_EventArgs& evtArgs ) {
-		triggerEvent( "Cursor_Click", evtArgs );
-	}
-	//############################################################################
-	void Control::eventCursor_Enter( Cursor_EventArgs& evtArgs ) {
-		triggerEvent( "Cursor_Enter", evtArgs );
-	}
-	//############################################################################
-	void Control::eventCursor_Leave( Cursor_EventArgs& evtArgs ) {
-		triggerEvent( "Cursor_Leave", evtArgs );
-	}
-	//############################################################################
-	Widget* Control::getSiblingAt( const FVector2& pos ) {
-		WidgetCollection* wc = getContainer();
-		if ( !wc ) return 0;
-		WidgetCollection::iterator i, ie = wc->end();
-		for ( i = wc->begin(); i != ie; i++ ) {
-			if ( i->_isInside( pos ) )
-				return i.get();
-		}
-		return 0;
-	}
-	/*! To preserve this functionality in future overrides, the base class
-	version of this method will need to be called.
-
-	Control implementation tracks cursor position and generates \c Cursor_Enter and
-	\c Cursor_Leave as appropriate according to the result of _isInside().
-
-	\note This function \b is cursor focus aware, and will do the "right thing"
-	in order to ensure proper generation of Cursor_Enter/Cursor_Leave events.
-	*/
-	void Control::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		FVector2 pos = evtArgs.Position;
-		if ( hasCursorFocus() ) // translate point if necessary
-			pos = pointFromScreen( pos );
-
-		const bool inside = _isInside( pos );
-
-		//mCursorEnterLeave_Sent
-		if ( mCursorInside ) {
-			// test if cursor is outside
-			if ( !inside || getSiblingAt( pos ) != this ) {
-				mCursorInside = false; // store the new state
-				eventCursor_Leave( evtArgs ); // let everyone know
-			} else {
-				// if we're still inside, then we should re-issue the event as Inside
-				if ( eventCursor_MoveInside( evtArgs.X, evtArgs.Y ) )
-					evtArgs.eat();
-			}
-		} else {
-			// test if cursor is inside
-			if ( inside && getSiblingAt( pos ) == this ) {
-				mCursorInside = true; // store the new state
-				eventCursor_Enter( evtArgs ); // let everyone know
-				// and don't forget to issue the move event afterward
-				if ( eventCursor_MoveInside( evtArgs.X, evtArgs.Y ) )
-					evtArgs.eat();
-			}
-		}
-	}
-	//############################################################################
 	void Control::onTargeted( Object* sender, EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Control::onUnTargeted( Object* sender, EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::eventTargeted() {
 		EventArgs eventArgs;
 		triggerEvent( "Targeted", eventArgs );
+	}
+	//############################################################################
+	void Control::onUnTargeted( Object* sender, EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::eventUnTargeted() {
@@ -540,13 +430,13 @@ namespace OpenGUI {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Control::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
 	void Control::eventMoved( const FVector2& oldPosition, const FVector2& newPosition ) {
 		Moved_EventArgs event( oldPosition, newPosition );
 		triggerEvent( "Moved", event );
+	}
+	//############################################################################
+	void Control::onResized( Object* sender, Resized_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Control::eventResized( const FVector2& oldSize, const FVector2& newSize ) {
@@ -677,38 +567,5 @@ namespace OpenGUI {
 	CursorPtr Control::getCursor() const {
 		return m_Cursor;
 	}
-	//############################################################################
-	/*! The default action is to consume the event, since it is inside our coverage area */
-	void Control::onCursor_MoveInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		evtArgs.eat();
-	}
-	//############################################################################
-	/*! The default action is to consume the event, since it is inside our coverage area */
-	void Control::onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		evtArgs.eat();
-	}
-	//############################################################################
-	/*! The default action is to consume the event, since it is inside our coverage area */
-	void Control::onCursor_ReleaseInside( Object* sender, Cursor_EventArgs& evtArgs ) {
-		evtArgs.eat();
-	}
-	//############################################################################
-	bool Control::eventCursor_MoveInside( float xPos, float yPos ) {
-		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_MoveInside", event );
-		return event.Consumed;
-	}
-	//############################################################################
-	bool Control::eventCursor_PressInside( float xPos, float yPos ) {
-		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_PressInside", event );
-		return event.Consumed;
-	}
-	//############################################################################
-	bool Control::eventCursor_ReleaseInside( float xPos, float yPos ) {
-		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_ReleaseInside", event );
-		return event.Consumed;
-	}
-	//############################################################################
+	//############################################################################	
 } // namespace OpenGUI {

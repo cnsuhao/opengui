@@ -126,7 +126,17 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual unsigned int getObjectType() const;
 
-//!\name Event Injectors
+		//! Returns true if the given point is inside this Widget
+		virtual bool isInside( const FVector2& position );
+
+		virtual bool _injectCursorMove( float xPos, float yPos );
+		virtual void _injectCursorEnter();
+		virtual void _injectCursorLeave();
+		virtual bool _injectCursorPress( float xPos, float yPos );
+		virtual bool _injectCursorRelease( float xPos, float yPos );
+
+	protected:
+//!\name Event Triggers
 //@{
 		//! Widget was attached to a container
 		void eventAttached( WidgetCollection* newContainer, Widget* widget );
@@ -144,19 +154,19 @@ namespace OpenGUI {
 		void eventDisabled();
 
 		//! Called for cursor movement, giving the X,Y position of the cursor
-		bool eventCursor_Move( float xPos, float yPos );
+		bool eventCursorMove( float xPos, float yPos );
 		//! Called when the cursor button is pressed
-		bool eventCursor_Press( float xPos, float yPos );
+		bool eventCursorPress( float xPos, float yPos );
 		//! Called when the cursor button is released
-		bool eventCursor_Release( float xPos, float yPos );
-		//! Called when the cursor is disabled
-		void eventCursor_Disabled();
-		//! Called when the cursor is enabled.
-		void eventCursor_Enabled( float xPos, float yPos );
+		bool eventCursorRelease( float xPos, float yPos );
+		//! Called when the cursor enters this Control
+		void eventCursorEnter();
+		//! Called when the cursor leaves this Control
+		void eventCursorLeave();
 		//! Called then this widget receives cursor focus
-		void eventCursor_Focused( Widget* cur, Widget* prev );
+		void eventCursorFocused( Widget* cur, Widget* prev );
 		//! Called then this widget loses cursor focus
-		void eventCursor_FocusLost( Widget* cur, Widget* prev );
+		void eventCursorFocusLost( Widget* cur, Widget* prev );
 
 		//! Called when the given \c character is released
 		bool eventKey_Up( char character );
@@ -173,10 +183,6 @@ namespace OpenGUI {
 		void eventTick( float seconds );
 //@}
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "Attached" event
@@ -194,20 +200,20 @@ namespace OpenGUI {
 		//! "Disabled" event
 		virtual void onDisabled( Object* sender, EventArgs& evtArgs );
 
-		//! "Cursor_Move" event
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Hidden" event
-		virtual void onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Shown" event
-		virtual void onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Focused" event
-		virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
-		//! "Cursor_FocusLost" event
-		virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorEnter" event
+		virtual void onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorLeave" event
+		virtual void onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorFocused" event
+		virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
+		//! "CursorFocusLost" event
+		virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 		//! "Key_Up" event
 		virtual void onKey_Up( Object* sender, Key_EventArgs& evtArgs );
@@ -256,6 +262,7 @@ namespace OpenGUI {
 
 		bool mEnabled;
 		std::string mWidgetName;
+		bool m_CursorInside;
 
 		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)
 		void _attaching(); // called directly before the attach occurs
