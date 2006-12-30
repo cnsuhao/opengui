@@ -135,6 +135,10 @@ namespace OpenGUI {
 		virtual bool _injectCursorPress( float xPos, float yPos );
 		virtual bool _injectCursorRelease( float xPos, float yPos );
 
+		virtual bool _injectKey_Down( char character );
+		virtual bool _injectKey_Pressed( char character );
+		virtual bool _injectKey_Up( char character );
+
 	protected:
 //!\name Event Triggers
 //@{

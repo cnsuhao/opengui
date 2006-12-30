@@ -269,17 +269,18 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
 	//############################################################################
-	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
+	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventAttached( WidgetCollection* newContainer, Widget* widget ) {
 		Attach_EventArgs event( newContainer, widget );
 		triggerEvent( "Attached", event );
+	}
+	//############################################################################
+	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventDetached( WidgetCollection* prevContainer, Widget* widget ) {
@@ -452,8 +453,7 @@ namespace OpenGUI {
 	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
-
-
+	//############################################################################
 	//############################################################################
 	void Widget::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
 		return; // Widget has no children
@@ -713,11 +713,23 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	bool Widget::_injectCursorPress( float xPos, float yPos ) {
-		OG_NYI;
+		return eventCursorPress( xPos, yPos );
 	}
 	//############################################################################
 	bool Widget::_injectCursorRelease( float xPos, float yPos ) {
-		OG_NYI;
+		return eventCursorRelease( xPos, yPos );
+	}
+	//############################################################################
+	bool Widget::_injectKey_Down( char character ) {
+		return eventKey_Down( character );
+	}
+	//############################################################################
+	bool Widget::_injectKey_Pressed( char character ) {
+		return eventKey_Pressed( character );
+	}
+	//############################################################################
+	bool Widget::_injectKey_Up( char character ) {
+		return eventKey_Up( character );
 	}
 	//############################################################################
 }//namespace OpenGUI{
