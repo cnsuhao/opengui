@@ -425,20 +425,17 @@ namespace OpenGUI {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = true;
 
-		//send to focus holder if present
+		WidgetPtrList wlist; // we'll need this later
+
+		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->_injectCursorPress( mCursorPos.x, mCursorPos.y );
+			wlist.push_back( m_CursorFocus );
+			return Widget::_sendCursorPress( wlist, mCursorPos.x, mCursorPos.y ); // we only return the
 		}
 
 		//send to everyone else
-		bool consumed = false;
-		WidgetCollection::iterator iter = Children.begin();
-		while ( iter != Children.end() ) {
-			if ( !consumed )
-				consumed = iter->_injectCursorPress( mCursorPos.x, mCursorPos.y );
-			iter++;
-		}
-		return consumed;
+		Children.appendWidgetPtrList( wlist );
+		return Widget::_sendCursorPress( wlist, mCursorPos.x, mCursorPos.y );
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -446,20 +443,17 @@ namespace OpenGUI {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = false;
 
-		//send to focus holder if present
+		WidgetPtrList wlist; // we'll need this later
+
+		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->_injectCursorRelease( mCursorPos.x, mCursorPos.y );
+			wlist.push_back( m_CursorFocus );
+			return Widget::_sendCursorRelease( wlist, mCursorPos.x, mCursorPos.y ); // we only return the
 		}
 
 		//send to everyone else
-		bool consumed = false;
-		WidgetCollection::iterator iter = Children.begin();
-		while ( iter != Children.end() ) {
-			if ( !consumed )
-				consumed = iter->_injectCursorRelease( mCursorPos.x, mCursorPos.y );
-			iter++;
-		}
-		return consumed;
+		Children.appendWidgetPtrList( wlist );
+		return Widget::_sendCursorRelease( wlist, mCursorPos.x, mCursorPos.y );
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
