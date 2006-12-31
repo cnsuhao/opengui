@@ -400,15 +400,10 @@ namespace OpenGUI {
 		}
 
 		//send to everyone
-		bool consumed = false;
-		WidgetCollection::iterator iter = Children.begin();
-		while ( iter != Children.end() ) {
-			if ( !consumed )
-				consumed = iter->_injectCursorMove( x_pos, y_pos );
-			else
-				iter->_sendCursorMoveConsumed();
-			iter++;
-		}
+		WidgetPtrList wlist;
+		Children.appendWidgetPtrList( wlist );
+		Widget::_sendCursorMove( wlist, x_pos, y_pos );
+
 		// we always return true if the move was issued to the widgets, regardless if anyone consumed it
 		// (merely processing it signifies that it was useful)
 		return true;
@@ -505,11 +500,9 @@ namespace OpenGUI {
 			_setCursorFocus( 0, false );
 
 			// end any existing cursor involvement by issuing a sweeping consumed event
-			WidgetCollection::iterator iter = Children.begin();
-			while ( iter != Children.end() ) {
-				iter->_sendCursorMoveConsumed();
-				iter++;
-			}
+			WidgetPtrList wlist;
+			Children.appendWidgetPtrList( wlist );
+			Widget::_sendCursorMoveConsumed( wlist);
 		}
 	}
 	//############################################################################

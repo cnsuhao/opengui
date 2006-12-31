@@ -704,6 +704,8 @@ namespace OpenGUI {
 		pass the events on to the children.
 		*/
 
+
+
 		// gather info about the focus state and convert the given move position if necessary
 		const bool isFocused = hasCursorFocus();
 		FVector2 localPos;
@@ -722,6 +724,19 @@ namespace OpenGUI {
 			}
 			assert( m_CursorInside );
 			consumed = eventCursorMove( xPos, yPos );
+
+
+			if ( !isFocused ) {
+				// pass the event through to any event receiving children when we don't have focus
+				WidgetPtrList children;
+				_getEventChildList( children );
+				// translate the point to inner coordinates before we pass it along
+				FVector2 innerPos = localPos;
+				_translatePointIn( innerPos );
+				// issue the event, capturing child consumption
+				consumed |= _sendCursorMove( children, innerPos.x, innerPos.y );
+			}
+
 		} else {
 			if ( m_CursorInside ) {
 				m_CursorInside = false;
@@ -734,7 +749,7 @@ namespace OpenGUI {
 		return consumed;
 	}
 	//############################################################################
-	void Widget::_sendCursorMoveConsumed() {
+	void Widget::_injectCursorMoveConsumed() {
 		/*
 		This function ensures that we properly receive the CursorLeave event if
 		we haven't already. It will need to be extended in containers to notify
@@ -783,8 +798,28 @@ namespace OpenGUI {
 		eventKeyFocusLost( cur, prev );
 	}
 	//############################################################################
-	void Widget::_getEventChildList(WidgetPtrList& childList){
+	void Widget::_getEventChildList( WidgetPtrList& childList ) {
 		/* we have no children, so we do nothing */
+	}
+	//############################################################################
+	bool Widget::_sendCursorMove( const WidgetPtrList& widgetList, float xPos, float yPos ) {
+		WidgetPtrList::const_iterator i, ie = widgetList.end();
+		bool consumed = false;
+		for ( i = widgetList.begin();i != ie;i++ ) {
+			if ( !consumed )
+				consumed = ( *i )->_injectCursorMove( xPos, yPos );
+			else
+				( *i )->_injectCursorMoveConsumed();
+		}
+		return consumed;
+	}
+	//############################################################################
+	void Widget::_sendCursorMoveConsumed( const WidgetPtrList& widgetList ) {
+		WidgetPtrList::const_iterator iter, iter_end = widgetList.end();
+		for ( iter = widgetList.begin(); iter != iter_end; iter++ ) {
+			( *iter )->_injectCursorMoveConsumed();
+			iter++;
+		}
 	}
 	//############################################################################
 }//namespace OpenGUI{

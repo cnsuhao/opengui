@@ -130,14 +130,17 @@ namespace OpenGUI {
 		virtual bool isInside( const FVector2& position );
 
 		//! fill the given list with a complete list of immediate child widgets that should receive events
-		virtual void _getEventChildList(WidgetPtrList& childList);
+		virtual void _getEventChildList( WidgetPtrList& childList );
 
-		bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event 
-		void _sendCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
+		bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event
+		void _injectCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
 		bool _injectCursorPress( float xPos, float yPos );
 		bool _injectCursorRelease( float xPos, float yPos );
 		void _sendCursorFocused( Widget* cur, Widget* prev );
 		void _sendCursorFocusLost( Widget* cur, Widget* prev );
+
+		static bool _sendCursorMove( const WidgetPtrList& widgetList, float xPos, float yPos );
+		static void _sendCursorMoveConsumed( const WidgetPtrList& widgetList );
 
 		bool _injectKeyDown( char character );
 		bool _injectKeyPressed( char character );
