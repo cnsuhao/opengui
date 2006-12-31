@@ -822,4 +822,26 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	bool _sendCursorPress( const WidgetPtrList& widgetList, float xPos, float yPos ) {
+		WidgetPtrList::const_iterator i, ie = widgetList.end();
+		for ( i = widgetList.begin();i != ie;i++ ) {
+			if(( *i )->_injectCursorPress( xPos, yPos )){
+				// we immediately return upon first consumption
+				return true;
+			}
+		}
+		return false;
+	}
+	//############################################################################
+	bool _sendCursorRelease( const WidgetPtrList& widgetList, float xPos, float yPos ) {
+		WidgetPtrList::const_iterator i, ie = widgetList.end();
+		for ( i = widgetList.begin();i != ie;i++ ) {
+			if(( *i )->_injectCursorRelease( xPos, yPos )){
+				// we immediately return upon first consumption
+				return true;
+			}
+		}
+		return false;
+	}
+	//############################################################################
 }//namespace OpenGUI{

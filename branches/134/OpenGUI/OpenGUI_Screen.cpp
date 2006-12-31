@@ -394,13 +394,16 @@ namespace OpenGUI {
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
 
-		//send to focus holder if present
+		WidgetPtrList wlist; // we'll need this later
+
+		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			return m_CursorFocus->_injectCursorMove( x_pos, y_pos );
+			wlist.push_back( m_CursorFocus );
+			Widget::_sendCursorMove( wlist, x_pos, y_pos );
+			return true; // see end of function note
 		}
 
 		//send to everyone
-		WidgetPtrList wlist;
 		Children.appendWidgetPtrList( wlist );
 		Widget::_sendCursorMove( wlist, x_pos, y_pos );
 
@@ -502,7 +505,7 @@ namespace OpenGUI {
 			// end any existing cursor involvement by issuing a sweeping consumed event
 			WidgetPtrList wlist;
 			Children.appendWidgetPtrList( wlist );
-			Widget::_sendCursorMoveConsumed( wlist);
+			Widget::_sendCursorMoveConsumed( wlist );
 		}
 	}
 	//############################################################################
