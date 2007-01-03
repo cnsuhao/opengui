@@ -112,7 +112,9 @@ namespace OpenGUI {
 
 		getEvents().createEvent( "CursorMoving" );
 		getEvents().createEvent( "CursorMove" );
+		getEvents().createEvent( "CursorPressing" );
 		getEvents().createEvent( "CursorPress" );
+		getEvents().createEvent( "CursorReleasing" );
 		getEvents().createEvent( "CursorRelease" );
 		getEvents().createEvent( "CursorEnter" );
 		getEvents().createEvent( "CursorLeave" );
@@ -120,7 +122,9 @@ namespace OpenGUI {
 		getEvents().createEvent( "CursorFocusLost" );
 		getEvents()["CursorMoving"].add( new EventDelegate( this, &Widget::onCursorMoving ) );
 		getEvents()["CursorMove"].add( new EventDelegate( this, &Widget::onCursorMove ) );
+		getEvents()["CursorPressing"].add( new EventDelegate( this, &Widget::onCursorPressing ) );
 		getEvents()["CursorPress"].add( new EventDelegate( this, &Widget::onCursorPress ) );
+		getEvents()["CursorReleasing"].add( new EventDelegate( this, &Widget::onCursorReleasing ) );
 		getEvents()["CursorRelease"].add( new EventDelegate( this, &Widget::onCursorRelease ) );
 		getEvents()["CursorEnter"].add( new EventDelegate( this, &Widget::onCursorEnter ) );
 		getEvents()["CursorLeave"].add( new EventDelegate( this, &Widget::onCursorLeave ) );
@@ -311,6 +315,10 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//############################################################################
+	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
+	*/
 	bool Widget::eventCursorMoving( float xPos, float yPos ) {
 		Cursor_EventArgs args( xPos, yPos );
 		triggerEvent( "CursorMoving", args );
@@ -318,8 +326,13 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onCursorMoving( Object* sender, Cursor_EventArgs& evtArgs ) {
-		if ( !getEnabled() )
+		if ( !getEnabled() ) {
 			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
 	}
 	//############################################################################
 	/*! \param xPos X position of the cursor
@@ -337,6 +350,26 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
+	*/
+	bool Widget::eventCursorPressing( float xPos, float yPos ) {
+		Cursor_EventArgs args( xPos, yPos );
+		triggerEvent( "CursorPressing", args );
+		return args.Consumed;
+	}
+	//############################################################################
+	void Widget::onCursorPressing( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( !getEnabled() ) {
+			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
 		\param yPos Y position of the cursor
 		\return true if the input was consumed, false otherwise
 	*/
@@ -348,6 +381,26 @@ namespace OpenGUI {
 	//############################################################################
 	void Widget::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/* Default is to do nothing */
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
+	*/
+	bool Widget::eventCursorReleasing( float xPos, float yPos ) {
+		Cursor_EventArgs args( xPos, yPos );
+		triggerEvent( "CursorReleasing", args );
+		return args.Consumed;
+	}
+	//############################################################################
+	void Widget::onCursorReleasing( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( !getEnabled() ) {
+			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
 	}
 	//############################################################################
 	/*! \param xPos X position of the cursor
@@ -734,7 +787,7 @@ namespace OpenGUI {
 			tmpEvent.eat();
 			_sendToChildren_CursorMove( tmpEvent );
 		} else {
-			// send to children for processing
+			// send to children for pre-processing
 			_sendToChildren_CursorMove( moveEvent );
 		}
 
@@ -779,6 +832,64 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! \note The \c pressEvent is the copy that was sent to _injectCursorPress(),
+	and will likely need to be translated to an inner coordinate before passing on
+	to the children. Also, be sure to preserve the event's \c Consumed value in
+	both directions, as it is critical to proper operation. */
+	void Widget::_sendToChildren_CursorPress( Cursor_EventArgs& pressEvent ) {
+		/*
+		A Widget does not have any children, so we can simply ignore this.
 
+		However, ContainerControl does have children, so a proper overload
+		should be implemented there.
+		*/
+	}
+	//############################################################################
+	void Widget::_injectCursorPress( Cursor_EventArgs& pressEvent ) {
+		if ( pressEvent.Consumed ) return;
+		// run local CursorPressing event
+		bool pressingConsumed = eventCursorPressing( pressEvent.X, pressEvent.Y );
+		if ( !pressingConsumed ) {
+			// send to children for pre-processing
+			_sendToChildren_CursorPress( pressEvent );
+		}
 
+		// if the event is not yet consumed and it falls within the coverage area, process it
+		if ( !pressEvent.Consumed && isInside( pressEvent.Position ) ) {
+			if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
+				pressEvent.eat(); // preserve event consumption
+			}
+		}
+	}
+	//############################################################################
+	/*! \note The \c releaseEvent is the copy that was sent to _injectCursorRelease(),
+	and will likely need to be translated to an inner coordinate before passing on
+	to the children. Also, be sure to preserve the event's \c Consumed value in
+	both directions, as it is critical to proper operation. */
+	void Widget::_sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent ) {
+		/*
+		A Widget does not have any children, so we can simply ignore this.
+
+		However, ContainerControl does have children, so a proper overload
+		should be implemented there.
+		*/
+	}
+	//############################################################################
+	void Widget::_injectCursorRelease( Cursor_EventArgs& releaseEvent ) {
+		if ( releaseEvent.Consumed ) return;
+		// run local CursorReleasing event
+		bool releasingConsumed = eventCursorReleasing( releaseEvent.X, releaseEvent.Y );
+		if ( !releasingConsumed ) {
+			// send to children for pre-processing
+			_sendToChildren_CursorRelease( releaseEvent );
+		}
+
+		// if the event is not yet consumed and it falls within the coverage area, process it
+		if ( !releaseEvent.Consumed && isInside( releaseEvent.Position ) ) {
+			if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
+				releaseEvent.eat(); // preserve event consumption
+			}
+		}
+	}
+	//############################################################################
 }//namespace OpenGUI{

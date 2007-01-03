@@ -129,14 +129,20 @@ namespace OpenGUI {
 		//! Returns true if the given point is inside this Widget
 		virtual bool isInside( const FVector2& position );
 
-
 		//! Informs this widget of cursor movement
 		void _injectCursorMove( Cursor_EventArgs& moveEvent );
 		//! Should inject the CursorMove event to all children
 		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
 
+		//! Informs this widget of cursor press
+		void _injectCursorPress( Cursor_EventArgs& pressEvent );
+		//! Should inject the CursorPress event to all children
+		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
 
-
+		//! Informs this widget of cursor release
+		void _injectCursorRelease( Cursor_EventArgs& releaseEvent );
+		//! Should inject the CursorRelease event to all children
+		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
 
 	protected:
 //!\name Event Triggers
@@ -160,8 +166,12 @@ namespace OpenGUI {
 		bool eventCursorMoving( float xPos, float yPos );
 		//! Called for cursor movement, giving the X,Y position of the cursor
 		bool eventCursorMove( float xPos, float yPos );
+		//! Called for cursor press before sending to children, giving the X,Y position of the cursor
+		bool eventCursorPressing( float xPos, float yPos );
 		//! Called when the cursor button is pressed
 		bool eventCursorPress( float xPos, float yPos );
+		//! Called for cursor release before sending to children, giving the X,Y position of the cursor
+		bool eventCursorReleasing( float xPos, float yPos );
 		//! Called when the cursor button is released
 		bool eventCursorRelease( float xPos, float yPos );
 		//! Called when the cursor enters this Control
@@ -209,8 +219,12 @@ namespace OpenGUI {
 		virtual void onCursorMoving( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorMove" event
 		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPressing" event
+		virtual void onCursorPressing( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorPress" event
 		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorReleasing" event
+		virtual void onCursorReleasing( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorRelease" event
 		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorEnter" event
