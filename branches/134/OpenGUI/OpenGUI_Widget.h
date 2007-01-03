@@ -129,27 +129,14 @@ namespace OpenGUI {
 		//! Returns true if the given point is inside this Widget
 		virtual bool isInside( const FVector2& position );
 
-		//! fill the given list with a complete list of immediate child widgets that should receive events
-		virtual void _getEventChildList( WidgetPtrList& childList );
 
-		
-		
-		void _sendCursorFocused( Widget* cur, Widget* prev );
-		void _sendCursorFocusLost( Widget* cur, Widget* prev );
+		//! Informs this widget of cursor movement
+		void _injectCursorMove( Cursor_EventArgs& moveEvent );
+		//! Should inject the CursorMove event to all children
+		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
 
-		static bool _sendCursorMove( const WidgetPtrList& widgetList, float xPos, float yPos );
-		static void _sendCursorMoveConsumed( const WidgetPtrList& widgetList );
 
-		bool _injectCursorPress( float xPos, float yPos );
-		bool _injectCursorRelease( float xPos, float yPos );
-		static bool _sendCursorPress( const WidgetPtrList& widgetList, float xPos, float yPos );
-		static bool _sendCursorRelease( const WidgetPtrList& widgetList, float xPos, float yPos );
 
-		bool _injectKeyDown( char character );
-		bool _injectKeyPressed( char character );
-		bool _injectKeyUp( char character );
-		void _sendKeyFocused( Widget* cur, Widget* prev );
-		void _sendKeyFocusLost( Widget* cur, Widget* prev );
 
 	protected:
 //!\name Event Triggers
@@ -169,6 +156,8 @@ namespace OpenGUI {
 		//! Widget's state has changed to Disabled
 		void eventDisabled();
 
+		//! Called for cursor movement before sending to children, giving the X,Y position of the cursor
+		bool eventCursorMoving( float xPos, float yPos );
 		//! Called for cursor movement, giving the X,Y position of the cursor
 		bool eventCursorMove( float xPos, float yPos );
 		//! Called when the cursor button is pressed
@@ -216,6 +205,8 @@ namespace OpenGUI {
 		//! "Disabled" event
 		virtual void onDisabled( Object* sender, EventArgs& evtArgs );
 
+		//! "CursorMoving" event
+		virtual void onCursorMoving( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorMove" event
 		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorPress" event
@@ -223,9 +214,9 @@ namespace OpenGUI {
 		//! "CursorRelease" event
 		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorEnter" event
-		virtual void onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
 		//! "CursorLeave" event
-		virtual void onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
 		//! "CursorFocused" event
 		virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
 		//! "CursorFocusLost" event
@@ -278,15 +269,13 @@ namespace OpenGUI {
 
 		bool mEnabled;
 		std::string mWidgetName;
-		bool m_CursorInside;
+		bool m_CursorInside; // state variable used by _injectCursorMove()
 
 		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)
 		void _attaching(); // called directly before the attach occurs
 		void _doPointToScreen( FVector2& local_point );
 		void _doPointFromScreen( FVector2& screen_point );
 
-		bool _injectCursorMove( float xPos, float yPos ); //!<\internal informs the widget of an available local cursor move event
-		void _injectCursorMoveConsumed(); //!<\internal informs the widget that there was a cursor move event locally, but it was consumed
 	};
 
 } //namespace OpenGUI{
