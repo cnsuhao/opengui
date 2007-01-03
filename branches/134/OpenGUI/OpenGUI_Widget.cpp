@@ -892,4 +892,39 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	void Widget::_injectCursorFocused( Widget* next, Widget* prev ) {
+		assert( next == this );
+		eventCursorFocused( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectCursorFocusLost( Widget* next, Widget* prev ) {
+		assert( prev == this );
+		eventCursorFocusLost( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectKeyDown( Key_EventArgs& evtArgs ) {
+		if ( eventKeyDown( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyPressed( Key_EventArgs& evtArgs ) {
+		if ( eventKeyPressed( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyUp( Key_EventArgs& evtArgs ) {
+		if ( eventKeyUp( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyFocused( Widget* next, Widget* prev ) {
+		assert( next == this );
+		eventKeyFocused( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectKeyFocusLost( Widget* next, Widget* prev ) {
+		assert( prev == this );
+		eventKeyFocusLost( next, prev );
+	}
+	//############################################################################
 }//namespace OpenGUI{

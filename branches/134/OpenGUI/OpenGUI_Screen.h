@@ -209,7 +209,7 @@ namespace OpenGUI {
 		virtual ~Screen();
 
 		//! \internal private implementation of injectCursorPosition(), post sanity checks
-		bool _injectCursorPosition( float x_rel, float y_rel );
+		bool _injectCursorPosition( float x_rel, float y_rel, bool preConsumed = false );
 
 	private:
 		Viewport* mViewport; // current viewport

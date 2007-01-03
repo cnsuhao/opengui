@@ -171,7 +171,7 @@ namespace OpenGUI {
 		Widget* next = widget;
 		//notify previous of focus lost
 		if ( prev ) {
-			prev->_sendKeyFocusLost( next, prev );
+			prev->_injectKeyFocusLost( next, prev );
 		}
 
 		//set the new focus target
@@ -179,7 +179,7 @@ namespace OpenGUI {
 
 		//notify the new of focus acquired
 		if ( next ) {
-			next->_sendKeyFocused( next, prev );
+			next->_injectKeyFocused( next, prev );
 		}
 	}
 	//############################################################################
@@ -192,7 +192,7 @@ namespace OpenGUI {
 
 		//notify previous of focus lost
 		if ( prev ) {
-			prev->_sendCursorFocusLost( next, prev );
+			prev->_injectCursorFocusLost( next, prev );
 		}
 
 		//set the new focus target
@@ -200,7 +200,7 @@ namespace OpenGUI {
 
 		//notify the new of focus acquired
 		if ( next ) {
-			next->_sendCursorFocused( next, prev );
+			next->_injectCursorFocused( next, prev );
 		}
 
 		//inject a CursorMove to update the new receiver about the cursor's position
@@ -360,9 +360,19 @@ namespace OpenGUI {
 			return false;
 
 		bool retval = false;
-		m_KeyFocus->_injectKeyDown( character );
-		retval = m_KeyFocus->_injectKeyPressed( character );
-		m_KeyFocus->_injectKeyUp( character );
+
+		Key_EventArgs downargs = Key_EventArgs( character );
+		m_KeyFocus->_injectKeyDown( downargs );
+		if ( downargs.Consumed ) retval = true;
+
+		Key_EventArgs pressargs = Key_EventArgs( character );
+		m_KeyFocus->_injectKeyPressed( pressargs );
+		if ( pressargs.Consumed ) retval = true;
+
+		Key_EventArgs upargs = Key_EventArgs( character );
+		m_KeyFocus->_injectKeyUp( upargs );
+		if ( upargs.Consumed ) retval = true;
+
 		return retval;
 	}
 	//############################################################################
@@ -386,7 +396,7 @@ namespace OpenGUI {
 		return _injectCursorPosition( x_pos, y_pos );
 	}
 	//############################################################################
-	bool Screen::_injectCursorPosition( float x_pos, float y_pos ) {
+	bool Screen::_injectCursorPosition( float x_pos, float y_pos, bool preConsumed ) {
 		// before we do anything, abort if the cursor is disabled
 		if ( !m_CursorEnabled ) return false;
 
@@ -394,18 +404,23 @@ namespace OpenGUI {
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
 
-		WidgetPtrList wlist; // we'll need this later
-
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			wlist.push_back( m_CursorFocus );
-			Widget::_sendCursorMove( wlist, x_pos, y_pos );
+			FVector2 localPos( x_pos, y_pos );
+			localPos = m_CursorFocus->pointFromScreen( localPos );
+			Cursor_EventArgs moveEvent( localPos.x, localPos.y );
+			if ( preConsumed ) moveEvent.eat();
+			m_CursorFocus->_injectCursorMove( moveEvent );
 			return true; // see end of function note
 		}
 
 		//send to everyone
-		Children.appendWidgetPtrList( wlist );
-		Widget::_sendCursorMove( wlist, x_pos, y_pos );
+		Cursor_EventArgs moveEvent( x_pos, y_pos );
+		if ( preConsumed ) moveEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorMove( moveEvent );
+		}
 
 		// we always return true if the move was issued to the widgets, regardless if anyone consumed it
 		// (merely processing it signifies that it was useful)
@@ -425,17 +440,22 @@ namespace OpenGUI {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = true;
 
-		WidgetPtrList wlist; // we'll need this later
-
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			wlist.push_back( m_CursorFocus );
-			return Widget::_sendCursorPress( wlist, mCursorPos.x, mCursorPos.y ); // we only return the
+			FVector2 localPos = m_CursorFocus->pointFromScreen( mCursorPos );
+			Cursor_EventArgs pressEvent( localPos.x, localPos.y );
+			m_CursorFocus->_injectCursorPress( pressEvent );
+			return pressEvent.Consumed; // return the consumption value
 		}
 
 		//send to everyone else
-		Children.appendWidgetPtrList( wlist );
-		return Widget::_sendCursorPress( wlist, mCursorPos.x, mCursorPos.y );
+		Cursor_EventArgs pressEvent( mCursorPos.x, mCursorPos.y );
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorPress( pressEvent );
+		}
+
+		return pressEvent.Consumed; // return the consumption value
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -443,17 +463,22 @@ namespace OpenGUI {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = false;
 
-		WidgetPtrList wlist; // we'll need this later
-
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {
-			wlist.push_back( m_CursorFocus );
-			return Widget::_sendCursorRelease( wlist, mCursorPos.x, mCursorPos.y ); // we only return the
+			FVector2 localPos = m_CursorFocus->pointFromScreen( mCursorPos );
+			Cursor_EventArgs releaseEvent( localPos.x, localPos.y );
+			m_CursorFocus->_injectCursorRelease( releaseEvent );
+			return releaseEvent.Consumed; // return the consumption value
 		}
 
 		//send to everyone else
-		Children.appendWidgetPtrList( wlist );
-		return Widget::_sendCursorRelease( wlist, mCursorPos.x, mCursorPos.y );
+		Cursor_EventArgs releaseEvent( mCursorPos.x, mCursorPos.y );
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorRelease( releaseEvent );
+		}
+
+		return releaseEvent.Consumed; // return the consumption value
 	}
 	//############################################################################
 	/*! If the cursor is disabled, this will always return false. */
@@ -497,9 +522,7 @@ namespace OpenGUI {
 			_setCursorFocus( 0, false );
 
 			// end any existing cursor involvement by issuing a sweeping consumed event
-			WidgetPtrList wlist;
-			Children.appendWidgetPtrList( wlist );
-			Widget::_sendCursorMoveConsumed( wlist );
+			_injectCursorPosition( mCursorPos.x, mCursorPos.y, true );
 		}
 	}
 	//############################################################################

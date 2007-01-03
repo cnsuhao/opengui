@@ -133,16 +133,29 @@ namespace OpenGUI {
 		void _injectCursorMove( Cursor_EventArgs& moveEvent );
 		//! Should inject the CursorMove event to all children
 		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
-
 		//! Informs this widget of cursor press
 		void _injectCursorPress( Cursor_EventArgs& pressEvent );
 		//! Should inject the CursorPress event to all children
 		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
-
 		//! Informs this widget of cursor release
 		void _injectCursorRelease( Cursor_EventArgs& releaseEvent );
 		//! Should inject the CursorRelease event to all children
 		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
+		//! Informs this widget of cursor focus acquisition
+		void _injectCursorFocused( Widget* next, Widget* prev );
+		//! Informs this widget of cursor focus loss
+		void _injectCursorFocusLost( Widget* next, Widget* prev );
+
+		//! Informs this widget of key down
+		void _injectKeyDown( Key_EventArgs& evtArgs );
+		//! Informs this widget of key press
+		void _injectKeyPressed( Key_EventArgs& evtArgs );
+		//! Informs this widget of key up
+		void _injectKeyUp( Key_EventArgs& evtArgs );
+		//! Informs this widget of key focus acquisition
+		void _injectKeyFocused( Widget* next, Widget* prev );
+		//! Informs this widget of key focus loss
+		void _injectKeyFocusLost( Widget* next, Widget* prev );
 
 	protected:
 //!\name Event Triggers
