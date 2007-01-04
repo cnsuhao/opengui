@@ -106,11 +106,7 @@ namespace OpenGUI {
 			OpenGUI::Window::onCursorMove( sender, evtArgs );
 
 			CursorState tmp = NORMAL;
-			FVector2 pos;
-			if ( hasCursorFocus() )
-				pos = pointFromScreen( evtArgs.Position );
-			else
-				pos = evtArgs.Position;
+			FVector2 pos = evtArgs.Position;
 
 			pos -= getPosition();
 
