@@ -1,5 +1,5 @@
 @echo Building USER HTML Docs...
-@"C:\Program Files\doxygen\bin\doxygen.exe" DoxyfileUsers > buildLogUsers.txt 2>&1
+@"C:\Program Files\doxygen\bin\doxygen.exe" DoxyfileUsers > buildLog.txt 2>&1
 @echo Compiling USER CHM...
-@"c:\Program Files\HTML Help Workshop\hhc.exe" html-users\index.hhp >> buildLogUsers.txt 2>&1
+@"c:\Program Files\HTML Help Workshop\hhc.exe" html\index.hhp >> buildLog.txt 2>&1
 @echo DONE!
