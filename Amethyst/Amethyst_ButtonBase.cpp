@@ -18,21 +18,21 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
 			m_Inside = true;
 			updateButtonState();
 			invalidate();
-			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
+			OpenGUI::Control::onCursorEnter( sender, evtArgs );
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
 			m_Inside = false;
 			updateButtonState();
 			invalidate();
-			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
+			OpenGUI::Control::onCursorLeave( sender, evtArgs );
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( m_Inside ) {
 				m_bMouseButtonState = true;
 				updateButtonState();
@@ -41,7 +41,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( m_Inside && m_bMouseButtonState ) {
 				_buttonActivate();
 			}
@@ -51,14 +51,14 @@ namespace OpenGUI {
 			releaseCursorFocus();
 		}
 		//############################################################################
-		void ButtonBase::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
 			m_Focused = true;
-			Control::onCursor_Focused( sender, evtArgs );
+			Control::onCursorFocused( sender, evtArgs );
 		}
 		//############################################################################
-		void ButtonBase::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
 			m_Focused = false;
-			Control::onCursor_FocusLost( sender, evtArgs );
+			Control::onCursorFocusLost( sender, evtArgs );
 		}
 		//############################################################################
 		void ButtonBase::onEnabled( Object* sender, EventArgs& evtArgs ) {

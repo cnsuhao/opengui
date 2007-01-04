@@ -80,9 +80,9 @@ namespace OpenGUI {
 		//! "Resize_End" event
 		virtual void onResize_End( Object* sender, EventArgs& evtArgs );
 
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
-		virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 //@}
 
 	private:

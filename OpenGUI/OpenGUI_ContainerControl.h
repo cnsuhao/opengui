@@ -85,6 +85,17 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual unsigned int getObjectType() const;
 
+		// reimplementations from Widget
+		virtual void _translatePointIn( FVector2& point );
+		virtual void _translatePointOut( FVector2& point );
+
+		virtual void _doflush();
+
+		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
+		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
+		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
+
+	protected:
 //!\name Event Injectors
 //@{
 		//! Draw this object's background using the given brush
@@ -97,13 +108,6 @@ namespace OpenGUI {
 		void eventInvalidatedChild();
 //@}
 
-		// reimplementations from Widget
-		virtual void _translatePointIn( FVector2& point );
-		virtual void _translatePointOut( FVector2& point );
-
-		virtual void _doflush();
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "DrawBG" event
@@ -112,12 +116,6 @@ namespace OpenGUI {
 		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "ChildDetached" event
 		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Move to children with a proper offset
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Press to children with a proper offset
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Release to children with a proper offset
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
 		//! Flushes the local Brush output cache that contains operations from this and all child Widgets
 		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );

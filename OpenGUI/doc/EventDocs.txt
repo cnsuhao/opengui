@@ -1,5 +1,7 @@
 
 /*! \page Events
+<b> This documentation is out of date!</b>
+
 	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
 	
 	To provide a consistent event system that offers the most flexibility for applications to customize, %OpenGUI uses a standardized method of event processing. Every standard event that a Widget receives in OpenGUI, either due to input injection or as the result of another event, is initiated by calling the appropriate event injector. Event injectors only have a single purpose: to build the necessary EventArgs and trigger the event via OpenGUI::Object::triggerEvent(). They have a standard naming convention:
@@ -23,30 +25,32 @@
 - \subpage Event_Detached "Detached"
 - \subpage Event_Draw "Draw"
 - \subpage Event_Invalidated "Invalidated"
-- \subpage Event_Cursor_Move "Cursor_Move"
-- \subpage Event_Cursor_Press "Cursor_Press"
-- \subpage Event_Cursor_Release "Cursor_Release"
-- \subpage Event_Cursor_Disabled "Cursor_Disabled"
-- \subpage Event_Cursor_Enabled "Cursor_Enabled"
-- \subpage Event_Cursor_Focused "Cursor_Focused"
-- \subpage Event_Cursor_FocusLost "Cursor_FocusLost"
+- \subpage Event_Tick "Tick"
+
+- \subpage Event_Cursor_Move "CursorMove"
+- \subpage Event_Cursor_Press "CursorPress"
+- \subpage Event_Cursor_Release "CursorRelease"
+- \subpage Event_Cursor_Disabled "CursorDisabled"
+- \subpage Event_Cursor_Enabled "CursorEnabled"
+- \subpage Event_CursorFocused "CursorFocused"
+- \subpage Event_CursorFocusLost "CursorFocusLost"
+
 - \subpage Event_Key_Up "Key_Up"
 - \subpage Event_Key_Down "Key_Down"
 - \subpage Event_Key_Pressed "Key_Pressed"
 - \subpage Event_Key_Focused "Key_Focused"
 - \subpage Event_Key_FocusLost "Key_FocusLost"
-- \subpage Event_Tick "Tick"
+
 
 
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
 - \subpage Event_Resized "Resized"
-- \subpage Event_Cursor_MoveInside "Cursor_MoveInside"
-- \subpage Event_Cursor_PressInside "Cursor_PressInside"
-- \subpage Event_Cursor_ReleaseInside "Cursor_ReleaseInside"
+
 - \subpage Event_Cursor_Click "Cursor_Click"
 - \subpage Event_Cursor_Enter "Cursor_Enter"
 - \subpage Event_Cursor_Leave "Cursor_Leave"
+
 - \subpage Event_Targeted "Targeted"
 - \subpage Event_UnTargeted "UnTargeted"
 
