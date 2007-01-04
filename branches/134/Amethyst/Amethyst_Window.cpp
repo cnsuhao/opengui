@@ -129,11 +129,11 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		void Window::onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void Window::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
 			OpenGUI::Window::onCursorEnter( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void Window::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
 			OpenGUI::Window::onCursorLeave( sender, evtArgs );
 		}
 		//############################################################################

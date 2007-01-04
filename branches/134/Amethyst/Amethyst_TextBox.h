@@ -51,9 +51,9 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
 			//! "Cursor_Enter" event; invokes Targeted
-			virtual void onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
 			//! "Cursor_Leave" event; invokes UnTargeted
-			virtual void onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
 			//! "Cursor_Press" event
 			virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Release" event

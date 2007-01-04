@@ -80,11 +80,11 @@ namespace OpenGUI {
 		}
 
 		//! Called when the cursor enters this Control
-		void TextBox::onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void TextBox::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
 			OpenGUI::Control::onCursorEnter( sender, evtArgs );
 		}
 		//! Called when the cursor leaves this Control
-		void TextBox::onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void TextBox::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
 			OpenGUI::Control::onCursorLeave( sender, evtArgs );
 		}
 

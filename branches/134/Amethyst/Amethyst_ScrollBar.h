@@ -70,13 +70,13 @@ namespace OpenGUI {
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
-			virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
-			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+			virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
+			virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 			//! Default handler for "ValueChanged" event
 			virtual void onValueChanged( Object* sender, EventArgs& evtArgs );

@@ -18,14 +18,14 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void ButtonBase::onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
 			m_Inside = true;
 			updateButtonState();
 			invalidate();
 			OpenGUI::Control::onCursorEnter( sender, evtArgs );
 		}
 		//############################################################################
-		void ButtonBase::onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ButtonBase::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
 			m_Inside = false;
 			updateButtonState();
 			invalidate();

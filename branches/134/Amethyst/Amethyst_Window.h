@@ -57,8 +57,8 @@ namespace OpenGUI {
 		protected:
 			virtual void onDrawBG( Object* sender, Draw_EventArgs& evtArgs );
 			virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+			virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
 			virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 			virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );

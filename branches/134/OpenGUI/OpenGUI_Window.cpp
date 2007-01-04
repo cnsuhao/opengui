@@ -112,16 +112,17 @@ namespace OpenGUI {
 		releaseCursorFocus();
 	}
 	//############################################################################
-	void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*
+	void Window::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
 		if ( isMoving() ) {
-			FVector2 diff = evtArgs.Position - mInitialCursor;
+			FVector2 newCursorPos = getScreen()->getCursorPos();
+			FVector2 diff = newCursorPos - mInitialCursor;
 			FVector2 newPos = mInitialPos + diff;
 			setLeft( newPos.x );
 			setTop( newPos.y );
 		}
 		if ( isResizing() ) {
-			FVector2 diff = evtArgs.Position - mInitialCursor;
+			FVector2 newCursorPos = getScreen()->getCursorPos();
+			FVector2 diff = newCursorPos - mInitialCursor;
 			FVector2 newPos = mInitialPos;
 			FVector2 newSize = mInitialSize;
 
@@ -149,20 +150,19 @@ namespace OpenGUI {
 				setHeight( newSize.y );
 			}
 		}
-		ContainerControl::onCursor_Move( sender, evtArgs );
-		*/
+		ContainerControl::onCursorMove( sender, evtArgs );
 	}
 	//############################################################################
-	void Window::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-		//ContainerControl::onCursor_Focused( sender, evtArgs );
+	void Window::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
+		ContainerControl::onCursorFocused( sender, evtArgs );
 	}
 	//############################################################################
-	void Window::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+	void Window::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
 		if ( isMoving() )
 			eventMove_End();
 		if ( isResizing() )
 			eventResize_End();
-		//ContainerControl::onCursor_FocusLost( sender, evtArgs );
+		ContainerControl::onCursorFocusLost( sender, evtArgs );
 	}
 	//############################################################################
 	bool Window::isMoving() const {
