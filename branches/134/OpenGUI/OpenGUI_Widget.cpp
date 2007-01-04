@@ -855,9 +855,17 @@ namespace OpenGUI {
 		}
 
 		// if the event is not yet consumed and it falls within the coverage area, process it
-		if ( !pressEvent.Consumed && isInside( pressEvent.Position ) ) {
-			if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
-				pressEvent.eat(); // preserve event consumption
+		if ( !pressEvent.Consumed ) {
+			if ( isInside( pressEvent.Position ) ) {
+				if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
+					pressEvent.eat(); // preserve event consumption
+				}
+			} else {
+				if ( hasCursorFocus() ) {
+					if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
+						pressEvent.eat(); // preserve event consumption
+					}
+				}
 			}
 		}
 	}
@@ -885,9 +893,17 @@ namespace OpenGUI {
 		}
 
 		// if the event is not yet consumed and it falls within the coverage area, process it
-		if ( !releaseEvent.Consumed && isInside( releaseEvent.Position ) ) {
-			if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
-				releaseEvent.eat(); // preserve event consumption
+		if ( !releaseEvent.Consumed ) {
+			if ( isInside( releaseEvent.Position ) ) {
+				if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
+					releaseEvent.eat(); // preserve event consumption
+				}
+			} else {
+				if ( hasCursorFocus() ) {
+					if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
+						releaseEvent.eat(); // preserve event consumption
+					}
+				}
 			}
 		}
 	}
