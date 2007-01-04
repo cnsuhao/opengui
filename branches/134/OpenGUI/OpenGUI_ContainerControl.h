@@ -91,6 +91,10 @@ namespace OpenGUI {
 
 		virtual void _doflush();
 
+		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
+		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
+		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
+
 	protected:
 //!\name Event Injectors
 //@{

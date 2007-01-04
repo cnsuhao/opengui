@@ -50,16 +50,14 @@ namespace OpenGUI {
 		protected:
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
-			//! "Cursor_Click" event
-			virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Enter" event; invokes Targeted
-			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Leave" event; invokes UnTargeted
-			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Press" event
-			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
 			//! "Cursor_Release" event
-			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 
 			//! "Attached" event
 			virtual void onAttached( Object* sender, Attach_EventArgs& evtArgs );
@@ -67,15 +65,15 @@ namespace OpenGUI {
 			virtual void onDetached( Object* sender, Attach_EventArgs& evtArgs );
 
 			//! "Key_Up" event
-			virtual void onKey_Up( Object* sender, Key_EventArgs& evtArgs );
+			virtual void onKeyUp( Object* sender, Key_EventArgs& evtArgs );
 			//! "Key_Down" event
-			virtual void onKey_Down( Object* sender, Key_EventArgs& evtArgs );
+			virtual void onKeyDown( Object* sender, Key_EventArgs& evtArgs );
 			//! "Key_Pressed" event
-			virtual void onKey_Pressed( Object* sender, Key_EventArgs& evtArgs );
+			virtual void onKeyPressed( Object* sender, Key_EventArgs& evtArgs );
 			//! "Key_Focused" event
-			virtual void onKey_Focused( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onKeyFocused( Object* sender, Focus_EventArgs& evtArgs );
 			//! "Key_FocusLost" event
-			virtual void onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 
 			ImageryPtr mImageryPtr;

@@ -442,4 +442,43 @@ namespace OpenGUI {
 		return mConsumeInput;
 	}
 	//############################################################################
+	void ContainerControl::_sendToChildren_CursorMove( Cursor_EventArgs& moveEvent ) {
+		FVector2 point = moveEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( moveEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorMove( localEvent );
+		}
+		if ( localEvent.Consumed )
+			moveEvent.eat();
+	}
+	//############################################################################
+	void ContainerControl::_sendToChildren_CursorPress( Cursor_EventArgs& pressEvent ) {
+		FVector2 point = pressEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( pressEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorPress( localEvent );
+		}
+		if ( localEvent.Consumed )
+			pressEvent.eat();
+	}
+	//############################################################################
+	void ContainerControl::_sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent ) {
+		FVector2 point = releaseEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( releaseEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorRelease( localEvent );
+		}
+		if ( localEvent.Consumed )
+			releaseEvent.eat();
+	}
+	//############################################################################
 } // namespace OpenGUI {

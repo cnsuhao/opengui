@@ -101,9 +101,9 @@ namespace OpenGUI {
 				evtArgs.brush.Image.drawFace( mFaceBG, getRect() );
 		}
 		//############################################################################
-		void Window::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void Window::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
 			// we need to run this first to ensure we don't wobble between cursor states
-			OpenGUI::Window::onCursor_Move( sender, evtArgs );
+			OpenGUI::Window::onCursorMove( sender, evtArgs );
 
 			CursorState tmp = NORMAL;
 			FVector2 pos;
@@ -129,15 +129,15 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		void Window::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Window::onCursor_Enter( sender, evtArgs );
+		void Window::onCursorEnter( Object* sender, Cursor_EventArgs& evtArgs ) {
+			OpenGUI::Window::onCursorEnter( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Window::onCursor_Leave( sender, evtArgs );
+		void Window::onCursorLeave( Object* sender, Cursor_EventArgs& evtArgs ) {
+			OpenGUI::Window::onCursorLeave( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void Window::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( mCursorState == UL )
 				eventResize_Begin( true, true, true, true );
 			if ( mCursorState == LR )
@@ -146,21 +146,21 @@ namespace OpenGUI {
 				eventResize_Begin( true, true, true, false );
 			if ( mCursorState == UR )
 				eventResize_Begin( true, true, false, true );
-			OpenGUI::Window::onCursor_Press( sender, evtArgs );
+			OpenGUI::Window::onCursorPress( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void Window::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( isResizing() )
 				eventResize_End();
-			OpenGUI::Window::onCursor_Release( sender, evtArgs );
+			OpenGUI::Window::onCursorRelease( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-			OpenGUI::Window::onCursor_Focused( sender, evtArgs );
+		void Window::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
+			OpenGUI::Window::onCursorFocused( sender, evtArgs );
 		}
 		//############################################################################
-		void Window::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-			OpenGUI::Window::onCursor_FocusLost( sender, evtArgs );
+		void Window::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+			OpenGUI::Window::onCursorFocusLost( sender, evtArgs );
 		}
 		//############################################################################
 		void Window::updateCursor() {
