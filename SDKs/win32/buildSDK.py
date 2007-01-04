@@ -229,7 +229,7 @@ def BuildDocs():
 	ogreDocDir = SCONSROOT + '/Renderers/Ogre/Renderer_Ogre/doc/'
 	amethystDocDir = SCONSROOT + '/Amethyst/doc/'
 	# OpenGUI
-	RunCommand('Building OpenGUI Documentation...', 'buildUserDocs.bat', mainDocDir)
+	RunCommand('Building OpenGUI Documentation...', 'buildDocs.bat', mainDocDir)
 	file = ['OpenGUI.chm']
 	CopyFiles(mainDocDir, WORKDIR + '/OpenGUI/', file)
 	# Ogre
