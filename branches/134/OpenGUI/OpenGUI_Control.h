@@ -149,6 +149,8 @@ namespace OpenGUI {
 		//! "Resized" event
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorPress" event
 		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorRelease" event
@@ -167,7 +169,7 @@ namespace OpenGUI {
 
 	private:
 		// returns a pointer to the first sibling found at the given position
-		Widget* getSiblingAt(const FVector2& pos);
+		Widget* getSiblingAt( const FVector2& pos );
 
 		//! Call for any operation that invalidates layouts, like moves and resizes.
 		void _invalidateLayout();

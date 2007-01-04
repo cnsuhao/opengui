@@ -568,6 +568,10 @@ namespace OpenGUI {
 		return m_Cursor;
 	}
 	//############################################################################
+	void Control::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
+		evtArgs.eat();
+	}
+	//############################################################################
 	void Control::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 		evtArgs.eat();
 	}
