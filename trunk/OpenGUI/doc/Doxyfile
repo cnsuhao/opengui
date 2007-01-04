@@ -83,10 +83,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = ../ \
-                         AdditionalDoxygenInput.txt \
-                         xmldocs.txt \
-                         EventDocs.txt \
-                         StringFormatting.txt
+                         doxygen_input
 
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -114,7 +111,8 @@ FILE_PATTERNS          = *.c \
                          *.m \
                          *.mm \
                          *.dox \
-                         *.py
+                         *.py \
+                         *.txt
 RECURSIVE              = NO
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
