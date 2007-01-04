@@ -125,6 +125,10 @@ namespace OpenGUI {
 		//! \internal  Returns a reference to the cursor to draw over this Control
 		const CursorPtr& _getCurrentCursor() const;
 
+		//! Returns true if the given point is inside this Widget
+		virtual bool isInside( const FVector2& position );
+
+	protected:
 //!\name Event Injectors
 //@{
 		//! Control has been moved
@@ -132,30 +136,12 @@ namespace OpenGUI {
 		//! Control has been resized
 		void eventResized( const FVector2& oldSize, const FVector2& newSize );
 
-		//! Called for cursor movement inside this Control, giving the X,Y position of the cursor
-		bool eventCursor_MoveInside( float xPos, float yPos );
-		//! Called when the cursor button is pressed inside this Control, giving the X,Y position of the cursor
-		bool eventCursor_PressInside( float xPos, float yPos );
-		//! Called when the cursor button is released inside this Control, giving the X,Y position of the cursor
-		bool eventCursor_ReleaseInside( float xPos, float yPos );
-
-		//! Called when cursor was pressed and released within this Control
-		void eventCursor_Click( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor enters this Control
-		void eventCursor_Enter( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor leaves this Control
-		void eventCursor_Leave( Cursor_EventArgs& evtArgs );
-
 		//! Called when this Control is targeted, either by cursor or by menu navigation
 		void eventTargeted();
 		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
 		void eventUnTargeted();
 //@}
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "Moved" event
@@ -163,27 +149,12 @@ namespace OpenGUI {
 		//! "Resized" event
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Click" event
-		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Enter" event; invokes Targeted
-		virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Leave" event; invokes UnTargeted
-		virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-
-		//! Adds cursor tracking to trigger Cursor_Enter and Cursor_Leave when appropriate.
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-
-		//! "Cursor_MoveInside" event
-		virtual void onCursor_MoveInside( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_PressInside" event
-		virtual void onCursor_PressInside( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_ReleaseInside" event
-		virtual void onCursor_ReleaseInside( Object* sender, Cursor_EventArgs& evtArgs );
-		
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 
 		//! "Targeted" event
 		virtual void onTargeted( Object* sender, EventArgs& evtArgs );
@@ -198,7 +169,7 @@ namespace OpenGUI {
 
 	private:
 		// returns a pointer to the first sibling found at the given position
-		Widget* getSiblingAt(const FVector2& pos);
+		Widget* getSiblingAt( const FVector2& pos );
 
 		//! Call for any operation that invalidates layouts, like moves and resizes.
 		void _invalidateLayout();

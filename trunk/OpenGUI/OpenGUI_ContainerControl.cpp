@@ -72,20 +72,16 @@ namespace OpenGUI {
 		return OT_CONTAINERCONTROL;
 	}
 	//############################################################################
+	void ContainerControl::onDrawBG( Object* sender, Draw_EventArgs& evtArgs ) {
+		/*! Default is to do nothing */
+	}
+	//############################################################################
 	void ContainerControl::eventDrawBG( Brush& brush ) {
 		Draw_EventArgs event( brush );
 		triggerEvent( "DrawBG", event );
 	}
 	//############################################################################
-	void ContainerControl::onDrawBG( Object* sender, Draw_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
 	void ContainerControl::onChildAttached( Object* sender, Attach_EventArgs& evtArgs ) {
-		invalidate(); // need to invalidate caches for hierarchy change
-	}
-	//############################################################################
-	void ContainerControl::onChildDetached( Object* sender, Attach_EventArgs& evtArgs ) {
 		invalidate(); // need to invalidate caches for hierarchy change
 	}
 	//############################################################################
@@ -94,94 +90,13 @@ namespace OpenGUI {
 		triggerEvent( "ChildAttached", event );
 	}
 	//############################################################################
+	void ContainerControl::onChildDetached( Object* sender, Attach_EventArgs& evtArgs ) {
+		invalidate(); // need to invalidate caches for hierarchy change
+	}
+	//############################################################################
 	void ContainerControl::eventChildDetached( WidgetCollection* container, Widget* prevChild ) {
 		Attach_EventArgs event( container, prevChild );
 		triggerEvent( "ChildDetached", event );
-	}
-	//############################################################################
-	/*! The \c Cursor_Move event is only re-issued to children if the cursor is
-	currently inside the container, or if the cursor just left the container.
-	This function is cursor focus aware, and will provide the correct information
-	to children as necessary
-	*/
-	void ContainerControl::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		Control::onCursor_Move( sender, evtArgs );
-
-		FVector2 pos = evtArgs.Position;
-		if ( hasCursorFocus() ) // translate point if necessary
-			pos = pointFromScreen( pos );
-
-		static bool lastInside = false;
-		bool reissue = lastInside;
-		if ( _isInside( pos ) ) {
-			lastInside = reissue = true;
-			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
-		} else {
-			lastInside = false;
-		}
-
-		if ( reissue ) {
-			FVector2 newPos;
-			newPos = pos - getPosition();
-			newPos.x -= m_ClientAreaOffset_UL.x;
-			newPos.y -= m_ClientAreaOffset_UL.y;
-			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
-			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Move( newPos.x, newPos.y ) ) {
-					evtArgs.eat();
-				}
-			}
-		}
-	}
-	//############################################################################
-	/*! This function is cursor focus aware, and will provide the correct cursor information
-	to children as necessary. */
-	void ContainerControl::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-		Control::onCursor_Press( sender, evtArgs );
-
-		FVector2 pos = evtArgs.Position;
-		if ( hasCursorFocus() ) // translate point if necessary
-			pos = pointFromScreen( pos );
-
-		if ( _isInside( evtArgs.Position ) ) {
-			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
-
-			FVector2 newPos;
-			newPos = pos - getPosition();
-			newPos.x -= m_ClientAreaOffset_UL.x;
-			newPos.y -= m_ClientAreaOffset_UL.y;
-			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
-			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Press( newPos.x, newPos.y ) ) {
-					evtArgs.eat();
-				}
-			}
-		}
-	}
-	//############################################################################
-	/*! This function is cursor focus aware, and will provide the correct cursor information
-	to children as necessary. */
-	void ContainerControl::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-		Control::onCursor_Release( sender, evtArgs );
-
-		FVector2 pos = evtArgs.Position;
-		if ( hasCursorFocus() ) // translate point if necessary
-			pos = pointFromScreen( pos );
-
-		if ( _isInside( pos ) ) {
-			if ( mConsumeInput ) evtArgs.eat(); // auto consume event if we are supposed to do so
-
-			FVector2 newPos;
-			newPos = pos - getPosition();
-			newPos.x -= m_ClientAreaOffset_UL.x;
-			newPos.y -= m_ClientAreaOffset_UL.y;
-			WidgetCollection::reverse_iterator iter, iterend = Children.rend();
-			for ( iter = Children.rbegin(); iter != iterend; iter++ ) {
-				if ( iter->eventCursor_Release( newPos.x, newPos.y ) ) {
-					evtArgs.eat();
-				}
-			}
-		}
 	}
 	//############################################################################
 	void ContainerControl::_draw( Brush& brush ) {
@@ -393,7 +308,7 @@ namespace OpenGUI {
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Widget* child = iter.get();
-			if ( child->_isInside( pos ) ) {
+			if ( child->isInside( pos ) ) {
 				if ( recursive ) {
 					child->getChildrenAt( pos, outList, true );
 				}
@@ -409,7 +324,7 @@ namespace OpenGUI {
 		WidgetCollection::iterator iter, iterend = Children.end();
 		for ( iter = Children.begin(); iter != iterend; iter++ ) {
 			Widget* child = iter.get();
-			if ( child->_isInside( pos ) ) {
+			if ( child->isInside( pos ) ) {
 				Widget* ret = child;
 				if ( recursive ) {
 					child = child->getChildAt( pos, true );
@@ -525,6 +440,45 @@ namespace OpenGUI {
 	//############################################################################
 	bool ContainerControl::getConsumeInput() {
 		return mConsumeInput;
+	}
+	//############################################################################
+	void ContainerControl::_sendToChildren_CursorMove( Cursor_EventArgs& moveEvent ) {
+		FVector2 point = moveEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( moveEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorMove( localEvent );
+		}
+		if ( localEvent.Consumed )
+			moveEvent.eat();
+	}
+	//############################################################################
+	void ContainerControl::_sendToChildren_CursorPress( Cursor_EventArgs& pressEvent ) {
+		FVector2 point = pressEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( pressEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorPress( localEvent );
+		}
+		if ( localEvent.Consumed )
+			pressEvent.eat();
+	}
+	//############################################################################
+	void ContainerControl::_sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent ) {
+		FVector2 point = releaseEvent.Position;
+		_translatePointIn( point );
+		Cursor_EventArgs localEvent( point.x, point.y );
+		if ( releaseEvent.Consumed ) localEvent.eat();
+		WidgetCollection::iterator i, ie = Children.end();
+		for ( i = Children.begin(); i != ie; i++ ) {
+			i->_injectCursorRelease( localEvent );
+		}
+		if ( localEvent.Consumed )
+			releaseEvent.eat();
 	}
 	//############################################################################
 } // namespace OpenGUI {

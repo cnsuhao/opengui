@@ -126,7 +126,39 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual unsigned int getObjectType() const;
 
-//!\name Event Injectors
+		//! Returns true if the given point is inside this Widget
+		virtual bool isInside( const FVector2& position );
+
+		//! Informs this widget of cursor movement
+		void _injectCursorMove( Cursor_EventArgs& moveEvent );
+		//! Should inject the CursorMove event to all children
+		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
+		//! Informs this widget of cursor press
+		void _injectCursorPress( Cursor_EventArgs& pressEvent );
+		//! Should inject the CursorPress event to all children
+		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
+		//! Informs this widget of cursor release
+		void _injectCursorRelease( Cursor_EventArgs& releaseEvent );
+		//! Should inject the CursorRelease event to all children
+		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
+		//! Informs this widget of cursor focus acquisition
+		void _injectCursorFocused( Widget* next, Widget* prev );
+		//! Informs this widget of cursor focus loss
+		void _injectCursorFocusLost( Widget* next, Widget* prev );
+
+		//! Informs this widget of key down
+		void _injectKeyDown( Key_EventArgs& evtArgs );
+		//! Informs this widget of key press
+		void _injectKeyPressed( Key_EventArgs& evtArgs );
+		//! Informs this widget of key up
+		void _injectKeyUp( Key_EventArgs& evtArgs );
+		//! Informs this widget of key focus acquisition
+		void _injectKeyFocused( Widget* next, Widget* prev );
+		//! Informs this widget of key focus loss
+		void _injectKeyFocusLost( Widget* next, Widget* prev );
+
+	protected:
+//!\name Event Triggers
 //@{
 		//! Widget was attached to a container
 		void eventAttached( WidgetCollection* newContainer, Widget* widget );
@@ -143,40 +175,42 @@ namespace OpenGUI {
 		//! Widget's state has changed to Disabled
 		void eventDisabled();
 
+		//! Called for cursor movement before sending to children, giving the X,Y position of the cursor
+		bool eventCursorMoving( float xPos, float yPos );
 		//! Called for cursor movement, giving the X,Y position of the cursor
-		bool eventCursor_Move( float xPos, float yPos );
+		bool eventCursorMove( float xPos, float yPos );
+		//! Called for cursor press before sending to children, giving the X,Y position of the cursor
+		bool eventCursorPressing( float xPos, float yPos );
 		//! Called when the cursor button is pressed
-		bool eventCursor_Press( float xPos, float yPos );
+		bool eventCursorPress( float xPos, float yPos );
+		//! Called for cursor release before sending to children, giving the X,Y position of the cursor
+		bool eventCursorReleasing( float xPos, float yPos );
 		//! Called when the cursor button is released
-		bool eventCursor_Release( float xPos, float yPos );
-		//! Called when the cursor is disabled
-		void eventCursor_Disabled();
-		//! Called when the cursor is enabled.
-		void eventCursor_Enabled( float xPos, float yPos );
+		bool eventCursorRelease( float xPos, float yPos );
+		//! Called when the cursor enters this Control
+		void eventCursorEnter();
+		//! Called when the cursor leaves this Control
+		void eventCursorLeave();
 		//! Called then this widget receives cursor focus
-		void eventCursor_Focused( Widget* cur, Widget* prev );
+		void eventCursorFocused( Widget* cur, Widget* prev );
 		//! Called then this widget loses cursor focus
-		void eventCursor_FocusLost( Widget* cur, Widget* prev );
+		void eventCursorFocusLost( Widget* cur, Widget* prev );
 
 		//! Called when the given \c character is released
-		bool eventKey_Up( char character );
+		bool eventKeyUp( char character );
 		//! Called when the given \c character is pressed down
-		bool eventKey_Down( char character );
+		bool eventKeyDown( char character );
 		//! Called when the given \c character is entered
-		bool eventKey_Pressed( char character );
+		bool eventKeyPressed( char character );
 		//! Called then this widget receives key focus
-		void eventKey_Focused( Widget* cur, Widget* prev );
+		void eventKeyFocused( Widget* cur, Widget* prev );
 		//! Called then this widget loses key focus
-		void eventKey_FocusLost( Widget* cur, Widget* prev );
+		void eventKeyFocusLost( Widget* cur, Widget* prev );
 
 		//! Called when the passage of time has been measured
 		void eventTick( float seconds );
 //@}
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "Attached" event
@@ -194,31 +228,37 @@ namespace OpenGUI {
 		//! "Disabled" event
 		virtual void onDisabled( Object* sender, EventArgs& evtArgs );
 
-		//! "Cursor_Move" event
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Hidden" event
-		virtual void onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Shown" event
-		virtual void onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Focused" event
-		virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
-		//! "Cursor_FocusLost" event
-		virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+		//! "CursorMoving" event
+		virtual void onCursorMoving( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPressing" event
+		virtual void onCursorPressing( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorReleasing" event
+		virtual void onCursorReleasing( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorEnter" event
+		virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+		//! "CursorLeave" event
+		virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
+		//! "CursorFocused" event
+		virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
+		//! "CursorFocusLost" event
+		virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 		//! "Key_Up" event
-		virtual void onKey_Up( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyUp( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Down" event
-		virtual void onKey_Down( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyDown( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Pressed" event
-		virtual void onKey_Pressed( Object* sender, Key_EventArgs& evtArgs );
+		virtual void onKeyPressed( Object* sender, Key_EventArgs& evtArgs );
 		//! "Key_Focused" event
-		virtual void onKey_Focused( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onKeyFocused( Object* sender, Focus_EventArgs& evtArgs );
 		//! "Key_FocusLost" event
-		virtual void onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+		virtual void onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 
 		//! "Tick" event
 		virtual void onTick( Object* sender, Tick_EventArgs& evtArgs );
@@ -256,11 +296,13 @@ namespace OpenGUI {
 
 		bool mEnabled;
 		std::string mWidgetName;
+		bool m_CursorInside; // state variable used by _injectCursorMove()
 
 		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)
 		void _attaching(); // called directly before the attach occurs
 		void _doPointToScreen( FVector2& local_point );
 		void _doPointFromScreen( FVector2& screen_point );
+
 	};
 
 } //namespace OpenGUI{
