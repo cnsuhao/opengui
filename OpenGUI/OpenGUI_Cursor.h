@@ -42,26 +42,9 @@ namespace OpenGUI {
 	simple task for anyone with experience creating custom widgets. The only major differences
 	between drawing a Widget and drawing a Cursor is that the onDraw event is called each time
 	the Screen is updated and is never cached, and the event arguments are of a different type
-	(DrawCursor_EventArgs).
-
-	You'll also notice that certain cursor related events are provided in the case that the Cursor
-	requires this information. There is, however, a slight variation for the \c Cursor_Shown and
-	\c Cursor_Hidden events. These events are called whenever this particular Cursor is being
-	shown or hidden, respectively. This means that if a Widget in the GUI requests a different
-	cursor, the current cursor will be given a \c Cursor_Hidden event, while the new cursor is
-	given \c Cursor_Shown. All cursors can expect (and rely upon) a \c Cursor_Shown event before
-	being receiving \c Draw events, but should not rely upon receiving \c Cursor_Hidden before
-	they are destroyed. A cursor will never receive \c Draw events after receiving \c Cursor_Hidden
-	until a new \c Cursor_Shown is issued. Additionally, a cursor will only receive the other events
-	(\c Cursor_Move, \c Cursor_Press, \c Cursor_Release) in between \c Cursor_Shown and \c Cursor_Hidden
-	events. After receiving \c Cursor_Hidden, these events will no longer be issued to this cursor,
-	so special care must be taken to properly deal with the potential that \c Cursor_Press does not
-	ensure a complimenting \c Cursor_Release, as the cursor may be hidden in between those two events.
-	The reverse logic is also true, in that \c Cursor_Release may be received without ever first
-	receiving \c Cursor_Press.
-
-	The Brush that is given in the \c DrawCursor_EventArgs of \c onDraw() is always in the context
-	of the Screen as a whole.
+	(DrawCursor_EventArgs). The Brush that is given in the \c DrawCursor_EventArgs of \c onDraw()
+	is always in the context of the Screen as a whole, so you need to apply your own
+	Brush::pushPosition() as necessary.
 
 	\note
 	Take notice that, while the input related events reuse the same EventArgs, cursors cannot
@@ -72,6 +55,8 @@ namespace OpenGUI {
 	the Cursor base class exposes. This property represents the display size of the cursor
 	for both the X and Y axis in Screen units. If the size is never specified by the application
 	it will be the default size of (20.0x20.0f).
+
+	\see \ref EventList_Control "Cursor Events"
 	*/
 	class OPENGUI_API Cursor: public Object {
 		friend class Screen; // Screen needs access to the protected input event triggers

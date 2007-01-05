@@ -1,7 +1,11 @@
 namespace OpenGUI{
 /*!
 \page Event_CursorMove CursorMove
-The primary cursor movement event, signifying cursor movement within the coverage area of a widget as indicated by its Widget::isInside() function. This event only occurs if all of the following conditions are met.
+
+This event is common to both widgets and cursors, so both are explained here.
+
+\section Event_CursorMove_Widget Widget
+The primary cursor movement event, signifying cursor movement within the coverage area of a widget as indicated by its Widget::isInside() function. The position coordinates in the event are always in Widget level coordinates. This event only occurs if all of the following conditions are met.
 
 - All parents have fully processed the \ref Event_CursorMoving "CursorMoving" event without consuming it
 - No other widget has yet consumed the event
@@ -16,5 +20,16 @@ Widget
 \par EventArgs:
 Cursor_EventArgs
 
+<HR>
+
+\section Event_CursorMove_Cursor Cursor
+Informs the the current visible cursor of a cursor move event. The position coordinates in the event are always in Screen level coordinates. While the cursor version of this event reuses the same Cursor_EventArgs, cursors cannot consume events. So whether you \c eat() the event or not makes no difference.
+
+\par Introduced In:
+Cursor
+- Cursor::onCursorMove
+- Cursor::eventCursorMove
+\par EventArgs:
+Cursor_EventArgs
 */
 }

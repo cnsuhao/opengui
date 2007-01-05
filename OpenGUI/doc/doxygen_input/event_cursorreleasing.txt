@@ -1,7 +1,7 @@
 namespace OpenGUI{
 /*!
 \page Event_CursorReleasing CursorReleasing
-This is a preemptive notification of a cursor release, allowing containers to inspect the event before passing it on to their children. Consuming this event signifies the desire to keep the event local, in which case children will not receive a \ref Event_CursorReleasing "CursorReleasing" or \ref Event_CursorRelease "CursorRelease" event. By default all Widget derived classes will consume this event within onCursorReleasing() if their \c Enabled property is \c false, or if the event's position is outside of the coverage area defined by the Widget::isInside() implementation.
+This is a preemptive notification of a cursor release, allowing containers to inspect the event before passing it on to their children. The position coordinates in the event are always in Widget level coordinates. Consuming this event signifies the desire to keep the event local, in which case children will not receive a \ref Event_CursorReleasing "CursorReleasing" or \ref Event_CursorRelease "CursorRelease" event. By default all Widget derived classes will consume this event within onCursorReleasing() if their \c Enabled property is \c false, or if the event's position is outside of the coverage area defined by the Widget::isInside() implementation.
 
 \par Introduced In:
 Widget

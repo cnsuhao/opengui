@@ -404,6 +404,11 @@ namespace OpenGUI {
 		mCursorPos.x = x_pos;
 		mCursorPos.y = y_pos;
 
+		//send to the active cursor, if we have one
+		if ( mPrevCursor ) {
+			mPrevCursor->eventCursorMove( mCursorPos.x, mCursorPos.y );
+		}
+
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {
 			FVector2 localPos( x_pos, y_pos );
@@ -440,6 +445,11 @@ namespace OpenGUI {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = true;
 
+		//send to the active cursor, if we have one
+		if ( mPrevCursor ) {
+			mPrevCursor->eventCursorPress( mCursorPos.x, mCursorPos.y );
+		}
+
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {
 			FVector2 localPos = m_CursorFocus->pointFromScreen( mCursorPos );
@@ -462,6 +472,11 @@ namespace OpenGUI {
 	bool Screen::injectCursorRelease() {
 		if ( !m_CursorEnabled ) return false;
 		mCursorPressed = false;
+
+		//send to the active cursor, if we have one
+		if ( mPrevCursor ) {
+			mPrevCursor->eventCursorRelease( mCursorPos.x, mCursorPos.y );
+		}
 
 		//send to just focus holder if present
 		if ( m_CursorFocus ) {

@@ -55,7 +55,6 @@
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
 - \subpage Event_Resized "Resized"
-
 - \subpage Event_Targeted "Targeted"
 - \subpage Event_UnTargeted "UnTargeted"
 
@@ -73,9 +72,11 @@
 - \subpage Event_Resize_End "Resize_End"
 
 \section EventList_Cursor Cursor Events
-- \subpage Event_CursorDisabled "CursorDisabled"
-- \subpage Event_CursorEnabled "CursorEnabled"
-
+- \subpage Event_CursorShown "CursorShown"
+- \subpage Event_CursorHidden "CursorHidden"
+- \subpage Event_CursorMove "CursorMove"
+- \subpage Event_CursorPress "CursorPress"
+- \subpage Event_CursorRelease "CursorRelease"
 
 \section Event Introduction and Redefinition Map
 The following image details the introduction point of all events, as well as the locations in which their function is altered.

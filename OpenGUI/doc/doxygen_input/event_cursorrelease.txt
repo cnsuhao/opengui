@@ -1,7 +1,10 @@
 namespace OpenGUI{
 /*!
 \page Event_CursorRelease CursorRelease
-The primary cursor release event, signifying a release press within the coverage area of a widget as indicated by its isInside() function. This event only occurs if all of the following conditions are met.
+This event is common to both widgets and cursors, so both are explained here.
+
+\section Event_CursorRelease_Widget Widget
+The primary cursor release event, signifying a release press within the coverage area of a widget as indicated by its isInside() function. The position coordinates in the event are always in Widget level coordinates. This event only occurs if all of the following conditions are met.
 
 - All parents have fully processed the \ref Event_CursorReleasing "CursorReleasing" event without consuming it
 - No other widget has yet consumed the event
@@ -11,9 +14,20 @@ Consuming this event ends the propagation of the cursor release event, in which 
 
 \par Introduced In:
 Widget
-Widget
 - Widget::onCursorRelease
 - Widget::eventCursorRelease
+\par EventArgs:
+Cursor_EventArgs
+
+<HR>
+
+\section Event_CursorRelease_Cursor Cursor
+Informs the the current visible cursor of a cursor release event. The position coordinates in the event are always in Screen level coordinates. While the cursor version of this event reuses the same Cursor_EventArgs, cursors cannot consume events. So whether you \c eat() the event or not makes no difference.
+
+\par Introduced In:
+Cursor
+- Cursor::onCursorRelease
+- Cursor::eventCursorRelease
 \par EventArgs:
 Cursor_EventArgs
 
