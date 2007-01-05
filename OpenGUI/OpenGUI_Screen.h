@@ -77,7 +77,7 @@ namespace OpenGUI {
 		Widget* getCursorFocusedWidget();
 
 		//! \internal Sets cursor focus to the given Widget. Called by the widget via Widget::grabCursorFocus() or Widget::releaseCursorFocus()
-		void _setCursorFocus( Widget* widget );
+		void _setCursorFocus( Widget* widget, bool issueMove = true );
 //@} Cursor Functions
 
 //!\name Keyboard Input Injection
@@ -209,7 +209,7 @@ namespace OpenGUI {
 		virtual ~Screen();
 
 		//! \internal private implementation of injectCursorPosition(), post sanity checks
-		bool _injectCursorPosition( float x_rel, float y_rel );
+		bool _injectCursorPosition( float x_rel, float y_rel, bool preConsumed = false );
 
 	private:
 		Viewport* mViewport; // current viewport

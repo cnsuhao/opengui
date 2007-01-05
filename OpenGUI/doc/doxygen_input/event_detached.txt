@@ -1,0 +1,14 @@
+namespace OpenGUI{
+/*!
+\page Event_Detached Detached
+Occurs when the widget was removed from its container. This event can also occur during the destruction of a widget, as widgets are automatically removed from their container during the destruction process.
+	\par Introduced in:
+	Widget
+	- Widget::onDetached
+	- Widget::eventDetached
+	\par EventArgs:
+	Attach_EventArgs
+	
+	\see \ref Event_Attached "Attached event"
+*/
+}

@@ -24,6 +24,14 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	void WidgetCollection::appendWidgetPtrList( WidgetPtrList& l ) const {
+		WidgetCollectionItemPtrList::const_iterator i, ie = mCollectionObjects.end();
+		for ( i = mCollectionObjects.begin(); i != ie; i++ ) {
+			WidgetCollectionItem* item = ( *i );
+			l.push_back( item->widgetPtr );
+		}
+	}
+	//############################################################################
 	/*! \warning Do not take this operation lightly. Stealing ownership of WidgetCollections
 	can lead to very unpredictable results. The general rule of thumb is, if you didn't
 	create it, then you shouldn't be claiming ownership of it.

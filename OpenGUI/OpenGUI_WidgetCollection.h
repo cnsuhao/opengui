@@ -13,6 +13,7 @@
 namespace OpenGUI {
 	class Widget; // forward declaration
 	class Object; // forward declaration
+	typedef std::list<Widget*> WidgetPtrList; // forward declaration
 
 	//! Ordered collection of Widget objects.
 	/*! Maintains an ordered list of Widget pointers. Also provides the option to take
@@ -82,6 +83,9 @@ namespace OpenGUI {
 		void setParent( Object* object );
 		//! Gets the hierarchical parent of this collection
 		Object* getParent();
+
+		//! Appends the contents of this collection to the end of the given WidgetPtrList, preserving the collection's order
+		void appendWidgetPtrList( WidgetPtrList& l ) const;
 
 		//! Template class providing iterator encapsulation
 		template <typename IterType>

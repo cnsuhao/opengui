@@ -30,12 +30,12 @@ namespace OpenGUI {
 
 		protected:
 			// These are all events that we overload in order to perform necessary actions
-			virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-			virtual void onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs );
-			virtual void onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+			virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
+			virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+			virtual void onCursorFocused( Object* sender, Focus_EventArgs& evtArgs );
+			virtual void onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs );
 			virtual void onEnabled( Object* sender, EventArgs& evtArgs );
 			virtual void onDisabled( Object* sender, EventArgs& evtArgs );
 

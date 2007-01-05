@@ -32,16 +32,14 @@ namespace OpenGUI {
 	being used as client area.
 
 	\par Properties
-		- Padding (setPadding, getPadding)
+		- Padding: setPadding(), getPadding()
+		- ConsumeInput: setConsumeInput(), getConsumeInput()
 
 	\par Events Introduced
 		- \ref Event_ChildAttached "ChildAttached"
 		- \ref Event_ChildDetached "ChildDetached"
 		- \ref Event_DrawBG "DrawBG"
-	\par Events Redefined
-		- \ref Event_Cursor_Move "Cursor_Move"
-		- \ref Event_Cursor_Press "Cursor_Press"
-		- \ref Event_Cursor_Release "Cursor_Release"
+
 	\see \ref EventList_ContainerControl "ContainerControl Events"
 	*/
 	class OPENGUI_API ContainerControl : public Control, WidgetCollectionListener {
@@ -55,6 +53,11 @@ namespace OpenGUI {
 		void setPadding( float padding );
 		//! gets the current padding of this container
 		float getPadding();
+
+		//! toggles auto consumption of input that occurs inside this container, preventing it from reaching overdrawn widgets. Default is \c TRUE
+		void setConsumeInput( bool consume );
+		//! retrieves current ConsumeInput setting
+		bool getConsumeInput();
 
 		//! suspends automatic layout updates until resumeLayout() is called
 		void suspendLayout();
@@ -80,6 +83,17 @@ namespace OpenGUI {
 		virtual ObjectAccessorList* getAccessors();
 		virtual unsigned int getObjectType() const;
 
+		// reimplementations from Widget
+		virtual void _translatePointIn( FVector2& point );
+		virtual void _translatePointOut( FVector2& point );
+
+		virtual void _doflush();
+
+		virtual void _sendToChildren_CursorMove( Cursor_EventArgs& moveEvent );
+		virtual void _sendToChildren_CursorPress( Cursor_EventArgs& pressEvent );
+		virtual void _sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent );
+
+	protected:
 //!\name Event Injectors
 //@{
 		//! Draw this object's background using the given brush
@@ -92,13 +106,6 @@ namespace OpenGUI {
 		void eventInvalidatedChild();
 //@}
 
-		// reimplementations from Widget
-		virtual void _translatePointIn( FVector2& point );
-		virtual void _translatePointOut( FVector2& point );
-
-		virtual void _doflush();
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "DrawBG" event
@@ -107,12 +114,6 @@ namespace OpenGUI {
 		virtual void onChildAttached( Object* sender, Attach_EventArgs& evtArgs );
 		//! "ChildDetached" event
 		virtual void onChildDetached( Object* sender, Attach_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Move to children with a proper offset
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Press to children with a proper offset
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! Re-issues the \c Cursor_Release to children with a proper offset
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
 
 		//! Flushes the local Brush output cache that contains operations from this and all child Widgets
 		virtual void onInvalidated( Object* sender, EventArgs& evtArgs );
@@ -168,6 +169,8 @@ namespace OpenGUI {
 		void onDetached_BrushCache( Object* sender, Attach_EventArgs& evtArgs );
 
 		float mPadding; // holds the padding of the container
+
+		bool mConsumeInput; // holds setting to auto-consume input that occurs within this container
 	};
 
 } // namespace OpenGUI{

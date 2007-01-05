@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = "OpenGUI INTERNAL DOCS"
+PROJECT_NAME           = OpenGUI
 PROJECT_NUMBER         = "0.8 [Kunzite]"
 OUTPUT_DIRECTORY       = 
 CREATE_SUBDIRS         = NO
@@ -43,24 +43,24 @@ SUBGROUPING            = YES
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
-EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = YES
+EXTRACT_ALL            = NO
+EXTRACT_PRIVATE        = NO
 EXTRACT_STATIC         = YES
-EXTRACT_LOCAL_CLASSES  = YES
-EXTRACT_LOCAL_METHODS  = YES
-HIDE_UNDOC_MEMBERS     = NO
-HIDE_UNDOC_CLASSES     = NO
+EXTRACT_LOCAL_CLASSES  = NO
+EXTRACT_LOCAL_METHODS  = NO
+HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_CLASSES     = YES
 HIDE_FRIEND_COMPOUNDS  = NO
-HIDE_IN_BODY_DOCS      = NO
-INTERNAL_DOCS          = YES
+HIDE_IN_BODY_DOCS      = YES
+INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = NO
 HIDE_SCOPE_NAMES       = NO
 SHOW_INCLUDE_FILES     = YES
 INLINE_INFO            = YES
 SORT_MEMBER_DOCS       = YES
 SORT_BRIEF_DOCS        = NO
-SORT_BY_SCOPE_NAME     = YES
-GENERATE_TODOLIST      = YES
+SORT_BY_SCOPE_NAME     = NO
+GENERATE_TODOLIST      = NO
 GENERATE_TESTLIST      = YES
 GENERATE_BUGLIST       = YES
 GENERATE_DEPRECATEDLIST= YES
@@ -83,10 +83,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = ../ \
-                         AdditionalDoxygenInput.txt \
-                         xmldocs.txt \
-                         EventDocs.txt \
-                         StringFormatting.txt
+                         doxygen_input
 
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -114,7 +111,8 @@ FILE_PATTERNS          = *.c \
                          *.m \
                          *.mm \
                          *.dox \
-                         *.py
+                         *.py \
+                         *.txt
 RECURSIVE              = NO
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
@@ -124,7 +122,8 @@ EXAMPLE_PATH           = ../ \
                          ./examples/
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = ./
+IMAGE_PATH             = ./ \
+                         doxygen_input
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -155,7 +154,7 @@ HTML_FOOTER            = DoxygenFooter.txt
 HTML_STYLESHEET        = 
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = YES
-CHM_FILE               = ../OpenGUI_INTERNAL.chm
+CHM_FILE               = ../OpenGUI.chm
 HHC_LOCATION           = 
 GENERATE_CHI           = NO
 BINARY_TOC             = NO
