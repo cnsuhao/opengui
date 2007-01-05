@@ -78,9 +78,7 @@
 - \subpage Event_CursorPress "CursorPress"
 - \subpage Event_CursorRelease "CursorRelease"
 
-\section Event Introduction and Redefinition Map
-The following image details the introduction point of all events, as well as the locations in which their function is altered.
-\image html EventIntroductionAndRedifinition.jpg
+
 
 
 
