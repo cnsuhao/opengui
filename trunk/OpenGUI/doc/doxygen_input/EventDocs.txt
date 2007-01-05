@@ -1,5 +1,5 @@
 
-/*! \page Events
+/*! \page Events Events
 
 	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
 	
