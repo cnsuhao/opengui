@@ -122,6 +122,13 @@ namespace OpenGUI {
 
 		//! flushes local Brush cache in addition to normal functionality
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
+
+		//! "CursorMove" event, only allows Control to consume if ConsumeInput is \c true
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event, only allows Control to consume if ConsumeInput is \c true
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event, only allows Control to consume if ConsumeInput is \c true
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
 		//! Returns the client area position and size as an FRect
