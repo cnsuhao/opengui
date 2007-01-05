@@ -1,0 +1,13 @@
+namespace OpenGUI{
+/*!
+\page Event_Tick Tick
+Tick events are issued to all widgets when time deltas are injected into the Screen via OpenGUI::Screen::injectTime(). These events bypass normal event propagation (much like the \ref Event_Tick "Draw event"), and are guaranteed delivery to all widgets within a Screen.
+\par Introduced In:
+	Widget
+	- Widget::onTick
+	- Widget::eventTick
+	\par EventArgs:
+	Tick_EventArgs
+*/
+}
+

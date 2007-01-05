@@ -17,23 +17,22 @@ namespace OpenGUI {
 	//! Base class for all GUI objects that have position and size
 	/*!
 	\par Properties
-	- Left (setLeft, getLeft)
-	- Top (setTop, getTop)
-	- Width (setWidth, getWidth)
-	- Height (setHeight, getHeight)
-	- Position (getPosition)
-	- Size (getSize)
-	- Rect (getRect)
-	- Visible (setVisible, getVisible)
-	- Alpha (setAlpha, getAlpha)
-	- Margin (setMargin, getMargin)
+	- Left: setLeft(), getLeft()
+	- Top: setTop(), getTop()
+	- Width: setWidth(), getWidth()
+	- Height: setHeight(), getHeight()
+	- Position: getPosition()
+	- Size: getSize()
+	- Rect: getRect()
+	- Visible: setVisible(), getVisible()
+	- Alpha: setAlpha(), getAlpha()
+	- Margin: setMargin(), getMargin()
 
 	\par Events Introduced
 		- \ref Event_Moved "Moved"
 		- \ref Event_Resized "Resized"
-		- \ref Event_Cursor_Click "Cursor_Click"
-		- \ref Event_Cursor_Enter "Cursor_Enter"
-		- \ref Event_Cursor_Leave "Cursor_Leave"
+		- \ref Event_CursorEnter "CursorEnter"
+		- \ref Event_CursorLeave "CursorLeave"
 		- \ref Event_Targeted "Targeted"
 		- \ref Event_UnTargeted "UnTargeted"
 	\see \ref EventList_Control "Control Events"

@@ -1,6 +1,5 @@
 
 /*! \page Events
-<b> This documentation is out of date!</b>
 
 	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
 	
@@ -19,22 +18,30 @@
 <hr>
 
 \section EventList_Widget Widget Events
+\subsection General
 - \subpage Event_Enabled "Enabled"
 - \subpage Event_Disabled "Disabled"
 - \subpage Event_Attached "Attached"
 - \subpage Event_Detached "Detached"
+\subsection Drawing
 - \subpage Event_Draw "Draw"
 - \subpage Event_Invalidated "Invalidated"
+\subsection Timing
 - \subpage Event_Tick "Tick"
-
-- \subpage Event_Cursor_Move "CursorMove"
-- \subpage Event_Cursor_Press "CursorPress"
-- \subpage Event_Cursor_Release "CursorRelease"
-- \subpage Event_Cursor_Disabled "CursorDisabled"
-- \subpage Event_Cursor_Enabled "CursorEnabled"
+\subsection Cursor Input
+Moving
+- \subpage Event_CursorMove "CursorMove"
+- \subpage Event_CursorEnter "CursorEnter"
+- \subpage Event_CursorLeave "CursorLeave"
+Pressing
+- \subpage Event_CursorPress "CursorPress"
+Releasing
+- \subpage Event_CursorRelease "CursorRelease"
+- \subpage Event_CursorDisabled "CursorDisabled"
+- \subpage Event_CursorEnabled "CursorEnabled"
 - \subpage Event_CursorFocused "CursorFocused"
 - \subpage Event_CursorFocusLost "CursorFocusLost"
-
+\subsection Text Input
 - \subpage Event_Key_Up "Key_Up"
 - \subpage Event_Key_Down "Key_Down"
 - \subpage Event_Key_Pressed "Key_Pressed"
@@ -48,8 +55,7 @@
 - \subpage Event_Resized "Resized"
 
 - \subpage Event_Cursor_Click "Cursor_Click"
-- \subpage Event_Cursor_Enter "Cursor_Enter"
-- \subpage Event_Cursor_Leave "Cursor_Leave"
+
 
 - \subpage Event_Targeted "Targeted"
 - \subpage Event_UnTargeted "UnTargeted"
@@ -75,97 +81,10 @@ The following image details the introduction point of all events, as well as the
 
 
 
-\page Event_Enabled Enabled
-Occurs when the Widget has been enabled
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onEnabled
-	- OpenGUI::Widget::eventEnabled
-	\par EventArgs:
-	OpenGUI::EventArgs
-
-
-
-\page Event_Disabled Disabled
-Occurs when the Widget has been disabled
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onDisabled
-	- OpenGUI::Widget::eventDisabled
-	\par EventArgs:
-	OpenGUI::EventArgs
-
-
-
-\page Event_Attached Attached
-Occurs when the Widget was attached to a container.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onAttached
-	- OpenGUI::Widget::eventAttached
-	\par EventArgs:
-	OpenGUI::Attach_EventArgs
-
-
-
-\page Event_Detached Detached
-Occurs when the Widget was removed from its container.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onDetached
-	- OpenGUI::Widget::eventDetached
-	\par EventArgs:
-	OpenGUI::Attach_EventArgs
-
-
-
-\page Event_Draw Draw
-Draw this object using the given brush.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onDraw
-	- OpenGUI::Widget::eventDraw
-	\par EventArgs:
-	OpenGUI::Draw_EventArgs
-
-
-
-\page Event_Invalidated Invalidated
-The Widget was invalidated and will need to be redrawn next Screen::update()
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onInvalidated
-	- OpenGUI::Widget::eventInvalidated
-	
-	\par EventArgs:
-	OpenGUI::EventArgs
-	\see OpenGUI::Screen::update(), OpenGUI::Screen::invalidateAll(), OpenGUI::Widget::invalidate(), \link Event_Draw Draw Event \endlink
 
 
 
 
-\page Event_Cursor_Move Cursor_Move
-The cursor has moved within the immediate container and this widget is being given a chance to evaluate and possibly consume that event. If the widget is a Control, the default \c onCursor_Move handler will trigger the Cursor_MoveInside event if the movement was inside the bounds of the Control as defined by OpenGUI::Control::_isInside().
-
-OpenGUI::ContainerControl culls these messages, only sending them to siblings when the cursor is currently inside of itself as well.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Move
-	- OpenGUI::Widget::eventCursor_Move
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
-
-
-
-\page Event_Cursor_MoveInside Cursor_MoveInside
-The cursor has moved while inside of this Control.
-
-	\par Occurs In:
-	OpenGUI::Control
-	- OpenGUI::Control::onCursor_MoveInside
-	- OpenGUI::Control::eventCursor_MoveInside
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
 
 
 
@@ -189,27 +108,6 @@ Called when the cursor button was released.
 	\par EventArgs:
 	OpenGUI::Cursor_EventArgs
 
-
-
-\page Event_Cursor_PressInside Cursor_PressInside
-Called when the cursor button was pressed inside this Control
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Control::onCursor_PressInside
-	- OpenGUI::Control::eventCursor_PressInside
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
-
-
-
-\page Event_Cursor_ReleaseInside Cursor_ReleaseInside
-Called when the cursor button was released inside this Control
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Control::onCursor_ReleaseInside
-	- OpenGUI::Control::eventCursor_ReleaseInside
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
 
 
 
@@ -306,14 +204,7 @@ This Widget has obtained key focus.
 
 
 
-\page Event_Tick Tick
-Tick events are issued to all widgets when time deltas are injected into the Screen via OpenGUI::Screen::injectTime(). These events bypass normal event propagation (much like the \ref Event_Tick "Draw event"), and are guaranteed delivery to all widgets within a Screen.
-\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onTick
-	- OpenGUI::Widget::eventTick
-	\par EventArgs:
-	OpenGUI::Tick_EventArgs
+
 
 
 
@@ -329,15 +220,6 @@ This Widget has lost key focus. This can occur either by direct request by \c re
 	\see OpenGUI::Widget::releaseKeyFocus(), \ref FocusKey
 
 
-
-\page Event_Cursor_Click Cursor_Click
-The cursor was pressed and released within this Control.
-	\par Occurs In:
-	OpenGUI::Control
-	- OpenGUI::Control::onCursor_Click
-	- OpenGUI::Control::eventCursor_Click
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
 
 
 

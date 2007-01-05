@@ -1,0 +1,16 @@
+namespace OpenGUI{
+/*!
+\page Event_Invalidated Invalidated
+The Widget was invalidated and will need to be redrawn next Screen::update()
+	\par Introduced In:
+	Widget
+	- Widget::onInvalidated
+	- Widget::eventInvalidated
+	
+	\par EventArgs:
+	EventArgs
+	
+	\see \ref Event_Draw "Draw Event" Screen::update(), Screen::invalidateAll(), Widget::invalidate()
+*/
+}
+
