@@ -1,0 +1,16 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorMoving CursorMoving
+This is a preemptive notification of cursor movement, allowing containers to inspect the event before passing it on to their children. Consuming this event signifies the desire to keep the event local, in which case children will receive \ref Event_CursorLeave "CursorLeave" if necessary, but will not process a \ref Event_CursorMoving "CursorMoving" or \ref Event_CursorMove "CursorMove" event. By default all Widget derived classes will consume this event within onCursorMoving() if their \c Enabled property is \c false, or if the event's position is outside of the coverage area defined by the Widget::isInside() implementation.
+
+Unlike \ref Event_CursorMove "CursorMove", this event occurs for all unconsumed cursor movement within the widget's container, so you will receive these events even if the cursor is not within the widget's actual coverage area.
+
+\par Introduced In:
+Widget
+- Widget::onCursorMoving
+- Widget::eventCursorMoving
+\par EventArgs:
+Cursor_EventArgs
+
+*/
+}
