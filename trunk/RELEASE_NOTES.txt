@@ -29,10 +29,7 @@ version 1.0 is released.
 
 ___________________________________________________________
 -- Known Issues
-It is known that the current renderers do not honor the
-usage of masks. Internally, OpenGUI recognizes the usage of
-masks and should correctly form render operations that use
-them.
+It is known that masks are not yet fully implemented.
 
 ___________________________________________________________
 -- Usage
