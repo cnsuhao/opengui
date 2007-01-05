@@ -426,6 +426,16 @@ namespace OpenGUI {
 		triggerEvent( "UnTargeted", eventArgs );
 	}
 	//############################################################################
+	void Control::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
+		eventTargeted();
+		Widget::onCursorEnter( sender, evtArgs );
+	}
+	//############################################################################
+	void Control::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
+		eventUnTargeted();
+		Widget::onCursorLeave( sender, evtArgs );
+	}
+	//############################################################################
 	void Control::onMoved( Object* sender, Moved_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}

@@ -314,10 +314,10 @@ namespace OpenGUI {
 			// send notifications if necessary
 			if ( drawCursor != mPrevCursor ) {
 				if ( mPrevCursor )
-					mPrevCursor->eventCursor_Hidden();
+					mPrevCursor->eventCursorHidden();
 				mPrevCursor = drawCursor;
 				if ( mPrevCursor )
-					mPrevCursor->eventCursor_Shown( mCursorPos.x, mCursorPos.y );
+					mPrevCursor->eventCursorShown( mCursorPos.x, mCursorPos.y );
 			}
 
 			// Draw the cursor
@@ -513,7 +513,7 @@ namespace OpenGUI {
 	void Screen::disableCursor() {
 		if ( m_CursorEnabled ) {
 			if ( mPrevCursor ) {
-				mPrevCursor->eventCursor_Hidden();
+				mPrevCursor->eventCursorHidden();
 				mPrevCursor = 0;
 			}
 			m_CursorEnabled = false;
@@ -547,7 +547,7 @@ namespace OpenGUI {
 		if ( m_CursorVisible ) {
 			m_CursorVisible = false;
 			if ( mPrevCursor ) {
-				mPrevCursor->eventCursor_Hidden();
+				mPrevCursor->eventCursorHidden();
 				mPrevCursor = 0;
 			}
 		}

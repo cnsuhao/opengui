@@ -72,10 +72,10 @@
 - \subpage Event_Resize_Begin "Resize_Begin"
 - \subpage Event_Resize_End "Resize_End"
 
-<hr>
+\section EventList_Cursor Cursor Events
 - \subpage Event_CursorDisabled "CursorDisabled"
 - \subpage Event_CursorEnabled "CursorEnabled"
-<hr>
+
 
 \section Event Introduction and Redefinition Map
 The following image details the introduction point of all events, as well as the locations in which their function is altered.
