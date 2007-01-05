@@ -5,7 +5,6 @@ This is a preemptive notification of a cursor press, allowing containers to insp
 
 \par Introduced In:
 Widget
-Widget
 - Widget::onCursorPressing
 - Widget::eventCursorPressing
 \par EventArgs:

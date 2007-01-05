@@ -99,15 +99,15 @@ namespace OpenGUI {
 		void eventDraw( float xPos, float yPos, Brush& brush );
 
 		//! Called for cursor movement, giving the X,Y position of the cursor
-		void eventCursor_Move( float xPos, float yPos );
+		void eventCursorMove( float xPos, float yPos );
 		//! Called when the cursor button is pressed
-		void eventCursor_Press( float xPos, float yPos );
+		void eventCursorPress( float xPos, float yPos );
 		//! Called when the cursor button is released
-		void eventCursor_Release( float xPos, float yPos );
+		void eventCursorRelease( float xPos, float yPos );
 		//! Called when the cursor is hidden
-		void eventCursor_Hidden();
+		void eventCursorHidden();
 		//! Called when the cursor is shown.
-		void eventCursor_Shown( float xPos, float yPos );
+		void eventCursorShown( float xPos, float yPos );
 //@}
 
 		//Object Functions
@@ -120,16 +120,16 @@ namespace OpenGUI {
 		//! "Draw" event
 		virtual void onDraw( Object* sender, DrawCursor_EventArgs& evtArgs );
 
-		//! "Cursor_Move" event
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Hidden" event
-		virtual void onCursor_Hidden( Object* sender, EventArgs& evtArgs );
-		//! "Cursor_Shown" event
-		virtual void onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorHidden" event
+		virtual void onCursorHidden( Object* sender, EventArgs& evtArgs );
+		//! "CursorShown" event
+		virtual void onCursorShown( Object* sender, Cursor_EventArgs& evtArgs );
 //@}
 
 	private:

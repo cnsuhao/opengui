@@ -154,7 +154,10 @@ namespace OpenGUI {
 		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
 		//! "CursorRelease" event
 		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
-
+		//! "CursorEnter" event
+		virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+		//! "CursorLeave" event
+		virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
 		//! "Targeted" event
 		virtual void onTargeted( Object* sender, EventArgs& evtArgs );
 		//! "UnTargeted" event

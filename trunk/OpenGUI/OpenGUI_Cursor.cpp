@@ -67,16 +67,16 @@ namespace OpenGUI {
 		// set up events
 		getEvents().createEvent( "Draw" );
 		getEvents()["Draw"].add( new EventDelegate( this, &Cursor::onDraw ) );
-		getEvents().createEvent( "Cursor_Move" );
-		getEvents().createEvent( "Cursor_Press" );
-		getEvents().createEvent( "Cursor_Release" );
-		getEvents().createEvent( "Cursor_Hidden" );
-		getEvents().createEvent( "Cursor_Shown" );
-		getEvents()["Cursor_Move"].add( new EventDelegate( this, &Cursor::onCursor_Move ) );
-		getEvents()["Cursor_Press"].add( new EventDelegate( this, &Cursor::onCursor_Press ) );
-		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Cursor::onCursor_Release ) );
-		getEvents()["Cursor_Hidden"].add( new EventDelegate( this, &Cursor::onCursor_Hidden ) );
-		getEvents()["Cursor_Shown"].add( new EventDelegate( this, &Cursor::onCursor_Shown ) );
+		getEvents().createEvent( "CursorMove" );
+		getEvents().createEvent( "CursorPress" );
+		getEvents().createEvent( "CursorRelease" );
+		getEvents().createEvent( "CursorHidden" );
+		getEvents().createEvent( "CursorShown" );
+		getEvents()["CursorMove"].add( new EventDelegate( this, &Cursor::onCursorMove ) );
+		getEvents()["CursorPress"].add( new EventDelegate( this, &Cursor::onCursorPress ) );
+		getEvents()["CursorRelease"].add( new EventDelegate( this, &Cursor::onCursorRelease ) );
+		getEvents()["CursorHidden"].add( new EventDelegate( this, &Cursor::onCursorHidden ) );
+		getEvents()["CursorShown"].add( new EventDelegate( this, &Cursor::onCursorShown ) );
 	}
 	//############################################################################
 	Cursor::~Cursor() {
@@ -87,23 +87,23 @@ namespace OpenGUI {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Cursor::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Cursor::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Cursor::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Hidden( Object* sender, EventArgs& evtArgs ) {
+	void Cursor::onCursorHidden( Object* sender, EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
-	void Cursor::onCursor_Shown( Object* sender, Cursor_EventArgs& evtArgs ) {
+	void Cursor::onCursorShown( Object* sender, Cursor_EventArgs& evtArgs ) {
 		/*! Default is to do nothing */
 	}
 	//############################################################################
@@ -112,29 +112,29 @@ namespace OpenGUI {
 		triggerEvent( "Draw", event );
 	}
 	//############################################################################
-	void Cursor::eventCursor_Move( float xPos, float yPos ) {
+	void Cursor::eventCursorMove( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Move", event );
+		triggerEvent( "CursorMove", event );
 	}
 	//############################################################################
-	void Cursor::eventCursor_Press( float xPos, float yPos ) {
+	void Cursor::eventCursorPress( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Press", event );
+		triggerEvent( "CursorPress", event );
 	}
 	//############################################################################
-	void Cursor::eventCursor_Release( float xPos, float yPos ) {
+	void Cursor::eventCursorRelease( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Release", event );
+		triggerEvent( "CursorRelease", event );
 	}
 	//############################################################################
-	void Cursor::eventCursor_Hidden() {
+	void Cursor::eventCursorHidden() {
 		EventArgs event;
-		triggerEvent( "Cursor_Hidden", event );
+		triggerEvent( "CursorHidden", event );
 	}
 	//############################################################################
-	void Cursor::eventCursor_Shown( float xPos, float yPos ) {
+	void Cursor::eventCursorShown( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Shown", event );
+		triggerEvent( "CursorShown", event );
 	}
 	//############################################################################
 }//namespace OpenGUI{
