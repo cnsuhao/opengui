@@ -14,6 +14,6 @@
 
 #else
 
-#   define OPENGUI_API
+#   define AMETHYST_API
 
 #endif
