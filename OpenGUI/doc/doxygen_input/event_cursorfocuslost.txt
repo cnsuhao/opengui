@@ -1,0 +1,16 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorFocusLost CursorFocusLost
+This event signifies the loss of cursor focus. This can occur either by direct request by Widget::releaseCursorFocus(), or as the result of another widget grabbing the focus. Both the newly focused widget and the previously focused widget are provided within the event arguments.
+
+\par Introduced In:
+Widget
+Widget
+- Widget::onCursorFocusLost
+- Widget::eventCursorFocusLost
+\par EventArgs:
+Focus_EventArgs
+
+\see Widget::releaseCursorFocus(), \ref FocusCursor, \ref Event_CursorFocused "CursorFocused event"
+*/
+}
