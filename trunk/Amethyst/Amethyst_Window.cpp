@@ -22,11 +22,6 @@ namespace OpenGUI {
 				addAccessor( &WindowP_LL );
 				addAccessor( &WindowP_UR );
 				addAccessor( &WindowP_LR );
-				/*addAccessor( &ScrollBarP_Maximum );
-				addAccessor( &ScrollBarP_Coverage );
-				addAccessor( &ScrollBarP_FaceBG );
-				addAccessor( &ScrollBarP_FaceThumb );
-				addAccessor( &ScrollBarP_Vertical );*/
 			}
 			~Window_ObjectAccessorList() {}
 		}

@@ -1,7 +1,11 @@
 namespace OpenGUI{
 /*!
 \page Event_CursorPress CursorPress
-The primary cursor press event, signifying a cursor press within the coverage area of a widget as indicated by its isInside() function. This event only occurs if all of the following conditions are met.
+
+This event is common to both widgets and cursors, so both are explained here.
+
+\section Event_CursorPress_Widget Widget
+The primary cursor press event, signifying a cursor press within the coverage area of a widget as indicated by its isInside() function. The position coordinates in the event are always in Widget level coordinates. This event only occurs if all of the following conditions are met.
 
 - All parents have fully processed the \ref Event_CursorPressing "CursorPressing" event without consuming it
 - No other widget has yet consumed the event
@@ -14,6 +18,18 @@ Widget
 Widget
 - Widget::onCursorPress
 - Widget::eventCursorPress
+\par EventArgs:
+Cursor_EventArgs
+
+<HR>
+
+\section Event_CursorPress_Cursor Cursor
+Informs the the current visible cursor of a cursor press event. The position coordinates in the event are always in Screen level coordinates. While the cursor version of this event reuses the same Cursor_EventArgs, cursors cannot consume events. So whether you \c eat() the event or not makes no difference.
+
+\par Introduced In:
+Cursor
+- Cursor::onCursorPress
+- Cursor::eventCursorPress
 \par EventArgs:
 Cursor_EventArgs
 
