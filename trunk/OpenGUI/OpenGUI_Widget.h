@@ -27,7 +27,8 @@ namespace OpenGUI {
 	//! Base class for all input processing, containable, and potentially visible GUI objects
 	/*!
 	\par Properties
-		- Name (setName, getName)
+		- Name: setName(), getName()
+		- Enabled: setEnabled(), getEnabled()
 
 	\par Events Introduced
 		- \ref Event_Enabled "Enabled"
@@ -36,18 +37,18 @@ namespace OpenGUI {
 		- \ref Event_Detached "Detached"
 		- \ref Event_Draw "Draw"
 		- \ref Event_Invalidated "Invalidated"
-		- \ref Event_Cursor_Move "Cursor_Move"
-		- \ref Event_Cursor_Press "Cursor_Press"
-		- \ref Event_Cursor_Release "Cursor_Release"
-		- \ref Event_Cursor_Disabled "Cursor_Disabled"
-		- \ref Event_Cursor_Enabled "Cursor_Enabled"
-		- \ref Event_Cursor_Focused "Cursor_Focused"
-		- \ref Event_Cursor_FocusLost "Cursor_FocusLost"
-		- \ref Event_Key_Up "Key_Up"
-		- \ref Event_Key_Down "Key_Down"
-		- \ref Event_Key_Pressed "Key_Pressed"
-		- \ref Event_Key_Focused "Key_Focused"
-		- \ref Event_Key_FocusLost "Key_FocusLost"
+		- \ref Event_CursorMove "CursorMove"
+		- \ref Event_CursorPress "CursorPress"
+		- \ref Event_CursorRelease "CursorRelease"
+		- \ref Event_CursorDisabled "CursorDisabled"
+		- \ref Event_CursorEnabled "CursorEnabled"
+		- \ref Event_CursorFocused "CursorFocused"
+		- \ref Event_CursorFocusLost "CursorFocusLost"
+		- \ref Event_KeyUp "KeyUp"
+		- \ref Event_KeyDown "KeyDown"
+		- \ref Event_KeyPressed "KeyPressed"
+		- \ref Event_KeyFocused "KeyFocused"
+		- \ref Event_KeyFocusLost "KeyFocusLost"
 		- \ref Event_Tick "Tick"
 	\see \ref EventList_Widget "Widget Events"
 	*/

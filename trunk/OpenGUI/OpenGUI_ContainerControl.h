@@ -32,16 +32,14 @@ namespace OpenGUI {
 	being used as client area.
 
 	\par Properties
-		- Padding (setPadding, getPadding)
+		- Padding: setPadding(), getPadding()
+		- ConsumeInput: setConsumeInput(), getConsumeInput()
 
 	\par Events Introduced
 		- \ref Event_ChildAttached "ChildAttached"
 		- \ref Event_ChildDetached "ChildDetached"
 		- \ref Event_DrawBG "DrawBG"
-	\par Events Redefined
-		- \ref Event_Cursor_Move "Cursor_Move"
-		- \ref Event_Cursor_Press "Cursor_Press"
-		- \ref Event_Cursor_Release "Cursor_Release"
+
 	\see \ref EventList_ContainerControl "ContainerControl Events"
 	*/
 	class OPENGUI_API ContainerControl : public Control, WidgetCollectionListener {

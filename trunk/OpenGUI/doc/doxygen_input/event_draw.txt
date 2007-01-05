@@ -1,0 +1,18 @@
+namespace OpenGUI{
+/*!
+\page Event_Draw Draw
+Occurs when the widget needs redrawing. A valid Brush is given as part of the Draw_EventArgs.
+	\par Introduced In:
+	Widget
+	- Widget::onDraw
+	- Widget::eventDraw
+	\par EventArgs:
+	Draw_EventArgs
+	
+	\see \ref Event_Detached "Detached event"
+*/
+}
+
+
+
+	
