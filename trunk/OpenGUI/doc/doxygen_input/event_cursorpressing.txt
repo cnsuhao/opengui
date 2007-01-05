@@ -1,0 +1,16 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorPressing CursorPressing
+This is a preemptive notification of a cursor press, allowing containers to inspect the event before passing it on to their children. Consuming this event signifies the desire to keep the event local, in which case children will not receive a \ref Event_CursorPressing "CursorPressing" or \ref Event_CursorPress "CursorPress" event. By default all Widget derived classes will consume this event within onCursorPressing() if their \c Enabled property is \c false, or if the event's position is outside of the coverage area defined by the Widget::isInside() implementation.
+
+\par Introduced In:
+Widget
+Widget
+- Widget::onCursorPressing
+- Widget::eventCursorPressing
+\par EventArgs:
+Cursor_EventArgs
+
+\see \ref Event_CursorPress "CursorPress"
+*/
+}

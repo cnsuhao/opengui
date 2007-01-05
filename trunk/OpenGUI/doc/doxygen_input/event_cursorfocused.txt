@@ -1,0 +1,16 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorFocused CursorFocused
+This event signifies the acquisition of cursor focus. Both the newly focused widget and the previously focused widget are provided within the event arguments.
+
+\par Introduced In:
+Widget
+Widget
+- Widget::onCursorFocused
+- Widget::eventCursorFocused
+\par EventArgs:
+Focus_EventArgs
+
+\see Widget::grabCursorFocus(), \ref FocusCursor, \ref Event_CursorFocusLost "CursorFocusLost event"
+*/
+}

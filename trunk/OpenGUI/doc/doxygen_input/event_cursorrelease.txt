@@ -1,0 +1,22 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorRelease CursorRelease
+The primary cursor release event, signifying a release press within the coverage area of a widget as indicated by its isInside() function. This event only occurs if all of the following conditions are met.
+
+- All parents have fully processed the \ref Event_CursorReleasing "CursorReleasing" event without consuming it
+- No other widget has yet consumed the event
+- The coordinates of the event are within the coverage area of the widget as defined by the widget's isInside() function. <small>(This restriction can be lifted by obtaining cursor focus)</small>
+
+Consuming this event ends the propagation of the cursor release event, in which case peers will not receive \ref Event_CursorRelease "CursorRelease" or \ref Event_CursorReleasing "CursorReleasing". Most controls will want to consume this event, and this behavior is the default action within Control::onCursorRelease().
+
+\par Introduced In:
+Widget
+Widget
+- Widget::onCursorRelease
+- Widget::eventCursorRelease
+\par EventArgs:
+Cursor_EventArgs
+
+\see \ref Event_CursorReleasing "CursorReleasing"
+*/
+}

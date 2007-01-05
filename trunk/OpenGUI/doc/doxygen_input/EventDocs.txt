@@ -18,44 +18,43 @@
 <hr>
 
 \section EventList_Widget Widget Events
+
 \subsection General
 - \subpage Event_Enabled "Enabled"
 - \subpage Event_Disabled "Disabled"
 - \subpage Event_Attached "Attached"
 - \subpage Event_Detached "Detached"
+
 \subsection Drawing
 - \subpage Event_Draw "Draw"
 - \subpage Event_Invalidated "Invalidated"
-\subsection Timing
+\subsection Events_Timing Timing
 - \subpage Event_Tick "Tick"
-\subsection Cursor Input
-Moving
+
+\subsection Events_Cursor_Input Cursor Input
+- \subpage Event_CursorMoving "CursorMoving"
 - \subpage Event_CursorMove "CursorMove"
 - \subpage Event_CursorEnter "CursorEnter"
 - \subpage Event_CursorLeave "CursorLeave"
-Pressing
+- \subpage Event_CursorPressing "CursorPressing"
 - \subpage Event_CursorPress "CursorPress"
-Releasing
+- \subpage Event_CursorReleasing "CursorReleasing"
 - \subpage Event_CursorRelease "CursorRelease"
-- \subpage Event_CursorDisabled "CursorDisabled"
-- \subpage Event_CursorEnabled "CursorEnabled"
 - \subpage Event_CursorFocused "CursorFocused"
 - \subpage Event_CursorFocusLost "CursorFocusLost"
-\subsection Text Input
-- \subpage Event_Key_Up "Key_Up"
-- \subpage Event_Key_Down "Key_Down"
-- \subpage Event_Key_Pressed "Key_Pressed"
-- \subpage Event_Key_Focused "Key_Focused"
-- \subpage Event_Key_FocusLost "Key_FocusLost"
+
+\subsection Events_Text_Input Text Input
+- \subpage Event_KeyUp "KeyUp"
+- \subpage Event_KeyDown "KeyDown"
+- \subpage Event_KeyPressed "KeyPressed"
+- \subpage Event_KeyFocused "KeyFocused"
+- \subpage Event_KeyFocusLost "KeyFocusLost"
 
 
 
 \section EventList_Control Control Events
 - \subpage Event_Moved "Moved"
 - \subpage Event_Resized "Resized"
-
-- \subpage Event_Cursor_Click "Cursor_Click"
-
 
 - \subpage Event_Targeted "Targeted"
 - \subpage Event_UnTargeted "UnTargeted"
@@ -74,6 +73,9 @@ Releasing
 - \subpage Event_Resize_End "Resize_End"
 
 <hr>
+- \subpage Event_CursorDisabled "CursorDisabled"
+- \subpage Event_CursorEnabled "CursorEnabled"
+<hr>
 
 \section Event Introduction and Redefinition Map
 The following image details the introduction point of all events, as well as the locations in which their function is altered.
@@ -88,25 +90,11 @@ The following image details the introduction point of all events, as well as the
 
 
 
-\page Event_Cursor_Press Cursor_Press
-Called when the cursor button was pressed.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Press
-	- OpenGUI::Widget::eventCursor_Press
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
 
 
 
-\page Event_Cursor_Release Cursor_Release
-Called when the cursor button was released.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Release
-	- OpenGUI::Widget::eventCursor_Release
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
+
+
 
 
 
@@ -135,27 +123,11 @@ The cursor was enabled.
 	
 
 
-\page Event_Cursor_Focused Cursor_Focused
-This Widget has obtained cursor focus.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_Focused
-	- OpenGUI::Widget::eventCursor_Focused
-	\par EventArgs:
-	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::grabCursorFocus(), \ref FocusCursor
 
 
 
-\page Event_Cursor_FocusLost Cursor_FocusLost
-This Widget has lost cursor focus. This can occur either by direct request by \c releaseCursorFocus(), or as the result of another widget grabbing the focus.
-	\par Occurs In:
-	OpenGUI::Widget
-	- OpenGUI::Widget::onCursor_FocusLost
-	- OpenGUI::Widget::eventCursor_FocusLost
-	\par EventArgs:
-	OpenGUI::Focus_EventArgs
-	\see OpenGUI::Widget::releaseCursorFocus(), \ref FocusCursor
+
+
 
 
 
@@ -223,25 +195,11 @@ This Widget has lost key focus. This can occur either by direct request by \c re
 
 
 
-\page Event_Cursor_Enter Cursor_Enter
-The cursor cursor entered this Control.
-	\par Occurs In:
-	OpenGUI::Control
-	- OpenGUI::Control::onCursor_Shown
-	- OpenGUI::Control::eventCursor_Shown
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
 
 
 
-\page Event_Cursor_Leave Cursor_Leave
-The cursor left this Control.
-	\par Occurs In:
-	OpenGUI::Control
-	- OpenGUI::Control::onCursor_Leave
-	- OpenGUI::Control::eventCursor_Leave
-	\par EventArgs:
-	OpenGUI::Cursor_EventArgs
+
+
 
 
 
