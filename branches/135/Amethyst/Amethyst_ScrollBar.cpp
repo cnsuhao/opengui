@@ -118,15 +118,15 @@ namespace OpenGUI {
 			return mVertical;
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
 			/**/
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
 			/**/
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( isInsideThumb( evtArgs.Position ) ) {
 				mThumbDownPt = evtArgs.Position;
 				mThumbDownValue = mValue;
@@ -134,23 +134,23 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( hasCursorFocus() ) {
 				releaseCursorFocus();
 			}
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
 			/**/
 		}
 		//############################################################################
-		void ScrollBar::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
 			/**/
 		}
 		//############################################################################
-		void ScrollBar::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void ScrollBar::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
 			if ( hasCursorFocus() ) {
-				FVector2 pos = pointFromScreen( evtArgs.Position );
+				FVector2 pos = evtArgs.Position;
 				pos -= mThumbDownPt;
 				float thumbCoveragePercent = mCoverage / mMaximum;
 				float travel;

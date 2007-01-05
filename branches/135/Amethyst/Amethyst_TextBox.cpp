@@ -79,56 +79,51 @@ namespace OpenGUI {
 			return new TextBox;
 		}
 
-		//! Called when cursor was pressed and released within this Control
-		void TextBox::onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs ) {
-			grabKeyFocus();
-			OpenGUI::Control::onCursor_Click( sender, evtArgs );
-		}
 		//! Called when the cursor enters this Control
-		void TextBox::onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Control::onCursor_Enter( sender, evtArgs );
+		void TextBox::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
+			OpenGUI::Control::onCursorEnter( sender, evtArgs );
 		}
 		//! Called when the cursor leaves this Control
-		void TextBox::onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs ) {
-			OpenGUI::Control::onCursor_Leave( sender, evtArgs );
+		void TextBox::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
+			OpenGUI::Control::onCursorLeave( sender, evtArgs );
 		}
 
 		//! "Cursor_Press" event
-		void TextBox::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
+		void TextBox::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
 			grabKeyFocus();
-			Control::onCursor_Press( sender, evtArgs );
+			Control::onCursorPress( sender, evtArgs );
 		}
 		//! "Cursor_Release" event
-		void TextBox::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-			Control::onCursor_Release( sender, evtArgs );
+		void TextBox::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
+			Control::onCursorRelease( sender, evtArgs );
 		}
 
 		//! "Key_Up" event
-		void TextBox::onKey_Up( Object* sender, Key_EventArgs& evtArgs )
+		void TextBox::onKeyUp( Object* sender, Key_EventArgs& evtArgs )
 		{
-			Control::onKey_Up( sender, evtArgs );
+			Control::onKeyUp( sender, evtArgs );
 		}
 		//! "Key_Down" event
-		void TextBox::onKey_Down( Object* sender, Key_EventArgs& evtArgs )
+		void TextBox::onKeyDown( Object* sender, Key_EventArgs& evtArgs )
 		{
-			Control::onKey_Down( sender, evtArgs );
+			Control::onKeyDown( sender, evtArgs );
 		}
 		//! "Key_Pressed" event
-		void TextBox::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs )
+		void TextBox::onKeyPressed( Object* sender, Key_EventArgs& evtArgs )
 		{
 			mText = mText + evtArgs.Character;
 			evtArgs.eat();
-			Control::onKey_Pressed( sender, evtArgs );
+			Control::onKeyPressed( sender, evtArgs );
 		}
 		//! "Key_Focused" event
-		void TextBox::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs )
+		void TextBox::onKeyFocused( Object* sender, Focus_EventArgs& evtArgs )
 		{
-			Control::onKey_Focused( sender, evtArgs );
+			Control::onKeyFocused( sender, evtArgs );
 		}
 		//! "Key_FocusLost" event
-		void TextBox::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs )
+		void TextBox::onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs )
 		{
-			Control::onKey_FocusLost( sender, evtArgs );
+			Control::onKeyFocusLost( sender, evtArgs );
 		}
 
 		//! "Attached" event

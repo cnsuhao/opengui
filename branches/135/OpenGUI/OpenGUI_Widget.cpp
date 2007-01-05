@@ -97,44 +97,56 @@ namespace OpenGUI {
 		mWidgetName = "";
 		mEnabled = true;
 		mValid = false;
+		m_CursorInside = false;
 
 		//Set up events and default bindings
 		getEvents().createEvent( "Attached" );
 		getEvents().createEvent( "Detached" );
 		getEvents()["Attached"].add( new EventDelegate( this, &Widget::onAttached ) );
 		getEvents()["Detached"].add( new EventDelegate( this, &Widget::onDetached ) );
+
 		getEvents().createEvent( "Draw" );
 		getEvents().createEvent( "Invalidated" );
 		getEvents()["Draw"].add( new EventDelegate( this, &Widget::onDraw ) );
 		getEvents()["Invalidated"].add( new EventDelegate( this, &Widget::onInvalidated ) );
-		getEvents().createEvent( "Cursor_Move" );
-		getEvents().createEvent( "Cursor_Press" );
-		getEvents().createEvent( "Cursor_Release" );
-		getEvents().createEvent( "Cursor_Disabled" );
-		getEvents().createEvent( "Cursor_Enabled" );
-		getEvents()["Cursor_Move"].add( new EventDelegate( this, &Widget::onCursor_Move ) );
-		getEvents()["Cursor_Press"].add( new EventDelegate( this, &Widget::onCursor_Press ) );
-		getEvents()["Cursor_Release"].add( new EventDelegate( this, &Widget::onCursor_Release ) );
-		getEvents()["Cursor_Disabled"].add( new EventDelegate( this, &Widget::onCursor_Disabled ) );
-		getEvents()["Cursor_Enabled"].add( new EventDelegate( this, &Widget::onCursor_Enabled ) );
-		getEvents().createEvent( "Cursor_Focused" );
-		getEvents().createEvent( "Cursor_FocusLost" );
-		getEvents()["Cursor_Focused"].add( new EventDelegate( this, &Widget::onCursor_Focused ) );
-		getEvents()["Cursor_FocusLost"].add( new EventDelegate( this, &Widget::onCursor_FocusLost ) );
+
+		getEvents().createEvent( "CursorMoving" );
+		getEvents().createEvent( "CursorMove" );
+		getEvents().createEvent( "CursorPressing" );
+		getEvents().createEvent( "CursorPress" );
+		getEvents().createEvent( "CursorReleasing" );
+		getEvents().createEvent( "CursorRelease" );
+		getEvents().createEvent( "CursorEnter" );
+		getEvents().createEvent( "CursorLeave" );
+		getEvents().createEvent( "CursorFocused" );
+		getEvents().createEvent( "CursorFocusLost" );
+		getEvents()["CursorMoving"].add( new EventDelegate( this, &Widget::onCursorMoving ) );
+		getEvents()["CursorMove"].add( new EventDelegate( this, &Widget::onCursorMove ) );
+		getEvents()["CursorPressing"].add( new EventDelegate( this, &Widget::onCursorPressing ) );
+		getEvents()["CursorPress"].add( new EventDelegate( this, &Widget::onCursorPress ) );
+		getEvents()["CursorReleasing"].add( new EventDelegate( this, &Widget::onCursorReleasing ) );
+		getEvents()["CursorRelease"].add( new EventDelegate( this, &Widget::onCursorRelease ) );
+		getEvents()["CursorEnter"].add( new EventDelegate( this, &Widget::onCursorEnter ) );
+		getEvents()["CursorLeave"].add( new EventDelegate( this, &Widget::onCursorLeave ) );
+		getEvents()["CursorFocused"].add( new EventDelegate( this, &Widget::onCursorFocused ) );
+		getEvents()["CursorFocusLost"].add( new EventDelegate( this, &Widget::onCursorFocusLost ) );
+
 		getEvents().createEvent( "Enabled" );
 		getEvents().createEvent( "Disabled" );
 		getEvents()["Enabled"].add( new EventDelegate( this, &Widget::onEnabled ) );
 		getEvents()["Disabled"].add( new EventDelegate( this, &Widget::onDisabled ) );
-		getEvents().createEvent( "Key_Up" );
-		getEvents().createEvent( "Key_Down" );
-		getEvents().createEvent( "Key_Pressed" );
-		getEvents()["Key_Up"].add( new EventDelegate( this, &Widget::onKey_Up ) );
-		getEvents()["Key_Down"].add( new EventDelegate( this, &Widget::onKey_Down ) );
-		getEvents()["Key_Pressed"].add( new EventDelegate( this, &Widget::onKey_Pressed ) );
-		getEvents().createEvent( "Key_Focused" );
-		getEvents().createEvent( "Key_FocusLost" );
-		getEvents()["Key_Focused"].add( new EventDelegate( this, &Widget::onKey_Focused ) );
-		getEvents()["Key_FocusLost"].add( new EventDelegate( this, &Widget::onKey_FocusLost ) );
+
+		getEvents().createEvent( "KeyUp" );
+		getEvents().createEvent( "KeyDown" );
+		getEvents().createEvent( "KeyPressed" );
+		getEvents().createEvent( "KeyFocused" );
+		getEvents().createEvent( "KeyFocusLost" );
+		getEvents()["KeyUp"].add( new EventDelegate( this, &Widget::onKeyUp ) );
+		getEvents()["KeyDown"].add( new EventDelegate( this, &Widget::onKeyDown ) );
+		getEvents()["KeyPressed"].add( new EventDelegate( this, &Widget::onKeyPressed ) );
+		getEvents()["KeyFocused"].add( new EventDelegate( this, &Widget::onKeyFocused ) );
+		getEvents()["KeyFocusLost"].add( new EventDelegate( this, &Widget::onKeyFocusLost ) );
+
 		getEvents().createEvent( "Tick" );
 		getEvents()["Tick"].add( new EventDelegate( this, &Widget::onTick ) );
 
@@ -245,15 +257,15 @@ namespace OpenGUI {
 	/*! This function is intended to be overridden by subclasses to reflect their
 	own personal interpretation of the given point (in local coordinates) and if
 	that point is considered to be inside the widget. This allows new widgets to
-	break free from the existing "axis aligned rect" paradigm that is currently
+	break free from the existing "axis aligned rect" paradigm that is usually
 	in place.
 
 	\note
-	Widget implementation always returns false since they have no position or size.
+	Widget implementation always returns true since they have no position or size.
 	Control, however, will test the point against its known size and position.
 	*/
-	bool Widget::_isInside( const FVector2& position ) {
-		return false;
+	bool Widget::isInside( const FVector2& position ) {
+		return true;
 	}
 	//############################################################################
 	Screen* Widget::getScreen() const {
@@ -267,17 +279,18 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
 	//############################################################################
-	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+	void Widget::onAttached( Object* obj, Attach_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventAttached( WidgetCollection* newContainer, Widget* widget ) {
 		Attach_EventArgs event( newContainer, widget );
 		triggerEvent( "Attached", event );
+	}
+	//############################################################################
+	void Widget::onDetached( Object* obj, Attach_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::eventDetached( WidgetCollection* prevContainer, Widget* widget ) {
@@ -286,7 +299,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onDraw( Object* obj, Draw_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	void Widget::onInvalidated( Object* obj, EventArgs& evtArgs ) {
@@ -304,167 +317,213 @@ namespace OpenGUI {
 		triggerEvent( "Invalidated", event );
 	}
 	//############################################################################
-	void Widget::onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
 	//############################################################################
-	void Widget::onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Widget::onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Widget::onCursor_Disabled( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Widget::onCursor_Enabled( Object* sender, Cursor_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	/*! Cursor position will be in the same coordinate space as the receiving Widget.
-	This message may be culled by containers if the cursor is not within their bounds.
-	(Meaning that children may not receive this event unless it is potentially relevant
-	to them as determined by the container.)
-	\param xPos X position of the cursor
-	\param yPos Y position of the cursor
-	\return true if the input was consumed, false otherwise
+	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
 	*/
-	bool Widget::eventCursor_Move( float xPos, float yPos ) {
+	bool Widget::eventCursorMoving( float xPos, float yPos ) {
+		Cursor_EventArgs args( xPos, yPos );
+		triggerEvent( "CursorMoving", args );
+		return args.Consumed;
+	}
+	//############################################################################
+	void Widget::onCursorMoving( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( !getEnabled() ) {
+			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+		\param yPos Y position of the cursor
+		\return true if the input was consumed, false otherwise
+	*/
+	bool Widget::eventCursorMove( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Move", event );
+		triggerEvent( "CursorMove", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	/*! Cursor position will be in the same coordinate space as the receiving Widget.
-	This message may be culled by containers if the cursor is not within their bounds.
-	(Meaning that children may not receive this event unless it is potentially relevant
-	to them as determined by the container.)
-	\param xPos X position of the cursor
-	\param yPos Y position of the cursor
-	\return true if the input was consumed, false otherwise
+	void Widget::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
 	*/
-	bool Widget::eventCursor_Press( float xPos, float yPos ) {
+	bool Widget::eventCursorPressing( float xPos, float yPos ) {
+		Cursor_EventArgs args( xPos, yPos );
+		triggerEvent( "CursorPressing", args );
+		return args.Consumed;
+	}
+	//############################################################################
+	void Widget::onCursorPressing( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( !getEnabled() ) {
+			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+		\param yPos Y position of the cursor
+		\return true if the input was consumed, false otherwise
+	*/
+	bool Widget::eventCursorPress( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Press", event );
+		triggerEvent( "CursorPress", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	/*! Cursor position will be in the same coordinate space as the receiving Widget.
-	This message may be culled by containers if the cursor is not within their bounds.
-	(Meaning that children may not receive this event unless it is potentially relevant
-	to them as determined by the container.)
-	\param xPos X position of the cursor
-	\param yPos Y position of the cursor
-	\return true if the input was consumed, false otherwise
+	void Widget::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+	    \param yPos Y position of the cursor
+	    \return true if the input was consumed, false otherwise
 	*/
-	bool Widget::eventCursor_Release( float xPos, float yPos ) {
+	bool Widget::eventCursorReleasing( float xPos, float yPos ) {
+		Cursor_EventArgs args( xPos, yPos );
+		triggerEvent( "CursorReleasing", args );
+		return args.Consumed;
+	}
+	//############################################################################
+	void Widget::onCursorReleasing( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( !getEnabled() ) {
+			evtArgs.eat();
+		} else {
+			if ( !isInside( evtArgs.Position ) ) {
+				evtArgs.eat();
+			}
+		}
+	}
+	//############################################################################
+	/*! \param xPos X position of the cursor
+		\param yPos Y position of the cursor
+		\return true if the input was consumed, false otherwise
+	*/
+	bool Widget::eventCursorRelease( float xPos, float yPos ) {
 		Cursor_EventArgs event( xPos, yPos );
-		triggerEvent( "Cursor_Release", event );
+		triggerEvent( "CursorRelease", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	/*! Containers should not cull this message. */
-	void Widget::eventCursor_Disabled() {
+	void Widget::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventCursorEnter() {
 		EventArgs event;
-		triggerEvent( "Cursor_Disabled", event );
+		triggerEvent( "CursorEnter", event );
 	}
 	//############################################################################
-	/*! Containers should not cull this message.
-	Cursor position will be in the same coordinate space as the receiving Widget.
-	\param xPos X position of the cursor
-	\param yPos Y position of the cursor
-	*/
-	void Widget::eventCursor_Enabled( float xPos, float yPos ) {
+	void Widget::onCursorEnter( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventCursorLeave() {
 		EventArgs event;
-		triggerEvent( "Cursor_Enabled", event );
+		triggerEvent( "CursorLeave", event );
 	}
 	//############################################################################
-	void Widget::onCursor_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+	void Widget::onCursorLeave( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onCursor_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Widget::eventCursor_Focused( Widget* cur, Widget* prev ) {
+	void Widget::eventCursorFocused( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Cursor_Focused", event );
+		triggerEvent( "CursorFocused", event );
 	}
 	//############################################################################
-	void Widget::eventCursor_FocusLost( Widget* cur, Widget* prev ) {
+	void Widget::onCursorFocused( Object* sender, Focus_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventCursorFocusLost( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Cursor_FocusLost", event );
+		triggerEvent( "CursorFocusLost", event );
 	}
 	//############################################################################
-	void Widget::onKey_Up( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+	void Widget::onCursorFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onKey_Down( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
 	//############################################################################
-	void Widget::onKey_Pressed( Object* sender, Key_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	bool Widget::eventKey_Up( char character ) {
+	bool Widget::eventKeyUp( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Up", event );
+		triggerEvent( "KeyUp", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	bool Widget::eventKey_Down( char character ) {
+	void Widget::onKeyUp( Object* sender, Key_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	bool Widget::eventKeyDown( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Down", event );
+		triggerEvent( "KeyDown", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	bool Widget::eventKey_Pressed( char character ) {
+	void Widget::onKeyDown( Object* sender, Key_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	bool Widget::eventKeyPressed( char character ) {
 		Key_EventArgs event( character );
-		triggerEvent( "Key_Pressed", event );
+		triggerEvent( "KeyPressed", event );
 		return event.Consumed;
 	}
 	//############################################################################
-	void Widget::onKey_Focused( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+	void Widget::onKeyPressed( Object* sender, Key_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onKey_FocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
-	//############################################################################
-	void Widget::eventKey_Focused( Widget* cur, Widget* prev ) {
+	void Widget::eventKeyFocused( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Key_Focused", event );
+		triggerEvent( "KeyFocused", event );
 	}
 	//############################################################################
-	void Widget::eventKey_FocusLost( Widget* cur, Widget* prev ) {
+	void Widget::onKeyFocused( Object* sender, Focus_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
+	void Widget::eventKeyFocusLost( Widget* cur, Widget* prev ) {
 		Focus_EventArgs event( cur, prev );
-		triggerEvent( "Key_FocusLost", event );
+		triggerEvent( "KeyFocusLost", event );
 	}
 	//############################################################################
-	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+	void Widget::onKeyFocusLost( Object* sender, Focus_EventArgs& evtArgs ) {
+		/* Default is to do nothing */
 	}
 	//############################################################################
-	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
-	}
 	//############################################################################
 	void Widget::eventEnabled() {
 		EventArgs event;
 		triggerEvent( "Enabled", event );
 	}
 	//############################################################################
+	void Widget::onEnabled( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
 	void Widget::eventDisabled() {
 		EventArgs event;
 		triggerEvent( "Disabled", event );
 	}
+	//############################################################################
+	void Widget::onDisabled( Object* sender, EventArgs& evtArgs ) {
+		/* Default is to do nothing */
+	}
+	//############################################################################
 	//############################################################################
 	void Widget::_getChildrenAt( const FVector2& position, WidgetPtrList& outList, bool recursive ) {
 		return; // Widget has no children
@@ -551,7 +610,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void Widget::onTick( Object* sender, Tick_EventArgs& evtArgs ) {
-		/*! Default is to do nothing */
+		/* Default is to do nothing */
 	}
 	//############################################################################
 	Widget* Widget::_getChildByName( const std::string& childName ) const {
@@ -704,6 +763,187 @@ namespace OpenGUI {
 		Screen* screen = getScreen();
 		if ( !screen ) return false;
 		return screen->getKeyFocusedWidget() == this;
+	}
+	//############################################################################
+	/*! \note The \c moveEvent is the copy that was sent to _injectCursorMove(),
+	and will likely need to be translated to an inner coordinate before passing on
+	to the children. Also, be sure to preserve the event's \c Consumed value in
+	both directions, as it is critical to proper operation. */
+	void Widget::_sendToChildren_CursorMove( Cursor_EventArgs& moveEvent ) {
+		/*
+		A Widget does not have any children, so we can simply ignore this.
+
+		However, ContainerControl does have children, so a proper overload
+		should be implemented there.
+		*/
+	}
+	//############################################################################
+	void Widget::_injectCursorMove( Cursor_EventArgs& moveEvent ) {
+		bool movingConsumed = false;
+		if ( !moveEvent.Consumed ) {
+			// run local CursorMoving event
+			movingConsumed = eventCursorMoving( moveEvent.X, moveEvent.Y );
+		}
+		if ( movingConsumed ) {
+			// in this situation, we need to send a pre-consumed copy of the event
+			Cursor_EventArgs tmpEvent( moveEvent.X, moveEvent.Y );
+			tmpEvent.eat();
+			_sendToChildren_CursorMove( tmpEvent );
+		} else {
+			// send to children for pre-processing
+			_sendToChildren_CursorMove( moveEvent );
+		}
+
+		if ( moveEvent.Consumed ) {
+			/*
+			The event was consumed at some point, so we need to perform any pending
+			cleanup by issuing a final CursorLeave if it is appropriate.
+			*/
+			if ( m_CursorInside ) {
+				m_CursorInside = false;
+				eventCursorLeave();
+			}
+		} else {
+			/*
+			The event is unconsumed, so we can apply the full processing, which entails
+			testing if the event is within the Widget's coverage area, and applying the
+			Enter/Move/Leave events as the result dictates.
+			*/
+			if ( isInside( moveEvent.Position ) ) {
+				// the cursor is inside, so throw CursorEnter if needed...
+				if ( !m_CursorInside ) {
+					m_CursorInside = true;
+					eventCursorEnter();
+				}
+				// and send the CursorMove
+				if ( eventCursorMove( moveEvent.X, moveEvent.Y ) ) {
+					moveEvent.eat(); // preserve event consumption
+				}
+			} else {
+				// the cursor is outside of our area, so we may need to throw CursorLeave
+				if ( m_CursorInside ) {
+					m_CursorInside = false;
+					eventCursorLeave();
+				}
+				// if we have cursor focus, then we need to issue this event every time
+				if ( hasCursorFocus() ) {
+					if ( eventCursorMove( moveEvent.X, moveEvent.Y ) ) {
+						moveEvent.eat(); // preserve event consumption
+					}
+				}
+			}
+		}
+	}
+	//############################################################################
+	/*! \note The \c pressEvent is the copy that was sent to _injectCursorPress(),
+	and will likely need to be translated to an inner coordinate before passing on
+	to the children. Also, be sure to preserve the event's \c Consumed value in
+	both directions, as it is critical to proper operation. */
+	void Widget::_sendToChildren_CursorPress( Cursor_EventArgs& pressEvent ) {
+		/*
+		A Widget does not have any children, so we can simply ignore this.
+
+		However, ContainerControl does have children, so a proper overload
+		should be implemented there.
+		*/
+	}
+	//############################################################################
+	void Widget::_injectCursorPress( Cursor_EventArgs& pressEvent ) {
+		if ( pressEvent.Consumed ) return;
+		// run local CursorPressing event
+		bool pressingConsumed = eventCursorPressing( pressEvent.X, pressEvent.Y );
+		if ( !pressingConsumed ) {
+			// send to children for pre-processing
+			_sendToChildren_CursorPress( pressEvent );
+		}
+
+		// if the event is not yet consumed and it falls within the coverage area, process it
+		if ( !pressEvent.Consumed ) {
+			if ( isInside( pressEvent.Position ) ) {
+				if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
+					pressEvent.eat(); // preserve event consumption
+				}
+			} else {
+				if ( hasCursorFocus() ) {
+					if ( eventCursorPress( pressEvent.X, pressEvent.Y ) ) {
+						pressEvent.eat(); // preserve event consumption
+					}
+				}
+			}
+		}
+	}
+	//############################################################################
+	/*! \note The \c releaseEvent is the copy that was sent to _injectCursorRelease(),
+	and will likely need to be translated to an inner coordinate before passing on
+	to the children. Also, be sure to preserve the event's \c Consumed value in
+	both directions, as it is critical to proper operation. */
+	void Widget::_sendToChildren_CursorRelease( Cursor_EventArgs& releaseEvent ) {
+		/*
+		A Widget does not have any children, so we can simply ignore this.
+
+		However, ContainerControl does have children, so a proper overload
+		should be implemented there.
+		*/
+	}
+	//############################################################################
+	void Widget::_injectCursorRelease( Cursor_EventArgs& releaseEvent ) {
+		if ( releaseEvent.Consumed ) return;
+		// run local CursorReleasing event
+		bool releasingConsumed = eventCursorReleasing( releaseEvent.X, releaseEvent.Y );
+		if ( !releasingConsumed ) {
+			// send to children for pre-processing
+			_sendToChildren_CursorRelease( releaseEvent );
+		}
+
+		// if the event is not yet consumed and it falls within the coverage area, process it
+		if ( !releaseEvent.Consumed ) {
+			if ( isInside( releaseEvent.Position ) ) {
+				if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
+					releaseEvent.eat(); // preserve event consumption
+				}
+			} else {
+				if ( hasCursorFocus() ) {
+					if ( eventCursorRelease( releaseEvent.X, releaseEvent.Y ) ) {
+						releaseEvent.eat(); // preserve event consumption
+					}
+				}
+			}
+		}
+	}
+	//############################################################################
+	void Widget::_injectCursorFocused( Widget* next, Widget* prev ) {
+		assert( next == this );
+		eventCursorFocused( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectCursorFocusLost( Widget* next, Widget* prev ) {
+		assert( prev == this );
+		eventCursorFocusLost( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectKeyDown( Key_EventArgs& evtArgs ) {
+		if ( eventKeyDown( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyPressed( Key_EventArgs& evtArgs ) {
+		if ( eventKeyPressed( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyUp( Key_EventArgs& evtArgs ) {
+		if ( eventKeyUp( evtArgs.Character ) )
+			evtArgs.eat();
+	}
+	//############################################################################
+	void Widget::_injectKeyFocused( Widget* next, Widget* prev ) {
+		assert( next == this );
+		eventKeyFocused( next, prev );
+	}
+	//############################################################################
+	void Widget::_injectKeyFocusLost( Widget* next, Widget* prev ) {
+		assert( prev == this );
+		eventKeyFocusLost( next, prev );
 	}
 	//############################################################################
 }//namespace OpenGUI{

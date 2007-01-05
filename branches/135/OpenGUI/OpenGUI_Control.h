@@ -17,23 +17,22 @@ namespace OpenGUI {
 	//! Base class for all GUI objects that have position and size
 	/*!
 	\par Properties
-	- Left (setLeft, getLeft)
-	- Top (setTop, getTop)
-	- Width (setWidth, getWidth)
-	- Height (setHeight, getHeight)
-	- Position (getPosition)
-	- Size (getSize)
-	- Rect (getRect)
-	- Visible (setVisible, getVisible)
-	- Alpha (setAlpha, getAlpha)
-	- Margin (setMargin, getMargin)
+	- Left: setLeft(), getLeft()
+	- Top: setTop(), getTop()
+	- Width: setWidth(), getWidth()
+	- Height: setHeight(), getHeight()
+	- Position: getPosition()
+	- Size: getSize()
+	- Rect: getRect()
+	- Visible: setVisible(), getVisible()
+	- Alpha: setAlpha(), getAlpha()
+	- Margin: setMargin(), getMargin()
 
 	\par Events Introduced
 		- \ref Event_Moved "Moved"
 		- \ref Event_Resized "Resized"
-		- \ref Event_Cursor_Click "Cursor_Click"
-		- \ref Event_Cursor_Enter "Cursor_Enter"
-		- \ref Event_Cursor_Leave "Cursor_Leave"
+		- \ref Event_CursorEnter "CursorEnter"
+		- \ref Event_CursorLeave "CursorLeave"
 		- \ref Event_Targeted "Targeted"
 		- \ref Event_UnTargeted "UnTargeted"
 	\see \ref EventList_Control "Control Events"
@@ -125,6 +124,10 @@ namespace OpenGUI {
 		//! \internal  Returns a reference to the cursor to draw over this Control
 		const CursorPtr& _getCurrentCursor() const;
 
+		//! Returns true if the given point is inside this Widget
+		virtual bool isInside( const FVector2& position );
+
+	protected:
 //!\name Event Injectors
 //@{
 		//! Control has been moved
@@ -132,23 +135,12 @@ namespace OpenGUI {
 		//! Control has been resized
 		void eventResized( const FVector2& oldSize, const FVector2& newSize );
 
-		//! Called when cursor was pressed and released within this Control
-		void eventCursor_Click( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor enters this Control
-		void eventCursor_Enter( Cursor_EventArgs& evtArgs );
-		//! Called when the cursor leaves this Control
-		void eventCursor_Leave( Cursor_EventArgs& evtArgs );
-
 		//! Called when this Control is targeted, either by cursor or by menu navigation
 		void eventTargeted();
 		//! Called when this Control is no longer targeted, either by cursor or by menu navigation
 		void eventUnTargeted();
 //@}
 
-		//! Returns true if the given point is inside this Widget
-		virtual bool _isInside( const FVector2& position );
-
-	protected:
 //!\name Event Handlers
 //@{
 		//! "Moved" event
@@ -156,20 +148,16 @@ namespace OpenGUI {
 		//! "Resized" event
 		virtual void onResized( Object* sender, Resized_EventArgs& evtArgs );
 
-		//! "Cursor_Press" event
-		virtual void onCursor_Press( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Release" event
-		virtual void onCursor_Release( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Click" event
-		virtual void onCursor_Click( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Enter" event; invokes Targeted
-		virtual void onCursor_Enter( Object* sender, Cursor_EventArgs& evtArgs );
-		//! "Cursor_Leave" event; invokes UnTargeted
-		virtual void onCursor_Leave( Object* sender, Cursor_EventArgs& evtArgs );
-
-		//! Adds cursor tracking to trigger Cursor_Enter and Cursor_Leave when appropriate.
-		virtual void onCursor_Move( Object* sender, Cursor_EventArgs& evtArgs );
-
+		//! "CursorMove" event
+		virtual void onCursorMove( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorPress" event
+		virtual void onCursorPress( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorRelease" event
+		virtual void onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs );
+		//! "CursorEnter" event
+		virtual void onCursorEnter( Object* sender, EventArgs& evtArgs );
+		//! "CursorLeave" event
+		virtual void onCursorLeave( Object* sender, EventArgs& evtArgs );
 		//! "Targeted" event
 		virtual void onTargeted( Object* sender, EventArgs& evtArgs );
 		//! "UnTargeted" event
@@ -182,6 +170,9 @@ namespace OpenGUI {
 
 
 	private:
+		// returns a pointer to the first sibling found at the given position
+		Widget* getSiblingAt( const FVector2& pos );
+
 		//! Call for any operation that invalidates layouts, like moves and resizes.
 		void _invalidateLayout();
 		//! Call for any operation that breaks docking. (Moves and resizes along a conflicting axis)
