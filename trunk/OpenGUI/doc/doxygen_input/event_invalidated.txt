@@ -10,7 +10,7 @@ The Widget was invalidated and will need to be redrawn next Screen::update()
 	\par EventArgs:
 	EventArgs
 	
-	\see \ref Event_Draw "Draw Event" Screen::update(), Screen::invalidateAll(), Widget::invalidate()
+	\see \ref Event_Draw "Draw event", Screen::update(), Screen::invalidateAll(), Widget::invalidate()
 */
 }
 

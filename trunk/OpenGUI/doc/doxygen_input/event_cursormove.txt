@@ -5,7 +5,7 @@ The primary cursor movement event, signifying cursor movement within the coverag
 
 - All parents have fully processed the \ref Event_CursorMoving "CursorMoving" event without consuming it
 - No other widget has yet consumed the event
-- The coordinates of the event are within the coverage area of the widget as defined by the widget's isInside() function <SUB>(This restriction can be lifted by obtaining cursor focus)</SUB>
+- The coordinates of the event are within the coverage area of the widget as defined by the widget's isInside() function. <SMALL>(The coordinate restriction can be lifted by obtaining cursor focus)</SMALL>
 
 Consuming this event ends the propagation of the cursor movement event, in which case peers will not receive \ref Event_CursorMove "CursorMove" or \ref Event_CursorMoving "CursorMoving", but will process a \ref Event_CursorLeave "CursorLeave" if applicable. Most controls will want to consume this event, and this behavior is the default action within Control::onCursorMove().
 
