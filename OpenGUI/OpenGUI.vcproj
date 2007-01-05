@@ -338,10 +338,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_LayoutLoader.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_LogSystem.cpp"
 				>
 			</File>
@@ -613,10 +609,6 @@
 			</File>
 			<File
 				RelativePath=".\OpenGUI_Iterators.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OpenGUI_LayoutLoader.h"
 				>
 			</File>
 			<File
