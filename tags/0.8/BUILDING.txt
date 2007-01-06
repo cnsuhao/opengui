@@ -1,0 +1,80 @@
+-----------------------------------------------------------
+ - Building OpenGUI -
+-----------------------------------------------------------
+OpenGUI uses SCons as its official build mechanism.
+
+Get it. Use it. It doesn't suck. http://www.scons.org/
+You will need a recent Python interpretter installed in
+order to use SCons. If you are using Windows, I recommend
+ActiveState's ActivePython. You can get ActivePython here:
+http://activestate.com/Products/ActivePython/
+
+The included SCons scripts are used to build all SDKs, and
+it is highly encouraged that users utilize these scripts
+when compiling from source. All dependencies that did not
+already come with working SCons scripts have had new
+scripts created for them. If you would like to see all
+available options, you can type "scons -h" to retrieve the
+build help, which will list available targets to build.
+
+To compile a release build:
+scons
+
+To compile a debug build:
+scons debug=1
+
+Despite the SCons scripts, we currently only officially
+support Windows using the Visual Studio compilers. This
+will certainly change in the future, but for now we have
+this limitation.
+
+
+
+-----------------------------------------------------------
+ - Windows -
+-----------------------------------------------------------
+Use SCons! There are a smattering of VC8 projects and
+solutions that are intended for use by the project
+developers. Building everything STILL REQUIRES SCONS, as
+all dependencies are still built using SCons to ensure
+consistent binaries.
+
+ * VC 8 (aka Visual Studio 2005 Standard/Pro/Express)
+    Just open OpenGUI.sln in the root directory, select a
+    build configuration and build the solution. All
+    necessary dependencies will be automatically built.
+
+ * VC 7.1 (aka Visual Studio .NET 2003)
+    We used to include project and solution files for this
+    toolchain, but they have been removed. With the free
+    availability of Visual Studio 2005 Express there is no
+    reason why it is necessary to maintain multiple sets of
+    project/solution files.
+
+
+
+-----------------------------------------------------------
+ - Linux -
+-----------------------------------------------------------
+Linux isn't officially supported at this time, but you are
+more than welcome to try. You can expect the SCons scripts
+to break, so please submit a patch if you spend the time to
+fix it .
+
+
+
+-----------------------------------------------------------
+ - Other -
+-----------------------------------------------------------
+You're pretty much on your own here. Everything is written
+in standard C++, and aims to avoid all compiler warnings.
+It also comes with all necessary dependencies, so if you
+can manage to get the dependencies to build, you shouldn't
+have too much trouble getting OpenGUI to build. Any
+platform specific #define statments can be found in
+"OpenGUI_Platform.h". Patches that increase the number of
+build targets are welcome, but stand a much better chance
+of permanent inclusion if you also offer to provide
+continued maintenance to ensure that the given build target
+is always working in future releases of OpenGUI.
+

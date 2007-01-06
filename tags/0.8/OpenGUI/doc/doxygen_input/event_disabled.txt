@@ -1,0 +1,14 @@
+namespace OpenGUI{
+/*!
+\page Event_Disabled Disabled
+Occurs when the Widget has been disabled via either the Enabled property, or by Widget::setEnabled().
+	\par Introduced In:
+	Widget
+	- Widget::onDisabled
+	- Widget::eventDisabled
+	\par EventArgs:
+	EventArgs
+	
+	\see \ref Event_Enabled "Enabled event"
+*/
+}

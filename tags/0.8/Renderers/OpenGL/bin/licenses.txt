@@ -1,0 +1,10 @@
+Licenses and recognitions for any assets used in demos:
+
+kongtext.ttf
+[ codeman38 | cody@zone38.net | http://www.zone38.net/ ]
+
+pecot.ttf
+[ Graham Meade | where ever you are | downloaded from http://www.cooltext.com/ ]
+
+All other assets are part of the OpenGUI project, and are
+distributed under the same license as OpenGUI.
