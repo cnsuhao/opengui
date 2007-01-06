@@ -437,6 +437,12 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
+	/*! Changing this value to \c false will make the container act as a transparent
+	entity with regards to cursor input, allowing normally obscured widgets to process
+	events. This is primarily useful when you use several fully transparent containers
+	to produce layers that cover the entire Screen for layout purposes. In this case,
+	you would not want the container to always consume the input, as it would prevent
+	the lower layers from ever getting input that they should logically receive. */
 	void ContainerControl::setConsumeInput( bool consume ) {
 		mConsumeInput = consume;
 	}
@@ -482,6 +488,24 @@ namespace OpenGUI {
 		}
 		if ( localEvent.Consumed )
 			releaseEvent.eat();
+	}
+	//############################################################################
+	void ContainerControl::onCursorMove( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( mConsumeInput ) {
+			Control::onCursorMove( sender, evtArgs );
+		}
+	}
+	//############################################################################
+	void ContainerControl::onCursorPress( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( mConsumeInput ) {
+			Control::onCursorPress( sender, evtArgs );
+		}
+	}
+	//############################################################################
+	void ContainerControl::onCursorRelease( Object* sender, Cursor_EventArgs& evtArgs ) {
+		if ( mConsumeInput ) {
+			Control::onCursorRelease( sender, evtArgs );
+		}
 	}
 	//############################################################################
 } // namespace OpenGUI {
