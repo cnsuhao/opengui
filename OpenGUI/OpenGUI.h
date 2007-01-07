@@ -19,6 +19,7 @@
 
 //Custom data types and import/export macros
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Singleton.h"
