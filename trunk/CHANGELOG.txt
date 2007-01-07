@@ -1,3 +1,7 @@
+Version 0.9 - ??/??/????)
+* removed Value::setValueAuto() #120
+
+
 Version 0.8 Final - 01/05/2006)
 * Removed Object::getClassName(), replaced with getObjectType() #129
 * Reworked cursor and key input propagation system. #134
