@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 
 namespace OpenGUI {
@@ -22,59 +23,59 @@ namespace OpenGUI {
 //!\name Conversion Functions
 //@{
 		//! Turn a string into an int
-		static void toInt( const std::string& in, int& out );
+		static void toInt( const String& in, int& out );
 		//! Turn a string into an unsigned int
-		static void toUInt( const std::string& in, unsigned int& out );
+		static void toUInt( const String& in, unsigned int& out );
 		//! Turn an int into a string
-		static void fromInt( int in, std::string& out );
+		static void fromInt( int in, String& out );
 		//! Turn an unsigned int into a string
-		static void fromUInt( unsigned int in, std::string& out );
+		static void fromUInt( unsigned int in, String& out );
 		//! Turn a string into a float
-		static void toFloat( const std::string& in, float& out );
+		static void toFloat( const String& in, float& out );
 		//! Turn a float into a string
-		static void fromFloat( float in, std::string& out );
+		static void fromFloat( float in, String& out );
 		//! Turn an IVector2 into a string
-		static void fromIVector2( const IVector2& in, std::string& out );
+		static void fromIVector2( const IVector2& in, String& out );
 		//! Turn a string into an IVector2
-		static void toIVector2( const std::string& in, IVector2& out );
+		static void toIVector2( const String& in, IVector2& out );
 		//! Turn an IRect into a string
-		static void fromIRect( const IRect& in, std::string& out );
+		static void fromIRect( const IRect& in, String& out );
 		//! Turn a string into an IRect
-		static void toIRect( const std::string& in, IRect& out );
+		static void toIRect( const String& in, IRect& out );
 		//! Turn an FVector2 into a string
-		static void fromFVector2( const FVector2& in, std::string& out );
+		static void fromFVector2( const FVector2& in, String& out );
 		//! Turn a string into an FVector2
-		static void toFVector2( const std::string& in, FVector2& out );
+		static void toFVector2( const String& in, FVector2& out );
 		//! Turn an FRect into a string
-		static void fromFRect( const FRect& in, std::string& out );
+		static void fromFRect( const FRect& in, String& out );
 		//! Turn a string into an FRect
-		static void toFRect( const std::string& in, FRect& out );
+		static void toFRect( const String& in, FRect& out );
 		//! Turn a Color into a string
-		static void fromColor( const Color& in, std::string& out );
+		static void fromColor( const Color& in, String& out );
 		//! Turn a string into a Color
-		static void toColor( const std::string& in, Color& out );
+		static void toColor( const String& in, Color& out );
 		//! Turn a bool into a string
-		static void fromBool( bool in, std::string& out );
+		static void fromBool( bool in, String& out );
 		//! Turn a string into a bool
-		static void toBool( const std::string& in, bool& out );
+		static void toBool( const String& in, bool& out );
 		//! Turn a Font into a string
-		static void fromFont( Font& in, std::string& out );
+		static void fromFont( Font& in, String& out );
 		//! Turn a string into a Font
-		static void toFont( const std::string& in, Font& out );
+		static void toFont( const String& in, Font& out );
 		//! Turn a TextAlignment into a string
-		static void fromTextAlignment( const TextAlignment& in, std::string& out );
+		static void fromTextAlignment( const TextAlignment& in, String& out );
 		//! Turn a string into a TextAlignment
-		static void toTextAlignment( const std::string& in, TextAlignment& out );
+		static void toTextAlignment( const String& in, TextAlignment& out );
 //@}
 
 //!\name Utility Functions
 //@{
 		//! Trims whitespace from the beginning and end of the given string
-		static void trim( std::string& str );
+		static void trim( String& str );
 		//! Explodes a string into a StringList based on separator tokens.
-		static void tokenize( const std::string& inputStr, StringList& outputStrList, char token );
+		static void tokenize( const String& inputStr, StringList& outputStrList, char token );
 		//! Converts a string to all lower case
-		static void toLower( std::string& in_out );
+		static void toLower( String& in_out );
 //@}
 	};
 }

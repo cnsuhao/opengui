@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_Object.h"
 
@@ -95,7 +96,7 @@ namespace OpenGUI {
 		void addAccessor( ObjectAccessor* accessor );
 
 		//! Gets the ObjectAccessor by \c accessorName
-		ObjectAccessor* getAccessor( const std::string& accessorName, bool recursive = true );
+		ObjectAccessor* getAccessor( const String& accessorName, bool recursive = true );
 
 	private:
 		ObjectAccessorList* mParent;

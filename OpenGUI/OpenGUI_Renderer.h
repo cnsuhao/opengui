@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Singleton.h"
@@ -118,7 +119,7 @@ namespace OpenGUI {
 			\note
 			It is expected that all textures are available for use by all rendering contexts.
 		*/
-		virtual Texture* createTextureFromFile( const std::string& filename ) = 0;
+		virtual Texture* createTextureFromFile( const String& filename ) = 0;
 
 		//! Create a texture from a TextureData object (memory)
 		/*! The passed in TextureData object does not become the sole property of

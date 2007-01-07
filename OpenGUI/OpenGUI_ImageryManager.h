@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Imageset.h"
 #include "OpenGUI_Face.h"
@@ -46,9 +47,9 @@ namespace OpenGUI {
 				can also be used to later retrieve the Imageset pointer via getImageset()
 			\return pointer to the newly created imageset, or 0 on failure.
 		*/
-		ImagesetPtr createImageset( const std::string& imageFilename );
+		ImagesetPtr createImageset( const String& imageFilename );
 		//! Static pass through function to createImageset()
-		static ImagesetPtr createImagesetEx( const std::string& imageFilename ) {
+		static ImagesetPtr createImagesetEx( const String& imageFilename ) {
 			return ImageryManager::getSingleton().createImageset( imageFilename );
 		}
 
@@ -77,10 +78,10 @@ namespace OpenGUI {
 
 			\returns On success the return value is the pointer to the Imageset created.
 		*/
-		ImagesetPtr createImagesetFromTexture( TexturePtr texture, const std::string& imageFilename = "" );
+		ImagesetPtr createImagesetFromTexture( TexturePtr texture, const String& imageFilename = "" );
 
 		//! Returns a pointer to the Imageset that was created using the given filename, or 0 on failure.
-		ImagesetPtr getImageset( const std::string& imageFilename );
+		ImagesetPtr getImageset( const String& imageFilename );
 
 		//! Returns a pointer to the Imageset that is based on the given \c texture, or 0 on failure.
 		ImagesetPtr getImagesetByTexture( TexturePtr texture );
@@ -88,7 +89,7 @@ namespace OpenGUI {
 		//! Destroys an Imageset.
 		void destroyImageset( ImagesetPtr pImageset );
 		//! Destroys an Imageset.
-		void destroyImageset( const std::string& imageFilename );
+		void destroyImageset( const String& imageFilename );
 		//! Destroys all Imagesets
 		void destroyAllImagesets();
 
@@ -106,7 +107,7 @@ namespace OpenGUI {
 		intending.
 
 		\returns ImageryPtr(0) on failure, otherwise a RefPtr to the found Imagery */
-		ImageryPtr getImagery( const std::string& imageryName );
+		ImageryPtr getImagery( const String& imageryName );
 
 		//! A string list used by ImageryManager::getImagesetList()
 		typedef std::list<std::string> ImagesetList;
@@ -117,15 +118,15 @@ namespace OpenGUI {
 		//! Adds the given FacePtr to the managed list of Faces so that it can be retrieved later by name
 		void addFace( FacePtr facePtr );
 		//! Retrieves a previously added Face by name
-		FacePtr getFace( const std::string& faceName );
+		FacePtr getFace( const String& faceName );
 		//! Removes a previously added Face by name.
-		void removeFace( const std::string& faceName );
+		void removeFace( const String& faceName );
 		//! Returns a list of all registered faces
 		StringList getFaceList();
 
 	private:
 		ImagesetPtrList mImagesetList;
-		static std::string _generateRandomName();//Generates unique names for Imagesets/Imagery
+		static String _generateRandomName();//Generates unique names for Imagesets/Imagery
 		ResourceProvider* mResourceProvider;
 
 		//! list of FacePtrs
@@ -133,12 +134,12 @@ namespace OpenGUI {
 		FacePtrMap mFacePtrMap;
 
 		// XML tag handlers for <Imageset> tags
-		static bool _Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _Imageset_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _Imageset_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 
 		// XML tag handlers for <Face> tags
-		static bool _Face_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Face_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _Face_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _Face_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 	};
 
 }

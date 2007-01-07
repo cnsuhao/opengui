@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_XML.h"
 
@@ -43,10 +44,10 @@ namespace OpenGUI {
 		static PluginManager* getSingletonPtr( void );
 
 		//! Loads a plugin by filename.
-		void loadPlugin( std::string filename );
+		void loadPlugin( String filename );
 
 		//! Unloads a plugin by filename.
-		void unloadPlugin( std::string filename );
+		void unloadPlugin( String filename );
 
 		//! Unloads all currently loaded plugins
 		void unloadAllPlugins();
@@ -58,8 +59,8 @@ namespace OpenGUI {
 		PluginMap mPluginMap;
 
 		// XML tag handlers for <Plugin> tags
-		static bool _Plugin_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Plugin_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _Plugin_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _Plugin_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 	};
 
 }

@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 // This warning can be disregarded
@@ -42,7 +43,7 @@ namespace OpenGUI {
 		};
 
 
-		Exception( int code, const std::string& desc, const std::string& srcArea );
+		Exception( int code, const String& desc, const String& srcArea );
 		/*!
 			\param code The ExceptionID that most closely matches the problem
 			\param desc A string describing the problem
@@ -50,21 +51,21 @@ namespace OpenGUI {
 			\param file The filename in which the exception occurred
 			\param line The line number where the exception occurred
 		*/
-		Exception( int code, const std::string& desc, const std::string& srcArea, char* file, long line );
+		Exception( int code, const String& desc, const String& srcArea, char* file, long line );
 		~Exception() {}
 		Exception( const Exception& rhs );
 		void operator = ( const Exception& rhs );
 
 		//! Returns a fully formatted string comprised of all available information
-		std::string getFullMessage() const;
+		String getFullMessage() const;
 
 		int getCode() {
 			return mCode;
 		}
-		std::string getSource() {
+		String getSource() {
 			return mSrc;
 		}
-		std::string getMessage() {
+		String getMessage() {
 			return mMsg;
 		}
 		char* getFile() {
@@ -76,10 +77,10 @@ namespace OpenGUI {
 	private:
 		int mCode;
 		int mLine;
-		std::string mMsg;
-		std::string mSrc;
+		String mMsg;
+		String mSrc;
 		char* mFile;
-		static std::string getCodeStr( int code );
+		static String getCodeStr( int code );
 	};
 };
 #endif

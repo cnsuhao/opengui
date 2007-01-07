@@ -8,7 +8,7 @@
 
 namespace OpenGUI {
 	//######################################################################
-	void _strTrim( std::string& str ) {
+	void _strTrim( String& str ) {
 		std::string::size_type pos = str.find_last_not_of( ' ' );
 		if ( pos != std::string::npos ) {
 			str.erase( pos + 1 );
@@ -17,8 +17,8 @@ namespace OpenGUI {
 		} else str.erase( str.begin(), str.end() );
 	}
 	//############################################################################
-	void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
-		std::string tmpStr;
+	void _Tokenize( const String& inputStr, StringList& outputStrList, char token ) {
+		String tmpStr;
 		const char* cstr = inputStr.c_str();
 		unsigned int epos, spos;
 		spos = epos = 0;
@@ -36,21 +36,21 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void StrConv::trim( std::string& str ) {
+	void StrConv::trim( String& str ) {
 		_strTrim( str );
 	}
 	//############################################################################
 	/*! The token is not included in the output strings. */
-	void StrConv::tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
+	void StrConv::tokenize( const String& inputStr, StringList& outputStrList, char token ) {
 		_Tokenize( inputStr, outputStrList, token );
 	}
 	//############################################################################
-	void StrConv::toLower( std::string& in_out ) {
+	void StrConv::toLower( String& in_out ) {
 		std::transform( in_out.begin(), in_out.end(), in_out.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
 	}
 	//############################################################################
-	void StrConv::toInt( const std::string& in, int& out ) {
-		std::string tmp = in;
+	void StrConv::toInt( const String& in, int& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		std::istringstream iss;
 		iss.exceptions( std::ios_base::failbit | std::ios_base::badbit );
@@ -58,8 +58,8 @@ namespace OpenGUI {
 		iss >> out;
 	}
 	//############################################################################
-	void StrConv::toUInt( const std::string& in, unsigned int& out ) {
-		std::string tmp = in;
+	void StrConv::toUInt( const String& in, unsigned int& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		std::istringstream iss;
 		iss.exceptions( std::ios_base::failbit | std::ios_base::badbit );
@@ -67,20 +67,20 @@ namespace OpenGUI {
 		iss >> out;
 	}
 	//############################################################################
-	void StrConv::fromInt( int in, std::string& out ) {
+	void StrConv::fromInt( int in, String& out ) {
 		std::stringstream ss;
 		ss << in;
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::fromUInt( unsigned int in, std::string& out ) {
+	void StrConv::fromUInt( unsigned int in, String& out ) {
 		std::stringstream ss;
 		ss << in;
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toFloat( const std::string& in, float& out ) {
-		std::string tmp = in;
+	void StrConv::toFloat( const String& in, float& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		std::istringstream iss;
 		iss.exceptions( std::ios_base::failbit | std::ios_base::badbit );
@@ -88,21 +88,21 @@ namespace OpenGUI {
 		iss >> out;
 	}
 	//############################################################################
-	void StrConv::fromFloat( float in, std::string& out ) {
+	void StrConv::fromFloat( float in, String& out ) {
 		std::stringstream ss;
 		ss << in;
 		out = ss.str();
 	}
 	//############################################################################
 
-	void StrConv::fromIVector2( const IVector2& in, std::string& out ) {
+	void StrConv::fromIVector2( const IVector2& in, String& out ) {
 		std::stringstream ss;
 		ss << "( " << in.x << " x " << in.y << " )" ;
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toIVector2( const std::string& in, IVector2& out ) {
-		std::string tmp = in;
+	void StrConv::toIVector2( const String& in, IVector2& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		if ( tmp.substr( 0, 1 ) != "(" )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
@@ -114,8 +114,8 @@ namespace OpenGUI {
 		std::string::size_type tokenPos = tmp.find( "x" );
 		if ( tokenPos == std::string::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
-		std::string xHalf = tmp.substr( 0, tokenPos );
-		std::string yHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String xHalf = tmp.substr( 0, tokenPos );
+		String yHalf = tmp.substr( tokenPos + 1, std::string::npos );
 
 		try {
 			toInt( xHalf, out.x );
@@ -126,17 +126,17 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void StrConv::fromIRect( const IRect& in, std::string& out ) {
+	void StrConv::fromIRect( const IRect& in, String& out ) {
 		std::stringstream ss;
-		std::string min, max;
+		String min, max;
 		fromIVector2( in.min, min );
 		fromIVector2( in.max, max );
 		ss << "{ " << min << " X " << max << " }";
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toIRect( const std::string& in, IRect& out ) {
-		std::string tmp = in;
+	void StrConv::toIRect( const String& in, IRect& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		if ( tmp.substr( 0, 1 ) != "{" )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
@@ -148,21 +148,21 @@ namespace OpenGUI {
 		std::string::size_type tokenPos = tmp.find( "X" );
 		if ( tokenPos == std::string::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
-		std::string minHalf = tmp.substr( 0, tokenPos );
-		std::string maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String minHalf = tmp.substr( 0, tokenPos );
+		String maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
 
 		toIVector2( minHalf, out.min );
 		toIVector2( maxHalf, out.max );
 	}
 	//############################################################################
-	void StrConv::fromFVector2( const FVector2& in, std::string& out ) {
+	void StrConv::fromFVector2( const FVector2& in, String& out ) {
 		std::stringstream ss;
 		ss << "( " << in.x << " x " << in.y << " )";
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toFVector2( const std::string& in, FVector2& out ) {
-		std::string tmp = in;
+	void StrConv::toFVector2( const String& in, FVector2& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		if ( tmp.substr( 0, 1 ) != "(" )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
@@ -174,8 +174,8 @@ namespace OpenGUI {
 		std::string::size_type tokenPos = tmp.find( "x" );
 		if ( tokenPos == std::string::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
-		std::string xHalf = tmp.substr( 0, tokenPos );
-		std::string yHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String xHalf = tmp.substr( 0, tokenPos );
+		String yHalf = tmp.substr( tokenPos + 1, std::string::npos );
 
 		try {
 			toFloat( xHalf, out.x );
@@ -186,17 +186,17 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void StrConv::fromFRect( const FRect& in, std::string& out ) {
+	void StrConv::fromFRect( const FRect& in, String& out ) {
 		std::stringstream ss;
-		std::string min, max;
+		String min, max;
 		fromFVector2( in.min, min );
 		fromFVector2( in.max, max );
 		ss << "{ " << min << " X " << max << " }";
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toFRect( const std::string& in, FRect& out ) {
-		std::string tmp = in;
+	void StrConv::toFRect( const String& in, FRect& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		if ( tmp.substr( 0, 1 ) != "{" )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
@@ -208,16 +208,16 @@ namespace OpenGUI {
 		std::string::size_type tokenPos = tmp.find( "X" );
 		if ( tokenPos == std::string::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
-		std::string minHalf = tmp.substr( 0, tokenPos );
-		std::string maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String minHalf = tmp.substr( 0, tokenPos );
+		String maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
 
 		toFVector2( minHalf, out.min );
 		toFVector2( maxHalf, out.max );
 	}
 	//############################################################################
-	void StrConv::fromColor( const Color& in, std::string& out ) {
+	void StrConv::fromColor( const Color& in, String& out ) {
 		std::stringstream ss;
-		std::string r, g, b, a;
+		String r, g, b, a;
 		fromFloat( in.Red, r );
 		fromFloat( in.Green, g );
 		fromFloat( in.Blue, b );
@@ -226,8 +226,8 @@ namespace OpenGUI {
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toColor( const std::string& in, Color& out ) {
-		std::string inCopy = in;
+	void StrConv::toColor( const String& in, Color& out ) {
+		String inCopy = in;
 		trim( inCopy );
 
 		// test for hex encoding
@@ -302,15 +302,15 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void StrConv::fromBool( bool in, std::string& out ) {
+	void StrConv::fromBool( bool in, String& out ) {
 		if ( in )
 			out = "true";
 		else
 			out = "false";
 	}
 	//############################################################################
-	void StrConv::toBool( const std::string& in, bool& out ) {
-		std::string tmp = in;
+	void StrConv::toBool( const String& in, bool& out ) {
+		String tmp = in;
 		_strTrim( tmp );
 		if ( tmp == "0" ) {
 			out = false;
@@ -334,7 +334,7 @@ namespace OpenGUI {
 		OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 	}
 	//############################################################################
-	void StrConv::fromFont( Font& in, std::string& out ) {
+	void StrConv::fromFont( Font& in, String& out ) {
 		std::stringstream ss;
 		ss << in.getName();
 		ss << " @ ";
@@ -342,19 +342,19 @@ namespace OpenGUI {
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toFont( const std::string& in, Font& out ) {
+	void StrConv::toFont( const String& in, Font& out ) {
 		StringList slist;
 		tokenize( in, slist, '@' );
 		if ( slist.size() != 2 )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
-		std::string name = slist.front();
+		String name = slist.front();
 		trim( name );
 		float size;
 		toFloat( slist.back(), size );
 		out = Font( name, size );
 	}
 	//############################################################################
-	void StrConv::fromTextAlignment( const TextAlignment& in, std::string& out ) {
+	void StrConv::fromTextAlignment( const TextAlignment& in, String& out ) {
 		std::stringstream ss;
 		switch ( in.getHorizontal() ) {
 		case TextAlignment::ALIGN_LEFT:
@@ -392,14 +392,14 @@ namespace OpenGUI {
 		out = ss.str();
 	}
 	//############################################################################
-	void StrConv::toTextAlignment( const std::string& in, TextAlignment& out ) {
+	void StrConv::toTextAlignment( const String& in, TextAlignment& out ) {
 		StringList slist;
 		tokenize( in, slist, '|' );
 		if ( slist.size() > 2 )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 
 		// get the string components
-		std::string h, v;
+		String h, v;
 		if ( slist.size() == 2 ) {
 			h = slist.front();
 			v = slist.back();

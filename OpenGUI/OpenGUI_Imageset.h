@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_Imagery.h"
@@ -18,23 +19,23 @@ namespace OpenGUI {
 		friend class ImageryManager;
 		friend class Imagery;
 		//! Applications should use the ImageryManager to creation Imagesets
-		Imageset( TexturePtr texturePtr, std::string sourceImageFilename );
+		Imageset( TexturePtr texturePtr, String sourceImageFilename );
 		~Imageset();
 	public:
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the entire Imageset area.
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery( std::string imageryName );
+		ImageryPtr createImagery( String imageryName );
 
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery. The new Imagery will encompass the Imageset area defined by areaRect (which is in standard UV coordinates).
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery( std::string imageryName, FRect areaRect, IRect imagesetRect = IRect( 0, 0, 0, 0 ) );
+		ImageryPtr createImagery( String imageryName, FRect areaRect, IRect imagesetRect = IRect( 0, 0, 0, 0 ) );
 
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery.  The new Imagery will encompass the Imageset area defined by areaRect (which is in pixels).
 		/*! \note Multiple calls to this function with the same \c imageryName result in the destruction and recreation of the Imagery. Effectively, a redefinition. */
-		ImageryPtr createImagery( std::string imageryName, IRect areaRect );
+		ImageryPtr createImagery( String imageryName, IRect areaRect );
 
 		//! Creates a new Imagery object from this Imageset and returns a shared pointer to the new Imagery.  The new Imagery will encompass the Imageset area defined by top,left,height,width
-		ImageryPtr createImagery( const std::string imageryName, int top, int left, int height, int width ) {
+		ImageryPtr createImagery( const String imageryName, int top, int left, int height, int width ) {
 			IRect rect( left, top, left + width, top + height );
 			return createImagery( imageryName, rect );
 		}
@@ -51,7 +52,7 @@ namespace OpenGUI {
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
 		void destroyImagery( Imagery* pImagery );
 		//! Destroys an Imagery object. \see void destroyImagery(ImageryPtr imageryPtr);
-		void destroyImagery( std::string name );
+		void destroyImagery( String name );
 
 		//! Destroys all Imagery within this Imageset. \note Preserves the "safe destruction" of Imagery, as defined in destroyImagery().
 		void destroyAllImagery();
@@ -60,7 +61,7 @@ namespace OpenGUI {
 			Imageset that has the given name. If the Imagery cannot be found,
 			the returned Imagery pointer will be == 0.
 		*/
-		ImageryPtr getImagery( std::string imageryName ) const;
+		ImageryPtr getImagery( String imageryName ) const;
 
 		//! A string list used by Imageset::getImageryList()
 		typedef std::list<std::string> ImageryList;
@@ -72,14 +73,14 @@ namespace OpenGUI {
 		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imageset
-		const std::string& getName() const;
+		const String& getName() const;
 
 		//! returns the total number of Imagery defined under this Imageset
 		size_t getImageryCount() const;
 
 	private:
 		virtual void finalize(); //finalizer from RefObject
-		std::string mFilename;
+		String mFilename;
 		TexturePtr mpTexture;
 		ImageryPtrList mChildImageryList;
 	};

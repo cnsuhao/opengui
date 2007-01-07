@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_EventHandler.h"
 
@@ -23,16 +24,16 @@ namespace OpenGUI {
 		virtual ~Object();
 
 		//! returns the value of \c propertyName via \c valueOut
-		void getProperty( const std::string& propertyName, Value& valueOut );
+		void getProperty( const String& propertyName, Value& valueOut );
 		//! sets the value of \c propertyName to the contents of \c valueIn
-		void setProperty( const std::string& propertyName, Value& valueIn );
+		void setProperty( const String& propertyName, Value& valueIn );
 		//! invokes \c methodName, sending \c paramIn as arguments, and catching return values in \c returnOut
-		void callMethod( const std::string& methodName, ValueList& paramIn, ValueList& returnOut );
+		void callMethod( const String& methodName, ValueList& paramIn, ValueList& returnOut );
 
 		//! triggers the event of the given \c eventName, sending the given \c evtArgs
 		/*!	\param eventName The name of the event to trigger
 			\param evtArgs The EventArgs based event data, by reference */
-		void triggerEvent( const std::string& eventName, EventArgs& evtArgs ) {
+		void triggerEvent( const String& eventName, EventArgs& evtArgs ) {
 			getEvents()[eventName].invoke( this, evtArgs );
 		}
 		//############################################################################

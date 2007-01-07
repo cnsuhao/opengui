@@ -47,7 +47,7 @@ namespace OpenGUI {
 		XMLParser::getSingleton().UnregisterUnloadHandler( "Screen", &ScreenManager::_Screen_XMLNode_Unload );
 	}
 	//############################################################################
-	Screen* ScreenManager::createScreen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport ) {
+	Screen* ScreenManager::createScreen( const String& screenName, const FVector2& initialSize, Viewport* viewport ) {
 		ScreenMap::iterator iter = mScreenMap.find( screenName );
 		if ( iter != mScreenMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM,
@@ -77,7 +77,7 @@ namespace OpenGUI {
 		mScreenMap.erase( iter );
 	}
 	//############################################################################
-	Screen* ScreenManager::getScreen( const std::string& screenName ) {
+	Screen* ScreenManager::getScreen( const String& screenName ) {
 		ScreenMap::iterator iter = mScreenMap.find( screenName );
 		if ( iter != mScreenMap.end() )
 			return iter->second;
@@ -126,7 +126,7 @@ namespace OpenGUI {
 		return 1.0f / mStatFPS.getAverage();
 	}
 	//############################################################################
-	bool ScreenManager::_Screen_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool ScreenManager::_Screen_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		ScreenManager& manager = ScreenManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
@@ -134,8 +134,8 @@ namespace OpenGUI {
 			return false;
 
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string sizeStr = node.getAttribute( "Size" );
+		const String name = node.getAttribute( "Name" );
+		const String sizeStr = node.getAttribute( "Size" );
 		FVector2 size;
 		StrConv::toFVector2( sizeStr, size );
 		Screen* screen = manager.createScreen( name, size );
@@ -144,34 +144,34 @@ namespace OpenGUI {
 
 		try {
 			if ( node.hasAttribute( "UPI" ) ) {
-				const std::string upiStr = node.getAttribute( "UPI" );
+				const String upiStr = node.getAttribute( "UPI" );
 				FVector2 upi;
 				StrConv::toFVector2( upiStr, upi );
 				screen->setUPI( upi );
 			}
 
 			if ( node.hasAttribute( "AutoUpdating" ) ) {
-				const std::string autoUpdateStr = node.getAttribute( "AutoUpdating" );
+				const String autoUpdateStr = node.getAttribute( "AutoUpdating" );
 				bool autoUpdate;
 				StrConv::toBool( autoUpdateStr, autoUpdate );
 				screen->setAutoUpdating( autoUpdate );
 			}
 
 			if ( node.hasAttribute( "AutoTiming" ) ) {
-				const std::string autoTimingStr = node.getAttribute( "AutoTiming" );
+				const String autoTimingStr = node.getAttribute( "AutoTiming" );
 				bool autoTiming;
 				StrConv::toBool( autoTimingStr, autoTiming );
 				screen->setAutoTiming( autoTiming );
 			}
 
 			if ( node.hasAttribute( "DefaultCursor" ) ) {
-				const std::string defCurStr = node.getAttribute( "DefaultCursor" );
+				const String defCurStr = node.getAttribute( "DefaultCursor" );
 				CursorPtr cur = CursorManager::getSingleton().CreateDefinedCursor( defCurStr );
 				screen->setCursor( cur );
 			}
 
 			if ( node.hasAttribute( "CursorEnabled" ) ) {
-				const std::string enabledStr = node.getAttribute( "CursorEnabled" );
+				const String enabledStr = node.getAttribute( "CursorEnabled" );
 				bool enabled;
 				StrConv::toBool( enabledStr, enabled );
 				if ( enabled )
@@ -181,7 +181,7 @@ namespace OpenGUI {
 			}
 
 			if ( node.hasAttribute( "CursorVisible" ) ) {
-				const std::string visibleStr = node.getAttribute( "CursorVisible" );
+				const String visibleStr = node.getAttribute( "CursorVisible" );
 				bool visible;
 				StrConv::toBool( visibleStr, visible );
 				if ( visible )
@@ -198,9 +198,9 @@ namespace OpenGUI {
 				if ( child->getTagName() == "Widget" ) {
 					WidgetManager::_Widget_XMLNode_IntoContainer( *child, container );
 				} else if ( child->getTagName() == "Form" ) {
-					const std::string formDef = child->getAttribute( "FormDef" );
+					const String formDef = child->getAttribute( "FormDef" );
 					if ( child->hasAttribute( "Name" ) ) {
-						std::string rootName =  child->getAttribute( "Name" );
+						String rootName =  child->getAttribute( "Name" );
 						FormManager::getSingleton().CreateForm( formDef, &container, rootName );
 					} else {
 						FormManager::getSingleton().CreateForm( formDef, &container );
@@ -217,14 +217,14 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool ScreenManager::_Screen_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool ScreenManager::_Screen_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		ScreenManager& manager = ScreenManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
+		const String name = node.getAttribute( "Name" );
 		Screen* screen = manager.getScreen( name );
 		if ( !screen )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Screen found with name: " + name, __FUNCTION__ );
