@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RefObject.h"
 
@@ -39,7 +40,7 @@ namespace OpenGUI {
 			complete responsibility of the Renderer, in which case this function would either be
 			altered or removed. This would affect _setName() as well.
 		*/
-		const std::string& getName() const;
+		const String& getName() const;
 
 		//! Returns the size of the texture, in pixels
 		/*! The returned size is the same value as set by the Renderer during texture creation via _setSize() */
@@ -70,7 +71,7 @@ namespace OpenGUI {
 		currently by a few logging functions. See getName() for more information.
 		\deprecated
 		This function would be removed if Texture::getName() is removed. */
-		void _setName( const std::string& name ) {
+		void _setName( const String& name ) {
 			mTextureName = name;
 		}
 		//! It is required that this be set to the texture dimensions by custom Renderers
@@ -94,7 +95,7 @@ namespace OpenGUI {
 
 	private:
 		virtual void finalize(); //finalizer from RefObject
-		std::string mTextureName;
+		String mTextureName;
 		IVector2 mTextureSize;
 	};
 

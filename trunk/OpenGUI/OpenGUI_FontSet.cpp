@@ -24,7 +24,7 @@ namespace OpenGUI {
 		delete this;
 	}
 	//############################################################################
-	FontSet::FontSet( const std::string& sourceFilename, const std::string& fontName ) {
+	FontSet::FontSet( const String& sourceFilename, const String& fontName ) {
 		LogManager::SlogMsg( "Font", OGLL_INFO ) << "(" << fontName << ") [" << sourceFilename << "]"
 		<< " Creation" << Log::endlog;
 
@@ -226,7 +226,7 @@ namespace OpenGUI {
 		return sMetrics->max_advance / 64;
 	}
 	//############################################################################
-	int FontSet::getTextWidth( const IVector2& pixelSize, const std::string& text ) {
+	int FontSet::getTextWidth( const IVector2& pixelSize, const String& text ) {
 		int retval = 0;
 		FontGlyph glyph;
 		const char* str = text.c_str();

@@ -5,8 +5,11 @@
 #ifndef A13D1E9F_9387_4014_8FDC_196E0F682766
 #define A13D1E9F_9387_4014_8FDC_196E0F682766
 
+#include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_ResourceProvider.h"
+
 namespace OpenGUI {
 	//! This is the defailt generic implementation of the resource provider
 	/*! If no specialized resource provider is given during creation of the
@@ -22,7 +25,7 @@ namespace OpenGUI {
 		GenericResourceProvider() { }
 		~GenericResourceProvider() { }
 
-		void loadResource( const std::string& filename, Resource& output );
+		void loadResource( const String& filename, Resource& output );
 
 		void unloadResource( Resource& resource );
 	};

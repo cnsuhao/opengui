@@ -556,8 +556,8 @@ namespace OpenGUI {
 	// BRUSHTEXT IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushText::_Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
-		std::string tmpStr;
+	void BrushText::_Tokenize( const String& inputStr, StringList& outputStrList, char token ) {
+		String tmpStr;
 		const char* cstr = inputStr.c_str();
 		unsigned int epos, spos;
 		spos = epos = 0;
@@ -575,13 +575,13 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-// 	std::string BrushText::_SubTextByWidth(std::string input, float width)
+// 	String BrushText::_SubTextByWidth(String input, float width)
 // 	{
 // // 		Render::PrimitiveText text;
 // // 		text.setContext(mContext);
 // // 		text.setFont(mFontName,mFontSize);
 //
-// 		std::string outstr = input;
+// 		String outstr = input;
 // 		unsigned int len = input.length();
 //
 // 		while(len > 0){
@@ -602,7 +602,7 @@ namespace OpenGUI {
 		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2;
 		for ( StringList::iterator iter = strList_in_out.begin();
 				iter != strList_in_out.end(); iter++ ) {
-			std::string& line = ( *iter );
+			String& line = ( *iter );
 			if ( line.length() <= maxChars )
 				continue; // skip lines that already fit
 
@@ -618,7 +618,7 @@ namespace OpenGUI {
 				lineCnt++;
 
 				if ( lineCnt > maxChars ) {
-					std::string tmpStr;
+					String tmpStr;
 					if ( lastSpace > lastSplit ) {
 						tmpStr = line.substr( lastSplit, lastSpace - lastSplit );
 						lastSplit = lastSpace + 1;
@@ -633,13 +633,13 @@ namespace OpenGUI {
 				}
 				i++;
 			}
-			std::string tmpStr;
+			String tmpStr;
 			tmpStr = line.substr( lastSplit, line.length() - lastSplit );
 			line = tmpStr;
 		}
 	}
 	//############################################################################
-	void BrushText::drawText( const std::string& text, const FVector2& position,
+	void BrushText::drawText( const String& text, const FVector2& position,
 							  Font& font, float spacing_adjust ) {
 		font.bind();
 		PenPosition = position;
@@ -655,7 +655,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
+	void BrushText::drawTextArea( const String& text, const FRect& area, Font& font,
 								  bool wrap, const TextAlignment alignment ) {
 		font.bind();
 		const FVector2& PPU = mParentBrush->getPPU();
@@ -716,7 +716,7 @@ namespace OpenGUI {
 		//for each line of text, we will render as necessary according to horizontal alignment
 		StringList::iterator iter = strList.begin();
 		while ( iter != strList.end() ) {
-			std::string& text = ( *iter );
+			String& text = ( *iter );
 			if ( alignment.getHorizontal() == TextAlignment::ALIGN_LEFT ) {
 				myPen.x = area.getPosition().x;
 				drawText( text, myPen, font );

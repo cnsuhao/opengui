@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_WidgetCollectionListener.h"
 
@@ -67,9 +68,9 @@ namespace OpenGUI {
 		void moveToBack( Widget* widget );
 
 		//! returns a pointer to the requested widget or 0 if not found
-		Widget* getWidget( const std::string& widgetName ) const;
+		Widget* getWidget( const String& widgetName ) const;
 		//! returns a reference to the requested widget or throws an exception if not found
-		Widget& operator[]( const std::string& widgetName );
+		Widget& operator[]( const String& widgetName );
 
 		//! returns true if the given widget pointer is in the collection
 		bool hasWidget( Widget* widget );

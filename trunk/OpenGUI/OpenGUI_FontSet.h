@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RefObject.h"
 
@@ -24,18 +25,18 @@ namespace OpenGUI {
 		//! Font creation implies loading of the font via FreeType.
 		/*! \param sourceFilename filename of the font to load
 		\param fontName the friendly name for this FontSet */
-		FontSet( const std::string& sourceFilename, const std::string& fontName );
+		FontSet( const String& sourceFilename, const String& fontName );
 		//! Destruction also unloads the font from FreeType
 		~FontSet();
 		virtual void finalize();
 	public:
 		//! Returns the filename used to load the font
-		const std::string& getFilename() {
+		const String& getFilename() {
 			return mFilename;
 		}
 
 		//! Returns the name of this font
-		const std::string& getName() {
+		const String& getName() {
 			return mFontName;
 		}
 
@@ -67,7 +68,7 @@ namespace OpenGUI {
 		int getMaxAdvance( unsigned int pointSize );
 
 		//! Returns the true width for the given \c text at the given \c pointSize
-		int getTextWidth( const IVector2& pixelSize, const std::string& text );
+		int getTextWidth( const IVector2& pixelSize, const String& text );
 
 		//! Renders the requested glyph to the given TextureDataRect in the size specified.
 		/*!
@@ -81,8 +82,8 @@ namespace OpenGUI {
 
 	private:
 		void* mFT_Face;
-		std::string mFilename;
-		std::string mFontName;
+		String mFilename;
+		String mFontName;
 		Resource *mFontResource;
 	};
 	typedef RefObjHandle<FontSet> FontSetPtr;

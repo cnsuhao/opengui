@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 
 namespace OpenGUI {
@@ -28,7 +29,7 @@ namespace OpenGUI {
 		//! Returns a complete copy of the list of children
 		XMLNodeList getChildren() const;
 		//! Returns a list of the children that match the given \c tagName
-		XMLNodeList getChildren( const std::string& tagName ) const;
+		XMLNodeList getChildren( const String& tagName ) const;
 
 	protected:
 		void _notifyChildDetach( XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
@@ -47,15 +48,15 @@ namespace OpenGUI {
 		//! clears the contents of this XMLDoc
 		void clear();
 		//! loads an existing XML file into this XMLDoc using the registered resource manager
-		void loadFile( const std::string& filename );
+		void loadFile( const String& filename );
 		//! saves this XMLDoc to a file, bypassing the resource manager (writes directly to disk)
-		void saveFile( const std::string& filename );
+		void saveFile( const String& filename );
 		//! returns the last filename this XMLDoc was saved to or loaded from
-		const std::string& getFileName() {
+		const String& getFileName() {
 			return mFileName;
 		}
 	protected:
-		std::string mFileName;
+		String mFileName;
 	};
 
 	//! Represents an XML tag
@@ -90,7 +91,7 @@ namespace OpenGUI {
 		friend class XMLDoc;
 	public:
 		//! constructor requires the tag name and optional pointer to parent
-		XMLNode( const std::string& tagName, XMLNodeContainer* parentPtr = 0 );
+		XMLNode( const String& tagName, XMLNodeContainer* parentPtr = 0 );
 		//! destructor automatically performs safe cleanup
 		virtual ~XMLNode();
 		//! Returns the containing XMLDoc of this node
@@ -100,42 +101,42 @@ namespace OpenGUI {
 		//! changes the parent of this node
 		void setParent( XMLNodeContainer* newParentPtr );
 		//! retrieves the tag name of this node
-		const std::string& getTagName() const {
+		const String& getTagName() const {
 			return mTagName;
 		}
 
 		//! Returns the XML DOM path leading up to this node. Ex: /path/to/
-		std::string getPath() const;
+		String getPath() const;
 
 		//! returns the value of a single attribute
-		const std::string& getAttribute( const std::string& name ) const;
+		const String& getAttribute( const String& name ) const;
 		//! sets the value of an attribute, creating it if it does not already exist
-		void setAttribute( const std::string& name, const std::string& value );
+		void setAttribute( const String& name, const String& value );
 		//! removes the given attribute
-		void removeAttribute( const std::string& name );
+		void removeAttribute( const String& name );
 		//! Returns \c true if the given attribute exists, \c false otherwise
-		bool hasAttribute( const std::string& name ) const;
+		bool hasAttribute( const String& name ) const;
 		//! returns a copy of all attributes
 		XMLAttributeMap getAttributes() const;
 
 		//! return the content of this node's text
-		const std::string& getText() const;
+		const String& getText() const;
 		//! set the text content of this node
-		void setText( const std::string& text );
+		void setText( const String& text );
 
 		//! Dumps the full contents of this node into a human readable format that is XML-like, but not real xml
-		std::string dump() const;
+		String dump() const;
 
 	protected:
 		//! \internal build the given tinyXML tree into a node tree
 		XMLNode( void* txmle, XMLNodeContainer* parentPtr );
 		//! \internal writes the contents of this node tree into a tinyXML tree
 		void* _totxml();
-		void _buildPath( std::string& path );
+		void _buildPath( String& path );
 
 	private:
-		std::string mTagName;
-		std::string mText;
+		String mTagName;
+		String mText;
 		XMLAttributeMap mAttributes;
 		XMLNodeContainer* mParent;
 

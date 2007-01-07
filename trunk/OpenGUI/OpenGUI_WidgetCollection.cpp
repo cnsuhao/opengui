@@ -86,7 +86,7 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
 		if ( widget->mContainer )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
-		const std::string wName = widget->getName();
+		const String wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
 			if ( w )
@@ -101,7 +101,7 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Invalid Widget pointer: 0", __FUNCTION__ );
 		if ( widget->mContainer )
 			OG_THROW( Exception::ERR_INTERNAL_ERROR, "Cannot add a widget to more than 1 WidgetCollection", __FUNCTION__ );
-		const std::string wName = widget->getName();
+		const String wName = widget->getName();
 		if ( wName != "" ) {
 			Widget* w = getWidget( wName );
 			if ( w )
@@ -173,7 +173,7 @@ namespace OpenGUI {
 		_add_back( widget, owner );
 	}
 	//############################################################################
-	Widget* WidgetCollection::getWidget( const std::string& widgetName ) const {
+	Widget* WidgetCollection::getWidget( const String& widgetName ) const {
 		for ( WidgetCollectionItemPtrList::const_iterator iter = mCollectionObjects.begin();
 				iter != mCollectionObjects.end(); iter++ ) {
 			WidgetCollectionItem* ptr = ( *iter );
@@ -184,7 +184,7 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	Widget& WidgetCollection::operator[]( const std::string& widgetName ) {
+	Widget& WidgetCollection::operator[]( const String& widgetName ) {
 		Widget* widget = getWidget( widgetName );
 		if ( !widget ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND,

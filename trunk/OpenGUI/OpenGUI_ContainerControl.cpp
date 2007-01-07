@@ -393,7 +393,7 @@ namespace OpenGUI {
 		Control::onResized( sender, evtArgs );
 	}
 	//############################################################################
-	Widget* ContainerControl::_getChildByName( const std::string& childName ) const {
+	Widget* ContainerControl::_getChildByName( const String& childName ) const {
 		return Children.getWidget( childName );
 	}
 	//############################################################################

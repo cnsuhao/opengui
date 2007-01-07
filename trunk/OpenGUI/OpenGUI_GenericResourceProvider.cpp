@@ -7,7 +7,7 @@
 
 namespace OpenGUI {
 	//#####################################################################
-	void GenericResourceProvider::loadResource( const std::string& filename, Resource& output ) {
+	void GenericResourceProvider::loadResource( const String& filename, Resource& output ) {
 		if ( filename.empty() || filename == "" ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No filename provided", "GenericResourceProvider::loadResource" );
 		}

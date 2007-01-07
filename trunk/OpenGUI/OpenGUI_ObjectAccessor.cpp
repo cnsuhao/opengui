@@ -27,7 +27,7 @@ namespace OpenGUI {
 	then an exception is thrown.
 	\note Throws an exception whenever the requested \c accessorName cannot
 	be found, and there is no available parent in which to defer the call. */
-	ObjectAccessor* ObjectAccessorList::getAccessor( const std::string& accessorName, bool recursive ) {
+	ObjectAccessor* ObjectAccessorList::getAccessor( const String& accessorName, bool recursive ) {
 		//try to find locally
 		ObjectAccessorMap::iterator iter = mObjectAccessorMap.find( accessorName );
 		if ( iter != mObjectAccessorMap.end() )

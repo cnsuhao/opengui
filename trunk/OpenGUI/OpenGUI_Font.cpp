@@ -17,7 +17,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! This will attempt to bind, but will fall back to delayed binding if the
 	bind fails. */
-	Font::Font( const std::string& fontName, float fontSize ) {
+	Font::Font( const String& fontName, float fontSize ) {
 		m_Bound = false;
 		m_FontName = fontName;
 		m_FontSize = fontSize;

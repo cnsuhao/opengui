@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Widget.h"
 #include "OpenGUI_WidgetCollection.h"
@@ -155,7 +156,7 @@ namespace OpenGUI {
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
 		//! \internal reimplementation from Widget. This will return the requested child if it exists, otherwise returns 0
-		Widget* _getChildByName( const std::string& childName ) const;
+		Widget* _getChildByName( const String& childName ) const;
 
 		//! \internal redefinition from Widget::_invalidatedChild()
 		virtual void _invalidatedChild();

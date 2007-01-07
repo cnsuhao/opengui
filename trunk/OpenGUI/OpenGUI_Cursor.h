@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
@@ -66,7 +67,7 @@ namespace OpenGUI {
 		virtual ~Cursor();
 
 		//! return the name of this cursor, as set by the CursorManager at creation
-		const std::string& getName() const {
+		const String& getName() const {
 			return mName;
 		}
 
@@ -118,7 +119,7 @@ namespace OpenGUI {
 //@}
 
 	private:
-		std::string mName;
+		String mName;
 		FVector2 mSize;
 	};
 

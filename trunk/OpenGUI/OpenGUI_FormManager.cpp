@@ -43,7 +43,7 @@ namespace OpenGUI {
 		UndefineAllForms();
 	}
 	//############################################################################
-	void FormManager::DefineForm( const std::string& formName, FormEntry& formRoot ) {
+	void FormManager::DefineForm( const String& formName, FormEntry& formRoot ) {
 		FormEntry* root = new FormEntry( formRoot );
 		try {
 			DefineForm( formName, root );
@@ -54,7 +54,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void FormManager::DefineForm( const std::string& formName, FormEntry* formRoot ) {
+	void FormManager::DefineForm( const String& formName, FormEntry* formRoot ) {
 		if ( formName == "" )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "FormDefinition name cannot be empty", __FUNCTION__ );
 		FormDefinitionMap::iterator iter = mFormDefinitions.find( formName );
@@ -64,7 +64,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "FormManager", OGLL_INFO ) << "Defined Form: " << formName << Log::endlog;
 	}
 	//############################################################################
-	void FormManager::UndefineForm( const std::string& formName ) {
+	void FormManager::UndefineForm( const String& formName ) {
 		FormDefinitionMap::iterator iter = mFormDefinitions.find( formName );
 		if ( iter == mFormDefinitions.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "FormDefinition with given name not found: " + formName, __FUNCTION__ );
@@ -86,7 +86,7 @@ namespace OpenGUI {
 		mFormDefinitions.clear();
 	}
 	//############################################################################
-	Widget* FormManager::CreateForm( const std::string& formName, WidgetCollection* container, const std::string& widgetName ) {
+	Widget* FormManager::CreateForm( const String& formName, WidgetCollection* container, const String& widgetName ) {
 		FormDefinitionMap::iterator iter = mFormDefinitions.find( formName );
 		if ( iter == mFormDefinitions.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "FormDefinition with given name not found: " + formName, __FUNCTION__ );
@@ -110,14 +110,14 @@ namespace OpenGUI {
 		return rootWidget;
 	}
 	//############################################################################
-	bool FormManager::_FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool FormManager::_FormDef_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		FormManager& manager = FormManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string Name = node.getAttribute( "Name" );
+		const String Name = node.getAttribute( "Name" );
 
 		FormEntry* root = 0;
 		try {
@@ -131,14 +131,14 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool FormManager::_FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool FormManager::_FormDef_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		FormManager& manager = FormManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string Name = node.getAttribute( "Name" );
+		const String Name = node.getAttribute( "Name" );
 		manager.UndefineForm( Name );
 		return true;
 	}
@@ -150,10 +150,10 @@ namespace OpenGUI {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Widget> attribute 'DefName' is mutually exclusive with 'BaseName' and 'BaseLibrary': " + node.dump(), __FUNCTION__ );
 		}
 
-		const std::string Name = node.getAttribute( "Name" );
-		std::string defName;
-		std::string baseName;
-		std::string baseLibrary;
+		const String Name = node.getAttribute( "Name" );
+		String defName;
+		String baseName;
+		String baseLibrary;
 		bool hasDef;
 
 		if ( node.hasAttribute( "DefName" ) ) {
@@ -210,12 +210,12 @@ namespace OpenGUI {
 
 
 	//############################################################################
-	FormEntry::FormEntry( const std::string& WidgetName, const std::string& WidgetDef, const ValueList& propertyList )
+	FormEntry::FormEntry( const String& WidgetName, const String& WidgetDef, const ValueList& propertyList )
 			: mWidgetName( WidgetName ), mBaseName( WidgetDef ), mLibrary( "" ), mByWidgetDef( true ), mProperties( propertyList ) {
 		/* nothing special */
 	}
 	//############################################################################
-	FormEntry::FormEntry( const std::string& WidgetName, const std::string& BaseName, const std::string& LibraryName, const ValueList& propertyList )
+	FormEntry::FormEntry( const String& WidgetName, const String& BaseName, const String& LibraryName, const ValueList& propertyList )
 			: mWidgetName( WidgetName ), mBaseName( BaseName ), mLibrary( LibraryName ), mByWidgetDef( false ), mProperties( propertyList ) {
 		/* nothing special */
 	}
@@ -267,7 +267,7 @@ namespace OpenGUI {
 			ValueList propList = mProperties;
 			while ( propList.size() > 0 ) {
 				Value val = propList.pop_front();
-				std::string name = val.getName();
+				String name = val.getName();
 				if ( name.length() > 0 ) {
 					widget->setProperty( name, val );
 				}

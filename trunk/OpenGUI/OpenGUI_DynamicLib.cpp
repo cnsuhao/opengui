@@ -3,6 +3,7 @@
 // See LICENSE.TXT for details
 
 #include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_DynamicLib.h"
@@ -39,7 +40,7 @@ namespace OpenGUI {
 	//############################################################################
 	//! \internal splits a given full path into separate path and filename components.
 	/*! \internal Always succeeds, even if the path portion is blank. Tests for / only  */
-	void _splitFileFromPath( const std::string& fullPath, std::string& pathHalf, std::string& fileHalf ) {
+	void _splitFileFromPath( const String& fullPath, String& pathHalf, String& fileHalf ) {
 		size_t pathSize;
 		pathSize = fullPath.rfind( "/" );
 		if ( pathSize == std::string::npos ) {
@@ -53,7 +54,7 @@ namespace OpenGUI {
 	//############################################################################
 	//! \internal extracts the extension from a filename/filename+path.
 	/*! \internal Returns false if no extension was found */
-	bool _getFileExt( const std::string& filename, std::string& ext ) {
+	bool _getFileExt( const String& filename, String& ext ) {
 		size_t prefixLen;
 		prefixLen = filename.rfind( "." );
 		if ( prefixLen == std::string::npos )
@@ -64,7 +65,7 @@ namespace OpenGUI {
 	//############################################################################
 	//! \internal Tests the existence of a file
 	/*! \internal Returns true if file exists, false otherwise */
-	bool _fileExists( const std::string& filename ) {
+	bool _fileExists( const String& filename ) {
 		std::ifstream inputFile( filename.c_str(), std::ios::binary | std::ios::ate );
 		if ( inputFile.fail() ) {
 			return false; //file not found
@@ -72,7 +73,7 @@ namespace OpenGUI {
 		return true; //file found
 	}
 	//############################################################################
-	DynamicLib::DynamicLib( const std::string& filename ) {
+	DynamicLib::DynamicLib( const String& filename ) {
 		//Depending on configuration, we may need to perform file mangling,
 		//so this is the best place to do it.
 #if !( MANGLE_FIX_EXT || MANGLE_ADD_D )
@@ -81,7 +82,7 @@ namespace OpenGUI {
 		return;
 #else
 		//otherwise, let the mangling begin
-		std::string path = "", file = "", ext = "";
+		String path = "", file = "", ext = "";
 		std::stringstream finalName;
 
 		_splitFileFromPath( filename, path, file );
@@ -185,7 +186,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void* DynamicLib::getSymbol( const std::string& symbolName ) const {
+	void* DynamicLib::getSymbol( const String& symbolName ) const {
 		return ( void* ) DYNAMICLIB_GETSYMBOL( mHandle, symbolName.c_str() );
 	}
 	//############################################################################

@@ -26,19 +26,19 @@ namespace OpenGUI {
 	//! \internal An internal class used to load dynamic libraries
 	class DynamicLib {
 	public:
-		DynamicLib( const std::string& filename );
+		DynamicLib( const String& filename );
 		~DynamicLib();
 
 		void load();
 		void unload();
 
-		const std::string& getName( void ) const {
+		const String& getName( void ) const {
 			return mName;
 		}
 
-		void* getSymbol( const std::string& symbolName ) const;
+		void* getSymbol( const String& symbolName ) const;
 	private:
-		std::string mName;
+		String mName;
 		DYNAMICLIB_HANDLE mHandle;
 	};
 

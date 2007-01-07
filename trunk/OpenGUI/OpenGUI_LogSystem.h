@@ -7,8 +7,8 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
-#include "OpenGUI_Singleton.h"
 #include "OpenGUI_String.h"
+#include "OpenGUI_Singleton.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 // This warning can be disregarded

@@ -73,97 +73,97 @@ namespace OpenGUI {
 		setName( copy.getName() );
 	}
 	//#####################################################################
-	Value::Value( const std::string& value, const std::string& Name ) {
+	Value::Value( const String& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const char* value, const std::string& Name ) {
+	Value::Value( const char* value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( bool value, const std::string& Name ) {
+	Value::Value( bool value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( float value, const std::string& Name ) {
+	Value::Value( float value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FVector2& value, const std::string& Name ) {
+	Value::Value( const FVector2& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FRect& value, const std::string& Name ) {
+	Value::Value( const FRect& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( int value, const std::string& Name ) {
+	Value::Value( int value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const IVector2& value, const std::string& Name ) {
+	Value::Value( const IVector2& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const IRect& value, const std::string& Name ) {
+	Value::Value( const IRect& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const Color& value, const std::string& Name ) {
+	Value::Value( const Color& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const Font& value, const std::string& Name ) {
+	Value::Value( const Font& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const TextAlignment& value, const std::string& Name ) {
+	Value::Value( const TextAlignment& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const ImageryPtr& value, const std::string& Name ) {
+	Value::Value( const ImageryPtr& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const FacePtr& value, const std::string& Name ) {
+	Value::Value( const FacePtr& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const CursorPtr& value, const std::string& Name ) {
+	Value::Value( const CursorPtr& value, const String& Name ) {
 		constructor();
 		setValue( value );
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const std::string& Name ) {
+	Value::Value( const String& Name ) {
 		constructor();
 		setName( Name );
 	}
@@ -177,7 +177,7 @@ namespace OpenGUI {
 		return mType;
 	}
 	//#####################################################################
-	void Value::setValue( const std::string& std_string ) {
+	void Value::setValue( const String& std_string ) {
 		clearValue();
 		mType = T_STRING;
 		mString = new std::string;
@@ -185,20 +185,20 @@ namespace OpenGUI {
 		mHasValue = true;
 	}
 	//#####################################################################
-	std::string Value::getValueAsString() const {
+	String Value::getValueAsString() const {
 		if ( !isSet() || getType() != T_STRING )
 			OG_THROW( Exception::OP_FAILED, "Stored value is not a string", __FUNCTION__ );
 		return *mString;
 	}
 	//#####################################################################
 	void Value::setValue( const char* cString ) {
-		std::string str = cString;
+		String str = cString;
 		setValue( str );
 	}
 	//#####################################################################
 	/*! You must copy this if you wish to keep it, the buffer is temporary */
 	const char* Value::getValueAsCString() const {
-		std::string str = getValueAsString();
+		String str = getValueAsString();
 		return str.c_str();
 	}
 	//#####################################################################
@@ -314,7 +314,7 @@ namespace OpenGUI {
 		return *mColor;
 	}
 	//#####################################################################
-	void Value::setValueAsFont( const std::string& fontStr ) {
+	void Value::setValueAsFont( const String& fontStr ) {
 		Font value;
 		StrConv::toFont( fontStr, value );
 		setValue( value );
@@ -516,54 +516,54 @@ namespace OpenGUI {
 		return !operator==( right );
 	}
 	//#####################################################################
-	void Value::setValueAsInt( const std::string& intStr ) {
+	void Value::setValueAsInt( const String& intStr ) {
 		int value;
 		StrConv::toInt( intStr, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsFloat( const std::string& floatStr ) {
+	void Value::setValueAsFloat( const String& floatStr ) {
 		float value;
 		StrConv::toFloat( floatStr, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsFVector2( const std::string& fv2Str ) {
+	void Value::setValueAsFVector2( const String& fv2Str ) {
 		FVector2 value;
 		StrConv::toFVector2( fv2Str, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsFRect( const std::string& frectStr ) {
+	void Value::setValueAsFRect( const String& frectStr ) {
 		FRect value;
 		StrConv::toFRect( frectStr, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsIVector2( const std::string& iv2Str ) {
+	void Value::setValueAsIVector2( const String& iv2Str ) {
 		IVector2 value;
 		StrConv::toIVector2( iv2Str, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsIRect( const std::string& irectStr ) {
+	void Value::setValueAsIRect( const String& irectStr ) {
 		IRect value;
 		StrConv::toIRect( irectStr, value );
 		setValue( value );
 	}
 	//#####################################################################
-	void Value::setValueAsColor( const std::string& colorStr ) {
+	void Value::setValueAsColor( const String& colorStr ) {
 		Color value;
 		StrConv::toColor( colorStr, value );
 		setValue( value );
 	}
 	//#####################################################################
 	/*! Yes, this is redundant. */
-	void Value::setValueAsString( const std::string& stringStr ) {
+	void Value::setValueAsString( const String& stringStr ) {
 		setValue( stringStr );
 	}
 	//#####################################################################
-	void Value::setValueAsBool( const std::string& boolStr ) {
+	void Value::setValueAsBool( const String& boolStr ) {
 		bool value;
 		StrConv::toBool( boolStr, value );
 		setValue( value );
@@ -574,8 +574,8 @@ namespace OpenGUI {
 			   c == '6' || c == '7' || c == '8' || c == '9' || c == '0';
 	}
 	//#####################################################################
-	std::string Value::toStr() const {
-		std::string ret;
+	String Value::toStr() const {
+		String ret;
 		switch ( mType ) {
 		case T_BOOL:
 			StrConv::fromBool( getValueAsBool(), ret );
@@ -673,11 +673,11 @@ namespace OpenGUI {
 	  \see \ref StringFormats for further information on the text formatting syntax of %OpenGUI objects.
 	*/
 	void Value::LoadFromXMLNode( const XMLNode& node ) {
-		std::string typestr = node.getAttribute( "ValueType" );
-		std::string valuestr = node.getAttribute( "ValueData" );
+		String typestr = node.getAttribute( "ValueType" );
+		String valuestr = node.getAttribute( "ValueData" );
 
 		if ( node.hasAttribute( "ValueName" ) ) {
-			std::string namestr = node.getAttribute( "ValueName" );
+			String namestr = node.getAttribute( "ValueName" );
 			setName( namestr );
 		} else {
 			setName( "" );
@@ -732,7 +732,7 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	std::string Value::_TypeToString( ValueType type ) {
+	String Value::_TypeToString( ValueType type ) {
 		switch ( type ) {
 		case T_BOOL:
 			return "BOOL";
@@ -781,7 +781,7 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	Value::ValueType Value::_TypeFromString( const std::string& type ) {
+	Value::ValueType Value::_TypeFromString( const String& type ) {
 		if ( type == "STRING" )
 			return T_STRING;
 
@@ -836,7 +836,7 @@ namespace OpenGUI {
 		return *mTextAlignment;
 	}
 	//#####################################################################
-	void Value::setValueAsTextAlignment( const std::string& textAlignmentStr ) {
+	void Value::setValueAsTextAlignment( const String& textAlignmentStr ) {
 		TextAlignment value;
 		StrConv::toTextAlignment( textAlignmentStr, value );
 		setValue( value );
@@ -856,7 +856,7 @@ namespace OpenGUI {
 		return *mImageryPtr;
 	}
 	//#####################################################################
-	void Value::setValueAsImageryPtr( const std::string& imageryName ) {
+	void Value::setValueAsImageryPtr( const String& imageryName ) {
 		ImageryPtr value;
 		value = ImageryManager::getSingleton().getImagery( imageryName );
 		setValue( value );
@@ -876,7 +876,7 @@ namespace OpenGUI {
 		return *mFacePtr;
 	}
 	//#####################################################################
-	void Value::setValueAsFacePtr( const std::string& faceName ) {
+	void Value::setValueAsFacePtr( const String& faceName ) {
 		FacePtr value;
 		value = ImageryManager::getSingleton().getFace( faceName );
 		setValue( value );
@@ -896,7 +896,7 @@ namespace OpenGUI {
 		return *mCursorPtr;
 	}
 	//#####################################################################
-	void Value::setValueAsCursorPtr( const std::string& cursorName ) {
+	void Value::setValueAsCursorPtr( const String& cursorName ) {
 		CursorPtr value;
 		value = CursorManager::getSingleton().CreateDefinedCursor( cursorName );
 		setValue( value );
@@ -946,7 +946,7 @@ namespace OpenGUI {
 	}
 	//#####################################################################
 	/*! If a Value by the requested \c name cannot be found, an Exception will be thrown. */
-	const Value& ValueList::get( const std::string& name ) const {
+	const Value& ValueList::get( const String& name ) const {
 			ValueDeQue::const_iterator iter = mValueDeQue.begin();
 			while ( iter != mValueDeQue.end() ) {
 				const Value& val = ( *iter );

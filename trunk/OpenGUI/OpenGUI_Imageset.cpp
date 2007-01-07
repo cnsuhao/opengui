@@ -10,7 +10,7 @@
 namespace OpenGUI {
 
 	//############################################################################
-	Imageset::Imageset( TexturePtr texturePtr, std::string sourceImageFilename )
+	Imageset::Imageset( TexturePtr texturePtr, String sourceImageFilename )
 			: mFilename( sourceImageFilename ), mpTexture( texturePtr ) {
 		LogManager::SlogMsg( "Imageset", OGLL_INFO ) << "(" << mFilename << ") " << "Creation" << Log::endlog;
 		if ( !texturePtr )
@@ -22,7 +22,7 @@ namespace OpenGUI {
 		Imageset::destroyAllImagery();
 	}
 	//############################################################################
-	const std::string& Imageset::getName() const {
+	const String& Imageset::getName() const {
 		return mFilename;
 	}
 	//############################################################################
@@ -30,11 +30,11 @@ namespace OpenGUI {
 		return mChildImageryList.size();
 	}
 	//############################################################################
-	ImageryPtr Imageset::createImagery( std::string imageryName ) {
+	ImageryPtr Imageset::createImagery( String imageryName ) {
 		return Imageset::createImagery( imageryName, FRect( 0.0f, 0.0f, 1.0f, 1.0f ) );
 	}
 	//############################################################################
-	ImageryPtr Imageset::createImagery( std::string imageryName, FRect areaRect, IRect imagesetRect ) {
+	ImageryPtr Imageset::createImagery( String imageryName, FRect areaRect, IRect imagesetRect ) {
 		if ( imageryName == "" ) {
 			imageryName = ImageryManager::_generateRandomName();
 		}
@@ -63,7 +63,7 @@ namespace OpenGUI {
 		return imgptr;
 	}
 	//############################################################################
-	ImageryPtr Imageset::createImagery( std::string imageryName, IRect areaRect ) {
+	ImageryPtr Imageset::createImagery( String imageryName, IRect areaRect ) {
 		//convert the IRect pixels into UV addresses and pass it along
 		IVector2 texSize = mpTexture->getSize();
 		FRect frect;
@@ -95,11 +95,11 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Could not find Imagery: " + ss.str(), "Imageset::destroyImagery" );
 	}
 	//############################################################################
-	void Imageset::destroyImagery( std::string name ) {
+	void Imageset::destroyImagery( String name ) {
 		Imageset::destroyImagery( Imageset::getImagery( name ).get() );
 	}
 	//############################################################################
-	ImageryPtr Imageset::getImagery( std::string imageryName ) const {
+	ImageryPtr Imageset::getImagery( String imageryName ) const {
 		ImageryPtrList::const_iterator iter = mChildImageryList.begin();
 		while ( mChildImageryList.end() != iter ) {
 			if (( *iter )->mName == imageryName ) {
