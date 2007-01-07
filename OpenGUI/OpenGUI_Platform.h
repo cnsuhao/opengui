@@ -2,8 +2,8 @@
 // This source code is release under the BSD License
 // See LICENSE.TXT for details
 
-#ifndef _OPENGUI_PLATFORM_H_
-#define _OPENGUI_PLATFORM_H_
+#ifndef F6C9B868_DD3A_4524_961F_F5369F49BAA6
+#define F6C9B868_DD3A_4524_961F_F5369F49BAA6
 
 /*
     The purpose of this include file is to identify the system type and
@@ -69,4 +69,4 @@
 #endif
 #endif // OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 
-#endif // _OPENGUI_PLATFORM_H_
+#endif // F6C9B868_DD3A_4524_961F_F5369F49BAA6
