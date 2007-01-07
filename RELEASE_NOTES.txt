@@ -1,5 +1,7 @@
 ###########################################################
-#####       OpenGUI 0.8 [Kunzite] Release Notes       #####
+#####       OpenGUI 0.9 [Iolite] Release Notes        #####
+
+<< version in active development, release notes not yet 100% valid >>
 
 Version 0.8 [Kunzite] is a complete redesign of the
 paradigms used in previous releases of OpenGUI. This
@@ -29,7 +31,7 @@ version 1.0 is released.
 
 ___________________________________________________________
 -- Known Issues
-It is known that masks are not yet fully implemented.
+<< version in active development >>
 
 ___________________________________________________________
 -- Usage
@@ -69,14 +71,6 @@ convert it for usage into any specific context.
 ___________________________________________________________
 -- Porting
 
-Due to the extensive changes that have occurred from the
-previous 0.7.7 release, there is no simple conversion path.
-The base widget class hierarchy has been completely
-redesigned, and the incompatibilities are numerous. For
-those of you that are using 0.7.7, I am truly sorry for
-this dilemma. The old design is no longer being maintained,
-but is still available from the SVN repository. There is a
-tag for an unreleased 0.7.8 version that has been
-beautified and had some very minor bug fixes applied to it.
-If you intend on maintaining your own fork based on that
-design, this is the tag that I recommend you use.
+* Any code that uses Value::setValueAuto() will need to be
+  altered. This function was deprecated in 0.8 and has been
+  removed.
