@@ -223,9 +223,6 @@ namespace OpenGUI {
 
 //!\name Purely string based functions
 //@{
-		//! Sets the value from a string, performing auto detection to try to fit it into the best type
-		void setValueAuto( const std::string& std_string );
-
 		//! Returns a string representation of the stored value
 		std::string toStr() const;
 //@}
