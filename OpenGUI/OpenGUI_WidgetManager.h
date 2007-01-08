@@ -53,14 +53,14 @@ namespace OpenGUI {
 		void UnregisterWidgetFactory( const String& Name, const String& Library );
 
 		//! inner type of WidgetRegPairList
-		typedef std::pair<std::string, std::string> WidgetRegPair;
+		typedef std::pair<String, String> WidgetRegPair;
 		//! return type of GetRegisteredWidgets()
 		typedef std::list<WidgetRegPair> WidgetRegPairList;
 		//! returns a pair list of all registered widgets
 		WidgetRegPairList GetRegisteredWidgets();
 
 		//! return type of GetDefinedWidgets()
-		typedef std::list<std::string> WidgetDefList;
+		typedef std::list<String> WidgetDefList;
 		//! returns a list of all defined widgets
 		WidgetDefList GetDefinedWidgets();
 
@@ -68,8 +68,8 @@ namespace OpenGUI {
 		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
 
 	private:
-		typedef std::map<std::string, WidgetFactoryCallback*> WidgetFactoryMap;
-		typedef std::map<std::string, WidgetFactoryMap> LibraryMap;
+		typedef std::map<String, WidgetFactoryCallback*> WidgetFactoryMap;
+		typedef std::map<String, WidgetFactoryMap> LibraryMap;
 		LibraryMap mLibraryMap;
 
 		struct WidgetDefinition {
@@ -77,7 +77,7 @@ namespace OpenGUI {
 			String Library;
 			ValueList Properties;
 		};
-		typedef std::map<std::string, WidgetDefinition> WidgetDefinitionMap;
+		typedef std::map<String, WidgetDefinition> WidgetDefinitionMap;
 		WidgetDefinitionMap mWidgetDefinitionMap;
 
 		// XML tag handlers for <WidgetDef> tags

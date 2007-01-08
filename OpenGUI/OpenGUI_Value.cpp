@@ -177,11 +177,11 @@ namespace OpenGUI {
 		return mType;
 	}
 	//#####################################################################
-	void Value::setValue( const String& std_string ) {
+	void Value::setValue( const String& str ) {
 		clearValue();
 		mType = T_STRING;
-		mString = new std::string;
-		*mString = std_string;
+		mString = new String;
+		*mString = str;
 		mHasValue = true;
 	}
 	//#####################################################################

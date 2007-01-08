@@ -55,7 +55,7 @@ namespace OpenGUI {
 	private:
 		void firePluginStart( DynamicLib* lib );
 		void firePluginStop( DynamicLib* lib );
-		typedef std::map<std::string, DynamicLib*> PluginMap;
+		typedef std::map<String, DynamicLib*> PluginMap;
 		PluginMap mPluginMap;
 
 		// XML tag handlers for <Plugin> tags

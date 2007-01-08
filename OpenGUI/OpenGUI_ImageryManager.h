@@ -110,7 +110,7 @@ namespace OpenGUI {
 		ImageryPtr getImagery( const String& imageryName );
 
 		//! A string list used by ImageryManager::getImagesetList()
-		typedef std::list<std::string> ImagesetList;
+		typedef std::list<String> ImagesetList;
 
 		//! Returns an ImagesetList of all Imagesets that are currently loaded. Items can be fed back into getImageset()
 		ImagesetList getImagesetList();
@@ -130,7 +130,7 @@ namespace OpenGUI {
 		ResourceProvider* mResourceProvider;
 
 		//! list of FacePtrs
-		typedef std::map<std::string, FacePtr> FacePtrMap;
+		typedef std::map<String, FacePtr> FacePtrMap;
 		FacePtrMap mFacePtrMap;
 
 		// XML tag handlers for <Imageset> tags

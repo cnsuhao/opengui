@@ -79,7 +79,7 @@ namespace OpenGUI {
 		~FormManager();
 
 	private:
-		typedef std::map<std::string, FormEntry*> FormDefinitionMap;
+		typedef std::map<String, FormEntry*> FormDefinitionMap;
 		FormDefinitionMap mFormDefinitions;
 		void UndefineAllForms();
 

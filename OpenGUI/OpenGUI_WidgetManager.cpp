@@ -53,7 +53,7 @@ namespace OpenGUI {
 		if ( Library == "" ) { // either packed Name:Library or just Name with first match
 			size_t nPos;
 			nPos = Name.find( ':' );
-			if ( nPos != std::string::npos ) { // packed Name:Library, so explode and recall
+			if ( nPos != String::npos ) { // packed Name:Library, so explode and recall
 				String NewName, NewLib;
 				NewName = Name.substr( 0, nPos );
 				NewLib = Name.substr( nPos + 1 );
@@ -84,7 +84,7 @@ namespace OpenGUI {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
@@ -106,7 +106,7 @@ namespace OpenGUI {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );

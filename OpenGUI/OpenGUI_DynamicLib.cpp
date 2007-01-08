@@ -43,7 +43,7 @@ namespace OpenGUI {
 	void _splitFileFromPath( const String& fullPath, String& pathHalf, String& fileHalf ) {
 		size_t pathSize;
 		pathSize = fullPath.rfind( "/" );
-		if ( pathSize == std::string::npos ) {
+		if ( pathSize == String::npos ) {
 			pathHalf = "";
 			fileHalf = fullPath;
 		} else {
@@ -57,7 +57,7 @@ namespace OpenGUI {
 	bool _getFileExt( const String& filename, String& ext ) {
 		size_t prefixLen;
 		prefixLen = filename.rfind( "." );
-		if ( prefixLen == std::string::npos )
+		if ( prefixLen == String::npos )
 			return false;
 		ext = filename.substr( prefixLen + 1 );
 		return true;
