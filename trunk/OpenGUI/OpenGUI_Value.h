@@ -125,7 +125,7 @@ namespace OpenGUI {
 //!\name Auto detect type based on parameter type
 //@{
 		//! Sets the value, stored value is a copy
-		void setValue( const String& std_string );
+		void setValue( const String& str );
 		//! Sets the value, stored value is a copy
 		void setValue( const char* cString );
 		//! Sets the value, stored value is a copy
@@ -238,7 +238,7 @@ namespace OpenGUI {
 		ValueType mType;
 		union {
 			void* mRaw;
-			std::string* mString;
+			String* mString;
 			bool* mBool;
 			float* mFloat;
 			FVector2* mFVector2;

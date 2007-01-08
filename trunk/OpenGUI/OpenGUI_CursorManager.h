@@ -50,14 +50,14 @@ namespace OpenGUI {
 		void UnregisterCursorFactory( const String& Name, const String& Library );
 
 		//! inner type of CursorRegPairList
-		typedef std::pair<std::string, std::string> CursorRegPair;
+		typedef std::pair<String, String> CursorRegPair;
 		//! return type of GetRegisteredCursors()
 		typedef std::list<CursorRegPair> CursorRegPairList;
 		//! returns a pair list of all registered Cursors
 		CursorRegPairList GetRegisteredCursors();
 
 		//! return type of GetDefinedCursors()
-		typedef std::list<std::string> CursorDefList;
+		typedef std::list<String> CursorDefList;
 		//! returns a list of all defined Cursors
 		CursorDefList GetDefinedCursors();
 
@@ -65,8 +65,8 @@ namespace OpenGUI {
 		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
 
 	private:
-		typedef std::map<std::string, CursorFactoryCallback*> CursorFactoryMap;
-		typedef std::map<std::string, CursorFactoryMap> LibraryMap;
+		typedef std::map<String, CursorFactoryCallback*> CursorFactoryMap;
+		typedef std::map<String, CursorFactoryMap> LibraryMap;
 		LibraryMap mLibraryMap;
 
 		struct CursorDefinition {
@@ -74,7 +74,7 @@ namespace OpenGUI {
 			String Library;
 			ValueList Properties;
 		};
-		typedef std::map<std::string, CursorDefinition> CursorDefinitionMap;
+		typedef std::map<String, CursorDefinition> CursorDefinitionMap;
 		CursorDefinitionMap mCursorDefinitionMap;
 
 		// XML tag handlers for <CursorDef> tags

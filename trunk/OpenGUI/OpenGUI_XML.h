@@ -17,7 +17,7 @@ namespace OpenGUI {
 	//! List of XMLNode pointers
 	typedef std::list<XMLNode*> XMLNodeList;
 	//! Map of attributes
-	typedef std::map<std::string, std::string> XMLAttributeMap;
+	typedef std::map<String, String> XMLAttributeMap;
 
 	//! Interface class for classes that contain XMLNode children.
 	/*! The memory attached to all children is considered property of this container,

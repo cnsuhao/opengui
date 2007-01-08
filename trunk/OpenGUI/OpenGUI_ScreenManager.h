@@ -24,7 +24,7 @@ namespace OpenGUI {
 	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
 		friend class System;
 	public:
-		typedef std::map<std::string, Screen*> ScreenMap;
+		typedef std::map<String, Screen*> ScreenMap;
 		typedef MapIterator<ScreenMap, ScreenMap::iterator> iterator;
 		typedef MapIterator<ScreenMap, ScreenMap::const_iterator> const_iterator;
 
@@ -52,7 +52,7 @@ namespace OpenGUI {
 		void updateTime();
 
 		//! returns an iterator to walk the current list of screens
-		/*! The Key half of the iterator is the Screen name (std::string),
+		/*! The Key half of the iterator is the Screen name (String),
 		the %Value half is a pointer to the Screen (Screen *) */
 		iterator getIterator() {
 			return iterator( mScreenMap.begin(), mScreenMap.end() );

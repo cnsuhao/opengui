@@ -151,7 +151,7 @@ namespace OpenGUI {
 	ImageryPtr ImageryManager::getImagery( const String& imageryName ) {
 		// test for fully qualified name lookups
 		size_t splitLoc = imageryName.find( ':' );
-		if ( splitLoc != std::string::npos ) {
+		if ( splitLoc != String::npos ) {
 			// yep, we can do a FQN lookup, so let's do it
 			const String setName = imageryName.substr( 0, splitLoc );
 			const String imgName = imageryName.substr( splitLoc + 1 );

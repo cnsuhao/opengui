@@ -64,7 +64,7 @@ namespace OpenGUI {
 		ImageryPtr getImagery( String imageryName ) const;
 
 		//! A string list used by Imageset::getImageryList()
-		typedef std::list<std::string> ImageryList;
+		typedef std::list<String> ImageryList;
 
 		//! Returns a list of all imagery currently defined within this imageset. Entries can be fed back into getImagery()
 		ImageryList getImageryList() const;

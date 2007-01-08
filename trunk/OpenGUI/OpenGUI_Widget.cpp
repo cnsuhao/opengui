@@ -173,7 +173,7 @@ namespace OpenGUI {
 			mWidgetName = name;
 			return;
 		}
-		if ( name == ".." || name == "." || name.find( '/' ) != std::string::npos ) {
+		if ( name == ".." || name == "." || name.find( '/' ) != String::npos ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Widget names cannot contain '/' and cannot be '.' or '..'", __FUNCTION__ );
 			return;
 		}

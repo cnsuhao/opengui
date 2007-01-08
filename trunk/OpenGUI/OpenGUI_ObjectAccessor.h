@@ -101,7 +101,7 @@ namespace OpenGUI {
 	private:
 		ObjectAccessorList* mParent;
 
-		typedef std::map<std::string, ObjectAccessor*> ObjectAccessorMap;
+		typedef std::map<String, ObjectAccessor*> ObjectAccessorMap;
 		ObjectAccessorMap mObjectAccessorMap;
 	};
 

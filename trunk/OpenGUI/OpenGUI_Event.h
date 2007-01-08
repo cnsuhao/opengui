@@ -183,7 +183,7 @@ namespace OpenGUI {
 	private:
 		EventReceiver();
 		~EventReceiver();
-		typedef std::map<std::string, EventHandlerList*> EventHandlerListMap;
+		typedef std::map<String, EventHandlerList*> EventHandlerListMap;
 		EventHandlerListMap mEventHandlerListMap;
 		Object* mParent;
 	};

@@ -72,7 +72,7 @@ namespace OpenGUI {
 		FontSetPtr GetFontSet( const String& fontName );
 
 		//! a list of font names that are currently loaded in the FontManager, retrieved by FontManager::getFontList()
-		typedef std::list<std::string> FontList;
+		typedef std::list<String> FontList;
 
 		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFontSet() or used with Font
 		FontList getFontList();
@@ -89,7 +89,7 @@ namespace OpenGUI {
 
 		FontCache* mFontCache;
 
-		typedef std::map<std::string, FontSetPtr> FontSetPtrMap;
+		typedef std::map<String, FontSetPtr> FontSetPtrMap;
 		FontSetPtrMap mFontSetMap;
 
 		Font mDefaultFont;

@@ -95,7 +95,7 @@ namespace OpenGUI {
 			mParentBrush = brush;
 		}
 		Brush* mParentBrush;
-		typedef std::list<std::string> StringList;
+		typedef std::list<String> StringList;
 		//! \internal explodes the given \c inputStr into an \c outputStrList by \c token
 		void _Tokenize( const String& inputStr, StringList& outputStrList, char token );
 		//! \internal Performs wrapping on \c strList_in_out, assuming each character is \c charWidth and lines are allowed a maximum of \c wrapWidth

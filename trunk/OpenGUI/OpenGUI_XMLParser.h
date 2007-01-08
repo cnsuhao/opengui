@@ -97,11 +97,11 @@ namespace OpenGUI {
 		static bool _IncludeLoadHandler( const XMLNode& node, const String& nodePath );
 		static bool _IncludeUnloadHandler( const XMLNode& node, const String& nodePath );
 		static bool _Included( const String& filename );
-		typedef std::list<std::string> IncludeList;
+		typedef std::list<String> IncludeList;
 		static IncludeList mIncludeList;
 
 		typedef std::list<XMLNodeHandler*> HandlerList;
-		typedef std::map<std::string, HandlerList> XMLHandlerMap;
+		typedef std::map<String, HandlerList> XMLHandlerMap;
 		XMLHandlerMap mLoadMap;
 		XMLHandlerMap mUnloadMap;
 		bool fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const String& nodePath );

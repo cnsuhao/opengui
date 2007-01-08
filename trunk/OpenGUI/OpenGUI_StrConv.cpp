@@ -9,11 +9,11 @@
 namespace OpenGUI {
 	//######################################################################
 	void _strTrim( String& str ) {
-		std::string::size_type pos = str.find_last_not_of( ' ' );
-		if ( pos != std::string::npos ) {
+		String::size_type pos = str.find_last_not_of( ' ' );
+		if ( pos != String::npos ) {
 			str.erase( pos + 1 );
 			pos = str.find_first_not_of( ' ' );
-			if ( pos != std::string::npos ) str.erase( 0, pos );
+			if ( pos != String::npos ) str.erase( 0, pos );
 		} else str.erase( str.begin(), str.end() );
 	}
 	//############################################################################
@@ -111,11 +111,11 @@ namespace OpenGUI {
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		tmp = tmp.substr( 0, tmp.length() - 1 );
 
-		std::string::size_type tokenPos = tmp.find( "x" );
-		if ( tokenPos == std::string::npos )
+		String::size_type tokenPos = tmp.find( "x" );
+		if ( tokenPos == String::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		String xHalf = tmp.substr( 0, tokenPos );
-		String yHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String yHalf = tmp.substr( tokenPos + 1, String::npos );
 
 		try {
 			toInt( xHalf, out.x );
@@ -145,11 +145,11 @@ namespace OpenGUI {
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		tmp = tmp.substr( 0, tmp.length() - 1 );
 
-		std::string::size_type tokenPos = tmp.find( "X" );
-		if ( tokenPos == std::string::npos )
+		String::size_type tokenPos = tmp.find( "X" );
+		if ( tokenPos == String::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		String minHalf = tmp.substr( 0, tokenPos );
-		String maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String maxHalf = tmp.substr( tokenPos + 1, String::npos );
 
 		toIVector2( minHalf, out.min );
 		toIVector2( maxHalf, out.max );
@@ -171,11 +171,11 @@ namespace OpenGUI {
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		tmp = tmp.substr( 0, tmp.length() - 1 );
 
-		std::string::size_type tokenPos = tmp.find( "x" );
-		if ( tokenPos == std::string::npos )
+		String::size_type tokenPos = tmp.find( "x" );
+		if ( tokenPos == String::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		String xHalf = tmp.substr( 0, tokenPos );
-		String yHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String yHalf = tmp.substr( tokenPos + 1, String::npos );
 
 		try {
 			toFloat( xHalf, out.x );
@@ -205,11 +205,11 @@ namespace OpenGUI {
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		tmp = tmp.substr( 0, tmp.length() - 1 );
 
-		std::string::size_type tokenPos = tmp.find( "X" );
-		if ( tokenPos == std::string::npos )
+		String::size_type tokenPos = tmp.find( "X" );
+		if ( tokenPos == String::npos )
 			OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 		String minHalf = tmp.substr( 0, tokenPos );
-		String maxHalf = tmp.substr( tokenPos + 1, std::string::npos );
+		String maxHalf = tmp.substr( tokenPos + 1, String::npos );
 
 		toFVector2( minHalf, out.min );
 		toFVector2( maxHalf, out.max );
