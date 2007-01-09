@@ -22,9 +22,9 @@ namespace OpenGUI {
 	initialize this class.
 
 	\remarks
-	Why do we store UTF-8 instead of UTF-32 or UTF-16 (like most people)? Well, UTF-32 is 
-	horribly large. In fact it will quadruple the size of any ASCII encoded string, and all
-	of the additional data that is adds in that case is nothing but zeros. Even for most
+	Why do we store UTF-8 instead of UTF-32/USC-4  or UTF-16 (like most people)? Well, UTF-32
+	is horribly large. In fact it will quadruple the size of any ASCII encoded string, and
+	all of the additional data that is adds in that case is nothing but zeros. Even for most
 	European languages, the majority of UTF-32 data is just wasted space. UTF-16 (wchar_t
 	and std::wstring) are arguably just as bad. UTF-16 only outperforms UTF-8 in certain
 	conditions that, as far as I'm aware, are rare occurances that are dwarfed when compared
@@ -54,7 +54,8 @@ namespace OpenGUI {
 		//! destructor
 		~UTF8String();
 
-
+		//! predicts the number of UTF-8 stream bytes will be needed to represent the given UCS-4 character
+		static size_t _predictBytes(const code_point& c);
 
 	private:
 		std::string mData; // this is the actual UTF-8 data we are storing
@@ -96,26 +97,12 @@ namespace OpenGUI {
 		}
 		m_buffer;
 
-		///////////////////////////////////////////////////////////////////////
-		// just a bunch of constants we'll be using later
-		typedef unsigned char byte;   // 1 byte ;-)
-		static const byte _lead1      = 0xC0; //110xxxxx
-		static const byte _lead1_mask = 0x1F; //00011111
-		static const byte _lead2      = 0xE0; //1110xxxx
-		static const byte _lead2_mask = 0x0F; //00001111
-		static const byte _lead3      = 0xF0; //11110xxx
-		static const byte _lead3_mask = 0x07; //00000111
-		static const byte _lead4      = 0xF8; //111110xx
-		static const byte _lead4_mask = 0x03; //00000011
-		static const byte _lead5      = 0xFC; //1111110x
-		static const byte _lead5_mask = 0x01; //00000001
-		static const byte _cont       = 0x80; //10xxxxxx
-		static const byte _cont_mask  = 0x3F; //00111111
 	};
 
+	//////////////////////////////////////////////////////////////////////////
+	// Define the base types used throughout the rest of the library
 	typedef char Char;
 	typedef std::string String;
-
 	/*
 	//! maps the String type to UTF8String
 	typedef UTF8String String;
