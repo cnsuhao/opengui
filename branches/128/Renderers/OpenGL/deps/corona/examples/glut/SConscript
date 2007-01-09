@@ -1,0 +1,9 @@
+Import("base_env CORONA_LIBS");
+
+execfile('glut_libs.py')
+
+env = base_env.Copy()
+env.Append(CPPPATH = ['#src'],
+           LIBPATH = ['#src'],
+           LIBS = CORONA_LIBS + GLUT_LIBS)
+env.Program('glut', 'glut.cpp')

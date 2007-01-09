@@ -1,0 +1,79 @@
+# Build Script for TachometerWidget
+import os
+import fnmatch
+
+
+# Source files (and yes, this is indeed much like cheating)
+files = os.listdir(".")
+Source = fnmatch.filter(files,"*.cpp")
+
+CPPPATH = """
+	#/OpenGUI
+	"""
+LIBPATH_D = """
+	#/lib
+	"""
+	
+LIBPATH_R = """
+	#/lib
+	"""
+
+LIBS_D = """
+	OpenGUI_d.lib
+	"""
+
+LIBS_R = """
+	OpenGUI.lib
+	"""
+
+OUTFILE = 'TachometerWidget'
+
+
+
+################################################################
+Import('platform')
+Import('base_env')
+env = base_env.Copy()
+
+OUTFILE_orig = OUTFILE
+
+Import('debug')
+if debug:
+	OUTFILE = OUTFILE + '_d'
+	libpath = Split(LIBPATH_D)
+	libs = Split(LIBS_D)
+else:
+	libpath = Split(LIBPATH_R)
+	libs = Split(LIBS_R)
+
+
+
+cppdefine = ['_USRDLL', 'TACHOMETERWIDGET_EXPORTS']
+env.Append(CPPDEFINES = cppdefine)
+env.Append(CPPPATH = Split(CPPPATH))
+env.Append(LIBPATH = libpath)
+env.Append(LIBS = libs)
+
+
+env['PDB'] = OUTFILE + '.pdb'
+
+
+lib = env.SharedLibrary( OUTFILE, Source )
+
+if debug and platform == "win32":
+	env.SideEffect(OUTFILE + '.ilk', lib)
+	Clean(lib, OUTFILE + '.ilk')
+
+final = []
+final += env.Install('#/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+final += env.Install('#/lib', OUTFILE + '.lib')
+final += env.Install('#/Renderers/OpenGL/bin', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+
+if env.get('OGRE_HOME',0):
+	if debug:
+		final += env.Install('#/Renderers/Ogre/bin/debug', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+	else:
+		final += env.Install('#/Renderers/Ogre/bin/release', [OUTFILE + '.dll',OUTFILE + '.pdb'] )
+
+Alias('tachometer',final)
+Alias('all',final)

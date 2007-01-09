@@ -1,0 +1,19 @@
+namespace OpenGUI{
+/*!
+\page Event_CursorLeave CursorLeave
+This event signals the exit of the cursor into the widget's coverage area, as defined by its implementation of isInside().
+
+This event is also augmented by the consumption of \ref Event_CursorMove "CursorMove" and \ref Event_CursorMoving "CursorMoving" by preceding widgets, which normally creates an environment where cursor entrance and exits are also representative of any clipping or visual overlapping amongst widgets.
+
+\par Introduced In:
+Widget
+- Widget::onCursor_Leave
+- Widget::eventCursor_Leave
+\par EventArgs:
+EventArgs
+
+\see \ref Event_CursorEnter "CursorEnter event"
+*/
+}
+
+	
