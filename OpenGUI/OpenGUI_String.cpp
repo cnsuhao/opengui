@@ -35,9 +35,10 @@ namespace OpenGUI {
 	void UTF8String::_init() {
 		m_buffer.mVoidBuffer = 0;
 		m_bufferType = none;
+		m_bufferSize = 0;
 	}
 	//#########################################################################
-	void UTF8String::_cleanBuffer() {
+	void UTF8String::_cleanBuffer() const {
 		if ( m_buffer.mVoidBuffer != 0 ) {
 			assert( m_bufferType != none ); // this should help catch issues during debug sessions
 			switch ( m_bufferType ) {
@@ -48,7 +49,7 @@ namespace OpenGUI {
 				delete m_buffer.mWStrBuffer;
 				break;
 			case cstring:
-				delete m_buffer.mCStrBuffer;
+				delete[] m_buffer.mCStrBuffer;
 				break;
 				// under the worse of circumstances, this is all we can really do
 			case none:
@@ -57,6 +58,17 @@ namespace OpenGUI {
 				break;
 			}
 			m_buffer.mVoidBuffer = 0;
+			m_bufferSize = 0;
+		}
+	}
+	//#########################################################################
+	void UTF8String::_getBufferCStr( size_t len ) const {
+		if ( m_bufferType != cstring || m_bufferSize < len ) {
+			_cleanBuffer();
+			m_buffer.mCStrBuffer = new char[len+1];
+			m_buffer.mCStrBuffer[len] = 0;
+			m_bufferSize = len;
+			m_bufferType = cstring;
 		}
 	}
 	//#########################################################################
@@ -66,6 +78,104 @@ namespace OpenGUI {
 	//#########################################################################
 	void UTF8String::_assign( const std::string& str ) {
 		mData = str;
+	}
+	//#########################################################################
+	void UTF8String::_utf32_to_utf8( code_point c, std::string& out ) const {
+		size_t len = _predictBytes( c );
+		_getBufferCStr( len );
+
+		//stuff all of the lower bits
+		for ( size_t i = len - 1;i > 0; i-- ) {
+			m_buffer.mCStrBuffer[i] = ((( byte )c ) & _cont_mask ) | _cont;
+			c >>= 6;
+		}
+
+		//now write the final bits
+		switch ( len ) {
+		case 6:
+			m_buffer.mCStrBuffer[0] = ((( byte )c ) & _lead5_mask ) | _lead5;
+			break;
+		case 5:
+			m_buffer.mCStrBuffer[0] = ((( byte )c ) & _lead4_mask ) | _lead4;
+			break;
+		case 4:
+			m_buffer.mCStrBuffer[0] = ((( byte )c ) & _lead3_mask ) | _lead3;
+			break;
+		case 3:
+			m_buffer.mCStrBuffer[0] = ((( byte )c ) & _lead2_mask ) | _lead2;
+			break;
+		case 2:
+			m_buffer.mCStrBuffer[0] = ((( byte )c ) & _lead1_mask ) | _lead1;
+			break;
+		case 1:
+		default:
+			m_buffer.mCStrBuffer[0] = (( byte )c ) & 0x7F;
+			break;
+		}
+
+		// and append the result to the given string
+		out.append( m_buffer.mCStrBuffer, len );
+	}
+	//#########################################################################
+	/*! This function is completely unprotected against buffer overflows.
+	So don't use it on data you don't trust. */
+	UTF8String::code_point UTF8String::_utf8_to_utf32( const char* utf8_str ) {
+		code_point v = 0;
+		size_t len = _getSequenceLen( utf8_str[0] );
+		v = utf8_str[0];
+		switch ( len ) {
+		case 6:
+			v = utf8_str[0] & _lead5_mask;
+			break;
+		case 5:
+			v = utf8_str[0] & _lead4_mask;
+			break;
+		case 4:
+			v = utf8_str[0] & _lead3_mask;
+			break;
+		case 3:
+			v = utf8_str[0] & _lead2_mask;
+			break;
+		case 2:
+			v = utf8_str[0] & _lead1_mask;
+			break;
+		case 1:
+		default:
+			break; //do nothing
+		}
+		for ( size_t i = 1; i < len; i++ ) {
+			v <<= 6;
+			v |= ( utf8_str[i] & _cont_mask );
+		}
+		return v;
+	}
+	//#########################################################################
+	size_t UTF8String::_getSequenceLen( const char& s ) {
+		if ( !( s & 0x80 ) ) return 1;
+		if (( byte )( s & ~_lead1_mask ) == _lead1 ) return 2;
+		if (( byte )( s & ~_lead2_mask ) == _lead2 ) return 3;
+		if (( byte )( s & ~_lead3_mask ) == _lead3 ) return 4;
+		if (( byte )( s & ~_lead4_mask ) == _lead4 ) return 5;
+		if (( byte )( s & ~_lead5_mask ) == _lead5 ) return 6;
+		throw std::range_error( "invalid UTF-8 sequence header value" );
+	}
+	//#########################################################################
+	size_t UTF8String::_predictBytes( const code_point& c ) {
+		/*
+		7 bit:  U-00000000 – U-0000007F: 0xxxxxxx
+		11 bit: U-00000080 – U-000007FF: 110xxxxx 10xxxxxx
+		16 bit: U-00000800 – U-0000FFFF: 1110xxxx 10xxxxxx 10xxxxxx
+		21 bit: U-00010000 – U-001FFFFF: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+		26 bit: U-00200000 – U-03FFFFFF: 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+		31 bit: U-04000000 – U-7FFFFFFF: 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+		*/
+		if ( !( c & ~0x0000007F ) ) return 1;
+		if ( !( c & ~0x000007FF ) ) return 2;
+		if ( !( c & ~0x0000FFFF ) ) return 3;
+		if ( !( c & ~0x001FFFFF ) ) return 4;
+		if ( !( c & ~0x03FFFFFF ) ) return 5;
+		if ( !( c & ~0x7FFFFFFF ) ) return 6;
+		throw std::range_error( "invalid code_point value" );
 	}
 	//#########################################################################
 	bool UTF8String::_verifyUTF8( const std::string& str ) {

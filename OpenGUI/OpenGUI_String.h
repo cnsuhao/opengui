@@ -54,9 +54,6 @@ namespace OpenGUI {
 		//! destructor
 		~UTF8String();
 
-		//! predicts the number of UTF-8 stream bytes will be needed to represent the given UCS-4 character
-		static size_t _predictBytes(const code_point& c);
-
 	private:
 		std::string mData; // this is the actual UTF-8 data we are storing
 
@@ -64,6 +61,16 @@ namespace OpenGUI {
 		void _append( const std::string& str );
 		// dumbly assigns the given string, no verification performed
 		void _assign( const std::string& str );
+
+		//! predicts the number of UTF-8 stream bytes that will be needed to represent the given UCS-4 character
+		static size_t _predictBytes( const code_point& c );
+		//! returns the length of the sequence starting with \c s
+		static size_t _getSequenceLen( const char& s );
+
+		//! returns the UCS-4 code point in the UTF-8 stream at the given position
+		static code_point _utf8_to_utf32( const char* utf8_str );
+		//! decodes the given code point and append the stream bytes to the given string
+		void _utf32_to_utf8( code_point c, std::string& out ) const;
 
 		//! runs the held stream through the other _verifyUTF8() test
 		bool _verifyUTF8() const {
@@ -75,8 +82,9 @@ namespace OpenGUI {
 
 		///////////////////////////////////////////////////////////////////////
 		// Scratch buffer
-		void _init(); // common constructor operations
-		void _cleanBuffer(); // auto cleans the scratch buffer using the proper delete for the stored type
+		void _init(); //!< common constructor operations
+		void _cleanBuffer() const; //!< auto cleans the scratch buffer using the proper delete for the stored type
+		void _getBufferCStr( size_t len ) const; //!< creates a scratch buffer of at least \c len size
 
 		// data type identifier
 		enum BufferType {
@@ -86,7 +94,8 @@ namespace OpenGUI {
 			cstring
 		};
 
-		BufferType m_bufferType; // identifies the data type held in m_buffer
+		mutable BufferType m_bufferType; // identifies the data type held in m_buffer
+		mutable size_t m_bufferSize; // size of the CString buffer
 
 		// multi-purpose buffer used everywhere we need a throw-away buffer. (Yes, we're that brave ;-)
 		union {
