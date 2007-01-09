@@ -80,6 +80,50 @@ namespace OpenGUI {
 		mData = str;
 	}
 	//#########################################################################
+	void UTF8String::_utf16_to_utf32( const code_point& c, code_point& c_out ) {
+		unsigned short wU, wL;
+		if ( c > 0xFFFF ) {
+			wU = c >> 16;
+			wL = c & 0xFFFF;
+		} else {
+			// just store the lower word
+			wU = 0;
+			wL = c & 0xFFFF;
+		}
+		if ( wU && 0xD800 <= wU && wU <= 0xDBFF && 0xDC00 <= wL && wL && 0xDFFF ) {
+			// valid surrogate pair, time to decode
+			wU -= 0xD800; // remove the encoding marker
+			wL -= 0xDC00; // remove the encoding marker
+			assert(( wU & ~0x03FF ) == 0 );
+			assert(( wL & ~0x03FF ) == 0 );
+			c_out = ( wU & 0x03FF ) << 10;
+			c_out |= ( wL & 0x03FF );
+			c_out += 0x10000;
+			return;
+		}
+		if ( 0xD800 <= wL && wL <= 0xDFFF ) {
+			throw std::range_error( "invalid UTF-16 single point value, not a valid surrogate pair but falls in that range" );
+		}
+		c_out = wL;
+	}
+	//#########################################################################
+	void UTF8String::_utf32_to_utf16( const code_point& c, code_point& c_out ) {
+		if ( c > 0xFFFF ) {
+			// we're over the single point limit, so we need to generate surrogate pairs
+			code_point v = c - 0x10000;
+			unsigned short vh, vl; // higher and lower 10 bits
+			vh = ( v >> 10 ) & 0x03FF;
+			vl = v & 0x03FF;
+			vh |= 0xD800; // add encoding marker
+			vl |= 0xDC00; // add encoding marker
+			c_out = vh << 16;
+			c_out |= vl & 0xFFFF;
+		} else {
+			// we actually fit into 16 bits, so just write it and move on
+			c_out = c;
+		}
+	}
+	//#########################################################################
 	void UTF8String::_utf32_to_utf8( code_point c, std::string& out ) const {
 		size_t len = _predictBytes( c );
 		_getBufferCStr( len );
