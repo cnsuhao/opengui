@@ -22,20 +22,22 @@ namespace OpenGUI {
 	initialize this class.
 
 	\remarks
-	Why do we store UTF-8 instead of UTF-32/USC-4  or UTF-16 (like most people)? Well, UTF-32
+	Why do we store UTF-8 instead of UTF-32/USC-4 or UTF-16 (like most people)? Well, UTF-32
 	is horribly large. In fact it will quadruple the size of any ASCII encoded string, and
-	all of the additional data that is adds in that case is nothing but zeros. Even for most
+	all of the additional data that it adds in that case is nothing but zeros. Even for most
 	European languages, the majority of UTF-32 data is just wasted space. UTF-16 (wchar_t
-	and std::wstring) are arguably just as bad. UTF-16 only outperforms UTF-8 in certain
-	conditions that, as far as I'm aware, are rare occurances that are dwarfed when compared
-	to the number of situations where UTF-8 outperforms UTF-16.	On the other hand, UTF-8
-	is an effective way to encode Unicode without adding a ton of additional cruft, and it
-	naturally preserves the most important aspects of C string functionality, while the
-	unpreserved functionality is still very cost efficient. Additionally, converting from
-	UTF-32 to UTF-8 and back is trivial and very efficient, comprised mostly of simple
-	bit-shifts. So in short, OpenGUI utilizes UTF-8 internally because, not only is it more
-	space efficient, but that additional space savings tends to also contribute to better
-	performance.
+	and std::wstring) are arguably just as bad. Not only does UTF-16 not protect you from
+	having to employ surrogate data pairs to represent all Unicode values (many Eastern
+	languages will use surrogate pairs extensively), but again, you suffer the wrath of
+	unnecessary data bloat when representing most characters from Western languages.
+	On the other hand, UTF-8 is an effective way to encode Unicode without adding a ton
+	of additional cruft, and it naturally preserves the most important aspects of C string
+	functionality, while the unpreserved functionality is still very cost efficient.
+	Additionally, converting from UTF-32 to UTF-8 and back is trivial and very efficient,
+	comprised mostly of simple bit-shifts. So in short, %OpenGUI utilizes UTF-8 internally
+	because, not only is it more space efficient, but that additional space savings tends
+	to also contribute to better performance. This is especially important to us due to
+	the extensive use of string indexed maps within %OpenGUI.
 
 	\see
 	For additional information on UTF-8 encoding: http://en.wikipedia.org/wiki/UTF-8
@@ -46,8 +48,8 @@ namespace OpenGUI {
 		typedef size_t size_type;
 		//! the usual constant representing: not found, no limit, etc
 		static const size_type npos;
-		//! type for representing a UTF-32/UCS-4 code point
-		typedef unsigned int code_point;
+		//! type for representing a UTF-32/UCS-4 code point, which is the only reliable way to always represent a single character using an integral type
+		typedef UINT32 code_point;
 
 		//! default constructor, creates an empty string
 		UTF8String();
@@ -71,6 +73,15 @@ namespace OpenGUI {
 		static code_point _utf8_to_utf32( const char* utf8_str );
 		//! decodes the given code point and append the stream bytes to the given string
 		void _utf32_to_utf8( code_point c, std::string& out ) const;
+
+		//! converts UTF-16 to UTF-32
+		/*! We store the UTF-16 in a 32-bit code-point because UTF-16 can still require
+		surrogate pairs for some values. Place the lead surrogate in the high bits if one exists. */
+		static void _utf16_to_utf32( const code_point& c, code_point& c_out );
+		//! converts UTF-32 to UTF-16
+		/*! We store the UTF-16 in a 32-bit code-point because UTF-16 can still require
+		surrogate pairs for some values. We place the lead surrogate in the high bits if one exists. */
+		static void _utf32_to_utf16( const code_point& c, code_point& c_out );
 
 		//! runs the held stream through the other _verifyUTF8() test
 		bool _verifyUTF8() const {
