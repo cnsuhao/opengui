@@ -4,6 +4,22 @@
 
 #include "OpenGUI_String.h"
 
+///////////////////////////////////////////////////////////////////////
+// just a bunch of constants we'll be using later. Should probably turn them into macros to force proper inlining
+typedef unsigned char byte; // 1 byte ;-)
+const byte _lead1      = 0xC0; //110xxxxx
+const byte _lead1_mask = 0x1F; //00011111
+const byte _lead2      = 0xE0; //1110xxxx
+const byte _lead2_mask = 0x0F; //00001111
+const byte _lead3      = 0xF0; //11110xxx
+const byte _lead3_mask = 0x07; //00000111
+const byte _lead4      = 0xF8; //111110xx
+const byte _lead4_mask = 0x03; //00000011
+const byte _lead5      = 0xFC; //1111110x
+const byte _lead5_mask = 0x01; //00000001
+const byte _cont       = 0x80; //10xxxxxx
+const byte _cont_mask  = 0x3F; //00111111
+
 namespace OpenGUI {
 	//#########################################################################
 	const UTF8String::size_type UTF8String::npos = ~0;
