@@ -209,8 +209,11 @@ void Demo1App::mouseButtonCallback( int button, int action ) {
 }
 
 int main( void ) {
-	Demo1App app;
+	const char german[] = { (char)0xC3,(char)0xB6, ' ', (char)0xC3,(char)0xA4, ' ', (char)0xC3,(char)0xBC, ' ', (char)0xC3,(char)0x9F, 0 };
+	UTF8String t(german);
+	UTF8String w(L"some wide string");
 
+	Demo1App app;
 	app.run();
 
 	return 0;

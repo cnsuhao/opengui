@@ -57,7 +57,18 @@ namespace OpenGUI {
 		~UTF8String();
 		//! copy constructor
 		UTF8String( const UTF8String& copy );
+		//! nul-terminated C-string initialized constructor
+		UTF8String( const char* cstr );
+		//! std::string initialized constructor
+		UTF8String( const std::string& str );
+		//! std::wstring (wide string) initialized constructor
+		UTF8String( const std::wstring& wstr );
 
+		//! This exception is used when invalid data streams are encountered
+		class invalid_data: public std::runtime_error{
+		public:
+			explicit invalid_data(const std::string& _Message):std::runtime_error(_Message){};
+		};
 	private:
 		typedef unsigned char data_point;
 		typedef std::basic_string<data_point> ustring;
@@ -76,10 +87,13 @@ namespace OpenGUI {
 		//! returns the length of the sequence starting with \c s
 		static size_t _getSequenceLen( const char& s );
 
+		//! loads the given wstring, appending it to the end of the given ustring as a UTF-8 stream, returns the UTF-8 character length
+		size_type _loadWString(const std::wstring& in_wstr, ustring& out_ustr) const;
+
 		//! returns the UCS-4 code point in the UTF-8 stream at the given position
 		static code_point _utf8_to_utf32( const char* utf8_str );
 		//! decodes the given code point and append the stream bytes to the given string
-		void _utf32_to_utf8( code_point c, std::string& out ) const;
+		void _utf32_to_utf8( code_point c, ustring& out ) const;
 
 		//! converts UTF-16 to UTF-32
 		/*! We store the UTF-16 in a 32-bit code-point because UTF-16 can still require
@@ -91,12 +105,14 @@ namespace OpenGUI {
 		static void _utf32_to_utf16( const code_point& c, code_point& c_out );
 
 		//! runs the held stream through the other _verifyUTF8() test
-		bool _verifyUTF8() const {
+		size_type _verifyUTF8() const {
 			return _verifyUTF8( mData );
 		};
 
-		//! tests the given UTF-8 stream for proper continuation bytes and sequence length identifiers
-		static bool _verifyUTF8( const ustring& str );
+		//! returns the length of the given UTF-8 stream and tests for proper continuation bytes and sequence length identifiers
+		static size_type _verifyUTF8( const ustring& str );
+		//! tests the given std::string as a UTF-8 stream for proper continuation bytes and sequence length identifiers, returns the length
+		static size_type _verifyUTF8( const std::string& str );
 
 		///////////////////////////////////////////////////////////////////////
 		// Scratch buffer

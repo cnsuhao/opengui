@@ -38,6 +38,31 @@ namespace OpenGUI {
 		mLength = copy.mLength;
 	}
 	//#########################################################################
+	UTF8String::UTF8String( const char* cstr ) {
+		_init();
+		mData = ( const data_point* )cstr;
+		try {
+			mLength = _verifyUTF8();
+		} catch ( invalid_data& ) {
+			invalid_data( "initializer string failed UTF-8 validity test" );
+		}
+	}
+	//#########################################################################
+	UTF8String::UTF8String( const std::string& str ) {
+		_init();
+		mData = ( const data_point* )str.c_str();
+		try {
+			mLength = _verifyUTF8();
+		} catch ( invalid_data& ) {
+			invalid_data( "initializer string failed UTF-8 validity test" );
+		}
+	}
+	//#########################################################################
+	UTF8String::UTF8String( const std::wstring& wstr ) {
+		_init();
+		mLength = _loadWString( wstr, mData );
+	}
+	//#########################################################################
 	void UTF8String::_init() {
 		mLength = 0;
 		m_buffer.mVoidBuffer = 0;
@@ -131,7 +156,7 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
-	void UTF8String::_utf32_to_utf8( code_point c, std::string& out ) const {
+	void UTF8String::_utf32_to_utf8( code_point c, ustring& out ) const {
 		size_t len = _predictBytes( c );
 		_getBufferCStr( len );
 
@@ -164,8 +189,8 @@ namespace OpenGUI {
 			break;
 		}
 
-		// and append the result to the given string
-		out.append( m_buffer.mCStrBuffer, len );
+		// and append the result to the given ustring
+		out.append(( byte* )m_buffer.mCStrBuffer, len );
 	}
 	//#########################################################################
 	/*! This function is completely unprotected against buffer overflows.
@@ -229,9 +254,10 @@ namespace OpenGUI {
 		throw std::range_error( "invalid code_point value" );
 	}
 	//#########################################################################
-	bool UTF8String::_verifyUTF8( const ustring& str ) {
+	UTF8String::size_type UTF8String::_verifyUTF8( const ustring& str ) {
 		ustring::const_iterator i, ie = str.end();
 		i = str.begin();
+		size_type length = 0;
 
 		while ( i != ie ) {
 			// characters pass until we find an extended sequence
@@ -242,81 +268,204 @@ namespace OpenGUI {
 
 				if (( c & ~_lead1_mask ) == _lead1 ) {
 					// 1 additional byte
-					if ( c == _lead1 ) return false; // overlong UTF-8 sequence
+					if ( c == _lead1 ) throw invalid_data( "overlong UTF-8 sequence" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 
 				} else if (( c & ~_lead2_mask ) == _lead2 ) {
 					// 2 additional bytes
 					if ( c == _lead2 ) { // possible overlong UTF-8 sequence
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
-						if (( c & _lead2 ) == _cont ) return false; // overlong UTF-8 sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead2 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					} else {
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					}
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 
 				} else if (( c & ~_lead3_mask ) == _lead3 ) {
 					// 3 additional bytes
 					if ( c == _lead3 ) { // possible overlong UTF-8 sequence
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
-						if (( c & _lead3 ) == _cont ) return false; // overlong UTF-8 sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead3 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					} else {
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					}
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 
 				} else if (( c & ~_lead4_mask ) == _lead4 ) {
 					// 4 additional bytes
 					if ( c == _lead4 ) { // possible overlong UTF-8 sequence
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
-						if (( c & _lead4 ) == _cont ) return false; // overlong UTF-8 sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead4 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					} else {
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					}
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 
 				} else if (( c & ~_lead5_mask ) == _lead5 ) {
 					// 5 additional bytes
 					if ( c == _lead5 ) { // possible overlong UTF-8 sequence
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
-						if (( c & _lead5 ) == _cont ) return false; // overlong UTF-8 sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead5 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					} else {
 						c = ( *( ++i ) ); // get next byte in sequence
-						if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					}
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 					c = ( *( ++i ) ); // get next byte in sequence
-					if (( c & ~_cont_mask ) != _cont ) return false; // bad continuation sequence header
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
 
 				} else {
 					// error condition, invalid lead byte signature
-					return false;
+					throw invalid_data( "invalid lead byte signature" );
 				}
 			}
+			length++;
 			i++;
 		}
-		return true;
+		return length;
 	}
+	//#########################################################################
+	UTF8String::size_type UTF8String::_verifyUTF8( const std::string& str ) {
+		std::string::const_iterator i, ie = str.end();
+		i = str.begin();
+		size_type length = 0;
+
+		while ( i != ie ) {
+			// characters pass until we find an extended sequence
+			if (( *i ) & 0x80 ) {
+				// Next step is to determine how many bytes are in the sequence and verify them all.
+				// We perform these tests in the order of likelihood (the longer sequences are more rare than the shorter ones)
+				byte c = ( *i );
+
+				if (( c & ~_lead1_mask ) == _lead1 ) {
+					// 1 additional byte
+					if ( c == _lead1 ) throw invalid_data( "overlong UTF-8 sequence" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+
+				} else if (( c & ~_lead2_mask ) == _lead2 ) {
+					// 2 additional bytes
+					if ( c == _lead2 ) { // possible overlong UTF-8 sequence
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead2 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					} else {
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					}
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+
+				} else if (( c & ~_lead3_mask ) == _lead3 ) {
+					// 3 additional bytes
+					if ( c == _lead3 ) { // possible overlong UTF-8 sequence
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead3 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					} else {
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					}
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+
+				} else if (( c & ~_lead4_mask ) == _lead4 ) {
+					// 4 additional bytes
+					if ( c == _lead4 ) { // possible overlong UTF-8 sequence
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead4 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					} else {
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					}
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+
+				} else if (( c & ~_lead5_mask ) == _lead5 ) {
+					// 5 additional bytes
+					if ( c == _lead5 ) { // possible overlong UTF-8 sequence
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+						if (( c & _lead5 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					} else {
+						c = ( *( ++i ) ); // get next byte in sequence
+						if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					}
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont ) throw invalid_data( "bad continuation sequence header" );
+
+				} else {
+					// error condition, invalid lead byte signature
+					throw invalid_data( "invalid lead byte signature" );
+				}
+			}
+			length++;
+			i++;
+		}
+		return length;
+	}
+	//#########################################################################
+	UTF8String::size_type UTF8String::_loadWString( const std::wstring& in_wstr, ustring& out_ustr ) const {
+		std::wstring::const_iterator i, ie = in_wstr.end();
+		out_ustr.reserve( out_ustr.length() + in_wstr.length() ); // reserve a logical guess worth of space
+		size_type length = 0;
+		i = in_wstr.begin();
+		while ( i != ie ) {
+			wchar_t w;
+			w = ( *i );
+			code_point cp;
+			if ( 0xD800 <= w && w <= 0xDBFF ) {
+				// surrogate pair
+				cp = w << 16;
+				i++;
+				w = ( *i );
+				cp |= w;
+			} else {
+				// just a single character
+				cp = w;
+			}
+			code_point cp2;
+			_utf16_to_utf32( cp, cp2 );
+			_utf32_to_utf8( cp2, out_ustr );
+			length++;
+			i++;
+		}
+		return length;
+	}
+	//#########################################################################
 } // namespace OpenGUI{
