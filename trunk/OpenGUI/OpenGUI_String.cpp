@@ -32,7 +32,14 @@ namespace OpenGUI {
 		_cleanBuffer();
 	}
 	//#########################################################################
+	UTF8String::UTF8String( const UTF8String& copy ) {
+		_init();
+		mData = copy.mData;
+		mLength = copy.mLength;
+	}
+	//#########################################################################
 	void UTF8String::_init() {
+		mLength = 0;
 		m_buffer.mVoidBuffer = 0;
 		m_bufferType = none;
 		m_bufferSize = 0;
@@ -72,11 +79,11 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
-	void UTF8String::_append( const std::string& str ) {
+	void UTF8String::_append( const ustring& str ) {
 		mData.append( str );
 	}
 	//#########################################################################
-	void UTF8String::_assign( const std::string& str ) {
+	void UTF8String::_assign( const ustring& str ) {
 		mData = str;
 	}
 	//#########################################################################
@@ -222,8 +229,8 @@ namespace OpenGUI {
 		throw std::range_error( "invalid code_point value" );
 	}
 	//#########################################################################
-	bool UTF8String::_verifyUTF8( const std::string& str ) {
-		std::string::const_iterator i, ie = str.end();
+	bool UTF8String::_verifyUTF8( const ustring& str ) {
+		ustring::const_iterator i, ie = str.end();
 		i = str.begin();
 
 		while ( i != ie ) {

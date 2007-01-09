@@ -55,14 +55,21 @@ namespace OpenGUI {
 		UTF8String();
 		//! destructor
 		~UTF8String();
+		//! copy constructor
+		UTF8String( const UTF8String& copy );
 
 	private:
-		std::string mData; // this is the actual UTF-8 data we are storing
+		typedef unsigned char data_point;
+		typedef std::basic_string<data_point> ustring;
+		ustring mData; // this is the actual UTF-8 data we are storing
+		size_type mLength; // we cache the length internally because we don't like iterating constantly for length
 
+		//////////////////////////////////////////////////////////////////////////
+		// utility functions
 		// dumbly appends the given string, no verification performed
-		void _append( const std::string& str );
+		void _append( const ustring& str );
 		// dumbly assigns the given string, no verification performed
-		void _assign( const std::string& str );
+		void _assign( const ustring& str );
 
 		//! predicts the number of UTF-8 stream bytes that will be needed to represent the given UCS-4 character
 		static size_t _predictBytes( const code_point& c );
@@ -89,7 +96,7 @@ namespace OpenGUI {
 		};
 
 		//! tests the given UTF-8 stream for proper continuation bytes and sequence length identifiers
-		static bool _verifyUTF8( const std::string& str );
+		static bool _verifyUTF8( const ustring& str );
 
 		///////////////////////////////////////////////////////////////////////
 		// Scratch buffer
