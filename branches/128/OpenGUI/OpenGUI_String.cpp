@@ -60,11 +60,11 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTF8String::iterator UTF8String::begin() {
-		return iterator( mData.begin() );
+		return iterator( this, mData.begin() );
 	}
 	//#########################################################################
 	UTF8String::iterator UTF8String::end() {
-		return iterator( mData.end() );
+		return iterator( this, mData.end() );
 	}
 	//#########################################################################
 	UTF8String& UTF8String::assign( const char* c_str ) {

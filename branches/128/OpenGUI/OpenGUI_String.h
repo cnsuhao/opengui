@@ -61,7 +61,7 @@ namespace OpenGUI {
 		public:
 			//! constructor takes a string message that can be later retrieved by the what() function
 			explicit invalid_data( const std::string& _Message ): std::runtime_error( _Message ) {
-				/**/
+				/* The thing is, Bob, it's not that I'm lazy, it's that I just don't care. */
 			}
 		};
 
@@ -71,20 +71,22 @@ namespace OpenGUI {
 			typedef code_point value_type;
 			typedef value_type & reference;
 			typedef value_type * pointer;
+
 			iterator() {
 				/* I would relax... I would sit on my ass all day... I would do nothing. */
 				mStringPtr = 0;
 			}
-			iterator( ustring::iterator init ) {
+			iterator( UTF8String* stringPtr, ustring::iterator init ) {
 				mPos = init;
+				mStringPtr = stringPtr;
 			}
 			iterator( const iterator& copy ) {
 				mPos = copy.mPos;
+				mStringPtr = copy.mStringPtr;
 			}
 			//! prefix ++ operator
 			iterator& operator++() {
-				size_t l = UTF8String::_getSequenceLen(( *mPos ) );
-				mPos += l;
+				_seek( 1 );
 				return *this;
 			}
 			//! postfix ++ operator
@@ -95,7 +97,7 @@ namespace OpenGUI {
 			}
 			//! prefix -- operator
 			iterator& operator--() {
-				while ( UTF8String::_isContByte(( *( --mPos ) ) ) );
+				_seek_rev( 1 );
 				return *this;
 			}
 			//! postfix -- operator
@@ -104,6 +106,13 @@ namespace OpenGUI {
 				operator--();
 				return ret;
 			}
+			iterator operator+( int c ) {
+				iterator ret( *this );
+			}
+			iterator& operator+=( int c ) {}
+			iterator operator-( int c ) {}
+			iterator& operator-=( int c ) {}
+
 			//! iterator equality operator
 			bool operator==( const iterator& r ) {
 				if ( mStringPtr != r.mStringPtr )
@@ -117,6 +126,24 @@ namespace OpenGUI {
 				return mPos != r.mPos;
 			}
 		private:
+			void _seek( int c ) {
+				if ( c < 0 ) {
+					_seek_rev( -c );
+				} else {
+					while ( c-- ) {
+						size_t l = UTF8String::_getSequenceLen(( *mPos ) );
+						mPos += l;
+					}
+				}
+			}
+			void _seek_rev( int c ) {
+				if ( c < 0 ) {
+					_seek( -c );
+				} else {
+					while ( c-- )
+						while ( UTF8String::_isContByte(( *( --mPos ) ) ) );
+				}
+			}
 			ustring::iterator mPos;
 			UTF8String* mStringPtr;
 		};
