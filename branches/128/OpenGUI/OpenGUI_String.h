@@ -73,6 +73,7 @@ namespace OpenGUI {
 			typedef value_type * pointer;
 			iterator() {
 				/* I would relax... I would sit on my ass all day... I would do nothing. */
+				mStringPtr = 0;
 			}
 			iterator( ustring::iterator init ) {
 				mPos = init;
@@ -83,8 +84,7 @@ namespace OpenGUI {
 			//! prefix ++ operator
 			iterator& operator++() {
 				size_t l = UTF8String::_getSequenceLen(( *mPos ) );
-				while (( l-- ) > 0 )
-					++mPos;
+				mPos += l;
 				return *this;
 			}
 			//! postfix ++ operator
@@ -106,14 +106,19 @@ namespace OpenGUI {
 			}
 			//! iterator equality operator
 			bool operator==( const iterator& r ) {
+				if ( mStringPtr != r.mStringPtr )
+					throw std::runtime_error( "cannot compare iterators from 2 independent streams" );
 				return mPos == r.mPos;
 			}
 			//! iterator inequality operator
 			bool operator!=( const iterator& r ) {
+				if ( mStringPtr != r.mStringPtr )
+					throw std::runtime_error( "cannot compare iterators from 2 independent streams" );
 				return mPos != r.mPos;
 			}
 		private:
 			ustring::iterator mPos;
+			UTF8String* mStringPtr;
 		};
 
 
@@ -174,20 +179,32 @@ namespace OpenGUI {
 		//! returns an iterator at the end of the string
 		iterator end();
 
+		//! assign \c str to the current string (\c str is treated as a UTF-8 stream)
 		UTF8String& assign( const std::string& str );
+		//! assign \c wstr to the current string
 		UTF8String& assign( const std::wstring& wstr );
+		//! assign \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
 		UTF8String& assign( const char* c_str );
+		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
 		UTF8String& assign( const char* c_str, size_type num );
 
-		/*
-		void assign( size_type num, const char& val );
-		void assign( size_type num, const code_point& val );
-
-		UTF8String& assign( const string& str, size_type index, size_type len );
-		UTF8String& assign( size_type num, const char& ch );
+		/* Waiting on Append
+		//! gives the current string the values from \c start to \c end
+		void assign( iterator start, iterator end );
+		//! assign a substring of \c ustr starting at \c index that is \c len characters long to the current string
+		UTF8String& assign( const UTF8String& ustr, size_type index, size_type len );
+		//! assign the string to \c num copies of \c val
+		UTF8String& assign( size_type num, const char& val );
+		//! assign the string to \c num copies of \c val
+		UTF8String& assign( size_type num, const code_point& val );
 		*/
 
-		//void assign( input_iterator start, input_iterator end );
+		/* Waiting on code_point to become a class
+		//! returns a reference to the element in the string at index \c loc
+		value_type& at( size_type loc );
+		//! returns a reference to the element in the string at index \c loc
+		const value_type& at( size_type loc ) const;
+		*/
 
 	private:
 		ustring mData; // this is the actual UTF-8 data we are storing

@@ -110,6 +110,10 @@ namespace OpenGUI {
 		mLength = _loadWString( wstr, mData );
 		return *this;
 	}
+	/*UTF8String& UTF8String::assign( const UTF8String& ustr, size_type index, size_type len ){
+		//
+		return *this;
+	}*/
 	//#########################################################################
 	void UTF8String::_init() {
 		mLength = 0;
