@@ -43,6 +43,11 @@ namespace OpenGUI {
 	For additional information on UTF-8 encoding: http://en.wikipedia.org/wiki/UTF-8
 	*/
 	class OPENGUI_API UTF8String {
+		friend class iterator;
+		//! represents a single data point (byte) in the UTF-8 stream, not a UCS code point!
+		typedef unsigned char data_point;
+		typedef std::basic_string<data_point> ustring;
+
 	public:
 		//! size type used to indicate character positions within the string
 		typedef size_t size_type;
@@ -50,6 +55,69 @@ namespace OpenGUI {
 		static const size_type npos;
 		//! type for representing a UTF-32/UCS-4 code point, which is the only reliable way to always represent a single character using an integral type
 		typedef UINT32 code_point;
+
+		//! This exception is used when invalid data streams are encountered
+	class invalid_data: public std::runtime_error { // i don't know why the beautifier is freaking out on this line
+		public:
+			//! constructor takes a string message that can be later retrieved by the what() function
+			explicit invalid_data( const std::string& _Message ): std::runtime_error( _Message ) {
+				/**/
+			}
+		};
+
+		//! iterator for UTF8String
+		class iterator {
+		public:
+			typedef code_point value_type;
+			typedef value_type & reference;
+			typedef value_type * pointer;
+			iterator() {
+				/* I would relax... I would sit on my ass all day... I would do nothing. */
+			}
+			iterator( ustring::iterator init ) {
+				mPos = init;
+			}
+			iterator( const iterator& copy ) {
+				mPos = copy.mPos;
+			}
+			//! prefix ++ operator
+			iterator& operator++() {
+				size_t l = UTF8String::_getSequenceLen(( *mPos ) );
+				while (( l-- ) > 0 )
+					++mPos;
+				return *this;
+			}
+			//! postfix ++ operator
+			iterator operator++( int ) {
+				iterator ret( *this );
+				operator++();
+				return ret;
+			}
+			//! prefix -- operator
+			iterator& operator--() {
+				while ( UTF8String::_isContByte(( *( --mPos ) ) ) );
+				return *this;
+			}
+			//! postfix -- operator
+			iterator operator--( int ) {
+				iterator ret( *this );
+				operator--();
+				return ret;
+			}
+			//! iterator equality operator
+			bool operator==( const iterator& r ) {
+				return mPos == r.mPos;
+			}
+			//! iterator inequality operator
+			bool operator!=( const iterator& r ) {
+				return mPos != r.mPos;
+			}
+		private:
+			ustring::iterator mPos;
+		};
+
+
+
 
 		//! default constructor, creates an empty string
 		UTF8String();
@@ -67,27 +135,12 @@ namespace OpenGUI {
 		//! clears the contents of the string
 		void clear();
 
-		//! This exception is used when invalid data streams are encountered
-	class invalid_data: public std::runtime_error {
-		public:
-			//! constructor takes a string message that can be later retrieved by the what() function
-			explicit invalid_data( const std::string& _Message ): std::runtime_error( _Message ) {
-				/**/
-			}
-		};
-
-	class iterator{
-	public:
-		typedef code_point value_type;
-		typedef value_type & reference;
-		typedef value_type * pointer;
-	};
+		//! returns an iterator at the beginning of the string
+		iterator begin();
+		//! returns an iterator at the end of the string
+		iterator end();
 
 	private:
-		friend class iterator;
-		
-		typedef unsigned char data_point;
-		typedef std::basic_string<data_point> ustring;
 		ustring mData; // this is the actual UTF-8 data we are storing
 		size_type mLength; // we cache the length internally because we don't like iterating constantly for length
 
@@ -101,13 +154,15 @@ namespace OpenGUI {
 		//! predicts the number of UTF-8 stream bytes that will be needed to represent the given UCS-4 character
 		static size_t _predictBytes( const code_point& c );
 		//! returns the length of the sequence starting with \c s
-		static size_t _getSequenceLen( const char& s );
+		static size_t _getSequenceLen( const data_point& s );
+		//! returns \c TRUE if the data point is a continuation byte
+		static bool _isContByte( const data_point& s );
 
 		//! loads the given wstring, appending it to the end of the given ustring as a UTF-8 stream, returns the UTF-8 character length
 		size_type _loadWString( const std::wstring& in_wstr, ustring& out_ustr ) const;
 
 		//! returns the UCS-4 code point in the UTF-8 stream at the given position
-		static code_point _utf8_to_utf32( const char* utf8_str );
+		static code_point _utf8_to_utf32( const data_point* utf8_str );
 		//! decodes the given code point and append the stream bytes to the given string
 		void _utf32_to_utf8( code_point c, ustring& out ) const;
 
@@ -127,7 +182,7 @@ namespace OpenGUI {
 
 		//! returns the length of the given UTF-8 stream and tests for proper continuation bytes and sequence length identifiers
 		static size_type _verifyUTF8( const ustring& str );
-		//! tests the given std::string as a UTF-8 stream for proper continuation bytes and sequence length identifiers, returns the length
+		//! tests the given std::string as a UTF-8 stream for proper continuation bytes and sequence length identifiers, returns the number of UCS characters in the stream (not byte length)
 		static size_type _verifyUTF8( const std::string& str );
 
 		///////////////////////////////////////////////////////////////////////

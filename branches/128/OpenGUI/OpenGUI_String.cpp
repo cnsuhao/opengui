@@ -75,6 +75,14 @@ namespace OpenGUI {
 		_cleanBuffer();
 	}
 	//#########################################################################
+	UTF8String::iterator UTF8String::begin() {
+		return iterator( mData.begin() );
+	}
+	//#########################################################################
+	UTF8String::iterator UTF8String::end() {
+		return iterator( mData.end() );
+	}
+	//#########################################################################
 	void UTF8String::_init() {
 		mLength = 0;
 		m_buffer.mVoidBuffer = 0;
@@ -207,7 +215,7 @@ namespace OpenGUI {
 	//#########################################################################
 	/*! This function is completely unprotected against buffer overflows.
 	So don't use it on data you don't trust. */
-	UTF8String::code_point UTF8String::_utf8_to_utf32( const char* utf8_str ) {
+	UTF8String::code_point UTF8String::_utf8_to_utf32( const data_point* utf8_str ) {
 		code_point v = 0;
 		size_t len = _getSequenceLen( utf8_str[0] );
 		v = utf8_str[0];
@@ -238,7 +246,7 @@ namespace OpenGUI {
 		return v;
 	}
 	//#########################################################################
-	size_t UTF8String::_getSequenceLen( const char& s ) {
+	size_t UTF8String::_getSequenceLen( const data_point& s ) {
 		if ( !( s & 0x80 ) ) return 1;
 		if (( byte )( s & ~_lead1_mask ) == _lead1 ) return 2;
 		if (( byte )( s & ~_lead2_mask ) == _lead2 ) return 3;
@@ -478,6 +486,10 @@ namespace OpenGUI {
 			i++;
 		}
 		return length;
+	}
+	//#########################################################################
+	bool UTF8String::_isContByte( const data_point& s ) {
+		return ( s & ~_cont_mask ) == _cont;
 	}
 	//#########################################################################
 } // namespace OpenGUI{
