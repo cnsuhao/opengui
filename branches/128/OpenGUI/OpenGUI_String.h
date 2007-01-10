@@ -135,10 +135,59 @@ namespace OpenGUI {
 		//! clears the contents of the string
 		void clear();
 
+		//! Returns the maximum number of elements the string can hold before it will need to allocate more space
+		/*! The returned value assumes the shortest possible encoding for each code_point (1 byte each). UTF-8 is
+		a variable length encoding scheme, so this is the best we can do. */
+		size_type capacity() const {
+			return mData.capacity();
+		}
+
+		//! Returns the maximum number of elements that the string can be guaranteed capable to hold
+		/*! This is barring memory limitations, which we can't detect. Also, the returned value is
+		conservative, assuming maximum UTF-8 encoding expansion. You'll likely be able to hold much
+		more than we report back, but again, variable length encoding means we have to take some
+		defensive measures. */
+		size_type max_size() const {
+			return mData.max_size() / 6;
+		}
+
+		//! Returns the number of elements (stored Unicode code points) in the current string
+		/*! \see byte_length() */
+		size_type length() const {
+			return size();
+		}
+
+		//! Returns the number of elements (stored Unicode code points) in the current string
+		/*! \see byte_length() */
+		size_type size() const {
+			return mLength;
+		}
+
+		//! Returns the number of bytes in the UTF-8 stream
+		/*! This is the byte array length of the encoded stream. */
+		size_type byte_length() const {
+			return mData.size();
+		}
+
 		//! returns an iterator at the beginning of the string
 		iterator begin();
 		//! returns an iterator at the end of the string
 		iterator end();
+
+		UTF8String& assign( const std::string& str );
+		UTF8String& assign( const std::wstring& wstr );
+		UTF8String& assign( const char* c_str );
+		UTF8String& assign( const char* c_str, size_type num );
+
+		/*
+		void assign( size_type num, const char& val );
+		void assign( size_type num, const code_point& val );
+
+		UTF8String& assign( const string& str, size_type index, size_type len );
+		UTF8String& assign( size_type num, const char& ch );
+		*/
+
+		//void assign( input_iterator start, input_iterator end );
 
 	private:
 		ustring mData; // this is the actual UTF-8 data we are storing

@@ -40,33 +40,17 @@ namespace OpenGUI {
 	//#########################################################################
 	UTF8String::UTF8String( const char* cstr ) {
 		_init();
-		mData = ( const data_point* )cstr;
-		try {
-			mLength = _verifyUTF8();
-		} catch ( invalid_data& ) {
-			mData.clear();
-			mLength = 0;
-			_cleanBuffer();
-			invalid_data( "initializer string failed UTF-8 validity test" );
-		}
+		assign( cstr );
 	}
 	//#########################################################################
 	UTF8String::UTF8String( const std::string& str ) {
 		_init();
-		mData = ( const data_point* )str.c_str();
-		try {
-			mLength = _verifyUTF8();
-		} catch ( invalid_data& ) {
-			mData.clear();
-			mLength = 0;
-			_cleanBuffer();
-			invalid_data( "initializer string failed UTF-8 validity test" );
-		}
+		assign( str );
 	}
 	//#########################################################################
 	UTF8String::UTF8String( const std::wstring& wstr ) {
 		_init();
-		mLength = _loadWString( wstr, mData );
+		assign( wstr );
 	}
 	//#########################################################################
 	void UTF8String::clear() {
@@ -81,6 +65,50 @@ namespace OpenGUI {
 	//#########################################################################
 	UTF8String::iterator UTF8String::end() {
 		return iterator( mData.end() );
+	}
+	//#########################################################################
+	UTF8String& UTF8String::assign( const char* c_str ) {
+		mData = ( const data_point* )c_str;
+		try {
+			mLength = _verifyUTF8();
+		} catch ( invalid_data& ) {
+			mData.clear();
+			mLength = 0;
+			_cleanBuffer();
+			invalid_data( "initializer string failed UTF-8 validity test" );
+		}
+		return *this;
+	}
+	//#########################################################################
+	UTF8String& UTF8String::assign( const char* c_str, size_type num ) {
+		mData.assign(( const data_point* )c_str, num );
+		try {
+			mLength = _verifyUTF8();
+		} catch ( invalid_data& ) {
+			mData.clear();
+			mLength = 0;
+			_cleanBuffer();
+			invalid_data( "initializer string failed UTF-8 validity test" );
+		}
+		return *this;
+	}
+	//#########################################################################
+	UTF8String& UTF8String::assign( const std::string& str ) {
+		mData = ( const data_point* )str.c_str();
+		try {
+			mLength = _verifyUTF8();
+		} catch ( invalid_data& ) {
+			mData.clear();
+			mLength = 0;
+			_cleanBuffer();
+			invalid_data( "initializer string failed UTF-8 validity test" );
+		}
+		return *this;
+	}
+	//#########################################################################
+	UTF8String& UTF8String::assign( const std::wstring& wstr ) {
+		mLength = _loadWString( wstr, mData );
+		return *this;
 	}
 	//#########################################################################
 	void UTF8String::_init() {
