@@ -76,7 +76,16 @@ namespace OpenGUI {
 			}
 		};
 
+	class iterator{
+	public:
+		typedef code_point value_type;
+		typedef value_type & reference;
+		typedef value_type * pointer;
+	};
+
 	private:
+		friend class iterator;
+		
 		typedef unsigned char data_point;
 		typedef std::basic_string<data_point> ustring;
 		ustring mData; // this is the actual UTF-8 data we are storing
