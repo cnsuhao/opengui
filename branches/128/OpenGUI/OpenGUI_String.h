@@ -64,11 +64,18 @@ namespace OpenGUI {
 		//! std::wstring (wide string) initialized constructor
 		UTF8String( const std::wstring& wstr );
 
+		//! clears the contents of the string
+		void clear();
+
 		//! This exception is used when invalid data streams are encountered
-		class invalid_data: public std::runtime_error{
+	class invalid_data: public std::runtime_error {
 		public:
-			explicit invalid_data(const std::string& _Message):std::runtime_error(_Message){};
+			//! constructor takes a string message that can be later retrieved by the what() function
+			explicit invalid_data( const std::string& _Message ): std::runtime_error( _Message ) {
+				/**/
+			}
 		};
+
 	private:
 		typedef unsigned char data_point;
 		typedef std::basic_string<data_point> ustring;
@@ -88,7 +95,7 @@ namespace OpenGUI {
 		static size_t _getSequenceLen( const char& s );
 
 		//! loads the given wstring, appending it to the end of the given ustring as a UTF-8 stream, returns the UTF-8 character length
-		size_type _loadWString(const std::wstring& in_wstr, ustring& out_ustr) const;
+		size_type _loadWString( const std::wstring& in_wstr, ustring& out_ustr ) const;
 
 		//! returns the UCS-4 code point in the UTF-8 stream at the given position
 		static code_point _utf8_to_utf32( const char* utf8_str );

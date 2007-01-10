@@ -44,6 +44,9 @@ namespace OpenGUI {
 		try {
 			mLength = _verifyUTF8();
 		} catch ( invalid_data& ) {
+			mData.clear();
+			mLength = 0;
+			_cleanBuffer();
 			invalid_data( "initializer string failed UTF-8 validity test" );
 		}
 	}
@@ -54,6 +57,9 @@ namespace OpenGUI {
 		try {
 			mLength = _verifyUTF8();
 		} catch ( invalid_data& ) {
+			mData.clear();
+			mLength = 0;
+			_cleanBuffer();
 			invalid_data( "initializer string failed UTF-8 validity test" );
 		}
 	}
@@ -61,6 +67,12 @@ namespace OpenGUI {
 	UTF8String::UTF8String( const std::wstring& wstr ) {
 		_init();
 		mLength = _loadWString( wstr, mData );
+	}
+	//#########################################################################
+	void UTF8String::clear() {
+		mData.clear();
+		mLength = 0;
+		_cleanBuffer();
 	}
 	//#########################################################################
 	void UTF8String::_init() {
