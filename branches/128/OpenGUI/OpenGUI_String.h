@@ -56,6 +56,18 @@ namespace OpenGUI {
 		//! type for representing a UTF-32/UCS-4 code point, which is the only reliable way to always represent a single character using an integral type
 		typedef UINT32 code_point;
 
+		//! A single editable Unicode code point within a UTF-8 encoded stream
+		/*! This class presents the interface necessary to edit data within a UTF8String.
+		It is also capable of representing a single Unicode code point on its own, and is
+		usable in that context as input for several functions of UTF8String. */
+		class Char {
+		public:
+			Char() {}
+			//Char& operator=(){}
+		private:
+			code_point mChar;
+		};
+
 		//! This exception is used when invalid data streams are encountered
 	class invalid_data: public std::runtime_error { // i don't know why the beautifier is freaking out on this line
 		public:
@@ -81,8 +93,9 @@ namespace OpenGUI {
 		*/
 		class iterator {
 		public:
-			typedef code_point value_type;
-			typedef value_type & reference;
+			typedef Char         value_type;
+			typedef int          difference_type;
+			typedef value_type & reference; //!< reference to a Unicode code point
 			typedef value_type * pointer;
 
 			iterator() {
@@ -100,6 +113,20 @@ namespace OpenGUI {
 				mStringPtr = copy.mStringPtr;
 				mIndex     = copy.mIndex;
 				mVersion   = copy.mVersion;
+			}
+			//! dereference operator
+			reference operator*() {
+				throw 0;
+			}
+			//! offset dereference operator
+			/*! returns a reference to the code point at the given offset */
+			reference operator[]( difference_type offset ) {
+				iterator tmp = *this + offset;
+				return tmp.operator *();
+			}
+			//! member access operator
+			pointer operator->() {
+				return 0;
 			}
 			//! prefix ++ operator
 			iterator& operator++() {
