@@ -26,7 +26,7 @@ namespace OpenGUI {
 	is horribly large. In fact it will quadruple the size of any ASCII encoded string, and
 	all of the additional data that it adds in that case is nothing but zeros. Even for most
 	European languages, the majority of UTF-32 data is just wasted space. UTF-16 (wchar_t
-	and std::wstring) are arguably just as bad. Not only does UTF-16 not protect you from
+	and std::wstring) is arguably just as bad. Not only does UTF-16 not protect you from
 	having to employ surrogate data pairs to represent all Unicode values (many Eastern
 	languages will use surrogate pairs extensively), but again, you suffer the wrath of
 	unnecessary data bloat when representing most characters from Western languages.
@@ -106,12 +106,28 @@ namespace OpenGUI {
 				operator--();
 				return ret;
 			}
+			//! += operator
+			iterator& operator+=( int c ) {
+				_seek( c );
+				return *this;
+			}
+			//! -= operator
+			iterator& operator-=( int c ) {
+				_seek_rev( c );
+				return *this;
+			}
+			//! + operator, returns copy of iterator at new position
 			iterator operator+( int c ) {
 				iterator ret( *this );
+				ret.operator += ( c );
+				return ret;
 			}
-			iterator& operator+=( int c ) {}
-			iterator operator-( int c ) {}
-			iterator& operator-=( int c ) {}
+			//! - operator, returns copy of iterator at new position
+			iterator operator-( int c ) {
+				iterator ret( *this );
+				ret.operator -= ( c );
+				return ret;
+			}
 
 			//! iterator equality operator
 			bool operator==( const iterator& r ) {
@@ -125,6 +141,7 @@ namespace OpenGUI {
 					throw std::runtime_error( "cannot compare iterators from 2 independent streams" );
 				return mPos != r.mPos;
 			}
+
 		private:
 			void _seek( int c ) {
 				if ( c < 0 ) {
