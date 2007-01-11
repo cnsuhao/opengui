@@ -307,14 +307,51 @@ namespace OpenGUI {
 			_versionChange();
 			return *this;
 		}
+		//! appends \c c_str (UTF-8 data) on to the end of the current string
+		UTF8String& append( const char* c_str ) {
+			ustring tmp = ( const data_point* )c_str;
+			size_type len = _verifyUTF8( tmp );
+			_append( tmp );
+			mLength += len;
+			_versionChange();
+			return *this;
+		}
 
-		/*UTF8String& append( const char* c_str );
+		//! appends \c num bytes of UTF-8 data from \c c_str on to the end of the current string
+		/*! While \c c_str is expected to be UTF-8 encoded data, \c num is the number of bytes of
+		that stream (not the number of characters). */
+		UTF8String& append( const char* c_str, size_type num ) {
+			ustring tmp;
+			tmp.append(( const data_point* )c_str, num );
+			size_type len = _verifyUTF8( tmp );
+			_append( tmp );
+			mLength += len;
+			_versionChange();
+			return *this;
+		}
+
+		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string
 		UTF8String& append( const std::string& str, size_type index, size_type len );
-		//! appends \c num characters of \c c_str on to the end of the current string
-		UTF8String& append( const char* c_str, size_type num );
-		UTF8String& append( size_type num, char ch );
-		UTF8String& append( iterator start, iterator end );
-		*/
+
+		//! appends \c num repetitions of \c ch on to the end of the current string
+		UTF8String& append( size_type num, code_point ch ) {
+			_utf32_to_utf8( ch, mData );
+			mLength++;
+			_versionChange();
+			return *this;
+		}
+
+		//! appends the sequence denoted by \c start and \c end on to the end of the current string
+		UTF8String& append( iterator start, iterator end ) {
+			while ( start != end ) {
+				throw 0;
+				//code_point& ch;
+				//append(1,ch);
+				++start;
+			}
+			return *this;
+		}
+
 
 		/* Waiting on Append
 		//! gives the current string the values from \c start to \c end
@@ -372,7 +409,7 @@ namespace OpenGUI {
 
 		//! returns the UCS-4 code point in the UTF-8 stream at the given position
 		static code_point _utf8_to_utf32( const data_point* utf8_str );
-		//! decodes the given code point and append the stream bytes to the given string
+		//! decodes the given code point and appends the stream bytes to the given string
 		void _utf32_to_utf8( code_point c, ustring& out ) const;
 
 		//! converts UTF-16 to UTF-32
