@@ -307,6 +307,7 @@ namespace OpenGUI {
 			_versionChange();
 			return *this;
 		}
+
 		/*UTF8String& append( const char* c_str );
 		UTF8String& append( const std::string& str, size_type index, size_type len );
 		//! appends \c num characters of \c c_str on to the end of the current string
@@ -332,6 +333,16 @@ namespace OpenGUI {
 		//! returns a reference to the element in the string at index \c loc
 		const value_type& at( size_type loc ) const;
 		*/
+
+		//! exchanges the elements of the current string with those of \c from. This function operates in constant time.
+		void swap( UTF8String& from ) {
+			mData.swap( from.mData );
+			size_type tmp = mLength;
+			mLength = from.mLength;
+			from.mLength = tmp;
+			_versionChange();
+			from._versionChange();
+		}
 
 	private:
 		ustring mData; // this is the actual UTF-8 data we are storing
