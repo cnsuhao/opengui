@@ -60,14 +60,15 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTF8String::iterator UTF8String::begin() {
-		return iterator( this, mData.begin() );
+		return iterator( this, mData.begin(), 0 );
 	}
 	//#########################################################################
 	UTF8String::iterator UTF8String::end() {
-		return iterator( this, mData.end() );
+		return iterator( this, mData.end(), mLength );
 	}
 	//#########################################################################
 	UTF8String& UTF8String::assign( const char* c_str ) {
+		_versionChange();
 		mData = ( const data_point* )c_str;
 		try {
 			mLength = _verifyUTF8();
@@ -81,6 +82,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTF8String& UTF8String::assign( const char* c_str, size_type num ) {
+		_versionChange();
 		mData.assign(( const data_point* )c_str, num );
 		try {
 			mLength = _verifyUTF8();
@@ -94,6 +96,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTF8String& UTF8String::assign( const std::string& str ) {
+		_versionChange();
 		mData = ( const data_point* )str.c_str();
 		try {
 			mLength = _verifyUTF8();
@@ -107,6 +110,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTF8String& UTF8String::assign( const std::wstring& wstr ) {
+		_versionChange();
 		mLength = _loadWString( wstr, mData );
 		return *this;
 	}
@@ -116,6 +120,7 @@ namespace OpenGUI {
 	}*/
 	//#########################################################################
 	void UTF8String::_init() {
+		mVersion = 0;
 		mLength = 0;
 		m_buffer.mVoidBuffer = 0;
 		m_bufferType = none;

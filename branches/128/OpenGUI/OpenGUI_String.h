@@ -77,7 +77,7 @@ namespace OpenGUI {
 		upwards of 4.2 billion alterations to a UTF8String before you use an attached iterator again
 		(which is quite unlikely, but still), you should try to call the sync() function a few times in
 		the middle to ensure that you don't win the 1 in 4.2 billion odds lottery that the version indicator
-		falls exactly back where it was before you started, causing unexpected iterator drift.
+		falls exactly back where it was when you first started, causing unexpected iterator drift.
 		*/
 		class iterator {
 		public:
@@ -86,19 +86,24 @@ namespace OpenGUI {
 			typedef value_type * pointer;
 
 			iterator() {
-				/* I would relax... I would sit on my ass all day... I would do nothing. */
 				mStringPtr = 0;
+				mIndex = 0;
 			}
-			iterator( UTF8String* stringPtr, ustring::iterator init ) {
+			iterator( UTF8String* stringPtr, ustring::iterator init, size_type pos ) {
 				mPos = init;
 				mStringPtr = stringPtr;
+				mVersion = mStringPtr->mVersion;
+				mIndex = pos;
 			}
 			iterator( const iterator& copy ) {
-				mPos = copy.mPos;
+				mPos       = copy.mPos;
 				mStringPtr = copy.mStringPtr;
+				mIndex     = copy.mIndex;
+				mVersion   = copy.mVersion;
 			}
 			//! prefix ++ operator
 			iterator& operator++() {
+				sync();
 				_seek( 1 );
 				return *this;
 			}
@@ -110,6 +115,7 @@ namespace OpenGUI {
 			}
 			//! prefix -- operator
 			iterator& operator--() {
+				sync();
 				_seek_rev( 1 );
 				return *this;
 			}
@@ -121,11 +127,13 @@ namespace OpenGUI {
 			}
 			//! the += operator
 			iterator& operator+=( int c ) {
+				sync();
 				_seek( c );
 				return *this;
 			}
 			//! the -= operator
 			iterator& operator-=( int c ) {
+				sync();
 				_seek_rev( c );
 				return *this;
 			}
@@ -146,13 +154,30 @@ namespace OpenGUI {
 			bool operator==( const iterator& r ) {
 				if ( mStringPtr != r.mStringPtr )
 					throw std::runtime_error( "cannot compare iterators from 2 independent streams" );
+				sync();
+				r.sync();
 				return mPos == r.mPos;
 			}
 			//! iterator inequality operator
 			bool operator!=( const iterator& r ) {
 				if ( mStringPtr != r.mStringPtr )
 					throw std::runtime_error( "cannot compare iterators from 2 independent streams" );
+				sync();
+				r.sync();
 				return mPos != r.mPos;
+			}
+
+			//! resynchronizes the iterator position if the pointed UTF8String's version has changed
+			/*! \return \c true if a resync was performed, \c false if it was skipped because it was not necessary */
+			bool sync() const {
+				if ( !mStringPtr )
+					throw std::runtime_error( "invalid iterator" );
+				if ( mStringPtr->mVersion != mVersion ) {
+					_sync();
+					return true;
+				} else {
+					return false;
+				}
 			}
 
 		private:
@@ -163,6 +188,7 @@ namespace OpenGUI {
 					while ( c-- ) {
 						size_t l = UTF8String::_getSequenceLen(( *mPos ) );
 						mPos += l;
+						mIndex++;
 					}
 				}
 			}
@@ -170,12 +196,30 @@ namespace OpenGUI {
 				if ( c < 0 ) {
 					_seek( -c );
 				} else {
-					while ( c-- )
+					while ( c-- ) {
 						while ( UTF8String::_isContByte(( *( --mPos ) ) ) );
+						mIndex--;
+					}
 				}
 			}
-			ustring::iterator mPos;
+			void _sync() const {
+				mVersion = mStringPtr->mVersion;
+				if ( mIndex == npos ) {
+					mPos = mStringPtr->mData.end();
+					mIndex = mStringPtr->mLength; // we can't stay at npos forever
+				} else {
+					size_t c = mIndex;
+					mPos = mStringPtr->mData.begin();
+					while ( c-- ) {
+						size_t l = UTF8String::_getSequenceLen(( *mPos ) );
+						mPos += l;
+					}
+				}
+			}
+			mutable ustring::iterator mPos;
 			UTF8String* mStringPtr;
+			mutable size_t mIndex;
+			mutable size_t mVersion;
 		};
 
 
@@ -245,6 +289,32 @@ namespace OpenGUI {
 		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
 		UTF8String& assign( const char* c_str, size_type num );
 
+		//! appends \c str on to the end of the current string
+		UTF8String& append( const std::string& str ) {
+			ustring tmp = ( const data_point* )str.c_str();
+			size_type len = _verifyUTF8( tmp );
+			_append( tmp );
+			mLength += len;
+			_versionChange();
+			return *this;
+		}
+		//! appends \c wstr on to the end of the current string
+		UTF8String& append( const std::wstring& wstr ) {
+			ustring tmp;
+			size_type len = _loadWString( wstr, tmp );
+			_append( tmp );
+			mLength += len;
+			_versionChange();
+			return *this;
+		}
+		/*UTF8String& append( const char* c_str );
+		UTF8String& append( const std::string& str, size_type index, size_type len );
+		//! appends \c num characters of \c c_str on to the end of the current string
+		UTF8String& append( const char* c_str, size_type num );
+		UTF8String& append( size_type num, char ch );
+		UTF8String& append( iterator start, iterator end );
+		*/
+
 		/* Waiting on Append
 		//! gives the current string the values from \c start to \c end
 		void assign( iterator start, iterator end );
@@ -266,6 +336,7 @@ namespace OpenGUI {
 	private:
 		ustring mData; // this is the actual UTF-8 data we are storing
 		size_type mLength; // we cache the length internally because we don't like iterating constantly for length
+		size_type mVersion; // version indicator, used to indicate a resync condition to iterators
 
 		//////////////////////////////////////////////////////////////////////////
 		// utility functions
@@ -274,6 +345,10 @@ namespace OpenGUI {
 		// dumbly assigns the given string, no verification performed
 		void _assign( const ustring& str );
 
+		void _versionChange() {
+			mVersion++;
+		}
+
 		//! predicts the number of UTF-8 stream bytes that will be needed to represent the given UCS-4 character
 		static size_t _predictBytes( const code_point& c );
 		//! returns the length of the sequence starting with \c s
@@ -281,7 +356,7 @@ namespace OpenGUI {
 		//! returns \c TRUE if the data point is a continuation byte
 		static bool _isContByte( const data_point& s );
 
-		//! loads the given wstring, appending it to the end of the given ustring as a UTF-8 stream, returns the UTF-8 character length
+		//! loads \c in_wstr as a UTF-8 stream, appending it to the end \c out_ustr, returns the UTF-8 character length of \c out_ustr
 		size_type _loadWString( const std::wstring& in_wstr, ustring& out_ustr ) const;
 
 		//! returns the UCS-4 code point in the UTF-8 stream at the given position
