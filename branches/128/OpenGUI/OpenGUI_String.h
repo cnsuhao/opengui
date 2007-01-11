@@ -316,7 +316,6 @@ namespace OpenGUI {
 			_versionChange();
 			return *this;
 		}
-
 		//! appends \c num bytes of UTF-8 data from \c c_str on to the end of the current string
 		/*! While \c c_str is expected to be UTF-8 encoded data, \c num is the number of bytes of
 		that stream (not the number of characters). */
@@ -329,10 +328,16 @@ namespace OpenGUI {
 			_versionChange();
 			return *this;
 		}
-
 		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string
-		UTF8String& append( const std::string& str, size_type index, size_type len );
-
+		UTF8String& append( const std::string& str, size_type index, size_type len ) {
+			append( str.substr( index, len ) );
+			return *this;
+		}
+		//! appends a substring of \c wstr starting at \c index that is \c len characters long on to the end of the current string
+		UTF8String& append( const std::wstring& wstr, size_type index, size_type len ) {
+			append( wstr.substr( index, len ) );
+			return *this;
+		}
 		//! appends \c num repetitions of \c ch on to the end of the current string
 		UTF8String& append( size_type num, code_point ch ) {
 			_utf32_to_utf8( ch, mData );
@@ -340,6 +345,7 @@ namespace OpenGUI {
 			_versionChange();
 			return *this;
 		}
+
 
 		//! appends the sequence denoted by \c start and \c end on to the end of the current string
 		UTF8String& append( iterator start, iterator end ) {
