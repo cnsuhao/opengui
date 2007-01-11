@@ -66,6 +66,19 @@ namespace OpenGUI {
 		};
 
 		//! iterator for UTF8String
+		/*! \warning
+		Due to the use of variable length encoding, this iterator it strongly tied to the UFT8String
+		object, utilizing an internal variable to track the version of the UTF8String. The version of
+		the UTF8String changes whenever the contents of the string are altered, which signals the
+		iterator that it needs to resynchronize on its next usage. Synchronization is an O(n) operation
+		in respect to the iterator index. The only way to synchronize properly is to walk the entire
+		UTF-8 stream until we reach the proper index. Here's the caveat part: UTF8String is only capable
+		of representing \c size_t versions before the version indicator overflows. So if you plan on doing
+		upwards of 4.2 billion alterations to a UTF8String before you use an attached iterator again
+		(which is quite unlikely, but still), you should try to call the sync() function a few times in
+		the middle to ensure that you don't win the 1 in 4.2 billion odds lottery that the version indicator
+		falls exactly back where it was before you started, causing unexpected iterator drift.
+		*/
 		class iterator {
 		public:
 			typedef code_point value_type;
@@ -106,23 +119,23 @@ namespace OpenGUI {
 				operator--();
 				return ret;
 			}
-			//! += operator
+			//! the += operator
 			iterator& operator+=( int c ) {
 				_seek( c );
 				return *this;
 			}
-			//! -= operator
+			//! the -= operator
 			iterator& operator-=( int c ) {
 				_seek_rev( c );
 				return *this;
 			}
-			//! + operator, returns copy of iterator at new position
+			//! the + operator, returns copy of iterator at new position
 			iterator operator+( int c ) {
 				iterator ret( *this );
 				ret.operator += ( c );
 				return ret;
 			}
-			//! - operator, returns copy of iterator at new position
+			//! the - operator, returns copy of iterator at new position
 			iterator operator-( int c ) {
 				iterator ret( *this );
 				ret.operator -= ( c );
