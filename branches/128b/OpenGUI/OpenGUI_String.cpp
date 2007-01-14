@@ -301,4 +301,83 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
+	//#########################################################################
+	bool UTFString::_utf16_start_char( code_point cp ) {
+		if ( 0xDC00 <= cp && cp <= 0xDFFF ) // tests if the cp is within the 2nd word of a surrogate pair
+			return false; // if it is a 2nd word, then we're not a starting character
+		return true; // everything else is a starting character
+	}
+	//#########################################################################
+	size_t UTFString::_utf16_char_length( code_point cp ) {
+		if ( 0xD800 <= cp && cp <= 0xDBFF ) // test if cp is the beginning of a surrogate pair
+			return 2; // if it is, then we are 2 words long
+		return 1; // otherwise we are only 1 word long
+	}
+	//#########################################################################
+	size_t UTFString::_utf16_char_length( unicode_char uc ) {
+		if ( uc > 0xFFFF ) // test if uc is greater than the single word maximum
+			return 2; // if so, we need a surrogate pair
+		return 1; // otherwise we can stuff it into a single word
+	}
+	//#########################################################################
+	/*! This function does it's best to prevent error conditions, verifying complete
+	surrogate pairs before applying the algorithm. In the event that half of a pair
+	is found it will happily generate a value in the 0xD800 - 0xDFFF range, which is
+	normally an invalid Unicode value but we preserve them for use as sentinel values. */
+	size_t UTFString::_utf16_to_utf32( const code_point in_cp[2], unicode_char& out_uc ) {
+		const code_point& cp1 = in_cp[0];
+		const code_point& cp2 = in_cp[1];
+		bool wordPair = false;
+
+		// does it look like a surrogate pair?
+		if ( 0xD800 <= cp1 && cp1 <= 0xDBFF ) {
+			// looks like one, but does the other half match the algorithm as well?
+			if ( 0xDC00 <= cp2 && cp2 <= 0xDFFF )
+				wordPair = true; // yep!
+		}
+
+		if ( !wordPair ) { // if we aren't a 100% authentic surrogate pair, then just copy the value
+			out_uc = cp1;
+			return 1;
+		}
+
+		unsigned short cU = cp1, cL = cp2; // copy upper and lower words of surrogate pair to writable buffers
+		cU -= 0xD800; // remove the encoding markers
+		cL -= 0xDC00;
+
+		assert(( cU & ~0x03FF ) == 0 ); // value range assertions
+		assert(( cL & ~0x03FF ) == 0 );
+
+		out_uc = ( cU & 0x03FF ) << 10; // grab the 10 upper bits and set them in their proper location
+		out_uc |= ( cL & 0x03FF ); // combine in the lower 10 bits
+		out_uc += 0x10000; // add back in the value offset
+
+		return 2; // this whole operation takes to words, so that's what we'll return
+	}
+	//#########################################################################
+	/*! This function, like its counterpart, will happily create invalid UTF-16 surrogate pairs. These
+	invalid entries will be created for any value of \c in_uc that falls in the range U+D800 - U+DFFF.
+	These are generally useful as sentinel values to represent various program specific conditions. */
+	size_t UTFString::_utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] ) {
+		if ( in_uc <= 0xFFFF ) { // we preserve sentinel values because our decoder understands them
+			out_cp[0] = in_uc;
+			return 1;
+		}
+		unicode_char uc = in_uc; // copy to writable buffer
+		unsigned short tmp; // single code point buffer
+		uc -= 0x10000; // subtract value offset
+
+		//process upper word
+		tmp = ( uc >> 10 ) & 0x03FF; // grab the upper 10 bits
+		tmp += 0xD800; // add encoding offset
+		out_cp[0] = tmp; // write
+
+		// process lower word
+		tmp = uc & 0x03FF; // grab the lower 10 bits
+		tmp += 0xDC00; // add encoding offset
+		out_cp[1] = tmp; // write
+
+		return 2; // return used word count (2 for surrogate pairs)
+	}
+	//#########################################################################
 } // namespace OpenGUI{

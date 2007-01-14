@@ -108,7 +108,7 @@ namespace OpenGUI {
 			}
 			//! difference operator
 			difference_type operator-( const _iterator& right ) const {
-				return mIter - right.mIter;
+				return ( difference_type )( mIter - right.mIter );
 			}
 			//! dereference operator
 			reference operator*() {
@@ -158,11 +158,11 @@ namespace OpenGUI {
 				mIter = init;
 			}
 		private:
-			void _seekFwd( unsigned int c ) const {
+			void _seekFwd( difference_type c ) const {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter += c;
 			}
-			void _seekRev( unsigned int c ) const {
+			void _seekRev( difference_type c ) const {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter -= c;
 			}
@@ -315,6 +315,16 @@ namespace OpenGUI {
 		iterator erase( iterator start, iterator end );
 		string& erase( size_type index = 0, size_type num = npos );
 		*/
+		//! returns \c true if \c cp is the beginning of a UTF-16 character (either surrogate pair lead word, or a standalone word)
+		static bool _utf16_start_char( code_point cp );
+		//! returns the number of UTF-16 code points needed to build a full UTF-32 character using the given \c cp
+		static size_t _utf16_char_length( code_point cp );
+		//! returns the number of UTF-16 code points needed to build a full UTF-32 character using the given \c cp
+		static size_t _utf16_char_length( unicode_char uc );
+		//! converts the given UTF-16 character buffer to a single UTF-32 Unicode character, returns the number of code_points used to create the output character (2 for surrogate pairs, otherwise 1)
+		static size_t _utf16_to_utf32( const code_point in_cp[2], unicode_char& out_uc );
+		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-16 encoding, returns the number of code_points used to encode the input
+		static size_t _utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] );
 
 	private:
 		//! buffer data type identifier
