@@ -85,39 +85,39 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::begin() {
-		return iterator( mData.begin() );
+		return iterator( mData.begin(), this );
 	}
 	//#########################################################################
 	UTFString::const_iterator UTFString::begin() const {
 		dstring& tmp = const_cast<dstring&>( mData );
-		return const_iterator( tmp.begin() );
+		return const_iterator( tmp.begin(), const_cast<UTFString*>( this ) );
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::end() {
-		return iterator( mData.end() );
+		return iterator( mData.end(), this );
 	}
 	//#########################################################################
 	UTFString::const_iterator UTFString::end() const {
 		dstring& tmp = const_cast<dstring&>( mData );
-		return const_iterator( tmp.end() );
+		return const_iterator( tmp.end(), const_cast<UTFString*>( this ) );
 	}
 	//#########################################################################
 	UTFString::reverse_iterator UTFString::rbegin() {
-		return reverse_iterator( mData.rbegin() );
+		return reverse_iterator( mData.rbegin(), this );
 	}
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rbegin() const {
 		dstring& tmp = const_cast<dstring&>( mData );
-		return reverse_iterator( tmp.rbegin() );
+		return reverse_iterator( tmp.rbegin(), const_cast<UTFString*>( this ) );
 	}
 	//#########################################################################
 	UTFString::reverse_iterator UTFString::rend() {
-		return const_reverse_iterator( mData.rend() );
+		return const_reverse_iterator( mData.rend(), this );
 	}
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rend() const {
 		dstring& tmp = const_cast<dstring&>( mData );
-		return const_reverse_iterator( tmp.rend() );
+		return const_reverse_iterator( tmp.rend(), const_cast<UTFString*>( this ) );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::length() const {
@@ -302,7 +302,7 @@ namespace OpenGUI {
 
 	//#########################################################################
 	UTFString::iterator UTFString::insert( iterator i, const code_point& ch ) {
-		return iterator( mData.insert( i.mIter, ch ) );
+		return iterator( mData.insert( i.mIter, ch ), this );
 	}
 	//#########################################################################
 	UTFString& UTFString::insert( size_type index, const UTFString& str ) {
@@ -339,11 +339,11 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator loc ) {
-		return iterator( mData.erase( loc.mIter ) );
+		return iterator( mData.erase( loc.mIter ), this );
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator start, iterator end ) {
-		return iterator( mData.erase( start.mIter, end.mIter ) );
+		return iterator( mData.erase( start.mIter, end.mIter ), this );
 	}
 	//#########################################################################
 	UTFString& UTFString::erase( size_type index, size_type num ) {
@@ -450,6 +450,18 @@ namespace OpenGUI {
 		if ( 0xDC00 <= cp && cp <= 0xDFFF ) // tests if the cp is within the 2nd word of a surrogate pair
 			return false; // if it is a 2nd word, then we're not a starting character
 		return true; // everything else is a starting character
+	}
+	//#########################################################################
+	bool UTFString::_utf16_surrogate_lead( code_point cp ) {
+		if ( 0xD800 <= cp && cp <= 0xDBFF ) // tests if the cp is within the 2nd word of a surrogate pair
+			return true; // it is a 1st word
+		return false; // it isn't
+	}
+	//#########################################################################
+	bool UTFString::_utf16_surrogate_follow( code_point cp ) {
+		if ( 0xDC00 <= cp && cp <= 0xDFFF ) // tests if the cp is within the 2nd word of a surrogate pair
+			return true; // it is a 2nd word
+		return false; // everything else isn't
 	}
 	//#########################################################################
 	size_t UTFString::_utf16_char_length( code_point cp ) {

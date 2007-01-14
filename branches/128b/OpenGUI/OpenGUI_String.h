@@ -51,9 +51,12 @@ namespace OpenGUI {
 			typedef const value_type& const_reference;
 			typedef value_type* pointer;
 
-			_iterator() {}
+			_iterator() {
+				mString = 0;
+			}
 			_iterator( const _iterator& copy ) {
 				mIter = copy.mIter;
+				mString = copy.mString;
 			}
 
 			//! assignment operator
@@ -154,12 +157,39 @@ namespace OpenGUI {
 			}
 			//! returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
 			unicode_char getCharacter() const {
-				throw 0;
+				unicode_char uc;
+				size_t l = _utf16_char_length(( *mIter ) );
+				code_point cp[2] = {0, 0};
+				cp[0] = mIter[0];
+				if ( l == 2 ) {
+					try {
+						cp[1] = mIter[_inc_value()];
+					} catch ( ... ) {
+						cp[1] = 0;
+					}
+				}
+				_utf16_to_utf32( cp, uc );
+				return uc;
 			}
 			//! sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
-			void setCharacter( unicode_char uc ) {
+			void setCharacter( unicode_char uc ) {/*
+								unicode_char uc_tmp;
+								size_t l = _utf16_char_length(( *mIter ) );
+								code_point cp[2] = {0, 0};
+								cp[0] = mIter[0];
+								if ( l == 2 ) {
+									try {
+										cp[1] = mIter[_inc_value()];
+									} catch ( ... ) {
+										cp[1] = 0;
+									}
+								}
+								l = _utf16_to_utf32( cp, uc_tmp );
+
+								code_point cp[2] = {0, 0};*/
 				throw 0;
 			}
+
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
 			_iterator& nextCharacter() {
 				throw 0;
@@ -170,9 +200,11 @@ namespace OpenGUI {
 			}
 
 
+
 		protected:
-			_iterator( const ITER_TYPE& init ) {
+			_iterator( const ITER_TYPE& init, UTFString* utfstr ) {
 				mIter = init;
+				mString = utfstr;
 			}
 		private:
 			void _seekFwd( difference_type c ) const {
@@ -183,7 +215,16 @@ namespace OpenGUI {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter -= c;
 			}
+
+			template<typename ITER_TYPE> int _inc_value() {
+				return 1;
+			}
+			template<> int _inc_value<dstring::reverse_iterator>() {
+				return -1;
+			}
+
 			ITER_TYPE mIter;
+			UTFString* mString;
 		};
 
 		typedef _iterator<dstring::iterator> iterator;                 //!< iterator
@@ -334,7 +375,7 @@ namespace OpenGUI {
 		void insert( iterator i, size_type num, const code_point& ch );
 		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
 		void insert( iterator i, iterator start, iterator end );
-		
+
 		//! removes the code point pointed to by \a loc, returning an iterator to the next character
 		iterator erase( iterator loc );
 		//! removes the characters between \a start and \a end (including the one at \a start but not the one at \a end), returning an iterator to the character after the last character removed
@@ -374,6 +415,10 @@ namespace OpenGUI {
 		//@{
 		//! returns \c true if \c cp is the beginning of a UTF-16 sequence (either surrogate pair lead word, or a standalone word)
 		static bool _utf16_start_char( code_point cp );
+		//! returns \c true if \ cp matches the signature of a surrogate pair lead character
+		static bool _utf16_surrogate_lead( code_point cp );
+		//! returns \c true if \ cp matches the signature of a surrogate pair following character
+		static bool _utf16_surrogate_follow( code_point cp );
 		//! estimates the number of UTF-16 code points in the sequence starting with \c cp
 		static size_t _utf16_char_length( code_point cp );
 		//! returns the number of UTF-16 code points needed to represent the given UTF-32 character \c cp
