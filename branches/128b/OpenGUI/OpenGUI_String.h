@@ -152,6 +152,23 @@ namespace OpenGUI {
 			bool operator>=( const _iterator& right ) const {
 				return mIter >= right.mIter;
 			}
+			//! returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
+			unicode_char getCharacter() const {
+				throw 0;
+			}
+			//! sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
+			void setCharacter( unicode_char uc ) {
+				throw 0;
+			}
+			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_iterator& nextCharacter() {
+				throw 0;
+			}
+			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_iterator& prevCharacter() {
+				throw 0;
+			}
+
 
 		protected:
 			_iterator( const ITER_TYPE& init ) {
@@ -256,18 +273,18 @@ namespace OpenGUI {
 		//! assign \c num copies of \c ch to the current string
 		UTFString& assign( size_type num, const code_point& ch );
 
-		//! assign \c wstr to the current string
+		//! assign \a wstr to the current string (\a wstr is treated as a UTF-16 stream)
 		UTFString& assign( const std::wstring& wstr );
-		//! assign \c w_str to the current string (\c w_str is treated as a 0 terminated UTF-16 stream)
+		//! assign \a w_str to the current string (\a w_str is treated as a 0 terminated UTF-16 stream)
 		UTFString& assign( const wchar_t* w_str );
-		//! assign the first \c num characters of \c w_str to the current string (\c w_str is treated as a 0 terminated UTF-16 stream)
+		//! assign the first \a num characters of \a w_str to the current string (\a w_str is treated as a UTF-16 stream)
 		UTFString& assign( const wchar_t* w_str, size_type num );
 
-		//! assign \c str to the current string (\c str is treated as a UTF-8 stream)
+		//! assign \a str to the current string (\a str is treated as a UTF-8 stream)
 		UTFString& assign( const std::string& str );
-		//! assign \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
+		//! assign \a c_str to the current string (\a c_str is treated as a UTF-8 stream)
 		UTFString& assign( const char* c_str );
-		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
+		//! assign the first \a num characters of \a c_str to the current string (\a c_str is treated as a UTF-8 stream)
 		UTFString& assign( const char* c_str, size_type num );
 
 
@@ -281,10 +298,49 @@ namespace OpenGUI {
 		UTFString& append( const code_point* str, size_type num );
 		//! appends \c num repetitions of \c ch on to the end of the current string
 		UTFString& append( size_type num, code_point ch );
-		//! appends the sequence denoted by \c start and \c end on to the end of the current string
-		//UTFString& append( input_iterator start, input_iterator end );
+		//! appends \a val to the end of the string
+		void push_back( code_point val );
+		//! appends the sequence denoted by \a start and \a end on to the end of the current string
+		UTFString& append( iterator start, iterator end );
 
+		//! appends \c str on to the end of the current string
+		UTFString& append( const std::wstring& wstr );
+		//! appends \c str on to the end of the current string
+		UTFString& append( const wchar_t* w_str );
+		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string
+		UTFString& append( const std::wstring& wstr, size_type index, size_type len );
+		//! appends \c num characters of \c str on to the end of the current string
+		UTFString& append( const wchar_t* w_str, size_type num );
+		//! appends \c num repetitions of \c ch on to the end of the current string
+		UTFString& append( size_type num, wchar_t ch );
+		//! appends \a val to the end of the string
+		void push_back( wchar_t val );
+		//! appends \a val to the end of the string
+		void push_back( unicode_char val );
 
+		//! inserts \a ch before the code point denoted by \a i
+		iterator insert( iterator i, const code_point& ch );
+		//! inserts \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const UTFString& str );
+		//! inserts \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const code_point* str );
+		//! inserts a substring of \a str (starting at \a index2 and \a num characters long) into the current string, at location \a index1
+		UTFString& insert( size_type index1, const UTFString& str, size_type index2, size_type num );
+		//! inserts \a num code points of \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const code_point* str, size_type num );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, code_point ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const code_point& ch );
+		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
+		void insert( iterator i, iterator start, iterator end );
+		
+		//! removes the code point pointed to by \a loc, returning an iterator to the next character
+		iterator erase( iterator loc );
+		//! removes the characters between \a start and \a end (including the one at \a start but not the one at \a end), returning an iterator to the character after the last character removed
+		iterator erase( iterator start, iterator end );
+		//! removes \a num characters from the current string, starting at \a index
+		UTFString& erase( size_type index = 0, size_type num = npos );
 
 		//! returns a reference to the element in the string at index \c loc
 		code_point& at( size_type loc );
@@ -313,12 +369,6 @@ namespace OpenGUI {
 
 		//! returns \c true if the string has no elements, \c false otherwise
 		bool empty() const;
-
-		/*
-		iterator erase( iterator loc );
-		iterator erase( iterator start, iterator end );
-		string& erase( size_type index = 0, size_type num = npos );
-		*/
 
 		//!\name UTF-16 encoding/decoding
 		//@{
@@ -356,6 +406,7 @@ namespace OpenGUI {
 
 
 	private:
+		//template<class ITER_TYPE> friend class _iterator;
 		dstring mData;
 
 		//! buffer data type identifier

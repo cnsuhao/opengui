@@ -255,6 +255,105 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	UTFString& UTFString::append( const std::wstring& wstr ) {
+		UTFString tmp( wstr );
+		append( tmp );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const wchar_t* w_str ) {
+		std::wstring tmp( w_str );
+		return append( tmp );
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const std::wstring& wstr, size_type index, size_type len ) {
+		std::wstring tmp( wstr, index, len );
+		return append( tmp );
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const wchar_t* w_str, size_type num ) {
+		std::wstring tmp( w_str, num );
+		return append( tmp );
+	}
+	//#########################################################################
+	UTFString& UTFString::append( size_type num, wchar_t ch ) {
+		return append( num, ( code_point )ch );
+	}
+	//#########################################################################
+	UTFString& UTFString::append( iterator start, iterator end ) {
+		mData.append( start.mIter, end.mIter );
+		return *this;
+	}
+	//#########################################################################
+	void UTFString::push_back( code_point val ) {
+		mData.push_back( val );
+	}
+	//#########################################################################
+	void UTFString::push_back( wchar_t val ) {
+		mData.push_back(( code_point )val );
+	}
+	//#########################################################################
+	void UTFString::push_back( unicode_char val ) {
+		code_point cp[2];
+		size_t c = _utf32_to_utf16( val, cp );
+		if ( c > 0 ) push_back( cp[0] );
+		if ( c > 1 ) push_back( cp[1] );
+	}
+
+	//#########################################################################
+	UTFString::iterator UTFString::insert( iterator i, const code_point& ch ) {
+		return iterator( mData.insert( i.mIter, ch ) );
+	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const UTFString& str ) {
+		mData.insert( index, str.mData );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const code_point* str ) {
+		mData.insert( index, str );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index1, const UTFString& str, size_type index2, size_type num ) {
+		mData.insert( index1, str.mData, index2, num );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const code_point* str, size_type num ) {
+		mData.insert( index, str, num );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, size_type num, code_point ch ) {
+		mData.insert( index, num, ch );
+		return *this;
+	}
+	//#########################################################################
+	void UTFString::insert( iterator i, size_type num, const code_point& ch ) {
+		mData.insert( i.mIter, num, ch );
+	}
+	//#########################################################################
+	void UTFString::insert( iterator i, iterator start, iterator end ) {
+		mData.insert( i.mIter, start.mIter, end.mIter );
+	}
+	//#########################################################################
+	UTFString::iterator UTFString::erase( iterator loc ) {
+		return iterator( mData.erase( loc.mIter ) );
+	}
+	//#########################################################################
+	UTFString::iterator UTFString::erase( iterator start, iterator end ) {
+		return iterator( mData.erase( start.mIter, end.mIter ) );
+	}
+	//#########################################################################
+	UTFString& UTFString::erase( size_type index, size_type num ) {
+		if ( num == npos )
+			mData.erase( index );
+		else
+			mData.erase( index, num );
+		return *this;
+	}
+	//#########################################################################
 	UTFString::code_point& UTFString::at( size_type loc ) {
 		return mData.at( loc );
 	}
