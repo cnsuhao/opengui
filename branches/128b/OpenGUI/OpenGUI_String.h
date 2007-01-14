@@ -179,10 +179,18 @@ namespace OpenGUI {
 				if ( _inc_value( mIter ) == 1 ) { // forward iterator
 					// insert the new character (gets inserted before our position)
 					mIter = mString->insert( *this, cp[0] ).mIter; // 1st half (or possibly this is all there is)
-					if ( cp[1] != 0 ) mIter = mString->insert( *this, cp[1] ).mIter; // 2nd half (if present)
-					//
+					++mIter; // move us back to where we were
+					if ( cp[1] != 0 ) {
+						mIter = mString->insert( *this, cp[1] ).mIter; // 2nd half (if present)
+						++mIter; // move us back to where we were
+					}
+
+					// now delete the old character
 					uc = getCharacter(); // grab the character at the current position so we can determine the encoded length
-					l = _utf16_char_length( uc );
+					difference_type len2 = ( difference_type )_utf16_char_length( uc );
+					mIter = mString->erase( *this, ( *this ) + len2 ).mIter;
+					--mIter; // move back to inserted character
+					if ( cp[1] != 0 ) --mIter; // need to move back again if new character was 2 code points long
 				} else { // reverse iterator
 					//
 				}
@@ -203,7 +211,6 @@ namespace OpenGUI {
 								l = _utf16_to_utf32( cp, uc_tmp );
 
 								code_point cp[2] = {0, 0};*/
-				throw 0;
 			}
 
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
