@@ -63,6 +63,7 @@ namespace OpenGUI {
 			_iterator& operator=( const _iterator& right ) const {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter = right.mIter;
+				const_cast<UTFString*>( mString ) = right.mString;
 				return const_cast<_iterator&>( *this );
 			}
 
@@ -163,7 +164,7 @@ namespace OpenGUI {
 				cp[0] = mIter[0];
 				if ( l == 2 ) {
 					try {
-						cp[1] = mIter[_inc_value()];
+						cp[1] = mIter[_inc_value( mIter )];
 					} catch ( ... ) {
 						cp[1] = 0;
 					}
@@ -172,7 +173,22 @@ namespace OpenGUI {
 				return uc;
 			}
 			//! sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
-			void setCharacter( unicode_char uc ) {/*
+			void setCharacter( unicode_char uc ) {
+				code_point cp[2] = {0, 0};
+				size_t l = _utf32_to_utf16( uc, cp );
+				if ( _inc_value( mIter ) == 1 ) { // forward iterator
+					// insert the new character (gets inserted before our position)
+					mIter = mString->insert( *this, cp[0] ).mIter; // 1st half (or possibly this is all there is)
+					if ( cp[1] != 0 ) mIter = mString->insert( *this, cp[1] ).mIter; // 2nd half (if present)
+					//
+					uc = getCharacter(); // grab the character at the current position so we can determine the encoded length
+					l = _utf16_char_length( uc );
+				} else { // reverse iterator
+					//
+				}
+
+
+				/*
 								unicode_char uc_tmp;
 								size_t l = _utf16_char_length(( *mIter ) );
 								code_point cp[2] = {0, 0};
@@ -216,10 +232,14 @@ namespace OpenGUI {
 				iter -= c;
 			}
 
-			template<typename ITER_TYPE> int _inc_value() {
+			template <class T>
+			int _inc_value( const T& ) const {
+				throw std::exception( "invalid iterator type for operation" );
+			}
+			template<> int _inc_value<UTFString::dstring::iterator>( const dstring::iterator& ) const {
 				return 1;
 			}
-			template<> int _inc_value<dstring::reverse_iterator>() {
+			template<> int _inc_value<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& ) const {
 				return -1;
 			}
 
