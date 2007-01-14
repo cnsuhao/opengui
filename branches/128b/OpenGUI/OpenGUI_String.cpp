@@ -5,8 +5,7 @@
 #include "OpenGUI_String.h"
 
 ///////////////////////////////////////////////////////////////////////
-// just a bunch of constants we'll be using later. Should probably turn them into macros to force proper inlining
-typedef unsigned char byte; // 1 byte ;-)
+// just a bunch of UTF-8 constants we'll be using later
 #define _lead1      0xC0 //110xxxxx
 #define _lead1_mask 0x1F //00011111
 #define _lead2      0xE0 //1110xxxx
@@ -484,6 +483,69 @@ namespace OpenGUI {
 
 		// return the byte length of the sequence
 		return len;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::_verifyUTF8( const unsigned char* c_str ) {
+		std::string tmp(( char* )c_str );
+		return _verifyUTF8( tmp );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::_verifyUTF8( const std::string& str ) {
+		std::string::const_iterator i, ie = str.end();
+		i = str.begin();
+		size_type length = 0;
+
+		while ( i != ie ) {
+			// characters pass until we find an extended sequence
+			if (( *i ) & 0x80 ) {
+				unsigned char c = ( *i );
+				size_t contBytes = 0;
+
+				// get continuation byte count and test for overlong sequences
+				if (( c & ~_lead1_mask ) == _lead1 ) { // 1 additional byte
+					if ( c == _lead1 ) throw invalid_data( "overlong UTF-8 sequence" );
+					contBytes = 1;
+
+				} else if (( c & ~_lead2_mask ) == _lead2 ) { // 2 additional bytes
+					contBytes = 2;
+					if ( c == _lead2 ) { // possible overlong UTF-8 sequence
+						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						if (( c & _lead2 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					}
+
+				} else if (( c & ~_lead3_mask ) == _lead3 ) { // 3 additional bytes
+					contBytes = 3;
+					if ( c == _lead3 ) { // possible overlong UTF-8 sequence
+						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						if (( c & _lead3 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					}
+				
+				} else if (( c & ~_lead4_mask ) == _lead4 ) { // 4 additional bytes
+					contBytes = 4;
+					if ( c == _lead4 ) { // possible overlong UTF-8 sequence
+						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						if (( c & _lead4 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					}
+
+				} else if (( c & ~_lead5_mask ) == _lead5 ) { // 5 additional bytes
+					contBytes = 5;
+					if ( c == _lead5 ) { // possible overlong UTF-8 sequence
+						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						if (( c & _lead5 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
+					}
+				}
+
+				// check remaining continuation bytes for 
+				while(contBytes--){
+					c = ( *( ++i ) ); // get next byte in sequence
+					if (( c & ~_cont_mask ) != _cont )
+						throw invalid_data( "bad continuation sequence header" );
+				}
+			}
+			length++;
+			i++;
+		}
+		return length;
 	}
 	//#########################################################################
 } // namespace OpenGUI{

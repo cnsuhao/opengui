@@ -28,8 +28,8 @@ namespace OpenGUI {
 
 		//! a single UTF-16 code point
 		typedef unsigned short code_point;
+
 		typedef std::basic_string<code_point> dstring; // data string
-		dstring mData;
 
 		//! This exception is used when invalid data streams are encountered
 	class invalid_data: public std::runtime_error { // i don't know why the beautifier is freaking out on this line
@@ -343,10 +343,17 @@ namespace OpenGUI {
 		static size_t _utf8_to_utf32( const unsigned char in_cp[6], unicode_char& out_uc );
 		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-8 encoding, returns the number of bytes used to encode the input
 		static size_t _utf32_to_utf8( const unicode_char& in_uc, unsigned char out_cp[6] );
+
+		//! verifies a UTF-8 stream, returning the total number of Unicode characters found
+		size_type _verifyUTF8( const unsigned char* c_str );
+		//! verifies a UTF-8 stream, returning the total number of Unicode characters found
+		size_type _verifyUTF8( const std::string& str );
 		//@}
 		
 
 	private:
+		dstring mData;
+
 		//! buffer data type identifier
 		enum BufferType {
 			none,
@@ -369,7 +376,7 @@ namespace OpenGUI {
 		mutable BufferType m_bufferType; // identifies the data type held in m_buffer
 		mutable size_t m_bufferSize; // size of the CString buffer
 
-		// multi-purpose buffer used everywhere we need a throw-away buffer. (Yes, we're that brave ;-)
+		// multi-purpose buffer used everywhere we need a throw-away buffer. Yes, we're that brave ;-)
 		union {
 			mutable void* mVoidBuffer;
 			mutable char* mCStrBuffer;
