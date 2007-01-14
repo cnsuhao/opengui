@@ -64,15 +64,25 @@ namespace OpenGUI {
 		assign( wstr );
 	}
 	//#########################################################################
-	/*UTFString::UTFString( const char* cstr ) {
+	UTFString::UTFString( const wchar_t* w_str, size_type length ) {
 		_init();
-		assign( cstr );
-	}*/
+		assign( w_str, length );
+	}
 	//#########################################################################
-	/*UTFString::UTFString( const std::string& str ) {
+	UTFString::UTFString( const char* c_str ) {
+		_init();
+		assign( c_str );
+	}
+	//#########################################################################
+	UTFString::UTFString( const char* c_str, size_type length ) {
+		_init();
+		assign( c_str, length );
+	}
+	//#########################################################################
+	UTFString::UTFString( const std::string& str ) {
 		_init();
 		assign( str );
-	}*/
+	}
 	//#########################################################################
 	UTFString::iterator UTFString::begin() {
 		return iterator( mData.begin() );
@@ -120,6 +130,10 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::size_type UTFString::max_size() const {
 		return mData.max_size();
+	}
+	//#########################################################################
+	void UTFString::reserve( size_type size ) {
+		mData.reserve( size );
 	}
 	//#########################################################################
 	void UTFString::resize( size_type num, const code_point& val ) {
@@ -173,16 +187,48 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
-	/*UTFString& UTFString::assign( const std::string& str ){
-		throw 0;
-	}
-	UTFString& UTFString::assign( const char* c_str ){
-		throw 0;
-	}
-	UTFString& UTFString::assign( const char* c_str, size_type num ){
-		throw 0;
-	}*/
+	UTFString& UTFString::assign( const std::string& str ) {
+		size_type len = _verifyUTF8( str );
+		clear(); // empty our contents, if there are any
+		reserve( len ); // best guess bulk capacity growth
 
+		// This is a 3 step process, converting each byte in the UTF-8 stream to UTF-32,
+		// then converting it to UTF-16, then finally appending the data buffer
+
+		unicode_char uc;          // temporary Unicode character buffer
+		unsigned char utf8buf[7]; // temporary UTF-8 buffer
+		utf8buf[6] = 0;
+		size_t utf8len;           // UTF-8 length
+		code_point utf16buff[3];  // temporary UTF-16 buffer
+		utf16buff[2] = 0;
+		size_t utf16len;          // UTF-16 length
+
+		std::string::const_iterator i, ie = str.end();
+		for ( i = str.begin(); i != ie; i++ ) {
+			utf8len = _utf8_char_length(( unsigned char )( *i ) ); // estimate bytes to load
+			for ( size_t j = 0; j < utf8len; j++ ) { // load the needed UTF-8 bytes
+				utf8buf[j] = (( unsigned char )( *( i + j ) ) ); // we don't increment 'i' here just in case the estimate is wrong (shouldn't happen, but we're being careful)
+			}
+			utf8buf[utf8len] = 0; // nul terminate so we throw an exception before running off the end of the buffer
+			utf8len = _utf8_to_utf32( utf8buf, uc ); // do the UTF-8 -> UTF-32 conversion
+			i += utf8len - 1; // we subtract 1 for the increment of the 'for' loop
+
+			utf16len = _utf32_to_utf16( uc, utf16buff ); // UTF-32 -> UTF-16 conversion
+			append( utf16buff, utf16len ); // append the characters to the string
+		}
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::assign( const char* c_str ) {
+		std::string tmp( c_str );
+		return assign( tmp );
+	}
+	//#########################################################################
+	UTFString& UTFString::assign( const char* c_str, size_type num ) {
+		std::string tmp;
+		tmp.assign( c_str, num );
+		return assign( tmp );
+	}
 	//#########################################################################
 	UTFString& UTFString::append( const UTFString& str ) {
 		mData.append( str.mData );
@@ -409,7 +455,7 @@ namespace OpenGUI {
 		if ( !( uc & ~0x001FFFFF ) ) return 4;
 		if ( !( uc & ~0x03FFFFFF ) ) return 5;
 		if ( !( uc & ~0x7FFFFFFF ) ) return 6;
-		throw std::range_error( "invalid code_point value" );
+		throw std::range_error( "invalid UTF-8 lead byte" );
 	}
 	//#########################################################################
 	size_t UTFString::_utf8_to_utf32( const unsigned char in_cp[6], unicode_char& out_uc ) {
@@ -440,6 +486,8 @@ namespace OpenGUI {
 		}
 
 		for ( ++i; i < len; i++ ) { // load each continuation byte
+			if (( in_cp[i] & ~_cont_mask ) != _cont )
+				throw invalid_data( "bad UTF-8 continuation byte" );
 			c <<= 6;
 			c |= ( in_cp[i] & _cont_mask );
 		}
@@ -509,34 +557,34 @@ namespace OpenGUI {
 				} else if (( c & ~_lead2_mask ) == _lead2 ) { // 2 additional bytes
 					contBytes = 2;
 					if ( c == _lead2 ) { // possible overlong UTF-8 sequence
-						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						c = ( *( i + 1 ) ); // look ahead to next byte in sequence
 						if (( c & _lead2 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					}
 
 				} else if (( c & ~_lead3_mask ) == _lead3 ) { // 3 additional bytes
 					contBytes = 3;
 					if ( c == _lead3 ) { // possible overlong UTF-8 sequence
-						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						c = ( *( i + 1 ) ); // look ahead to next byte in sequence
 						if (( c & _lead3 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					}
-				
+
 				} else if (( c & ~_lead4_mask ) == _lead4 ) { // 4 additional bytes
 					contBytes = 4;
 					if ( c == _lead4 ) { // possible overlong UTF-8 sequence
-						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						c = ( *( i + 1 ) ); // look ahead to next byte in sequence
 						if (( c & _lead4 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					}
 
 				} else if (( c & ~_lead5_mask ) == _lead5 ) { // 5 additional bytes
 					contBytes = 5;
 					if ( c == _lead5 ) { // possible overlong UTF-8 sequence
-						c = ( *( i+1 ) ); // look ahead to next byte in sequence
+						c = ( *( i + 1 ) ); // look ahead to next byte in sequence
 						if (( c & _lead5 ) == _cont ) throw invalid_data( "overlong UTF-8 sequence" );
 					}
 				}
 
-				// check remaining continuation bytes for 
-				while(contBytes--){
+				// check remaining continuation bytes for
+				while ( contBytes-- ) {
 					c = ( *( ++i ) ); // get next byte in sequence
 					if (( c & ~_cont_mask ) != _cont )
 						throw invalid_data( "bad continuation sequence header" );

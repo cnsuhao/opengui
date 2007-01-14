@@ -190,24 +190,28 @@ namespace OpenGUI {
 		~UTFString();
 		//! copy constructor
 		UTFString( const UTFString& copy );
-		//! \c length copies of \c ch
+		//! \a length copies of \a ch
 		UTFString( size_type length, const code_point& ch );
-		//! duplicate of str
+		//! duplicate of \a str
 		UTFString( const code_point* str );
-		//! duplicate of str, \c length characters long
+		//! duplicate of \a str, \a length characters long
 		UTFString( const code_point* str, size_type length );
-		//! substring of \c str starting at \c index and \c length characters long
+		//! substring of \a str starting at \a index and \a length characters long
 		UTFString( const UTFString& str, size_type index, size_type length );
 
 		//! nul-terminated wchar_t array initialized constructor (UTF-16 encoding)
 		UTFString( const wchar_t* w_str );
+		//! wchar_t array initialized constructor (UTF-16 encoding), \a length characters long
+		UTFString( const wchar_t* w_str, size_type length );
 		//! std::wstring (wide string) initialized constructor (UTF-16 encoding)
 		UTFString( const std::wstring& wstr );
 
-		//! nul-terminated C-string initialized constructor
-		//UTFString( const char* cstr );
-		//! std::string initialized constructor
-		//UTFString( const std::string& str );
+		//! nul-terminated C-string initialized constructor (UTF-8 encoding)
+		UTFString( const char* c_str );
+		//! nul-terminated C-string initialized constructor (UTF-8 encoding)
+		UTFString( const char* c_str, size_type length );
+		//! std::string initialized constructor (UTF-8 encoding)
+		UTFString( const std::string& str );
 
 		//! Returns the number of code points in the current string
 		size_type length() const;
@@ -259,6 +263,13 @@ namespace OpenGUI {
 		//! assign the first \c num characters of \c w_str to the current string (\c w_str is treated as a 0 terminated UTF-16 stream)
 		UTFString& assign( const wchar_t* w_str, size_type num );
 
+		//! assign \c str to the current string (\c str is treated as a UTF-8 stream)
+		UTFString& assign( const std::string& str );
+		//! assign \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
+		UTFString& assign( const char* c_str );
+		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
+		UTFString& assign( const char* c_str, size_type num );
+
 
 		//! appends \c str on to the end of the current string
 		UTFString& append( const UTFString& str );
@@ -273,13 +284,6 @@ namespace OpenGUI {
 		//! appends the sequence denoted by \c start and \c end on to the end of the current string
 		//UTFString& append( input_iterator start, input_iterator end );
 
-
-		//! assign \c str to the current string (\c str is treated as a UTF-8 stream)
-		//UTFString& assign( const std::string& str );
-		//! assign \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
-		//UTFString& assign( const char* c_str );
-		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
-		//UTFString& assign( const char* c_str, size_type num );
 
 
 		//! returns a reference to the element in the string at index \c loc
@@ -349,7 +353,7 @@ namespace OpenGUI {
 		//! verifies a UTF-8 stream, returning the total number of Unicode characters found
 		size_type _verifyUTF8( const std::string& str );
 		//@}
-		
+
 
 	private:
 		dstring mData;
