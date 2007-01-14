@@ -75,6 +75,42 @@ namespace OpenGUI {
 		assign( str );
 	}*/
 	//#########################################################################
+	UTFString::iterator UTFString::begin() {
+		return iterator( mData.begin() );
+	}
+	//#########################################################################
+	UTFString::const_iterator UTFString::begin() const {
+		dstring& tmp = const_cast<dstring&>( mData );
+		return const_iterator( tmp.begin() );
+	}
+	//#########################################################################
+	UTFString::iterator UTFString::end() {
+		return iterator( mData.end() );
+	}
+	//#########################################################################
+	UTFString::const_iterator UTFString::end() const {
+		dstring& tmp = const_cast<dstring&>( mData );
+		return const_iterator( tmp.end() );
+	}
+	//#########################################################################
+	UTFString::reverse_iterator UTFString::rbegin() {
+		return reverse_iterator( mData.rbegin() );
+	}
+	//#########################################################################
+	UTFString::const_reverse_iterator UTFString::rbegin() const {
+		dstring& tmp = const_cast<dstring&>( mData );
+		return reverse_iterator( tmp.rbegin() );
+	}
+	//#########################################################################
+	UTFString::reverse_iterator UTFString::rend() {
+		return const_reverse_iterator( mData.rend() );
+	}
+	//#########################################################################
+	UTFString::const_reverse_iterator UTFString::rend() const {
+		dstring& tmp = const_cast<dstring&>( mData );
+		return const_reverse_iterator( tmp.rend() );
+	}
+	//#########################################################################
 	UTFString::size_type UTFString::length() const {
 		return size();
 	}

@@ -40,6 +40,140 @@ namespace OpenGUI {
 			}
 		};
 
+		//! base class of iterator for UTFString
+		template<class ITER_TYPE>
+		class _iterator {
+			friend class UTFString;
+		public:
+			typedef code_point  value_type;      //!< The value type we normally access
+			typedef int         difference_type;
+			typedef value_type& reference;       //!< reference to a UTF-16 code point
+			typedef const value_type& const_reference;
+			typedef value_type* pointer;
+
+			_iterator() {}
+			_iterator( const _iterator& copy ) {
+				mIter = copy.mIter;
+			}
+
+			//! assignment operator
+			_iterator& operator=( const _iterator& right ) const {
+				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
+				iter = right.mIter;
+				return const_cast<_iterator&>( *this );
+			}
+
+			//! pre-increment
+			_iterator& operator++() const {
+				_seekFwd( 1 );
+				return const_cast<_iterator&>( *this );
+			}
+			//! post-increment
+			_iterator operator++( int ) const {
+				_iterator tmp( *this );
+				_seekFwd( 1 );
+				return tmp;
+			}
+
+			//! pre-decrement
+			_iterator& operator--() const {
+				_seekRev( 1 );
+				return const_cast<_iterator&>( *this );
+			}
+			//! post-decrement
+			_iterator operator--( int ) const {
+				_iterator tmp( *this );
+				_seekRev( 1 );
+				return tmp;
+			}
+			//! addition operator
+			_iterator operator+( difference_type n ) const {
+				_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_iterator operator-( difference_type n ) const {
+				_iterator tmp( *this );
+				tmp._seekRev( n );
+				return tmp;
+			}
+			_iterator& operator+=( difference_type n ) const {
+				_seekFwd( n );
+				return const_cast<_iterator&>( *this );
+			}
+			_iterator& operator-=( difference_type n ) const {
+				_seekRev( n );
+				return const_cast<_iterator&>( *this );
+			}
+			//! difference operator
+			difference_type operator-( const _iterator& right ) const {
+				return mIter - right.mIter;
+			}
+			//! dereference operator
+			reference operator*() {
+				return mIter.operator*();
+			}
+			//! dereference operator
+			const_reference operator*() const {
+				return mIter.operator*();
+			}
+
+			//! dereference at offset operator
+			reference operator[]( difference_type n ) {
+				_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			const_reference operator[]( difference_type n ) const {
+				_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp.operator*();
+			}
+
+			//! equality operator
+			bool operator==( const _iterator& right ) const {
+				return mIter == right.mIter;
+			}
+			//! inequality operator
+			bool operator!=( const _iterator& right ) const {
+				return mIter != right.mIter;
+			}
+			bool operator<( const _iterator& right ) const {
+				return mIter < right.mIter;
+			}
+			bool operator<=( const _iterator& right ) const {
+				return mIter <= right.mIter;
+			}
+			bool operator>( const _iterator& right ) const {
+				return mIter > right.mIter;
+			}
+			bool operator>=( const _iterator& right ) const {
+				return mIter >= right.mIter;
+			}
+
+		protected:
+			_iterator( const ITER_TYPE& init ) {
+				mIter = init;
+			}
+		private:
+			void _seekFwd( unsigned int c ) const {
+				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
+				iter += c;
+			}
+			void _seekRev( unsigned int c ) const {
+				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
+				iter -= c;
+			}
+			ITER_TYPE mIter;
+		};
+
+		typedef _iterator<dstring::iterator> iterator;                 //!< iterator
+		typedef _iterator<dstring::reverse_iterator> reverse_iterator; //!< reverse iterator
+		typedef const iterator const_iterator;                         //!< const iterator
+		typedef const reverse_iterator const_reverse_iterator;         //!< const reverse iterator
+
 		/*
 		Goals:
 		Implicit conversions from char* and std::string as UTF-8, and wchar_t* and std::wstring as UTF-16.
@@ -87,6 +221,24 @@ namespace OpenGUI {
 		void resize( size_type num, const code_point& val = 0 );
 		//! exchanges the elements of the current string with those of \a from
 		void swap( UTFString& from );
+
+		//! returns an iterator to the first element of the string
+		iterator begin();
+		//! returns an iterator to the first element of the string
+		const_iterator begin() const;
+		//! returns an iterator just past the end of the string
+		iterator end();
+		//! returns an iterator just past the end of the string
+		const_iterator end() const;
+
+		//! returns a reverse iterator to the last element of the string
+		reverse_iterator rbegin();
+		//! returns a reverse iterator to the last element of the string
+		const_reverse_iterator rbegin() const;
+		//! returns a reverse iterator just past the beginning of the string
+		reverse_iterator rend();
+		//! returns a reverse iterator just past the beginning of the string
+		const_reverse_iterator rend() const;
 
 		//UTFString& assign( input_iterator start, input_iterator end );
 		//! assign \c str to the current string
