@@ -22,6 +22,10 @@ namespace OpenGUI {
 		typedef size_t size_type;
 		//! the usual constant representing: not found, no limit, etc
 		static const size_type npos = ~0;
+
+		//! a single 32-bit Unicode character
+		typedef UINT32 unicode_char;
+
 		//! a single UTF-16 code point
 		typedef unsigned short code_point;
 		typedef std::basic_string<code_point> dstring; // data string
@@ -71,12 +75,18 @@ namespace OpenGUI {
 		//! std::string initialized constructor
 		//UTFString( const std::string& str );
 
-
 		//! Returns the number of code points in the current string
 		size_type length() const;
 		//! Returns the number of code points in the current string
 		size_type size() const;
-
+		//! returns the maximum number of UTF-16 code points that the string can hold
+		size_type max_size() const;
+		//! sets the capacity of the string to at least \a size code points
+		void reserve( size_type size );
+		//! changes the size of the string to \a size
+		void resize( size_type num, const code_point& val = 0 );
+		//! exchanges the elements of the current string with those of \a from
+		void swap( UTFString& from );
 
 		//UTFString& assign( input_iterator start, input_iterator end );
 		//! assign \c str to the current string
@@ -119,6 +129,40 @@ namespace OpenGUI {
 		//! assign the first \c num characters of \c c_str to the current string (\c c_str is treated as a UTF-8 stream)
 		//UTFString& assign( const char* c_str, size_type num );
 
+
+		//! returns a reference to the element in the string at index \c loc
+		code_point& at( size_type loc );
+		//! returns a reference to the element in the string at index \c loc
+		const code_point& at( size_type loc ) const;
+		//! returns a const pointer to a regular C string, identical to the current string
+		const code_point* c_str() const;
+		//! returns a pointer to the first character in the current string
+		const code_point* data() const;
+		//! returns the number of elements that the string can hold before it will need to allocate more space
+		size_type capacity() const;
+
+		//! deletes all of the elements in the string
+		void clear();
+
+		//! compare \c str to the current string
+		int compare( const UTFString& str );
+		//! compare \c str to the current string
+		int compare( const code_point* str );
+		//! compare \c str to a substring of the current string, starting at \c index for \c length characters
+		int compare( size_type index, size_type length, const UTFString& str );
+		//! compare a substring of \c str to a substring of the current string, where \c index2 and \c length2 refer to \c str and \c index and \c length refer to the current string
+		int compare( size_type index, size_type length, const UTFString& str, size_type index2, size_type length2 );
+		//! compare a substring of \c str to a substring of the current string, where the substring of \c str begins at zero and is \c length2 characters long, and the substring of the current string begins at \c index and is \c length  characters long
+		int compare( size_type index, size_type length, const code_point* str, size_type length2 );
+
+		//! returns \c true if the string has no elements, \c false otherwise
+		bool empty() const;
+
+		/*
+		iterator erase( iterator loc );
+		iterator erase( iterator start, iterator end );
+		string& erase( size_type index = 0, size_type num = npos );
+		*/
 
 	private:
 		//! buffer data type identifier

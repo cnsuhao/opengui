@@ -49,6 +49,7 @@ namespace OpenGUI {
 		_init();
 		assign( str, length );
 	}
+	//#########################################################################
 	UTFString::UTFString( const UTFString& str, size_type index, size_type length ) {
 		_init();
 		assign( str, index, length );
@@ -80,6 +81,18 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::size_type UTFString::size() const {
 		return mData.size();
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::max_size() const {
+		return mData.max_size();
+	}
+	//#########################################################################
+	void UTFString::resize( size_type num, const code_point& val ) {
+		mData.resize( num, val );
+	}
+	//#########################################################################
+	void UTFString::swap( UTFString& from ) {
+		mData.swap( from.mData );
 	}
 	//#########################################################################
 	UTFString& UTFString::assign( const UTFString& str ) {
@@ -161,6 +174,55 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	UTFString::code_point& UTFString::at( size_type loc ) {
+		return mData.at( loc );
+	}
+	//#########################################################################
+	const UTFString::code_point& UTFString::at( size_type loc ) const {
+		return mData.at( loc );
+	}
+	//#########################################################################
+	const UTFString::code_point* UTFString::c_str() const {
+		return mData.c_str();
+	}
+	//#########################################################################
+	const UTFString::code_point* UTFString::data() const {
+		return c_str();
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::capacity() const {
+		return mData.capacity();
+	}
+	//#########################################################################
+	void UTFString::clear() {
+		mData.clear();
+	}
+	//#########################################################################
+	int UTFString::compare( const UTFString& str ) {
+		return mData.compare( str.mData );
+	}
+	//#########################################################################
+	int UTFString::compare( const code_point* str ) {
+		return mData.compare( str );
+	}
+	//#########################################################################
+	int UTFString::compare( size_type index, size_type length, const UTFString& str ) {
+		return mData.compare( index, length, str.mData );
+	}
+	//#########################################################################
+	int UTFString::compare( size_type index, size_type length, const UTFString& str, size_type index2, size_type length2 ) {
+		return mData.compare( index, length, str.mData, index2, length2 );
+	}
+	//#########################################################################
+	int UTFString::compare( size_type index, size_type length, const code_point* str, size_type length2 ) {
+		return mData.compare( index, length, str, length2 );
+	}
+	//#########################################################################
+	bool UTFString::empty() const {
+		return mData.empty();
+	}
+	//#########################################################################
+
 	void UTFString::_init() {
 		//mVersion = 0;
 		//mLength = 0;
