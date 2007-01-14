@@ -315,16 +315,36 @@ namespace OpenGUI {
 		iterator erase( iterator start, iterator end );
 		string& erase( size_type index = 0, size_type num = npos );
 		*/
-		//! returns \c true if \c cp is the beginning of a UTF-16 character (either surrogate pair lead word, or a standalone word)
+
+		//!\name UTF-16 encoding/decoding
+		//@{
+		//! returns \c true if \c cp is the beginning of a UTF-16 sequence (either surrogate pair lead word, or a standalone word)
 		static bool _utf16_start_char( code_point cp );
-		//! returns the number of UTF-16 code points needed to build a full UTF-32 character using the given \c cp
+		//! estimates the number of UTF-16 code points in the sequence starting with \c cp
 		static size_t _utf16_char_length( code_point cp );
-		//! returns the number of UTF-16 code points needed to build a full UTF-32 character using the given \c cp
+		//! returns the number of UTF-16 code points needed to represent the given UTF-32 character \c cp
 		static size_t _utf16_char_length( unicode_char uc );
 		//! converts the given UTF-16 character buffer to a single UTF-32 Unicode character, returns the number of code_points used to create the output character (2 for surrogate pairs, otherwise 1)
 		static size_t _utf16_to_utf32( const code_point in_cp[2], unicode_char& out_uc );
 		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-16 encoding, returns the number of code_points used to encode the input
 		static size_t _utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] );
+		//@}
+
+		//!\name UTF-8 encoding/decoding
+		//@{
+		//! returns \c true if \c cp is the beginning of a UTF-8 sequence
+		static bool _utf8_start_char( unsigned char cp );
+		//! estimates the number of UTF-8 code points in the sequence starting with \c cp
+		static size_t _utf8_char_length( unsigned char cp );
+		//! returns the number of UTF-8 code points needed to represent the given UTF-32 character \c cp
+		static size_t _utf8_char_length( unicode_char uc );
+
+		//! converts the given UTF-8 character buffer to a single UTF-32 Unicode character, returns the number of bytes used to create the output character (maximum of 6)
+		static size_t _utf8_to_utf32( const unsigned char in_cp[6], unicode_char& out_uc );
+		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-8 encoding, returns the number of bytes used to encode the input
+		static size_t _utf32_to_utf8( const unicode_char& in_uc, unsigned char out_cp[6] );
+		//@}
+		
 
 	private:
 		//! buffer data type identifier

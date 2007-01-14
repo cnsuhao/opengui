@@ -7,18 +7,18 @@
 ///////////////////////////////////////////////////////////////////////
 // just a bunch of constants we'll be using later. Should probably turn them into macros to force proper inlining
 typedef unsigned char byte; // 1 byte ;-)
-const byte _lead1      = 0xC0; //110xxxxx
-const byte _lead1_mask = 0x1F; //00011111
-const byte _lead2      = 0xE0; //1110xxxx
-const byte _lead2_mask = 0x0F; //00001111
-const byte _lead3      = 0xF0; //11110xxx
-const byte _lead3_mask = 0x07; //00000111
-const byte _lead4      = 0xF8; //111110xx
-const byte _lead4_mask = 0x03; //00000011
-const byte _lead5      = 0xFC; //1111110x
-const byte _lead5_mask = 0x01; //00000001
-const byte _cont       = 0x80; //10xxxxxx
-const byte _cont_mask  = 0x3F; //00111111
+#define _lead1      0xC0 //110xxxxx
+#define _lead1_mask 0x1F //00011111
+#define _lead2      0xE0 //1110xxxx
+#define _lead2_mask 0x0F //00001111
+#define _lead3      0xF0 //11110xxx
+#define _lead3_mask 0x07 //00000111
+#define _lead4      0xF8 //111110xx
+#define _lead4_mask 0x03 //00000011
+#define _lead5      0xFC //1111110x
+#define _lead5_mask 0x01 //00000001
+#define _cont       0x80 //10xxxxxx
+#define _cont_mask  0x3F //00111111
 
 namespace OpenGUI {
 	//#########################################################################
@@ -378,6 +378,112 @@ namespace OpenGUI {
 		out_cp[1] = tmp; // write
 
 		return 2; // return used word count (2 for surrogate pairs)
+	}
+	//#########################################################################
+	//#########################################################################
+	bool UTFString::_utf8_start_char( unsigned char cp ) {
+		return ( cp & ~_cont_mask ) != _cont;
+	}
+	//#########################################################################
+	size_t UTFString::_utf8_char_length( unsigned char cp ) {
+		if ( !( cp & 0x80 ) ) return 1;
+		if (( cp & ~_lead1_mask ) == _lead1 ) return 2;
+		if (( cp & ~_lead2_mask ) == _lead2 ) return 3;
+		if (( cp & ~_lead3_mask ) == _lead3 ) return 4;
+		if (( cp & ~_lead4_mask ) == _lead4 ) return 5;
+		if (( cp & ~_lead5_mask ) == _lead5 ) return 6;
+		throw std::range_error( "invalid UTF-8 sequence header value" );
+	}
+	//#########################################################################
+	size_t UTFString::_utf8_char_length( unicode_char uc ) {
+		/*
+		7 bit:  U-00000000 – U-0000007F: 0xxxxxxx
+		11 bit: U-00000080 – U-000007FF: 110xxxxx 10xxxxxx
+		16 bit: U-00000800 – U-0000FFFF: 1110xxxx 10xxxxxx 10xxxxxx
+		21 bit: U-00010000 – U-001FFFFF: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+		26 bit: U-00200000 – U-03FFFFFF: 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+		31 bit: U-04000000 – U-7FFFFFFF: 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+		*/
+		if ( !( uc & ~0x0000007F ) ) return 1;
+		if ( !( uc & ~0x000007FF ) ) return 2;
+		if ( !( uc & ~0x0000FFFF ) ) return 3;
+		if ( !( uc & ~0x001FFFFF ) ) return 4;
+		if ( !( uc & ~0x03FFFFFF ) ) return 5;
+		if ( !( uc & ~0x7FFFFFFF ) ) return 6;
+		throw std::range_error( "invalid code_point value" );
+	}
+	//#########################################################################
+	size_t UTFString::_utf8_to_utf32( const unsigned char in_cp[6], unicode_char& out_uc ) {
+		size_t len = _utf8_char_length( in_cp[0] );
+		if ( len == 1 ) { // if we are only 1 byte long, then just grab it and exit
+			out_uc = in_cp[0];
+			return 1;
+		}
+
+		unicode_char c = 0; // temporary buffer
+		size_t i = 0;
+		switch ( len ) { // load header byte
+		case 6:
+			c = in_cp[i] & _lead5_mask;
+			break;
+		case 5:
+			c = in_cp[i] & _lead4_mask;
+			break;
+		case 4:
+			c = in_cp[i] & _lead3_mask;
+			break;
+		case 3:
+			c = in_cp[i] & _lead2_mask;
+			break;
+		case 2:
+			c = in_cp[i] & _lead1_mask;
+			break;
+		}
+
+		for ( ++i; i < len; i++ ) { // load each continuation byte
+			c <<= 6;
+			c |= ( in_cp[i] & _cont_mask );
+		}
+
+		out_uc = c; // write the final value and return the used byte length
+		return len;
+	}
+	//#########################################################################
+	size_t UTFString::_utf32_to_utf8( const unicode_char& in_uc, unsigned char out_cp[6] ) {
+		size_t len = _utf8_char_length( in_uc ); // predict byte length of sequence
+		unicode_char c = in_uc; // copy to temp buffer
+
+		//stuff all of the lower bits
+		for ( size_t i = len - 1; i > 0; i-- ) {
+			out_cp[i] = (( c ) & _cont_mask ) | _cont;
+			c >>= 6;
+		}
+
+		//now write the header byte
+		switch ( len ) {
+		case 6:
+			out_cp[0] = (( c ) & _lead5_mask ) | _lead5;
+			break;
+		case 5:
+			out_cp[0] = (( c ) & _lead4_mask ) | _lead4;
+			break;
+		case 4:
+			out_cp[0] = (( c ) & _lead3_mask ) | _lead3;
+			break;
+		case 3:
+			out_cp[0] = (( c ) & _lead2_mask ) | _lead2;
+			break;
+		case 2:
+			out_cp[0] = (( c ) & _lead1_mask ) | _lead1;
+			break;
+		case 1:
+		default:
+			out_cp[0] = ( c ) & 0x7F;
+			break;
+		}
+
+		// return the byte length of the sequence
+		return len;
 	}
 	//#########################################################################
 } // namespace OpenGUI{
