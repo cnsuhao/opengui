@@ -446,10 +446,10 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	//#########################################################################
-	bool UTFString::_utf16_start_char( code_point cp ) {
-		if ( 0xDC00 <= cp && cp <= 0xDFFF ) // tests if the cp is within the 2nd word of a surrogate pair
-			return false; // if it is a 2nd word, then we're not a starting character
-		return true; // everything else is a starting character
+	bool UTFString::_utf16_independent_char( code_point cp ) {
+		if ( 0xD800 <= cp && cp <= 0xDFFF ) // tests if the cp is within the surrogate pair range
+			return false; // it matches a surrogate pair signature
+		return true; // everything else is a standalone code point
 	}
 	//#########################################################################
 	bool UTFString::_utf16_surrogate_lead( code_point cp ) {

@@ -172,7 +172,7 @@ namespace OpenGUI {
 				_utf16_to_utf32( cp, uc );
 				return uc;
 			}
-			//! sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
+			//! <b>Forward iterators only</b> sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
 			void setCharacter( unicode_char uc ) {
 				code_point cp[2] = {0, 0};
 				size_t l = _utf32_to_utf16( uc, cp );
@@ -192,34 +192,45 @@ namespace OpenGUI {
 					--mIter; // move back to inserted character
 					if ( cp[1] != 0 ) --mIter; // need to move back again if new character was 2 code points long
 				} else { // reverse iterator
-					//
+					throw std::exception( "cannot modify Unicode characters with reverse_iterator" );
 				}
-
-
-				/*
-								unicode_char uc_tmp;
-								size_t l = _utf16_char_length(( *mIter ) );
-								code_point cp[2] = {0, 0};
-								cp[0] = mIter[0];
-								if ( l == 2 ) {
-									try {
-										cp[1] = mIter[_inc_value()];
-									} catch ( ... ) {
-										cp[1] = 0;
-									}
-								}
-								l = _utf16_to_utf32( cp, uc_tmp );
-
-								code_point cp[2] = {0, 0};*/
 			}
 
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
 			_iterator& nextCharacter() {
-				throw 0;
+				operator++(); // move 1 code point
+				if ( _utf16_surrogate_follow( mIter[0] ) ) {
+					// landing on a follow code point means we might be part of a bigger character
+					// so we test for that
+					code_point lead_half = 0;
+					try { // we need to try/catch here in case we test outside the range of the string
+						lead_half = mIter[-_inc_value( *this )]; // check the previous character to see if we're part of a surrogate pair
+						if ( _utf16_surrogate_lead( lead_half ) ) {
+							operator++(); // for both forward and reverse iterators, this will always result in the correct location
+						}
+					} catch ( ... ) {
+						return *this; // if something threw, then we'll just say where we are
+					}
+				}
+				return *this;
 			}
 			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
 			_iterator& prevCharacter() {
-				throw 0;
+				operator--(); // move 1 code point
+				if ( _utf16_surrogate_follow( mIter[0] ) ) {
+					// landing on a follow code point means we might be part of a bigger character
+					// so we test for that
+					code_point lead_half = 0;
+					try { // we need to try/catch here in case we test outside the range of the string
+						lead_half = mIter[-_inc_value( *this )]; // check the previous character to see if we're part of a surrogate pair
+						if ( _utf16_surrogate_lead( lead_half ) ) {
+							operator--(); // for both forward and reverse iterators, this will always result in the correct location
+						}
+					} catch ( ... ) {
+						return *this; // if something threw, then we'll just say where we are
+					}
+				}
+				return *this;
 			}
 
 
@@ -440,8 +451,8 @@ namespace OpenGUI {
 
 		//!\name UTF-16 encoding/decoding
 		//@{
-		//! returns \c true if \c cp is the beginning of a UTF-16 sequence (either surrogate pair lead word, or a standalone word)
-		static bool _utf16_start_char( code_point cp );
+		//! returns \c true if \c cp does not match the signature for the lead of follow code point of a surrogate pair in a UTF-16 sequence
+		static bool _utf16_independent_char( code_point cp );
 		//! returns \c true if \ cp matches the signature of a surrogate pair lead character
 		static bool _utf16_surrogate_lead( code_point cp );
 		//! returns \c true if \ cp matches the signature of a surrogate pair following character
