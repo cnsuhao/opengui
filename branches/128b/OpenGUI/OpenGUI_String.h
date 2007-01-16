@@ -197,7 +197,7 @@ namespace OpenGUI {
 			}
 
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_iterator& nextCharacter() {
+			_iterator& moveNext() {
 				operator++(); // move 1 code point
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
@@ -215,7 +215,7 @@ namespace OpenGUI {
 				return *this;
 			}
 			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_iterator& prevCharacter() {
+			_iterator& movePrev() {
 				operator--(); // move 1 code point
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
@@ -340,7 +340,8 @@ namespace OpenGUI {
 		//! returns a reverse iterator just past the beginning of the string
 		const_reverse_iterator rend() const;
 
-		//UTFString& assign( input_iterator start, input_iterator end );
+		//! gives the current string the values from \a start to \a end
+		UTFString& assign( iterator start, iterator end );
 		//! assign \c str to the current string
 		UTFString& assign( const UTFString& str );
 		//! assign the nul-terminated \c str to the current string
@@ -381,7 +382,7 @@ namespace OpenGUI {
 		void push_back( code_point val );
 		//! appends the sequence denoted by \a start and \a end on to the end of the current string
 		UTFString& append( iterator start, iterator end );
-
+		//
 		//! appends \c str on to the end of the current string
 		UTFString& append( const std::wstring& wstr );
 		//! appends \c str on to the end of the current string
@@ -392,10 +393,29 @@ namespace OpenGUI {
 		UTFString& append( const wchar_t* w_str, size_type num );
 		//! appends \c num repetitions of \c ch on to the end of the current string
 		UTFString& append( size_type num, wchar_t ch );
+		// 
+		//! appends \c str on to the end of the current string (UTF-8 encoding)
+		UTFString& append( const std::string& str );
+		//! appends \c str on to the end of the current string (UTF-8 encoding)
+		UTFString& append( const char* c_str );
+		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string  (UTF-8 encoding)
+		UTFString& append( const std::string& str, size_type index, size_type len );
+		//! appends \c num characters of \c str on to the end of the current string  (UTF-8 encoding)
+		UTFString& append( const char* c_str, size_type num );
+		//! appends \c num repetitions of \c ch on to the end of the current string (Unicode values less than 128)
+		UTFString& append( size_type num, char ch );
+		//
+		//! appends \c num repetitions of \c ch on to the end of the current string (Full Unicode spectrum)
+		UTFString& append( size_type num, unicode_char ch );
+
+
+		
+		//! appends \a val to the end of the string
+		void push_back( unicode_char val );
 		//! appends \a val to the end of the string
 		void push_back( wchar_t val );
 		//! appends \a val to the end of the string
-		void push_back( unicode_char val );
+		void push_back( char val );
 
 		//! inserts \a ch before the code point denoted by \a i
 		iterator insert( iterator i, const code_point& ch );

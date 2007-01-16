@@ -144,6 +144,11 @@ namespace OpenGUI {
 		mData.swap( from.mData );
 	}
 	//#########################################################################
+	UTFString& UTFString::assign( iterator start, iterator end ) {
+		mData.assign( start.mIter, end.mIter );
+		return *this;
+	}
+	//#########################################################################
 	UTFString& UTFString::assign( const UTFString& str ) {
 		mData.assign( str.mData );
 		return *this;
@@ -285,11 +290,62 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	UTFString& UTFString::append( const std::string& str ) {
+		UTFString tmp( str );
+		append( tmp );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const char* c_str ) {
+		UTFString tmp( c_str );
+		append( tmp );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const std::string& str, size_type index, size_type len ) {
+		UTFString tmp( str, index, len );
+		append( tmp );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( const char* c_str, size_type num ) {
+		UTFString tmp( c_str, num );
+		append( tmp );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( size_type num, char ch ) {
+		append( num, ( code_point )ch );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::append( size_type num, unicode_char ch ) {
+		code_point cp[2] = {0, 0};
+		if ( _utf32_to_utf16( ch, cp ) == 2 ) {
+			for ( size_type i = 0; i < num; i++ ) {
+				append( 1, cp[0] );
+				append( 1, cp[1] );
+			}
+		} else {
+			for ( size_type i = 0; i < num; i++ ) {
+				append( 1, cp[0] );
+			}
+		}
+		return *this;
+	}
+	//#########################################################################
+	/*! This can be used to push surrogate pair code points, you'll just need to push them
+	one after the other. */
 	void UTFString::push_back( code_point val ) {
 		mData.push_back( val );
 	}
 	//#########################################################################
 	void UTFString::push_back( wchar_t val ) {
+		mData.push_back(( code_point )val );
+	}
+	//#########################################################################
+	/*! Limited to characters under the 127 value barrier. */
+	void UTFString::push_back( char val ) {
 		mData.push_back(( code_point )val );
 	}
 	//#########################################################################
