@@ -334,6 +334,7 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	//#########################################################################
 	/*! This can be used to push surrogate pair code points, you'll just need to push them
 	one after the other. */
 	void UTFString::push_back( code_point val ) {
@@ -356,6 +357,7 @@ namespace OpenGUI {
 		if ( c > 1 ) push_back( cp[1] );
 	}
 
+	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::insert( iterator i, const code_point& ch ) {
 		return iterator( mData.insert( i.mIter, ch ), this );
@@ -393,6 +395,19 @@ namespace OpenGUI {
 	void UTFString::insert( iterator i, iterator start, iterator end ) {
 		mData.insert( i.mIter, start.mIter, end.mIter );
 	}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const std::wstring& wstr ){throw 0;}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const wchar_t* w_str ){throw 0;}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index1, const std::wstring& wstr, size_type index2, size_type num ){throw 0;}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, const wchar_t* w_str, size_type num ){throw 0;}
+	//#########################################################################
+	UTFString& UTFString::insert( size_type index, size_type num, wchar_t ch ){throw 0;}
+	//#########################################################################
+	void UTFString::insert( iterator i, size_type num, const wchar_t& ch ){throw 0;}
+	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator loc ) {
 		return iterator( mData.erase( loc.mIter ), this );
@@ -433,6 +448,7 @@ namespace OpenGUI {
 	void UTFString::clear() {
 		mData.clear();
 	}
+	//#########################################################################
 	//#########################################################################
 	int UTFString::compare( const UTFString& str ) {
 		return mData.compare( str.mData );

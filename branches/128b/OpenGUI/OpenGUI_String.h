@@ -9,12 +9,14 @@
 #include "OpenGUI_Exports.h"
 
 namespace OpenGUI {
-	//! Provides UTF-16 string representation with implicit conversion from UTF-8
-	/*!
+	//! A UTF-16 string with implicit conversion to/from UTF-8 and UTF-32
+	/*! 
 
 
 	\see
-	For additional information on UTF-16 encoding: http://en.wikipedia.org/wiki/UTF-16
+	- For additional information on UTF-16 encoding: http://en.wikipedia.org/wiki/UTF-16
+	- For additional information on UTF-8 encoding: http://en.wikipedia.org/wiki/UTF-8
+	- For additional information on UTF-32 encoding: http://en.wikipedia.org/wiki/UTF-32
 	*/
 	class OPENGUI_API UTFString {
 	public:
@@ -144,19 +146,23 @@ namespace OpenGUI {
 			bool operator!=( const _iterator& right ) const {
 				return mIter != right.mIter;
 			}
+			//! less than
 			bool operator<( const _iterator& right ) const {
 				return mIter < right.mIter;
 			}
+			//! less than or equal
 			bool operator<=( const _iterator& right ) const {
 				return mIter <= right.mIter;
 			}
+			//! greater than
 			bool operator>( const _iterator& right ) const {
 				return mIter > right.mIter;
 			}
+			//! greater than or equal
 			bool operator>=( const _iterator& right ) const {
 				return mIter >= right.mIter;
 			}
-			//! returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
+			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
 			unicode_char getCharacter() const {
 				unicode_char uc;
 				size_t l = _utf16_char_length(( *mIter ) );
@@ -172,7 +178,7 @@ namespace OpenGUI {
 				_utf16_to_utf32( cp, uc );
 				return uc;
 			}
-			//! <b>Forward iterators only</b> sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
+			//! <b>Forward iterators only!</b> Sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
 			void setCharacter( unicode_char uc ) {
 				code_point cp[2] = {0, 0};
 				size_t l = _utf32_to_utf16( uc, cp );
@@ -378,8 +384,6 @@ namespace OpenGUI {
 		UTFString& append( const code_point* str, size_type num );
 		//! appends \c num repetitions of \c ch on to the end of the current string
 		UTFString& append( size_type num, code_point ch );
-		//! appends \a val to the end of the string
-		void push_back( code_point val );
 		//! appends the sequence denoted by \a start and \a end on to the end of the current string
 		UTFString& append( iterator start, iterator end );
 		//
@@ -408,14 +412,16 @@ namespace OpenGUI {
 		//! appends \c num repetitions of \c ch on to the end of the current string (Full Unicode spectrum)
 		UTFString& append( size_type num, unicode_char ch );
 
-
 		
 		//! appends \a val to the end of the string
 		void push_back( unicode_char val );
 		//! appends \a val to the end of the string
 		void push_back( wchar_t val );
 		//! appends \a val to the end of the string
+		void push_back( code_point val );
+		//! appends \a val to the end of the string
 		void push_back( char val );
+
 
 		//! inserts \a ch before the code point denoted by \a i
 		iterator insert( iterator i, const code_point& ch );
@@ -433,6 +439,20 @@ namespace OpenGUI {
 		void insert( iterator i, size_type num, const code_point& ch );
 		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
 		void insert( iterator i, iterator start, iterator end );
+
+		//! inserts \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const std::wstring& wstr );
+		//! inserts \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const wchar_t* w_str );
+		//! inserts a substring of \a str (starting at \a index2 and \a num characters long) into the current string, at location \a index1
+		UTFString& insert( size_type index1, const std::wstring& wstr, size_type index2, size_type num );
+		//! inserts \a num code points of \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const wchar_t* w_str, size_type num );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, wchar_t ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const wchar_t& ch );
+
 
 		//! removes the code point pointed to by \a loc, returning an iterator to the next character
 		iterator erase( iterator loc );
