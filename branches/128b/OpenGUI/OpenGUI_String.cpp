@@ -625,6 +625,88 @@ namespace OpenGUI {
 		return find_first_not_of( UTFString( cp, l ), index );
 	}
 	//#########################################################################
+	UTFString::size_type UTFString::find_last_of( const UTFString& str, size_type index, size_type num ) {
+		size_type i = 0;
+		const size_type len = length();
+		if ( index > len ) index = len - 1;
+
+		while ( i < num && ( index - i ) != npos ) {
+			size_type j = index - i;
+			// careful to step full Unicode characters
+			code_point cur = at( j );
+			if ( j != 0 && _utf16_surrogate_follow( at( j ) ) && _utf16_surrogate_lead( at( j - 1 ) ) ) {
+				j = index - ++i;
+			}
+			// and back to the usual dull test
+			unicode_char ch = getChar( j );
+			if ( str.inString( ch ) )
+				return j;
+			i++;
+		}
+		return npos;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_of( code_point ch, size_type index ) {
+		UTFString tmp;
+		tmp.assign( 1, ch );
+		return find_last_of( tmp, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_of( char ch, size_type index ) {
+		return find_last_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_of( wchar_t ch, size_type index ) {
+		return find_last_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_of( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return find_last_of( UTFString( cp, l ), index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_not_of( const UTFString& str, size_type index , size_type num ) {
+		size_type i = 0;
+		const size_type len = length();
+		if ( index > len ) index = len - 1;
+
+		while ( i < num && ( index - i ) != npos ) {
+			size_type j = index - i;
+			// careful to step full Unicode characters
+			code_point cur = at( j );
+			if ( j != 0 && _utf16_surrogate_follow( at( j ) ) && _utf16_surrogate_lead( at( j - 1 ) ) ) {
+				j = index - ++i;
+			}
+			// and back to the usual dull test
+			unicode_char ch = getChar( j );
+			if ( !str.inString( ch ) )
+				return j;
+			i++;
+		}
+		return npos;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_not_of( code_point ch, size_type index ) {
+		UTFString tmp;
+		tmp.assign( 1, ch );
+		return find_last_not_of( tmp, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_not_of( char ch, size_type index ) {
+		return find_last_not_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_not_of( wchar_t ch, size_type index ) {
+		return find_last_not_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_last_not_of( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return find_last_not_of( UTFString( cp, l ), index );
+	}
+	//#########################################################################
 	UTFString::unicode_char UTFString::getChar( size_type loc ) const {
 		const code_point* ptr = c_str();
 		unicode_char uc;

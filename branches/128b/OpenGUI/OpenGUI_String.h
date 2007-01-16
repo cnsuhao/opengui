@@ -668,6 +668,28 @@ namespace OpenGUI {
 		size_type find_first_not_of( wchar_t ch, size_type index = 0 );
 		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( unicode_char ch, size_type index = 0 );
+
+		//! returns the index of the first character within the current string that matches any character in \a str, doing a reverse search from \a index and searching at most \a num characters; returns \c UTFString::npos if nothing is found
+		size_type find_last_of( const UTFString& str, size_type index = npos, size_type num = npos );
+		//! returns the index of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_of( code_point ch, size_type index = npos );
+		//! returns the index of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_of( char ch, size_type index = npos );
+		//! returns the index of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_of( wchar_t ch, size_type index = npos );
+		//! returns the index of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_of( unicode_char ch, size_type index = npos );
+
+		//! returns the index of the last character within the current string that does not match any character in \a str, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_not_of( const UTFString& str, size_type index = npos, size_type num = npos );
+		//! returns the index of the last occurrence of a character that does not match \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_not_of( code_point ch, size_type index = npos );
+		//! returns the index of the last occurrence of a character that does not match \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_not_of( char ch, size_type index = npos );
+		//! returns the index of the last occurrence of a character that does not match \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_not_of( wchar_t ch, size_type index = npos );
+		//! returns the index of the last occurrence of a character that does not match \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
+		size_type find_last_not_of( unicode_char ch, size_type index = npos );
 		//@}
 
 		//!\name Operators
