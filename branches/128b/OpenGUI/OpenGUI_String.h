@@ -10,7 +10,22 @@
 
 namespace OpenGUI {
 	//! A UTF-16 string with implicit conversion to/from UTF-8 and UTF-32
-	/*! 
+	/*! This class provides a complete 1 to 1 map of all std::string functions (at least to my
+	knowledge). Implicit conversions allow this string class to work with all common C++ string
+	formats, with specialty functions defined where implicit conversion would cause potential
+	problems or is otherwise unavailable.
+
+	Some additional functionality is present to assist in working with characters using the
+	32-bit UTF-32 encoding. (Which is guaranteed to fit any Unicode character into a single
+	code point.)
+
+
+	\par Supported Input Types
+	The supported string types for input, and their assumed encoding schemes, are:
+	- std::string (UTF-8)
+	- char* (UTF-8)
+	- std::wstring (UTF-16)
+	- wchar_t* (UTF-16)
 
 
 	\see
@@ -276,20 +291,11 @@ namespace OpenGUI {
 		typedef const iterator const_iterator;                         //!< const iterator
 		typedef const reverse_iterator const_reverse_iterator;         //!< const reverse iterator
 
-		/*
-		Goals:
-		Implicit conversions from char* and std::string as UTF-8, and wchar_t* and std::wstring as UTF-16.
 
-		Default access method uses UTF-16 code points, extra methods available for working with UCS-4 code points
-
-		Can read and write all 3 major UTF encodings
-
-		*/
-
+		//!\name Constructors/Destructor
+		//@{
 		//! default constructor, creates an empty string
 		UTFString();
-		//! destructor
-		~UTFString();
 		//! copy constructor
 		UTFString( const UTFString& copy );
 		//! \a length copies of \a ch
@@ -314,7 +320,12 @@ namespace OpenGUI {
 		UTFString( const char* c_str, size_type length );
 		//! std::string initialized constructor (UTF-8 encoding)
 		UTFString( const std::string& str );
+		//! destructor
+		~UTFString();
+		//@}
 
+		//!\name Utility functions
+		//@{
 		//! Returns the number of code points in the current string
 		size_type length() const;
 		//! Returns the number of code points in the current string
@@ -327,7 +338,35 @@ namespace OpenGUI {
 		void resize( size_type num, const code_point& val = 0 );
 		//! exchanges the elements of the current string with those of \a from
 		void swap( UTFString& from );
+		//! returns \c true if the string has no elements, \c false otherwise
+		bool empty() const;
+		//! returns a reference to the element in the string at index \c loc
+		code_point& at( size_type loc );
+		//! returns a reference to the element in the string at index \c loc
+		const code_point& at( size_type loc ) const;
+		//! returns a const pointer to a regular C string, identical to the current string
+		const code_point* c_str() const;
+		//! returns a pointer to the first character in the current string
+		const code_point* data() const;
+		//! returns the number of elements that the string can hold before it will need to allocate more space
+		size_type capacity() const;
+		//! deletes all of the elements in the string
+		void clear();
+		//! returns a substring of the current string, starting at \a index, and \a num characters long.
+		/*! If \a num is omitted, it will default to \c npos, and the substr() function will simply return the remainder of the string starting at \a index. */
+		UTFString substr( size_type index, size_type num = npos );
+		//! appends \a val to the end of the string
+		void push_back( unicode_char val );
+		//! appends \a val to the end of the string
+		void push_back( wchar_t val );
+		//! appends \a val to the end of the string
+		void push_back( code_point val );
+		//! appends \a val to the end of the string
+		void push_back( char val );
+		//@}
 
+		//!\name iterator acquisition
+		//@{
 		//! returns an iterator to the first element of the string
 		iterator begin();
 		//! returns an iterator to the first element of the string
@@ -345,7 +384,10 @@ namespace OpenGUI {
 		reverse_iterator rend();
 		//! returns a reverse iterator just past the beginning of the string
 		const_reverse_iterator rend() const;
+		//@}
 
+		//!\name assign
+		//@{
 		//! gives the current string the values from \a start to \a end
 		UTFString& assign( iterator start, iterator end );
 		//! assign \c str to the current string
@@ -372,8 +414,10 @@ namespace OpenGUI {
 		UTFString& assign( const char* c_str );
 		//! assign the first \a num characters of \a c_str to the current string (\a c_str is treated as a UTF-8 stream)
 		UTFString& assign( const char* c_str, size_type num );
+		//@}
 
-
+		//!\name append
+		//@{
 		//! appends \c str on to the end of the current string
 		UTFString& append( const UTFString& str );
 		//! appends \c str on to the end of the current string
@@ -386,43 +430,21 @@ namespace OpenGUI {
 		UTFString& append( size_type num, code_point ch );
 		//! appends the sequence denoted by \a start and \a end on to the end of the current string
 		UTFString& append( iterator start, iterator end );
-		//
-		//! appends \c str on to the end of the current string
-		UTFString& append( const std::wstring& wstr );
-		//! appends \c str on to the end of the current string
-		UTFString& append( const wchar_t* w_str );
-		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string
-		UTFString& append( const std::wstring& wstr, size_type index, size_type len );
 		//! appends \c num characters of \c str on to the end of the current string
 		UTFString& append( const wchar_t* w_str, size_type num );
 		//! appends \c num repetitions of \c ch on to the end of the current string
 		UTFString& append( size_type num, wchar_t ch );
-		// 
-		//! appends \c str on to the end of the current string (UTF-8 encoding)
-		UTFString& append( const std::string& str );
-		//! appends \c str on to the end of the current string (UTF-8 encoding)
-		UTFString& append( const char* c_str );
-		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string  (UTF-8 encoding)
-		UTFString& append( const std::string& str, size_type index, size_type len );
 		//! appends \c num characters of \c str on to the end of the current string  (UTF-8 encoding)
 		UTFString& append( const char* c_str, size_type num );
 		//! appends \c num repetitions of \c ch on to the end of the current string (Unicode values less than 128)
 		UTFString& append( size_type num, char ch );
-		//
 		//! appends \c num repetitions of \c ch on to the end of the current string (Full Unicode spectrum)
 		UTFString& append( size_type num, unicode_char ch );
-
-		
-		//! appends \a val to the end of the string
-		void push_back( unicode_char val );
-		//! appends \a val to the end of the string
-		void push_back( wchar_t val );
-		//! appends \a val to the end of the string
-		void push_back( code_point val );
-		//! appends \a val to the end of the string
-		void push_back( char val );
+		//@}
 
 
+		//!\name insert
+		//@{
 		//! inserts \a ch before the code point denoted by \a i
 		iterator insert( iterator i, const code_point& ch );
 		//! inserts \a str into the current string, at location \a index
@@ -439,42 +461,32 @@ namespace OpenGUI {
 		void insert( iterator i, size_type num, const code_point& ch );
 		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
 		void insert( iterator i, iterator start, iterator end );
-
-		//! inserts \a str into the current string, at location \a index
-		UTFString& insert( size_type index, const std::wstring& wstr );
-		//! inserts \a str into the current string, at location \a index
-		UTFString& insert( size_type index, const wchar_t* w_str );
-		//! inserts a substring of \a str (starting at \a index2 and \a num characters long) into the current string, at location \a index1
-		UTFString& insert( size_type index1, const std::wstring& wstr, size_type index2, size_type num );
 		//! inserts \a num code points of \a str into the current string, at location \a index
 		UTFString& insert( size_type index, const wchar_t* w_str, size_type num );
 		//! inserts \a num copies of \a ch into the current string, at location \a index
 		UTFString& insert( size_type index, size_type num, wchar_t ch );
 		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
 		void insert( iterator i, size_type num, const wchar_t& ch );
+		//! inserts \a num code points of \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const char* c_str, size_type num );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, char ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const char& ch );
+		//@}
 
-
+		//!\name erase
+		//@{
 		//! removes the code point pointed to by \a loc, returning an iterator to the next character
 		iterator erase( iterator loc );
 		//! removes the characters between \a start and \a end (including the one at \a start but not the one at \a end), returning an iterator to the character after the last character removed
 		iterator erase( iterator start, iterator end );
 		//! removes \a num characters from the current string, starting at \a index
 		UTFString& erase( size_type index = 0, size_type num = npos );
+		//@}
 
-		//! returns a reference to the element in the string at index \c loc
-		code_point& at( size_type loc );
-		//! returns a reference to the element in the string at index \c loc
-		const code_point& at( size_type loc ) const;
-		//! returns a const pointer to a regular C string, identical to the current string
-		const code_point* c_str() const;
-		//! returns a pointer to the first character in the current string
-		const code_point* data() const;
-		//! returns the number of elements that the string can hold before it will need to allocate more space
-		size_type capacity() const;
-
-		//! deletes all of the elements in the string
-		void clear();
-
+		//!\name compare
+		//@{
 		//! compare \c str to the current string
 		int compare( const UTFString& str );
 		//! compare \c str to the current string
@@ -485,9 +497,90 @@ namespace OpenGUI {
 		int compare( size_type index, size_type length, const UTFString& str, size_type index2, size_type length2 );
 		//! compare a substring of \c str to a substring of the current string, where the substring of \c str begins at zero and is \c length2 characters long, and the substring of the current string begins at \c index and is \c length  characters long
 		int compare( size_type index, size_type length, const code_point* str, size_type length2 );
+		//! compare a substring of \c str to a substring of the current string, where the substring of \c str begins at zero and is \c length2 <b>UTF-16 code points</b> long, and the substring of the current string begins at \c index and is \c length characters long
+		int compare( size_type index, size_type length, const wchar_t* w_str, size_type length2 );
+		//! compare a substring of \c str to a substring of the current string, where the substring of \c str begins at zero and is \c length2 <b>UTF-8 code points</b> long, and the substring of the current string begins at \c index and is \c length characters long
+		int compare( size_type index, size_type length, const char* c_str, size_type length2 );
+		//@}
 
-		//! returns \c true if the string has no elements, \c false otherwise
-		bool empty() const;
+		//!\name find & rfind
+		//@{
+		//! returns the index of the first occurrence of \a str within the current string, starting at \a index; returns \c npos if nothing is found
+		/*! \a str is a UTF-16 encoded string, but through implicit casting can also be a UTF-8 encoded string (const char* or std::string) */
+		size_type find( const UTFString& str, size_type index );
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		/*! \a cp_str is a UTF-16 encoded string */
+		size_type find( const code_point* cp_str, size_type index, size_type length );
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		/*! \a cp_str is a UTF-8 encoded string */
+		size_type find( const char* c_str, size_type index, size_type length );
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		/*! \a cp_str is a UTF-16 encoded string */
+		size_type find( const wchar_t* w_str, size_type index, size_type length );
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		/*! \a ch is only capable of representing Unicode values up to U+007F (127) */
+		size_type find( char ch, size_type index );
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
+		size_type find( code_point ch, size_type index );
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
+		size_type find( wchar_t ch, size_type index );
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		/*! \a ch can fully represent any Unicode character */
+		size_type find( unicode_char ch, size_type index );
+
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		size_type rfind( const UTFString& str, size_type index );
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		size_type rfind( const code_point* cp_str, size_type index, size_type num );
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		size_type rfind( const char* c_str, size_type index, size_type num );
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		size_type rfind( const wchar_t* w_str, size_type index, size_type num );
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		size_type rfind( char ch, size_type index );
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		size_type rfind( code_point ch, size_type index );
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		size_type rfind( wchar_t ch, size_type index );
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		size_type rfind( unicode_char ch, size_type index );
+		//@}
+
+		size_type find_first_of( const string &str, size_type index = 0 );
+		size_type find_first_of( const char* str, size_type index = 0 );
+		size_type find_first_of( const char* str, size_type index, size_type num );
+		size_type find_first_of( char ch, size_type index = 0 );
+
+		//!\name Operators
+		//@{
+		//! less than operator
+		bool operator<( const UTFString& right ) {
+			return compare( right ) < 0;
+		}
+		//! less than or equal operator
+		bool operator<=( const UTFString& right ) {
+			return compare( right ) <= 0;
+		}
+		//! greater than operator
+		bool operator>( const UTFString& right ) {
+			return compare( right ) > 0;
+		}
+		//! greater than or equal operator
+		bool operator>=( const UTFString& right ) {
+			return compare( right ) >= 0;
+		}
+		//! equality operator
+		bool operator==( const UTFString& right ) {
+			return compare( right ) == 0;
+		}
+		//! inequality operator
+		bool operator!=( const UTFString& right ) {
+			return !operator==( right );
+		}
+		//@}
+
 
 		//!\name UTF-16 encoding/decoding
 		//@{
@@ -522,9 +615,9 @@ namespace OpenGUI {
 		static size_t _utf32_to_utf8( const unicode_char& in_uc, unsigned char out_cp[6] );
 
 		//! verifies a UTF-8 stream, returning the total number of Unicode characters found
-		size_type _verifyUTF8( const unsigned char* c_str );
+		static size_type _verifyUTF8( const unsigned char* c_str );
 		//! verifies a UTF-8 stream, returning the total number of Unicode characters found
-		size_type _verifyUTF8( const std::string& str );
+		static size_type _verifyUTF8( const std::string& str );
 		//@}
 
 

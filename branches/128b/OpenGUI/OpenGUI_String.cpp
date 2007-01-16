@@ -260,22 +260,6 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
-	UTFString& UTFString::append( const std::wstring& wstr ) {
-		UTFString tmp( wstr );
-		append( tmp );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const wchar_t* w_str ) {
-		std::wstring tmp( w_str );
-		return append( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const std::wstring& wstr, size_type index, size_type len ) {
-		std::wstring tmp( wstr, index, len );
-		return append( tmp );
-	}
-	//#########################################################################
 	UTFString& UTFString::append( const wchar_t* w_str, size_type num ) {
 		std::wstring tmp( w_str, num );
 		return append( tmp );
@@ -287,24 +271,6 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString& UTFString::append( iterator start, iterator end ) {
 		mData.append( start.mIter, end.mIter );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const std::string& str ) {
-		UTFString tmp( str );
-		append( tmp );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const char* c_str ) {
-		UTFString tmp( c_str );
-		append( tmp );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const std::string& str, size_type index, size_type len ) {
-		UTFString tmp( str, index, len );
-		append( tmp );
 		return *this;
 	}
 	//#########################################################################
@@ -396,17 +362,35 @@ namespace OpenGUI {
 		mData.insert( i.mIter, start.mIter, end.mIter );
 	}
 	//#########################################################################
-	UTFString& UTFString::insert( size_type index, const std::wstring& wstr ){throw 0;}
+	UTFString& UTFString::insert( size_type index, const wchar_t* w_str, size_type num ) {
+		UTFString tmp( w_str, num );
+		insert( index, tmp );
+		return *this;
+	}
 	//#########################################################################
-	UTFString& UTFString::insert( size_type index, const wchar_t* w_str ){throw 0;}
+	UTFString& UTFString::insert( size_type index, size_type num, wchar_t ch ) {
+		insert( index, num, ( code_point )ch );
+		return *this;
+	}
 	//#########################################################################
-	UTFString& UTFString::insert( size_type index1, const std::wstring& wstr, size_type index2, size_type num ){throw 0;}
+	void UTFString::insert( iterator i, size_type num, const wchar_t& ch ) {
+		insert( i, num, ( code_point )ch );
+	}
 	//#########################################################################
-	UTFString& UTFString::insert( size_type index, const wchar_t* w_str, size_type num ){throw 0;}
+	UTFString& UTFString::insert( size_type index, const char* c_str, size_type num ) {
+		UTFString tmp( c_str, num );
+		insert( index, tmp );
+		return *this;
+	}
 	//#########################################################################
-	UTFString& UTFString::insert( size_type index, size_type num, wchar_t ch ){throw 0;}
+	UTFString& UTFString::insert( size_type index, size_type num, char ch ) {
+		insert( index, num, ( code_point )ch );
+		return *this;
+	}
 	//#########################################################################
-	void UTFString::insert( iterator i, size_type num, const wchar_t& ch ){throw 0;}
+	void UTFString::insert( iterator i, size_type num, const char& ch ) {
+		insert( i, num, ( code_point )ch );
+	}
 	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator loc ) {
@@ -470,14 +454,104 @@ namespace OpenGUI {
 		return mData.compare( index, length, str, length2 );
 	}
 	//#########################################################################
+	int UTFString::compare( size_type index, size_type length, const wchar_t* w_str, size_type length2 ) {
+		UTFString tmp( w_str, length2 );
+		return compare( index, length, tmp );
+	}
+	//#########################################################################
+	int UTFString::compare( size_type index, size_type length, const char* c_str, size_type length2 ) {
+		UTFString tmp( c_str, length2 );
+		return compare( index, length, tmp );
+	}
+	//#########################################################################
 	bool UTFString::empty() const {
 		return mData.empty();
 	}
 	//#########################################################################
-
+	//#########################################################################
+	UTFString::size_type UTFString::find( const UTFString& str, size_type index ) {
+		return mData.find( str.c_str(), index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( const code_point* cp_str, size_type index, size_type length ) {
+		UTFString tmp( cp_str );
+		return mData.find( tmp.c_str(), index, length );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( const char* c_str, size_type index, size_type length ) {
+		UTFString tmp( c_str );
+		return mData.find( tmp.c_str(), index, length );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( const wchar_t* w_str, size_type index, size_type length ) {
+		UTFString tmp( w_str );
+		return mData.find( tmp.c_str(), index, length );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( code_point ch, size_type index ) {
+		return mData.find( ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( char ch, size_type index ) {
+		return find(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( wchar_t ch, size_type index ) {
+		return find(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return find( UTFString( cp, l ), index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( const UTFString& str, size_type index ) {
+		return mData.rfind( str.c_str(), index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( const code_point* cp_str, size_type index, size_type num ) {
+		UTFString tmp( cp_str );
+		return mData.rfind( tmp.c_str(), index, num );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( const char* c_str, size_type index, size_type num ) {
+		UTFString tmp( c_str );
+		return mData.rfind( tmp.c_str(), index, num );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( const wchar_t* w_str, size_type index, size_type num ) {
+		UTFString tmp( w_str );
+		return mData.rfind( tmp.c_str(), index, num );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( char ch, size_type index ) {
+		return rfind(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( code_point ch, size_type index ) {
+		return mData.rfind( ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( wchar_t ch, size_type index ) {
+		return rfind(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::rfind( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return rfind( UTFString( cp, l ), index );
+	}
+	//#########################################################################
+	UTFString UTFString::substr( size_type index, size_type num ) {
+		// this could avoid the extra copy if we used a private specialty constructor
+		dstring data = mData.substr( index, num );
+		UTFString tmp;
+		tmp.mData.swap( data );
+		return tmp;
+	}
+	//#########################################################################
 	void UTFString::_init() {
-		//mVersion = 0;
-		//mLength = 0;
 		m_buffer.mVoidBuffer = 0;
 		m_bufferType = none;
 		m_bufferSize = 0;
