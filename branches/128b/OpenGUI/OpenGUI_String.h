@@ -353,7 +353,7 @@ namespace OpenGUI {
 		//! deletes all of the elements in the string
 		void clear();
 		//! returns a substring of the current string, starting at \a index, and \a num characters long.
-		/*! If \a num is omitted, it will default to \c npos, and the substr() function will simply return the remainder of the string starting at \a index. */
+		/*! If \a num is omitted, it will default to \c UTFString::npos, and the substr() function will simply return the remainder of the string starting at \a index. */
 		UTFString substr( size_type index, size_type num = npos );
 		//! appends \a val to the end of the string
 		void push_back( unicode_char val );
@@ -505,53 +505,56 @@ namespace OpenGUI {
 
 		//!\name find & rfind
 		//@{
-		//! returns the index of the first occurrence of \a str within the current string, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence of \a str within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a str is a UTF-16 encoded string, but through implicit casting can also be a UTF-8 encoded string (const char* or std::string) */
 		size_type find( const UTFString& str, size_type index );
-		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a cp_str is a UTF-16 encoded string */
 		size_type find( const code_point* cp_str, size_type index, size_type length );
-		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a cp_str is a UTF-8 encoded string */
 		size_type find( const char* c_str, size_type index, size_type length );
-		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a cp_str is a UTF-16 encoded string */
 		size_type find( const wchar_t* w_str, size_type index, size_type length );
-		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+007F (127) */
 		size_type find( char ch, size_type index );
-		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
 		size_type find( code_point ch, size_type index );
-		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
 		size_type find( wchar_t ch, size_type index );
-		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c npos if nothing is found
+		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch can fully represent any Unicode character */
 		size_type find( unicode_char ch, size_type index );
 
-		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
 		size_type rfind( const UTFString& str, size_type index );
-		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c UTFString::npos if nothing is found
 		size_type rfind( const code_point* cp_str, size_type index, size_type num );
-		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c UTFString::npos if nothing is found
 		size_type rfind( const char* c_str, size_type index, size_type num );
-		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c UTFString::npos if nothing is found
 		size_type rfind( const wchar_t* w_str, size_type index, size_type num );
-		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
 		size_type rfind( char ch, size_type index );
-		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
 		size_type rfind( code_point ch, size_type index );
-		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
 		size_type rfind( wchar_t ch, size_type index );
-		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c npos if nothing is found
+		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
 		size_type rfind( unicode_char ch, size_type index );
 		//@}
 
-		size_type find_first_of( const string &str, size_type index = 0 );
-		size_type find_first_of( const char* str, size_type index = 0 );
+		//! Returns the index of the first character within the current string that matches \b any character in \a str, beginning the search at \a index; returns \c UTFString::npos if nothing is found
+		size_type find_first_of( const UTFString &str, size_type index = 0 );
 		size_type find_first_of( const char* str, size_type index, size_type num );
+		size_type find_first_of( code_point ch, size_type index = 0 );
 		size_type find_first_of( char ch, size_type index = 0 );
+		size_type find_first_of( wchar_t ch, size_type index = 0 );
+		size_type find_first_of( unicode_char ch, size_type index = 0 );
 
 		//!\name Operators
 		//@{
