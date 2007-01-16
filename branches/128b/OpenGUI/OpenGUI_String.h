@@ -108,29 +108,68 @@ namespace OpenGUI {
 				return tmp;
 			}
 			//! addition operator
-			_iterator operator+( difference_type n ) const {
+			_iterator operator+( size_type n ) const {
 				_iterator tmp( *this );
 				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! addition operator
+			_iterator operator+( difference_type n ) const {
+				_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekRev( n );
+				else
+					tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_iterator operator-( size_type n ) const {
+				_iterator tmp( *this );
+				tmp._seekRev( n );
 				return tmp;
 			}
 			//! subtraction operator
 			_iterator operator-( difference_type n ) const {
 				_iterator tmp( *this );
-				tmp._seekRev( n );
+				if ( n < 0 )
+					tmp._seekFwd( n );
+				else
+					tmp._seekRev( n );
 				return tmp;
 			}
-			_iterator& operator+=( difference_type n ) const {
+
+			//! addition assignment operator
+			_iterator& operator+=( size_type n ) const {
 				_seekFwd( n );
 				return const_cast<_iterator&>( *this );
 			}
-			_iterator& operator-=( difference_type n ) const {
+			//! addition assignment operator
+			_iterator& operator+=( difference_type n ) const {
+				if ( n < 0 )
+					_seekRev( n );
+				else
+					_seekFwd( n );
+				return const_cast<_iterator&>( *this );
+			}
+			//! subtraction assignment operator
+			_iterator& operator-=( size_type n ) const {
 				_seekRev( n );
 				return const_cast<_iterator&>( *this );
 			}
-			//! difference operator
-			difference_type operator-( const _iterator& right ) const {
-				return ( difference_type )( mIter - right.mIter );
+			//! subtraction assignment operator
+			_iterator& operator-=( difference_type n ) const {
+				if ( n < 0 )
+					_seekFwd( n );
+				else
+					_seekRev( n );
+				return const_cast<_iterator&>( *this );
 			}
+
+			//! difference operator
+			size_type operator-( const _iterator& right ) const {
+				return ( mIter - right.mIter );
+			}
+
 			//! dereference operator
 			reference operator*() {
 				return mIter.operator*();
@@ -141,15 +180,27 @@ namespace OpenGUI {
 			}
 
 			//! dereference at offset operator
+			reference operator[]( size_type n ) {
+				_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			const_reference operator[]( size_type n ) const {
+				_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
 			reference operator[]( difference_type n ) {
 				_iterator tmp( *this );
-				tmp._seekFwd( n );
+				tmp += n;
 				return tmp.operator*();
 			}
 			//! dereference at offset operator
 			const_reference operator[]( difference_type n ) const {
 				_iterator tmp( *this );
-				tmp._seekFwd( n );
+				tmp += n;
 				return tmp.operator*();
 			}
 
@@ -179,47 +230,21 @@ namespace OpenGUI {
 			}
 			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
 			unicode_char getCharacter() const {
-				unicode_char uc;
-				size_t l = _utf16_char_length(( *mIter ) );
-				code_point cp[2] = {0, 0};
-				cp[0] = mIter[0];
-				if ( l == 2 ) {
-					try {
-						cp[1] = mIter[_inc_value( mIter )];
-					} catch ( ... ) {
-						cp[1] = 0;
-					}
-				}
-				_utf16_to_utf32( cp, uc );
-				return uc;
+				size_type current_index = _get_index( mIter );
+				return mString->getChar( current_index );
 			}
-			//! <b>Forward iterators only!</b> Sets the Unicode value of the character at the current position (adding a surrogate pair if needed)
-			void setCharacter( unicode_char uc ) {
-				code_point cp[2] = {0, 0};
-				size_t l = _utf32_to_utf16( uc, cp );
-				if ( _inc_value( mIter ) == 1 ) { // forward iterator
-					// insert the new character (gets inserted before our position)
-					mIter = mString->insert( *this, cp[0] ).mIter; // 1st half (or possibly this is all there is)
-					++mIter; // move us back to where we were
-					if ( cp[1] != 0 ) {
-						mIter = mString->insert( *this, cp[1] ).mIter; // 2nd half (if present)
-						++mIter; // move us back to where we were
-					}
-
-					// now delete the old character
-					uc = getCharacter(); // grab the character at the current position so we can determine the encoded length
-					difference_type len2 = ( difference_type )_utf16_char_length( uc );
-					mIter = mString->erase( *this, ( *this ) + len2 ).mIter;
-					--mIter; // move back to inserted character
-					if ( cp[1] != 0 ) --mIter; // need to move back again if new character was 2 code points long
-				} else { // reverse iterator
-					throw std::exception( "cannot modify Unicode characters with reverse_iterator" );
-				}
+			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
+			int setCharacter( unicode_char uc ) {
+				size_type current_index = _get_index( mIter );
+				int change = mString->setChar( current_index, uc );
+				_jump_to( mIter, current_index );
+				return change;
 			}
 
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
 			_iterator& moveNext() {
 				operator++(); // move 1 code point
+				if ( _test_end( mIter ) ) return *this; // exit if we hit the end
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
 					// so we test for that
@@ -230,7 +255,7 @@ namespace OpenGUI {
 							operator++(); // for both forward and reverse iterators, this will always result in the correct location
 						}
 					} catch ( ... ) {
-						return *this; // if something threw, then we'll just say where we are
+						return *this; // if something threw, then we'll just stay where we are
 					}
 				}
 				return *this;
@@ -238,6 +263,7 @@ namespace OpenGUI {
 			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
 			_iterator& movePrev() {
 				operator--(); // move 1 code point
+				if ( _test_begin( mIter ) ) return *this; // exit if we hit the beginning
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
 					// so we test for that
@@ -248,7 +274,7 @@ namespace OpenGUI {
 							operator--(); // for both forward and reverse iterators, this will always result in the correct location
 						}
 					} catch ( ... ) {
-						return *this; // if something threw, then we'll just say where we are
+						return *this; // if something threw, then we'll just stay where we are
 					}
 				}
 				return *this;
@@ -262,15 +288,40 @@ namespace OpenGUI {
 				mString = utfstr;
 			}
 		private:
-			void _seekFwd( difference_type c ) const {
+			void _seekFwd( size_type c ) const {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter += c;
 			}
-			void _seekRev( difference_type c ) const {
+			void _seekRev( size_type c ) const {
 				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
 				iter -= c;
 			}
 
+			// specializations for testing if _iter is at the beginning of the string
+			template <class T>
+			bool _test_begin( const T& ) const {
+				throw std::exception( "invalid iterator type for operation" );
+			}
+			template<> bool _test_begin<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
+				return _iter == mString->mData.begin();
+			}
+			template<> bool _test_begin<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
+				return _iter == mString->mData.rbegin();
+			}
+
+			// specializations for testing if _iter is at the end of the string
+			template <class T>
+			bool _test_end( const T& ) const {
+				throw std::exception( "invalid iterator type for operation" );
+			}
+			template<> bool _test_end<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
+				return _iter == mString->mData.end();
+			}
+			template<> bool _test_end<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
+				return _iter == mString->mData.rend();
+			}
+
+			// specializations for determining true increment direction regardless of iterator type
 			template <class T>
 			int _inc_value( const T& ) const {
 				throw std::exception( "invalid iterator type for operation" );
@@ -280,6 +331,30 @@ namespace OpenGUI {
 			}
 			template<> int _inc_value<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& ) const {
 				return -1;
+			}
+
+			// specialization to retrieve current index
+			template <class T>
+			size_type _get_index( const T& ) const {
+				throw std::exception( "invalid iterator type for operation" );
+			}
+			template<> size_type _get_index<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
+				return mIter - mString->mData.begin();
+			}
+			template<> size_type _get_index<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
+				return ( mIter - mString->mData.rend() ) - 1;
+			}
+
+			// specialization to jump to a given index from the string's beginning
+			template <class T>
+			void _jump_to( T&, size_type ) const {
+				throw std::exception( "invalid iterator type for operation" );
+			}
+			template<> void _jump_to<UTFString::dstring::iterator>( dstring::iterator& _iter, size_type index ) const {
+				_iter = mString->mData.begin() + index;
+			}
+			template<> void _jump_to<UTFString::dstring::reverse_iterator>( dstring::reverse_iterator& _iter, size_type index ) const {
+				_iter = mString->mData.rend() - ( index + 1 );
 			}
 
 			ITER_TYPE mIter;
@@ -340,10 +415,6 @@ namespace OpenGUI {
 		void swap( UTFString& from );
 		//! returns \c true if the string has no elements, \c false otherwise
 		bool empty() const;
-		//! returns a reference to the element in the string at index \c loc
-		code_point& at( size_type loc );
-		//! returns a reference to the element in the string at index \c loc
-		const code_point& at( size_type loc ) const;
 		//! returns a const pointer to a regular C string, identical to the current string
 		const code_point* c_str() const;
 		//! returns a pointer to the first character in the current string
@@ -363,6 +434,32 @@ namespace OpenGUI {
 		void push_back( code_point val );
 		//! appends \a val to the end of the string
 		void push_back( char val );
+		//! returns \c true if the given Unicode character is in this string
+		bool inString( unicode_char ch ) const;
+		//@}
+
+		//!\name Single Character Access
+		//@{
+		//! returns a reference to the element in the string at index \c loc
+		code_point& at( size_type loc );
+		//! returns a reference to the element in the string at index \c loc
+		const code_point& at( size_type loc ) const;
+		//! returns the data point \a loc evaluated as a UTF-32 value
+		/*! This function will will only properly decode surrogate pairs when \a loc points to the index
+		of a lead code point that is followed by a trailing code point. Evaluating the trailing code point
+		itself, or pointing to a code point that is a sentinel value (part of a broken pair) will return
+		the value of just that code point (not a valid Unicode value, but useful as a sentinel value). */
+		unicode_char getChar( size_type loc ) const;
+		//! sets the value of the character at \a loc to the Unicode value \a ch (UTF-32)
+		/*! Providing sentinel values (values between U+D800-U+DFFF) are accepted, but you should be aware
+		that you can also unwittingly create a valid surrogate pair if you don't pay attention to what you
+		are doing. \note This operation may also lengthen the string if a surrogate pair is needed to
+		represent the value given, but one is not available to replace; or alternatively shorten the string
+		if an existing surrogate pair is replaced with a character that is representable without a surrogate
+		pair. The return value will signify any lengthening or shortening performed, returning 0 if no change
+		was made, -1 if the string was shortened, or 1 if the string was lengthened. Any single call can
+		only change the string length by + or - 1. */
+		int setChar( size_type loc, unicode_char ch );
 		//@}
 
 		//!\name iterator acquisition
@@ -548,13 +645,30 @@ namespace OpenGUI {
 		size_type rfind( unicode_char ch, size_type index );
 		//@}
 
-		//! Returns the index of the first character within the current string that matches \b any character in \a str, beginning the search at \a index; returns \c UTFString::npos if nothing is found
-		size_type find_first_of( const UTFString &str, size_type index = 0 );
-		size_type find_first_of( const char* str, size_type index, size_type num );
+		//!\name find_first/last_(not)_of
+		//@{
+		//! Returns the index of the first character within the current string that matches \b any character in \a str, beginning the search at \a index and searching at most \a num characters; returns \c UTFString::npos if nothing is found
+		size_type find_first_of( const UTFString &str, size_type index = 0, size_type num = npos );
+		//! returns the index of the first occurrence of \a ch in the current string, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_of( code_point ch, size_type index = 0 );
+		//! returns the index of the first occurrence of \a ch in the current string, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_of( char ch, size_type index = 0 );
+		//! returns the index of the first occurrence of \a ch in the current string, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_of( wchar_t ch, size_type index = 0 );
+		//! returns the index of the first occurrence of \a ch in the current string, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_of( unicode_char ch, size_type index = 0 );
+
+		//! returns the index of the first character within the current string that does not match any character in \a str, beginning the search at \a index and searching at most \a num characters; returns \c UTFString::npos if nothing is found
+		size_type find_first_not_of( const UTFString& str, size_type index = 0, size_type num = npos );
+		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		size_type find_first_not_of( code_point ch, size_type index = 0 );
+		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		size_type find_first_not_of( char ch, size_type index = 0 );
+		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		size_type find_first_not_of( wchar_t ch, size_type index = 0 );
+		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		size_type find_first_not_of( unicode_char ch, size_type index = 0 );
+		//@}
 
 		//!\name Operators
 		//@{

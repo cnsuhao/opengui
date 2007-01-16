@@ -550,6 +550,123 @@ namespace OpenGUI {
 		tmp.mData.swap( data );
 		return tmp;
 	}
+
+	//#########################################################################
+	bool UTFString::inString( unicode_char ch ) const {
+		iterator i, ie = end();
+		for ( i = begin(); i != ie; i.moveNext() ) {
+			if ( i.getCharacter() == ch )
+				return true;
+		}
+		return false;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_of( const UTFString &str, size_type index, size_type num ) {
+		size_type i = 0;
+		const size_type len = length();
+		while ( i < num && ( index + i ) < len ) {
+			unicode_char ch = getChar( index + i );
+			if ( str.inString( ch ) )
+				return index + i;
+			i += _utf16_char_length( ch ); // increment by the Unicode character length
+		}
+		return npos;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_of( code_point ch, size_type index ) {
+		UTFString tmp;
+		tmp.assign( 1, ch );
+		return find_first_of( tmp, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_of( char ch, size_type index ) {
+		return find_first_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_of( wchar_t ch, size_type index ) {
+		return find_first_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_of( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return find_first_of( UTFString( cp, l ), index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_not_of( const UTFString& str, size_type index, size_type num ) {
+		size_type i = 0;
+		const size_type len = length();
+		while ( i < num && ( index + i ) < len ) {
+			unicode_char ch = getChar( index + i );
+			if ( !str.inString( ch ) )
+				return index + i;
+			i += _utf16_char_length( ch ); // increment by the Unicode character length
+		}
+		return npos;
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_not_of( code_point ch, size_type index ) {
+		UTFString tmp;
+		tmp.assign( 1, ch );
+		return find_first_not_of( tmp, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_not_of( char ch, size_type index ) {
+		return find_first_not_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_not_of( wchar_t ch, size_type index ) {
+		return find_first_not_of(( code_point )ch, index );
+	}
+	//#########################################################################
+	UTFString::size_type UTFString::find_first_not_of( unicode_char ch, size_type index ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		return find_first_not_of( UTFString( cp, l ), index );
+	}
+	//#########################################################################
+	UTFString::unicode_char UTFString::getChar( size_type loc ) const {
+		const code_point* ptr = c_str();
+		unicode_char uc;
+		size_t l = _utf16_char_length( ptr[loc] );
+		code_point cp[2] = { /* blame the code beautifier */
+							   0, 0
+						   };
+		cp[0] = ptr[loc];
+
+		if ( l == 2 && ( loc + 1 ) < mData.length() ) {
+			cp[1] = ptr[loc+1];
+		}
+		_utf16_to_utf32( cp, uc );
+		return uc;
+	}
+	//#########################################################################
+	int UTFString::setChar( size_type loc, unicode_char ch ) {
+		const code_point* ptr = c_str();
+		code_point cp[2] = { /* blame the code beautifier */
+							   0, 0
+						   };
+		size_t l = _utf32_to_utf16( ch, cp );
+		unicode_char existingChar = getChar( loc );
+		size_t existingSize = _utf16_char_length( existingChar );
+		size_t newSize = _utf16_char_length( ch );
+
+		if ( newSize > existingSize ) {
+			at( loc ) = cp[0];
+			insert( loc + 1, 1, cp[1] );
+			return 1;
+		}
+		if ( newSize < existingSize ) {
+			erase( loc, 1 );
+			at( loc ) = cp[0];
+			return -1;
+		}
+
+		// newSize == existingSize
+		at( loc ) = cp[0];
+		if ( l == 2 ) at( loc + 1 ) = cp[1];
+		return 0;
+	}
 	//#########################################################################
 	void UTFString::_init() {
 		m_buffer.mVoidBuffer = 0;
