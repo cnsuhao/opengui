@@ -456,6 +456,38 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	UTFString& UTFString::replace( size_type index1, size_type num1, const UTFString& str ) {
+		mData.replace( index1, num1, str.mData, 0, npos );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::replace( size_type index1, size_type num1, const UTFString& str, size_type num2 ) {
+		mData.replace( index1, num1, str.mData, 0, num2 );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::replace( size_type index1, size_type num1, const UTFString& str, size_type index2, size_type num2 ) {
+		mData.replace( index1, num1, str.mData, index2, num2 );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::replace( iterator start, iterator end, const UTFString& str, size_type num ) {
+		size_type index1 = begin() - start;
+		size_type num1 = end - start;
+		return replace( index1, num1, str, 0, num );
+	}
+	//#########################################################################
+	UTFString& UTFString::replace( size_type index, size_type num1, size_type num2, code_point ch ) {
+		mData.replace( index, num1, num2, ch );
+		return *this;
+	}
+	//#########################################################################
+	UTFString& UTFString::replace( iterator start, iterator end, size_type num, code_point ch ) {
+		size_type index1 = begin() - start;
+		size_type num1 = end - start;
+		return replace( index1, num1, num, ch );
+	}
+	//#########################################################################
 	UTFString::code_point& UTFString::at( size_type loc ) {
 		return mData.at( loc );
 	}

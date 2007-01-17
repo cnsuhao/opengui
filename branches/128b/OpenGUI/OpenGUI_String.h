@@ -596,7 +596,7 @@ namespace OpenGUI {
 		UTFString& insert( size_type index, const UTFString& str );
 		//! inserts \a str into the current string, at location \a index
 		UTFString& insert( size_type index, const code_point* str );
-		//! inserts a substring of \a str (starting at \a index2 and \a num characters long) into the current string, at location \a index1
+		//! inserts a substring of \a str (starting at \a index2 and \a num code points long) into the current string, at location \a index1
 		UTFString& insert( size_type index1, const UTFString& str, size_type index2, size_type num );
 		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
 		void insert( iterator i, iterator start, iterator end );
@@ -621,17 +621,33 @@ namespace OpenGUI {
 		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
 		void insert( iterator i, size_type num, const char& ch );
 		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
-		void insert( iterator i, size_type num, const unicode_char& ch );	
+		void insert( iterator i, size_type num, const unicode_char& ch );
 		//@}
 
 		//!\name erase
 		//@{
 		//! removes the code point pointed to by \a loc, returning an iterator to the next character
 		iterator erase( iterator loc );
-		//! removes the characters between \a start and \a end (including the one at \a start but not the one at \a end), returning an iterator to the character after the last character removed
+		//! removes the code points between \a start and \a end (including the one at \a start but not the one at \a end), returning an iterator to the code point after the last code point removed
 		iterator erase( iterator start, iterator end );
-		//! removes \a num characters from the current string, starting at \a index
+		//! removes \a num code points from the current string, starting at \a index
 		UTFString& erase( size_type index = 0, size_type num = npos );
+		//@}
+
+		//!\name replace
+		//@{
+		//! replaces up to \a num1 code points of the current string (starting at \a index1) with \a str
+		UTFString& replace( size_type index1, size_type num1, const UTFString& str);
+		//! replaces up to \a num1 code points of the current string (starting at \a index1) with up to \a num2 code points from \a str
+		UTFString& replace( size_type index1, size_type num1, const UTFString& str, size_type num2);
+		//! replaces up to \a num1 code points of the current string (starting at \a index1) with up to \a num2 code points from \a str beginning at \a index2
+		UTFString& replace( size_type index1, size_type num1, const UTFString& str, size_type index2, size_type num2 );
+		//! replaces code points in the current string from \a start to \a end with \a num code points from \a str
+		UTFString& replace( iterator start, iterator end, const UTFString& str, size_type num = npos );
+		//! replaces up to \a num1 code points in the current string (beginning at \a index) with \c num2 copies of \c ch
+		UTFString& replace( size_type index, size_type num1, size_type num2, code_point ch );
+		//! replaces the code points in the current string from \a start to \a end with \a num copies of \a ch
+		UTFString& replace( iterator start, iterator end, size_type num, code_point ch );
 		//@}
 
 		//!\name compare
@@ -712,13 +728,13 @@ namespace OpenGUI {
 
 		//! returns the index of the first character within the current string that does not match any character in \a str, beginning the search at \a index and searching at most \a num characters; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( const UTFString& str, size_type index = 0, size_type num = npos );
-		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		//! returns the index of the first character within the current string that does not match \a ch, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( code_point ch, size_type index = 0 );
-		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		//! returns the index of the first character within the current string that does not match \a ch, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( char ch, size_type index = 0 );
-		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		//! returns the index of the first character within the current string that does not match \a ch, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( wchar_t ch, size_type index = 0 );
-		//! returns the index of the first character within the current string that does not match \a, starting the search at \a index; returns \c UTFString::npos if nothing is found
+		//! returns the index of the first character within the current string that does not match \a ch, starting the search at \a index; returns \c UTFString::npos if nothing is found
 		size_type find_first_not_of( unicode_char ch, size_type index = 0 );
 
 		//! returns the index of the first character within the current string that matches any character in \a str, doing a reverse search from \a index and searching at most \a num characters; returns \c UTFString::npos if nothing is found
@@ -769,6 +785,34 @@ namespace OpenGUI {
 		//! inequality operator
 		bool operator!=( const UTFString& right ) {
 			return !operator==( right );
+		}
+		//! assignment operator, implicitly casts all compatible types
+		UTFString& operator=( const UTFString& s ){
+			return assign(s);
+		}
+		//! assignment operator
+		UTFString& operator=( code_point ch ){
+			clear();
+			return append(1,ch);
+		}
+		//! assignment operator
+		UTFString& operator=( char ch ){
+			clear();
+			return append(1,ch);
+		}
+		//! assignment operator
+		UTFString& operator=( wchar_t ch ){
+			clear();
+			return append(1,ch);
+		}
+		//! assignment operator
+		UTFString& operator=( unicode_char ch ){
+			clear();
+			return append(1,ch);
+		}
+		//! code point dereference operator
+		code_point& operator[]( size_type index ){
+			return at(index);
 		}
 		//@}
 
@@ -847,6 +891,44 @@ namespace OpenGUI {
 		}
 		m_buffer;
 	};
+
+	//! string addition operator \relates UTFString
+	UTFString operator+(const UTFString& s1, const UTFString& s2 ){
+		return UTFString(s1).append(s2);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( const UTFString& s1, UTFString::code_point c ){
+		return UTFString(s1).append(1,c);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( const UTFString& s1, UTFString::unicode_char c ){
+		return UTFString(s1).append(1,c);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( const UTFString& s1, char c ){
+		return UTFString(s1).append(1,c);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( const UTFString& s1, wchar_t c ){
+		return UTFString(s1).append(1,c);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( UTFString::code_point c, const UTFString& s2 ){
+		return UTFString().append(1,c).append(s2);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( UTFString::unicode_char c, const UTFString& s2 ){
+		return UTFString().append(1,c).append(s2);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( char c, const UTFString& s2 ){
+		return UTFString().append(1,c).append(s2);
+	}
+	//! string addition operator \relates UTFString
+	UTFString operator+( wchar_t c, const UTFString& s2 ){
+		return UTFString().append(1,c).append(s2);
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Define the base types used throughout the rest of the library
