@@ -67,7 +67,9 @@ namespace OpenGUI {
 
 	Some additional functionality is present to assist in working with characters using the
 	32-bit UTF-32 encoding. (Which is guaranteed to fit any Unicode character into a single
-	code point.)
+	code point.) \b Note: Reverse iterators do not have this functionality due to the
+	ambiguity that surrounds working with UTF-16 in reverse. (Such as, where should an
+	iterator point to represent the beginning of a surrogate pair?)
 
 
 	\par Supported Input Types
@@ -110,6 +112,7 @@ namespace OpenGUI {
 			}
 		};
 
+		//#########################################################################
 		//! base iterator class for UTFString
 	class _base_iterator: public std::iterator<std::random_access_iterator_tag, value_type> {
 			friend class UTFString;
@@ -117,6 +120,31 @@ namespace OpenGUI {
 			//! difference operator
 			size_type operator-( const _base_iterator& right ) const {
 				return ( mIter - right.mIter );
+			}
+
+			//! equality operator
+			bool operator==( const _base_iterator& right ) const {
+				return mIter == right.mIter;
+			}
+			//! inequality operator
+			bool operator!=( const _base_iterator& right ) const {
+				return mIter != right.mIter;
+			}
+			//! less than
+			bool operator<( const _base_iterator& right ) const {
+				return mIter < right.mIter;
+			}
+			//! less than or equal
+			bool operator<=( const _base_iterator& right ) const {
+				return mIter <= right.mIter;
+			}
+			//! greater than
+			bool operator>( const _base_iterator& right ) const {
+				return mIter > right.mIter;
+			}
+			//! greater than or equal
+			bool operator>=( const _base_iterator& right ) const {
+				return mIter >= right.mIter;
 			}
 
 		protected:
@@ -147,12 +175,10 @@ namespace OpenGUI {
 				mIter = mString->mData.begin() + index;
 			}
 
-			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
 			unicode_char _getCharacter() const {
 				size_type current_index = _get_index();
 				return mString->getChar( current_index );
 			}
-			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
 			int _setCharacter( unicode_char uc ) {
 				size_type current_index = _get_index();
 				int change = mString->setChar( current_index, uc );
@@ -161,7 +187,7 @@ namespace OpenGUI {
 			}
 
 			void _moveNext() {
-				_seekFwd(1); // move 1 code point forward
+				_seekFwd( 1 ); // move 1 code point forward
 				if ( _test_end() ) return; // exit if we hit the end
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
@@ -170,12 +196,12 @@ namespace OpenGUI {
 					//NB: we can't possibly be at the beginning here, so no need to test
 					lead_half = mIter[-1]; // check the previous code point to see if we're part of a surrogate pair
 					if ( _utf16_surrogate_lead( lead_half ) ) {
-						_seekFwd(1); // if so, then advance 1 more code point
+						_seekFwd( 1 ); // if so, then advance 1 more code point
 					}
 				}
 			}
 			void _movePrev() {
-				_seekRev(1); // move 1 code point backwards
+				_seekRev( 1 ); // move 1 code point backwards
 				if ( _test_begin() ) return; // exit if we hit the beginning
 				if ( _utf16_surrogate_follow( mIter[0] ) ) {
 					// landing on a follow code point means we might be part of a bigger character
@@ -183,7 +209,7 @@ namespace OpenGUI {
 					code_point lead_half = 0;
 					lead_half = mIter[-1]; // check the previous character to see if we're part of a surrogate pair
 					if ( _utf16_surrogate_lead( lead_half ) ) {
-						_seekRev(1); // if so, then rewind 1 more code point
+						_seekRev( 1 ); // if so, then rewind 1 more code point
 					}
 				}
 			}
@@ -192,14 +218,17 @@ namespace OpenGUI {
 			UTFString* mString;
 		};
 
+		//#########################################################################
+		// FORWARD ITERATORS
+		//#########################################################################
 		class _const_fwd_iterator; // forward declaration
 		//! forward iterator for UTFString
 	class _fwd_iterator: _base_iterator {
 			friend class _const_fwd_iterator;
 		public:
-			_fwd_iterator(){}
-			_fwd_iterator(const _fwd_iterator& i){
-				_become(i);
+			_fwd_iterator() {}
+			_fwd_iterator( const _fwd_iterator& i ) {
+				_become( i );
 			}
 
 			//! pre-increment
@@ -302,38 +331,13 @@ namespace OpenGUI {
 				return tmp.operator*();
 			}
 
-			//! equality operator
-			bool operator==( const _fwd_iterator& right ) const {
-				return mIter == right.mIter;
-			}
-			//! inequality operator
-			bool operator!=( const _fwd_iterator& right ) const {
-				return mIter != right.mIter;
-			}
-			//! less than
-			bool operator<( const _fwd_iterator& right ) const {
-				return mIter < right.mIter;
-			}
-			//! less than or equal
-			bool operator<=( const _fwd_iterator& right ) const {
-				return mIter <= right.mIter;
-			}
-			//! greater than
-			bool operator>( const _fwd_iterator& right ) const {
-				return mIter > right.mIter;
-			}
-			//! greater than or equal
-			bool operator>=( const _fwd_iterator& right ) const {
-				return mIter >= right.mIter;
-			}
-
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_fwd_iterator& moveNext(){
+			_fwd_iterator& moveNext() {
 				_moveNext();
 				return *this;
 			}
 			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_fwd_iterator& movePrev(){
+			_fwd_iterator& movePrev() {
 				_movePrev();
 				return *this;
 			}
@@ -343,19 +347,20 @@ namespace OpenGUI {
 			}
 			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
 			int setCharacter( unicode_char uc ) {
-				return _setCharacter(uc);
+				return _setCharacter( uc );
 			}
 		};
 
+		//#########################################################################
 		//! const forward iterator for UTFString
 	class _const_fwd_iterator: _base_iterator {
 		public:
 			_const_fwd_iterator() {}
 			_const_fwd_iterator( const _const_fwd_iterator& i ) {
-				_become(i);
+				_become( i );
 			}
 			_const_fwd_iterator( const _fwd_iterator& i ) {
-				_become(i);
+				_become( i );
 			}
 
 			//! pre-increment
@@ -458,38 +463,13 @@ namespace OpenGUI {
 				return tmp.operator*();
 			}
 
-			//! equality operator
-			bool operator==( const _const_fwd_iterator& right ) const {
-				return mIter == right.mIter;
-			}
-			//! inequality operator
-			bool operator!=( const _const_fwd_iterator& right ) const {
-				return mIter != right.mIter;
-			}
-			//! less than
-			bool operator<( const _const_fwd_iterator& right ) const {
-				return mIter < right.mIter;
-			}
-			//! less than or equal
-			bool operator<=( const _const_fwd_iterator& right ) const {
-				return mIter <= right.mIter;
-			}
-			//! greater than
-			bool operator>( const _const_fwd_iterator& right ) const {
-				return mIter > right.mIter;
-			}
-			//! greater than or equal
-			bool operator>=( const _const_fwd_iterator& right ) const {
-				return mIter >= right.mIter;
-			}
-
 			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_const_fwd_iterator& moveNext(){
+			_const_fwd_iterator& moveNext() {
 				_moveNext();
 				return *this;
 			}
 			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_const_fwd_iterator& movePrev(){
+			_const_fwd_iterator& movePrev() {
 				_movePrev();
 				return *this;
 			}
@@ -498,7 +478,232 @@ namespace OpenGUI {
 				return _getCharacter();
 			}
 		};
-//////////////////////////////////////////////////////////////////////////
+
+		//#########################################################################
+		// REVERSE ITERATORS
+		//#########################################################################
+		class _const_rev_iterator; // forward declaration
+		//! forward iterator for UTFString
+	class _rev_iterator: _base_iterator {
+			friend class _const_rev_iterator;
+		public:
+			_rev_iterator() {}
+			_rev_iterator( const _rev_iterator& i ) {
+				_become( i );
+			}
+
+			//! pre-increment
+			_rev_iterator& operator++() {
+				_seekRev( 1 );
+				return *this;
+			}
+			//! post-increment
+			_rev_iterator operator++( int ) {
+				_rev_iterator tmp( *this );
+				_seekRev( 1 );
+				return tmp;
+			}
+
+			//! pre-decrement
+			_rev_iterator& operator--() {
+				_seekFwd( 1 );
+				return *this;
+			}
+			//! post-decrement
+			_rev_iterator operator--( int ) {
+				_rev_iterator tmp( *this );
+				_seekFwd( 1 );
+				return tmp;
+			}
+
+			//! addition operator
+			_rev_iterator operator+( size_type n ) {
+				_rev_iterator tmp( *this );
+				tmp._seekRev( n );
+				return tmp;
+			}
+			//! addition operator
+			_rev_iterator operator+( difference_type n ) {
+				_rev_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekFwd( n );
+				else
+					tmp._seekRev( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_rev_iterator operator-( size_type n ) {
+				_rev_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_rev_iterator operator-( difference_type n ) {
+				_rev_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekRev( n );
+				else
+					tmp._seekFwd( n );
+				return tmp;
+			}
+
+			//! addition assignment operator
+			_rev_iterator& operator+=( size_type n ) {
+				_seekRev( n );
+				return *this;
+			}
+			//! addition assignment operator
+			_rev_iterator& operator+=( difference_type n ) {
+				if ( n < 0 )
+					_seekFwd( n );
+				else
+					_seekRev( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_rev_iterator& operator-=( size_type n ) {
+				_seekFwd( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_rev_iterator& operator-=( difference_type n ) {
+				if ( n < 0 )
+					_seekRev( n );
+				else
+					_seekFwd( n );
+				return *this;
+			}
+
+			//! dereference operator
+			value_type& operator*() const {
+				return mIter[-1];
+			}
+
+			//! dereference at offset operator
+			value_type& operator[]( size_type n ) const {
+				_rev_iterator tmp( *this );
+				tmp -= n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			value_type& operator[]( difference_type n ) const {
+				_rev_iterator tmp( *this );
+				tmp -= n;
+				return tmp.operator*();
+			}
+		};
+		//#########################################################################
+		//! const reverse iterator for UTFString
+		class _const_rev_iterator: _base_iterator {
+		public:
+			_const_rev_iterator() {}
+			_const_rev_iterator( const _const_rev_iterator& i ) {
+				_become( i );
+			}
+			_const_rev_iterator( const _rev_iterator& i ) {
+				_become( i );
+			}
+			//! pre-increment
+			_const_rev_iterator& operator++() {
+				_seekRev( 1 );
+				return *this;
+			}
+			//! post-increment
+			_const_rev_iterator operator++( int ) {
+				_const_rev_iterator tmp( *this );
+				_seekRev( 1 );
+				return tmp;
+			}
+
+			//! pre-decrement
+			_const_rev_iterator& operator--() {
+				_seekFwd( 1 );
+				return *this;
+			}
+			//! post-decrement
+			_const_rev_iterator operator--( int ) {
+				_const_rev_iterator tmp( *this );
+				_seekFwd( 1 );
+				return tmp;
+			}
+
+			//! addition operator
+			_const_rev_iterator operator+( size_type n ) {
+				_const_rev_iterator tmp( *this );
+				tmp._seekRev( n );
+				return tmp;
+			}
+			//! addition operator
+			_const_rev_iterator operator+( difference_type n ) {
+				_const_rev_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekFwd( n );
+				else
+					tmp._seekRev( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_const_rev_iterator operator-( size_type n ) {
+				_const_rev_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_const_rev_iterator operator-( difference_type n ) {
+				_const_rev_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekRev( n );
+				else
+					tmp._seekFwd( n );
+				return tmp;
+			}
+
+			//! addition assignment operator
+			_const_rev_iterator& operator+=( size_type n ) {
+				_seekRev( n );
+				return *this;
+			}
+			//! addition assignment operator
+			_const_rev_iterator& operator+=( difference_type n ) {
+				if ( n < 0 )
+					_seekFwd( n );
+				else
+					_seekRev( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_const_rev_iterator& operator-=( size_type n ) {
+				_seekFwd( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_const_rev_iterator& operator-=( difference_type n ) {
+				if ( n < 0 )
+					_seekRev( n );
+				else
+					_seekFwd( n );
+				return *this;
+			}
+
+			//! dereference operator
+			const value_type& operator*() const {
+				return mIter[-1];
+			}
+
+			//! dereference at offset operator
+			const value_type& operator[]( size_type n ) const {
+				_const_rev_iterator tmp( *this );
+				tmp -= n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			const value_type& operator[]( difference_type n ) const {
+				_const_rev_iterator tmp( *this );
+				tmp -= n;
+				return tmp.operator*();
+			}
+		};
+		//#########################################################################
 		//! base class of iterator for UTFString
 		template<class ITER_TYPE>
 		class _iterator {
@@ -1287,39 +1492,39 @@ namespace OpenGUI {
 	};
 
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, const UTFString& s2 ) {
+	inline UTFString operator+( const UTFString& s1, const UTFString& s2 ) {
 		return UTFString( s1 ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, UTFString::code_point c ) {
+	inline UTFString operator+( const UTFString& s1, UTFString::code_point c ) {
 		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, UTFString::unicode_char c ) {
+	inline UTFString operator+( const UTFString& s1, UTFString::unicode_char c ) {
 		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, char c ) {
+	inline UTFString operator+( const UTFString& s1, char c ) {
 		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, wchar_t c ) {
+	inline UTFString operator+( const UTFString& s1, wchar_t c ) {
 		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( UTFString::code_point c, const UTFString& s2 ) {
+	inline UTFString operator+( UTFString::code_point c, const UTFString& s2 ) {
 		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( UTFString::unicode_char c, const UTFString& s2 ) {
+	inline UTFString operator+( UTFString::unicode_char c, const UTFString& s2 ) {
 		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( char c, const UTFString& s2 ) {
+	inline UTFString operator+( char c, const UTFString& s2 ) {
 		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( wchar_t c, const UTFString& s2 ) {
+	inline UTFString operator+( wchar_t c, const UTFString& s2 ) {
 		return UTFString().append( 1, c ).append( s2 );
 	}
 
