@@ -93,8 +93,8 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::const_iterator UTFString::begin() const {
 		const_iterator i;
-		i.mIter = const_cast<UTFString*>(this)->mData.begin();
-		i.mString = const_cast<UTFString*>(this);
+		i.mIter = const_cast<UTFString*>( this )->mData.begin();
+		i.mString = const_cast<UTFString*>( this );
 		return i;
 	}
 	//#########################################################################
@@ -107,8 +107,8 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::const_iterator UTFString::end() const {
 		const_iterator i;
-		i.mIter = const_cast<UTFString*>(this)->mData.end();
-		i.mString = const_cast<UTFString*>(this);
+		i.mIter = const_cast<UTFString*>( this )->mData.end();
+		i.mString = const_cast<UTFString*>( this );
 		return i;
 	}
 	//#########################################################################
@@ -121,8 +121,8 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rbegin() const {
 		const_reverse_iterator i;
-		i.mIter = const_cast<UTFString*>(this)->mData.end();
-		i.mString = const_cast<UTFString*>(this);
+		i.mIter = const_cast<UTFString*>( this )->mData.end();
+		i.mString = const_cast<UTFString*>( this );
 		return i;
 	}
 	//#########################################################################
@@ -135,8 +135,8 @@ namespace OpenGUI {
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rend() const {
 		const_reverse_iterator i;
-		i.mIter = const_cast<UTFString*>(this)->mData.begin();
-		i.mString = const_cast<UTFString*>(this);
+		i.mIter = const_cast<UTFString*>( this )->mData.begin();
+		i.mString = const_cast<UTFString*>( this );
 		return i;
 	}
 	//#########################################################################
@@ -197,7 +197,7 @@ namespace OpenGUI {
 	UTFString& UTFString::assign( const std::wstring& wstr ) {
 		mData.clear();
 		mData.reserve( wstr.length() ); // best guess bulk allocate
-#if 0//#ifdef WCHAR_UTF16 // if we're already working in UTF-16, this is easy
+#ifdef WCHAR_UTF16 // if we're already working in UTF-16, this is easy
 		code_point tmp;
 		std::wstring::const_iterator i, ie = wstr.end();
 		for ( i = wstr.begin(); i != ie; i++ ) {
@@ -860,25 +860,24 @@ namespace OpenGUI {
 	//#########################################################################
 	void UTFString::_init() {
 		m_buffer.mVoidBuffer = 0;
-		m_bufferType = none;
+		m_bufferType = bt_none;
 		m_bufferSize = 0;
 	}
 	//#########################################################################
 	void UTFString::_cleanBuffer() const {
 		if ( m_buffer.mVoidBuffer != 0 ) {
-			assert( m_bufferType != none ); // this should help catch issues during debug sessions
+			assert( m_bufferType != bt_none ); // this should help catch issues during debug sessions
 			switch ( m_bufferType ) {
-			case string:
+			case bt_string:
 				delete m_buffer.mStrBuffer;
 				break;
-			case wstring:
+			case bt_wstring:
 				delete m_buffer.mWStrBuffer;
 				break;
-			case cstring:
-				delete[] m_buffer.mCStrBuffer;
+			case bt_utf32string:
+				delete m_buffer.mUTF32StrBuffer;
 				break;
-				// under the worse of circumstances, this is all we can really do
-			case none:
+			case bt_none: // under the worse of circumstances, this is all we can do, and hope it works out
 			default:
 				delete m_buffer.mVoidBuffer;
 				break;
@@ -888,13 +887,84 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
-	void UTFString::_getBufferCStr( size_t len ) const {
-		if ( m_bufferType != cstring || m_bufferSize < len ) {
+	void UTFString::_getBufferStr() const {
+		if ( m_bufferType != bt_string ) {
 			_cleanBuffer();
-			m_buffer.mCStrBuffer = new char[len+1];
-			m_buffer.mCStrBuffer[len] = 0;
-			m_bufferSize = len;
-			m_bufferType = cstring;
+			m_buffer.mStrBuffer = new std::string();
+			m_bufferType = bt_string;
+		}
+		m_buffer.mStrBuffer->clear();
+	}
+	//#########################################################################
+	void UTFString::_getBufferWStr() const {
+		if ( m_bufferType != bt_wstring ) {
+			_cleanBuffer();
+			m_buffer.mWStrBuffer = new std::wstring();
+			m_bufferType = bt_wstring;
+		}
+		m_buffer.mWStrBuffer->clear();
+	}
+	//#########################################################################
+	void UTFString::_getBufferUTF32Str() const {
+		if ( m_bufferType != bt_utf32string ) {
+			_cleanBuffer();
+			m_buffer.mUTF32StrBuffer = new utf32string();
+			m_bufferType = bt_utf32string;
+		}
+		m_buffer.mUTF32StrBuffer->clear();
+	}
+	//#########################################################################
+	//#########################################################################
+	void UTFString::_load_buffer_UTF8() const {
+		_getBufferStr();
+		std::string& buffer = ( *m_buffer.mStrBuffer );
+		buffer.reserve( length() );
+
+		unsigned char utf8buf[6];
+		char* charbuf = ( char* )utf8buf;
+		unicode_char c;
+		size_t len;
+
+		const_iterator i, ie = end();
+		for ( i = begin(); i != ie; i.moveNext() ) {
+			c = i.getCharacter();
+			len = _utf32_to_utf8( c, utf8buf );
+			size_t j = 0;
+			while ( j < len )
+				buffer.push_back( charbuf[j++] );
+		}
+	}
+	//#########################################################################
+	void UTFString::_load_buffer_WStr() const {
+		_getBufferWStr();
+		std::wstring& buffer = ( *m_buffer.mWStrBuffer );
+		buffer.reserve( length() ); // may over reserve, but should be close enough
+#ifdef WCHAR_UTF16 // wchar_t matches UTF-16
+		const_iterator i, ie = end();
+		for ( i = begin(); i != ie; ++i ) {
+			buffer.push_back(( wchar_t )( *i ) );
+		}
+#else // wchar_t fits UTF-32
+		unicode_char c;
+		const_iterator i, ie = end();
+		for ( i = begin(); i != ie; i.moveNext() ) {
+			c = i.getCharacter();
+			buffer.push_back(( wchar_t )c );
+		}
+#endif
+	}
+	//#########################################################################
+	void UTFString::_load_buffer_UTF32() const {
+		_getBufferUTF32Str();
+		utf32string& buffer = ( *m_buffer.mUTF32StrBuffer );
+		buffer.reserve( length() ); // may over reserve, but should be close enough
+
+		unicode_char c;
+
+		const_iterator i, ie = end();
+		for ( i = begin(); i != ie; i.moveNext() ) {
+			c = i.getCharacter();
+			buffer.push_back( c );
 		}
 	}
 	//#########################################################################

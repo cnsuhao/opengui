@@ -50,7 +50,7 @@ namespace OpenGUI {
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #define WCHAR_UTF16 // All currently known Windows platforms utilize UTF-16 encoding in wchar_t
 #else // #if defined( __WIN32__ ) || defined( _WIN32 )
-#if !(WCHAR_MAX > 0xFFFF) // this is a last resort fall back test WCHAR_MAX is defined in <wchar.h>
+#if WCHAR_MAX <= 0xFFFF // this is a last resort fall back test; WCHAR_MAX is defined in <wchar.h>
 #define WCHAR_UTF16 // best we can tell, wchar_t is not larger than 16-bit
 #endif // #if !(WCHAR_MAX > 0xFFFF)
 #endif // #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -102,6 +102,9 @@ namespace OpenGUI {
 		typedef code_point value_type;
 
 		typedef std::basic_string<code_point> dstring; // data string
+
+		//! string type used for returning UTF-32 formatted data
+		typedef std::basic_string<unicode_char> utf32string;
 
 		//! This exception is used when invalid data streams are encountered
 	class invalid_data: public std::runtime_error { /* i don't know why the beautifier is freaking out on this line */
@@ -746,6 +749,8 @@ namespace OpenGUI {
 		~UTFString();
 		//@}
 
+
+
 		//!\name Utility functions
 		//@{
 		//! Returns the number of code points in the current string
@@ -784,6 +789,8 @@ namespace OpenGUI {
 		//! returns \c true if the given Unicode character is in this string
 		bool inString( unicode_char ch ) const;
 		//@}
+
+		
 
 		//!\name Single Character Access
 		//@{
@@ -1116,7 +1123,7 @@ namespace OpenGUI {
 		//@}
 
 
-		//!\name UTF-16 encoding/decoding
+		//!\name UTF-16 character encoding/decoding
 		//@{
 		//! returns \c true if \c cp does not match the signature for the lead of follow code point of a surrogate pair in a UTF-16 sequence
 		static bool _utf16_independent_char( code_point cp );
@@ -1134,7 +1141,7 @@ namespace OpenGUI {
 		static size_t _utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] );
 		//@}
 
-		//!\name UTF-8 encoding/decoding
+		//!\name UTF-8 character encoding/decoding
 		//@{
 		//! returns \c true if \c cp is the beginning of a UTF-8 sequence
 		static bool _utf8_start_char( unsigned char cp );
@@ -1154,17 +1161,16 @@ namespace OpenGUI {
 		static size_type _verifyUTF8( const std::string& str );
 		//@}
 
-
 	private:
 		//template<class ITER_TYPE> friend class _iterator;
 		dstring mData;
 
 		//! buffer data type identifier
 		enum BufferType {
-			none,
-			string,
-			wstring,
-			cstring
+			bt_none,
+			bt_string,
+			bt_wstring,
+			bt_utf32string
 		};
 
 		//! common constructor operations
@@ -1175,8 +1181,16 @@ namespace OpenGUI {
 		//! auto cleans the scratch buffer using the proper delete for the stored type
 		void _cleanBuffer() const;
 
-		//! creates a scratch buffer of at least \c len size
-		void _getBufferCStr( size_t len ) const;
+		//! create a std::string in the scratch buffer area
+		void _getBufferStr() const;
+		//! create a std::wstring in the scratch buffer area
+		void _getBufferWStr() const;
+		//! create a utf32string in the scratch buffer area
+		void _getBufferUTF32Str() const;
+
+		void _load_buffer_UTF8() const;
+		void _load_buffer_WStr() const;
+		void _load_buffer_UTF32() const;
 
 		mutable BufferType m_bufferType; // identifies the data type held in m_buffer
 		mutable size_t m_bufferSize; // size of the CString buffer
@@ -1184,9 +1198,9 @@ namespace OpenGUI {
 		// multi-purpose buffer used everywhere we need a throw-away buffer. Yes, we're that brave ;-)
 		union {
 			mutable void* mVoidBuffer;
-			mutable char* mCStrBuffer;
 			mutable std::string* mStrBuffer;
 			mutable std::wstring* mWStrBuffer;
+			mutable utf32string* mUTF32StrBuffer;
 		}
 		m_buffer;
 	};
