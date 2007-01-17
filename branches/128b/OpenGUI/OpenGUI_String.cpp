@@ -1003,7 +1003,7 @@ namespace OpenGUI {
 		if (( cp & ~_lead3_mask ) == _lead3 ) return 4;
 		if (( cp & ~_lead4_mask ) == _lead4 ) return 5;
 		if (( cp & ~_lead5_mask ) == _lead5 ) return 6;
-		throw std::range_error( "invalid UTF-8 sequence header value" );
+		throw invalid_data( "invalid UTF-8 sequence header value" );
 	}
 	//#########################################################################
 	size_t UTFString::_utf8_char_length( unicode_char uc ) {
@@ -1021,7 +1021,7 @@ namespace OpenGUI {
 		if ( !( uc & ~0x001FFFFF ) ) return 4;
 		if ( !( uc & ~0x03FFFFFF ) ) return 5;
 		if ( !( uc & ~0x7FFFFFFF ) ) return 6;
-		throw std::range_error( "invalid UTF-8 lead byte" );
+		throw invalid_data( "invalid UTF-32 value" );
 	}
 	//#########################################################################
 	size_t UTFString::_utf8_to_utf32( const unsigned char in_cp[6], unicode_char& out_uc ) {
@@ -1153,7 +1153,7 @@ namespace OpenGUI {
 				while ( contBytes-- ) {
 					c = ( *( ++i ) ); // get next byte in sequence
 					if (( c & ~_cont_mask ) != _cont )
-						throw invalid_data( "bad continuation sequence header" );
+						throw invalid_data( "bad UTF-8 continuation byte" );
 				}
 			}
 			length++;
