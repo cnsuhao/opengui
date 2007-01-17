@@ -9,6 +9,54 @@
 #include "OpenGUI_Exports.h"
 
 namespace OpenGUI {
+
+	/* READ THIS NOTICE BEFORE USING IN YOUR OWN APPLICATIONS
+	=NOTICE=
+	This class is not a complete Unicode solution. It purposefully does not
+	provide certain functionality, such as proper lexical sorting for
+	Unicode values. It does provide comparison operators for the sole purpose
+	of using UTFString as an index with std::map and other operator< sorted
+	containers, but it should NOT be relied upon for meaningful lexical
+	operations, such as alphabetical sorts. If you need this type of
+	functionality, look into using ICU instead (http://icu.sourceforge.net/).
+
+	=REQUIREMENTS=
+	There are a few requirements for proper operation. They are fairly small,
+	and shouldn't restrict usage on any reasonable target.
+	* Compiler must support unsigned 16-bit integer types
+	* Compiler must support unsigned 32-bit integer types
+	* wchar_t must be either UTF-16 or UTF-32 encoding, and specified as such
+	    using the WCHAR_UTF16 macro as outlined below.
+
+	=REQUIRED PREPROCESSOR MACROS=
+	This class requires two preprocessor macros to be defined in order to
+	work as advertised.
+	UINT32 - must be mapped to an unsigned 32 bit integer (ex. #define UINT32 unsigned int)
+	UINT16 - must be mapped to an unsigned 16 bit integer (ex. #define UINT32 unsigned short)
+
+	Additionally, a third macro should be defined to control the evaluation of wchar_t:
+	WCHAR_UTF16 - should be defined when wchar_t represents UTF-16 code points,
+	    such as in Windows. Otherwise it is assumed that wchar_t is a 32-bit
+		integer representing UTF-32 code points.
+	*/
+
+	// THIS IS A VERY BRIEF AUTO DETECTION. YOU MAY NEED TO TWEAK THIS
+#ifdef __STDC_ISO_10646__
+// for any compiler that provides this, wchar_t is guaranteed to hold any Unicode value with a single code point (32-bit or larger)
+// so we can safely skip the rest of the testing
+#else // #ifdef __STDC_ISO_10646__
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#define WCHAR_UTF16 // All currently known Windows platforms utilize UTF-16 encoding in wchar_t
+#else // #if defined( __WIN32__ ) || defined( _WIN32 )
+#if !(WCHAR_MAX > 0xFFFF) // this is a last resort fall back test WCHAR_MAX is defined in <wchar.h>
+#define WCHAR_UTF16 // best we can tell, wchar_t is not larger than 16-bit
+#endif // #if !(WCHAR_MAX > 0xFFFF)
+#endif // #if defined( __WIN32__ ) || defined( _WIN32 )
+#endif // #ifdef __STDC_ISO_10646__
+
+	//ADD THE UTF8 DEFINES HERE (DON'T FORGET TO UNDEFINE THEM AT THE END)
+
+
 	//! A UTF-16 string with implicit conversion to/from UTF-8 and UTF-32
 	/*! This class provides a complete 1 to 1 map of all std::string functions (at least to my
 	knowledge). Implicit conversions allow this string class to work with all common C++ string
@@ -24,8 +72,8 @@ namespace OpenGUI {
 	The supported string types for input, and their assumed encoding schemes, are:
 	- std::string (UTF-8)
 	- char* (UTF-8)
-	- std::wstring (UTF-16)
-	- wchar_t* (UTF-16)
+	- std::wstring (autodetected UTF-16 / UTF-32 based on compiler)
+	- wchar_t* (autodetected UTF-16 / UTF-32 based on compiler)
 
 
 	\see
@@ -44,7 +92,7 @@ namespace OpenGUI {
 		typedef UINT32 unicode_char;
 
 		//! a single UTF-16 code point
-		typedef unsigned short code_point;
+		typedef UINT16 code_point;
 
 		typedef std::basic_string<code_point> dstring; // data string
 
@@ -550,26 +598,30 @@ namespace OpenGUI {
 		UTFString& insert( size_type index, const code_point* str );
 		//! inserts a substring of \a str (starting at \a index2 and \a num characters long) into the current string, at location \a index1
 		UTFString& insert( size_type index1, const UTFString& str, size_type index2, size_type num );
-		//! inserts \a num code points of \a str into the current string, at location \a index
-		UTFString& insert( size_type index, const code_point* str, size_type num );
-		//! inserts \a num copies of \a ch into the current string, at location \a index
-		UTFString& insert( size_type index, size_type num, code_point ch );
-		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
-		void insert( iterator i, size_type num, const code_point& ch );
 		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
 		void insert( iterator i, iterator start, iterator end );
 		//! inserts \a num code points of \a str into the current string, at location \a index
+		UTFString& insert( size_type index, const code_point* str, size_type num );
+		//! inserts \a num code points of \a str into the current string, at location \a index
 		UTFString& insert( size_type index, const wchar_t* w_str, size_type num );
-		//! inserts \a num copies of \a ch into the current string, at location \a index
-		UTFString& insert( size_type index, size_type num, wchar_t ch );
-		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
-		void insert( iterator i, size_type num, const wchar_t& ch );
 		//! inserts \a num code points of \a str into the current string, at location \a index
 		UTFString& insert( size_type index, const char* c_str, size_type num );
 		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, code_point ch );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, wchar_t ch );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
 		UTFString& insert( size_type index, size_type num, char ch );
+		//! inserts \a num copies of \a ch into the current string, at location \a index
+		UTFString& insert( size_type index, size_type num, unicode_char ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const code_point& ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const wchar_t& ch );
 		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
 		void insert( iterator i, size_type num, const char& ch );
+		//! inserts \a num copies of \a ch into the current string, before the code point denoted by \a i
+		void insert( iterator i, size_type num, const unicode_char& ch );	
 		//@}
 
 		//!\name erase
@@ -735,7 +787,7 @@ namespace OpenGUI {
 		static size_t _utf16_char_length( unicode_char uc );
 		//! converts the given UTF-16 character buffer to a single UTF-32 Unicode character, returns the number of code_points used to create the output character (2 for surrogate pairs, otherwise 1)
 		static size_t _utf16_to_utf32( const code_point in_cp[2], unicode_char& out_uc );
-		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-16 encoding, returns the number of code_points used to encode the input
+		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-16 encoding, returns the number of code_points used to encode the input (always 1 or 2)
 		static size_t _utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] );
 		//@}
 

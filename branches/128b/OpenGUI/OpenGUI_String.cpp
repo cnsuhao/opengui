@@ -175,21 +175,39 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString& UTFString::assign( const std::wstring& wstr ) {
-		const code_point* ptr = ( const code_point* )wstr.c_str();
-		mData.assign( ptr );
+		mData.clear();
+		mData.reserve( wstr.length() ); // best guess bulk allocate
+#if 0//#ifdef WCHAR_UTF16 // if we're already working in UTF-16, this is easy
+		code_point tmp;
+		std::wstring::const_iterator i, ie = wstr.end();
+		for ( i = wstr.begin(); i != ie; i++ ) {
+			tmp = ( code_point )( *i );
+			mData.push_back( tmp );
+		}
+#else // otherwise we do it the safe way (which is still 100% safe to pass UTF-16 through, just slower)
+		code_point cp[3] = {0, 0, 0};
+		unicode_char tmp;
+		std::wstring::const_iterator i, ie = wstr.end();
+		for ( i = wstr.begin(); i != ie; i++ ) {
+			tmp = ( unicode_char )( *i );
+			size_t l = _utf32_to_utf16( tmp, cp );
+			if ( l > 0 ) mData.push_back( cp[0] );
+			if ( l > 1 ) mData.push_back( cp[1] );
+		}
+#endif
 		return *this;
 	}
 	//#########################################################################
 	UTFString& UTFString::assign( const wchar_t* w_str ) {
-		const code_point* ptr = ( const code_point* )w_str;
-		mData.assign( ptr );
-		return *this;
+		std::wstring tmp;
+		tmp.assign( w_str );
+		return assign( tmp );
 	}
 	//#########################################################################
 	UTFString& UTFString::assign( const wchar_t* w_str, size_type num ) {
-		const code_point* ptr = ( const code_point* )w_str;
-		mData.assign( ptr, num );
-		return *this;
+		std::wstring tmp;
+		tmp.assign( w_str, num );
+		return assign( tmp );
 	}
 	//#########################################################################
 	UTFString& UTFString::assign( const std::string& str ) {
@@ -266,7 +284,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString& UTFString::append( size_type num, wchar_t ch ) {
-		return append( num, ( code_point )ch );
+		return append( num, ( unicode_char )ch );
 	}
 	//#########################################################################
 	UTFString& UTFString::append( iterator start, iterator end ) {
@@ -308,7 +326,8 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	void UTFString::push_back( wchar_t val ) {
-		mData.push_back(( code_point )val );
+		// we do this because the Unicode method still preserves UTF-16 code points
+		mData.push_back(( unicode_char )val );
 	}
 	//#########################################################################
 	/*! Limited to characters under the 127 value barrier. */
@@ -368,13 +387,41 @@ namespace OpenGUI {
 		return *this;
 	}
 	//#########################################################################
+	UTFString& UTFString::insert( size_type index, size_type num, unicode_char ch ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		if ( l == 1 ) {
+			return insert( index, num, cp[0] );
+		}
+		for ( size_type c = 0; c < num; c++ ) {
+			// insert in reverse order to preserve ordering after insert
+			insert( index, 1, cp[1] );
+			insert( index, 1, cp[0] );
+		}
+		return *this;
+	}
+	//#########################################################################
+	void UTFString::insert( iterator i, size_type num, const unicode_char& ch ) {
+		code_point cp[3] = {0, 0, 0};
+		size_t l = _utf32_to_utf16( ch, cp );
+		if ( l == 1 ) {
+			insert( i, num, cp[0] );
+		} else {
+			for ( size_type c = 0; c < num; c++ ) {
+				// insert in reverse order to preserve ordering after insert
+				insert( i, 1, cp[1] );
+				insert( i, 1, cp[0] );
+			}
+		}
+	}
+	//#########################################################################
 	UTFString& UTFString::insert( size_type index, size_type num, wchar_t ch ) {
-		insert( index, num, ( code_point )ch );
+		insert( index, num, ( unicode_char )ch );
 		return *this;
 	}
 	//#########################################################################
 	void UTFString::insert( iterator i, size_type num, const wchar_t& ch ) {
-		insert( i, num, ( code_point )ch );
+		insert( i, num, ( unicode_char )ch );
 	}
 	//#########################################################################
 	UTFString& UTFString::insert( size_type index, const char* c_str, size_type num ) {
@@ -497,7 +544,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find( wchar_t ch, size_type index ) {
-		return find(( code_point )ch, index );
+		return find(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find( unicode_char ch, size_type index ) {
@@ -534,7 +581,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::rfind( wchar_t ch, size_type index ) {
-		return rfind(( code_point )ch, index );
+		return rfind(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::rfind( unicode_char ch, size_type index ) {
@@ -584,7 +631,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_first_of( wchar_t ch, size_type index ) {
-		return find_first_of(( code_point )ch, index );
+		return find_first_of(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_first_of( unicode_char ch, size_type index ) {
@@ -616,7 +663,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_first_not_of( wchar_t ch, size_type index ) {
-		return find_first_not_of(( code_point )ch, index );
+		return find_first_not_of(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_first_not_of( unicode_char ch, size_type index ) {
@@ -657,7 +704,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_last_of( wchar_t ch, size_type index ) {
-		return find_last_of(( code_point )ch, index );
+		return find_last_of(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_last_of( unicode_char ch, size_type index ) {
@@ -698,7 +745,7 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_last_not_of( wchar_t ch, size_type index ) {
-		return find_last_not_of(( code_point )ch, index );
+		return find_last_not_of(( unicode_char )ch, index );
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::find_last_not_of( unicode_char ch, size_type index ) {
@@ -858,9 +905,11 @@ namespace OpenGUI {
 	//#########################################################################
 	/*! This function, like its counterpart, will happily create invalid UTF-16 surrogate pairs. These
 	invalid entries will be created for any value of \c in_uc that falls in the range U+D800 - U+DFFF.
-	These are generally useful as sentinel values to represent various program specific conditions. */
+	These are generally useful as sentinel values to represent various program specific conditions.
+	\note This function will also pass through any single UTF-16 code point without modification,
+	making it a safe method of ensuring a stream that is unknown UTF-32 or UTF-16 is truly UTF-16.*/
 	size_t UTFString::_utf32_to_utf16( const unicode_char& in_uc, code_point out_cp[2] ) {
-		if ( in_uc <= 0xFFFF ) { // we preserve sentinel values because our decoder understands them
+		if ( in_uc <= 0xFFFF ) { // we blindly preserve sentinel values because our decoder understands them
 			out_cp[0] = in_uc;
 			return 1;
 		}

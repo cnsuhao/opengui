@@ -25,6 +25,7 @@
 #include <deque>
 #include <cassert>
 #include <locale>
+#include <wchar.h>
 
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
