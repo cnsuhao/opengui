@@ -27,6 +27,8 @@ namespace OpenGUI {
 	* Compiler must support unsigned 32-bit integer types
 	* wchar_t must be either UTF-16 or UTF-32 encoding, and specified as such
 	    using the WCHAR_UTF16 macro as outlined below.
+	* You must include <iterator>, <string>, and <wchar>. Probably more, but
+	    these are the most obvious.
 
 	=REQUIRED PREPROCESSOR MACROS=
 	This class requires two preprocessor macros to be defined in order to
@@ -94,6 +96,9 @@ namespace OpenGUI {
 		//! a single UTF-16 code point
 		typedef UINT16 code_point;
 
+		//! value type typedef for use in iterators
+		typedef code_point value_type;
+
 		typedef std::basic_string<code_point> dstring; // data string
 
 		//! This exception is used when invalid data streams are encountered
@@ -105,6 +110,395 @@ namespace OpenGUI {
 			}
 		};
 
+		//! base iterator class for UTFString
+	class _base_iterator: public std::iterator<std::random_access_iterator_tag, value_type> {
+			friend class UTFString;
+		public:
+			//! difference operator
+			size_type operator-( const _base_iterator& right ) const {
+				return ( mIter - right.mIter );
+			}
+
+		protected:
+			_base_iterator() {
+				mString = 0;
+			}
+
+			void _seekFwd( size_type c ) {
+				mIter += c;
+			}
+			void _seekRev( size_type c ) {
+				mIter -= c;
+			}
+			void _become( const _base_iterator& i ) {
+				mIter = i.mIter;
+				mString = i.mString;
+			}
+			bool _test_begin() const {
+				return mIter == mString->mData.begin();
+			}
+			bool _test_end() const {
+				return mIter == mString->mData.end();
+			}
+			size_type _get_index() const {
+				return mIter - mString->mData.begin();
+			}
+			void _jump_to( size_type index ) {
+				mIter = mString->mData.begin() + index;
+			}
+
+			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
+			unicode_char _getCharacter() const {
+				size_type current_index = _get_index();
+				return mString->getChar( current_index );
+			}
+			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
+			int _setCharacter( unicode_char uc ) {
+				size_type current_index = _get_index();
+				int change = mString->setChar( current_index, uc );
+				_jump_to( current_index );
+				return change;
+			}
+
+			void _moveNext() {
+				_seekFwd(1); // move 1 code point forward
+				if ( _test_end() ) return; // exit if we hit the end
+				if ( _utf16_surrogate_follow( mIter[0] ) ) {
+					// landing on a follow code point means we might be part of a bigger character
+					// so we test for that
+					code_point lead_half = 0;
+					//NB: we can't possibly be at the beginning here, so no need to test
+					lead_half = mIter[-1]; // check the previous code point to see if we're part of a surrogate pair
+					if ( _utf16_surrogate_lead( lead_half ) ) {
+						_seekFwd(1); // if so, then advance 1 more code point
+					}
+				}
+			}
+			void _movePrev() {
+				_seekRev(1); // move 1 code point backwards
+				if ( _test_begin() ) return; // exit if we hit the beginning
+				if ( _utf16_surrogate_follow( mIter[0] ) ) {
+					// landing on a follow code point means we might be part of a bigger character
+					// so we test for that
+					code_point lead_half = 0;
+					lead_half = mIter[-1]; // check the previous character to see if we're part of a surrogate pair
+					if ( _utf16_surrogate_lead( lead_half ) ) {
+						_seekRev(1); // if so, then rewind 1 more code point
+					}
+				}
+			}
+
+			dstring::iterator mIter;
+			UTFString* mString;
+		};
+
+		class _const_fwd_iterator; // forward declaration
+		//! forward iterator for UTFString
+	class _fwd_iterator: _base_iterator {
+			friend class _const_fwd_iterator;
+		public:
+			_fwd_iterator(){}
+			_fwd_iterator(const _fwd_iterator& i){
+				_become(i);
+			}
+
+			//! pre-increment
+			_fwd_iterator& operator++() {
+				_seekFwd( 1 );
+				return *this;
+			}
+			//! post-increment
+			_fwd_iterator operator++( int ) {
+				_fwd_iterator tmp( *this );
+				_seekFwd( 1 );
+				return tmp;
+			}
+
+			//! pre-decrement
+			_fwd_iterator& operator--() {
+				_seekRev( 1 );
+				return *this;
+			}
+			//! post-decrement
+			_fwd_iterator operator--( int ) {
+				_fwd_iterator tmp( *this );
+				_seekRev( 1 );
+				return tmp;
+			}
+
+			//! addition operator
+			_fwd_iterator operator+( size_type n ) {
+				_fwd_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! addition operator
+			_fwd_iterator operator+( difference_type n ) {
+				_fwd_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekRev( n );
+				else
+					tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_fwd_iterator operator-( size_type n ) {
+				_fwd_iterator tmp( *this );
+				tmp._seekRev( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_fwd_iterator operator-( difference_type n ) {
+				_fwd_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekFwd( n );
+				else
+					tmp._seekRev( n );
+				return tmp;
+			}
+
+			//! addition assignment operator
+			_fwd_iterator& operator+=( size_type n ) {
+				_seekFwd( n );
+				return *this;
+			}
+			//! addition assignment operator
+			_fwd_iterator& operator+=( difference_type n ) {
+				if ( n < 0 )
+					_seekRev( n );
+				else
+					_seekFwd( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_fwd_iterator& operator-=( size_type n ) {
+				_seekRev( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_fwd_iterator& operator-=( difference_type n ) {
+				if ( n < 0 )
+					_seekFwd( n );
+				else
+					_seekRev( n );
+				return *this;
+			}
+
+			//! dereference operator
+			value_type& operator*() const {
+				return mIter.operator*();
+			}
+
+			//! dereference at offset operator
+			value_type& operator[]( size_type n ) const {
+				_fwd_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			value_type& operator[]( difference_type n ) const {
+				_fwd_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+
+			//! equality operator
+			bool operator==( const _fwd_iterator& right ) const {
+				return mIter == right.mIter;
+			}
+			//! inequality operator
+			bool operator!=( const _fwd_iterator& right ) const {
+				return mIter != right.mIter;
+			}
+			//! less than
+			bool operator<( const _fwd_iterator& right ) const {
+				return mIter < right.mIter;
+			}
+			//! less than or equal
+			bool operator<=( const _fwd_iterator& right ) const {
+				return mIter <= right.mIter;
+			}
+			//! greater than
+			bool operator>( const _fwd_iterator& right ) const {
+				return mIter > right.mIter;
+			}
+			//! greater than or equal
+			bool operator>=( const _fwd_iterator& right ) const {
+				return mIter >= right.mIter;
+			}
+
+			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_fwd_iterator& moveNext(){
+				_moveNext();
+				return *this;
+			}
+			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_fwd_iterator& movePrev(){
+				_movePrev();
+				return *this;
+			}
+			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
+			unicode_char getCharacter() const {
+				return _getCharacter();
+			}
+			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
+			int setCharacter( unicode_char uc ) {
+				return _setCharacter(uc);
+			}
+		};
+
+		//! const forward iterator for UTFString
+	class _const_fwd_iterator: _base_iterator {
+		public:
+			_const_fwd_iterator() {}
+			_const_fwd_iterator( const _const_fwd_iterator& i ) {
+				_become(i);
+			}
+			_const_fwd_iterator( const _fwd_iterator& i ) {
+				_become(i);
+			}
+
+			//! pre-increment
+			_const_fwd_iterator& operator++() {
+				_seekFwd( 1 );
+				return *this;
+			}
+			//! post-increment
+			_const_fwd_iterator operator++( int ) {
+				_const_fwd_iterator tmp( *this );
+				_seekFwd( 1 );
+				return tmp;
+			}
+
+			//! pre-decrement
+			_const_fwd_iterator& operator--() {
+				_seekRev( 1 );
+				return *this;
+			}
+			//! post-decrement
+			_const_fwd_iterator operator--( int ) {
+				_const_fwd_iterator tmp( *this );
+				_seekRev( 1 );
+				return tmp;
+			}
+
+			//! addition operator
+			_const_fwd_iterator operator+( size_type n ) {
+				_const_fwd_iterator tmp( *this );
+				tmp._seekFwd( n );
+				return tmp;
+			}
+			//! addition operator
+			_const_fwd_iterator operator+( difference_type n ) {
+				_const_fwd_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekRev( n );
+				else
+					tmp._seekFwd( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_const_fwd_iterator operator-( size_type n ) {
+				_const_fwd_iterator tmp( *this );
+				tmp._seekRev( n );
+				return tmp;
+			}
+			//! subtraction operator
+			_const_fwd_iterator operator-( difference_type n ) {
+				_const_fwd_iterator tmp( *this );
+				if ( n < 0 )
+					tmp._seekFwd( n );
+				else
+					tmp._seekRev( n );
+				return tmp;
+			}
+
+			//! addition assignment operator
+			_const_fwd_iterator& operator+=( size_type n ) {
+				_seekFwd( n );
+				return *this;
+			}
+			//! addition assignment operator
+			_const_fwd_iterator& operator+=( difference_type n ) {
+				if ( n < 0 )
+					_seekRev( n );
+				else
+					_seekFwd( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_const_fwd_iterator& operator-=( size_type n ) {
+				_seekRev( n );
+				return *this;
+			}
+			//! subtraction assignment operator
+			_const_fwd_iterator& operator-=( difference_type n ) {
+				if ( n < 0 )
+					_seekFwd( n );
+				else
+					_seekRev( n );
+				return *this;
+			}
+
+			//! dereference operator
+			const value_type& operator*() const {
+				return mIter.operator*();
+			}
+
+			//! dereference at offset operator
+			const value_type& operator[]( size_type n ) const {
+				_const_fwd_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+			//! dereference at offset operator
+			const value_type& operator[]( difference_type n ) const {
+				_const_fwd_iterator tmp( *this );
+				tmp += n;
+				return tmp.operator*();
+			}
+
+			//! equality operator
+			bool operator==( const _const_fwd_iterator& right ) const {
+				return mIter == right.mIter;
+			}
+			//! inequality operator
+			bool operator!=( const _const_fwd_iterator& right ) const {
+				return mIter != right.mIter;
+			}
+			//! less than
+			bool operator<( const _const_fwd_iterator& right ) const {
+				return mIter < right.mIter;
+			}
+			//! less than or equal
+			bool operator<=( const _const_fwd_iterator& right ) const {
+				return mIter <= right.mIter;
+			}
+			//! greater than
+			bool operator>( const _const_fwd_iterator& right ) const {
+				return mIter > right.mIter;
+			}
+			//! greater than or equal
+			bool operator>=( const _const_fwd_iterator& right ) const {
+				return mIter >= right.mIter;
+			}
+
+			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_const_fwd_iterator& moveNext(){
+				_moveNext();
+				return *this;
+			}
+			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
+			_const_fwd_iterator& movePrev(){
+				_movePrev();
+				return *this;
+			}
+			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
+			unicode_char getCharacter() const {
+				return _getCharacter();
+			}
+		};
+//////////////////////////////////////////////////////////////////////////
 		//! base class of iterator for UTFString
 		template<class ITER_TYPE>
 		class _iterator {
@@ -637,9 +1031,9 @@ namespace OpenGUI {
 		//!\name replace
 		//@{
 		//! replaces up to \a num1 code points of the current string (starting at \a index1) with \a str
-		UTFString& replace( size_type index1, size_type num1, const UTFString& str);
+		UTFString& replace( size_type index1, size_type num1, const UTFString& str );
 		//! replaces up to \a num1 code points of the current string (starting at \a index1) with up to \a num2 code points from \a str
-		UTFString& replace( size_type index1, size_type num1, const UTFString& str, size_type num2);
+		UTFString& replace( size_type index1, size_type num1, const UTFString& str, size_type num2 );
 		//! replaces up to \a num1 code points of the current string (starting at \a index1) with up to \a num2 code points from \a str beginning at \a index2
 		UTFString& replace( size_type index1, size_type num1, const UTFString& str, size_type index2, size_type num2 );
 		//! replaces code points in the current string from \a start to \a end with \a num code points from \a str
@@ -787,32 +1181,32 @@ namespace OpenGUI {
 			return !operator==( right );
 		}
 		//! assignment operator, implicitly casts all compatible types
-		UTFString& operator=( const UTFString& s ){
-			return assign(s);
+		UTFString& operator=( const UTFString& s ) {
+			return assign( s );
 		}
 		//! assignment operator
-		UTFString& operator=( code_point ch ){
+		UTFString& operator=( code_point ch ) {
 			clear();
-			return append(1,ch);
+			return append( 1, ch );
 		}
 		//! assignment operator
-		UTFString& operator=( char ch ){
+		UTFString& operator=( char ch ) {
 			clear();
-			return append(1,ch);
+			return append( 1, ch );
 		}
 		//! assignment operator
-		UTFString& operator=( wchar_t ch ){
+		UTFString& operator=( wchar_t ch ) {
 			clear();
-			return append(1,ch);
+			return append( 1, ch );
 		}
 		//! assignment operator
-		UTFString& operator=( unicode_char ch ){
+		UTFString& operator=( unicode_char ch ) {
 			clear();
-			return append(1,ch);
+			return append( 1, ch );
 		}
 		//! code point dereference operator
-		code_point& operator[]( size_type index ){
-			return at(index);
+		code_point& operator[]( size_type index ) {
+			return at( index );
 		}
 		//@}
 
@@ -893,40 +1287,40 @@ namespace OpenGUI {
 	};
 
 	//! string addition operator \relates UTFString
-	UTFString operator+(const UTFString& s1, const UTFString& s2 ){
-		return UTFString(s1).append(s2);
+	UTFString operator+( const UTFString& s1, const UTFString& s2 ) {
+		return UTFString( s1 ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, UTFString::code_point c ){
-		return UTFString(s1).append(1,c);
+	UTFString operator+( const UTFString& s1, UTFString::code_point c ) {
+		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, UTFString::unicode_char c ){
-		return UTFString(s1).append(1,c);
+	UTFString operator+( const UTFString& s1, UTFString::unicode_char c ) {
+		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, char c ){
-		return UTFString(s1).append(1,c);
+	UTFString operator+( const UTFString& s1, char c ) {
+		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( const UTFString& s1, wchar_t c ){
-		return UTFString(s1).append(1,c);
+	UTFString operator+( const UTFString& s1, wchar_t c ) {
+		return UTFString( s1 ).append( 1, c );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( UTFString::code_point c, const UTFString& s2 ){
-		return UTFString().append(1,c).append(s2);
+	UTFString operator+( UTFString::code_point c, const UTFString& s2 ) {
+		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( UTFString::unicode_char c, const UTFString& s2 ){
-		return UTFString().append(1,c).append(s2);
+	UTFString operator+( UTFString::unicode_char c, const UTFString& s2 ) {
+		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( char c, const UTFString& s2 ){
-		return UTFString().append(1,c).append(s2);
+	UTFString operator+( char c, const UTFString& s2 ) {
+		return UTFString().append( 1, c ).append( s2 );
 	}
 	//! string addition operator \relates UTFString
-	UTFString operator+( wchar_t c, const UTFString& s2 ){
-		return UTFString().append(1,c).append(s2);
+	UTFString operator+( wchar_t c, const UTFString& s2 ) {
+		return UTFString().append( 1, c ).append( s2 );
 	}
 
 
