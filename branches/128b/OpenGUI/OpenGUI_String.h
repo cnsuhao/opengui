@@ -104,7 +104,7 @@ namespace OpenGUI {
 		typedef std::basic_string<code_point> dstring; // data string
 
 		//! This exception is used when invalid data streams are encountered
-	class invalid_data: public std::runtime_error { // i don't know why the beautifier is freaking out on this line
+	class invalid_data: public std::runtime_error { /* i don't know why the beautifier is freaking out on this line */
 		public:
 			//! constructor takes a string message that can be later retrieved by the what() function
 			explicit invalid_data( const std::string& _Message ): std::runtime_error( _Message ) {
@@ -114,39 +114,8 @@ namespace OpenGUI {
 
 		//#########################################################################
 		//! base iterator class for UTFString
-	class _base_iterator: public std::iterator<std::random_access_iterator_tag, value_type> {
+	class _base_iterator: public std::iterator<std::random_access_iterator_tag, value_type> { /* i don't know why the beautifier is freaking out on this line */
 			friend class UTFString;
-		public:
-			//! difference operator
-			size_type operator-( const _base_iterator& right ) const {
-				return ( mIter - right.mIter );
-			}
-
-			//! equality operator
-			bool operator==( const _base_iterator& right ) const {
-				return mIter == right.mIter;
-			}
-			//! inequality operator
-			bool operator!=( const _base_iterator& right ) const {
-				return mIter != right.mIter;
-			}
-			//! less than
-			bool operator<( const _base_iterator& right ) const {
-				return mIter < right.mIter;
-			}
-			//! less than or equal
-			bool operator<=( const _base_iterator& right ) const {
-				return mIter <= right.mIter;
-			}
-			//! greater than
-			bool operator>( const _base_iterator& right ) const {
-				return mIter > right.mIter;
-			}
-			//! greater than or equal
-			bool operator>=( const _base_iterator& right ) const {
-				return mIter >= right.mIter;
-			}
-
 		protected:
 			_base_iterator() {
 				mString = 0;
@@ -222,8 +191,9 @@ namespace OpenGUI {
 		// FORWARD ITERATORS
 		//#########################################################################
 		class _const_fwd_iterator; // forward declaration
+
 		//! forward iterator for UTFString
-	class _fwd_iterator: _base_iterator {
+	class _fwd_iterator: public _base_iterator { /* i don't know why the beautifier is freaking out on this line */
 			friend class _const_fwd_iterator;
 		public:
 			_fwd_iterator() {}
@@ -351,9 +321,11 @@ namespace OpenGUI {
 			}
 		};
 
+
+
 		//#########################################################################
 		//! const forward iterator for UTFString
-	class _const_fwd_iterator: _base_iterator {
+	class _const_fwd_iterator: public _base_iterator { /* i don't know why the beautifier is freaking out on this line */
 		public:
 			_const_fwd_iterator() {}
 			_const_fwd_iterator( const _const_fwd_iterator& i ) {
@@ -477,6 +449,22 @@ namespace OpenGUI {
 			unicode_char getCharacter() const {
 				return _getCharacter();
 			}
+
+			//! difference operator
+			friend size_type operator-( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! equality operator
+			friend bool operator==( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! inequality operator
+			friend bool operator!=( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! less than
+			friend bool operator<( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! less than or equal
+			friend bool operator<=( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! greater than
+			friend bool operator>( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+			//! greater than or equal
+			friend bool operator>=( const _const_fwd_iterator& left, const _const_fwd_iterator& right );
+
 		};
 
 		//#########################################################################
@@ -484,7 +472,7 @@ namespace OpenGUI {
 		//#########################################################################
 		class _const_rev_iterator; // forward declaration
 		//! forward iterator for UTFString
-	class _rev_iterator: _base_iterator {
+	class _rev_iterator: public _base_iterator { /* i don't know why the beautifier is freaking out on this line */
 			friend class _const_rev_iterator;
 		public:
 			_rev_iterator() {}
@@ -594,7 +582,7 @@ namespace OpenGUI {
 		};
 		//#########################################################################
 		//! const reverse iterator for UTFString
-		class _const_rev_iterator: _base_iterator {
+	class _const_rev_iterator: public _base_iterator { /* i don't know why the beautifier is freaking out on this line */
 		public:
 			_const_rev_iterator() {}
 			_const_rev_iterator( const _const_rev_iterator& i ) {
@@ -702,316 +690,28 @@ namespace OpenGUI {
 				tmp -= n;
 				return tmp.operator*();
 			}
-		};
-		//#########################################################################
-		//! base class of iterator for UTFString
-		template<class ITER_TYPE>
-		class _iterator {
-			friend class UTFString;
-		public:
-			typedef code_point  value_type;      //!< The value type we normally access
-			typedef int         difference_type;
-			typedef value_type& reference;       //!< reference to a UTF-16 code point
-			typedef const value_type& const_reference;
-			typedef value_type* pointer;
-
-			_iterator() {
-				mString = 0;
-			}
-			_iterator( const _iterator& copy ) {
-				mIter = copy.mIter;
-				mString = copy.mString;
-			}
-
-			//! assignment operator
-			_iterator& operator=( const _iterator& right ) const {
-				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
-				iter = right.mIter;
-				const_cast<UTFString*>( mString ) = right.mString;
-				return const_cast<_iterator&>( *this );
-			}
-
-			//! pre-increment
-			_iterator& operator++() const {
-				_seekFwd( 1 );
-				return const_cast<_iterator&>( *this );
-			}
-			//! post-increment
-			_iterator operator++( int ) const {
-				_iterator tmp( *this );
-				_seekFwd( 1 );
-				return tmp;
-			}
-
-			//! pre-decrement
-			_iterator& operator--() const {
-				_seekRev( 1 );
-				return const_cast<_iterator&>( *this );
-			}
-			//! post-decrement
-			_iterator operator--( int ) const {
-				_iterator tmp( *this );
-				_seekRev( 1 );
-				return tmp;
-			}
-			//! addition operator
-			_iterator operator+( size_type n ) const {
-				_iterator tmp( *this );
-				tmp._seekFwd( n );
-				return tmp;
-			}
-			//! addition operator
-			_iterator operator+( difference_type n ) const {
-				_iterator tmp( *this );
-				if ( n < 0 )
-					tmp._seekRev( n );
-				else
-					tmp._seekFwd( n );
-				return tmp;
-			}
-			//! subtraction operator
-			_iterator operator-( size_type n ) const {
-				_iterator tmp( *this );
-				tmp._seekRev( n );
-				return tmp;
-			}
-			//! subtraction operator
-			_iterator operator-( difference_type n ) const {
-				_iterator tmp( *this );
-				if ( n < 0 )
-					tmp._seekFwd( n );
-				else
-					tmp._seekRev( n );
-				return tmp;
-			}
-
-			//! addition assignment operator
-			_iterator& operator+=( size_type n ) const {
-				_seekFwd( n );
-				return const_cast<_iterator&>( *this );
-			}
-			//! addition assignment operator
-			_iterator& operator+=( difference_type n ) const {
-				if ( n < 0 )
-					_seekRev( n );
-				else
-					_seekFwd( n );
-				return const_cast<_iterator&>( *this );
-			}
-			//! subtraction assignment operator
-			_iterator& operator-=( size_type n ) const {
-				_seekRev( n );
-				return const_cast<_iterator&>( *this );
-			}
-			//! subtraction assignment operator
-			_iterator& operator-=( difference_type n ) const {
-				if ( n < 0 )
-					_seekFwd( n );
-				else
-					_seekRev( n );
-				return const_cast<_iterator&>( *this );
-			}
 
 			//! difference operator
-			size_type operator-( const _iterator& right ) const {
-				return ( mIter - right.mIter );
-			}
-
-			//! dereference operator
-			reference operator*() {
-				return mIter.operator*();
-			}
-			//! dereference operator
-			const_reference operator*() const {
-				return mIter.operator*();
-			}
-
-			//! dereference at offset operator
-			reference operator[]( size_type n ) {
-				_iterator tmp( *this );
-				tmp += n;
-				return tmp.operator*();
-			}
-			//! dereference at offset operator
-			const_reference operator[]( size_type n ) const {
-				_iterator tmp( *this );
-				tmp += n;
-				return tmp.operator*();
-			}
-			//! dereference at offset operator
-			reference operator[]( difference_type n ) {
-				_iterator tmp( *this );
-				tmp += n;
-				return tmp.operator*();
-			}
-			//! dereference at offset operator
-			const_reference operator[]( difference_type n ) const {
-				_iterator tmp( *this );
-				tmp += n;
-				return tmp.operator*();
-			}
-
+			friend size_type operator-( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! equality operator
-			bool operator==( const _iterator& right ) const {
-				return mIter == right.mIter;
-			}
+			friend bool operator==( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! inequality operator
-			bool operator!=( const _iterator& right ) const {
-				return mIter != right.mIter;
-			}
+			friend bool operator!=( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! less than
-			bool operator<( const _iterator& right ) const {
-				return mIter < right.mIter;
-			}
+			friend bool operator<( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! less than or equal
-			bool operator<=( const _iterator& right ) const {
-				return mIter <= right.mIter;
-			}
+			friend bool operator<=( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! greater than
-			bool operator>( const _iterator& right ) const {
-				return mIter > right.mIter;
-			}
+			friend bool operator>( const _const_rev_iterator& left, const _const_rev_iterator& right );
 			//! greater than or equal
-			bool operator>=( const _iterator& right ) const {
-				return mIter >= right.mIter;
-			}
-			//! Returns the Unicode value of the character at the current position (decodes surrogate pairs if needed)
-			unicode_char getCharacter() const {
-				size_type current_index = _get_index( mIter );
-				return mString->getChar( current_index );
-			}
-			//! Sets the Unicode value of the character at the current position (adding a surrogate pair if needed); returns the amount of string length change caused by the operation
-			int setCharacter( unicode_char uc ) {
-				size_type current_index = _get_index( mIter );
-				int change = mString->setChar( current_index, uc );
-				_jump_to( mIter, current_index );
-				return change;
-			}
-
-			//! advances to the next Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_iterator& moveNext() {
-				operator++(); // move 1 code point
-				if ( _test_end( mIter ) ) return *this; // exit if we hit the end
-				if ( _utf16_surrogate_follow( mIter[0] ) ) {
-					// landing on a follow code point means we might be part of a bigger character
-					// so we test for that
-					code_point lead_half = 0;
-					try { // we need to try/catch here in case we test outside the range of the string
-						lead_half = mIter[-_inc_value( *this )]; // check the previous character to see if we're part of a surrogate pair
-						if ( _utf16_surrogate_lead( lead_half ) ) {
-							operator++(); // for both forward and reverse iterators, this will always result in the correct location
-						}
-					} catch ( ... ) {
-						return *this; // if something threw, then we'll just stay where we are
-					}
-				}
-				return *this;
-			}
-			//! rewinds to the previous Unicode character, honoring surrogate pairs in the UTF-16 stream
-			_iterator& movePrev() {
-				operator--(); // move 1 code point
-				if ( _test_begin( mIter ) ) return *this; // exit if we hit the beginning
-				if ( _utf16_surrogate_follow( mIter[0] ) ) {
-					// landing on a follow code point means we might be part of a bigger character
-					// so we test for that
-					code_point lead_half = 0;
-					try { // we need to try/catch here in case we test outside the range of the string
-						lead_half = mIter[-_inc_value( *this )]; // check the previous character to see if we're part of a surrogate pair
-						if ( _utf16_surrogate_lead( lead_half ) ) {
-							operator--(); // for both forward and reverse iterators, this will always result in the correct location
-						}
-					} catch ( ... ) {
-						return *this; // if something threw, then we'll just stay where we are
-					}
-				}
-				return *this;
-			}
-
-
-
-		protected:
-			_iterator( const ITER_TYPE& init, UTFString* utfstr ) {
-				mIter = init;
-				mString = utfstr;
-			}
-		private:
-			void _seekFwd( size_type c ) const {
-				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
-				iter += c;
-			}
-			void _seekRev( size_type c ) const {
-				ITER_TYPE& iter = const_cast<ITER_TYPE&>( mIter );
-				iter -= c;
-			}
-
-			// specializations for testing if _iter is at the beginning of the string
-			template <class T>
-			bool _test_begin( const T& ) const {
-				throw std::exception( "invalid iterator type for operation" );
-			}
-			template<> bool _test_begin<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
-				return _iter == mString->mData.begin();
-			}
-			template<> bool _test_begin<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
-				return _iter == mString->mData.rbegin();
-			}
-
-			// specializations for testing if _iter is at the end of the string
-			template <class T>
-			bool _test_end( const T& ) const {
-				throw std::exception( "invalid iterator type for operation" );
-			}
-			template<> bool _test_end<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
-				return _iter == mString->mData.end();
-			}
-			template<> bool _test_end<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
-				return _iter == mString->mData.rend();
-			}
-
-			// specializations for determining true increment direction regardless of iterator type
-			template <class T>
-			int _inc_value( const T& ) const {
-				throw std::exception( "invalid iterator type for operation" );
-			}
-			template<> int _inc_value<UTFString::dstring::iterator>( const dstring::iterator& ) const {
-				return 1;
-			}
-			template<> int _inc_value<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& ) const {
-				return -1;
-			}
-
-			// specialization to retrieve current index
-			template <class T>
-			size_type _get_index( const T& ) const {
-				throw std::exception( "invalid iterator type for operation" );
-			}
-			template<> size_type _get_index<UTFString::dstring::iterator>( const dstring::iterator& _iter ) const {
-				return mIter - mString->mData.begin();
-			}
-			template<> size_type _get_index<UTFString::dstring::reverse_iterator>( const dstring::reverse_iterator& _iter ) const {
-				return ( mIter - mString->mData.rend() ) - 1;
-			}
-
-			// specialization to jump to a given index from the string's beginning
-			template <class T>
-			void _jump_to( T&, size_type ) const {
-				throw std::exception( "invalid iterator type for operation" );
-			}
-			template<> void _jump_to<UTFString::dstring::iterator>( dstring::iterator& _iter, size_type index ) const {
-				_iter = mString->mData.begin() + index;
-			}
-			template<> void _jump_to<UTFString::dstring::reverse_iterator>( dstring::reverse_iterator& _iter, size_type index ) const {
-				_iter = mString->mData.rend() - ( index + 1 );
-			}
-
-			ITER_TYPE mIter;
-			UTFString* mString;
+			friend bool operator>=( const _const_rev_iterator& left, const _const_rev_iterator& right );
 		};
+		//#########################################################################
 
-		typedef _iterator<dstring::iterator> iterator;                 //!< iterator
-		typedef _iterator<dstring::reverse_iterator> reverse_iterator; //!< reverse iterator
-		typedef const iterator const_iterator;                         //!< const iterator
-		typedef const reverse_iterator const_reverse_iterator;         //!< const reverse iterator
+		typedef _fwd_iterator iterator;                     //!< iterator
+		typedef _rev_iterator reverse_iterator;             //!< reverse iterator
+		typedef _const_fwd_iterator const_iterator;         //!< const iterator
+		typedef _const_rev_iterator const_reverse_iterator; //!< const reverse iterator
 
 
 		//!\name Constructors/Destructor
@@ -1526,6 +1226,52 @@ namespace OpenGUI {
 	//! string addition operator \relates UTFString
 	inline UTFString operator+( wchar_t c, const UTFString& s2 ) {
 		return UTFString().append( 1, c ).append( s2 );
+	}
+
+	// (const) forward iterator common operators
+	inline UTFString::size_type operator-( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return ( left.mIter - right.mIter );
+	}
+	inline bool operator==( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter == right.mIter;
+	}
+	inline bool operator!=( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter != right.mIter;
+	}
+	inline bool operator<( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter < right.mIter;
+	}
+	inline bool operator<=( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter <= right.mIter;
+	}
+	inline bool operator>( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter > right.mIter;
+	}
+	inline bool operator>=( const UTFString::_const_fwd_iterator& left, const UTFString::_const_fwd_iterator& right ) {
+		return left.mIter >= right.mIter;
+	}
+
+	// (const) reverse iterator common operators
+	inline UTFString::size_type operator-( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return ( left.mIter - right.mIter );
+	}
+	inline bool operator==( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter == right.mIter;
+	}
+	inline bool operator!=( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter != right.mIter;
+	}
+	inline bool operator<( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter < right.mIter;
+	}
+	inline bool operator<=( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter <= right.mIter;
+	}
+	inline bool operator>( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter > right.mIter;
+	}
+	inline bool operator>=( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
+		return left.mIter >= right.mIter;
 	}
 
 

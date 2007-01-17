@@ -85,39 +85,59 @@ namespace OpenGUI {
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::begin() {
-		return iterator( mData.begin(), this );
+		iterator i;
+		i.mIter = mData.begin();
+		i.mString = this;
+		return i;
 	}
 	//#########################################################################
 	UTFString::const_iterator UTFString::begin() const {
-		dstring& tmp = const_cast<dstring&>( mData );
-		return const_iterator( tmp.begin(), const_cast<UTFString*>( this ) );
+		const_iterator i;
+		i.mIter = const_cast<UTFString*>(this)->mData.begin();
+		i.mString = const_cast<UTFString*>(this);
+		return i;
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::end() {
-		return iterator( mData.end(), this );
+		iterator i;
+		i.mIter = mData.end();
+		i.mString = this;
+		return i;
 	}
 	//#########################################################################
 	UTFString::const_iterator UTFString::end() const {
-		dstring& tmp = const_cast<dstring&>( mData );
-		return const_iterator( tmp.end(), const_cast<UTFString*>( this ) );
+		const_iterator i;
+		i.mIter = const_cast<UTFString*>(this)->mData.end();
+		i.mString = const_cast<UTFString*>(this);
+		return i;
 	}
 	//#########################################################################
 	UTFString::reverse_iterator UTFString::rbegin() {
-		return reverse_iterator( mData.rbegin(), this );
+		reverse_iterator i;
+		i.mIter = mData.end();
+		i.mString = this;
+		return i;
 	}
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rbegin() const {
-		dstring& tmp = const_cast<dstring&>( mData );
-		return reverse_iterator( tmp.rbegin(), const_cast<UTFString*>( this ) );
+		const_reverse_iterator i;
+		i.mIter = const_cast<UTFString*>(this)->mData.end();
+		i.mString = const_cast<UTFString*>(this);
+		return i;
 	}
 	//#########################################################################
 	UTFString::reverse_iterator UTFString::rend() {
-		return const_reverse_iterator( mData.rend(), this );
+		reverse_iterator i;
+		i.mIter = mData.begin();
+		i.mString = this;
+		return i;
 	}
 	//#########################################################################
 	UTFString::const_reverse_iterator UTFString::rend() const {
-		dstring& tmp = const_cast<dstring&>( mData );
-		return const_reverse_iterator( tmp.rend(), const_cast<UTFString*>( this ) );
+		const_reverse_iterator i;
+		i.mIter = const_cast<UTFString*>(this)->mData.begin();
+		i.mString = const_cast<UTFString*>(this);
+		return i;
 	}
 	//#########################################################################
 	UTFString::size_type UTFString::length() const {
@@ -345,7 +365,10 @@ namespace OpenGUI {
 	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::insert( iterator i, const code_point& ch ) {
-		return iterator( mData.insert( i.mIter, ch ), this );
+		iterator ret;
+		ret.mIter = mData.insert( i.mIter, ch );
+		ret.mString = this;
+		return ret;
 	}
 	//#########################################################################
 	UTFString& UTFString::insert( size_type index, const UTFString& str ) {
@@ -441,11 +464,17 @@ namespace OpenGUI {
 	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator loc ) {
-		return iterator( mData.erase( loc.mIter ), this );
+		iterator ret;
+		ret.mIter = mData.erase( loc.mIter );
+		ret.mString = this;
+		return ret;
 	}
 	//#########################################################################
 	UTFString::iterator UTFString::erase( iterator start, iterator end ) {
-		return iterator( mData.erase( start.mIter, end.mIter ), this );
+		iterator ret;
+		ret.mIter = mData.erase( start.mIter, end.mIter );
+		ret.mString = this;
+		return ret;
 	}
 	//#########################################################################
 	UTFString& UTFString::erase( size_type index, size_type num ) {
@@ -632,7 +661,7 @@ namespace OpenGUI {
 
 	//#########################################################################
 	bool UTFString::inString( unicode_char ch ) const {
-		iterator i, ie = end();
+		const_iterator i, ie = end();
 		for ( i = begin(); i != ie; i.moveNext() ) {
 			if ( i.getCharacter() == ch )
 				return true;
