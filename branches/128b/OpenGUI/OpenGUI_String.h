@@ -87,18 +87,18 @@ namespace OpenGUI {
 	*/
 	class UTFString {
 		// constants used in UTF-8 conversions
-#define _lead1      0xC0 //110xxxxx
-#define _lead1_mask 0x1F //00011111
-#define _lead2      0xE0 //1110xxxx
-#define _lead2_mask 0x0F //00001111
-#define _lead3      0xF0 //11110xxx
-#define _lead3_mask 0x07 //00000111
-#define _lead4      0xF8 //111110xx
-#define _lead4_mask 0x03 //00000011
-#define _lead5      0xFC //1111110x
-#define _lead5_mask 0x01 //00000001
-#define _cont       0x80 //10xxxxxx
-#define _cont_mask  0x3F //00111111
+		static const unsigned char _lead1 = 0xC0;      //110xxxxx
+		static const unsigned char _lead1_mask = 0x1F; //00011111
+		static const unsigned char _lead2 = 0xE0;      //1110xxxx
+		static const unsigned char _lead2_mask = 0x0F; //00001111
+		static const unsigned char _lead3 = 0xF0;      //11110xxx
+		static const unsigned char _lead3_mask = 0x07; //00000111
+		static const unsigned char _lead4 = 0xF8;      //111110xx
+		static const unsigned char _lead4_mask = 0x03; //00000011
+		static const unsigned char _lead5 = 0xFC;      //1111110x
+		static const unsigned char _lead5_mask = 0x01; //00000001
+		static const unsigned char _cont = 0x80;       //10xxxxxx
+		static const unsigned char _cont_mask = 0x3F;  //00111111
 	public:
 		//! size type used to indicate string size and character positions within the string
 		typedef size_t size_type;
@@ -847,7 +847,7 @@ namespace OpenGUI {
 		}
 		//! returns a substring of the current string, starting at \a index, and \a num characters long.
 		/*! If \a num is omitted, it will default to \c UTFString::npos, and the substr() function will simply return the remainder of the string starting at \a index. */
-		UTFString substr( size_type index, size_type num = npos ) {
+		UTFString substr( size_type index, size_type num = npos ) const {
 			// this could avoid the extra copy if we used a private specialty constructor
 			dstring data = mData.substr( index, num );
 			UTFString tmp;
@@ -1453,7 +1453,7 @@ namespace OpenGUI {
 		//@{
 		//! returns the index of the first occurrence of \a str within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a str is a UTF-16 encoded string, but through implicit casting can also be a UTF-8 encoded string (const char* or std::string) */
-		size_type find( const UTFString& str, size_type index ) const {
+		size_type find( const UTFString& str, size_type index = 0 ) const {
 			return mData.find( str.c_str(), index );
 		}
 		//! returns the index of the first occurrence of \a str within the current string and within \a length code points, starting at \a index; returns \c UTFString::npos if nothing is found
@@ -1476,29 +1476,29 @@ namespace OpenGUI {
 		}
 		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+007F (127) */
-		size_type find( char ch, size_type index ) const {
+		size_type find( char ch, size_type index = 0 ) const {
 			return find( static_cast<code_point>( ch ), index );
 		}
 		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
-		size_type find( code_point ch, size_type index ) const {
+		size_type find( code_point ch, size_type index = 0 ) const {
 			return mData.find( ch, index );
 		}
 		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch is only capable of representing Unicode values up to U+FFFF (65535) */
-		size_type find( wchar_t ch, size_type index ) const {
+		size_type find( wchar_t ch, size_type index = 0 ) const {
 			return find( static_cast<unicode_char>( ch ), index );
 		}
 		//! returns the index of the first occurrence \a ch within the current string, starting at \a index; returns \c UTFString::npos if nothing is found
 		/*! \a ch can fully represent any Unicode character */
-		size_type find( unicode_char ch, size_type index ) const {
+		size_type find( unicode_char ch, size_type index = 0 ) const {
 			code_point cp[3] = {0, 0, 0};
 			size_t l = _utf32_to_utf16( ch, cp );
 			return find( UTFString( cp, l ), index );
 		}
 
 		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
-		size_type rfind( const UTFString& str, size_type index ) const {
+		size_type rfind( const UTFString& str, size_type index = 0 ) const {
 			return mData.rfind( str.c_str(), index );
 		}
 		//! returns the location of the first occurrence of \a str in the current string, doing a reverse search from \a index, searching at most \a num characters; returns \c UTFString::npos if nothing is found
@@ -1517,7 +1517,7 @@ namespace OpenGUI {
 			return mData.rfind( tmp.c_str(), index, num );
 		}
 		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
-		size_type rfind( char ch, size_type index ) const {
+		size_type rfind( char ch, size_type index = 0 ) const {
 			return rfind( static_cast<code_point>( ch ), index );
 		}
 		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
@@ -1525,11 +1525,11 @@ namespace OpenGUI {
 			return mData.rfind( ch, index );
 		}
 		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
-		size_type rfind( wchar_t ch, size_type index ) const {
+		size_type rfind( wchar_t ch, size_type index = 0 ) const {
 			return rfind( static_cast<unicode_char>( ch ), index );
 		}
 		//! returns the location of the first occurrence of \a ch in the current string, doing a reverse search from \a index; returns \c UTFString::npos if nothing is found
-		size_type rfind( unicode_char ch, size_type index ) const {
+		size_type rfind( unicode_char ch, size_type index = 0 ) const {
 			code_point cp[3] = {0, 0, 0};
 			size_t l = _utf32_to_utf16( ch, cp );
 			return rfind( UTFString( cp, l ), index );
@@ -2267,14 +2267,14 @@ namespace OpenGUI {
 
 	//////////////////////////////////////////////////////////////////////////
 	// Define the base types used throughout the rest of the library
-	typedef char Char;
-	typedef std::string String;
-	/*
-	//! maps the String type to UTF8String
-	typedef UTF8String String;
-	//! maps the Char type to wchar_t
-	typedef wchar_t Char; // a single character is only usefully representable using wide characters
-	*/
+	/*typedef char Char;
+	typedef std::string String;*/
+	
+	//! maps the String type to UTFString
+	typedef UTFString String;
+	//! maps the Char type to UTFString::unicode_char
+	typedef UTFString::unicode_char Char; // a single character is only usefully representable using wide characters
+	
 
 } // namespace OpenGUI{
 

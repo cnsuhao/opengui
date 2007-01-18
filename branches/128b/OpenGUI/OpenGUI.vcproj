@@ -386,10 +386,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpenGUI_String.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OpenGUI_System.cpp"
 				>
 			</File>
