@@ -968,6 +968,36 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
+	const std::string& UTFString::asUTF8(){
+		_load_buffer_UTF8();
+		return *m_buffer.mStrBuffer;
+	}
+	//#########################################################################
+	const char* UTFString::asUTF8_c_str(){
+		_load_buffer_UTF8();
+		return m_buffer.mStrBuffer->c_str();
+	}
+	//#########################################################################
+	const UTFString::utf32string& UTFString::asUTF32(){
+		_load_buffer_UTF32();
+		return *m_buffer.mUTF32StrBuffer;
+	}
+	//#########################################################################
+	const UTFString::unicode_char* UTFString::asUTF32_c_str(){
+		_load_buffer_UTF32();
+		return m_buffer.mUTF32StrBuffer->c_str();
+	}
+	//#########################################################################
+	const std::wstring& UTFString::asWStr(){
+		_load_buffer_WStr();
+		return *m_buffer.mWStrBuffer;
+	}
+	//#########################################################################
+	const wchar_t* UTFString::asWStr_c_str(){
+		_load_buffer_WStr();
+		return m_buffer.mWStrBuffer->c_str();
+	}
+	//#########################################################################
 	//#########################################################################
 	bool UTFString::_utf16_independent_char( code_point cp ) {
 		if ( 0xD800 <= cp && cp <= 0xDFFF ) // tests if the cp is within the surrogate pair range

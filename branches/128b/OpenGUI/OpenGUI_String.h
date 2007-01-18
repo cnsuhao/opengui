@@ -33,7 +33,7 @@ namespace OpenGUI {
 	=REQUIRED PREPROCESSOR MACROS=
 	This class requires two preprocessor macros to be defined in order to
 	work as advertised.
-	UINT32 - must be mapped to an unsigned 32 bit integer (ex. #define UINT32 unsigned int)
+	INT32 - must be mapped to a signed 32 bit integer (ex. #define INT32 int)
 	UINT16 - must be mapped to an unsigned 16 bit integer (ex. #define UINT32 unsigned short)
 
 	Additionally, a third macro should be defined to control the evaluation of wchar_t:
@@ -93,7 +93,7 @@ namespace OpenGUI {
 		static const size_type npos = ~0;
 
 		//! a single 32-bit Unicode character
-		typedef UINT32 unicode_char;
+		typedef INT32 unicode_char;
 
 		//! a single UTF-16 code point
 		typedef UINT16 code_point;
@@ -791,6 +791,22 @@ namespace OpenGUI {
 		//@}
 
 		
+		//!\name Stream variations
+		//@{
+		//! returns the current string in UTF-8 form within a std::string
+		const std::string& asUTF8();
+		//! returns the current string in UTF-8 form as a nul-terminated char array
+		const char* asUTF8_c_str();
+		//! returns the current string in UTF-32 form within a utf32string
+		const utf32string& asUTF32();
+		//! returns the current string in UTF-32 form as a nul-terminated unicode_char array
+		const unicode_char* asUTF32_c_str();
+		//! returns the current string in the native form of std::wstring
+		const std::wstring& asWStr();
+		//! returns the current string in the native form of a nul-terminated wchar_t array
+		const wchar_t* asWStr_c_str();
+		//@}
+
 
 		//!\name Single Character Access
 		//@{
