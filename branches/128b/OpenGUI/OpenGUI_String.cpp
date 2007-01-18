@@ -968,32 +968,32 @@ namespace OpenGUI {
 		}
 	}
 	//#########################################################################
-	const std::string& UTFString::asUTF8(){
+	const std::string& UTFString::asUTF8() const {
 		_load_buffer_UTF8();
 		return *m_buffer.mStrBuffer;
 	}
 	//#########################################################################
-	const char* UTFString::asUTF8_c_str(){
+	const char* UTFString::asUTF8_c_str() const {
 		_load_buffer_UTF8();
 		return m_buffer.mStrBuffer->c_str();
 	}
 	//#########################################################################
-	const UTFString::utf32string& UTFString::asUTF32(){
+	const UTFString::utf32string& UTFString::asUTF32() const {
 		_load_buffer_UTF32();
 		return *m_buffer.mUTF32StrBuffer;
 	}
 	//#########################################################################
-	const UTFString::unicode_char* UTFString::asUTF32_c_str(){
+	const UTFString::unicode_char* UTFString::asUTF32_c_str() const {
 		_load_buffer_UTF32();
 		return m_buffer.mUTF32StrBuffer->c_str();
 	}
 	//#########################################################################
-	const std::wstring& UTFString::asWStr(){
+	const std::wstring& UTFString::asWStr() const {
 		_load_buffer_WStr();
 		return *m_buffer.mWStrBuffer;
 	}
 	//#########################################################################
-	const wchar_t* UTFString::asWStr_c_str(){
+	const wchar_t* UTFString::asWStr_c_str() const {
 		_load_buffer_WStr();
 		return m_buffer.mWStrBuffer->c_str();
 	}

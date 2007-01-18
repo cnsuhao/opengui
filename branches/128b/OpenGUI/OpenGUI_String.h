@@ -790,21 +790,21 @@ namespace OpenGUI {
 		bool inString( unicode_char ch ) const;
 		//@}
 
-		
+
 		//!\name Stream variations
 		//@{
 		//! returns the current string in UTF-8 form within a std::string
-		const std::string& asUTF8();
+		const std::string& asUTF8() const;
 		//! returns the current string in UTF-8 form as a nul-terminated char array
-		const char* asUTF8_c_str();
+		const char* asUTF8_c_str() const;
 		//! returns the current string in UTF-32 form within a utf32string
-		const utf32string& asUTF32();
+		const utf32string& asUTF32() const;
 		//! returns the current string in UTF-32 form as a nul-terminated unicode_char array
-		const unicode_char* asUTF32_c_str();
+		const unicode_char* asUTF32_c_str() const;
 		//! returns the current string in the native form of std::wstring
-		const std::wstring& asWStr();
+		const std::wstring& asWStr() const;
 		//! returns the current string in the native form of a nul-terminated wchar_t array
-		const wchar_t* asWStr_c_str();
+		const wchar_t* asWStr_c_str() const;
 		//@}
 
 
@@ -1135,6 +1135,18 @@ namespace OpenGUI {
 		//! code point dereference operator
 		code_point& operator[]( size_type index ) {
 			return at( index );
+		}
+		//@}
+
+		//!\name Implicit Cast Operators
+		//@{
+		//! implicit cast to std::string
+		operator std::string() const {
+			return std::string( asUTF8() );
+		}
+		//! implicit cast to std::wstring
+		operator std::wstring() const {
+			return std::wstring( asWStr() );
 		}
 		//@}
 
