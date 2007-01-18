@@ -2264,17 +2264,27 @@ namespace OpenGUI {
 		return right.mIter >= left.mIter;
 	}
 
+	//! std::ostream write operator \relates UTFString
+	inline std::ostream& operator << ( std::ostream& os, const UTFString& s ) {
+		return os << s.asUTF8();
+	}
+
+	//! std::wostream write operator \relates UTFString
+	inline std::wostream& operator << ( std::wostream& os, const UTFString& s ) {
+		return os << s.asWStr();
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Define the base types used throughout the rest of the library
 	/*typedef char Char;
 	typedef std::string String;*/
-	
+
 	//! maps the String type to UTFString
 	typedef UTFString String;
 	//! maps the Char type to UTFString::unicode_char
 	typedef UTFString::unicode_char Char; // a single character is only usefully representable using wide characters
-	
+
 
 } // namespace OpenGUI{
 
