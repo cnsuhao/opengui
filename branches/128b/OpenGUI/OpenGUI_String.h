@@ -238,7 +238,7 @@ namespace OpenGUI {
 			_fwd_iterator operator+( difference_type n ) {
 				_fwd_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekRev( n );
+					tmp._seekRev( -n );
 				else
 					tmp._seekFwd( n );
 				return tmp;
@@ -253,7 +253,7 @@ namespace OpenGUI {
 			_fwd_iterator operator-( difference_type n ) {
 				_fwd_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekFwd( n );
+					tmp._seekFwd( -n );
 				else
 					tmp._seekRev( n );
 				return tmp;
@@ -267,7 +267,7 @@ namespace OpenGUI {
 			//! addition assignment operator
 			_fwd_iterator& operator+=( difference_type n ) {
 				if ( n < 0 )
-					_seekRev( n );
+					_seekRev( -n );
 				else
 					_seekFwd( n );
 				return *this;
@@ -280,7 +280,7 @@ namespace OpenGUI {
 			//! subtraction assignment operator
 			_fwd_iterator& operator-=( difference_type n ) {
 				if ( n < 0 )
-					_seekFwd( n );
+					_seekFwd( -n );
 				else
 					_seekRev( n );
 				return *this;
@@ -372,7 +372,7 @@ namespace OpenGUI {
 			_const_fwd_iterator operator+( difference_type n ) {
 				_const_fwd_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekRev( n );
+					tmp._seekRev( -n );
 				else
 					tmp._seekFwd( n );
 				return tmp;
@@ -387,7 +387,7 @@ namespace OpenGUI {
 			_const_fwd_iterator operator-( difference_type n ) {
 				_const_fwd_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekFwd( n );
+					tmp._seekFwd( -n );
 				else
 					tmp._seekRev( n );
 				return tmp;
@@ -401,7 +401,7 @@ namespace OpenGUI {
 			//! addition assignment operator
 			_const_fwd_iterator& operator+=( difference_type n ) {
 				if ( n < 0 )
-					_seekRev( n );
+					_seekRev( -n );
 				else
 					_seekFwd( n );
 				return *this;
@@ -414,7 +414,7 @@ namespace OpenGUI {
 			//! subtraction assignment operator
 			_const_fwd_iterator& operator-=( difference_type n ) {
 				if ( n < 0 )
-					_seekFwd( n );
+					_seekFwd( -n );
 				else
 					_seekRev( n );
 				return *this;
@@ -517,7 +517,7 @@ namespace OpenGUI {
 			_rev_iterator operator+( difference_type n ) {
 				_rev_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekFwd( n );
+					tmp._seekFwd( -n );
 				else
 					tmp._seekRev( n );
 				return tmp;
@@ -532,7 +532,7 @@ namespace OpenGUI {
 			_rev_iterator operator-( difference_type n ) {
 				_rev_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekRev( n );
+					tmp._seekRev( -n );
 				else
 					tmp._seekFwd( n );
 				return tmp;
@@ -546,7 +546,7 @@ namespace OpenGUI {
 			//! addition assignment operator
 			_rev_iterator& operator+=( difference_type n ) {
 				if ( n < 0 )
-					_seekFwd( n );
+					_seekFwd( -n );
 				else
 					_seekRev( n );
 				return *this;
@@ -559,7 +559,7 @@ namespace OpenGUI {
 			//! subtraction assignment operator
 			_rev_iterator& operator-=( difference_type n ) {
 				if ( n < 0 )
-					_seekRev( n );
+					_seekRev( -n );
 				else
 					_seekFwd( n );
 				return *this;
@@ -628,7 +628,7 @@ namespace OpenGUI {
 			_const_rev_iterator operator+( difference_type n ) {
 				_const_rev_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekFwd( n );
+					tmp._seekFwd( -n );
 				else
 					tmp._seekRev( n );
 				return tmp;
@@ -643,7 +643,7 @@ namespace OpenGUI {
 			_const_rev_iterator operator-( difference_type n ) {
 				_const_rev_iterator tmp( *this );
 				if ( n < 0 )
-					tmp._seekRev( n );
+					tmp._seekRev( -n );
 				else
 					tmp._seekFwd( n );
 				return tmp;
@@ -657,7 +657,7 @@ namespace OpenGUI {
 			//! addition assignment operator
 			_const_rev_iterator& operator+=( difference_type n ) {
 				if ( n < 0 )
-					_seekFwd( n );
+					_seekFwd( -n );
 				else
 					_seekRev( n );
 				return *this;
@@ -670,7 +670,7 @@ namespace OpenGUI {
 			//! subtraction assignment operator
 			_const_rev_iterator& operator-=( difference_type n ) {
 				if ( n < 0 )
-					_seekRev( n );
+					_seekRev( -n );
 				else
 					_seekFwd( n );
 				return *this;
