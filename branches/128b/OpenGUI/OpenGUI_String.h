@@ -1294,8 +1294,9 @@ namespace OpenGUI {
 	}
 
 	// (const) reverse iterator common operators
+	// NB: many of these operations are evaluated in reverse because this is a reverse iterator wrapping a forward iterator
 	inline UTFString::size_type operator-( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
-		return ( left.mIter - right.mIter );
+		return ( right.mIter - left.mIter );
 	}
 	inline bool operator==( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
 		return left.mIter == right.mIter;
@@ -1304,16 +1305,16 @@ namespace OpenGUI {
 		return left.mIter != right.mIter;
 	}
 	inline bool operator<( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
-		return left.mIter < right.mIter;
+		return right.mIter < left.mIter;
 	}
 	inline bool operator<=( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
-		return left.mIter <= right.mIter;
+		return right.mIter <= left.mIter;
 	}
 	inline bool operator>( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
-		return left.mIter > right.mIter;
+		return right.mIter > left.mIter;
 	}
 	inline bool operator>=( const UTFString::_const_rev_iterator& left, const UTFString::_const_rev_iterator& right ) {
-		return left.mIter >= right.mIter;
+		return right.mIter >= left.mIter;
 	}
 
 
