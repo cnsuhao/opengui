@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef E5AE9E12_AF34_48ff_B669_2802A0C3DC0A
@@ -52,7 +52,7 @@ namespace OpenGUI {
 #else // #if defined( __WIN32__ ) || defined( _WIN32 )
 #if WCHAR_MAX <= 0xFFFF // this is a last resort fall back test; WCHAR_MAX is defined in <wchar.h>
 #define WCHAR_UTF16 // best we can tell, wchar_t is not larger than 16-bit
-#endif // #if !(WCHAR_MAX > 0xFFFF)
+#endif // #if WCHAR_MAX <= 0xFFFF
 #endif // #if defined( __WIN32__ ) || defined( _WIN32 )
 #endif // #ifdef __STDC_ISO_10646__
 
