@@ -720,106 +720,229 @@ namespace OpenGUI {
 		//!\name Constructors/Destructor
 		//@{
 		//! default constructor, creates an empty string
-		UTFString();
+		UTFString() {
+			_init();
+		}
 		//! copy constructor
-		UTFString( const UTFString& copy );
+		UTFString( const UTFString& copy ) {
+			_init();
+			mData = copy.mData;
+		}
 		//! \a length copies of \a ch
-		UTFString( size_type length, const code_point& ch );
-		//! duplicate of \a str
-		UTFString( const code_point* str );
-		//! duplicate of \a str, \a length characters long
-		UTFString( const code_point* str, size_type length );
-		//! substring of \a str starting at \a index and \a length characters long
-		UTFString( const UTFString& str, size_type index, size_type length );
-
-		//! nul-terminated wchar_t array initialized constructor (UTF-16 encoding)
-		UTFString( const wchar_t* w_str );
-		//! wchar_t array initialized constructor (UTF-16 encoding), \a length characters long
-		UTFString( const wchar_t* w_str, size_type length );
-		//! std::wstring (wide string) initialized constructor (UTF-16 encoding)
-		UTFString( const std::wstring& wstr );
-
-		//! nul-terminated C-string initialized constructor (UTF-8 encoding)
-		UTFString( const char* c_str );
-		//! nul-terminated C-string initialized constructor (UTF-8 encoding)
-		UTFString( const char* c_str, size_type length );
-		//! std::string initialized constructor (UTF-8 encoding)
-		UTFString( const std::string& str );
+		UTFString( size_type length, const code_point& ch ) {
+			_init();
+			assign( length, ch );
+		}
+		//! duplicate of nul-terminated sequence \a str
+		UTFString( const code_point* str ) {
+			_init();
+			assign( str );
+		}
+		//! duplicate of \a str, \a length code points long
+		UTFString( const code_point* str, size_type length ) {
+			_init();
+			assign( str, length );
+		}
+		//! substring of \a str starting at \a index and \a length code points long
+		UTFString( const UTFString& str, size_type index, size_type length ) {
+			_init();
+			assign( str, index, length );
+		}
+		//! duplicate of nul-terminated \c wchar_t array
+		UTFString( const wchar_t* w_str ) {
+			_init();
+			assign( w_str );
+		}
+		//! duplicate of \a w_str, \a length characters long
+		UTFString( const wchar_t* w_str, size_type length ) {
+			_init();
+			assign( w_str, length );
+		}
+		//! duplicate of \a wstr
+		UTFString( const std::wstring& wstr ) {
+			_init();
+			assign( wstr );
+		}
+		//! duplicate of nul-terminated C-string \a c_str (UTF-8 encoding)
+		UTFString( const char* c_str ) {
+			_init();
+			assign( c_str );
+		}
+		//! duplicate of \a c_str, \a length characters long (UTF-8 encoding)
+		UTFString( const char* c_str, size_type length ) {
+			_init();
+			assign( c_str, length );
+		}
+		//! duplicate of \a str (UTF-8 encoding)
+		UTFString( const std::string& str ) {
+			_init();
+			assign( str );
+		}
 		//! destructor
-		~UTFString();
+		~UTFString() {
+			_cleanBuffer();
+		}
 		//@}
 
-
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name Utility functions
 		//@{
 		//! Returns the number of code points in the current string
-		size_type length() const;
+		size_type length() const {
+			return size();
+		}
 		//! Returns the number of code points in the current string
-		size_type size() const;
+		size_type size() const {
+			return mData.size();
+		}
 		//! returns the maximum number of UTF-16 code points that the string can hold
-		size_type max_size() const;
+		size_type max_size() const {
+			return mData.max_size();
+		}
 		//! sets the capacity of the string to at least \a size code points
-		void reserve( size_type size );
-		//! changes the size of the string to \a size
-		void resize( size_type num, const code_point& val = 0 );
+		void reserve( size_type size ) {
+			mData.reserve( size );
+		}
+		//! changes the size of the string to \a size, filling in any new area with \a val
+		void resize( size_type num, const code_point& val = 0 ) {
+			mData.resize( num, val );
+		}
 		//! exchanges the elements of the current string with those of \a from
-		void swap( UTFString& from );
+		void swap( UTFString& from ) {
+			mData.swap( from.mData );
+		}
 		//! returns \c true if the string has no elements, \c false otherwise
-		bool empty() const;
-		//! returns a const pointer to a regular C string, identical to the current string
-		const code_point* c_str() const;
+		bool empty() const {
+			return mData.empty();
+		}
 		//! returns a pointer to the first character in the current string
-		const code_point* data() const;
+		const code_point* c_str() const {
+			return mData.c_str();
+		}
+		//! returns a pointer to the first character in the current string
+		const code_point* data() const {
+			return c_str();
+		}
 		//! returns the number of elements that the string can hold before it will need to allocate more space
-		size_type capacity() const;
+		size_type capacity() const {
+			return mData.capacity();
+		}
 		//! deletes all of the elements in the string
-		void clear();
+		void clear() {
+			mData.clear();
+		}
 		//! returns a substring of the current string, starting at \a index, and \a num characters long.
 		/*! If \a num is omitted, it will default to \c UTFString::npos, and the substr() function will simply return the remainder of the string starting at \a index. */
-		UTFString substr( size_type index, size_type num = npos );
+		UTFString substr( size_type index, size_type num = npos ) {
+			// this could avoid the extra copy if we used a private specialty constructor
+			dstring data = mData.substr( index, num );
+			UTFString tmp;
+			tmp.mData.swap( data );
+			return tmp;
+		}
 		//! appends \a val to the end of the string
-		void push_back( unicode_char val );
+		void push_back( unicode_char val ) {
+			code_point cp[2];
+			size_t c = _utf32_to_utf16( val, cp );
+			if ( c > 0 ) push_back( cp[0] );
+			if ( c > 1 ) push_back( cp[1] );
+		}
 		//! appends \a val to the end of the string
-		void push_back( wchar_t val );
+		void push_back( wchar_t val ) {
+			// we do this because the Unicode method still preserves UTF-16 code points
+			mData.push_back(( unicode_char )val );
+		}
 		//! appends \a val to the end of the string
-		void push_back( code_point val );
+		/*! This can be used to push surrogate pair code points, you'll just need to push them
+		one after the other. */
+		void push_back( code_point val ) {
+			mData.push_back( val );
+		}
 		//! appends \a val to the end of the string
-		void push_back( char val );
-		//! returns \c true if the given Unicode character is in this string
-		bool inString( unicode_char ch ) const;
+		/*! Limited to characters under the 127 value barrier. */
+		void push_back( char val ) {
+			mData.push_back(( code_point )val );
+		}
+		//! returns \c true if the given Unicode character \a ch is in this string
+		bool inString( unicode_char ch ) const {
+			const_iterator i, ie = end();
+			for ( i = begin(); i != ie; i.moveNext() ) {
+				if ( i.getCharacter() == ch )
+					return true;
+			}
+			return false;
+		}
 		//@}
 
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name Stream variations
 		//@{
 		//! returns the current string in UTF-8 form within a std::string
-		const std::string& asUTF8() const;
+		const std::string& asUTF8() const {
+			_load_buffer_UTF8();
+			return *m_buffer.mStrBuffer;
+		}
 		//! returns the current string in UTF-8 form as a nul-terminated char array
-		const char* asUTF8_c_str() const;
+		const char* asUTF8_c_str() const {
+			_load_buffer_UTF8();
+			return m_buffer.mStrBuffer->c_str();
+		}
 		//! returns the current string in UTF-32 form within a utf32string
-		const utf32string& asUTF32() const;
+		const utf32string& asUTF32() const {
+			_load_buffer_UTF32();
+			return *m_buffer.mUTF32StrBuffer;
+		}
 		//! returns the current string in UTF-32 form as a nul-terminated unicode_char array
-		const unicode_char* asUTF32_c_str() const;
+		const unicode_char* asUTF32_c_str() const {
+			_load_buffer_UTF32();
+			return m_buffer.mUTF32StrBuffer->c_str();
+		}
 		//! returns the current string in the native form of std::wstring
-		const std::wstring& asWStr() const;
+		const std::wstring& asWStr() const {
+			_load_buffer_WStr();
+			return *m_buffer.mWStrBuffer;
+		}
 		//! returns the current string in the native form of a nul-terminated wchar_t array
-		const wchar_t* asWStr_c_str() const;
+		const wchar_t* asWStr_c_str() const {
+			_load_buffer_WStr();
+			return m_buffer.mWStrBuffer->c_str();
+		}
 		//@}
 
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name Single Character Access
 		//@{
 		//! returns a reference to the element in the string at index \c loc
-		code_point& at( size_type loc );
+		code_point& at( size_type loc ) {
+			return mData.at( loc );
+		}
 		//! returns a reference to the element in the string at index \c loc
-		const code_point& at( size_type loc ) const;
+		const code_point& at( size_type loc ) const {
+			return mData.at( loc );
+		}
 		//! returns the data point \a loc evaluated as a UTF-32 value
 		/*! This function will will only properly decode surrogate pairs when \a loc points to the index
 		of a lead code point that is followed by a trailing code point. Evaluating the trailing code point
 		itself, or pointing to a code point that is a sentinel value (part of a broken pair) will return
 		the value of just that code point (not a valid Unicode value, but useful as a sentinel value). */
-		unicode_char getChar( size_type loc ) const;
+		unicode_char getChar( size_type loc ) const {
+			const code_point* ptr = c_str();
+			unicode_char uc;
+			size_t l = _utf16_char_length( ptr[loc] );
+			code_point cp[2] = { /* blame the code beautifier */
+								   0, 0
+							   };
+			cp[0] = ptr[loc];
+
+			if ( l == 2 && ( loc + 1 ) < mData.length() ) {
+				cp[1] = ptr[loc+1];
+			}
+			_utf16_to_utf32( cp, uc );
+			return uc;
+		}
 		//! sets the value of the character at \a loc to the Unicode value \a ch (UTF-32)
 		/*! Providing sentinel values (values between U+D800-U+DFFF) are accepted, but you should be aware
 		that you can also unwittingly create a valid surrogate pair if you don't pay attention to what you
@@ -829,86 +952,283 @@ namespace OpenGUI {
 		pair. The return value will signify any lengthening or shortening performed, returning 0 if no change
 		was made, -1 if the string was shortened, or 1 if the string was lengthened. Any single call can
 		only change the string length by + or - 1. */
-		int setChar( size_type loc, unicode_char ch );
+		int setChar( size_type loc, unicode_char ch ) {
+			const code_point* ptr = c_str();
+			code_point cp[2] = { /* blame the code beautifier */
+								   0, 0
+							   };
+			size_t l = _utf32_to_utf16( ch, cp );
+			unicode_char existingChar = getChar( loc );
+			size_t existingSize = _utf16_char_length( existingChar );
+			size_t newSize = _utf16_char_length( ch );
+
+			if ( newSize > existingSize ) {
+				at( loc ) = cp[0];
+				insert( loc + 1, 1, cp[1] );
+				return 1;
+			}
+			if ( newSize < existingSize ) {
+				erase( loc, 1 );
+				at( loc ) = cp[0];
+				return -1;
+			}
+
+			// newSize == existingSize
+			at( loc ) = cp[0];
+			if ( l == 2 ) at( loc + 1 ) = cp[1];
+			return 0;
+		}
 		//@}
+
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name iterator acquisition
 		//@{
 		//! returns an iterator to the first element of the string
-		iterator begin();
+		iterator begin() {
+			iterator i;
+			i.mIter = mData.begin();
+			i.mString = this;
+			return i;
+		}
 		//! returns an iterator to the first element of the string
-		const_iterator begin() const;
+		const_iterator begin() const {
+			const_iterator i;
+			i.mIter = const_cast<UTFString*>( this )->mData.begin();
+			i.mString = const_cast<UTFString*>( this );
+			return i;
+		}
 		//! returns an iterator just past the end of the string
-		iterator end();
+		iterator end() {
+			iterator i;
+			i.mIter = mData.end();
+			i.mString = this;
+			return i;
+		}
 		//! returns an iterator just past the end of the string
-		const_iterator end() const;
-
+		const_iterator end() const {
+			const_iterator i;
+			i.mIter = const_cast<UTFString*>( this )->mData.end();
+			i.mString = const_cast<UTFString*>( this );
+			return i;
+		}
 		//! returns a reverse iterator to the last element of the string
-		reverse_iterator rbegin();
+		reverse_iterator rbegin() {
+			reverse_iterator i;
+			i.mIter = mData.end();
+			i.mString = this;
+			return i;
+		}
 		//! returns a reverse iterator to the last element of the string
-		const_reverse_iterator rbegin() const;
+		const_reverse_iterator rbegin() const {
+			const_reverse_iterator i;
+			i.mIter = const_cast<UTFString*>( this )->mData.end();
+			i.mString = const_cast<UTFString*>( this );
+			return i;
+		}
 		//! returns a reverse iterator just past the beginning of the string
-		reverse_iterator rend();
+		reverse_iterator rend() {
+			reverse_iterator i;
+			i.mIter = mData.begin();
+			i.mString = this;
+			return i;
+		}
 		//! returns a reverse iterator just past the beginning of the string
-		const_reverse_iterator rend() const;
+		const_reverse_iterator rend() const {
+			const_reverse_iterator i;
+			i.mIter = const_cast<UTFString*>( this )->mData.begin();
+			i.mString = const_cast<UTFString*>( this );
+			return i;
+		}
 		//@}
+
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name assign
 		//@{
 		//! gives the current string the values from \a start to \a end
-		UTFString& assign( iterator start, iterator end );
-		//! assign \c str to the current string
-		UTFString& assign( const UTFString& str );
-		//! assign the nul-terminated \c str to the current string
-		UTFString& assign( const code_point* str );
-		//! assign the first \c num characters of \c str to the current string
-		UTFString& assign( const code_point* str, size_type num );
-		//! assign \c len entries from \c str to the current string, starting at \c index
-		UTFString& assign( const UTFString& str, size_type index, size_type len );
-		//! assign \c num copies of \c ch to the current string
-		UTFString& assign( size_type num, const code_point& ch );
-
+		UTFString& assign( iterator start, iterator end ) {
+			mData.assign( start.mIter, end.mIter );
+			return *this;
+		}
+		//! assign \a str to the current string
+		UTFString& assign( const UTFString& str ) {
+			mData.assign( str.mData );
+			return *this;
+		}
+		//! assign the nul-terminated \a str to the current string
+		UTFString& assign( const code_point* str ) {
+			mData.assign( str );
+			return *this;
+		}
+		//! assign the first \a num characters of \a str to the current string
+		UTFString& assign( const code_point* str, size_type num ) {
+			mData.assign( str, num );
+			return *this;
+		}
+		//! assign \a len entries from \a str to the current string, starting at \a index
+		UTFString& assign( const UTFString& str, size_type index, size_type len ) {
+			mData.assign( str.mData, index, len );
+			return *this;
+		}
+		//! assign \a num copies of \a ch to the current string
+		UTFString& assign( size_type num, const code_point& ch ) {
+			mData.assign( num, ch );
+			return *this;
+		}
 		//! assign \a wstr to the current string (\a wstr is treated as a UTF-16 stream)
-		UTFString& assign( const std::wstring& wstr );
-		//! assign \a w_str to the current string (\a w_str is treated as a 0 terminated UTF-16 stream)
-		UTFString& assign( const wchar_t* w_str );
-		//! assign the first \a num characters of \a w_str to the current string (\a w_str is treated as a UTF-16 stream)
-		UTFString& assign( const wchar_t* w_str, size_type num );
-
+		UTFString& assign( const std::wstring& wstr ) {
+			mData.clear();
+			mData.reserve( wstr.length() ); // best guess bulk allocate
+#ifdef WCHAR_UTF16 // if we're already working in UTF-16, this is easy
+			code_point tmp;
+			std::wstring::const_iterator i, ie = wstr.end();
+			for ( i = wstr.begin(); i != ie; i++ ) {
+				tmp = static_cast<code_point>( *i );
+				mData.push_back( tmp );
+			}
+#else // otherwise we do it the safe way (which is still 100% safe to pass UTF-16 through, just slower)
+			code_point cp[3] = {0, 0, 0};
+			unicode_char tmp;
+			std::wstring::const_iterator i, ie = wstr.end();
+			for ( i = wstr.begin(); i != ie; i++ ) {
+				tmp = static_cast<unicode_char>( *i );
+				size_t l = _utf32_to_utf16( tmp, cp );
+				if ( l > 0 ) mData.push_back( cp[0] );
+				if ( l > 1 ) mData.push_back( cp[1] );
+			}
+#endif
+			return *this;
+		}
+		//! assign \a w_str to the current string
+		UTFString& assign( const wchar_t* w_str ) {
+			std::wstring tmp;
+			tmp.assign( w_str );
+			return assign( tmp );
+		}
+		//! assign the first \a num characters of \a w_str to the current string
+		UTFString& assign( const wchar_t* w_str, size_type num ) {
+			std::wstring tmp;
+			tmp.assign( w_str, num );
+			return assign( tmp );
+		}
 		//! assign \a str to the current string (\a str is treated as a UTF-8 stream)
-		UTFString& assign( const std::string& str );
+		UTFString& assign( const std::string& str ) {
+			size_type len = _verifyUTF8( str );
+			clear(); // empty our contents, if there are any
+			reserve( len ); // best guess bulk capacity growth
+
+			// This is a 3 step process, converting each byte in the UTF-8 stream to UTF-32,
+			// then converting it to UTF-16, then finally appending the data buffer
+
+			unicode_char uc;          // temporary Unicode character buffer
+			unsigned char utf8buf[7]; // temporary UTF-8 buffer
+			utf8buf[6] = 0;
+			size_t utf8len;           // UTF-8 length
+			code_point utf16buff[3];  // temporary UTF-16 buffer
+			utf16buff[2] = 0;
+			size_t utf16len;          // UTF-16 length
+
+			std::string::const_iterator i, ie = str.end();
+			for ( i = str.begin(); i != ie; i++ ) {
+				utf8len = _utf8_char_length( static_cast<unsigned char>( *i ) ); // estimate bytes to load
+				for ( size_t j = 0; j < utf8len; j++ ) { // load the needed UTF-8 bytes
+					utf8buf[j] = ( static_cast<unsigned char>( *( i + j ) ) ); // we don't increment 'i' here just in case the estimate is wrong (shouldn't happen, but we're being careful)
+				}
+				utf8buf[utf8len] = 0; // nul terminate so we throw an exception before running off the end of the buffer
+				utf8len = _utf8_to_utf32( utf8buf, uc ); // do the UTF-8 -> UTF-32 conversion
+				i += utf8len - 1; // we subtract 1 for the increment of the 'for' loop
+
+				utf16len = _utf32_to_utf16( uc, utf16buff ); // UTF-32 -> UTF-16 conversion
+				append( utf16buff, utf16len ); // append the characters to the string
+			}
+			return *this;
+		}
 		//! assign \a c_str to the current string (\a c_str is treated as a UTF-8 stream)
-		UTFString& assign( const char* c_str );
+		UTFString& assign( const char* c_str ) {
+			std::string tmp( c_str );
+			return assign( tmp );
+		}
 		//! assign the first \a num characters of \a c_str to the current string (\a c_str is treated as a UTF-8 stream)
-		UTFString& assign( const char* c_str, size_type num );
+		UTFString& assign( const char* c_str, size_type num ) {
+			std::string tmp;
+			tmp.assign( c_str, num );
+			return assign( tmp );
+		}
 		//@}
+
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name append
 		//@{
-		//! appends \c str on to the end of the current string
-		UTFString& append( const UTFString& str );
-		//! appends \c str on to the end of the current string
-		UTFString& append( const code_point* str );
-		//! appends a substring of \c str starting at \c index that is \c len characters long on to the end of the current string
-		UTFString& append( const UTFString& str, size_type index, size_type len );
-		//! appends \c num characters of \c str on to the end of the current string
-		UTFString& append( const code_point* str, size_type num );
-		//! appends \c num repetitions of \c ch on to the end of the current string
-		UTFString& append( size_type num, code_point ch );
+		//! appends \a str on to the end of the current string
+		UTFString& append( const UTFString& str ) {
+			mData.append( str.mData );
+			return *this;
+		}
+		//! appends \a str on to the end of the current string
+		UTFString& append( const code_point* str ) {
+			mData.append( str );
+			return *this;
+		}
+		//! appends a substring of \a str starting at \a index that is \a len characters long on to the end of the current string
+		UTFString& append( const UTFString& str, size_type index, size_type len ) {
+			mData.append( str.mData, index, len );
+			return *this;
+		}
+		//! appends \a num characters of \a str on to the end of the current string
+		UTFString& append( const code_point* str, size_type num ) {
+			mData.append( str, num );
+			return *this;
+		}
+		//! appends \a num repetitions of \a ch on to the end of the current string
+		UTFString& append( size_type num, code_point ch ) {
+			mData.append( num, ch );
+			return *this;
+		}
 		//! appends the sequence denoted by \a start and \a end on to the end of the current string
-		UTFString& append( iterator start, iterator end );
-		//! appends \c num characters of \c str on to the end of the current string
-		UTFString& append( const wchar_t* w_str, size_type num );
-		//! appends \c num repetitions of \c ch on to the end of the current string
-		UTFString& append( size_type num, wchar_t ch );
-		//! appends \c num characters of \c str on to the end of the current string  (UTF-8 encoding)
-		UTFString& append( const char* c_str, size_type num );
-		//! appends \c num repetitions of \c ch on to the end of the current string (Unicode values less than 128)
-		UTFString& append( size_type num, char ch );
-		//! appends \c num repetitions of \c ch on to the end of the current string (Full Unicode spectrum)
-		UTFString& append( size_type num, unicode_char ch );
+		UTFString& append( iterator start, iterator end ) {
+			mData.append( start.mIter, end.mIter );
+			return *this;
+		}
+		//! appends \a num characters of \a str on to the end of the current string
+		UTFString& append( const wchar_t* w_str, size_type num ) {
+			std::wstring tmp( w_str, num );
+			return append( tmp );
+		}
+		//! appends \a num repetitions of \a ch on to the end of the current string
+		UTFString& append( size_type num, wchar_t ch ) {
+			return append( num, static_cast<unicode_char>( ch ) );
+		}
+		//! appends \a num characters of \a str on to the end of the current string  (UTF-8 encoding)
+		UTFString& append( const char* c_str, size_type num ) {
+			UTFString tmp( c_str, num );
+			append( tmp );
+			return *this;
+		}
+		//! appends \a num repetitions of \a ch on to the end of the current string (Unicode values less than 128)
+		UTFString& append( size_type num, char ch ) {
+			append( num, static_cast<code_point>( ch ) );
+			return *this;
+		}
+		//! appends \a num repetitions of \a ch on to the end of the current string (Full Unicode spectrum)
+		UTFString& append( size_type num, unicode_char ch ) {
+			code_point cp[2] = {0, 0};
+			if ( _utf32_to_utf16( ch, cp ) == 2 ) {
+				for ( size_type i = 0; i < num; i++ ) {
+					append( 1, cp[0] );
+					append( 1, cp[1] );
+				}
+			} else {
+				for ( size_type i = 0; i < num; i++ ) {
+					append( 1, cp[0] );
+				}
+			}
+			return *this;
+		}
 		//@}
 
+		//////////////////////////////////////////////////////////////////////////
 
 		//!\name insert
 		//@{

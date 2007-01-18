@@ -20,348 +20,15 @@
 #define _cont_mask  0x3F //00111111
 
 namespace OpenGUI {
-	//#########################################################################
-	UTFString::UTFString() {
-		_init();
-	}
-	//#########################################################################
-	UTFString::~UTFString() {
-		_cleanBuffer();
-	}
-	//#########################################################################
-	UTFString::UTFString( const UTFString& copy ) {
-		_init();
-		mData = copy.mData;
-	}
-	//#########################################################################
-	UTFString::UTFString( size_type length, const code_point& ch ) {
-		_init();
-		assign( length, ch );
-	}
-	//#########################################################################
-	UTFString::UTFString( const code_point* cp_str ) {
-		_init();
-		assign( cp_str );
-	}
-	//#########################################################################
-	UTFString::UTFString( const code_point* str, size_type length ) {
-		_init();
-		assign( str, length );
-	}
-	//#########################################################################
-	UTFString::UTFString( const UTFString& str, size_type index, size_type length ) {
-		_init();
-		assign( str, index, length );
-	}
-	//#########################################################################
-	UTFString::UTFString( const wchar_t* w_str ) {
-		_init();
-		assign( w_str );
-	}
-	//#########################################################################
-	UTFString::UTFString( const std::wstring& wstr ) {
-		_init();
-		assign( wstr );
-	}
-	//#########################################################################
-	UTFString::UTFString( const wchar_t* w_str, size_type length ) {
-		_init();
-		assign( w_str, length );
-	}
-	//#########################################################################
-	UTFString::UTFString( const char* c_str ) {
-		_init();
-		assign( c_str );
-	}
-	//#########################################################################
-	UTFString::UTFString( const char* c_str, size_type length ) {
-		_init();
-		assign( c_str, length );
-	}
-	//#########################################################################
-	UTFString::UTFString( const std::string& str ) {
-		_init();
-		assign( str );
-	}
-	//#########################################################################
-	UTFString::iterator UTFString::begin() {
-		iterator i;
-		i.mIter = mData.begin();
-		i.mString = this;
-		return i;
-	}
-	//#########################################################################
-	UTFString::const_iterator UTFString::begin() const {
-		const_iterator i;
-		i.mIter = const_cast<UTFString*>( this )->mData.begin();
-		i.mString = const_cast<UTFString*>( this );
-		return i;
-	}
-	//#########################################################################
-	UTFString::iterator UTFString::end() {
-		iterator i;
-		i.mIter = mData.end();
-		i.mString = this;
-		return i;
-	}
-	//#########################################################################
-	UTFString::const_iterator UTFString::end() const {
-		const_iterator i;
-		i.mIter = const_cast<UTFString*>( this )->mData.end();
-		i.mString = const_cast<UTFString*>( this );
-		return i;
-	}
-	//#########################################################################
-	UTFString::reverse_iterator UTFString::rbegin() {
-		reverse_iterator i;
-		i.mIter = mData.end();
-		i.mString = this;
-		return i;
-	}
-	//#########################################################################
-	UTFString::const_reverse_iterator UTFString::rbegin() const {
-		const_reverse_iterator i;
-		i.mIter = const_cast<UTFString*>( this )->mData.end();
-		i.mString = const_cast<UTFString*>( this );
-		return i;
-	}
-	//#########################################################################
-	UTFString::reverse_iterator UTFString::rend() {
-		reverse_iterator i;
-		i.mIter = mData.begin();
-		i.mString = this;
-		return i;
-	}
-	//#########################################################################
-	UTFString::const_reverse_iterator UTFString::rend() const {
-		const_reverse_iterator i;
-		i.mIter = const_cast<UTFString*>( this )->mData.begin();
-		i.mString = const_cast<UTFString*>( this );
-		return i;
-	}
-	//#########################################################################
-	UTFString::size_type UTFString::length() const {
-		return size();
-	}
-	//#########################################################################
-	UTFString::size_type UTFString::size() const {
-		return mData.size();
-	}
-	//#########################################################################
-	UTFString::size_type UTFString::max_size() const {
-		return mData.max_size();
-	}
-	//#########################################################################
-	void UTFString::reserve( size_type size ) {
-		mData.reserve( size );
-	}
-	//#########################################################################
-	void UTFString::resize( size_type num, const code_point& val ) {
-		mData.resize( num, val );
-	}
-	//#########################################################################
-	void UTFString::swap( UTFString& from ) {
-		mData.swap( from.mData );
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( iterator start, iterator end ) {
-		mData.assign( start.mIter, end.mIter );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const UTFString& str ) {
-		mData.assign( str.mData );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const code_point* str ) {
-		mData.assign( str );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const code_point* str, size_type num ) {
-		mData.assign( str, num );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const UTFString& str, size_type index, size_type len ) {
-		mData.assign( str.mData, index, len );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( size_type num, const code_point& ch ) {
-		mData.assign( num, ch );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const std::wstring& wstr ) {
-		mData.clear();
-		mData.reserve( wstr.length() ); // best guess bulk allocate
-#ifdef WCHAR_UTF16 // if we're already working in UTF-16, this is easy
-		code_point tmp;
-		std::wstring::const_iterator i, ie = wstr.end();
-		for ( i = wstr.begin(); i != ie; i++ ) {
-			tmp = ( code_point )( *i );
-			mData.push_back( tmp );
-		}
-#else // otherwise we do it the safe way (which is still 100% safe to pass UTF-16 through, just slower)
-		code_point cp[3] = {0, 0, 0};
-		unicode_char tmp;
-		std::wstring::const_iterator i, ie = wstr.end();
-		for ( i = wstr.begin(); i != ie; i++ ) {
-			tmp = ( unicode_char )( *i );
-			size_t l = _utf32_to_utf16( tmp, cp );
-			if ( l > 0 ) mData.push_back( cp[0] );
-			if ( l > 1 ) mData.push_back( cp[1] );
-		}
-#endif
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const wchar_t* w_str ) {
-		std::wstring tmp;
-		tmp.assign( w_str );
-		return assign( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const wchar_t* w_str, size_type num ) {
-		std::wstring tmp;
-		tmp.assign( w_str, num );
-		return assign( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const std::string& str ) {
-		size_type len = _verifyUTF8( str );
-		clear(); // empty our contents, if there are any
-		reserve( len ); // best guess bulk capacity growth
 
-		// This is a 3 step process, converting each byte in the UTF-8 stream to UTF-32,
-		// then converting it to UTF-16, then finally appending the data buffer
 
-		unicode_char uc;          // temporary Unicode character buffer
-		unsigned char utf8buf[7]; // temporary UTF-8 buffer
-		utf8buf[6] = 0;
-		size_t utf8len;           // UTF-8 length
-		code_point utf16buff[3];  // temporary UTF-16 buffer
-		utf16buff[2] = 0;
-		size_t utf16len;          // UTF-16 length
 
-		std::string::const_iterator i, ie = str.end();
-		for ( i = str.begin(); i != ie; i++ ) {
-			utf8len = _utf8_char_length(( unsigned char )( *i ) ); // estimate bytes to load
-			for ( size_t j = 0; j < utf8len; j++ ) { // load the needed UTF-8 bytes
-				utf8buf[j] = (( unsigned char )( *( i + j ) ) ); // we don't increment 'i' here just in case the estimate is wrong (shouldn't happen, but we're being careful)
-			}
-			utf8buf[utf8len] = 0; // nul terminate so we throw an exception before running off the end of the buffer
-			utf8len = _utf8_to_utf32( utf8buf, uc ); // do the UTF-8 -> UTF-32 conversion
-			i += utf8len - 1; // we subtract 1 for the increment of the 'for' loop
+	
 
-			utf16len = _utf32_to_utf16( uc, utf16buff ); // UTF-32 -> UTF-16 conversion
-			append( utf16buff, utf16len ); // append the characters to the string
-		}
-		return *this;
-	}
+	 
+	 
 	//#########################################################################
-	UTFString& UTFString::assign( const char* c_str ) {
-		std::string tmp( c_str );
-		return assign( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::assign( const char* c_str, size_type num ) {
-		std::string tmp;
-		tmp.assign( c_str, num );
-		return assign( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const UTFString& str ) {
-		mData.append( str.mData );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const code_point* str ) {
-		mData.append( str );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const UTFString& str, size_type index, size_type len ) {
-		mData.append( str.mData, index, len );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const code_point* str, size_type num ) {
-		mData.append( str, num );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( size_type num, code_point ch ) {
-		mData.append( num, ch );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const wchar_t* w_str, size_type num ) {
-		std::wstring tmp( w_str, num );
-		return append( tmp );
-	}
-	//#########################################################################
-	UTFString& UTFString::append( size_type num, wchar_t ch ) {
-		return append( num, ( unicode_char )ch );
-	}
-	//#########################################################################
-	UTFString& UTFString::append( iterator start, iterator end ) {
-		mData.append( start.mIter, end.mIter );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( const char* c_str, size_type num ) {
-		UTFString tmp( c_str, num );
-		append( tmp );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( size_type num, char ch ) {
-		append( num, ( code_point )ch );
-		return *this;
-	}
-	//#########################################################################
-	UTFString& UTFString::append( size_type num, unicode_char ch ) {
-		code_point cp[2] = {0, 0};
-		if ( _utf32_to_utf16( ch, cp ) == 2 ) {
-			for ( size_type i = 0; i < num; i++ ) {
-				append( 1, cp[0] );
-				append( 1, cp[1] );
-			}
-		} else {
-			for ( size_type i = 0; i < num; i++ ) {
-				append( 1, cp[0] );
-			}
-		}
-		return *this;
-	}
-	//#########################################################################
-	//#########################################################################
-	/*! This can be used to push surrogate pair code points, you'll just need to push them
-	one after the other. */
-	void UTFString::push_back( code_point val ) {
-		mData.push_back( val );
-	}
-	//#########################################################################
-	void UTFString::push_back( wchar_t val ) {
-		// we do this because the Unicode method still preserves UTF-16 code points
-		mData.push_back(( unicode_char )val );
-	}
-	//#########################################################################
-	/*! Limited to characters under the 127 value barrier. */
-	void UTFString::push_back( char val ) {
-		mData.push_back(( code_point )val );
-	}
-	//#########################################################################
-	void UTFString::push_back( unicode_char val ) {
-		code_point cp[2];
-		size_t c = _utf32_to_utf16( val, cp );
-		if ( c > 0 ) push_back( cp[0] );
-		if ( c > 1 ) push_back( cp[1] );
-	}
-
+	//##################
 	//#########################################################################
 	//#########################################################################
 	UTFString::iterator UTFString::insert( iterator i, const code_point& ch ) {
@@ -516,30 +183,9 @@ namespace OpenGUI {
 		size_type num1 = end - start;
 		return replace( index1, num1, num, ch );
 	}
-	//#########################################################################
-	UTFString::code_point& UTFString::at( size_type loc ) {
-		return mData.at( loc );
-	}
-	//#########################################################################
-	const UTFString::code_point& UTFString::at( size_type loc ) const {
-		return mData.at( loc );
-	}
-	//#########################################################################
-	const UTFString::code_point* UTFString::c_str() const {
-		return mData.c_str();
-	}
-	//#########################################################################
-	const UTFString::code_point* UTFString::data() const {
-		return c_str();
-	}
-	//#########################################################################
-	UTFString::size_type UTFString::capacity() const {
-		return mData.capacity();
-	}
-	//#########################################################################
-	void UTFString::clear() {
-		mData.clear();
-	}
+	//##############################################################
+	//############################################### 
+	//#####################
 	//#########################################################################
 	//#########################################################################
 	int UTFString::compare( const UTFString& str ) {
@@ -571,10 +217,7 @@ namespace OpenGUI {
 		UTFString tmp( c_str, length2 );
 		return compare( index, length, tmp );
 	}
-	//#########################################################################
-	bool UTFString::empty() const {
-		return mData.empty();
-	}
+	//##########################
 	//#########################################################################
 	//#########################################################################
 	UTFString::size_type UTFString::find( const UTFString& str, size_type index ) {
@@ -650,24 +293,8 @@ namespace OpenGUI {
 		size_t l = _utf32_to_utf16( ch, cp );
 		return rfind( UTFString( cp, l ), index );
 	}
-	//#########################################################################
-	UTFString UTFString::substr( size_type index, size_type num ) {
-		// this could avoid the extra copy if we used a private specialty constructor
-		dstring data = mData.substr( index, num );
-		UTFString tmp;
-		tmp.mData.swap( data );
-		return tmp;
-	}
-
-	//#########################################################################
-	bool UTFString::inString( unicode_char ch ) const {
-		const_iterator i, ie = end();
-		for ( i = begin(); i != ie; i.moveNext() ) {
-			if ( i.getCharacter() == ch )
-				return true;
-		}
-		return false;
-	}
+	
+	//################################################
 	//#########################################################################
 	UTFString::size_type UTFString::find_first_of( const UTFString &str, size_type index, size_type num ) {
 		size_type i = 0;
@@ -814,49 +441,8 @@ namespace OpenGUI {
 		size_t l = _utf32_to_utf16( ch, cp );
 		return find_last_not_of( UTFString( cp, l ), index );
 	}
-	//#########################################################################
-	UTFString::unicode_char UTFString::getChar( size_type loc ) const {
-		const code_point* ptr = c_str();
-		unicode_char uc;
-		size_t l = _utf16_char_length( ptr[loc] );
-		code_point cp[2] = { /* blame the code beautifier */
-							   0, 0
-						   };
-		cp[0] = ptr[loc];
-
-		if ( l == 2 && ( loc + 1 ) < mData.length() ) {
-			cp[1] = ptr[loc+1];
-		}
-		_utf16_to_utf32( cp, uc );
-		return uc;
-	}
-	//#########################################################################
-	int UTFString::setChar( size_type loc, unicode_char ch ) {
-		const code_point* ptr = c_str();
-		code_point cp[2] = { /* blame the code beautifier */
-							   0, 0
-						   };
-		size_t l = _utf32_to_utf16( ch, cp );
-		unicode_char existingChar = getChar( loc );
-		size_t existingSize = _utf16_char_length( existingChar );
-		size_t newSize = _utf16_char_length( ch );
-
-		if ( newSize > existingSize ) {
-			at( loc ) = cp[0];
-			insert( loc + 1, 1, cp[1] );
-			return 1;
-		}
-		if ( newSize < existingSize ) {
-			erase( loc, 1 );
-			at( loc ) = cp[0];
-			return -1;
-		}
-
-		// newSize == existingSize
-		at( loc ) = cp[0];
-		if ( l == 2 ) at( loc + 1 ) = cp[1];
-		return 0;
-	}
+	//############################################################### 
+	//#######################################################
 	//#########################################################################
 	void UTFString::_init() {
 		m_buffer.mVoidBuffer = 0;
@@ -967,36 +553,7 @@ namespace OpenGUI {
 			buffer.push_back( c );
 		}
 	}
-	//#########################################################################
-	const std::string& UTFString::asUTF8() const {
-		_load_buffer_UTF8();
-		return *m_buffer.mStrBuffer;
-	}
-	//#########################################################################
-	const char* UTFString::asUTF8_c_str() const {
-		_load_buffer_UTF8();
-		return m_buffer.mStrBuffer->c_str();
-	}
-	//#########################################################################
-	const UTFString::utf32string& UTFString::asUTF32() const {
-		_load_buffer_UTF32();
-		return *m_buffer.mUTF32StrBuffer;
-	}
-	//#########################################################################
-	const UTFString::unicode_char* UTFString::asUTF32_c_str() const {
-		_load_buffer_UTF32();
-		return m_buffer.mUTF32StrBuffer->c_str();
-	}
-	//#########################################################################
-	const std::wstring& UTFString::asWStr() const {
-		_load_buffer_WStr();
-		return *m_buffer.mWStrBuffer;
-	}
-	//#########################################################################
-	const wchar_t* UTFString::asWStr_c_str() const {
-		_load_buffer_WStr();
-		return m_buffer.mWStrBuffer->c_str();
-	}
+	//####################################### 
 	//#########################################################################
 	//#########################################################################
 	bool UTFString::_utf16_independent_char( code_point cp ) {
