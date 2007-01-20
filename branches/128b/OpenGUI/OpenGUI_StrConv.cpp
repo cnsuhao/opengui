@@ -18,7 +18,6 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void _Tokenize( const String& inputStr, StringList& outputStrList, Char token ) {
-		assert( 0 ); // debug me
 		String tmpStr;
 		String::size_type epos = 0, spos = 0;
 		const String::size_type token_size = String::_utf16_char_length( token );
@@ -48,7 +47,6 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Only capable of lowering English Latin Characters, all others are silently ignored. */
 	void StrConv::toLower_Latin( String& in_out ) {
-		assert( 0 ); // debug me
 		String::iterator i, ie = in_out.end();
 		for ( i = in_out.begin(); i != ie; i++ ) {
 			String::value_type c = *i;
