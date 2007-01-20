@@ -92,12 +92,12 @@ namespace OpenGUI {
 			return mFace_Disabled;
 		}
 		//############################################################################
-		void Button::setText( const std::string& nText ) {
+		void Button::setText( const String& nText ) {
 			mText = nText;
 			invalidate();
 		}
 		//############################################################################
-		const std::string& Button::getText( void ) const {
+		const String& Button::getText( void ) const {
 			return mText;
 		}
 		//############################################################################

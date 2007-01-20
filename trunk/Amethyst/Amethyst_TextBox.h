@@ -20,17 +20,17 @@ namespace OpenGUI {
 			virtual ~TextBox() ;
 
 			//! Sets the BG imagery.
-			void setImagery( std::string imageryName );
+			void setImagery( String imageryName );
 			//! Gets the BG imagery.
-			std::string getImagery();
+			String getImagery();
 
-			void setText( std::string &nText )		{
+			void setText( String &nText )		{
 				mText = nText;
 			}
 			void setText( const char *p )			{
 				mText = p;
 			}
-			const std::string getText( void ) const	{
+			const String getText( void ) const	{
 				return mText;
 			}
 			void setFont( const Font& fnt )			{
@@ -78,7 +78,7 @@ namespace OpenGUI {
 
 			ImageryPtr mImageryPtr;
 
-			std::string mText;
+			String mText;
 			Font mFont;
 			TextAlignment::Alignment m_alignh;
 			TextAlignment::Alignment m_alignv;

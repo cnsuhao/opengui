@@ -29,9 +29,9 @@ namespace OpenGUI {
 			virtual ~Label();
 
 			//! Set the text contents
-			void setText( const std::string& text );
+			void setText( const String& text );
 			//! Retrieve the current text contents
-			const std::string& getText() const;
+			const String& getText() const;
 
 			//! Set the font used for this label
 			void setFont( const Font& fnt );
@@ -60,7 +60,7 @@ namespace OpenGUI {
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
 		private:
-			std::string mText;
+			String mText;
 			Font mFont;
 			TextAlignment mAlignment;
 			bool mWrap;

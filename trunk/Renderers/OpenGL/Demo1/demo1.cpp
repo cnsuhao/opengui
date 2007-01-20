@@ -32,11 +32,11 @@ public:
 		mAutoWrap = false;
 	}
 	virtual ~SimpleText() {}
-	void setText( const std::string& text ) {
+	void setText( const String& text ) {
 		invalidate();
 		mText = text;
 	}
-	const std::string& getText() const {
+	const String& getText() const {
 		return mText;
 	}
 	void setFont( const Font& font ) {
@@ -60,7 +60,7 @@ protected:
 		b.Text.drawTextArea( mText, getRect(), mFont, mAutoWrap, mAlign );
 	}
 private:
-	std::string mText;
+	String mText;
 	Font mFont;
 	TextAlignment mAlign;
 	bool mAutoWrap;
