@@ -789,6 +789,11 @@ namespace OpenGUI {
 			_init();
 			assign( str );
 		}
+		//! \a length copies of \a ch
+		UTFString( size_type length, const unicode_char& ch ) {
+			_init();
+			assign( length, ch );
+		}
 		//! destructor
 		~UTFString() {
 			_cleanBuffer();
@@ -1176,6 +1181,24 @@ namespace OpenGUI {
 			std::string tmp;
 			tmp.assign( c_str, num );
 			return assign( tmp );
+		}
+		//! assign \a num copies of \a ch to the current string
+		UTFString& assign( size_type num, const unicode_char& ch ) {
+			code_point utf16buff[3];  // temporary UTF-16 buffer
+			utf16buff[2] = 0;
+			size_t utf16len;          // UTF-16 length
+			utf16len = _utf32_to_utf16( ch, utf16buff ); // UTF-32 -> UTF-16 conversion
+			// short UTF-16 values are easy
+			if ( utf16len == 1 ) {
+				mData.assign( num, utf16buff[0] );
+			} else { // surrogate pairs take more work
+				mData.clear();
+				for ( size_type i = 0; i < num; ++i ) {
+					mData.push_back( utf16buff[0] );
+					mData.push_back( utf16buff[1] );
+				}
+			}
+			return *this;
 		}
 		//@}
 
