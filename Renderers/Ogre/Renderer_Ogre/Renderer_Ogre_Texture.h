@@ -37,11 +37,11 @@ namespace OpenGUI {
 		//! Returns the name of this texture as held by Ogre
 		virtual const Ogre::String& getOgreTextureName() const;
 		//! loads a new texture from a file
-		void loadFile( const std::string& filename, const std::string& resourceGroup );
+		void loadFile( const String& filename, const String& resourceGroup );
 		//! assigns an existing Ogre texture to this object
 		void loadOgreTexture( Ogre::TexturePtr ogreTexture );
 		//! load a texture with the contents of an OpenGUI TextureData object (aka: from memory)
-		void loadFromTextureData( const TextureData* textureData, const std::string& groupName );
+		void loadFromTextureData( const TextureData* textureData, const String& groupName );
 
 		virtual void getOgreUVScale( float& u, float& v ) {
 			getUVs( u, v );
