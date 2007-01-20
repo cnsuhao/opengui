@@ -1,6 +1,0 @@
-import os
-import fnmatch
-files = os.listdir(".")
-Source = fnmatch.filter(files,"*.cpp")
-Source += fnmatch.filter(files,"*.c")
-Return("Source")
