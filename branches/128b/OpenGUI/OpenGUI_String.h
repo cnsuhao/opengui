@@ -6,7 +6,6 @@
 #define E5AE9E12_AF34_48ff_B669_2802A0C3DC0A
 
 #include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Exports.h"
 
 namespace OpenGUI {
 
@@ -24,7 +23,7 @@ namespace OpenGUI {
 	There are a few requirements for proper operation. They are fairly small,
 	and shouldn't restrict usage on any reasonable target.
 	* Compiler must support unsigned 16-bit integer types
-	* Compiler must support unsigned 32-bit integer types
+	* Compiler must support signed 32-bit integer types
 	* wchar_t must be either UTF-16 or UTF-32 encoding, and specified as such
 	    using the WCHAR_UTF16 macro as outlined below.
 	* You must include <iterator>, <string>, and <wchar>. Probably more, but
@@ -56,11 +55,9 @@ namespace OpenGUI {
 #endif // #if defined( __WIN32__ ) || defined( _WIN32 )
 #endif // #ifdef __STDC_ISO_10646__
 
-	//ADD THE UTF8 DEFINES HERE (DON'T FORGET TO UNDEFINE THEM AT THE END)
 
-
-	//! A UTF-16 string with implicit conversion to/from UTF-8 and UTF-32
-	/*! This class provides a complete 1 to 1 map of all std::string functions (at least to my
+	//! A UTF-16 string with implicit conversion to/from std::string and std::wstring
+	/*! This class provides a complete 1 to 1 map of most std::string functions (at least to my
 	knowledge). Implicit conversions allow this string class to work with all common C++ string
 	formats, with specialty functions defined where implicit conversion would cause potential
 	problems or is otherwise unavailable.
@@ -99,6 +96,7 @@ namespace OpenGUI {
 		static const unsigned char _lead5_mask = 0x01; //00000001
 		static const unsigned char _cont = 0x80;       //10xxxxxx
 		static const unsigned char _cont_mask = 0x3F;  //00111111
+
 	public:
 		//! size type used to indicate string size and character positions within the string
 		typedef size_t size_type;
@@ -809,7 +807,8 @@ namespace OpenGUI {
 		size_type length() const {
 			return size();
 		}
-		//! Returns the number of Unicode characters in the string <em>{linear time}</em>
+		//! Returns the number of Unicode characters in the string
+		/*! Executes in linear time. */
 		size_type length_Characters() const {
 			const_iterator i = begin(), ie = end();
 			size_type c = 0;
@@ -1277,7 +1276,7 @@ namespace OpenGUI {
 			mData.insert( index1, str.mData, index2, num );
 			return *this;
 		}
-		//! inserts the code points denoted by start and end into the current string, before the code point specified by i
+		//! inserts the code points denoted by \a start and \a end into the current string, before the code point specified by \a i
 		void insert( iterator i, iterator start, iterator end ) {
 			mData.insert( i.mIter, start.mIter, end.mIter );
 		}
@@ -1781,37 +1780,37 @@ namespace OpenGUI {
 
 		//!\name UTF-16 character encoding/decoding
 		//@{
-		//! returns \c true if \c cp does not match the signature for the lead of follow code point of a surrogate pair in a UTF-16 sequence
+		//! returns \c true if \a cp does not match the signature for the lead of follow code point of a surrogate pair in a UTF-16 sequence
 		static bool _utf16_independent_char( code_point cp ) {
 			if ( 0xD800 <= cp && cp <= 0xDFFF ) // tests if the cp is within the surrogate pair range
 				return false; // it matches a surrogate pair signature
 			return true; // everything else is a standalone code point
 		}
-		//! returns \c true if \ cp matches the signature of a surrogate pair lead character
+		//! returns \c true if \a cp matches the signature of a surrogate pair lead character
 		static bool _utf16_surrogate_lead( code_point cp ) {
 			if ( 0xD800 <= cp && cp <= 0xDBFF ) // tests if the cp is within the 2nd word of a surrogate pair
 				return true; // it is a 1st word
 			return false; // it isn't
 		}
-		//! returns \c true if \ cp matches the signature of a surrogate pair following character
+		//! returns \c true if \a cp matches the signature of a surrogate pair following character
 		static bool _utf16_surrogate_follow( code_point cp ) {
 			if ( 0xDC00 <= cp && cp <= 0xDFFF ) // tests if the cp is within the 2nd word of a surrogate pair
 				return true; // it is a 2nd word
 			return false; // everything else isn't
 		}
-		//! estimates the number of UTF-16 code points in the sequence starting with \c cp
+		//! estimates the number of UTF-16 code points in the sequence starting with \a cp
 		static size_t _utf16_char_length( code_point cp ) {
 			if ( 0xD800 <= cp && cp <= 0xDBFF ) // test if cp is the beginning of a surrogate pair
 				return 2; // if it is, then we are 2 words long
 			return 1; // otherwise we are only 1 word long
 		}
-		//! returns the number of UTF-16 code points needed to represent the given UTF-32 character \c cp
+		//! returns the number of UTF-16 code points needed to represent the given UTF-32 character \a cp
 		static size_t _utf16_char_length( unicode_char uc ) {
 			if ( uc > 0xFFFF ) // test if uc is greater than the single word maximum
 				return 2; // if so, we need a surrogate pair
 			return 1; // otherwise we can stuff it into a single word
 		}
-		//! converts the given UTF-16 character buffer to a single UTF-32 Unicode character, returns the number of code_points used to create the output character (2 for surrogate pairs, otherwise 1)
+		//! converts the given UTF-16 character buffer \a in_cp to a single UTF-32 Unicode character \a out_uc, returns the number of code points used to create the output character (2 for surrogate pairs, otherwise 1)
 		/*! This function does it's best to prevent error conditions, verifying complete
 		surrogate pairs before applying the algorithm. In the event that half of a pair
 		is found it will happily generate a value in the 0xD800 - 0xDFFF range, which is
@@ -1846,7 +1845,7 @@ namespace OpenGUI {
 
 			return 2; // this whole operation takes to words, so that's what we'll return
 		}
-		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-16 encoding, returns the number of code_points used to encode the input (always 1 or 2)
+		//! writes the given UTF-32 \a uc_in to the buffer location \a out_cp using UTF-16 encoding, returns the number of code points used to encode the input (always 1 or 2)
 		/*! This function, like its counterpart, will happily create invalid UTF-16 surrogate pairs. These
 		invalid entries will be created for any value of \c in_uc that falls in the range U+D800 - U+DFFF.
 		These are generally useful as sentinel values to represent various program specific conditions.
@@ -1879,11 +1878,11 @@ namespace OpenGUI {
 
 		//!\name UTF-8 character encoding/decoding
 		//@{
-		//! returns \c true if \c cp is the beginning of a UTF-8 sequence
+		//! returns \c true if \a cp is the beginning of a UTF-8 sequence
 		static bool _utf8_start_char( unsigned char cp ) {
 			return ( cp & ~_cont_mask ) != _cont;
 		}
-		//! estimates the number of UTF-8 code points in the sequence starting with \c cp
+		//! estimates the number of UTF-8 code points in the sequence starting with \a cp
 		static size_t _utf8_char_length( unsigned char cp ) {
 			if ( !( cp & 0x80 ) ) return 1;
 			if (( cp & ~_lead1_mask ) == _lead1 ) return 2;
@@ -1893,7 +1892,7 @@ namespace OpenGUI {
 			if (( cp & ~_lead5_mask ) == _lead5 ) return 6;
 			throw invalid_data( "invalid UTF-8 sequence header value" );
 		}
-		//! returns the number of UTF-8 code points needed to represent the given UTF-32 character \c cp
+		//! returns the number of UTF-8 code points needed to represent the given UTF-32 character \a cp
 		static size_t _utf8_char_length( unicode_char uc ) {
 			/*
 			7 bit:  U-00000000 – U-0000007F: 0xxxxxxx
@@ -1950,7 +1949,7 @@ namespace OpenGUI {
 			out_uc = c; // write the final value and return the used byte length
 			return len;
 		}
-		//! writes the given UTF-32 \c uc_in to the buffer location \c out_cp using UTF-8 encoding, returns the number of bytes used to encode the input
+		//! writes the given UTF-32 \a uc_in to the buffer location \a out_cp using UTF-8 encoding, returns the number of bytes used to encode the input
 		static size_t _utf32_to_utf8( const unicode_char& in_uc, unsigned char out_cp[6] ) {
 			size_t len = _utf8_char_length( in_uc ); // predict byte length of sequence
 			unicode_char c = in_uc; // copy to temp buffer
