@@ -216,9 +216,11 @@ protected:
 	}
 	virtual void createOpenGUI(void)
 	{
+		#include "OgreNoMemoryMacros.h"
 		ogRenderer = new OpenGUI::OgreRenderer();
 		ogResourceProvider = new OpenGUI::OgreResourceProvider();
 		ogSystem = new OpenGUI::System(ogRenderer, ogResourceProvider);
+		#include "OgreMemoryMacros.h"
 	}
 
     /// Method which will define the source of resources (other than current folder)

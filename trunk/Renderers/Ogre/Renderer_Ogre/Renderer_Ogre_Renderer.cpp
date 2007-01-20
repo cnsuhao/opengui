@@ -129,11 +129,11 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	void OgreRenderer::setTextureResourceGroup( const std::string& ogreResourceGroup ) {
+	void OgreRenderer::setTextureResourceGroup( const String& ogreResourceGroup ) {
 		mTextureResourceGroup = ogreResourceGroup;
 	}
 	//#####################################################################
-	const std::string& OgreRenderer::getTextureResourceGroup() {
+	const String& OgreRenderer::getTextureResourceGroup() {
 		return mTextureResourceGroup;
 	}
 	//#####################################################################
@@ -451,7 +451,7 @@ namespace OpenGUI {
 		m_HWBufferSize = numVerts; // store the size
 	}
 	//#####################################################################
-	Texture* OgreRenderer::createTextureFromFile( const std::string &filename ) {
+	Texture* OgreRenderer::createTextureFromFile( const String& filename ) {
 		if ( mInRender ) // need to flush the buffer because texture operations tend to mess with texture states
 			safeExecuteBuffer();
 		safeSetTextureState( 0, 0 ); // Ref #137
