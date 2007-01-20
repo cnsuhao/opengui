@@ -559,7 +559,7 @@ namespace OpenGUI {
 	void BrushText::_WordWrapText( StringList& strList_in_out, unsigned int charWidth,
 								   unsigned int wrapWidth ) {
 		if ( charWidth > wrapWidth ) return; // We're not going to split on every character. That's insane.
-		const unsigned int maxChars = ( wrapWidth / charWidth ); // number of characters that fully fit into the wrapWidth (drops remainder)
+		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2; // number of characters that fully fit into the wrapWidth (drops remainder)
 
 		StringList out; // output buffer, used to temporarily store the output data. We swap() it at the end
 
