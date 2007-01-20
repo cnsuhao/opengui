@@ -560,6 +560,7 @@ namespace OpenGUI {
 								   unsigned int wrapWidth ) {
 		if ( charWidth > wrapWidth ) return; // We're not going to split on every character. That's insane.
 		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2; // number of characters that fully fit into the wrapWidth (drops remainder)
+		// See #153 about the *2
 
 		StringList out; // output buffer, used to temporarily store the output data. We swap() it at the end
 
