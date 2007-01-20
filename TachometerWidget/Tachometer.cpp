@@ -353,13 +353,13 @@ namespace OpenGUI {
 			b.pop(); //b.pushPosition(getPosition());
 		}
 		//############################################################################
-		void Tachometer::setBackgroundImagery( std::string imageryName ) {
+		void Tachometer::setBackgroundImagery( const String& imageryName ) {
 			invalidate();
 			mBGImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
 		//############################################################################
-		const std::string& Tachometer::getBackgroundImagery() {
-			static std::string retval;
+		const String& Tachometer::getBackgroundImagery() {
+			static String retval;
 			if ( mBGImageryPtr ) {
 				retval = mBGImageryPtr->getName();
 			} else {
@@ -373,13 +373,13 @@ namespace OpenGUI {
 			mNeedlePivot = pivotLocation;
 		}
 		//############################################################################
-		void Tachometer::setNeedleImagery( std::string imageryName ) {
+		void Tachometer::setNeedleImagery( const String& imageryName ) {
 			invalidate();
 			mNeedleImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
 		//############################################################################
-		const std::string& Tachometer::getNeedleImagery() {
-			static std::string retval;
+		const String& Tachometer::getNeedleImagery() {
+			static String retval;
 			if ( mNeedleImageryPtr ) {
 				retval = mNeedleImageryPtr->getName();
 			} else {
