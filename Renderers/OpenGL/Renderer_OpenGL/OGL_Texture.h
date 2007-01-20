@@ -20,7 +20,7 @@ namespace OpenGUI {
 
 		GLuint textureId;
 
-		void setName( const std::string& name ) {
+		void setName( const String& name ) {
 			_setName( name );
 		}
 		void setSize( const IVector2& size ) {
@@ -37,7 +37,7 @@ namespace OpenGUI {
 		GLuint fboId;
 		FVector2 maxUVs;
 
-		void setName( const std::string& name ) {
+		void setName( const String& name ) {
 			_setName( name );
 		}
 		void setSize( const IVector2& size ) {

@@ -100,7 +100,7 @@ namespace OpenGUI {
 		_DestroyAllFontAtlas();
 	}
 	//############################################################################
-	void FontCache::GetGlyph( FontSet* font, char glyph_charCode, const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph ) {
+	void FontCache::GetGlyph( FontSet* font, const Char glyph_charCode, const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph ) {
 		FontCacheGlyphSet* glyphSet;
 		glyphSet = _GetFontCacheGlyphSet( font, glyph_pixelSize );
 
@@ -111,7 +111,7 @@ namespace OpenGUI {
 		}
 
 		LogManager::SlogMsg( "FontCache", OGLL_INSANE ) << "Cache Miss! :: CharCode:"
-		<< ( unsigned int )glyph_charCode << Log::endlog;
+		<< static_cast<unsigned int>( glyph_charCode ) << Log::endlog;
 
 		FontCache::_RenderGlyph( glyphSet, glyph_charCode );
 
@@ -161,12 +161,12 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
-	void FontCache::_RenderGlyph( FontCacheGlyphSet* glyphSet, char glyph_charCode ) {
-		char logChar[] = { glyph_charCode, 0};
+	void FontCache::_RenderGlyph( FontCacheGlyphSet* glyphSet, const Char glyph_charCode ) {
+		UTFString logChar( 1, glyph_charCode );
 		LogManager::SlogMsg( "FontCache", OGLL_VERB ) << "RenderGlyph-> "
 		<< "(" << glyphSet->font->getFilename() << ") "
 		<< "Size: " << glyphSet->glyphSize.toStr()
-		<< " Glyph: " << glyph_charCode << "  "
+		<< " Glyph: " << static_cast<unsigned int>( glyph_charCode ) << "  "
 		<< logChar
 		<< Log::endlog;
 
@@ -183,11 +183,11 @@ namespace OpenGUI {
 		FontAtlasList::iterator iterend = mFontAtlasList.end();
 		while ( iter != iterend ) {
 			atlas = ( *iter );
-			IRect tmpIRect; //GCC apparently does not support in-place object contruction in pass by reference
+			IRect tmpIRect; //GCC apparently does not support in-place object construction in pass by reference
 			if ( atlas->GetAvailableChunk( glyphSet->glyphSize, tmpIRect, false ) ) {
 				break;
 			}
-			iter++;
+			++iter;
 			atlas = 0;
 		}
 

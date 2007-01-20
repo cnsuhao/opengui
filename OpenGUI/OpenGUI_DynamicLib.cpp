@@ -174,7 +174,7 @@ namespace OpenGUI {
 	DynamicLib::~DynamicLib() {}
 	//############################################################################
 	void DynamicLib::load() {
-		mHandle = DYNAMICLIB_LOAD( mName.c_str() );
+		mHandle = DYNAMICLIB_LOAD( mName );
 		if ( !mHandle ) {
 			OG_THROW( Exception::OP_FAILED, "Could not load library " + mName, "DynamicLib::load" );
 		}
@@ -187,7 +187,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void* DynamicLib::getSymbol( const String& symbolName ) const {
-		return ( void* ) DYNAMICLIB_GETSYMBOL( mHandle, symbolName.c_str() );
+		return ( void* ) DYNAMICLIB_GETSYMBOL( mHandle, symbolName );
 	}
 	//############################################################################
 }

@@ -31,7 +31,7 @@ namespace OpenGUI {
 	public:
 		FontSet* font;
 		IVector2 glyphSize;
-		typedef std::map<char, FontGlyph> GlyphMap;
+		typedef std::map<Char, FontGlyph> GlyphMap;
 		GlyphMap mGlyphMap;
 	};
 
@@ -46,7 +46,7 @@ namespace OpenGUI {
 	public:
 		FontCache();
 		~FontCache();
-		void GetGlyph( FontSet* font, char glyph_charCode,
+		void GetGlyph( FontSet* font, const Char glyph_charCode,
 					   const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph );
 
 		//! Flushes all glyphs from a given font
@@ -57,7 +57,7 @@ namespace OpenGUI {
 	private:
 		IVector2 _calcNewAtlasSize( const IVector2& estimatedGlyphSize );
 		FontCacheGlyphSet* _GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize );
-		void _RenderGlyph( FontCacheGlyphSet* glyphSet, char glyph_charCode );
+		void _RenderGlyph( FontCacheGlyphSet* glyphSet, const Char glyph_charCode );
 
 		void _DestroyAllGlyphSets();
 		void _DestroyAllFontAtlas();

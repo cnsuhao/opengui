@@ -43,10 +43,10 @@ namespace OpenGUI {
 		//! Create a font handle that will either immediate or delayed bind to the default font.
 		Font();
 
-		//! Create a font handle to the given \c fontSet at the given \c fontSize.
+		//! Create a font handle to the given \a fontSet at the given \a fontSize.
 		Font( FontSetPtr fontSet, float fontSize );
 
-		//! Create a font handle to the given registered \c fontName at the given \c fontSize.
+		//! Create a font handle to the given registered \a fontName at the given \a fontSize.
 		Font( const String& fontName, float fontSize );
 
 		//! public destructor does nothing special

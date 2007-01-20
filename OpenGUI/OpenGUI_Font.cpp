@@ -25,7 +25,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! This will force an immediate binding to the given FontSet at the given size.
-	If the given \c fontSet is an empty pointer, the default font will be used. */
+	If the given \a fontSet is an empty pointer, the default font will be used. */
 	Font::Font( FontSetPtr fontSet, float fontSize ) {
 		m_Bound = false;
 		m_FontSize = fontSize;

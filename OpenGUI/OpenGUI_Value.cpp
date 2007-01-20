@@ -198,8 +198,9 @@ namespace OpenGUI {
 	//#####################################################################
 	/*! You must copy this if you wish to keep it, the buffer is temporary */
 	const char* Value::getValueAsCString() const {
-		String str = getValueAsString();
-		return str.c_str();
+		if ( !isSet() || getType() != T_STRING )
+			OG_THROW( Exception::OP_FAILED, "Stored value is not a string", __FUNCTION__ );
+		return mString->asUTF8_c_str();
 	}
 	//#####################################################################
 	void Value::setValue( bool boolean ) {
