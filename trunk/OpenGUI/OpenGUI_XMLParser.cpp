@@ -261,10 +261,10 @@ namespace OpenGUI {
 	//############################################################################
 	bool XMLParser::_Included( const String& filename ) {
 		String file = filename;
-		StrConv::toLower( file );
-		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end();iter++ ) {
+		StrConv::toLower_Latin( file );
+		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end(); iter++ ) {
 			String item = ( *iter );
-			StrConv::toLower( item );
+			StrConv::toLower_Latin( item );
 			if ( item == file )
 				return true;
 		}

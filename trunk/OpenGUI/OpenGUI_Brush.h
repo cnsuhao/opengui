@@ -16,6 +16,7 @@
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_BrushModifierStack.h"
 #include "OpenGUI_RenderOperation.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 
@@ -95,24 +96,23 @@ namespace OpenGUI {
 			mParentBrush = brush;
 		}
 		Brush* mParentBrush;
-		typedef std::list<String> StringList;
-		//! \internal explodes the given \c inputStr into an \c outputStrList by \c token
-		void _Tokenize( const String& inputStr, StringList& outputStrList, char token );
-		//! \internal Performs wrapping on \c strList_in_out, assuming each character is \c charWidth and lines are allowed a maximum of \c wrapWidth
-		void _WrapText( StringList& strList_in_out, unsigned int charWidth, unsigned int wrapWidth );
+
+		//! \internal Performs word wrapping on \a strList_in_out, assuming each character is \a charWidth and lines are allowed a maximum of \a wrapWidth
+		void _WordWrapText( StringList& strList_in_out, unsigned int charWidth, unsigned int wrapWidth );
+
 	public:
 		~BrushText() {}
 
-		//! draws the given string of \c text at the given \c position, using the given \c font, and optionally adjusting the glyph spacing by \c spacing_adjust
+		//! draws the given string of \a text at the given \a position, using the given \a font, and optionally adjusting the glyph spacing by \a spacing_adjust
 		void drawText( const String& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
 
 		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
 		void drawTextArea( const String& text, const FRect& area, Font& font, bool wrap = false, const TextAlignment alignment = TextAlignment() );
 
-		//! draws the given \c character at the given \c position using the given \c font.
-		void drawCharacter( const char character, Font& font );
+		//! draws the given \a character at the current PenPosition using the given \a font.
+		void drawCharacter( const Char character, Font& font );
 
-		//! Converts the given \c pointSize to the individual X and Y pixel sizes according to PPU and UPI
+		//! Converts the given \a pointSize to the individual X and Y pixel sizes according to PPU and UPI
 		IVector2 pointsToPixels( float pointSize );
 
 		//! The position that the next font glyph should be drawn to continue the last string of text.

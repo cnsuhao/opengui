@@ -9,15 +9,15 @@
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32
 #define DYNAMICLIB_HANDLE HMODULE
-#define DYNAMICLIB_LOAD(lib) LoadLibrary(lib)
+#define DYNAMICLIB_LOAD(lib) LoadLibraryW(lib.asWStr_c_str())
 #define DYNAMICLIB_UNLOAD(handle) FreeLibrary(handle)
-#define DYNAMICLIB_GETSYMBOL(handle,procname) GetProcAddress(handle,procname)
+#define DYNAMICLIB_GETSYMBOL(handle,procname) GetProcAddress(handle,procname.asUTF8_c_str())
 
 #elif OPENGUI_PLATFORM == OPENGUI_PLATFORM_LINUX
 #define DYNAMICLIB_HANDLE void*
-#define DYNAMICLIB_LOAD(lib) dlopen(lib,RTLD_LAZY)
+#define DYNAMICLIB_LOAD(lib) dlopen(lib.asUTF8_c_str(),RTLD_LAZY)
 #define DYNAMICLIB_UNLOAD(handle) dlclose(handle)
-#define DYNAMICLIB_GETSYMBOL(handle,procname) dlsym(handle,procname)
+#define DYNAMICLIB_GETSYMBOL(handle,procname) dlsym(handle,procname.asUTF8_c_str())
 
 #endif
 
