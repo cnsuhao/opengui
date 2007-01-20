@@ -17,22 +17,23 @@ namespace OpenGUI {
 		} else str.erase( str.begin(), str.end() );
 	}
 	//############################################################################
-	void _Tokenize( const String& inputStr, StringList& outputStrList, char token ) {
+	void _Tokenize( const String& inputStr, StringList& outputStrList, Char token ) {
+		assert( 0 ); // debug me
 		String tmpStr;
-		const char* cstr = inputStr.c_str();
-		unsigned int epos, spos;
-		spos = epos = 0;
-		while ( cstr[epos] != 0 ) {
-			if ( cstr[epos] == token ) {
+		String::size_type epos = 0, spos = 0;
+		const String::size_type token_size = String::_utf16_char_length( token );
+		const String::size_type string_len = inputStr.length();
+
+		while ( epos < string_len && epos != String::npos ) {
+			epos = inputStr.find( token, spos );
+			if ( String::npos == epos ) {
 				tmpStr = inputStr.substr( spos, epos - spos );
 				outputStrList.push_back( tmpStr );
-				spos = epos + 1;
+			} else {
+				tmpStr = inputStr.substr( spos, epos - spos );
+				outputStrList.push_back( tmpStr );
+				spos = epos + token_size;
 			}
-			epos++;
-		}
-		if ( spos != epos ) {
-			tmpStr = inputStr.substr( spos, epos - spos );
-			outputStrList.push_back( tmpStr );
 		}
 	}
 	//############################################################################
@@ -41,12 +42,20 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! The token is not included in the output strings. */
-	void StrConv::tokenize( const String& inputStr, StringList& outputStrList, char token ) {
+	void StrConv::tokenize( const String& inputStr, StringList& outputStrList, Char token ) {
 		_Tokenize( inputStr, outputStrList, token );
 	}
 	//############################################################################
-	void StrConv::toLower( String& in_out ) {
-		std::transform( in_out.begin(), in_out.end(), in_out.begin(), static_cast < int( * )( int ) > ( std::tolower ) );
+	/*! Only capable of lowering English Latin Characters, all others are silently ignored. */
+	void StrConv::toLower_Latin( String& in_out ) {
+		assert( 0 ); // debug me
+		String::iterator i, ie = in_out.end();
+		for ( i = in_out.begin(); i != ie; i++ ) {
+			String::value_type c = *i;
+			if ( 'A' <= c && c <= 'Z' ) {
+				*i = c - ( 'a' - 'A' );
+			}
+		}
 	}
 	//############################################################################
 	void StrConv::toInt( const String& in, int& out ) {
@@ -321,7 +330,7 @@ namespace OpenGUI {
 			return;
 		}
 
-		toLower( tmp );
+		toLower_Latin( tmp );
 
 		if ( tmp == "true" ) {
 			out = true;
@@ -405,13 +414,13 @@ namespace OpenGUI {
 			v = slist.back();
 			trim( h );
 			trim( v );
-			toLower( h );
-			toLower( v );
+			toLower_Latin( h );
+			toLower_Latin( v );
 		}
 		if ( slist.size() == 1 ) {
 			h = slist.front();
 			trim( h );
-			toLower( h );
+			toLower_Latin( h );
 			v = h;
 		}
 

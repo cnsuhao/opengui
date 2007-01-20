@@ -802,12 +802,22 @@ namespace OpenGUI {
 		//!\name Utility functions
 		//@{
 		//! Returns the number of code points in the current string
+		size_type size() const {
+			return mData.size();
+		}
+		//! Returns the number of code points in the current string
 		size_type length() const {
 			return size();
 		}
-		//! Returns the number of code points in the current string
-		size_type size() const {
-			return mData.size();
+		//! Returns the number of Unicode characters in the string <em>{linear time}</em>
+		size_type length_Characters() const {
+			const_iterator i = begin(), ie = end();
+			size_type c = 0;
+			while ( i != ie ) {
+				i.moveNext();
+				++c;
+			}
+			return c;
 		}
 		//! returns the maximum number of UTF-16 code points that the string can hold
 		size_type max_size() const {
@@ -2277,14 +2287,10 @@ namespace OpenGUI {
 
 	//////////////////////////////////////////////////////////////////////////
 	// Define the base types used throughout the rest of the library
-	/*typedef char Char;
-	typedef std::string String;*/
-
 	//! maps the String type to UTFString
 	typedef UTFString String;
 	//! maps the Char type to UTFString::unicode_char
 	typedef UTFString::unicode_char Char; // a single character is only usefully representable using wide characters
-
 
 } // namespace OpenGUI{
 

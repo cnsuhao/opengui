@@ -70,12 +70,12 @@ namespace OpenGUI {
 
 //!\name Utility Functions
 //@{
-		//! Trims whitespace from the beginning and end of the given string
+		//! Trims spaces from the beginning and end of the given string
 		static void trim( String& str );
 		//! Explodes a string into a StringList based on separator tokens.
-		static void tokenize( const String& inputStr, StringList& outputStrList, char token );
-		//! Converts a string to all lower case
-		static void toLower( String& in_out );
+		static void tokenize( const String& inputStr, StringList& outputStrList, Char token );
+		//! Converts any Latin characters in \a in_out to their English lower case equivalent
+		static void toLower_Latin( String& in_out );
 //@}
 	};
 }
