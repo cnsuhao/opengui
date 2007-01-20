@@ -74,3 +74,14 @@ ___________________________________________________________
 * Any code that uses Value::setValueAuto() will need to be
   altered. This function was deprecated in 0.8 and has been
   removed.
+
+* All classes now use the new String type for the passing
+  and storing of string data. This affects all aspects of
+  OpenGUI, so inherited classes will need to be updated in
+  order to preserve the vtable linkage for overloads.
+
+* Renderer signature has changed, now using OpenGUI::String
+  instead of std::string. This change only affects the
+  Renderer::createTextureFromFile() function, but you should
+  update the rest of your renderer to use String if you are
+  maintaining any other string OpenGUI data.

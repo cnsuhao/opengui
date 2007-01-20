@@ -19,14 +19,14 @@ namespace OpenGUI {
 			Tachometer();
 			virtual ~Tachometer();
 			//! Sets the background imagery for the tachometer
-			void setBackgroundImagery( std::string imageryName );
+			void setBackgroundImagery( const String& imageryName );
 			//! gets the background imagery
-			const std::string& getBackgroundImagery();
+			const String& getBackgroundImagery();
 
 			//! Sets the Imagery used for the needle
-			void setNeedleImagery( std::string imageryName );
+			void setNeedleImagery( const String& imageryName );
 			//! gets the needle imagery
-			const std::string& getNeedleImagery();
+			const String& getNeedleImagery();
 
 			//! Sets the location within the BG imagery where the needle pivot should be
 			void setNeedlePivot( const FVector2& pivotLocation );
