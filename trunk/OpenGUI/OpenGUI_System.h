@@ -80,7 +80,7 @@ namespace OpenGUI {
 			\param logFile name of the log file to write log message to. If "" is used,
 				no log file will be created
 		*/
-		System( Renderer* renderer, ResourceProvider* resourceProvider = NULL, String logFile = "OpenGUI.log" );
+		System( Renderer* renderer, ResourceProvider* resourceProvider = NULL, const String& logFile = "OpenGUI.log" );
 		/*! As the other constructor except a log listener is passed in place of a log filename.
 			\param renderer pointer to a valid Renderer object
 			\param resourceProvider pointer to a valid ResourceProvider object, or 0

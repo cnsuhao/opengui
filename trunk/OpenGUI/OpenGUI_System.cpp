@@ -17,7 +17,7 @@ namespace OpenGUI {
 		return mptr_Singleton;
 	}
 	//############################################################################
-	System::System( Renderer* renderer, ResourceProvider* resourceProvider, String logFile ) {
+	System::System( Renderer* renderer, ResourceProvider* resourceProvider, const String& logFile ) {
 		if ( logFile == "" ) {
 			System( renderer, resourceProvider, 0 );
 		} else {
