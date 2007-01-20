@@ -85,7 +85,7 @@ namespace OpenGUI {
 		mFontResource = 0;
 	}
 	//############################################################################
-	void FontSet::renderGlyph( char glyph_charCode, const IVector2& pixelSize,
+	void FontSet::renderGlyph( const Char glyph_charCode, const IVector2& pixelSize,
 							   TextureDataRect* destTDR, FontGlyphMetrics& destGlyphMetrics ) {
 		FT_Error error;
 		FT_Face* tFace = ( FT_Face* ) mFT_Face;
@@ -99,7 +99,7 @@ namespace OpenGUI {
 			<< Log::endlog;
 			return;
 		}
-		error = FT_Load_Char( *tFace, ( unsigned char )glyph_charCode, FT_LOAD_RENDER );
+		error = FT_Load_Char( *tFace, static_cast<FT_ULong>( glyph_charCode ), FT_LOAD_RENDER );
 		if ( error ) {
 			LogManager::SlogMsg( "Font", OGLL_ERR ) << "[renderGlyph] "
 			<< "FreeType 2 Error: (" << (( int )error ) << ") "
@@ -229,16 +229,17 @@ namespace OpenGUI {
 	int FontSet::getTextWidth( const IVector2& pixelSize, const String& text ) {
 		int retval = 0;
 		FontGlyph glyph;
-		const char* str = text.c_str();
-		const size_t len = text.length();
-		for ( size_t i = 0; i < len; i++ ) {
-			getGlyph( str[i], pixelSize, glyph );
+		// sum the horizontal advance for each Unicode character in the string
+		String::const_iterator iter, iterend = text.end();
+		for ( iter = text.begin(); iter != iterend; iter.moveNext() ) {
+			const Char c = iter.getCharacter();
+			getGlyph( c, pixelSize, glyph );
 			retval += glyph.metrics.horiAdvance;
 		}
 		return retval;
 	}
 	//############################################################################
-	bool FontSet::getGlyph( const char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph ) {
+	bool FontSet::getGlyph( const Char glyph_charCode, const IVector2& pixelSize, FontGlyph& outFontGlyph ) {
 		if ( !FontManager::getSingletonPtr() ) {
 			//err msg
 			return false;
