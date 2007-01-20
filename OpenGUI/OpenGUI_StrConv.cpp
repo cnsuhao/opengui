@@ -51,7 +51,7 @@ namespace OpenGUI {
 		for ( i = in_out.begin(); i != ie; i++ ) {
 			String::value_type c = *i;
 			if ( 'A' <= c && c <= 'Z' ) {
-				*i = c - ( 'a' - 'A' );
+				*i = c + ( 'a' - 'A' );
 			}
 		}
 	}

@@ -40,13 +40,13 @@ namespace OpenGUI {
 		radio button into an existing group it will automatically un-select its new peers.
 		(This will cause ToggledOff events as necessary.)
 		*/
-		void RadioButton::setGroup( const std::string& groupName ) {
+		void RadioButton::setGroup( const String& groupName ) {
 			mGroupName = groupName;
 			if ( getSelected() )
 				unselectPeers();
 		}
 		//############################################################################
-		const std::string& RadioButton::getGroup() {
+		const String& RadioButton::getGroup() {
 			return mGroupName;
 		}
 		//############################################################################

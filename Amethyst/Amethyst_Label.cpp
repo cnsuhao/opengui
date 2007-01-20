@@ -50,12 +50,12 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void Label::setText( const std::string& text ) {
+		void Label::setText( const String& text ) {
 			mText = text;
 			invalidate();
 		}
 		//############################################################################
-		const std::string& Label::getText() const {
+		const String& Label::getText() const {
 			return mText;
 		}
 		//############################################################################

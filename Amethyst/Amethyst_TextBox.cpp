@@ -25,13 +25,13 @@ namespace OpenGUI {
 		}
 
 		//! Sets the normal button imagery.
-		void TextBox::setImagery( std::string imageryName ) {
+		void TextBox::setImagery( String imageryName ) {
 			invalidate();
 			mImageryPtr = ImageryManager::getSingleton().getImagery( imageryName );
 		}
 
 		//! Gets the normal button imagery.
-		std::string TextBox::getImagery() {
+		String TextBox::getImagery() {
 			if ( !mImageryPtr.isNull() )
 				return mImageryPtr->getName();
 
