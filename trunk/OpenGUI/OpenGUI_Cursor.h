@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef B7CF3B5F_D4DC_4d03_99AF_67494B0B2E38
