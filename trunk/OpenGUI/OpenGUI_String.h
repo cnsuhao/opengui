@@ -6,6 +6,7 @@
 #define E5AE9E12_AF34_48ff_B669_2802A0C3DC0A
 
 #include "OpenGUI_PreRequisites.h"
+#include "OpenGUI_Exports.h"
 
 namespace OpenGUI {
 
@@ -82,7 +83,7 @@ namespace OpenGUI {
 	- For additional information on UTF-8 encoding: http://en.wikipedia.org/wiki/UTF-8
 	- For additional information on UTF-32 encoding: http://en.wikipedia.org/wiki/UTF-32
 	*/
-	class UTFString {
+	class OPENGUI_API UTFString {
 		// constants used in UTF-8 conversions
 		static const unsigned char _lead1 = 0xC0;      //110xxxxx
 		static const unsigned char _lead1_mask = 0x1F; //00011111
@@ -2097,56 +2098,13 @@ namespace OpenGUI {
 		///////////////////////////////////////////////////////////////////////
 		// Scratch buffer
 		//! auto cleans the scratch buffer using the proper delete for the stored type
-		void _cleanBuffer() const {
-			if ( m_buffer.mVoidBuffer != 0 ) {
-				assert( m_bufferType != bt_none ); // this should help catch issues during debug sessions
-				switch ( m_bufferType ) {
-				case bt_string:
-					delete m_buffer.mStrBuffer;
-					break;
-				case bt_wstring:
-					delete m_buffer.mWStrBuffer;
-					break;
-				case bt_utf32string:
-					delete m_buffer.mUTF32StrBuffer;
-					break;
-				case bt_none: // under the worse of circumstances, this is all we can do, and hope it works out
-				default:
-					delete m_buffer.mVoidBuffer;
-					break;
-				}
-				m_buffer.mVoidBuffer = 0;
-				m_bufferSize = 0;
-			}
-		}
-
+		void _cleanBuffer() const;
 		//! create a std::string in the scratch buffer area
-		void _getBufferStr() const {
-			if ( m_bufferType != bt_string ) {
-				_cleanBuffer();
-				m_buffer.mStrBuffer = new std::string();
-				m_bufferType = bt_string;
-			}
-			m_buffer.mStrBuffer->clear();
-		}
+		void _getBufferStr() const;
 		//! create a std::wstring in the scratch buffer area
-		void _getBufferWStr() const {
-			if ( m_bufferType != bt_wstring ) {
-				_cleanBuffer();
-				m_buffer.mWStrBuffer = new std::wstring();
-				m_bufferType = bt_wstring;
-			}
-			m_buffer.mWStrBuffer->clear();
-		}
+		void _getBufferWStr() const;
 		//! create a utf32string in the scratch buffer area
-		void _getBufferUTF32Str() const {
-			if ( m_bufferType != bt_utf32string ) {
-				_cleanBuffer();
-				m_buffer.mUTF32StrBuffer = new utf32string();
-				m_bufferType = bt_utf32string;
-			}
-			m_buffer.mUTF32StrBuffer->clear();
-		}
+		void _getBufferUTF32Str() const;
 
 		void _load_buffer_UTF8() const {
 			_getBufferStr();
