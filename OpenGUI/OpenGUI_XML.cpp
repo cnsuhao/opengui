@@ -34,7 +34,7 @@ namespace OpenGUI {
 	void XMLDoc::saveFile( const String& filename ) {
 		mFileName = filename;
 		TiXmlDocument doc;
-		TiXmlDeclaration decl( "1.0", "", "" );
+		TiXmlDeclaration decl( "1.0", "UTF-8", "" );
 		doc.InsertEndChild( decl );
 		for ( XMLNodeList::iterator iter = mChildren.begin(); iter != mChildren.end(); iter++ ) {
 			XMLNode* node = ( *iter );

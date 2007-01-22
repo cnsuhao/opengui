@@ -163,9 +163,8 @@ namespace OpenGUI {
 		setName( Name );
 	}
 	//#####################################################################
-	Value::Value( const String& Name ) {
+	Value::Value() {
 		constructor();
-		setName( Name );
 	}
 	//#####################################################################
 	Value::~Value() {
