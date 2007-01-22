@@ -32,8 +32,8 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API Value {
 	public:
-		//! Constructor. \c Name is optional, but will set the name of this Value if given
-		Value( const String& Name = "" );
+		//! default constructor
+		Value();
 		//! Copy Constructor
 		Value( const Value& copy );
 		//! Destructor
