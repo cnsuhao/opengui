@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_TextureManager.h"
@@ -33,14 +33,14 @@ namespace OpenGUI {
 		destroyAllTextures();
 	}
 	//############################################################################
-	TexturePtr TextureManager::createTextureFromFile( const std::string& filename ) {
+	TexturePtr TextureManager::createTextureFromFile( const String& filename ) {
 		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "Create Texture from File: " << filename << Log::endlog;
 		Texture* tex = mRenderer->createTextureFromFile( filename );
 		mTextureCPtrList.push_front( tex );
 		return TexturePtr( tex );
 	}
 	//############################################################################
-	TexturePtr TextureManager::createTextureFromTextureData( const std::string& name, TextureData* textureData ) {
+	TexturePtr TextureManager::createTextureFromTextureData( const String& name, TextureData* textureData ) {
 		LogManager::SlogMsg( "TextureManager", OGLL_INFO2 ) << "Create Texture from TextureData: "
 		<< name
 		<< " (" << ( size_t ) textureData << ")"

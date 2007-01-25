@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "ft2build.h"
@@ -91,7 +91,7 @@ namespace OpenGUI {
 		XMLParser::getSingleton().UnregisterUnloadHandler( "Font", &FontManager::_Font_XMLNode_Unload );
 	}
 	//############################################################################
-	std::string FontManager::_GetFTErrorString( int errorCode ) {
+	String FontManager::_GetFTErrorString( int errorCode ) {
 #undef __FTERRORS_H__
 #define FT_ERRORDEF( e, v, s )  { e, s },
 #define FT_ERROR_START_LIST     {
@@ -110,7 +110,7 @@ namespace OpenGUI {
 			return "*UNKNOWN ERROR*";
 	}
 	//############################################################################
-	FontSetPtr FontManager::RegisterFontSet( std::string filename, std::string fontName ) {
+	FontSetPtr FontManager::RegisterFontSet( String filename, String fontName ) {
 		LogManager::SlogMsg( "FontManager", OGLL_INFO )
 		<< "RegisterFontSet:"
 		<< " Name: " << fontName
@@ -162,7 +162,7 @@ namespace OpenGUI {
 		<< fontSet->getName() << "'->'" << fontSet->getFilename() << "' ITEM NOT FOUND!" << Log::endlog;
 	}
 	//############################################################################
-	void FontManager::UnRegisterFontSet( const std::string& fontName ) {
+	void FontManager::UnRegisterFontSet( const String& fontName ) {
 		LogManager::SlogMsg( "FontManager", OGLL_INFO2 ) << "UnRegister FontSet: '"
 		<< fontName << "'..." << Log::endlog;
 
@@ -175,7 +175,7 @@ namespace OpenGUI {
 		<< fontName << "' ITEM NOT FOUND!" << Log::endlog;
 	}
 	//############################################################################
-	FontSetPtr FontManager::GetFontSet( const std::string& fontName ) {
+	FontSetPtr FontManager::GetFontSet( const String& fontName ) {
 		FontSetPtrMap::iterator iter = mFontSetMap.find( fontName );
 		if ( iter != mFontSetMap.end() ) {
 			return iter->second;
@@ -208,26 +208,26 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
-	bool FontManager::_Font_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool FontManager::_Font_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		FontManager& manager = FontManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string file = node.getAttribute( "File" );
+		const String name = node.getAttribute( "Name" );
+		const String file = node.getAttribute( "File" );
 		manager.RegisterFontSet( file, name );
 		return true;
 	}
 	//############################################################################
-	bool FontManager::_Font_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool FontManager::_Font_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		FontManager& manager = FontManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string file = node.getAttribute( "File" );
+		const String name = node.getAttribute( "Name" );
+		const String file = node.getAttribute( "File" );
 		manager.UnRegisterFontSet( name );
 		return true;
 	}

@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_Widget.h"
@@ -167,16 +167,16 @@ namespace OpenGUI {
 		return OT_WIDGET;
 	}
 	//############################################################################
-	const std::string& Widget::getName() {
+	const String& Widget::getName() {
 		return mWidgetName;
 	}
 	//############################################################################
-	void Widget::setName( const std::string& name ) {
+	void Widget::setName( const String& name ) {
 		if ( name == "" ) { // empty names (anonymous) are always ok
 			mWidgetName = name;
 			return;
 		}
-		if ( name == ".." || name == "." || name.find( '/' ) != std::string::npos ) {
+		if ( name == ".." || name == "." || name.find( '/' ) != String::npos ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Widget names cannot contain '/' and cannot be '.' or '..'", __FUNCTION__ );
 			return;
 		}
@@ -613,7 +613,7 @@ namespace OpenGUI {
 		/* Default is to do nothing */
 	}
 	//############################################################################
-	Widget* Widget::_getChildByName( const std::string& childName ) const {
+	Widget* Widget::_getChildByName( const String& childName ) const {
 		return 0;
 	}
 	//############################################################################
@@ -633,8 +633,8 @@ namespace OpenGUI {
 	you cannot obtain a pointer to a screen by using paths. Querying for "/" alone will
 	result in an exception. If you want the screen, use getScreen().
 	*/
-	Widget* Widget::getPath( const std::string& path ) const {
-		std::string tmpPath = path;
+	Widget* Widget::getPath( const String& path ) const {
+		String tmpPath = path;
 		StrConv::trim( tmpPath );
 
 		//handle absolute paths by deferring to Screen
@@ -655,7 +655,7 @@ namespace OpenGUI {
 	Widget* Widget::_getPath( StringList& pathList ) const {
 		if ( pathList.size() == 0 ) return const_cast<Widget*>( this );
 
-		const std::string top = pathList.front();
+		const String top = pathList.front();
 		pathList.pop_front();
 		if ( !( top.length() > 0 ) ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Empty path locations are not allowed", __FUNCTION__ );

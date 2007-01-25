@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef DCA429BB_8BCE_4042_A4DA_558D1A0AAE00
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_XML.h"
@@ -36,30 +37,30 @@ namespace OpenGUI {
 		static WidgetManager* getSingletonPtr( void );
 
 		//! Create a Widget that was registered under the given \c Name and optionally \c Library
-		Widget* CreateRawWidget( const std::string& Name, const std::string& Library = "" );
+		Widget* CreateRawWidget( const String& Name, const String& Library = "" );
 
 		//! Creates and initializes a Widget that was previously defined by DefineWidget()
-		Widget* CreateDefinedWidget( const std::string& Name );
+		Widget* CreateDefinedWidget( const String& Name );
 
 		//! Defines a new Widget under the given \c Name with the given \c propertyList, using \c BaseName and \c BaseLibrary as the source
-		void DefineWidget( const std::string& Name, const ValueList& propertyList, const std::string& BaseName, const std::string& BaseLibrary );
+		void DefineWidget( const String& Name, const ValueList& propertyList, const String& BaseName, const String& BaseLibrary );
 		//! Undefines an existing Widget definition by \c Name
-		void UndefineWidget( const std::string& Name );
+		void UndefineWidget( const String& Name );
 
 		//! Register a Widget factory
-		void RegisterWidgetFactory( const std::string& Name, const std::string& Library, WidgetFactoryCallback* factoryCallback );
+		void RegisterWidgetFactory( const String& Name, const String& Library, WidgetFactoryCallback* factoryCallback );
 		//! Unregister a Widget factory
-		void UnregisterWidgetFactory( const std::string& Name, const std::string& Library );
+		void UnregisterWidgetFactory( const String& Name, const String& Library );
 
 		//! inner type of WidgetRegPairList
-		typedef std::pair<std::string, std::string> WidgetRegPair;
+		typedef std::pair<String, String> WidgetRegPair;
 		//! return type of GetRegisteredWidgets()
 		typedef std::list<WidgetRegPair> WidgetRegPairList;
 		//! returns a pair list of all registered widgets
 		WidgetRegPairList GetRegisteredWidgets();
 
 		//! return type of GetDefinedWidgets()
-		typedef std::list<std::string> WidgetDefList;
+		typedef std::list<String> WidgetDefList;
 		//! returns a list of all defined widgets
 		WidgetDefList GetDefinedWidgets();
 
@@ -67,21 +68,21 @@ namespace OpenGUI {
 		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
 
 	private:
-		typedef std::map<std::string, WidgetFactoryCallback*> WidgetFactoryMap;
-		typedef std::map<std::string, WidgetFactoryMap> LibraryMap;
+		typedef std::map<String, WidgetFactoryCallback*> WidgetFactoryMap;
+		typedef std::map<String, WidgetFactoryMap> LibraryMap;
 		LibraryMap mLibraryMap;
 
 		struct WidgetDefinition {
-			std::string Name;
-			std::string Library;
+			String Name;
+			String Library;
 			ValueList Properties;
 		};
-		typedef std::map<std::string, WidgetDefinition> WidgetDefinitionMap;
+		typedef std::map<String, WidgetDefinition> WidgetDefinitionMap;
 		WidgetDefinitionMap mWidgetDefinitionMap;
 
 		// XML tag handlers for <WidgetDef> tags
-		static bool _WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _WidgetDef_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _WidgetDef_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 		static void _Widget_XMLNode_IntoContainer( const XMLNode& widgetNode, WidgetCollection& widgetContainer );
 	};
 }//namespace OpenGUI{

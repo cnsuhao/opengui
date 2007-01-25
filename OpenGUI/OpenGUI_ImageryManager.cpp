@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_ImageryManager.h"
@@ -42,7 +42,7 @@ namespace OpenGUI {
 		ImageryManager::destroyAllImagesets();
 	}
 	//############################################################################
-	ImagesetPtr ImageryManager::createImageset( const std::string& imageFilename ) {
+	ImagesetPtr ImageryManager::createImageset( const String& imageFilename ) {
 		ImagesetPtr imgset = getImageset( imageFilename );
 		if ( imgset ) {
 			return imgset;
@@ -63,7 +63,7 @@ namespace OpenGUI {
 		return imgset;
 	}
 	//############################################################################
-	ImagesetPtr ImageryManager::createImagesetFromTexture( TexturePtr texture, const std::string& imageFilename ) {
+	ImagesetPtr ImageryManager::createImagesetFromTexture( TexturePtr texture, const String& imageFilename ) {
 		if ( texture.isNull() ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "texture parameter must be a valid texture", "ImageryManager::createImagesetFromTexture" );
 		}
@@ -77,7 +77,7 @@ namespace OpenGUI {
 			}
 		}
 
-		std::string newImageFileName = imageFilename;
+		String newImageFileName = imageFilename;
 
 		if ( imageFilename == "" ) {
 			//generate a new filename
@@ -111,7 +111,7 @@ namespace OpenGUI {
 	}
 
 	//############################################################################
-	ImagesetPtr ImageryManager::getImageset( const std::string& imageFilename ) {
+	ImagesetPtr ImageryManager::getImageset( const String& imageFilename ) {
 		ImagesetPtrList::iterator iter = mImagesetList.begin();
 		while ( iter != mImagesetList.end() ) {
 			if (( *iter )->getName() == imageFilename ) {
@@ -134,7 +134,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void ImageryManager::destroyImageset( const std::string& imageFilename ) {
+	void ImageryManager::destroyImageset( const String& imageFilename ) {
 		ImagesetPtr imgset;
 		imgset = ImageryManager::getImageset( imageFilename );
 		if ( imgset ) {
@@ -148,13 +148,13 @@ namespace OpenGUI {
 		mImagesetList.clear();
 	}
 	//############################################################################
-	ImageryPtr ImageryManager::getImagery( const std::string& imageryName ) {
+	ImageryPtr ImageryManager::getImagery( const String& imageryName ) {
 		// test for fully qualified name lookups
 		size_t splitLoc = imageryName.find( ':' );
-		if ( splitLoc != std::string::npos ) {
+		if ( splitLoc != String::npos ) {
 			// yep, we can do a FQN lookup, so let's do it
-			const std::string setName = imageryName.substr( 0, splitLoc );
-			const std::string imgName = imageryName.substr( splitLoc + 1 );
+			const String setName = imageryName.substr( 0, splitLoc );
+			const String imgName = imageryName.substr( splitLoc + 1 );
 			ImagesetPtr imgSet = getImageset( setName );
 			if ( imgSet ) {
 				return imgSet->getImagery( imgName );
@@ -173,10 +173,10 @@ namespace OpenGUI {
 		return ImageryPtr( 0 );
 	}
 	//############################################################################
-	std::string ImageryManager::_generateRandomName() {
+	String ImageryManager::_generateRandomName() {
 		static unsigned int mRandomNameGeneratorIndex = 0;
 		std::stringstream ss;
-		std::string retval;
+		String retval;
 		time_t timer;
 		time( &timer ); //NOTE: This function call will break after 19:14:07, January 18, 2038, UTC
 		ss << "__OPENGUI_RANDOM__:" << ( unsigned int )timer << ":" << mRandomNameGeneratorIndex;
@@ -197,19 +197,19 @@ namespace OpenGUI {
 		return retval;
 	}
 	//############################################################################
-	bool ImageryManager::_Imageset_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool ImageryManager::_Imageset_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		ImageryManager& manager = ImageryManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string filename = node.getAttribute( "File" );
+		const String filename = node.getAttribute( "File" );
 		ImagesetPtr imgset = manager.createImageset( filename );
 
 		XMLNodeList imageryNodes = node.getChildren( "Imagery" );
 		for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
 			XMLNode* child = ( *iter );
-			const std::string name = child->getAttribute( "Name" );
+			const String name = child->getAttribute( "Name" );
 			int t, l, w, h;
 			StrConv::toInt( child->getAttribute( "Top" ), t );
 			StrConv::toInt( child->getAttribute( "Left" ), l );
@@ -220,20 +220,20 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool ImageryManager::_Imageset_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool ImageryManager::_Imageset_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		ImageryManager& manager = ImageryManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string filename = node.getAttribute( "File" );
+		const String filename = node.getAttribute( "File" );
 		ImagesetPtr imgset = manager.getImageset( filename );
 
 		if ( imgset ) {
 			XMLNodeList imageryNodes = node.getChildren( "Imagery" );
 			for ( XMLNodeList::iterator iter = imageryNodes.begin(); iter != imageryNodes.end(); iter++ ) {
 				XMLNode* child = ( *iter );
-				const std::string name = child->getAttribute( "Name" );
+				const String name = child->getAttribute( "Name" );
 				imgset->destroyImagery( name );
 			}
 			if ( imgset->getImageryCount() == 0 )
@@ -243,7 +243,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	void ImageryManager::addFace( FacePtr facePtr ) {
-		const std::string& faceName = facePtr->getName();
+		const String& faceName = facePtr->getName();
 		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
 		if ( iter != mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Face already registered with name: " + faceName, __FUNCTION__ );
@@ -251,14 +251,14 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "ImageryManager", OGLL_INFO2 ) << "AddFace: " << facePtr->getName() << Log::endlog;
 	}
 	//############################################################################
-	FacePtr ImageryManager::getFace( const std::string& faceName ) {
+	FacePtr ImageryManager::getFace( const String& faceName ) {
 		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
 		if ( iter == mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Face not found: " + faceName, __FUNCTION__ );
 		return iter->second;
 	}
 	//############################################################################
-	void ImageryManager::removeFace( const std::string& faceName ) {
+	void ImageryManager::removeFace( const String& faceName ) {
 		FacePtrMap::iterator iter = mFacePtrMap.find( faceName );
 		if ( iter == mFacePtrMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Face not found: " + faceName, __FUNCTION__ );
@@ -275,15 +275,15 @@ namespace OpenGUI {
 		return out;
 	}
 	//############################################################################
-	bool ImageryManager::_Face_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool ImageryManager::_Face_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		ImageryManager& manager = ImageryManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
 		FaceDef faceDef;
-		const std::string faceNameStr = node.getAttribute( "Name" );
-		const std::string faceMetricStr = node.getAttribute( "Metric" );
+		const String faceNameStr = node.getAttribute( "Name" );
+		const String faceMetricStr = node.getAttribute( "Metric" );
 		if ( faceMetricStr == "Units" )
 			faceDef.Metric = Face::FM_UNITS;
 		else if ( faceMetricStr == "Pixels" )
@@ -347,7 +347,7 @@ namespace OpenGUI {
 
 				//get Imagery setting, if specified (otherwise there won't be any)
 				if ( sliceNode->hasAttribute( "Imagery" ) ) {
-					const std::string imageryStr = sliceNode->getAttribute( "Imagery" );
+					const String imageryStr = sliceNode->getAttribute( "Imagery" );
 					sliceDef.Imagery = manager.getImagery( imageryStr );
 				}
 
@@ -363,13 +363,13 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool ImageryManager::_Face_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool ImageryManager::_Face_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		ImageryManager& manager = ImageryManager::getSingleton();
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string faceName = node.getAttribute( "Name" );
+		const String faceName = node.getAttribute( "Name" );
 		manager.removeFace( faceName );
 		return true;
 	}

@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef F5ED205F_518A_42e8_86FF_D196D23C0C6A
@@ -25,6 +25,8 @@
 #include <deque>
 #include <cassert>
 #include <locale>
+#include <wchar.h>
+#include <iterator>
 
 
 #if OPENGUI_PLATFORM == OPENGUI_PLATFORM_WIN32

@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_Exception.h"
@@ -8,13 +8,13 @@
 namespace OpenGUI {
 
 
-	Exception::Exception( int code, const std::string& desc, const std::string& srcArea )
+	Exception::Exception( int code, const String& desc, const String& srcArea )
 			: mCode( code ), mLine( 0 ), mMsg( desc ), mSrc( srcArea ), mFile( 0 ) {
 		if ( LogManager::getSingletonPtr() )
 			LogManager::SlogMsg( "EXCEPTION", OGLL_ERR ) << Exception::getFullMessage() << Log::endlog;
 	}
 
-	Exception::Exception( int code, const std::string& desc, const std::string& srcArea, char* file, long line )
+	Exception::Exception( int code, const String& desc, const String& srcArea, char* file, long line )
 			: mCode( code ), mLine( line ), mMsg( desc ), mSrc( srcArea ), mFile( file ) {
 		if ( LogManager::getSingletonPtr() )
 			LogManager::SlogMsg( "EXCEPTION", OGLL_ERR ) << Exception::getFullMessage() << Log::endlog;
@@ -31,7 +31,7 @@ namespace OpenGUI {
 		mFile = rhs.mFile;
 	}
 
-	std::string Exception::getFullMessage() const {
+	String Exception::getFullMessage() const {
 		std::stringstream ss;
 		ss << mSrc << "[" << getCodeStr( mCode ) << "] " << mMsg;
 		if ( mFile ) {
@@ -40,7 +40,7 @@ namespace OpenGUI {
 		return ss.str();
 	}
 
-	std::string Exception::getCodeStr( int code ) {
+	String Exception::getCodeStr( int code ) {
 		switch ( code ) {
 		case OP_FAILED:
 			return "OP_FAILED";

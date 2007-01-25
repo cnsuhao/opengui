@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_CONFIG.h"
@@ -113,7 +113,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	//############################################################################
-	Screen::Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport ) {
+	Screen::Screen( const String& screenName, const FVector2& initialSize, Viewport* viewport ) {
 		if ( gScreen_ObjectAccessorList.getParent() == 0 )
 			gScreen_ObjectAccessorList.setParent( Object::getAccessors() );
 
@@ -230,7 +230,7 @@ namespace OpenGUI {
 		invalidateAll();
 	}
 	//############################################################################
-	const std::string& Screen::getName() const {
+	const String& Screen::getName() const {
 		return mName;
 	}
 	//############################################################################
@@ -625,8 +625,8 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! \see Widget::getPath() for a more in-depth explanation of paths */
-	Widget* Screen::getPath( const std::string& path ) const {
-		std::string tmpPath = path;
+	Widget* Screen::getPath( const String& path ) const {
+		String tmpPath = path;
 		StrConv::trim( tmpPath );
 
 		StringList pathList;
@@ -645,7 +645,7 @@ namespace OpenGUI {
 			return 0;
 		}
 
-		const std::string top = pathList.front();
+		const String top = pathList.front();
 		pathList.pop_front();
 		if ( !( top.length() > 0 ) ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Empty path locations are not allowed", __FUNCTION__ );

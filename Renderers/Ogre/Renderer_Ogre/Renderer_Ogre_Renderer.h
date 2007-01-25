@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 // -----------------------------------------------------------------------------
@@ -59,9 +59,9 @@ namespace OpenGUI {
 		virtual ~OgreRenderer();
 
 		//! Sets the resource group from which future textures will be loaded. Default is Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME
-		void setTextureResourceGroup( const std::string& ogreResourceGroup );
+		void setTextureResourceGroup( const String& ogreResourceGroup );
 		//! Returns the current resource group that textures are loaded from
-		const std::string& getTextureResourceGroup();
+		const String& getTextureResourceGroup();
 
 		//! This tests the batch buffer usage since the previous call to this function, and shortens it there is significant under utilization
 		/*! Automatically called by the OgreFrameListener. You only need to call this if frame listeners are not being fired for some reason. */
@@ -75,7 +75,7 @@ namespace OpenGUI {
 		virtual void preRenderSetup(); //!< See Renderer documentation from %OpenGUI
 		virtual void doRenderOperation( RenderOperation& renderOp ); //!< See Renderer documentation from %OpenGUI
 		virtual void postRenderCleanup(); //!< See Renderer documentation from %OpenGUI
-		virtual Texture* createTextureFromFile( const std::string& filename ); //!< See Renderer documentation from %OpenGUI
+		virtual Texture* createTextureFromFile( const String& filename ); //!< See Renderer documentation from %OpenGUI
 		virtual Texture* createTextureFromTextureData( const TextureData* textureData ); //!< See Renderer documentation from %OpenGUI
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData *textureData ); //!< See Renderer documentation from %OpenGUI
 		virtual void destroyTexture( Texture* texturePtr ); //!< See Renderer documentation from %OpenGUI
@@ -101,7 +101,7 @@ namespace OpenGUI {
 		//Ogre Specific
 		Ogre::Root* mOgreRoot;
 		Ogre::RenderSystem* mRenderSystem;
-		std::string mTextureResourceGroup;
+		String mTextureResourceGroup;
 		FVector2 mTexelOffset; //holds the pixel level texel offset that needs to be applied to each vertex to maintain pixel alignment
 
 		//Capabilities

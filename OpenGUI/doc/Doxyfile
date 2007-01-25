@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = OpenGUI
-PROJECT_NUMBER         = "0.8 [Kunzite]"
+PROJECT_NUMBER         = "0.9 [Iolite]"
 OUTPUT_DIRECTORY       = 
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
@@ -151,7 +151,7 @@ HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = DoxygenFooter.txt
-HTML_STYLESHEET        = 
+HTML_STYLESHEET        = doxygen_input/doxygen.css
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = YES
 CHM_FILE               = ../OpenGUI.chm

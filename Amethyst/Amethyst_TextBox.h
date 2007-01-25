@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef Amethyst_TextBox_h__
@@ -20,17 +20,17 @@ namespace OpenGUI {
 			virtual ~TextBox() ;
 
 			//! Sets the BG imagery.
-			void setImagery( std::string imageryName );
+			void setImagery( String imageryName );
 			//! Gets the BG imagery.
-			std::string getImagery();
+			String getImagery();
 
-			void setText( std::string &nText )		{
+			void setText( String &nText )		{
 				mText = nText;
 			}
 			void setText( const char *p )			{
 				mText = p;
 			}
-			const std::string getText( void ) const	{
+			const String getText( void ) const	{
 				return mText;
 			}
 			void setFont( const Font& fnt )			{
@@ -78,7 +78,7 @@ namespace OpenGUI {
 
 			ImageryPtr mImageryPtr;
 
-			std::string mText;
+			String mText;
 			Font mFont;
 			TextAlignment::Alignment m_alignh;
 			TextAlignment::Alignment m_alignv;

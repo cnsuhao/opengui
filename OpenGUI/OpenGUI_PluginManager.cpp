@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "tinyxml.h"
@@ -44,7 +44,7 @@ namespace OpenGUI {
 		XMLParser::getSingleton().UnregisterUnloadHandler( "Plugin", &PluginManager::_Plugin_XMLNode_Unload );
 	}
 	//############################################################################
-	void PluginManager::loadPlugin( std::string filename ) {
+	void PluginManager::loadPlugin( String filename ) {
 		LogManager::SlogMsg( "PluginManager", OGLL_INFO2 ) << "LoadPlugin: " << filename << Log::endlog;
 
 		PluginMap::iterator iter = mPluginMap.find( filename );
@@ -71,7 +71,7 @@ namespace OpenGUI {
 		firePluginStart( lib );
 	}
 	//############################################################################
-	void PluginManager::unloadPlugin( std::string filename ) {
+	void PluginManager::unloadPlugin( String filename ) {
 		LogManager::SlogMsg( "PluginManager", OGLL_INFO2 ) << "UnloadPlugin: " << filename << Log::endlog;
 
 		DynamicLib* lib;
@@ -128,26 +128,26 @@ namespace OpenGUI {
 			func();
 	}
 	//############################################################################
-	bool PluginManager::_Plugin_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool PluginManager::_Plugin_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		PluginManager& manager = PluginManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string file = node.getAttribute( "File" );
+		const String file = node.getAttribute( "File" );
 		manager.loadPlugin( file );
 		return true;
 	}
 	//############################################################################
-	bool PluginManager::_Plugin_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool PluginManager::_Plugin_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		PluginManager& manager = PluginManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string file = node.getAttribute( "File" );
+		const String file = node.getAttribute( "File" );
 		manager.unloadPlugin( file );
 		return true;
 	}

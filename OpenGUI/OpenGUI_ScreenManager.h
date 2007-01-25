@@ -1,13 +1,14 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef A0225006_7C8D_45CC_9C07_5328679AD103
 #define A0225006_7C8D_45CC_9C07_5328679AD103
 
 #include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
+#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Timer.h"
 #include "OpenGUI_Iterators.h"
@@ -23,7 +24,7 @@ namespace OpenGUI {
 	class OPENGUI_API ScreenManager: public Singleton<ScreenManager> {
 		friend class System;
 	public:
-		typedef std::map<std::string, Screen*> ScreenMap;
+		typedef std::map<String, Screen*> ScreenMap;
 		typedef MapIterator<ScreenMap, ScreenMap::iterator> iterator;
 		typedef MapIterator<ScreenMap, ScreenMap::const_iterator> const_iterator;
 
@@ -38,11 +39,11 @@ namespace OpenGUI {
 		//! Creates a new screen with the given \c screenName at the given \c initialSize, rendering to the given \c viewport
 		/*! The \c viewport is optional, but you cannot render a Screen without a Viewport to render to, so
 		Screens with no Viewport are created disabled, and cannot be enabled until a Viewport is assigned. */
-		Screen* createScreen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport = 0 );
+		Screen* createScreen( const String& screenName, const FVector2& initialSize, Viewport* viewport = 0 );
 		//! destroys the given screen
 		void destroyScreen( Screen* screenPtr );
 		//! returns the requested screen by name, or 0 on failure
-		Screen* getScreen( const std::string& screenName );
+		Screen* getScreen( const String& screenName );
 
 		//! performs an update on all screens that are auto updating
 		void updateScreens();
@@ -51,7 +52,7 @@ namespace OpenGUI {
 		void updateTime();
 
 		//! returns an iterator to walk the current list of screens
-		/*! The Key half of the iterator is the Screen name (std::string),
+		/*! The Key half of the iterator is the Screen name (String),
 		the %Value half is a pointer to the Screen (Screen *) */
 		iterator getIterator() {
 			return iterator( mScreenMap.begin(), mScreenMap.end() );
@@ -86,8 +87,8 @@ namespace OpenGUI {
 		void _stat_UpdateFPS();
 
 		// XML tag handlers for <Screen> tags
-		static bool _Screen_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Screen_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _Screen_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _Screen_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 	};
 } //namespace OpenGUI {
 

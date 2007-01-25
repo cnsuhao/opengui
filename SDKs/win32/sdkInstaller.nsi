@@ -7,8 +7,8 @@
 
 !define BUILD_DIR "tmp"
 !define PRODUCT_NAME "OpenGUI SDK"
-!define PRODUCT_VERSION "0.8"
-!define PRODUCT_CODENAME "Kunzite"
+!define PRODUCT_VERSION "0.9"
+!define PRODUCT_CODENAME "Iolite"
 !define PRODUCT_WEB_SITE "http://opengui.sourceforge.net/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\OpenGUI_SDK"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"

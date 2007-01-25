@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef B2B428BD_BA97_41F4_AF2E_EF32498FC240
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Object.h"
 #include "OpenGUI_ObjectAccessor.h"
@@ -63,9 +64,9 @@ namespace OpenGUI {
 		virtual ~Widget();
 
 		//! returns the name of this Widget
-		const std::string& getName();
+		const String& getName();
 		//! sets the name of this Widget
-		void setName( const std::string& name );
+		void setName( const String& name );
 
 		//! returns the enabled/disabled state of this Widget
 		bool getEnabled();
@@ -100,7 +101,7 @@ namespace OpenGUI {
 		Widget* getChildAt( const FVector2& position, bool recursive = false );
 
 		//! Returns a pointer to the widget at the given path, 0 if no widget is found
-		Widget* getPath( const std::string& path ) const;
+		Widget* getPath( const String& path ) const;
 		//! \internal follows the given \c pathList, returning the ending location. The \c pathList is modified along the way
 		Widget* _getPath( StringList& pathList ) const;
 
@@ -288,7 +289,7 @@ namespace OpenGUI {
 		virtual Widget* _getChildAt( const FVector2& position, bool recursive );
 
 		//! \internal returns the child with the given name. Virtual so that container widgets can redefine it to fit their storage type. Default returns 0 always
-		virtual Widget* _getChildByName( const std::string& childName ) const;
+		virtual Widget* _getChildByName( const String& childName ) const;
 
 		//! \internal called by a child when they have been invalidated. Default does nothing. Override me if you need more functionality
 		virtual void _invalidatedChild();
@@ -297,7 +298,7 @@ namespace OpenGUI {
 		bool mValid; // used to prevent multiple calls to invalidate from constantly causing Invalidated events
 
 		bool mEnabled;
-		std::string mWidgetName;
+		String mWidgetName;
 		bool m_CursorInside; // state variable used by _injectCursorMove()
 
 		void _detaching(); // called directly before the detach occurs (used for last minute cleanup)

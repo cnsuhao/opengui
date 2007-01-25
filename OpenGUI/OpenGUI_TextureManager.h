@@ -1,13 +1,14 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef E7C6D975_96DE_4E7B_BC8B_15FA981B1FEF
 #define E7C6D975_96DE_4E7B_BC8B_15FA981B1FEF
 
 #include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
+#include "OpenGUI_Singleton.h"
 
 #include "OpenGUI_Texture.h"
 #include "OpenGUI_RenderTexture.h"
@@ -41,9 +42,9 @@ namespace OpenGUI {
 		static TextureManager* getSingletonPtr( void );
 
 		//! create a new texture. \c filename will be used at the texture name
-		TexturePtr createTextureFromFile( const std::string& filename );
+		TexturePtr createTextureFromFile( const String& filename );
 		//! create a new texture from memory
-		TexturePtr createTextureFromTextureData( const std::string& name, TextureData* textureData );
+		TexturePtr createTextureFromTextureData( const String& name, TextureData* textureData );
 		//! Replace the given texture's contents with the contents of the given TextureData
 		void updateTextureFromTextureData( TexturePtr texturePtr, TextureData* textureData );
 

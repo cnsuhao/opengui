@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI.h" // <-- This is the one place I would consider this acceptable
@@ -17,7 +17,7 @@ namespace OpenGUI {
 		return mptr_Singleton;
 	}
 	//############################################################################
-	System::System( Renderer* renderer, ResourceProvider* resourceProvider, std::string logFile ) {
+	System::System( Renderer* renderer, ResourceProvider* resourceProvider, const String& logFile ) {
 		if ( logFile == "" ) {
 			System( renderer, resourceProvider, 0 );
 		} else {
@@ -168,11 +168,11 @@ namespace OpenGUI {
 			delete mDefaultLogListener; //very lastly close default log listener if it was used
 	}
 	//############################################################################
-	void System::loadPlugin( std::string filename ) {
+	void System::loadPlugin( String filename ) {
 		PluginManager::getSingleton().loadPlugin( filename );
 	}
 	//############################################################################
-	void System::unloadPlugin( std::string filename ) {
+	void System::unloadPlugin( String filename ) {
 		PluginManager::getSingleton().unloadPlugin( filename );
 	}
 	//############################################################################
@@ -199,18 +199,18 @@ namespace OpenGUI {
 		mScreenManager->updateScreens();
 	}
 	//############################################################################
-	bool System::_OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool System::_OpenGUI_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		if ( nodePath == "/" ) {
-			std::string path = nodePath + node.getTagName() + "/";
+			String path = nodePath + node.getTagName() + "/";
 			XMLParser::getSingleton().ProcessXML_Load( node, path );
 			return true;
 		}
 		return false;
 	}
 	//############################################################################
-	bool System::_OpenGUI_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool System::_OpenGUI_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		if ( nodePath == "/" ) {
-			std::string path = nodePath + node.getTagName() + "/";
+			String path = nodePath + node.getTagName() + "/";
 			XMLParser::getSingleton().ProcessXML_Unload( node, path );
 			return true;
 		}

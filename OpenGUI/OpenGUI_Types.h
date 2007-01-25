@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef CCFEE719_8FDE_46ce_8F52_350F92CA56CD
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Math.h"
 
 namespace OpenGUI {
@@ -329,7 +330,7 @@ namespace OpenGUI {
 			return IVector2( -x, -y );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const;
+		String toStr() const;
 		int x; //!< direct access to x
 		int y; //!< direct access to y
 	};
@@ -402,7 +403,7 @@ namespace OpenGUI {
 			return false;
 		}
 		//! Return a string representation of this value
-		std::string toStr() const;
+		String toStr() const;
 		//! comparison operator
 		bool operator==( const IRect& right ) const  {
 			return min == right.min && max == right.max;
@@ -504,7 +505,7 @@ namespace OpenGUI {
 			return FVector2( -x, -y );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const;
+		String toStr() const;
 		float x; //!< direct access to x
 		float y; //!< direct access to y
 	};
@@ -609,7 +610,7 @@ namespace OpenGUI {
 			return FRect( min.pixelAligned( resolution ), max.pixelAligned( resolution ) );
 		}
 		//! Return a string representation of this value
-		std::string toStr() const;
+		String toStr() const;
 		//! comparison operator
 		bool operator==( const FRect& right ) const  {
 			return min == right.min && max == right.max;

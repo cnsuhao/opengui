@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef BA005A9D_5FCE_4363_A3C3_CDE071FA13B5
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 
 
@@ -171,18 +172,18 @@ namespace OpenGUI {
 
 		//EventReceiver (){}
 		//! Adds the given \c name to the list of valid (and bindable) events
-		void createEvent( const std::string& name );
+		void createEvent( const String& name );
 		//! Sends an event of the given \c name to all such bound EventHandler instances
-		void sendEvent( const std::string& name, EventArgs& args );
+		void sendEvent( const String& name, EventArgs& args );
 
 		//! Returns the list of EventHandler objects for the event of given \c name
-		EventHandlerList* getEventHandlers( const std::string& name );
+		EventHandlerList* getEventHandlers( const String& name );
 		//! Returns reference to the list of EventHandler objects for the event of given \c name, throws exception if event does not exist
-		EventHandlerList& operator[]( const std::string& name );
+		EventHandlerList& operator[]( const String& name );
 	private:
 		EventReceiver();
 		~EventReceiver();
-		typedef std::map<std::string, EventHandlerList*> EventHandlerListMap;
+		typedef std::map<String, EventHandlerList*> EventHandlerListMap;
 		EventHandlerListMap mEventHandlerListMap;
 		Object* mParent;
 	};

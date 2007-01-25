@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 // -----------------------------------------------------------------------------
@@ -25,19 +25,19 @@ event that it conflicts with an existing resource group of your own. Doing so wi
 
 namespace OpenGUI {
 	//#####################################################################
-	void OgreStaticTexture::loadFile( const std::string& filename, const std::string& resourceGroup ) {
+	void OgreStaticTexture::loadFile( const String& filename, const String& resourceGroup ) {
 		using namespace Ogre;
 		freeOgreTexture(); //dump any existing texture
 		Ogre::TextureManager* textureManager = Ogre::TextureManager::getSingletonPtr();
 
-		Ogre::TexturePtr tmpTexture = ( Ogre::TexturePtr )textureManager->getByName( filename.c_str() );
+		Ogre::TexturePtr tmpTexture = ( Ogre::TexturePtr )textureManager->getByName( filename );
 		try {
 			if ( !tmpTexture.isNull() ) { //check if texture already exists
 				mOgreTexturePtr = tmpTexture;
 				mNotOwner = true; //we need to make sure we don't destroy it, since we didn't create it
 			} else {
-				tmpTexture = textureManager->load( filename.c_str(),
-												   resourceGroup.c_str(), //only look in the resource group we were given
+				tmpTexture = textureManager->load( filename,
+												   resourceGroup, //only look in the resource group we were given
 												   TEX_TYPE_2D, //we only deal with 2D textures in this neck of the woods
 												   -1, //mipmaps are for Ninnies
 												   1.0f ); //default gamma
@@ -45,7 +45,7 @@ namespace OpenGUI {
 			}
 		} catch ( Ogre::Exception e ) {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  std::string( "Error loading texture from file: " ) + filename +
+					  String( "Error loading texture from file: " ) + filename +
 					  " (Ogre exception caught during load)",
 					  "OgreTexture::loadFile" );
 		}
@@ -57,7 +57,7 @@ namespace OpenGUI {
 		} else {
 			//looks like it didn't load after all
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  std::string( "Error loading texture from file: " ) + filename +
+					  String( "Error loading texture from file: " ) + filename +
 					  " (Ogre returned a dead texture handle)",
 					  "OgreTexture::loadFile" );
 		}
@@ -85,7 +85,7 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################################
-	void OgreStaticTexture::loadFromTextureData( const TextureData* textureData, const std::string& groupName ) {
+	void OgreStaticTexture::loadFromTextureData( const TextureData* textureData, const String& groupName ) {
 		using namespace Ogre;
 
 		freeOgreTexture(); //dump any existing texture
@@ -144,7 +144,7 @@ namespace OpenGUI {
 									 0 ); //mipmaps are still for Ninnies
 		} catch ( Ogre::Exception e ) {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  std::string( "Error loading texture from TextureData" ) +
+					  String( "Error loading texture from TextureData" ) +
 					  " (Ogre::Image failed to load the pixel buffer)",
 					  "OgreTexture::loadFromTextureData" );
 		}
@@ -165,7 +165,7 @@ namespace OpenGUI {
 						 false );
 		} catch ( Ogre::Exception e ) {
 			OG_THROW( Exception::ERR_INTERNAL_ERROR,
-					  std::string( "Error loading texture from TextureData" ) +
+					  String( "Error loading texture from TextureData" ) +
 					  " (Ogre::TextureManager::loadImage failed to load the Image)",
 					  "OgreTexture::loadFromTextureData" );
 		}

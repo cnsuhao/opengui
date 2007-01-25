@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_Face.h"
@@ -9,11 +9,11 @@
 namespace OpenGUI {
 	//############################################################################
 	// We're doing this to ensure that memory destroyed within OpenGUI is also created within OpenGUI
-	FacePtr Face::Create( const std::string& faceName, const FaceDef& faceDefinition ) {
+	FacePtr Face::Create( const String& faceName, const FaceDef& faceDefinition ) {
 		return new Face( faceName, faceDefinition );
 	}
 	//############################################################################
-	Face::Face( const std::string& faceName, const FaceDef& faceDefinition ): Metric( faceDefinition.Metric ) {
+	Face::Face( const String& faceName, const FaceDef& faceDefinition ): Metric( faceDefinition.Metric ) {
 		mName = faceName;
 
 		//Note: these may be a waste of time, since they aren't always accurate to begin with

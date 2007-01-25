@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef F93B4D11_706D_4fab_B757_BCEAC2BEA28F
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
 
@@ -48,13 +49,13 @@ namespace OpenGUI {
 			FM_PIXELS = 1 //!< The size is in pixels of the native display
 		};
 		//! Takes a FaceDef (Face definition) and generates a Face which is returned in a reference counted pointer
-		static FacePtr Create( const std::string& faceName, const FaceDef& faceDefinition );
+		static FacePtr Create( const String& faceName, const FaceDef& faceDefinition );
 		~Face() {}
 		//! Indicates the metric that should be used when rendering this Face
 		const FaceMetric Metric;
 
 		//! Returns the name of this Face
-		const std::string& getName() {
+		const String& getName() {
 			return mName;
 		}
 
@@ -66,8 +67,8 @@ namespace OpenGUI {
 		const SliceList& getSlices();
 
 	private:
-		std::string mName;
-		Face( const std::string& faceName, const FaceDef& faceDefinition );
+		String mName;
+		Face( const String& faceName, const FaceDef& faceDefinition );
 		SliceList mSlices;
 
 		class SliceDim	{

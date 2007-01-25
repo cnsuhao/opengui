@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef EE1973FF_45A9_47ea_BBE1_A9DEFA47DF60
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Value.h"
@@ -23,8 +24,8 @@ namespace OpenGUI {
 	//! The base unit that comprises FormDefinition objects
 	class OPENGUI_API FormEntry {
 	public:
-		FormEntry( const std::string& WidgetName, const std::string& WidgetDef, const ValueList& propertyList );
-		FormEntry( const std::string& WidgetName, const std::string& BaseName, const std::string& LibraryName, const ValueList& propertyList );
+		FormEntry( const String& WidgetName, const String& WidgetDef, const ValueList& propertyList );
+		FormEntry( const String& WidgetName, const String& BaseName, const String& LibraryName, const ValueList& propertyList );
 		~FormEntry();
 		//! adds a copy of the given \c child to this FormEntry
 		void addChild( FormEntry& child );
@@ -41,9 +42,9 @@ namespace OpenGUI {
 		//! builds a widget hierarchy from this FormEntry tree
 		Widget* buildTree();
 	protected:
-		std::string mWidgetName;
-		std::string mBaseName; // holds DefName when mByWidgetDef == true
-		std::string mLibrary;
+		String mWidgetName;
+		String mBaseName; // holds DefName when mByWidgetDef == true
+		String mLibrary;
 		bool mByWidgetDef;
 		ValueList mProperties;
 		typedef std::list<FormEntry*> FormEntryList;
@@ -64,26 +65,26 @@ namespace OpenGUI {
 		static FormManager* getSingletonPtr( void );
 
 		//! Defines a Form for later use according to the provided \c formDefinition, which can be recalled by the given \c formName
-		void DefineForm( const std::string& formName, FormEntry& formRoot );
+		void DefineForm( const String& formName, FormEntry& formRoot );
 		//! Removes a previously defined Form by the given \c formName
-		void UndefineForm( const std::string& formName );
+		void UndefineForm( const String& formName );
 
 		//! Creates a predefined form, signified by \c formName, within the given \c container, assigning the given \c widgetName to the form's root widget
-		Widget* CreateForm( const std::string& formName, WidgetCollection* container = 0, const std::string& widgetName = "" );
+		Widget* CreateForm( const String& formName, WidgetCollection* container = 0, const String& widgetName = "" );
 
 	protected:
 		//! Same as other DefineForm, except that this does not duplicate the given \c formRoot, and instead stored the pointer and assumes ownership
-		void DefineForm( const std::string& formName, FormEntry* formRoot );
+		void DefineForm( const String& formName, FormEntry* formRoot );
 		FormManager();
 		~FormManager();
 
 	private:
-		typedef std::map<std::string, FormEntry*> FormDefinitionMap;
+		typedef std::map<String, FormEntry*> FormDefinitionMap;
 		FormDefinitionMap mFormDefinitions;
 		void UndefineAllForms();
 
-		static bool _FormDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _FormDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _FormDef_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _FormDef_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 		static FormEntry* _FormDef_Load_FormEntry( const XMLNode& node );
 
 	};

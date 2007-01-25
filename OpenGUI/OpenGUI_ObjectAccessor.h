@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef E278D21F_0B04_437C_8A77_E84A74699F89
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Value.h"
 #include "OpenGUI_Object.h"
 
@@ -95,12 +96,12 @@ namespace OpenGUI {
 		void addAccessor( ObjectAccessor* accessor );
 
 		//! Gets the ObjectAccessor by \c accessorName
-		ObjectAccessor* getAccessor( const std::string& accessorName, bool recursive = true );
+		ObjectAccessor* getAccessor( const String& accessorName, bool recursive = true );
 
 	private:
 		ObjectAccessorList* mParent;
 
-		typedef std::map<std::string, ObjectAccessor*> ObjectAccessorMap;
+		typedef std::map<String, ObjectAccessor*> ObjectAccessorMap;
 		ObjectAccessorMap mObjectAccessorMap;
 	};
 
