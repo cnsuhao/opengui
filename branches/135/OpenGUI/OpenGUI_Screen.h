@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef C98B3B2E_E8CB_4091_BFE6_F66803F67963
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Object.h"
 #include "OpenGUI_Widget.h"
@@ -118,13 +119,13 @@ namespace OpenGUI {
 		void getWidgetsAt( const FVector2& position, WidgetPtrList& outList, bool recursive = false );
 
 		//! Returns a pointer to the widget at the given path, 0 if no widget is found
-		Widget* getPath( const std::string& path ) const;
+		Widget* getPath( const String& path ) const;
 		//! \internal follows the given \c pathList, returning the ending location. The \c pathList is modified along the way
 		Widget* _getPath( StringList& pathList ) const;
 
 
 		//! returns the name of this Screen
-		const std::string& getName() const;
+		const String& getName() const;
 		//! returns the size/resolution of this Screen
 		const FVector2& getSize() const;
 		//! changes the size/resolution of this Screen
@@ -204,7 +205,7 @@ namespace OpenGUI {
 
 	protected:
 		// We aren't for creation outside of ScreenManager
-		Screen( const std::string& screenName, const FVector2& initialSize, Viewport* viewport );
+		Screen( const String& screenName, const FVector2& initialSize, Viewport* viewport );
 		// Not for deletion either
 		virtual ~Screen();
 
@@ -217,7 +218,7 @@ namespace OpenGUI {
 		bool mActive; // active/disabled
 		bool mAutoUpdating; // updated by System::updateScreens or not
 		bool mAutoTiming; // times injected by System:: or not
-		std::string mName;
+		String mName;
 		FVector2 mSize;
 		FVector2 mUPI;
 		mutable FVector2 mPPUcache; //mutable because overall it is state unrelated

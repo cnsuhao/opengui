@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 // -----------------------------------------------------------------------------
@@ -21,15 +21,15 @@ namespace OpenGUI {
 		virtual ~OgreResourceProvider();
 		//! Sets the ResourceGroup that is to be used when loading non-texture assets.
 		/*!  Default is Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME */
-		void setResourceGroup( const std::string& groupName );
+		void setResourceGroup( const String& groupName );
 		//! Returns the ResourceGroup that is currently being used.
-		std::string getResourceGroup() const;
+		const String& getResourceGroup() const;
 		//! Loads a given filename into the given OpenGUI::Resource object
-		virtual void loadResource( const std::string& filename, Resource& output );
+		virtual void loadResource( const String& filename, Resource& output );
 		//! Unloads the given OpenGUI::Resource object
 		virtual void unloadResource( Resource& resource );
 	protected:
-		std::string mResourceGroup;
+		String mResourceGroup;
 	};
 }
 ;//namespace OpenGUI{

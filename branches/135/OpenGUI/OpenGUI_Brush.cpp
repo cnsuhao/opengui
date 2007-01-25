@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_CONFIG.h"
@@ -556,106 +556,84 @@ namespace OpenGUI {
 	// BRUSHTEXT IMPLEMENTATIONS
 	//############################################################################
 	//############################################################################
-	void BrushText::_Tokenize( const std::string& inputStr, StringList& outputStrList, char token ) {
-		std::string tmpStr;
-		const char* cstr = inputStr.c_str();
-		unsigned int epos, spos;
-		spos = epos = 0;
-		while ( cstr[epos] != 0 ) {
-			if ( cstr[epos] == token ) {
-				tmpStr = inputStr.substr( spos, epos - spos );
-				outputStrList.push_back( tmpStr );
-				spos = epos + 1;
-			}
-			epos++;
-		}
-		if ( spos != epos ) {
-			tmpStr = inputStr.substr( spos, epos - spos );
-			outputStrList.push_back( tmpStr );
-		}
-	}
-	//############################################################################
-// 	std::string BrushText::_SubTextByWidth(std::string input, float width)
-// 	{
-// // 		Render::PrimitiveText text;
-// // 		text.setContext(mContext);
-// // 		text.setFont(mFontName,mFontSize);
-//
-// 		std::string outstr = input;
-// 		unsigned int len = input.length();
-//
-// 		while(len > 0){
-// 			outstr = input.substr(0, len);
-// 			text.setText(outstr);
-// 			if(text.getTextWidth() < width){
-// 				return outstr;
-// 			}
-// 			len--;
-// 		}
-//
-// 		return outstr; //at the minimum, we return 1 character
-// 	}
-	//############################################################################
-	void BrushText::_WrapText( StringList& strList_in_out, unsigned int charWidth,
-							   unsigned int wrapWidth ) {
-		if ( charWidth > wrapWidth ) return; // We're not going to split every character. That's insane.
-		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2;
-		for ( StringList::iterator iter = strList_in_out.begin();
-				iter != strList_in_out.end(); iter++ ) {
-			std::string& line = ( *iter );
-			if ( line.length() <= maxChars )
-				continue; // skip lines that already fit
+	void BrushText::_WordWrapText( StringList& strList_in_out, unsigned int charWidth,
+								   unsigned int wrapWidth ) {
+		if ( charWidth > wrapWidth ) return; // We're not going to split on every character. That's insane.
+		const unsigned int maxChars = ( wrapWidth / charWidth ) * 2; // number of characters that fully fit into the wrapWidth (drops remainder)
+		// See #153 about the *2
 
-			unsigned int lastSplit = 0;
-			unsigned int lastSpace = 0;
-			unsigned int lineCnt = 0;
-			unsigned int i = 0;
-			const char* curLine = line.c_str();
-			while ( curLine[i] != 0 ) {
-				if ( curLine[i] == ' ' )
-					lastSpace = i;
+		StringList out; // output buffer, used to temporarily store the output data. We swap() it at the end
 
-				lineCnt++;
+		// For each line we check line length to see if we need to wrap.
+		// If we do need to wrap, we try to wrap to the last space ' '.
+		// If there are no spaces, we fall back to just splitting at the maximum character count
+		StringList::iterator iter, iterend = strList_in_out.end();
+		iter = strList_in_out.begin();
+		while ( iter != iterend ) {
+			String& line = ( *iter );
+			const String::size_type strLength = line.length_Characters();
+			if ( strLength <= maxChars ) { // does the line already fit?
+				// if so, then move the whole line into the buffer
+				// NB: we do the move this way to avoid unnecessary copying during constructors
+				out.push_back( String() ); // add an empty string to the end of the buffer
+				StringList::iterator tmpIter = --( out.end() ); // iterator to the newly created entry
+				tmpIter->swap( line ); // swap the values of our new entry with the current line of the input buffer
+				++iter; // next pass processes next line
 
-				if ( lineCnt > maxChars ) {
-					std::string tmpStr;
-					if ( lastSpace > lastSplit ) {
-						tmpStr = line.substr( lastSplit, lastSpace - lastSplit );
-						lastSplit = lastSpace + 1;
-						lastSpace = lastSpace + 1;
-					} else {
-						tmpStr = line.substr( lastSplit, i - lastSplit );
-						lastSplit = i;
-						lastSpace = lastSplit;
-					}
-					strList_in_out.insert( iter, tmpStr );
-					lineCnt = 0;
+			} else { // line doesn't fit, needs to be wrapped
+				// no matter what happens we're adding a line to the output, so prep the out buffer
+				out.push_back( String() ); // add an empty string to the end of the buffer
+				StringList::iterator tmpIter = --( out.end() ); // iterator to the newly created entry
+
+				// search for the best possible split location
+				String::size_type splitPos;
+				String::iterator maxIter = line.begin();
+				for ( size_t c = 0; c < maxChars; ++c ) maxIter.moveNext(); // get an iterator at the mandatory wrap point
+				const String::size_type maxPos = maxIter - line.begin();
+				splitPos = line.find_last_of( ' ', maxPos );
+
+				if ( String::npos == splitPos ) { // there are no spaces available, we have to forcefully split
+					splitPos = maxPos;
+					String tmpStr = line.substr( 0, splitPos ); // grab the portion of the line we're keeping
+					tmpIter->swap( tmpStr ); // constant time data swap
+					line.erase( 0, splitPos ); // erase what we copied from the source line
+
+				} else { // found a space where we should split
+					String tmpStr = line.substr( 0, splitPos ); // grab the portion of the line we're keeping
+					tmpIter->swap( tmpStr ); // constant time data swap
+					line.erase( 0, splitPos + 1 ); // this erase includes the found ' ' code point
 				}
-				i++;
-			}
-			std::string tmpStr;
-			tmpStr = line.substr( lastSplit, line.length() - lastSplit );
-			line = tmpStr;
-		}
+				// only increment to next line if current line is now perfectly empty (highly unlikely)
+				if ( line.length() == 0 )
+					++iter; // we won the lotto... nifty
+			} // if ( strLength <= maxChars ) {
+		} // while ( iter != iterend ) {
+
+		// and now we swap the data (constant time)
+		strList_in_out.swap( out );
+		// scope can clean up any left over garbage
 	}
 	//############################################################################
-	void BrushText::drawText( const std::string& text, const FVector2& position,
+	void BrushText::drawText( const String& text, const FVector2& position,
 							  Font& font, float spacing_adjust ) {
 		font.bind();
 		PenPosition = position;
-		for ( size_t i = 0; i < text.length(); i++ ) {
-			if ( text[i] == '\n' ) {
+
+		String::const_iterator iter,iterend=text.end();
+		for(iter=text.begin(); iter!=iterend; iter.moveNext()){
+			Char character = iter.getCharacter();
+			if(character == '\n'){
 				PenPosition.x = position.x;
 				unsigned int lineSpace = font->getLineSpacing( pointsToPixels( font.getSize() ).y );
 				PenPosition.y += (( float )lineSpace ) / mParentBrush->getPPU().y;
-			} else {
-				drawCharacter( text[i], font );
+			}else{
+				drawCharacter( character, font );
 				PenPosition.x += spacing_adjust;
 			}
 		}
 	}
 	//############################################################################
-	void BrushText::drawTextArea( const std::string& text, const FRect& area, Font& font,
+	void BrushText::drawTextArea( const String& text, const FRect& area, Font& font,
 								  bool wrap, const TextAlignment alignment ) {
 		font.bind();
 		const FVector2& PPU = mParentBrush->getPPU();
@@ -666,12 +644,12 @@ namespace OpenGUI {
 		FVector2 myPen;
 
 		StringList strList;
-		_Tokenize( text, strList, '\n' );
+		StrConv::tokenize( text, strList, '\n' );
 
 		if ( wrap ) {
-			unsigned int ma = font->getMaxAdvance( glyphSize.x );
-			unsigned int mw = ( int )( rect_size.x * PPU.x );
-			_WrapText( strList, ma, mw );
+			const unsigned int ma = font->getMaxAdvance( glyphSize.x );
+			const unsigned int mw = static_cast<unsigned int>( rect_size.x * PPU.x );
+			_WordWrapText( strList, ma, mw );
 		}
 
 		if ( strList.size() == 0 ) return; //just in case...
@@ -716,7 +694,7 @@ namespace OpenGUI {
 		//for each line of text, we will render as necessary according to horizontal alignment
 		StringList::iterator iter = strList.begin();
 		while ( iter != strList.end() ) {
-			std::string& text = ( *iter );
+			String& text = ( *iter );
 			if ( alignment.getHorizontal() == TextAlignment::ALIGN_LEFT ) {
 				myPen.x = area.getPosition().x;
 				drawText( text, myPen, font );
@@ -749,7 +727,7 @@ namespace OpenGUI {
 
 	}
 	//############################################################################
-	void BrushText::drawCharacter( const char character, Font& font ) {
+	void BrushText::drawCharacter( const Char character, Font& font ) {
 		font.bind();
 		const FVector2& PPU = mParentBrush->getPPU();
 

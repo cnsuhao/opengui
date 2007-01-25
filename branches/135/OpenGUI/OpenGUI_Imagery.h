@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef DA3C55D9_F331_4cd8_9AAA_9354011F56C0
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_RefPtr.h"
 #include "OpenGUI_Texture.h"
@@ -33,16 +34,16 @@ namespace OpenGUI {
 		TexturePtr getTexture() const;
 
 		//! Returns the name of this Imagery object
-		const std::string& getName() const;
+		const String& getName() const;
 
 		//! Returns the fully qualified name of this Imagery object
-		const std::string& getFQN() const;
+		const String& getFQN() const;
 
 	private:
-		Imagery( const std::string ImagesetName, const std::string Name, FRect areaRect, IRect nativeRect, TexturePtr texture );
+		Imagery( const String ImagesetName, const String Name, FRect areaRect, IRect nativeRect, TexturePtr texture );
 		~Imagery();
-		std::string mFQN;
-		std::string mName;
+		String mFQN;
+		String mName;
 		FRect mAreaRect;
 		IRect mNativeRect;
 		TexturePtr mTexture;

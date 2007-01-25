@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "Amethyst_Button.h"
@@ -92,12 +92,12 @@ namespace OpenGUI {
 			return mFace_Disabled;
 		}
 		//############################################################################
-		void Button::setText( const std::string& nText ) {
+		void Button::setText( const String& nText ) {
 			mText = nText;
 			invalidate();
 		}
 		//############################################################################
-		const std::string& Button::getText( void ) const {
+		const String& Button::getText( void ) const {
 			return mText;
 		}
 		//############################################################################

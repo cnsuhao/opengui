@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "ft2build.h"
@@ -17,7 +17,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! This will attempt to bind, but will fall back to delayed binding if the
 	bind fails. */
-	Font::Font( const std::string& fontName, float fontSize ) {
+	Font::Font( const String& fontName, float fontSize ) {
 		m_Bound = false;
 		m_FontName = fontName;
 		m_FontSize = fontSize;
@@ -25,7 +25,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! This will force an immediate binding to the given FontSet at the given size.
-	If the given \c fontSet is an empty pointer, the default font will be used. */
+	If the given \a fontSet is an empty pointer, the default font will be used. */
 	Font::Font( FontSetPtr fontSet, float fontSize ) {
 		m_Bound = false;
 		m_FontSize = fontSize;

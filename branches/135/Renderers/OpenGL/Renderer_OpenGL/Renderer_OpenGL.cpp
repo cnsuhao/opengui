@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include <windows.h>		// Header File For Windows
@@ -204,7 +204,7 @@ namespace OpenGUI {
 			glBindFramebufferEXT( GL_FRAMEBUFFER_EXT, 0 );
 	}
 	//###########################################################
-	Texture* Renderer_OpenGL::createTextureFromFile( const std::string& filename ) {
+	Texture* Renderer_OpenGL::createTextureFromFile( const String& filename ) {
 		safeEnd();
 		selectTextureState( 0 );
 		OGLTexture* retval = 0;
@@ -376,7 +376,7 @@ namespace OpenGUI {
 		}
 	}
 	//###########################################################
-	TextureData* Renderer_OpenGL::LoadTextureData( std::string filename ) {
+	TextureData* Renderer_OpenGL::LoadTextureData( String filename ) {
 		//we can't load anything until the system is up
 		//but we should try to play nice
 		if ( !System::getSingletonPtr() )

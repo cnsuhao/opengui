@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef C2B66BFD_200F_4347_B858_48C47FDF7003
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
@@ -36,7 +37,7 @@ namespace OpenGUI {
 			\param message The message itself
 			\param level The log level of the message
 		*/
-		virtual void write( std::string section, std::string message, unsigned int level ) = 0;
+		virtual void write( const String& section, const String& message, unsigned int level ) = 0;
 	};
 
 
@@ -44,7 +45,7 @@ namespace OpenGUI {
 		friend class Log;
 	public:
 		LogMessage();
-		LogMessage& operator<< ( std::string val ) {
+		LogMessage& operator<< ( const String& val ) {
 			mStream << val;
 			return *this;
 		}
@@ -111,10 +112,8 @@ namespace OpenGUI {
 	class OPENGUI_API LogManager : public Singleton<LogManager> {
 		friend class Log;
 	public:
-		//NOTE : GCC doesn't like the -1 compiler trick
-		LogManager() : mLogListenerPtr( 0 ), mLogLevel( -1 ) {}
-		//NOTE : GCC doesn't like the -1 compiler trick
-		LogManager( LogListener* listener ) : mLogListenerPtr( listener ), mLogLevel( -1 ) {}
+		LogManager() : mLogListenerPtr( 0 ), mLogLevel( ~0 ) {}
+		LogManager( LogListener* listener ) : mLogListenerPtr( listener ), mLogLevel( ~0 ) {}
 		~LogManager();
 
 		//Reimplementation required for this style of singleton implementation to work across DLLs
@@ -129,17 +128,17 @@ namespace OpenGUI {
 		/*! This is equivalent to getLog(log)->write(message, logLevel); \n
 			If \c log does not yet exist, it will be created.
 		*/
-		void logMsg( std::string log, std::string message, unsigned int logLevel );
+		void logMsg( const String& log, const String& message, unsigned int logLevel );
 
 		//! A stream like interface for writing to logs
 		/*! This should be pretty simple to use for just about everyone. Works just like
 			standard C++ stream (since it is based off of them).
 			myLogmanagerPtr->logMsg("myLog", 1) << "Here is my log entry, and the number " << 4 << Log::end;
 		*/
-		LogMessage& logMsg( std::string log, unsigned int logLevel );
+		LogMessage& logMsg( const String& log, unsigned int logLevel );
 
 		//! Same as logMsg, but implemented as a static function, with automatic singleton dereferencing. Should help make your code a little smaller.
-		static LogMessage& SlogMsg( std::string log, unsigned int logLevel ) {
+		static LogMessage& SlogMsg( const String& log, unsigned int logLevel ) {
 			return LogManager::getSingleton().logMsg( log, logLevel );
 		};
 
@@ -151,16 +150,16 @@ namespace OpenGUI {
 		void setLevel( unsigned int logLevel );
 
 		//! Explicitly create a new log. \note Log names are case sensitive
-		Log* createLog( std::string name );
+		Log* createLog( const String& name );
 		//! Get a log by name
-		Log* getLog( std::string name );
+		Log* getLog( const String& name );
 		//! Destroy a log by name
-		void destroyLog( std::string name );
+		void destroyLog( const String& name );
 	protected:
-		void _writeLogListener( std::string log, std::string message, unsigned int logLevel );
+		void _writeLogListener( const String& log, const String& message, unsigned int logLevel );
 	private:
 		LogListener* mLogListenerPtr;
-		typedef std::map<std::string, Log*> LogMap;
+		typedef std::map<String, Log*> LogMap;
 		LogMap mLogMap;
 		unsigned int mLogLevel;
 	};
@@ -180,7 +179,7 @@ namespace OpenGUI {
 		void setLevel( unsigned int newLogLevel );
 
 		//! Write a message to this log.
-		void write( std::string message, unsigned int logLevel );
+		void write( const String& message, unsigned int logLevel );
 
 		//! Used for << notation
 		LogMessage& write( unsigned int logLevel );
@@ -190,10 +189,10 @@ namespace OpenGUI {
 
 	protected:
 		//! Protected constructor. Logs are created only by the LogManager
-		Log( LogManager* parent, std::string name );
+		Log( LogManager* parent, const String& name );
 		~Log();
 	private:
-		std::string mName;
+		String mName;
 		LogManager* mParent;
 		unsigned int mLogLevel;
 		LogMessage mLogMessage;
@@ -203,9 +202,9 @@ namespace OpenGUI {
 	//! Default implementation of a LogListener. This one simply writes to a file, truncating it on open.
 	class OPENGUI_API LogListenerToFile : public LogListener {
 	public:
-		LogListenerToFile( std::string filename );
+		LogListenerToFile( const String& filename );
 		virtual ~LogListenerToFile();
-		virtual void write( std::string section, std::string message, unsigned int level );
+		virtual void write( const String& section, const String& message, unsigned int level );
 	private:
 		std::ofstream mFile;
 	};

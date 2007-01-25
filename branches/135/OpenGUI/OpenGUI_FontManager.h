@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef E066B8D8_F5B9_4e34_84C2_9BE53ACFA533
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Font.h"
 #include "OpenGUI_FontSet.h"
@@ -44,7 +45,7 @@ namespace OpenGUI {
 			The first font registered is automatically set as the default using fontSize = 12.
 			To manually set the default font to something else, use \c SetDefaultFont().
 		*/
-		FontSetPtr RegisterFontSet( std::string filename, std::string fontName );
+		FontSetPtr RegisterFontSet( String filename, String fontName );
 
 		//! Sets the default font
 		/*! This sets the default font and font size (in points) that is used when no font is specified.
@@ -62,16 +63,16 @@ namespace OpenGUI {
 		}
 
 		//! UnRegisters a loaded font by name
-		void UnRegisterFontSet( const std::string& fontName );
+		void UnRegisterFontSet( const String& fontName );
 
 		//! UnRegisters a loaded font by FontSetPtr
 		void UnRegisterFontSet( FontSetPtr fontSet );
 
 		//! Retrieves a font by name
-		FontSetPtr GetFontSet( const std::string& fontName );
+		FontSetPtr GetFontSet( const String& fontName );
 
 		//! a list of font names that are currently loaded in the FontManager, retrieved by FontManager::getFontList()
-		typedef std::list<std::string> FontList;
+		typedef std::list<String> FontList;
 
 		//! Returns a FontList containing the names of all loaded fonts, which can then be fed to GetFontSet() or used with Font
 		FontList getFontList();
@@ -81,21 +82,21 @@ namespace OpenGUI {
 
 	private:
 		//! \internal Returns a string containing the error description from FreeType for the given FreeType error code. If the error is not found, "*UNKNOWN ERROR*" is returned.
-		std::string _GetFTErrorString( int errorCode );
+		String _GetFTErrorString( int errorCode );
 
 		//! \internal This is a pointer to the freetype2 library handle. It is held as a (void*) to remove the need for the freetype includes in OpenGUI using applications.
 		void* mFTLibrary;
 
 		FontCache* mFontCache;
 
-		typedef std::map<std::string, FontSetPtr> FontSetPtrMap;
+		typedef std::map<String, FontSetPtr> FontSetPtrMap;
 		FontSetPtrMap mFontSetMap;
 
 		Font mDefaultFont;
 
 		// XML tag handlers for <Font> tags
-		static bool _Font_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _Font_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _Font_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _Font_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 	};
 }//namespace OpenGUI{
 #endif

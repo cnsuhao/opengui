@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_WidgetManager.h"
@@ -49,12 +49,12 @@ namespace OpenGUI {
 	if it is in a packed Name:Library format. If so then the packed value will be exploded and
 	used, otherwise the full list of registered cursors is walked and the first entry with
 	a matching \a Name is used. */
-	Widget* WidgetManager::CreateRawWidget( const std::string& Name, const std::string& Library ) {
+	Widget* WidgetManager::CreateRawWidget( const String& Name, const String& Library ) {
 		if ( Library == "" ) { // either packed Name:Library or just Name with first match
 			size_t nPos;
 			nPos = Name.find( ':' );
-			if ( nPos != std::string::npos ) { // packed Name:Library, so explode and recall
-				std::string NewName, NewLib;
+			if ( nPos != String::npos ) { // packed Name:Library, so explode and recall
+				String NewName, NewLib;
 				NewName = Name.substr( 0, nPos );
 				NewLib = Name.substr( nPos + 1 );
 				return CreateRawWidget( NewName, NewLib );
@@ -63,7 +63,7 @@ namespace OpenGUI {
 					WidgetFactoryMap& fMap = iter->second;
 					WidgetFactoryMap::iterator iter2 = fMap.find( Name );
 					if ( iter2 != fMap.end() ) {
-						const std::string& Lib = iter->first;
+						const String& Lib = iter->first;
 						return CreateRawWidget( Name, Lib );
 					}
 				}
@@ -79,12 +79,12 @@ namespace OpenGUI {
 		return widget;
 	}
 	//############################################################################
-	void WidgetManager::RegisterWidgetFactory( const std::string& Name, const std::string& Library,
+	void WidgetManager::RegisterWidgetFactory( const String& Name, const String& Library,
 			WidgetFactoryCallback* factoryCallback ) {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
@@ -102,11 +102,11 @@ namespace OpenGUI {
 		fMap[Name] = factoryCallback;
 	}
 	//############################################################################
-	void WidgetManager::UnregisterWidgetFactory( const std::string& Name, const std::string& Library ) {
+	void WidgetManager::UnregisterWidgetFactory( const String& Name, const String& Library ) {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
@@ -124,8 +124,8 @@ namespace OpenGUI {
 		fMap.erase( iter );
 	}
 	//############################################################################
-	void WidgetManager::DefineWidget( const std::string& Name, const ValueList& propertyList,
-									  const std::string& BaseName, const std::string& BaseLibrary ) {
+	void WidgetManager::DefineWidget( const String& Name, const ValueList& propertyList,
+									  const String& BaseName, const String& BaseLibrary ) {
 		WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.find( Name );
 		if ( iter != mWidgetDefinitionMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Widget already defined with given Name: " + Name, __FUNCTION__ );
@@ -146,7 +146,7 @@ namespace OpenGUI {
 		wd.Properties = propertyList;
 	}
 	//############################################################################
-	void WidgetManager::UndefineWidget( const std::string& Name ) {
+	void WidgetManager::UndefineWidget( const String& Name ) {
 		WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.find( Name );
 		if ( iter == mWidgetDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Widget defined with given Name: " + Name, __FUNCTION__ );
@@ -154,7 +154,7 @@ namespace OpenGUI {
 		mWidgetDefinitionMap.erase( iter );
 	}
 	//############################################################################
-	Widget* WidgetManager::CreateDefinedWidget( const std::string& Name ) {
+	Widget* WidgetManager::CreateDefinedWidget( const String& Name ) {
 		WidgetDefinitionMap::iterator iter = mWidgetDefinitionMap.find( Name );
 		if ( iter == mWidgetDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Widget defined with given Name: " + Name, __FUNCTION__ );
@@ -173,10 +173,10 @@ namespace OpenGUI {
 	WidgetManager::WidgetRegPairList WidgetManager::GetRegisteredWidgets() {
 		WidgetRegPairList retval;
 		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
-			std::string LibName = iter->first;
+			String LibName = iter->first;
 			WidgetFactoryMap& factoryMap = iter->second;
 			for ( WidgetFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
-				std::string BaseName = iter->first;
+				String BaseName = iter->first;
 				retval.push_back( WidgetRegPair( BaseName, LibName ) );
 			}
 		}
@@ -210,16 +210,16 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	bool WidgetManager::_WidgetDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool WidgetManager::_WidgetDef_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		WidgetManager& manager = WidgetManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string basename = node.getAttribute( "BaseName" );
-		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		const String name = node.getAttribute( "Name" );
+		const String basename = node.getAttribute( "BaseName" );
+		const String baselib = node.getAttribute( "BaseLibrary" );
 		ValueList propertyList;
 		XMLNodeList xmlProps = node.getChildren( "Property" );
 		for ( XMLNodeList::iterator iter = xmlProps.begin(); iter != xmlProps.end(); iter++ ) {
@@ -232,16 +232,16 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool WidgetManager::_WidgetDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool WidgetManager::_WidgetDef_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		WidgetManager& manager = WidgetManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string basename = node.getAttribute( "BaseName" );
-		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		const String name = node.getAttribute( "Name" );
+		const String basename = node.getAttribute( "BaseName" );
+		const String baselib = node.getAttribute( "BaseLibrary" );
 		manager.UndefineWidget( name );
 		return true;
 	}
@@ -253,13 +253,13 @@ namespace OpenGUI {
 		}
 
 		Widget* widget = 0;
-		const std::string name = widgetNode.getAttribute( "Name" );
+		const String name = widgetNode.getAttribute( "Name" );
 		if ( widgetNode.hasAttribute( "DefName" ) ) {
-			const std::string defname = widgetNode.getAttribute( "DefName" );
+			const String defname = widgetNode.getAttribute( "DefName" );
 			widget = WidgetManager::getSingleton().CreateDefinedWidget( defname );
 		} else {
-			const std::string basename = widgetNode.getAttribute( "BaseName" );
-			const std::string baselib = widgetNode.getAttribute( "BaseLibrary" );
+			const String basename = widgetNode.getAttribute( "BaseName" );
+			const String baselib = widgetNode.getAttribute( "BaseLibrary" );
 			widget = WidgetManager::getSingleton().CreateRawWidget( basename, baselib );
 		}
 		if ( !widget )
@@ -292,9 +292,9 @@ namespace OpenGUI {
 				if ( !container )
 					OG_THROW( Exception::OP_FAILED, "Failure casting this <Widget> into a proper container for child: " + widgetNode.dump(), __FUNCTION__ );
 				else {
-					const std::string formDef = child->getAttribute( "FormDef" );
+					const String formDef = child->getAttribute( "FormDef" );
 					if ( child->hasAttribute( "Name" ) ) {
-						std::string rootName =  child->getAttribute( "Name" );
+						String rootName =  child->getAttribute( "Name" );
 						FormManager::getSingleton().CreateForm( formDef, &( container->Children ), rootName );
 					} else {
 						FormManager::getSingleton().CreateForm( formDef, &( container->Children ) );

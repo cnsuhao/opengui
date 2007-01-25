@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef Amethyst_Button_h__
@@ -57,9 +57,9 @@ namespace OpenGUI {
 			FacePtr getFaceDisabled()const;
 
 			//! Sets the text that is displayed on this button
-			void setText( const std::string& nText );
+			void setText( const String& nText );
 			//! Gets the text that is displayed on this button
-			const std::string& getText() const;
+			const String& getText() const;
 			//! Sets the Font used to draw the text on this button
 			void setFont( const Font& fnt );
 			//! Gets the Font used to draw the text on this button
@@ -100,7 +100,7 @@ namespace OpenGUI {
 
 			virtual void onDraw( Object* sender, Draw_EventArgs& evtArgs );
 
-			std::string mText;
+			String mText;
 			Font mFont;
 			TextAlignment m_TextAlignment;
 			FacePtr mFace_Normal;

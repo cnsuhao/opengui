@@ -1,9 +1,9 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
-#ifndef _OPENGUI_PLATFORM_H_
-#define _OPENGUI_PLATFORM_H_
+#ifndef F6C9B868_DD3A_4524_961F_F5369F49BAA6
+#define F6C9B868_DD3A_4524_961F_F5369F49BAA6
 
 /*
     The purpose of this include file is to identify the system type and
@@ -60,13 +60,12 @@
 #endif
 
 #if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
-// This warning can be disregarded
-#pragma warning (disable : 4251)
-
+#pragma warning (disable : 4251) // This warning can be disregarded
+//#pragma warning(disable : 4996) // for now, ignore the deprecation warnings on the STL
 #define strcmpi _strcmpi // VC8 doesn't like POSIX style strcmpi
 #ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE // VC8 also doesn't like a lot of standard C library functions
 #endif
 #endif // OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
 
-#endif // _OPENGUI_PLATFORM_H_
+#endif // F6C9B868_DD3A_4524_961F_F5369F49BAA6

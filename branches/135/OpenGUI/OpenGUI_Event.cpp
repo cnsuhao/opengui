@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_Event.h"
@@ -22,7 +22,7 @@ namespace OpenGUI {
 		mEventHandlerListMap.clear();
 	}
 	//############################################################################
-	void EventReceiver::sendEvent( const std::string& name, EventArgs& args ) {
+	void EventReceiver::sendEvent( const String& name, EventArgs& args ) {
 		EventHandlerList* events = getEventHandlers( name );
 		if ( events ) {
 			events->invoke( mParent, args );
@@ -31,7 +31,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void EventReceiver::createEvent( const std::string& name ) {
+	void EventReceiver::createEvent( const String& name ) {
 		EventHandlerListMap::iterator iter = mEventHandlerListMap.find( name );
 		if ( mEventHandlerListMap.end() != iter ) {
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Event already exists: " + name, __FUNCTION__ );
@@ -42,7 +42,7 @@ namespace OpenGUI {
 	//############################################################################
 	/*! Returns 0 (NULL) if the event requested does not exist.
 	\see Too create new events see createEvent()	*/
-	EventHandlerList* EventReceiver::getEventHandlers( const std::string& name ) {
+	EventHandlerList* EventReceiver::getEventHandlers( const String& name ) {
 		EventHandlerListMap::iterator iter = mEventHandlerListMap.find( name );
 		if ( mEventHandlerListMap.end() != iter ) {
 			return iter->second;
@@ -50,7 +50,7 @@ namespace OpenGUI {
 		return 0;
 	}
 	//############################################################################
-	EventHandlerList& EventReceiver::operator[]( const std::string& name ) {
+	EventHandlerList& EventReceiver::operator[]( const String& name ) {
 		EventHandlerList* retobj = getEventHandlers( name );
 		if ( retobj == 0 ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Event does not exist: " + name, __FUNCTION__ );

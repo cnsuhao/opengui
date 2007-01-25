@@ -1,11 +1,11 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
 #define A276FC6E_2DB9_4c84_BDA0_027C4AC5E47C
 
-#define OPENGUI_VERSION_STR "0.8 [Kunzite]"
+#define OPENGUI_VERSION_STR "0.9 [Iolite]"
 
 //Just a bunch of macros to determine platform
 #include "OpenGUI_Platform.h"
@@ -19,6 +19,7 @@
 
 //Custom data types and import/export macros
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Singleton.h"

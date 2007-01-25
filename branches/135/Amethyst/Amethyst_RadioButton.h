@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef Amethyst_RadioButton_h__
@@ -23,9 +23,9 @@ namespace OpenGUI {
 			RadioButton();
 			virtual ~RadioButton();
 			//! Sets the Group name of the radio button
-			void setGroup( const std::string& groupName );
+			void setGroup( const String& groupName );
 			//! Gets the radio button Group name
-			const std::string& getGroup();
+			const String& getGroup();
 
 			static Widget* createRadioButtonFactory();
 			virtual ObjectAccessorList* getAccessors();
@@ -37,7 +37,7 @@ namespace OpenGUI {
 		private:
 			// this is the function used to unselect all peers when we are selected
 			void unselectPeers();
-			std::string mGroupName;
+			String mGroupName;
 		};
 	} // namespace Amethyst {
 } // namespace OpenGUI {

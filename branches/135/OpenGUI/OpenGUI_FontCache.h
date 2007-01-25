@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef B2AE3F25_D739_4f77_93B3_0930B8015415
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Imagery.h"
 #include "OpenGUI_FontGlyph.h"
@@ -30,7 +31,7 @@ namespace OpenGUI {
 	public:
 		FontSet* font;
 		IVector2 glyphSize;
-		typedef std::map<char, FontGlyph> GlyphMap;
+		typedef std::map<Char, FontGlyph> GlyphMap;
 		GlyphMap mGlyphMap;
 	};
 
@@ -45,7 +46,7 @@ namespace OpenGUI {
 	public:
 		FontCache();
 		~FontCache();
-		void GetGlyph( FontSet* font, char glyph_charCode,
+		void GetGlyph( FontSet* font, const Char glyph_charCode,
 					   const IVector2& glyph_pixelSize, FontGlyph& outFontGlyph );
 
 		//! Flushes all glyphs from a given font
@@ -56,7 +57,7 @@ namespace OpenGUI {
 	private:
 		IVector2 _calcNewAtlasSize( const IVector2& estimatedGlyphSize );
 		FontCacheGlyphSet* _GetFontCacheGlyphSet( FontSet* font, const IVector2& glyph_pixelSize );
-		void _RenderGlyph( FontCacheGlyphSet* glyphSet, char glyph_charCode );
+		void _RenderGlyph( FontCacheGlyphSet* glyphSet, const Char glyph_charCode );
 
 		void _DestroyAllGlyphSets();
 		void _DestroyAllFontAtlas();

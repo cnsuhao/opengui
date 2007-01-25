@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "tinyxml.h"
@@ -16,7 +16,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void XMLDoc::loadFile( const std::string& filename ) {
+	void XMLDoc::loadFile( const String& filename ) {
 		mFileName = filename;
 		TiXmlDocument doc;
 		Resource_CStr res;
@@ -31,10 +31,10 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void XMLDoc::saveFile( const std::string& filename ) {
+	void XMLDoc::saveFile( const String& filename ) {
 		mFileName = filename;
 		TiXmlDocument doc;
-		TiXmlDeclaration decl( "1.0", "", "" );
+		TiXmlDeclaration decl( "1.0", "UTF-8", "" );
 		doc.InsertEndChild( decl );
 		for ( XMLNodeList::iterator iter = mChildren.begin(); iter != mChildren.end(); iter++ ) {
 			XMLNode* node = ( *iter );
@@ -57,7 +57,7 @@ namespace OpenGUI {
 		return mChildren;
 	}
 	//############################################################################
-	XMLNodeList XMLNodeContainer::getChildren( const std::string& tagName )const {
+	XMLNodeList XMLNodeContainer::getChildren( const String& tagName )const {
 		XMLNodeList ret;
 		for ( XMLNodeList::const_iterator iter = mChildren.begin(); iter != mChildren.end(); iter++ ) {
 			XMLNode* child = ( *iter );
@@ -86,7 +86,7 @@ namespace OpenGUI {
 	//############################################################################
 	//############################################################################
 	//############################################################################
-	XMLNode::XMLNode( const std::string& tagName, XMLNodeContainer* parentPtr )
+	XMLNode::XMLNode( const String& tagName, XMLNodeContainer* parentPtr )
 			: mTagName( tagName ), mParent( parentPtr ) {
 		if ( mParent )
 			_notifyChildAttach( mParent, this );
@@ -109,7 +109,7 @@ namespace OpenGUI {
 			_notifyChildAttach( mParent, this );
 	}
 	//############################################################################
-	const std::string& XMLNode::getAttribute( const std::string& name ) const {
+	const String& XMLNode::getAttribute( const String& name ) const {
 		XMLAttributeMap::const_iterator iter = mAttributes.find( name );
 		if ( iter == mAttributes.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND,
@@ -123,26 +123,26 @@ namespace OpenGUI {
 		return attribs;
 	}
 	//############################################################################
-	void XMLNode::setAttribute( const std::string& name, const std::string& value ) {
+	void XMLNode::setAttribute( const String& name, const String& value ) {
 		mAttributes[name] = value;
 	}
 	//############################################################################
-	void XMLNode::removeAttribute( const std::string& name ) {
+	void XMLNode::removeAttribute( const String& name ) {
 		mAttributes.erase( name );
 	}
 	//############################################################################
-	bool XMLNode::hasAttribute( const std::string& name ) const {
+	bool XMLNode::hasAttribute( const String& name ) const {
 		XMLAttributeMap::const_iterator iter = mAttributes.find( name );
 		if ( iter != mAttributes.end() )
 			return true;
 		return false;
 	}
 	//############################################################################
-	const std::string& XMLNode::getText() const {
+	const String& XMLNode::getText() const {
 		return mText;
 	}
 	//############################################################################
-	void XMLNode::setText( const std::string& text ) {
+	void XMLNode::setText( const String& text ) {
 		mText = text;
 	}
 	//############################################################################
@@ -195,8 +195,8 @@ namespace OpenGUI {
 		TiXmlElement* mytxml = new TiXmlElement( getTagName() );
 		XMLAttributeMap::iterator iter = mAttributes.begin();
 		while ( iter != mAttributes.end() ) {
-			const std::string& aName = iter->first;
-			const std::string& aValue = iter->second;
+			const String& aName = iter->first;
+			const String& aValue = iter->second;
 			mytxml->SetAttribute( aName, aValue );
 			iter++;
 		}
@@ -229,8 +229,8 @@ namespace OpenGUI {
 	The path is always comprised of a leading "/", following by \c tagName + "/" for each proceeding
 	node before the current node.
 	*/
-	std::string XMLNode::getPath() const {
-		std::string path = "/";
+	String XMLNode::getPath() const {
+		String path = "/";
 		XMLNode* parentNode = dynamic_cast<XMLNode*>( mParent );
 		if ( parentNode ) {
 			parentNode->_buildPath( path );
@@ -238,7 +238,7 @@ namespace OpenGUI {
 		return path;
 	}
 	//############################################################################
-	void XMLNode::_buildPath( std::string& path ) {
+	void XMLNode::_buildPath( String& path ) {
 		XMLNode* parentNode = dynamic_cast<XMLNode*>( mParent );
 		if ( parentNode ) {
 			parentNode->_buildPath( path );
@@ -246,7 +246,7 @@ namespace OpenGUI {
 		path = path + mTagName + "/";
 	}
 	//############################################################################
-	std::string XMLNode::dump() const {
+	String XMLNode::dump() const {
 		std::stringstream out;
 		out << "<" << mTagName;
 		for ( XMLAttributeMap::const_iterator iter = mAttributes.begin(); iter != mAttributes.end(); iter++ ) {

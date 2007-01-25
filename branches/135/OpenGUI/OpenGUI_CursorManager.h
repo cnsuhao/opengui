@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef DEA5BEFE_2592_4893_B0D2_AB7A54DF71A7
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_Cursor.h"
 #include "OpenGUI_Value.h"
@@ -33,30 +34,30 @@ namespace OpenGUI {
 		static CursorManager* getSingletonPtr( void );
 
 		//! Create a Cursor that was registered under the given \c Name and optionally \c Library
-		CursorPtr CreateRawCursor( const std::string& Name, const std::string& Library = "" );
+		CursorPtr CreateRawCursor( const String& Name, const String& Library = "" );
 
 		//! Creates and initializes a cursor that was previously defined by DefineCursor()
-		CursorPtr CreateDefinedCursor( const std::string& Name );
+		CursorPtr CreateDefinedCursor( const String& Name );
 
 		//! Defines a new cursor under the given \c Name with the given \c propertyList, using \c BaseName and \c BaseLibrary as the source
-		void DefineCursor( const std::string& Name, const ValueList& propertyList, const std::string& BaseName, const std::string& BaseLibrary );
+		void DefineCursor( const String& Name, const ValueList& propertyList, const String& BaseName, const String& BaseLibrary );
 		//! Undefines an existing cursor definition by \c Name
-		void UndefineCursor( const std::string& Name );
+		void UndefineCursor( const String& Name );
 
 		//! Register a Cursor factory
-		void RegisterCursorFactory( const std::string& Name, const std::string& Library, CursorFactoryCallback* factoryCallback );
+		void RegisterCursorFactory( const String& Name, const String& Library, CursorFactoryCallback* factoryCallback );
 		//! Unregister a Cursor factory
-		void UnregisterCursorFactory( const std::string& Name, const std::string& Library );
+		void UnregisterCursorFactory( const String& Name, const String& Library );
 
 		//! inner type of CursorRegPairList
-		typedef std::pair<std::string, std::string> CursorRegPair;
+		typedef std::pair<String, String> CursorRegPair;
 		//! return type of GetRegisteredCursors()
 		typedef std::list<CursorRegPair> CursorRegPairList;
 		//! returns a pair list of all registered Cursors
 		CursorRegPairList GetRegisteredCursors();
 
 		//! return type of GetDefinedCursors()
-		typedef std::list<std::string> CursorDefList;
+		typedef std::list<String> CursorDefList;
 		//! returns a list of all defined Cursors
 		CursorDefList GetDefinedCursors();
 
@@ -64,21 +65,21 @@ namespace OpenGUI {
 		void getStats( size_t& RegWidgets, size_t& RegLibs, size_t& DefWidgets );
 
 	private:
-		typedef std::map<std::string, CursorFactoryCallback*> CursorFactoryMap;
-		typedef std::map<std::string, CursorFactoryMap> LibraryMap;
+		typedef std::map<String, CursorFactoryCallback*> CursorFactoryMap;
+		typedef std::map<String, CursorFactoryMap> LibraryMap;
 		LibraryMap mLibraryMap;
 
 		struct CursorDefinition {
-			std::string Name;
-			std::string Library;
+			String Name;
+			String Library;
 			ValueList Properties;
 		};
-		typedef std::map<std::string, CursorDefinition> CursorDefinitionMap;
+		typedef std::map<String, CursorDefinition> CursorDefinitionMap;
 		CursorDefinitionMap mCursorDefinitionMap;
 
 		// XML tag handlers for <CursorDef> tags
-		static bool _CursorDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _CursorDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _CursorDef_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _CursorDef_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 	};
 } //namespace OpenGUI {
 #endif // DEA5BEFE_2592_4893_B0D2_AB7A54DF71A7

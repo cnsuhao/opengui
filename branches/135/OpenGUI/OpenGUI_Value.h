@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef D8213470_947C_4A26_A6E3_2ED806D2B523
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 
 namespace OpenGUI {
@@ -31,8 +32,8 @@ namespace OpenGUI {
 	*/
 	class OPENGUI_API Value {
 	public:
-		//! Constructor. \c Name is optional, but will set the name of this Value if given
-		Value( const std::string& Name = "" );
+		//! default constructor
+		Value();
 		//! Copy Constructor
 		Value( const Value& copy );
 		//! Destructor
@@ -41,43 +42,43 @@ namespace OpenGUI {
 //!\name Assigning constructors that auto detect type based on parameter type
 //@{
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const std::string& value, const std::string& Name = "" );
+		Value( const String& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const char* value, const std::string& Name = "" );
+		Value( const char* value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( bool boolean, const std::string& Name = "" );
+		Value( bool boolean, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( float value, const std::string& Name = "" );
+		Value( float value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const FVector2& value, const std::string& Name = "" );
+		Value( const FVector2& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const FRect& value, const std::string& Name = "" );
+		Value( const FRect& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( int value, const std::string& Name = "" );
+		Value( int value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const IVector2& value, const std::string& Name = "" );
+		Value( const IVector2& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const IRect& value, const std::string& Name = "" );
+		Value( const IRect& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const Color& value, const std::string& Name = "" );
+		Value( const Color& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const Font& value, const std::string& Name = "" );
+		Value( const Font& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const TextAlignment& value, const std::string& Name = "" );
+		Value( const TextAlignment& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const ImageryPtr& value, const std::string& Name = "" );
+		Value( const ImageryPtr& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const FacePtr& value, const std::string& Name = "" );
+		Value( const FacePtr& value, const String& Name = "" );
 		//! Constructor, initializes object with copy of given \c value, the \c Name is optional
-		Value( const CursorPtr& value, const std::string& Name = "" );
+		Value( const CursorPtr& value, const String& Name = "" );
 //@}
 
 		//! gets the name of this Value
-		const std::string& getName()const {
+		const String& getName()const {
 			return mName;
 		}
 		//! sets the name of this Value
-		void setName( const std::string& Name = "" ) {
+		void setName( const String& Name = "" ) {
 			mName = Name;
 		}
 
@@ -124,7 +125,7 @@ namespace OpenGUI {
 //!\name Auto detect type based on parameter type
 //@{
 		//! Sets the value, stored value is a copy
-		void setValue( const std::string& std_string );
+		void setValue( const String& str );
 		//! Sets the value, stored value is a copy
 		void setValue( const char* cString );
 		//! Sets the value, stored value is a copy
@@ -158,7 +159,7 @@ namespace OpenGUI {
 //!\name Get value as explicit type
 //@{
 		//! Gets the stored value, throws exception if no value is stored
-		std::string getValueAsString() const;
+		String getValueAsString() const;
 		//! Gets the stored value, throws exception if no value is stored
 		const char* getValueAsCString() const;
 		//! Gets the stored value, throws exception if no value is stored
@@ -192,42 +193,39 @@ namespace OpenGUI {
 //!\name Set from string with explicit type conversion
 //@{
 		//! Sets the value from a string, parsed into an int
-		void setValueAsInt( const std::string& intStr );
+		void setValueAsInt( const String& intStr );
 		//! Sets the value from a string, parsed into a float
-		void setValueAsFloat( const std::string& floatStr );
+		void setValueAsFloat( const String& floatStr );
 		//! Sets the value from a string, parsed into an FVector2
-		void setValueAsFVector2( const std::string& fv2Str );
+		void setValueAsFVector2( const String& fv2Str );
 		//! Sets the value from a string, parsed into an FRect
-		void setValueAsFRect( const std::string& frectStr );
+		void setValueAsFRect( const String& frectStr );
 		//! Sets the value from a string, parsed into an IVector2
-		void setValueAsIVector2( const std::string& iv2Str );
+		void setValueAsIVector2( const String& iv2Str );
 		//! Sets the value from a string, parsed into an IRect
-		void setValueAsIRect( const std::string& irectStr );
+		void setValueAsIRect( const String& irectStr );
 		//! Sets the value from a string, parsed into a Color
-		void setValueAsColor( const std::string& colorStr );
+		void setValueAsColor( const String& colorStr );
 		//! Sets the value from a string, parsed into a string
-		void setValueAsString( const std::string& stringStr );
+		void setValueAsString( const String& stringStr );
 		//! Sets the value from a string, parsed into a boolean
-		void setValueAsBool( const std::string& boolStr );
+		void setValueAsBool( const String& boolStr );
 		//! Sets the value from a string, parsed into a Font
-		void setValueAsFont( const std::string& fontStr );
+		void setValueAsFont( const String& fontStr );
 		//! Sets the value from a string, parsed into a TextAlignment
-		void setValueAsTextAlignment( const std::string& textAlignmentStr );
+		void setValueAsTextAlignment( const String& textAlignmentStr );
 		//! Sets the value from a string, used to look up the Imagery (can be either short name or FQN)
-		void setValueAsImageryPtr( const std::string& imageryName );
+		void setValueAsImageryPtr( const String& imageryName );
 		//! Sets the value from a string, used to look up the Face
-		void setValueAsFacePtr( const std::string& faceName );
+		void setValueAsFacePtr( const String& faceName );
 		//! Sets the value from a string, used to look up the Cursor via CursorManager::CreateDefinedCursor()
-		void setValueAsCursorPtr( const std::string& cursorName );
+		void setValueAsCursorPtr( const String& cursorName );
 //@}
 
 //!\name Purely string based functions
 //@{
-		//! Sets the value from a string, performing auto detection to try to fit it into the best type
-		void setValueAuto( const std::string& std_string );
-
 		//! Returns a string representation of the stored value
-		std::string toStr() const;
+		String toStr() const;
 //@}
 		//! Saves this Value to the given XMLNode object, overwriting any colliding content
 		void SaveToXMLNode( XMLNode& node ) const;
@@ -240,7 +238,7 @@ namespace OpenGUI {
 		ValueType mType;
 		union {
 			void* mRaw;
-			std::string* mString;
+			String* mString;
 			bool* mBool;
 			float* mFloat;
 			FVector2* mFVector2;
@@ -255,10 +253,10 @@ namespace OpenGUI {
 			FacePtr* mFacePtr;
 			CursorPtr* mCursorPtr;
 		};
-		std::string mName;
+		String mName;
 
-		static std::string _TypeToString( ValueType type );
-		static ValueType _TypeFromString( const std::string& type );
+		static String _TypeToString( ValueType type );
+		static ValueType _TypeFromString( const String& type );
 	};
 
 	//############################################################################
@@ -283,7 +281,7 @@ namespace OpenGUI {
 		size_t size() const;
 
 		//! Retrieves the first Value in the list with the given \c name
-		const Value& get( const std::string& name ) const;
+		const Value& get( const String& name ) const;
 		//! Retrieves a Value by its stack \c index
 		const Value& get ( unsigned int index ) const;
 	private:

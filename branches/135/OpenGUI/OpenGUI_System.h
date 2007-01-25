@@ -1,13 +1,14 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef DC3E54A4_1432_4fa1_A635_D76797D7ED89
 #define DC3E54A4_1432_4fa1_A635_D76797D7ED89
 
 #include "OpenGUI_PreRequisites.h"
-#include "OpenGUI_Singleton.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
+#include "OpenGUI_Singleton.h"
 #include "OpenGUI_LogSystem.h"
 #include "OpenGUI_Exception.h"
 #include "OpenGUI_Math.h"
@@ -79,7 +80,7 @@ namespace OpenGUI {
 			\param logFile name of the log file to write log message to. If "" is used,
 				no log file will be created
 		*/
-		System( Renderer* renderer, ResourceProvider* resourceProvider = NULL, std::string logFile = "OpenGUI.log" );
+		System( Renderer* renderer, ResourceProvider* resourceProvider = NULL, const String& logFile = "OpenGUI.log" );
 		/*! As the other constructor except a log listener is passed in place of a log filename.
 			\param renderer pointer to a valid Renderer object
 			\param resourceProvider pointer to a valid ResourceProvider object, or 0
@@ -91,9 +92,9 @@ namespace OpenGUI {
 		~System();
 
 		//! loads a plugin by filename
-		void loadPlugin( std::string filename );
+		void loadPlugin( String filename );
 		//! unloads a plugin by filename
-		void unloadPlugin( std::string filename );
+		void unloadPlugin( String filename );
 
 
 		//! Updates all subsystems in the necessary order
@@ -118,8 +119,8 @@ namespace OpenGUI {
 		void doConstructor( Renderer* renderer, ResourceProvider* resourceProvider );
 
 		// XML tag handlers for <OpenGUI> root tag
-		static bool _OpenGUI_XMLNode_Load( const XMLNode& node, const std::string& nodePath );
-		static bool _OpenGUI_XMLNode_Unload( const XMLNode& node, const std::string& nodePath );
+		static bool _OpenGUI_XMLNode_Load( const XMLNode& node, const String& nodePath );
+		static bool _OpenGUI_XMLNode_Unload( const XMLNode& node, const String& nodePath );
 
 		//Logging Facilities
 		LogManager* m_LogManager;

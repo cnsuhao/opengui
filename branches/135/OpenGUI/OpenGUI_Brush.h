@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef B955248E_7EDD_47CA_B588_BAA9C55E4380
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Event.h"
 #include "OpenGUI_Imagery.h"
@@ -15,6 +16,7 @@
 #include "OpenGUI_BrushModifier.h"
 #include "OpenGUI_BrushModifierStack.h"
 #include "OpenGUI_RenderOperation.h"
+#include "OpenGUI_StrConv.h"
 
 namespace OpenGUI {
 
@@ -94,24 +96,23 @@ namespace OpenGUI {
 			mParentBrush = brush;
 		}
 		Brush* mParentBrush;
-		typedef std::list<std::string> StringList;
-		//! \internal explodes the given \c inputStr into an \c outputStrList by \c token
-		void _Tokenize( const std::string& inputStr, StringList& outputStrList, char token );
-		//! \internal Performs wrapping on \c strList_in_out, assuming each character is \c charWidth and lines are allowed a maximum of \c wrapWidth
-		void _WrapText( StringList& strList_in_out, unsigned int charWidth, unsigned int wrapWidth );
+
+		//! \internal Performs word wrapping on \a strList_in_out, assuming each character is \a charWidth and lines are allowed a maximum of \a wrapWidth
+		void _WordWrapText( StringList& strList_in_out, unsigned int charWidth, unsigned int wrapWidth );
+
 	public:
 		~BrushText() {}
 
-		//! draws the given string of \c text at the given \c position, using the given \c font, and optionally adjusting the glyph spacing by \c spacing_adjust
-		void drawText( const std::string& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
+		//! draws the given string of \a text at the given \a position, using the given \a font, and optionally adjusting the glyph spacing by \a spacing_adjust
+		void drawText( const String& text, const FVector2& position, Font& font, float spacing_adjust = 0.0f );
 
 		//! draws the given string within the given rect, using the given font, while applying the given text alignments and performing any necessary word wrapping
-		void drawTextArea( const std::string& text, const FRect& area, Font& font, bool wrap = false, const TextAlignment alignment = TextAlignment() );
+		void drawTextArea( const String& text, const FRect& area, Font& font, bool wrap = false, const TextAlignment alignment = TextAlignment() );
 
-		//! draws the given \c character at the given \c position using the given \c font.
-		void drawCharacter( const char character, Font& font );
+		//! draws the given \a character at the current PenPosition using the given \a font.
+		void drawCharacter( const Char character, Font& font );
 
-		//! Converts the given \c pointSize to the individual X and Y pixel sizes according to PPU and UPI
+		//! Converts the given \a pointSize to the individual X and Y pixel sizes according to PPU and UPI
 		IVector2 pointsToPixels( float pointSize );
 
 		//! The position that the next font glyph should be drawn to continue the last string of text.

@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_CursorManager.h"
@@ -53,12 +53,12 @@ namespace OpenGUI {
 	if it is in a packed Name:Library format. If so then the packed value will be exploded and
 	used, otherwise the full list of registered cursors is walked and the first entry with
 	a matching \a Name is used. */
-	CursorPtr CursorManager::CreateRawCursor( const std::string& Name, const std::string& Library ) {
+	CursorPtr CursorManager::CreateRawCursor( const String& Name, const String& Library ) {
 		if ( Library == "" ) { // either packed Name:Library or just Name with first match
 			size_t nPos;
 			nPos = Name.find( ':' );
-			if ( nPos != std::string::npos ) { // packed Name:Library, so explode and recall
-				std::string NewName, NewLib;
+			if ( nPos != String::npos ) { // packed Name:Library, so explode and recall
+				String NewName, NewLib;
 				NewName = Name.substr( 0, nPos );
 				NewLib = Name.substr( nPos + 1 );
 				return CreateRawCursor( NewName, NewLib );
@@ -67,7 +67,7 @@ namespace OpenGUI {
 					CursorFactoryMap& fMap = iter->second;
 					CursorFactoryMap::iterator iter2 = fMap.find( Name );
 					if ( iter2 != fMap.end() ) {
-						const std::string& Lib = iter->first;
+						const String& Lib = iter->first;
 						return CreateRawCursor( Name, Lib );
 					}
 				}
@@ -84,12 +84,12 @@ namespace OpenGUI {
 		return cursor;
 	}
 	//############################################################################
-	void CursorManager::RegisterCursorFactory( const std::string& Name, const std::string& Library,
+	void CursorManager::RegisterCursorFactory( const String& Name, const String& Library,
 			CursorFactoryCallback* factoryCallback ) {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
@@ -107,11 +107,11 @@ namespace OpenGUI {
 		fMap[Name] = factoryCallback;
 	}
 	//############################################################################
-	void CursorManager::UnregisterCursorFactory( const std::string& Name, const std::string& Library ) {
+	void CursorManager::UnregisterCursorFactory( const String& Name, const String& Library ) {
 		size_t nPos, lPos;
 		nPos = Name.find( ':' );
 		lPos = Library.find( ':' );
-		if ( nPos != std::string::npos || lPos != std::string::npos )
+		if ( nPos != String::npos || lPos != String::npos )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Separator character ':' is not allowed in Name or Library", __FUNCTION__ );
 		if ( Name.length() == 0 )
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Name cannot be 0 length", __FUNCTION__ );
@@ -129,8 +129,8 @@ namespace OpenGUI {
 		fMap.erase( iter );
 	}
 	//############################################################################
-	void CursorManager::DefineCursor( const std::string& Name, const ValueList& propertyList,
-									  const std::string& BaseName, const std::string& BaseLibrary ) {
+	void CursorManager::DefineCursor( const String& Name, const ValueList& propertyList,
+									  const String& BaseName, const String& BaseLibrary ) {
 		CursorDefinitionMap::iterator iter = mCursorDefinitionMap.find( Name );
 		if ( iter != mCursorDefinitionMap.end() )
 			OG_THROW( Exception::ERR_DUPLICATE_ITEM, "Cursor already defined with given Name: " + Name, __FUNCTION__ );
@@ -149,7 +149,7 @@ namespace OpenGUI {
 		cd.Properties = propertyList;
 	}
 	//############################################################################
-	void CursorManager::UndefineCursor( const std::string& Name ) {
+	void CursorManager::UndefineCursor( const String& Name ) {
 		CursorDefinitionMap::iterator iter = mCursorDefinitionMap.find( Name );
 		if ( iter == mCursorDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Cursor defined with given Name: " + Name, __FUNCTION__ );
@@ -157,7 +157,7 @@ namespace OpenGUI {
 		mCursorDefinitionMap.erase( iter );
 	}
 	//############################################################################
-	CursorPtr CursorManager::CreateDefinedCursor( const std::string& Name ) {
+	CursorPtr CursorManager::CreateDefinedCursor( const String& Name ) {
 		CursorDefinitionMap::iterator iter = mCursorDefinitionMap.find( Name );
 		if ( iter == mCursorDefinitionMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "No Cursor defined with given Name: " + Name, __FUNCTION__ );
@@ -177,10 +177,10 @@ namespace OpenGUI {
 	CursorManager::CursorRegPairList CursorManager::GetRegisteredCursors() {
 		CursorRegPairList retval;
 		for ( LibraryMap::iterator iter = mLibraryMap.begin(); iter != mLibraryMap.end(); iter++ ) {
-			std::string LibName = iter->first;
+			String LibName = iter->first;
 			CursorFactoryMap& factoryMap = iter->second;
 			for ( CursorFactoryMap::iterator iter = factoryMap.begin(); iter != factoryMap.end(); iter++ ) {
-				std::string BaseName = iter->first;
+				String BaseName = iter->first;
 				retval.push_back( CursorRegPair( BaseName, LibName ) );
 			}
 		}
@@ -214,16 +214,16 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	bool CursorManager::_CursorDef_XMLNode_Load( const XMLNode& node, const std::string& nodePath ) {
+	bool CursorManager::_CursorDef_XMLNode_Load( const XMLNode& node, const String& nodePath ) {
 		CursorManager& manager = CursorManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string basename = node.getAttribute( "BaseName" );
-		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		const String name = node.getAttribute( "Name" );
+		const String basename = node.getAttribute( "BaseName" );
+		const String baselib = node.getAttribute( "BaseLibrary" );
 		ValueList propertyList;
 		XMLNodeList xmlProps = node.getChildren( "Property" );
 		for ( XMLNodeList::iterator iter = xmlProps.begin(); iter != xmlProps.end(); iter++ ) {
@@ -236,16 +236,16 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool CursorManager::_CursorDef_XMLNode_Unload( const XMLNode& node, const std::string& nodePath ) {
+	bool CursorManager::_CursorDef_XMLNode_Unload( const XMLNode& node, const String& nodePath ) {
 		CursorManager& manager = CursorManager::getSingleton();
 
 		// we only handle these tags within <OpenGUI>
 		if ( nodePath != "/OpenGUI/" )
 			return false;
 
-		const std::string name = node.getAttribute( "Name" );
-		const std::string basename = node.getAttribute( "BaseName" );
-		const std::string baselib = node.getAttribute( "BaseLibrary" );
+		const String name = node.getAttribute( "Name" );
+		const String basename = node.getAttribute( "BaseName" );
+		const String baselib = node.getAttribute( "BaseLibrary" );
 		manager.UndefineCursor( name );
 		return true;
 	}

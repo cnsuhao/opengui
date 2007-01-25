@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "tinyxml.h"
@@ -38,7 +38,7 @@ namespace OpenGUI {
 		UnregisterUnloadHandler( "Include", &XMLParser::_IncludeUnloadHandler );
 	}
 	//############################################################################
-	void XMLParser::LoadFromFile( const std::string& xmlFilename ) {
+	void XMLParser::LoadFromFile( const String& xmlFilename ) {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN LoadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
@@ -46,7 +46,7 @@ namespace OpenGUI {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "END LoadFromFile: " << xmlFilename << Log::endlog;
 	}
 	//############################################################################
-	void XMLParser::UnloadFromFile( const std::string& xmlFilename ) {
+	void XMLParser::UnloadFromFile( const String& xmlFilename ) {
 		LogManager::SlogMsg( "XMLParser", OGLL_INFO ) << "BEGIN UnloadFromFile: " << xmlFilename << Log::endlog;
 		XMLDoc doc;
 		doc.loadFile( xmlFilename );
@@ -57,7 +57,7 @@ namespace OpenGUI {
 	/*! Registering for a path that is already registered is legal, and will override the
 	existing registration. Unregistering your override will restore the previously registered
 	handler. */
-	void XMLParser::RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+	void XMLParser::RegisterLoadHandler( const String& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mLoadMap[tagName];
 		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
@@ -77,7 +77,7 @@ namespace OpenGUI {
 	}
 	//############################################################################
 	/*! \see RegisterLoadHandler() */
-	void XMLParser::UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+	void XMLParser::UnregisterLoadHandler( const String& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mLoadMap[tagName];
 		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
@@ -97,7 +97,7 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, ss.str(), __FUNCTION__ );
 	}
 	//############################################################################
-	void XMLParser::RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+	void XMLParser::RegisterUnloadHandler( const String& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mUnloadMap[tagName];
 		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
@@ -116,7 +116,7 @@ namespace OpenGUI {
 		handlers.push_front( handler_callback );
 	}
 	//############################################################################
-	void XMLParser::UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback ) {
+	void XMLParser::UnregisterUnloadHandler( const String& tagName, XMLNodeHandler* handler_callback ) {
 		HandlerList& handlers = mUnloadMap[tagName];
 		for ( HandlerList::iterator iter = handlers.begin(); iter != handlers.end(); iter++ ) {
 			XMLNodeHandler* handler = ( *iter );
@@ -136,21 +136,21 @@ namespace OpenGUI {
 		OG_THROW( Exception::ERR_ITEM_NOT_FOUND, ss.str(), __FUNCTION__ );
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_LoadNode( const XMLNode& node, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_LoadNode( const XMLNode& node, const String& nodePath ) {
 		if ( !fireCallback( mLoadMap, node, nodePath ) ) {
 			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
 			<< "No XMLLoad handler processed tag: " << node.getTagName() << Log::endlog;
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_UnloadNode( const XMLNode& node, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_UnloadNode( const XMLNode& node, const String& nodePath ) {
 		if ( !fireCallback( mUnloadMap, node, nodePath ) ) {
 			LogManager::SlogMsg( "XMLParser", OGLL_WARN )
 			<< "No XMLUnload handler processed tag: " << node.getTagName() << Log::endlog;
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_Load( const XMLNodeContainer& container, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_Load( const XMLNodeContainer& container, const String& nodePath ) {
 		XMLNodeList list = container.getChildren();
 		for ( XMLNodeList::iterator iter = list.begin(); list.end() != iter; iter++ ) {
 			XMLNode& node = *( *iter );
@@ -158,7 +158,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void XMLParser::ProcessXML_Unload( const XMLNodeContainer& container, const std::string& nodePath ) {
+	void XMLParser::ProcessXML_Unload( const XMLNodeContainer& container, const String& nodePath ) {
 		XMLNodeList list = container.getChildren();
 		for ( XMLNodeList::reverse_iterator iter = list.rbegin(); list.rend() != iter; iter++ ) {
 			XMLNode& node = *( *iter );
@@ -166,7 +166,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	bool XMLParser::fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const std::string& nodePath ) {
+	bool XMLParser::fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const String& nodePath ) {
 		XMLHandlerMap::iterator mapIter = handlerMap.find( node.getTagName() );
 		if ( mapIter != handlerMap.end() && mapIter->second.size() > 0 ) {
 			HandlerList& handleList = mapIter->second;
@@ -177,7 +177,7 @@ namespace OpenGUI {
 					retval = ( *handler_callback )( node, nodePath );
 				} catch ( ... ) {
 					XMLDoc* doc = node.getDoc();
-					std::string file;
+					String file;
 					if ( doc ) file = doc->getFileName();
 					OG_THROW( Exception::ERR_INTERNAL_ERROR,
 							  "Unhandled exception in XML handler callback! @" + file + ":"
@@ -193,8 +193,8 @@ namespace OpenGUI {
 		return false;
 	}
 	//############################################################################
-	bool XMLParser::_IncludeLoadHandler( const XMLNode& node, const std::string& nodePath ) {
-		std::string filename = node.getAttribute( "File" );
+	bool XMLParser::_IncludeLoadHandler( const XMLNode& node, const String& nodePath ) {
+		String filename = node.getAttribute( "File" );
 		if ( filename.length() <= 0 ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'File' attribute.", __FUNCTION__ );
 		}
@@ -225,8 +225,8 @@ namespace OpenGUI {
 		return true;
 	}
 	//############################################################################
-	bool XMLParser::_IncludeUnloadHandler( const XMLNode& node, const std::string& nodePath ) {
-		std::string filename = node.getAttribute( "File" );
+	bool XMLParser::_IncludeUnloadHandler( const XMLNode& node, const String& nodePath ) {
+		String filename = node.getAttribute( "File" );
 		if ( filename.length() <= 0 ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "<Include> tag missing 'File' attribute.", __FUNCTION__ );
 		}
@@ -259,12 +259,12 @@ namespace OpenGUI {
 	//############################################################################
 	XMLParser::IncludeList XMLParser::mIncludeList;
 	//############################################################################
-	bool XMLParser::_Included( const std::string& filename ) {
-		std::string file = filename;
-		StrConv::toLower( file );
-		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end();iter++ ) {
-			std::string item = ( *iter );
-			StrConv::toLower( item );
+	bool XMLParser::_Included( const String& filename ) {
+		String file = filename;
+		StrConv::toLower_Latin( file );
+		for ( IncludeList::iterator iter = mIncludeList.begin(); iter != mIncludeList.end(); iter++ ) {
+			String item = ( *iter );
+			StrConv::toLower_Latin( item );
 			if ( item == file )
 				return true;
 		}

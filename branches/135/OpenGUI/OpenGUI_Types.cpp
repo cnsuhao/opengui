@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_Types.h"
@@ -8,26 +8,26 @@
 
 namespace OpenGUI {
 	//#####################################################################
-	std::string IVector2::toStr() const {
-		std::string ret;
+	String IVector2::toStr() const {
+		String ret;
 		StrConv::fromIVector2( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string FVector2::toStr() const {
-		std::string ret;
+	String FVector2::toStr() const {
+		String ret;
 		StrConv::fromFVector2( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string IRect::toStr() const {
-		std::string ret;
+	String IRect::toStr() const {
+		String ret;
 		StrConv::fromIRect( *this, ret );
 		return ret;
 	}
 	//#####################################################################
-	std::string FRect::toStr() const {
-		std::string ret;
+	String FRect::toStr() const {
+		String ret;
 		StrConv::fromFRect( *this, ret );
 		return ret;
 	}

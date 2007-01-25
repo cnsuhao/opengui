@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 // -----------------------------------------------------------------------------
@@ -20,15 +20,15 @@ namespace OpenGUI {
 	//#####################################################################
 	OgreResourceProvider::~OgreResourceProvider() {}
 	//#####################################################################
-	void OgreResourceProvider::setResourceGroup( const std::string& groupName ) {
+	void OgreResourceProvider::setResourceGroup( const String& groupName ) {
 		mResourceGroup = groupName;
 	}
 	//#####################################################################
-	std::string OgreResourceProvider::getResourceGroup() const {
+	const String& OgreResourceProvider::getResourceGroup() const {
 		return mResourceGroup;
 	}
 	//#####################################################################
-	void OgreResourceProvider::loadResource( const std::string& filename, Resource& output ) {
+	void OgreResourceProvider::loadResource( const String& filename, Resource& output ) {
 		if ( filename.empty() || filename == "" ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No filename provided", "OgreResourceProvider::loadResource" );
 		}

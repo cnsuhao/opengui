@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "Amethyst_Label.h"
@@ -50,12 +50,12 @@ namespace OpenGUI {
 			/**/
 		}
 		//############################################################################
-		void Label::setText( const std::string& text ) {
+		void Label::setText( const String& text ) {
 			mText = text;
 			invalidate();
 		}
 		//############################################################################
-		const std::string& Label::getText() const {
+		const String& Label::getText() const {
 			return mText;
 		}
 		//############################################################################

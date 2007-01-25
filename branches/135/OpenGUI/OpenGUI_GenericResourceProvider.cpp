@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_GenericResourceProvider.h"
@@ -7,7 +7,7 @@
 
 namespace OpenGUI {
 	//#####################################################################
-	void GenericResourceProvider::loadResource( const std::string& filename, Resource& output ) {
+	void GenericResourceProvider::loadResource( const String& filename, Resource& output ) {
 		if ( filename.empty() || filename == "" ) {
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "No filename provided", "GenericResourceProvider::loadResource" );
 		}

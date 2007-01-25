@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_PreRequisites.h"
@@ -36,11 +36,11 @@ namespace OpenGUI {
 		mLogMap.clear();
 	}
 	//############################################################################
-	void LogManager::logMsg( std::string log, std::string message, unsigned int logLevel ) {
+	void LogManager::logMsg( const String& log, const String& message, unsigned int logLevel ) {
 		createLog( log )->write( message, logLevel );
 	}
 	//############################################################################
-	LogMessage& LogManager::logMsg( std::string log, unsigned int logLevel ) {
+	LogMessage& LogManager::logMsg( const String& log, unsigned int logLevel ) {
 		return createLog( log )->write( logLevel );
 	}
 	//############################################################################
@@ -52,7 +52,7 @@ namespace OpenGUI {
 		mLogLevel = logLevel;
 	}
 	//############################################################################
-	Log* LogManager::createLog( std::string name ) {
+	Log* LogManager::createLog( const String& name ) {
 		LogMap::iterator iter = mLogMap.find( name );
 		if ( iter != mLogMap.end() )
 			return ( *iter ).second;
@@ -61,14 +61,14 @@ namespace OpenGUI {
 		return lp;
 	}
 	//############################################################################
-	Log* LogManager::getLog( std::string name ) {
+	Log* LogManager::getLog( const String& name ) {
 		LogMap::iterator iter = mLogMap.find( name );
 		if ( iter == mLogMap.end() )
 			return 0;
 		return ( *iter ).second;
 	}
 	//############################################################################
-	void LogManager::destroyLog( std::string name ) {
+	void LogManager::destroyLog( const String& name ) {
 		LogMap::iterator iter = mLogMap.find( name );
 		if ( iter == mLogMap.end() )
 			return;
@@ -76,7 +76,7 @@ namespace OpenGUI {
 		mLogMap.erase( iter );
 	}
 	//############################################################################
-	void LogManager::_writeLogListener( std::string log, std::string message, unsigned int logLevel ) {
+	void LogManager::_writeLogListener( const String& log, const String& message, unsigned int logLevel ) {
 		//
 		if ( mLogListenerPtr ) {
 			if ( logLevel <= mLogLevel ) {
@@ -91,9 +91,8 @@ namespace OpenGUI {
 	//############################################################################
 
 
-	//NOTE : GCC doesn't like the -1 compiler trick
-	Log::Log( LogManager* parent, std::string name )
-			: mName( name ), mParent( parent ), mLogLevel( -1 ) {
+	Log::Log( LogManager* parent, const String& name )
+			: mName( name ), mParent( parent ), mLogLevel( ~0 ) {
 #ifdef OPENGUI_DEBUG
 		//write(0) << "**Log Type Created**" << Log::endlog;
 #endif
@@ -112,7 +111,7 @@ namespace OpenGUI {
 #endif
 	}
 	//############################################################################
-	void Log::write( std::string message, unsigned int logLevel ) {
+	void Log::write( const String& message, unsigned int logLevel ) {
 		if ( logLevel <= mLogLevel ) {
 			mParent->_writeLogListener( mName, message, logLevel );
 		}
@@ -146,7 +145,7 @@ namespace OpenGUI {
 
 
 
-	LogListenerToFile::LogListenerToFile( std::string filename ) {
+	LogListenerToFile::LogListenerToFile( const String& filename ) {
 		mFile.open( filename.c_str(), std::ios_base::trunc | std::ios_base::out );
 		write( "", "*** Log Started ***", 0 );
 	}
@@ -156,7 +155,7 @@ namespace OpenGUI {
 		mFile.close();
 	}
 	//############################################################################
-	void LogListenerToFile::write( std::string section, std::string message, unsigned int level ) {
+	void LogListenerToFile::write( const String& section, const String& message, unsigned int level ) {
 		static unsigned int sSectionWidth = 0;
 
 		using namespace std;

@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef A3E35C4A_48F9_429b_B13A_F3AB9BFF90D4
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Resource.h"
 #include "OpenGUI_RefObject.h"
@@ -42,11 +43,11 @@ namespace OpenGUI {
 		//! Create a font handle that will either immediate or delayed bind to the default font.
 		Font();
 
-		//! Create a font handle to the given \c fontSet at the given \c fontSize.
+		//! Create a font handle to the given \a fontSet at the given \a fontSize.
 		Font( FontSetPtr fontSet, float fontSize );
 
-		//! Create a font handle to the given registered \c fontName at the given \c fontSize.
-		Font( const std::string& fontName, float fontSize );
+		//! Create a font handle to the given registered \a fontName at the given \a fontSize.
+		Font( const String& fontName, float fontSize );
 
 		//! public destructor does nothing special
 		~Font() {
@@ -62,7 +63,7 @@ namespace OpenGUI {
 		void bind();
 
 		//! Returns the name of the FontSet this Font is currently or will be bound to
-		const std::string& getName() const {
+		const String& getName() const {
 			return m_FontName;
 		}
 
@@ -90,7 +91,7 @@ namespace OpenGUI {
 		bool m_Bound;
 		FontSetPtr m_FontSetPtr;
 		float m_FontSize;
-		std::string m_FontName;
+		String m_FontName;
 
 		bool _tryBind(); // tries to bind the font, returning false if failed for any reason
 	};

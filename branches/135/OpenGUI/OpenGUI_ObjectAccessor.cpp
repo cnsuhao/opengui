@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #include "OpenGUI_ObjectAccessor.h"
@@ -27,7 +27,7 @@ namespace OpenGUI {
 	then an exception is thrown.
 	\note Throws an exception whenever the requested \c accessorName cannot
 	be found, and there is no available parent in which to defer the call. */
-	ObjectAccessor* ObjectAccessorList::getAccessor( const std::string& accessorName, bool recursive ) {
+	ObjectAccessor* ObjectAccessorList::getAccessor( const String& accessorName, bool recursive ) {
 		//try to find locally
 		ObjectAccessorMap::iterator iter = mObjectAccessorMap.find( accessorName );
 		if ( iter != mObjectAccessorMap.end() )

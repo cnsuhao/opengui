@@ -1,5 +1,5 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef BE0F3698_B136_43b6_993F_F93035AB500C
@@ -7,6 +7,7 @@
 
 #include "OpenGUI_PreRequisites.h"
 #include "OpenGUI_Exports.h"
+#include "OpenGUI_String.h"
 #include "OpenGUI_Types.h"
 #include "OpenGUI_Singleton.h"
 #include "OpenGUI_XML.h"
@@ -29,7 +30,7 @@ namespace OpenGUI {
 	\return \c true if you handled the tag, \c false if you didn't (in which case the
 	next registered handler for that tag will have the opportunity to handle it)
 	*/
-	typedef bool XMLNodeHandler( const XMLNode& node, const std::string& nodePath );
+	typedef bool XMLNodeHandler( const XMLNode& node, const String& nodePath );
 
 	//! Provides XML tag registration and processing callback services
 	/*! XML is processed by %OpenGUI using a mixed DOM/SAX system. XML documents are fully loaded
@@ -68,42 +69,42 @@ namespace OpenGUI {
 		static XMLParser* getSingletonPtr( void );
 
 		//! Reads the given XML file from the registered resource manager and parses the file according to the \ref XMLDOC "XML specifications"
-		void LoadFromFile( const std::string& xmlFilename );
+		void LoadFromFile( const String& xmlFilename );
 
 		//! Reads the given XML file from the registered resource manager and parses it in reverse, performing unloads instead of loads
-		void UnloadFromFile( const std::string& xmlFilename );
+		void UnloadFromFile( const String& xmlFilename );
 
 		//! Registers an XML Load handler for the given \c tagName
-		void RegisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
+		void RegisterLoadHandler( const String& tagName, XMLNodeHandler* handler_callback );
 		//! Unregisters an XML Load handler for the given \c tagName
-		void UnregisterLoadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
+		void UnregisterLoadHandler( const String& tagName, XMLNodeHandler* handler_callback );
 
 		//! Registers an XML Unload handler for the given \c tagName
-		void RegisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
+		void RegisterUnloadHandler( const String& tagName, XMLNodeHandler* handler_callback );
 		//! Unregisters an XML Unload handler for the given \c tagName
-		void UnregisterUnloadHandler( const std::string& tagName, XMLNodeHandler* handler_callback );
+		void UnregisterUnloadHandler( const String& tagName, XMLNodeHandler* handler_callback );
 
 		//! Processes the given \c container with XMLLoad handlers, using the given \c nodePath (Calls ProcessXML_LoadNode() for all container children)
-		void ProcessXML_Load( const XMLNodeContainer& container, const std::string& nodePath );
+		void ProcessXML_Load( const XMLNodeContainer& container, const String& nodePath );
 		//! Processes the given node with XMLLoad handlers, using the given \c nodePath
-		void ProcessXML_LoadNode( const XMLNode& node, const std::string& nodePath );
+		void ProcessXML_LoadNode( const XMLNode& node, const String& nodePath );
 		//! Processes the given \c container with XMLUnload handlers, using the given \c nodePath (Calls ProcessXML_UnloadNode() for all container children)
-		void ProcessXML_Unload( const XMLNodeContainer& container, const std::string& nodePath );
+		void ProcessXML_Unload( const XMLNodeContainer& container, const String& nodePath );
 		//! Processes the given node with XMLUnload handlers, using the given \c nodePath
-		void ProcessXML_UnloadNode( const XMLNode& node, const std::string& nodePath );
+		void ProcessXML_UnloadNode( const XMLNode& node, const String& nodePath );
 
 	private:
-		static bool _IncludeLoadHandler( const XMLNode& node, const std::string& nodePath );
-		static bool _IncludeUnloadHandler( const XMLNode& node, const std::string& nodePath );
-		static bool _Included( const std::string& filename );
-		typedef std::list<std::string> IncludeList;
+		static bool _IncludeLoadHandler( const XMLNode& node, const String& nodePath );
+		static bool _IncludeUnloadHandler( const XMLNode& node, const String& nodePath );
+		static bool _Included( const String& filename );
+		typedef std::list<String> IncludeList;
 		static IncludeList mIncludeList;
 
 		typedef std::list<XMLNodeHandler*> HandlerList;
-		typedef std::map<std::string, HandlerList> XMLHandlerMap;
+		typedef std::map<String, HandlerList> XMLHandlerMap;
 		XMLHandlerMap mLoadMap;
 		XMLHandlerMap mUnloadMap;
-		bool fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const std::string& nodePath );
+		bool fireCallback( XMLHandlerMap& handlerMap, const XMLNode& node, const String& nodePath );
 	};
 };
 

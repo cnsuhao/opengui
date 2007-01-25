@@ -1,10 +1,10 @@
 // OpenGUI (http://opengui.sourceforge.net)
-// This source code is release under the BSD License
+// This source code is released under the BSD License
 // See LICENSE.TXT for details
 
 #ifndef D10A6A7B_DE80_49a2_A962_92696C85AFB8
 #define D10A6A7B_DE80_49a2_A962_92696C85AFB8
-#include <OpenGUI.h>
+#include "OpenGUI.h"
 
 #include "OGL_Viewport.h"
 
@@ -36,7 +36,7 @@ namespace OpenGUI {
 		virtual void preRenderSetup();
 		virtual void doRenderOperation( RenderOperation& renderOp );
 		virtual void postRenderCleanup();
-		virtual Texture* createTextureFromFile( const std::string& filename );
+		virtual Texture* createTextureFromFile( const String& filename );
 		virtual Texture* createTextureFromTextureData( const TextureData* textureData );
 		virtual void updateTextureFromTextureData( Texture* texture, const TextureData* textureData );
 		virtual void destroyTexture( Texture* texturePtr );
@@ -58,7 +58,7 @@ namespace OpenGUI {
 
 		//! Loads the given \c filename into a TextureData object and returns the resulting object pointer, or 0 on fail.
 		/*! \note This uses the Corona library to read the file format.	*/
-		static TextureData* LoadTextureData( std::string filename );
+		static TextureData* LoadTextureData( String filename );
 		bool mSupportRTT;
 
 		OGL_Viewport* mCurrentViewport;
