@@ -18,21 +18,15 @@ using namespace System;
 namespace OpenGUI_Net {
 	namespace Marshal {
 		//############################################################################
-		inline const std::string& STRING( ::System::String ^ managedString ) {
-			static std::string out;
+		inline const OpenGUI::String& STRING( ::System::String ^ managedString ) {
+			static OpenGUI::String out;
 			pin_ptr<const wchar_t> wch = PtrToStringChars( managedString );
-			int len = (( managedString->Length + 1 ) * 2 );
-			char *ch = new char[ len ];
-			bool result = wcstombs( ch, wch, len ) != -1;
-			if ( !result )
-				throw gcnew ::System::Exception( "Failed to marshal managed String to std::string" );
-			out = ch;
-			delete[] ch;
+			out.assign( wch );
 			return out;
 		}
 		//############################################################################
-		inline ::System::String ^ STRING( const std::string& stdString ) {
-			::System::String ^ out = gcnew ::System::String( stdString.c_str() );
+		inline ::System::String ^ STRING( const OpenGUI::String& stdString ) {
+			::System::String ^ out = gcnew ::System::String( stdString.asWStr_c_str() );
 			return out;
 		}
 		//############################################################################

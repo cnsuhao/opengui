@@ -119,7 +119,7 @@ namespace OpenGUI_Net {
 	String ^ IVector2::toStr() {
 		OpenGUI::IVector2 iv2;
 		iv2 = Marshal::IVECTOR2( *this );
-		std::string cstr;
+		OpenGUI::String cstr;
 		OpenGUI::StrConv::fromIVector2( iv2, cstr );
 		String ^ ret = Marshal::STRING( cstr );
 		return ret;
@@ -130,7 +130,7 @@ namespace OpenGUI_Net {
 	String ^ FVector2::toStr() {
 		OpenGUI::FVector2 fv2;
 		fv2 = Marshal::FVECTOR2( *this );
-		std::string cstr;
+		OpenGUI::String cstr;
 		OpenGUI::StrConv::fromFVector2( fv2, cstr );
 		String ^ ret = Marshal::STRING( cstr );
 		return ret;
@@ -141,7 +141,7 @@ namespace OpenGUI_Net {
 	String ^ IRect::toStr() {
 		OpenGUI::IRect ir;
 		ir = Marshal::IRECT( *this );
-		std::string cstr;
+		OpenGUI::String cstr;
 		OpenGUI::StrConv::fromIRect( ir, cstr );
 		String ^ ret = Marshal::STRING( cstr );
 		return ret;
@@ -152,7 +152,7 @@ namespace OpenGUI_Net {
 	String ^ FRect::toStr() {
 		OpenGUI::FRect fr;
 		fr = Marshal::FRECT( *this );
-		std::string cstr;
+		OpenGUI::String cstr;
 		OpenGUI::StrConv::fromFRect( fr, cstr );
 		String ^ ret = Marshal::STRING( cstr );
 		return ret;
