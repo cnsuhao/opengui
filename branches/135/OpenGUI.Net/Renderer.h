@@ -57,7 +57,7 @@ namespace OpenGUI_Net {
 		virtual void preRenderSetup() {}
 		virtual void doRenderOperation( OpenGUI::RenderOperation& renderOp ) {}
 		virtual void postRenderCleanup() {}
-		virtual OpenGUI::Texture* createTextureFromFile( const std::string& filename ) {
+		virtual OpenGUI::Texture* createTextureFromFile( const OpenGUI::String& filename ) {
 			return 0;
 		}
 		virtual OpenGUI::Texture* createTextureFromTextureData( const OpenGUI::TextureData* textureData ) {
