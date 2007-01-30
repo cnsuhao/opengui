@@ -83,7 +83,7 @@ Export('clean_env')
 
 ########## SELECT DEBUG / RELEASE MODE ############
 # detect debug/release and export the flag
-debug = bool( ARGUMENTS.get('debug', 0) )
+debug = bool(int(ARGUMENTS.get('debug', 0)))
 Export('debug')
 if debug:
 	print "Build Mode: DEBUG"
