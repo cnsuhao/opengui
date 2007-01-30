@@ -4,8 +4,8 @@
 
 #ifndef D10A6A7B_DE80_49a2_A962_92696C85AFB8
 #define D10A6A7B_DE80_49a2_A962_92696C85AFB8
+#include "OGL_Platform.h"
 #include "OpenGUI.h"
-
 #include "OGL_Viewport.h"
 
 /*

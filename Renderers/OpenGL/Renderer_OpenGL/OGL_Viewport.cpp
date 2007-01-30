@@ -2,6 +2,7 @@
 // This source code is released under the BSD License
 // See LICENSE.TXT for details
 
+#include "OGL_Platform.h"
 #include "OGL_Viewport.h"
 #include "OGL_Texture.h"
 #include "Renderer_OpenGL.h"
@@ -18,3 +19,4 @@ namespace OpenGUI {
 	}
 	//###########################################################
 }
+

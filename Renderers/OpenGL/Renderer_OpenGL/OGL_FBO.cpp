@@ -2,6 +2,7 @@
 // This source code is released under the BSD License
 // See LICENSE.TXT for details
 
+#include "OGL_Platform.h"
 #include "OGL_FBO.h"
 #include "GL/glfw.h"
 
@@ -72,3 +73,4 @@ bool InitializeFBO() {
 
 	return true;
 }
+

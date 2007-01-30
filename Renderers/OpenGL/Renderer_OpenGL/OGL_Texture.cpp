@@ -2,6 +2,7 @@
 // This source code is released under the BSD License
 // See LICENSE.TXT for details
 
+#include "OGL_Platform.h"
 #include "Renderer_OpenGL.h"
 #include "OGL_Texture.h"
 
@@ -36,5 +37,5 @@ namespace OpenGUI {
 		glDeleteFramebuffersEXT( 1, &fboId );
 	}
 	//###########################################################
-}
-;//namespace OpenGUI{
+} // namespace OpenGUI{
+
