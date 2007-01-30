@@ -26,7 +26,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			try {
 				Widget& w = dynamic_cast<Widget&>( objectRef );
 				w.setName( valueIn.getValueAsString() );
@@ -56,7 +56,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			try {
 				Widget& w = dynamic_cast<Widget&>( objectRef );
 				w.setEnabled( valueIn.getValueAsBool() );

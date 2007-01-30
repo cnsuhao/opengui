@@ -341,7 +341,7 @@ namespace OpenGUI {
 		OG_THROW( Exception::OP_FAILED, "Type conversion failed", __FUNCTION__ );
 	}
 	//############################################################################
-	void StrConv::fromFont( Font& in, String& out ) {
+	void StrConv::fromFont( const Font& in, String& out ) {
 		std::stringstream ss;
 		ss << in.getName();
 		ss << " @ ";

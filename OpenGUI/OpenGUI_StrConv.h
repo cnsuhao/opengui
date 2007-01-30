@@ -59,7 +59,7 @@ namespace OpenGUI {
 		//! Turn a string into a bool
 		static void toBool( const String& in, bool& out );
 		//! Turn a Font into a string
-		static void fromFont( Font& in, String& out );
+		static void fromFont(const Font& in, String& out );
 		//! Turn a string into a Font
 		static void toFont( const String& in, Font& out );
 		//! Turn a TextAlignment into a string

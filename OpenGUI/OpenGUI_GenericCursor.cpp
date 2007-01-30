@@ -22,7 +22,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			try {
 				GenericCursor& c = dynamic_cast<GenericCursor&>( objectRef );
 				ImageryPtr img = ImageryManager::getSingleton().getImagery( valueIn.getValueAsString() );
@@ -53,7 +53,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			try {
 				GenericCursor& c = dynamic_cast<GenericCursor&>( objectRef );
 				c.setOffset( valueIn.getValueAsIVector2() );
@@ -140,7 +140,7 @@ namespace OpenGUI {
 	//############################################################################
 	void GenericCursor::_updateOffsetCache() {
 		if ( mImagery ) {
-			IVector2& imgSize = mImagery->getImagesetRect().getSize();
+			const IVector2 imgSize = mImagery->getImagesetRect().getSize();
 			mOffsetCache.x = (( float ) mOffset.x / ( float ) imgSize.x );
 			mOffsetCache.y = (( float ) mOffset.y / ( float ) imgSize.y );
 		}
@@ -148,3 +148,4 @@ namespace OpenGUI {
 	//############################################################################
 
 }//namespace OpenGUI{
+

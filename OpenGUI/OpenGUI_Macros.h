@@ -45,7 +45,7 @@ public: \
 			OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ ); \
 		} \
 	} \
-	virtual void set( Object& objectRef, Value& valueIn ) { \
+	virtual void set( Object& objectRef, const Value& valueIn ) { \
 		try { \
 			TARGET_OBJECT_CLASS& target = dynamic_cast<TARGET_OBJECT_CLASS&>( objectRef ); \
 			target.SETTER( valueIn.VALUE_GET_FUNC() ); \

@@ -22,7 +22,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			try {
 				Cursor& c = dynamic_cast<Cursor&>( objectRef );
 				c.setSize( valueIn.getValueAsFVector2() );

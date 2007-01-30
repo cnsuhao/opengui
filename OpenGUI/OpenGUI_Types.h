@@ -686,7 +686,7 @@ namespace OpenGUI {
 	class OPENGUI_API Color {
 	public:
 		//! Constructor with optional in place initialization
-		Color( float R = 1.0f, float G = 1.0f, float B = 1.0f, float A = 1.0f ) : Red( R ), Blue( B ), Green( G ), Alpha( A ) {}
+		Color( float R = 1.0f, float G = 1.0f, float B = 1.0f, float A = 1.0f ) : Red( R ), Green( G ), Blue( B ),  Alpha( A ) {}
 
 		float Red;//!<Red Channel
 		float Green;//!<Green Channel
@@ -777,27 +777,28 @@ namespace OpenGUI {
 	template <typename T>
 	class AutoArray2D {
 	public:
-		template <typename T>
+		template <typename U>
 		class Column {
-			template <typename T> friend class AutoArray2D; // mutual friends
+			friend class AutoArray2D < U >; // mutual friends
 		public:
-			T& operator[]( size_t y ) {
+			U& operator[]( size_t y ) {
 				if (( y+1 ) > mData.size() )
 					mParent->resize( mParent->mSizeX, y + 1 ); // this will sufficiently lengthen us in the process
 				return mData[y];
 			}
-			Column<typename T>& operator=( const Column<typename T>&right ) {
+			Column< U>& operator=( const Column< U >&right ) {
 				mParent = right.mParent;
 				return *this;
 			}
 		private:
 			Column( AutoArray2D* parent ): mParent( parent ) {}
-			typedef std::vector<T> EntryVector;
+			typedef std::vector<U> EntryVector;
 			EntryVector mData;
 			AutoArray2D* mParent;
 		};
-		template <typename T> friend class Column; // mutual friends
+		friend class Column<T>; // mutual friends
 		typedef Column<T> ColumnType;
+		typedef std::vector < ColumnType > ColVector;
 
 		//! Constructor allows for pre-sizing the array, if desired
 		AutoArray2D( size_t x_size = 0, size_t y_size = 0 ): mSizeX( 0 ), mSizeY( 0 ) {
@@ -824,7 +825,7 @@ namespace OpenGUI {
 		void resize( size_t x_size, size_t y_size ) {
 			if ( mLocked ) throw std::overflow_error( "AutoArray2D is locked" ); // throw if we're locked
 			mData.resize( x_size, ColumnType( this ) );
-			ColVector::iterator i, ie = mData.end();
+			typename ColVector::iterator i, ie = mData.end();
 			for ( i = mData.begin(); i != ie; i++ )
 				i->mData.resize( y_size );
 			mSizeX = x_size;
@@ -840,7 +841,7 @@ namespace OpenGUI {
 			if ( y_size < mSizeY ) y_size = mSizeY;
 
 			mData.resize( x_size, ColumnType( this ) );
-			ColVector::iterator i, ie = mData.end();
+			typename ColVector::iterator i, ie = mData.end();
 			for ( i = mData.begin(); i != ie; i++ )
 				i->mData.resize( y_size );
 			mSizeX = x_size;
@@ -856,7 +857,7 @@ namespace OpenGUI {
 			if ( y_size < mSizeY ) y_size = mSizeY;
 
 			mData.resize( x_size, ColumnType( this ) );
-			ColVector::iterator i, ie = mData.end();
+			typename ColVector::iterator i, ie = mData.end();
 			for ( i = mData.begin(); i != ie; i++ )
 				i->mData.resize( y_size, value );
 			mSizeX = x_size;
@@ -873,7 +874,6 @@ namespace OpenGUI {
 		}
 
 	private:
-		typedef std::vector < ColumnType > ColVector;
 		ColVector mData;
 		size_t mSizeX;
 		size_t mSizeY;
@@ -884,4 +884,5 @@ namespace OpenGUI {
 }//namespace OpenGUI {
 
 #endif
+
 
