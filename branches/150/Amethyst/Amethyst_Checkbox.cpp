@@ -2,7 +2,7 @@
 // This source code is released under the BSD License
 // See LICENSE.TXT for details
 
-#include "Amethyst_Checkbox.h"
+#include "Amethyst_CheckBox.h"
 #include "OpenGUI_Macros.h"
 
 namespace OpenGUI {
@@ -211,3 +211,4 @@ namespace OpenGUI {
 		//############################################################################
 	} // namespace Amethyst {
 } // namespace OpenGUI {
+

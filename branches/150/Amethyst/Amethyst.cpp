@@ -51,12 +51,12 @@ namespace OpenGUI {
 
 extern "C" {
 
-	void __declspec( dllexport ) pluginStart() {
+	void AMETHYST_API  pluginStart() {
 		using namespace OpenGUI::Amethyst;
 		Initialize();
 	}
 
-	void __declspec( dllexport ) pluginStop() {
+	void AMETHYST_API pluginStop() {
 		using namespace OpenGUI::Amethyst;
 		Shutdown();
 	}

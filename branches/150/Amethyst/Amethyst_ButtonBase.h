@@ -64,3 +64,4 @@ namespace OpenGUI {
 } // namespace OpenGUI {
 
 #endif // Amethyst_ButtonBase_h__
+

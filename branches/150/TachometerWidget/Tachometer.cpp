@@ -301,8 +301,7 @@ namespace OpenGUI {
 		//############################################################################
 		void Tachometer::onDraw( Object* sender, Draw_EventArgs& evtArgs ) {
 			Brush& b = evtArgs.brush;
-			const FVector2& PPU = b.getPPU();
-			const float scaleX = getRect().getWidth() / (( float )mBGImageryPtr->getImagesetRect().getWidth() ) ;
+			const float scaleX = getRect().getWidth() / (( float )mBGImageryPtr->getImagesetRect().getWidth() );
 			const float scaleY = getRect().getWidth()  / (( float )mBGImageryPtr->getImagesetRect().getHeight() );
 			b.Image.drawImage( mBGImageryPtr, getRect() );
 
@@ -427,3 +426,4 @@ namespace OpenGUI {
 		//############################################################################
 	}//namespace Examples
 }//namespace OpenGUI{
+
