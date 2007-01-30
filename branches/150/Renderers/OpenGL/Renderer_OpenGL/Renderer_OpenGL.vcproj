@@ -256,6 +256,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OGL_Platform.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OGL_Texture.h"
 				>
 			</File>

@@ -5,10 +5,19 @@
 #ifndef OpenGUI_FBO_h__
 #define OpenGUI_FBO_h__
 
+#include "OGL_Platform.h"
+
+#if OGL_PLATFORM == OGL_PLATFORM_WIN32
 #include <windows.h>		// Header File For Windows
 #include <gl\gl.h>			// Header File For The OpenGL32 Library
 #include <gl\glu.h>			// Header File For The GLu32 Library
 #include <gl\glaux.h>		// Header File For The Glaux Library
+#endif // OGL_PLATFORM == OGL_PLATFORM_WIN32
+
+#if OGL_PLATFORM == OGL_PLATFORM_LINUX
+#include <GL/gl.h>			// Header File For The OpenGL Library
+#include <GL/glu.h>			// Header File For The GLu Library
+#endif // OGL_PLATFORM == OGL_PLATFORM_LINUX
 
 #define GL_FRAMEBUFFER_EXT                     0x8D40
 #define GL_RENDERBUFFER_EXT                    0x8D41

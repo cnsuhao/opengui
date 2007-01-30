@@ -2,13 +2,9 @@
 // This source code is released under the BSD License
 // See LICENSE.TXT for details
 
-#include <windows.h>		// Header File For Windows
-#include <gl\gl.h>			// Header File For The OpenGL32 Library
-#include <gl\glu.h>			// Header File For The GLu32 Library
-#include <gl\glaux.h>		// Header File For The Glaux Library
-
-#include "GL/glfw.h"
+#include "OGL_Platform.h"
 #include "OGL_FBO.h"
+#include "GL/glfw.h"
 
 #include "corona.h"
 
@@ -589,8 +585,8 @@ namespace OpenGUI {
 		}
 	}
 	//#####################################################
-}
-;//namespace OpenGUI{
+} // namespace OpenGUI{
+
 
 
 
