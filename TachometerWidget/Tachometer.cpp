@@ -23,7 +23,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleStartAngle( valueIn.getValueAsFloat() );
@@ -53,7 +53,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleMaxValue( valueIn.getValueAsFloat() );
@@ -83,7 +83,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleSweepAngle( valueIn.getValueAsFloat() );
@@ -113,7 +113,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setBackgroundImagery( valueIn.getValueAsString() );
@@ -143,7 +143,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleImagery( valueIn.getValueAsString() );
@@ -173,7 +173,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleValue( valueIn.getValueAsFloat() );
@@ -203,7 +203,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedleAnchor( valueIn.getValueAsFVector2() );
@@ -233,7 +233,7 @@ namespace OpenGUI {
 				}
 			}
 			//############################################################################
-			virtual void set( Object& objectRef, Value& valueIn ) {
+			virtual void set( Object& objectRef, const Value& valueIn ) {
 				try {
 					Tachometer& t = dynamic_cast<Tachometer&>( objectRef );
 					t.setNeedlePivot( valueIn.getValueAsFVector2() );
