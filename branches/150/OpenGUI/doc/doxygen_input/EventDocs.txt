@@ -1,0 +1,209 @@
+
+/*! \page Events Events
+
+	Any Object derived class has the ability to expose Events within %OpenGUI. Events are used heavily throughout %OpenGUI to notify Widgets about conditions that may be of interest to them. Many of these events have a default action that is performed to maintain a logically working GUI environment, and in some cases the default event action for one Widget is not necessarily the best course of action for another.
+	
+	To provide a consistent event system that offers the most flexibility for applications to customize, %OpenGUI uses a standardized method of event processing. Every standard event that a Widget receives in OpenGUI, either due to input injection or as the result of another event, is initiated by calling the appropriate event injector. Event injectors only have a single purpose: to build the necessary EventArgs and trigger the event via OpenGUI::Object::triggerEvent(). They have a standard naming convention:
+	\code event<Event Name>(params) \endcode
+	An example would be \c eventActivate, which would (as implied) triggers the "Activate" event. Event injectors are just helper functions, and it is perfectly legal to skip this step and use OpenGUI::Object::triggerEvent() directly if you're capable of building the appropriate OpenGUI::EventArgs yourself.
+	
+	The actual default event actions are handled in the event handlers. These have a standard naming convention as well:
+	\code on<Event Name>(Object* sender,Attach_EventArgs& evtArgs) \endcode
+	All default actions for events occur within these default event handlers. They are virtual functions so that they can be overridden when the current default action is not the necessary action for a new derived Widget type. It is also legal to override an event handler in a subclass of a Widget just to receive notification of the event without registering another handler, but you should take care to call the existing handler during your override to ensure the previous functionality remains. It is not good practice to call default event handlers directly from outside of a default event handler override, as this would not trigger the calling of any additionally bound handlers.
+	
+\section EventList Events List
+	The following is a list of all events that %OpenGUI supports internally. This does not mean that these are the only events that are possible, as any Widget can define new events that it is willing to accept. This is merely the complete list of events that %OpenGUI expects Widgets, Controls, ContainerControls, and Windows to have. Since more specialized Widgets tend to have more events, these events are broken up into smaller lists to illustrate the class hierarchy level where each becomes available.
+	
+	As the Widget classes become more specific, they also include the events of their base classes.
+<hr>
+
+\section EventList_Widget Widget Events
+
+\subsection General
+- \subpage Event_Enabled "Enabled"
+- \subpage Event_Disabled "Disabled"
+- \subpage Event_Attached "Attached"
+- \subpage Event_Detached "Detached"
+
+\subsection Drawing
+- \subpage Event_Draw "Draw"
+- \subpage Event_Invalidated "Invalidated"
+\subsection Events_Timing Timing
+- \subpage Event_Tick "Tick"
+
+\subsection Events_Cursor_Input Cursor Input
+- \subpage Event_CursorMoving "CursorMoving"
+- \subpage Event_CursorMove "CursorMove"
+- \subpage Event_CursorEnter "CursorEnter"
+- \subpage Event_CursorLeave "CursorLeave"
+- \subpage Event_CursorPressing "CursorPressing"
+- \subpage Event_CursorPress "CursorPress"
+- \subpage Event_CursorReleasing "CursorReleasing"
+- \subpage Event_CursorRelease "CursorRelease"
+- \subpage Event_CursorFocused "CursorFocused"
+- \subpage Event_CursorFocusLost "CursorFocusLost"
+
+\subsection Events_Text_Input Text Input
+- \subpage Event_KeyUp "KeyUp"
+- \subpage Event_KeyDown "KeyDown"
+- \subpage Event_KeyPressed "KeyPressed"
+- \subpage Event_KeyFocused "KeyFocused"
+- \subpage Event_KeyFocusLost "KeyFocusLost"
+
+
+
+\section EventList_Control Control Events
+- \subpage Event_Moved "Moved"
+- \subpage Event_Resized "Resized"
+- \subpage Event_Targeted "Targeted"
+- \subpage Event_UnTargeted "UnTargeted"
+
+
+\section EventList_ContainerControl ContainerControl Events
+- \subpage Event_ChildAttached "ChildAttached"
+- \subpage Event_ChildDetached "ChildDetached"
+- \subpage Event_DrawBG "DrawBG"
+
+
+\section EventList_Window Window Events
+- \subpage Event_Move_Begin "Move_Begin"
+- \subpage Event_Move_End "Move_End"
+- \subpage Event_Resize_Begin "Resize_Begin"
+- \subpage Event_Resize_End "Resize_End"
+
+\section EventList_Cursor Cursor Events
+- \subpage Event_CursorShown "CursorShown"
+- \subpage Event_CursorHidden "CursorHidden"
+- \subpage Event_CursorMove "CursorMove"
+- \subpage Event_CursorPress "CursorPress"
+- \subpage Event_CursorRelease "CursorRelease"
+
+
+
+
+
+
+
+
+\page Event_Targeted Targeted
+The Control was targeted, either by cursor or by menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onTargeted
+	- OpenGUI::Control::eventTargeted
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_UnTargeted UnTargeted
+The Control is no longer targeted, as a result of either cursor or menu navigation.
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onUnTargeted
+	- OpenGUI::Control::eventUnTargeted
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_ChildAttached ChildAttached
+A child Widget has been attached to this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildAttached
+	- OpenGUI::ContainerControl::eventChildAttached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_ChildDetached ChildDetached
+A child Widget has been detached from this ContainerControl.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onChildDetached
+	- OpenGUI::ContainerControl::eventChildDetached
+	\par EventArgs:
+	OpenGUI::Attach_EventArgs
+
+
+
+\page Event_DrawBG DrawBG
+Draw the background of this object using the given brush. The background will appear underneath the contained widgets, whereas the foreground (drawn within the usual \c Draw event) will be drawn on top of the contained widgets.
+	\par Occurs In:
+	OpenGUI::ContainerControl
+	- OpenGUI::ContainerControl::onDrawBG
+	- OpenGUI::ContainerControl::eventDrawBG
+	\par EventArgs:
+	OpenGUI::Draw_EventArgs
+
+
+
+\page Event_Moved Moved
+The Control has been moved
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onMoved
+	- OpenGUI::Control::eventMoved
+	\par EventArgs:
+	OpenGUI::Moved_EventArgs
+
+
+\page Event_Resized Resized
+The Control has been resized
+	\par Occurs In:
+	OpenGUI::Control
+	- OpenGUI::Control::onResized
+	- OpenGUI::Control::eventResized
+	\par EventArgs:
+	OpenGUI::Resized_EventArgs
+
+
+
+\page Event_Move_Begin Move_Begin
+Signals the beginning of a drag-to-move operation.
+\par Occurs In:
+	OpenGUI::Window
+	- OpenGUI::Window::onMove_Begin
+	- OpenGUI::Window::eventMove_Begin
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Move_End Move_End
+Signals the end of a drag-to-move operation.
+\par Occurs In:
+	OpenGUI::Window
+	- OpenGUI::Window::onMove_End
+	- OpenGUI::Window::eventMove_End
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Resize_Begin Resize_Begin
+Signals the beginning of a drag-to-resize operation.
+Signals the end of a drag-to-move operation.
+\par Occurs In:
+	OpenGUI::Window
+	- OpenGUI::Window::onResize_Begin
+	- OpenGUI::Window::eventResize_Begin
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+
+
+\page Event_Resize_End Resize_End
+Signals the end of a drag-to-resize operation.
+Signals the end of a drag-to-move operation.
+\par Occurs In:
+	OpenGUI::Window
+	- OpenGUI::Window::onResize_End
+	- OpenGUI::Window::eventResize_End
+	\par EventArgs:
+	OpenGUI::EventArgs
+
+*/
+
