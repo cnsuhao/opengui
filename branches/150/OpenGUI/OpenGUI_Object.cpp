@@ -53,7 +53,7 @@ namespace OpenGUI {
 		}
 	}
 	//############################################################################
-	void Object::setProperty( const String& propertyName, Value& valueIn ) {
+	void Object::setProperty( const String& propertyName, const Value& valueIn ) {
 		ObjectAccessorList* oal = getAccessors();
 		if ( !oal ) {
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "getAccessors() returned invalid ObjectAccessorList", "Object::setProperty" );
@@ -118,3 +118,4 @@ namespace OpenGUI {
 	}
 	//############################################################################
 }//namespace OpenGUI{
+

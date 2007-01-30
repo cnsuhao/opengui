@@ -83,7 +83,7 @@ namespace OpenGUI {
 				OG_THROW( Exception::ERR_INVALIDPARAMS, "Bad Object Pointer", __FUNCTION__ );
 			}
 		}
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			/* read-only */
 		}
 		virtual Value::ValueType getPropertyType() {

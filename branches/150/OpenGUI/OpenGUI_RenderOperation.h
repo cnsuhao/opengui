@@ -12,8 +12,6 @@
 
 namespace OpenGUI {
 
-
-
 	//! It's a vertex. A Triangle consists of 3 of these.
 	class OPENGUI_API Vertex {
 	public:
@@ -54,7 +52,7 @@ namespace OpenGUI {
 	class OPENGUI_API RenderOperation {
 	public:
 		//! constructor
-		RenderOperation() : texture( 0 ), mask( 0 ), triangleList( 0 ) {}
+		RenderOperation() : triangleList ( 0 ), texture( 0 ), mask( 0 ) {}
 		~RenderOperation() {
 			if ( triangleList != 0 )
 				delete triangleList;
@@ -69,6 +67,7 @@ namespace OpenGUI {
 
 	typedef std::list<RenderOperation> RenderOperationList;
 
-};
+} // namespace OpenGUI {
 #endif
+
 

@@ -1,4 +1,5 @@
 Version 0.9 - ??/??/????)
+* ObjectProperty->set()'s valueIn is now "const Value&"
 * added String type (UTFString) to support Unicode string data, now used throughout the library #128
 * renamed StrConv::toLower() to StrConv::toLower_Latin() to reflect its working limitations #128
 * removed Value::setValueAuto() #120

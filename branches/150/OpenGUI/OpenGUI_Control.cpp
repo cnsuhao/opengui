@@ -37,7 +37,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			/* read-only property */
 		}
 		//############################################################################
@@ -66,7 +66,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			/* read-only property */
 		}
 		//############################################################################
@@ -95,7 +95,7 @@ namespace OpenGUI {
 			}
 		}
 		//############################################################################
-		virtual void set( Object& objectRef, Value& valueIn ) {
+		virtual void set( Object& objectRef, const Value& valueIn ) {
 			/* read-only property */
 		}
 		//############################################################################

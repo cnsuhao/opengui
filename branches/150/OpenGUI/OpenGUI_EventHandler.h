@@ -123,8 +123,8 @@ namespace OpenGUI {
 			}
 		}
 	private:
-		CLASS* mClassObject;
 		MEMBER mMemberPtr;
+		CLASS* mClassObject;
 	};
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
@@ -222,4 +222,5 @@ namespace OpenGUI {
 }// namespace OpenGUI {
 
 #endif // CA247652_FCF4_483C_B34C_810A39296B18
+
 

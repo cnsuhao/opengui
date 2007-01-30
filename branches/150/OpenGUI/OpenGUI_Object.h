@@ -26,7 +26,7 @@ namespace OpenGUI {
 		//! returns the value of \c propertyName via \c valueOut
 		void getProperty( const String& propertyName, Value& valueOut );
 		//! sets the value of \c propertyName to the contents of \c valueIn
-		void setProperty( const String& propertyName, Value& valueIn );
+		void setProperty( const String& propertyName, const Value& valueIn );
 		//! invokes \c methodName, sending \c paramIn as arguments, and catching return values in \c returnOut
 		void callMethod( const String& methodName, ValueList& paramIn, ValueList& returnOut );
 

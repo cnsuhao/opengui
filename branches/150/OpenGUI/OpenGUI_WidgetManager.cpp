@@ -74,6 +74,7 @@ namespace OpenGUI {
 		WidgetFactoryMap::iterator iter = fMap.find( Name );
 		if ( iter == fMap.end() )
 			OG_THROW( Exception::ERR_ITEM_NOT_FOUND, "Widget not registered: " + Name + ":" + Library, __FUNCTION__ );
+		LogManager::SlogMsg( "WidgetManager", OGLL_INSANE ) << "Creating Widget - " << Name << " : " << Library << Log::endlog;
 		WidgetFactoryCallback* callback = iter->second;
 		Widget* widget = ( *callback )();
 		return widget;

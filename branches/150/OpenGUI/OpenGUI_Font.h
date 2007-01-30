@@ -95,7 +95,8 @@ namespace OpenGUI {
 
 		bool _tryBind(); // tries to bind the font, returning false if failed for any reason
 	};
-};
+
+} // namespace OpenGUI {
 
 #endif // A3E35C4A_48F9_429b_B13A_F3AB9BFF90D4
 
