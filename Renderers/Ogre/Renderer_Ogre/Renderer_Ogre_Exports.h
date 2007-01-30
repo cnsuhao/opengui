@@ -11,7 +11,7 @@
 
 #include "Renderer_Ogre_PreRequisites.h"
 
-#if OPENGUI_COMPILER == OPENGUI_COMPILER_MSVC
+#if OGR_OGRE_COMPILER == OGR_OGRE_COMPILER_MSVC
 
 #   ifdef OGR_OGRE_EXPORTS
 #       define OGR_OGRE_API __declspec(dllexport)

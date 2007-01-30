@@ -30,12 +30,12 @@ in this file.
 /* Detect compiler */
 //check for MSVC
 #if defined ( _MSC_VER )
-#define OGR_OGRE_COMPILER OPENGUI_COMPILER_MSVC
+#define OGR_OGRE_COMPILER OGR_OGRE_COMPILER_MSVC
 //	#pragma message( "Detected Compiler: MSVC" )
 
 //check for GCC
 #elif defined ( __GNUC__ )
-#define OGR_OGRE_COMPILER OPENGUI_COMPILER_GCC
+#define OGR_OGRE_COMPILER OGR_OGRE_COMPILER_GCC
 
 #else
 #pragma error "Unknown compiler! Refer to Renderer_Ogre_Platform.h"
@@ -49,7 +49,7 @@ in this file.
 #define OGR_OGRE_PLATFORM OGR_OGRE_PLATFORM_WIN32
 //	#pragma message( "Detected Platform: WIN32" )
 
-//assume linux if nothing else fits
+//assume Linux if nothing else fits
 #else
 #define OGR_OGRE_PLATFORM OGR_OGRE_PLATFORM_LINUX
 
