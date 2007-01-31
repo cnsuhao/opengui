@@ -18,7 +18,7 @@ using namespace System;
 namespace OpenGUI_Net {
 	namespace Marshal {
 		//############################################################################
-		inline const OpenGUI::String& STRING( ::System::String ^ managedString ) {
+		inline const OpenGUI::String& STRING( const ::System::String ^ managedString ) {
 			static OpenGUI::String out;
 			pin_ptr<const wchar_t> wch = PtrToStringChars( managedString );
 			out.assign( wch );
