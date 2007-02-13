@@ -45,6 +45,10 @@ namespace OpenGUI {
 		doc.SaveFile( filename );
 	}
 	//############################################################################
+	XMLNodeContainer::NodeType XMLDoc::getType() {
+		return XMLNodeContainer::T_XMLDOC;
+	}
+	//############################################################################
 	//############################################################################
 	//############################################################################
 	XMLNodeContainer::~XMLNodeContainer() {
@@ -257,6 +261,10 @@ namespace OpenGUI {
 			out << "#- " << mText;
 		}
 		return out.str();
+	}
+	//############################################################################
+	XMLNodeContainer::NodeType XMLNode::getType() {
+		return XMLNodeContainer::T_XMLNODE;
 	}
 	//############################################################################
 }//namespace OpenGUI{

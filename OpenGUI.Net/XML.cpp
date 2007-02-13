@@ -22,9 +22,9 @@ namespace OpenGUI_Net {
 	}
 	//############################################################################
 	XMLNodeContainer ^ XMLNodeContainer::makeManaged( OpenGUI::XMLNodeContainer* native ) {
-		if ( native->getType() == OpenGUI::XMLNodeContainer::NT_XMLDOC ) {
+		if ( native->getType() == OpenGUI::XMLNodeContainer::T_XMLDOC ) {
 			return gcnew XMLDoc( static_cast<OpenGUI::XMLDoc*>( native ) );
-		} else if ( native->getType() == OpenGUI::XMLNodeContainer::NT_XMLNODE ) {
+		} else if ( native->getType() == OpenGUI::XMLNodeContainer::T_XMLNODE ) {
 			return gcnew XMLNode( static_cast<OpenGUI::XMLNode*>( native ) );
 		}
 		throw gcnew ::System::Exception( "Unknown XMLNodeContainer type" );
