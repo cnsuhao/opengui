@@ -30,6 +30,15 @@ namespace OpenGUI {
 		XMLNodeList getChildren() const;
 		//! Returns a list of the children that match the given \c tagName
 		XMLNodeList getChildren( const String& tagName ) const;
+		//! Identifies the XMLNodeContainer type
+		enum NodeType {
+			//! The container is an XMLDoc
+			T_XMLDOC,
+			//! The container is an XMLNode
+			T_XMLNODE
+		};
+		//! Returns a more specific identifier for this container's true type
+		virtual NodeType getType() = 0;
 
 	protected:
 		void _notifyChildDetach( XMLNodeContainer* parent, XMLNode* childPtr ); // issues event
@@ -55,6 +64,9 @@ namespace OpenGUI {
 		const String& getFileName() {
 			return mFileName;
 		}
+		//! Returns a more specific identifier for this container's true type
+		virtual NodeType getType();
+
 	protected:
 		String mFileName;
 	};
@@ -126,6 +138,9 @@ namespace OpenGUI {
 
 		//! Dumps the full contents of this node into a human readable format that is XML-like, but not real xml
 		String dump() const;
+
+		//! Returns a more specific identifier for this container's true type
+		virtual NodeType getType();
 
 	protected:
 		//! \internal build the given tinyXML tree into a node tree

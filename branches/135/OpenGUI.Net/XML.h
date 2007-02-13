@@ -90,7 +90,7 @@ namespace OpenGUI_Net {
 		//! set the text content of this node
 		void setText( const String ^ text );
 
-		//! Dumps the full contents of this node into a human readable format that is XML-like, but not real xml
+		//! Dumps the full contents of this node into a human readable format that is XML-like, but not real XML
 		String ^ dump();
 	};
 } // namespace OpenGUI_Net {
