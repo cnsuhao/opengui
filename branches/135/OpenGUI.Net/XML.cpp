@@ -42,6 +42,37 @@ namespace OpenGUI_Net {
 		return retval;
 	}
 	//############################################################################
+	//############################################################################
+	//############################################################################
+	void XMLDoc::clear() {
+		THRU_THROW_BEGIN
+		static_cast<OpenGUI::XMLDoc*>( mNative )->clear();
+		THRU_THROW_END
+	}
+	//############################################################################
+	void XMLDoc::loadFile( const String ^ filename ) {
+		OpenGUI::String str = Marshal::STRING( filename );
+		THRU_THROW_BEGIN
+		static_cast<OpenGUI::XMLDoc*>( mNative )->loadFile( str );
+		THRU_THROW_END
+	}
+	//############################################################################
+	void XMLDoc::saveFile( const String ^ filename ) {
+		OpenGUI::String str = Marshal::STRING( filename );
+		THRU_THROW_BEGIN
+		static_cast<OpenGUI::XMLDoc*>( mNative )->saveFile( str );
+		THRU_THROW_END
+	}
+	//############################################################################
+	String ^ XMLDoc::getFileName() {
+		OpenGUI::String str;
+		THRU_THROW_BEGIN
+		str = static_cast<OpenGUI::XMLDoc*>( mNative )->getFileName();
+		THRU_THROW_END
+		String ^ name = Marshal::STRING( str );
+		return name;
+	}
+	//############################################################################
 
 } // namespace OpenGUI_Net {
 
