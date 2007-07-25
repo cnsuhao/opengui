@@ -13,7 +13,7 @@ namespace OpenGUI_Net {
 	ref class XMLDoc;
 	ref class XMLNode;
 	typedef List < XMLNode ^ > XMLNodeList;
-	typedef Dictionary<String^,String^> XMLAttributeMap;
+	typedef Dictionary < String ^ , String ^ > XMLAttributeMap;
 
 	public ref class XMLNodeContainer {
 	public:
@@ -35,6 +35,8 @@ namespace OpenGUI_Net {
 		static XMLNodeContainer ^ makeManaged( OpenGUI::XMLNodeContainer* native );
 	};
 
+	//############################################################################
+
 	public ref class XMLDoc: public XMLNodeContainer {
 	public:
 		XMLDoc( OpenGUI::XMLDoc* nativeDoc ) {
@@ -51,6 +53,8 @@ namespace OpenGUI_Net {
 		//! returns the last filename this XMLDoc was saved to or loaded from
 		String ^ getFileName();
 	};
+
+	//############################################################################
 
 	public ref class XMLNode: public XMLNodeContainer {
 	public:
